@@ -1,0 +1,22 @@
+{
+  "id": "ab746921-d839-4867-bcf9-b41db8ebc852",
+  "personId": "ab746921-d839-4867-bcf9-b41db8ebceee",
+  "courtCentreName": "Liverpool",
+  "courtCode": "147",
+  "startDate": "2017-03-15",
+  "judgeName": "Nina Logan",
+  "prosecutorName": "Mary O'Brien QC",
+  "defenceName": "Michael Lark QC",
+  "clerks":[{
+    "clerkOfTheCourtId": "ab746921-d839-4867-bcf9-b41db8ebc112",
+    "clerkOfTheCourtFirstName": "David",
+    "clerkOfTheCourtLastName": "Walliams"
+  }],
+  "variants":[{
+    "nowsTypeId" : "5a7bbb07-aa18-400d-a2de-56a5103e4ff0",
+    "materialId" : "f79bf106-84e0-4bd9-911a-fc28cd6a8c9c",
+    "description": "Imprisonment Order",
+    "templateName": "SingleTemplate",
+    "status": "GENERATED"
+  }]
+}

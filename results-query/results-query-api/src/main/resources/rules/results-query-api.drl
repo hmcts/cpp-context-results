@@ -1,0 +1,46 @@
+package uk.gov.moj.cpp.accesscontrol;
+
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.*;
+
+import uk.gov.moj.cpp.accesscontrol.drools.Outcome;
+import uk.gov.moj.cpp.accesscontrol.drools.Action;
+import java.util.Arrays;
+
+global uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider userAndGroupProvider;
+
+rule "Query - API - results.get-person-details"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.get-person-details");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, personDetailsGroups()));
+
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "Query - API - results.get-hearing-details"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.get-hearing-details");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, hearingDetailsGroups()));
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "Query - API - results.get-results-details"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.get-results-details");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, resultsDetailsGroups()));
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "Query - API - results.get-results-summary"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.get-results-summary");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, resultsSummaryGroups()));
+  then
+    $outcome.setSuccess(true);
+end

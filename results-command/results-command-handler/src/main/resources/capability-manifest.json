@@ -1,0 +1,9 @@
+{
+  "capabilities": [
+    {
+      "name": "results.add-hearing-result",
+      "type": "action",
+      "action": "results.add-hearing-result"
+    }
+  ]
+}

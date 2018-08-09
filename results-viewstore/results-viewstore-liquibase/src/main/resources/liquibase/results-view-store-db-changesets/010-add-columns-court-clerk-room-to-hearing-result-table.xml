@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="010-add-columns-court-clerk-room-to-hearing-result-table.xml">
+
+        <addColumn tableName="hearing_result">
+            <column name="court" type="text"/>
+            <column name="court_room" type="text"/>
+            <column name="clerk_of_court_id" type="uuid"/>
+            <column name="clerk_of_court_firstname" type="text"/>
+            <column name="clerk_of_court_lastname" type="text"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

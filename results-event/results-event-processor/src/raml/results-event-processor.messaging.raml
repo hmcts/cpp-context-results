@@ -1,0 +1,20 @@
+#%RAML 0.8
+title: Results event processor
+baseUri: message://event/processor/message/results
+
+/results.event:
+  post:
+    body:
+      application/vnd.results.add-hearing-result+json:
+        schema: !include json/schema/results.add-hearing-result.json
+        example: !include json/results.add-hearing-result.json
+      application/vnd.results.event.nows-material-status-updated+json:
+        schema: !include json/schema/results.event.nows-material-status-updated.json
+        example: !include json/results.event.nows-material-status-updated.json
+
+/public.event:
+    post:
+        body:
+            application/vnd.public.hearing.resulted+json:
+                schema: !include json/schema/public.hearing.resulted.json
+                example: !include json/public.hearing.resulted.json

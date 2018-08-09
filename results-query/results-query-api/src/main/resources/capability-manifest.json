@@ -1,0 +1,23 @@
+{
+  "capabilities": [
+    {
+      "name": "results.person-details",
+      "type": "action",
+      "action": "results.person-details"
+    },
+    {
+      "name": "results.hearing-details",
+      "type": "action",
+      "action": "results.hearing-details"
+    },{
+      "name": "results.results-details",
+      "type": "action",
+      "action": "results.results-details"
+    },
+    {
+      "name": "results.results-summary",
+      "type": "action",
+      "action": "results.results-summary"
+    }
+  ]
+}

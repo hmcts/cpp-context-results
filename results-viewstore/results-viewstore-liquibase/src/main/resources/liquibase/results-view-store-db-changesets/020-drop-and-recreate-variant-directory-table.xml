@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="020-drop-and-recreate-variant-directory-table.xml">
+
+        <preConditions>
+            <tableExists tableName="variant_directory"/>
+        </preConditions>
+
+        <dropTable cascadeConstraints="true" tableName="variant_directory"/>
+
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="020-drop-and-recreate-variant-directory-table.xml">
+
+        <createTable tableName="variant_directory">
+            <column name="id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hearing_id" type="uuid"/>
+            <column name="person_id" type="uuid"/>
+            <column name="defendant_id" type="uuid"/>
+            <column name="nows_type_id" type="uuid"/>
+            <column name="material_id" type="uuid"/>
+            <column name="description" type="text"/>
+            <column name="template_name" type="text"/>
+            <column name="status" type="text"/>
+        </createTable>
+
+        <createTable tableName="variant_directory_usergroup">
+            <column name="variant_directory_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_group" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="id" constraintName="variant_directory_pkey" tableName="variant_directory"/>
+
+        <addForeignKeyConstraint baseColumnNames="variant_directory_id" baseTableName="variant_directory_usergroup"
+                                 constraintName="fk_user_group_variant_directory" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="variant_directory"/>
+
+    </changeSet>
+
+    <changeSet id="3" author="CCR" logicalFilePath="020-create-index-variant_directory.xml">
+
+        <sql>
+            CREATE INDEX IF NOT EXISTS idx_variant_directory_hearing_id
+            ON variant_directory (hearing_id NULLS FIRST);
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>

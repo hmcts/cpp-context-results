@@ -1,0 +1,12 @@
+#%RAML 0.8
+title: API Using media type in the URL
+baseUri: message://event/processor/message/results
+
+/public.event:
+  get:
+      responses:
+          200:
+              body:
+                    application/vnd.public.results.event.nows-material-status-updated+json:
+                        schema: !include json/schema/public.results.event.nows-material-status-updated.json
+                        example: !include json/public.results.event.nows-material-status-updated.json

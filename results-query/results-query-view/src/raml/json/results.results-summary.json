@@ -1,0 +1,26 @@
+{
+  "results": [
+    {
+      "hearingId": "6ac98e9c-66b2-4363-8a78-641dbec8bbd2",
+      "hearingType": "PTPH",
+      "hearingDate": "2017-08-01",
+      "urns": ["12AB3456789", "12AB3456780"],
+      "defendant": {
+        "personId": "6ac98e9c-66b2-4363-8a78-13453rdef345",
+        "firstName": "David",
+        "lastName": "Lloyd"
+      }
+    },
+    {
+      "hearingId": "6ac98e9c-66b2-4363-8a78-641dbec8b234f",
+      "hearingType": "SENTENCE",
+      "hearingDate": "2017-08-05",
+      "urns": ["12AB3456799", "12AB3456790"],
+      "defendant": {
+        "personId": "6ac98e9c-66b2-4363-8a78-13453r4rdfgdf4",
+        "firstName": "John",
+        "lastName": "Smith"
+      }
+    }
+  ]
+}
