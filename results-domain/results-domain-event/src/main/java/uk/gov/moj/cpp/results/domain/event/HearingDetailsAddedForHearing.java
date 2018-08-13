@@ -6,7 +6,7 @@ import java.util.UUID;
 import uk.gov.justice.domain.annotation.Event;
 
 @Event("results.hearing-details-added-for-hearing")
-@SuppressWarnings("squid:S1067")
+@SuppressWarnings("squid:S00107")
 public class HearingDetailsAddedForHearing {
 
     private final UUID hearingId;

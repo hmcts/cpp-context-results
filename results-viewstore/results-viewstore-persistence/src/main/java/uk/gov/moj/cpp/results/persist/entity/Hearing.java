@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @IdClass(value = HearingKey.class)
 @Table(name = "hearing")
-@SuppressWarnings("squid:S1067")
+@SuppressWarnings("squid:S00107")
 public class Hearing {
 
     @Id

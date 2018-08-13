@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Event("results.resultline-added-for-hearing")
+@SuppressWarnings("squid:S00107")
 public class ResultLineAddedForHearing {
 
     private final UUID hearingResultId;

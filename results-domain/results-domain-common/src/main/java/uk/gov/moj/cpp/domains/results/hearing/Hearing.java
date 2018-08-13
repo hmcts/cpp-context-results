@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.domains.results.hearing;
 
 import java.time.LocalDate;
 import java.util.UUID;
-@SuppressWarnings("squid:S1067")
+@SuppressWarnings("squid:S00107")
 public class Hearing {
 
     private final UUID id;

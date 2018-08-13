@@ -34,7 +34,7 @@ import static org.apache.commons.collections.CollectionUtils.containsAny;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
 import static uk.gov.moj.cpp.domains.results.result.ResultLevel.*;
 
-@SuppressWarnings({"CdiInjectionPointsInspection", "SpringAutowiredFieldsWarningInspection", "WeakerAccess"})
+@SuppressWarnings({"CdiInjectionPointsInspection", "SpringAutowiredFieldsWarningInspection", "WeakerAccess","squid:S1188"})
 @ServiceComponent(QUERY_VIEW)
 public class ResultsQueryView {
 
