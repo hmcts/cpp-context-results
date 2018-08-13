@@ -1,25 +1,21 @@
 package uk.gov.moj.cpp.results.event;
 
-import uk.gov.justice.services.common.converter.LocalDates;
-import uk.gov.justice.services.common.converter.ZonedDateTimes;
-import uk.gov.moj.cpp.domains.results.result.ResultLevel;
-import uk.gov.moj.cpp.results.persist.entity.Hearing;
-import uk.gov.moj.cpp.results.persist.entity.HearingResult;
-import uk.gov.moj.cpp.results.persist.entity.Defendant;
-import uk.gov.moj.cpp.results.persist.entity.ResultPrompt;
-import uk.gov.moj.cpp.results.persist.entity.VariantDirectory;
-
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.toConcurrentMap;
 import static java.util.stream.Collectors.toList;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonString;
+import uk.gov.justice.services.common.converter.LocalDates;
+import uk.gov.justice.services.common.converter.ZonedDateTimes;
+import uk.gov.moj.cpp.domains.results.result.ResultLevel;
+import uk.gov.moj.cpp.results.persist.entity.Defendant;
+import uk.gov.moj.cpp.results.persist.entity.Hearing;
+import uk.gov.moj.cpp.results.persist.entity.HearingResult;
+import uk.gov.moj.cpp.results.persist.entity.ResultPrompt;
+import uk.gov.moj.cpp.results.persist.entity.VariantDirectory;
+
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,14 +28,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonString;
+
 @SuppressWarnings({"unchecked", "squid:S1845"})
 final class HearingResultsConverter {
 
-    public static final String HEARING_ID = "hearingId";
-    public static final String VARIANTS = "variants";
-    public static final String HEARING_RESULTS = "hearingResults";
-    public static final String HEARINGS = "hearings";
-    public static final String DEFENDANTS = "defendants";
+    static final String HEARING_ID = "hearingId";
+    static final String VARIANTS = "variants";
+    static final String HEARING_RESULTS = "hearingResults";
+    static final String HEARINGS = "hearings";
+    static final String DEFENDANTS = "defendants";
 
     private final JsonObject hearing;
     private final UUID hearingId;
@@ -59,11 +59,11 @@ final class HearingResultsConverter {
         this.courtCentre = this.hearing.getJsonObject("courtCentre");
         final List<JsonObject> attendees = this.hearing.getJsonArray("attendees").getValuesAs(JsonObject.class);
         this.judgeName = attendees.stream().filter(a -> "JUDGE".equals(a.getString("type")))
-                .map(v -> buildFullName(v))
+                .map(HearingResultsConverter::buildFullName)
                 .findFirst().orElse("N/A");
         this.prosecutorName = attendees.stream()
                 .filter(a -> "PROSECUTIONADVOCATE".equals(a.getString("type")))
-                .map(v -> buildFullName(v))
+                .map(HearingResultsConverter::buildFullName)
                 .findFirst().orElse("N/A");
         this.defendants = hearing.getJsonArray(DEFENDANTS).getValuesAs(JsonObject.class).stream()
                 .distinct()
@@ -78,9 +78,8 @@ final class HearingResultsConverter {
                 .distinct()
                 .collect(toList());
         this.defenceAdvocates = new ConcurrentHashMap<>();
-        this.defendants.values().stream()
+        this.defendants.values()
                 .forEach(defendant -> advocates.forEach(advocate -> advocate.getJsonArray("defendantIds").getValuesAs(JsonString.class)
-                        .stream()
                         .forEach(defendantId -> {
                             if (defendant.getString("id").equalsIgnoreCase(defendantId.getString())) {
                                 this.defenceAdvocates.putIfAbsent(
@@ -105,12 +104,12 @@ final class HearingResultsConverter {
 
     }
 
-    public static HearingResultsConverter withJsonObject(final JsonObject source) {
+    static HearingResultsConverter withJsonObject(final JsonObject source) {
         Objects.requireNonNull(source, "source");
         return new HearingResultsConverter(source);
     }
 
-    public Map<String, Object> convert() {
+    Map<String, Object> convert() {
         final Map<String, Object> hearingResults = new HashMap<>();
         hearingResults.put(HEARING_ID, this.hearingId);
         this.hearing.getJsonArray("sharedResultLines").getValuesAs(JsonObject.class).forEach(resultLine -> {
@@ -127,7 +126,7 @@ final class HearingResultsConverter {
 
         final List<VariantDirectory> variantDirectories = new ArrayList<>();
         if (variants != null) {
-            variants.getValuesAs(JsonObject.class).stream()
+            variants.getValuesAs(JsonObject.class)
                     .forEach(v -> {
                                 final JsonObject key = v.getJsonObject("key");
                                 variantDirectories.add(new VariantDirectory(UUID.randomUUID(),
@@ -213,9 +212,9 @@ final class HearingResultsConverter {
                         .collect(toList()))
                 .withLastSharedDateTime(
                         ofNullable(resultLine.getString("lastSharedDateTime", null))
-                                .map(ZonedDateTime::parse)
+                                .map(ZonedDateTimes::fromString)
                                 .orElse(null))
-                .withOrderedDate(ofNullable(resultLine.getString("orderedDate",null)).map(LocalDates::from).orElse(null));
+                .withOrderedDate(ofNullable(resultLine.getString("orderedDate", null)).map(LocalDates::from).orElse(null));
         if (caseOffences.get(offenceId).containsKey("plea")) {
             final JsonObject plea = caseOffences.get(offenceId).getJsonObject("plea");
             hearingResultBuilder.withPleaDate(LocalDates.from(plea.getString("date")));
@@ -230,7 +229,7 @@ final class HearingResultsConverter {
             hearingResultBuilder.withVerdictDate(LocalDates.from(verdict.getString("verdictDate")));
             hearingResultBuilder.withVerdictCategory(verdict.getString("verdictCategory"));
             hearingResultBuilder
-                            .withVerdictDescription(verdict.getString("verdictDescription", null));
+                    .withVerdictDescription(verdict.getString("verdictDescription", null));
         }
         return hearingResultBuilder.build();
     }
