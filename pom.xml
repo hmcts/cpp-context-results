@@ -34,6 +34,8 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
+        <!--TODO: Remove cpp.system-users.version once parent service (pom) reflects the 3.1.5 version-->
+        <cpp.system-users.version>3.1.5</cpp.system-users.version>
     </properties>
 
     <build>

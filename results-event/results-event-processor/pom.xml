@@ -16,13 +16,11 @@
     <packaging>war</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>uk.gov.moj.cpp.common</groupId>
             <artifactId>event-processor</artifactId>
@@ -45,7 +43,6 @@
             <artifactId>results-domain-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-
 
         <!-- Test Dependencies -->
         <dependency>
