@@ -4,12 +4,12 @@
 
 
     <artifactId>test-utilities</artifactId>
-    <version>1.0.0-R3-SNAPSHOT</version>
+    <version>1.0.0-R2</version>
 
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>1.0.0-R3-SNAPSHOT</version>
+        <version>1.0.0-R2</version>
     </parent>
 
     <dependencies>
