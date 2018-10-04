@@ -2,7 +2,10 @@ package uk.gov.moj.cpp.results.it.steps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.restassured.path.json.JsonPath;
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import uk.gov.justice.services.common.converter.LocalDates;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -10,14 +13,19 @@ import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
-import uk.gov.moj.cpp.domains.results.shareResults.*;
+import uk.gov.moj.cpp.domains.results.shareresults.*;
+import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.it.utils.WireMockStubUtils;
+import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
+import uk.gov.moj.cpp.results.test.matchers.MapJsonObjectToTypeMatcher;
 
+import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.StringReader;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -101,7 +109,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
                 );
     }
 
-    public static void thenPersonDetailsAreAsExpected(final UUID hearingId, final uk.gov.moj.cpp.domains.results.shareResults.Person person) {
+    public static void thenPersonDetailsAreAsExpected(final UUID hearingId, final uk.gov.moj.cpp.domains.results.shareresults.Person person) {
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-person-hearing-result-details", person.getId(),
@@ -125,7 +133,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
                         )));
     }
 
-    public static void thenPersonDetailsAreAsExpected_withLimitedData(final UUID hearingId, final uk.gov.moj.cpp.domains.results.shareResults.Person person) {
+    public static void thenPersonDetailsAreAsExpected_withLimitedData(final UUID hearingId, final uk.gov.moj.cpp.domains.results.shareresults.Person person) {
 
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
@@ -150,7 +158,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
                         )));
     }
 
-    public static void thenHearingDetailsAreAsExpected(final uk.gov.moj.cpp.domains.results.shareResults.Hearing hearing, final UUID personId, final UUID defendantId) {
+    public static void thenHearingDetailsAreAsExpected(final uk.gov.moj.cpp.domains.results.shareresults.Hearing hearing, final UUID personId, final UUID defendantId) {
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-person-hearing-result-details", personId,
@@ -214,7 +222,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
                         )));
     }
 
-    public static void thenHearingDetailsWithVariantsAreAsExpected(uk.gov.moj.cpp.domains.results.shareResults.Hearing hearing, UUID personId, UUID defendantId, List<Variant> variants) {
+    public static void thenHearingDetailsWithVariantsAreAsExpected(uk.gov.moj.cpp.domains.results.shareresults.Hearing hearing, UUID personId, UUID defendantId, List<Variant> variants) {
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-person-hearing-result-details", personId,
@@ -287,7 +295,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     public static void thenHearingDetailsAreAsExpected_givenNoAdvocates(final ShareResultsMessage shareResultsMessage) {
 
-        final uk.gov.moj.cpp.domains.results.shareResults.Person person = shareResultsMessage.getHearing().getDefendants().get(0).getPerson();
+        final uk.gov.moj.cpp.domains.results.shareresults.Person person = shareResultsMessage.getHearing().getDefendants().get(0).getPerson();
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-person-hearing-result-details", person.getId(),
@@ -333,7 +341,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
         final Case legalCase = defendant.getCases().get(0);
 
-        final uk.gov.moj.cpp.domains.results.shareResults.Offence offence = legalCase.getOffences().get(0);
+        final uk.gov.moj.cpp.domains.results.shareresults.Offence offence = legalCase.getOffences().get(0);
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-person-hearing-result-details", defendant.getPerson().getId(),
@@ -407,11 +415,11 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     public static void thenResultDetailsAreAsExpected_givenNoPlea(final ShareResultsMessage shareResultsMessage) {
 
-        final uk.gov.moj.cpp.domains.results.shareResults.Person person = shareResultsMessage.getHearing().getDefendants().get(0).getPerson();
+        final uk.gov.moj.cpp.domains.results.shareresults.Person person = shareResultsMessage.getHearing().getDefendants().get(0).getPerson();
 
         final Case legalCase = shareResultsMessage.getHearing().getDefendants().get(0).getCases().get(0);
 
-        final uk.gov.moj.cpp.domains.results.shareResults.Offence offence = legalCase.getOffences().get(0);
+        final uk.gov.moj.cpp.domains.results.shareresults.Offence offence = legalCase.getOffences().get(0);
 
         final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-person-hearing-result-details", person.getId(),
@@ -489,6 +497,71 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
                 .get();
     }
 
+    public static HearingResultSummariesView getSummariesByDate(final LocalDate fromDate) {
+        final String resultSummaryUrl = format("%s%s?fromDate=%s", BASE_URI, getProperty(GET_RESULTS_SUMMARY), fromDate);
+        final RequestParamsBuilder resultsSummaryRequest = requestParams(resultSummaryUrl,
+                CONTENT_TYPE_RESULTS_SUMMARY)
+                .withHeader(USER_ID, getLoggedInUser());
+
+        final ResponseData resultsSummaryResponse = poll(resultsSummaryRequest)
+                .until(
+                        status().is(OK)
+                );
+        return MapJsonObjectToTypeMatcher.convert(HearingResultSummariesView.class, resultsSummaryResponse.getPayload());
+    }
+
+    private static <T> Matcher<ResponseData> jsonPayloadMatcher(Class<T> theClass, Matcher<T> matcher) {
+        return new BaseMatcher<ResponseData>() {
+            @Override
+            public boolean matches(final Object o) {
+                if (o instanceof ResponseData) {
+                    final ResponseData responseData = (ResponseData) o;
+                    if (responseData.getPayload() != null) {
+                        T object = MapJsonObjectToTypeMatcher.convert(theClass, responseData.getPayload());
+                        return matcher.matches(object);
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void describeMismatch(Object item, Description description) {
+                ResponseData responseData = (ResponseData) item;
+                JsonObject jsonObject = Json.createReader(new StringReader(responseData.getPayload())).readObject();
+                matcher.describeMismatch(jsonObject, description);
+            }
+
+            @Override
+            public void describeTo(final Description description) {
+                matcher.describeTo(description);
+            }
+        };
+    }
+
+    public static void  getHearingDetails(final UUID hearingId, final UUID defendantId, final Matcher<HearingResultsAdded> matcher) {
+        //TODO change this name
+        final String personHearingResultDetailsUrl = format("%s%s", BASE_URI,
+                getProperty("results.get-person-hearing-result-details", defendantId,
+                        hearingId));
+
+        final Matcher<ResponseData>  responseDataMatcher = jsonPayloadMatcher(HearingResultsAdded.class, matcher);
+
+
+        poll(requestParams(personHearingResultDetailsUrl, CONTENT_TYPE_HEARING_DETAILS).withHeader(USER_ID, getLoggedInUser())) .until(
+                print(),
+                status().is(OK),
+                payload().isJson(allOf(
+                        withJsonPath("$.hearing.id", equalTo(hearingId.toString()))
+                )),
+                responseDataMatcher
+        );
+
+    }
+
+
+
+
+
     public static void thenResultsSummaryShowsHearingWithinDateRange(final LocalDate fromDate) {
         final String resultSummaryUrl = format("%s%s?fromDate=%s", BASE_URI, getProperty(GET_RESULTS_SUMMARY), fromDate);
         final RequestParamsBuilder resultsSummaryRequest = requestParams(resultSummaryUrl,
@@ -536,7 +609,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         assertThat(actualPersonIds, hasSize(expectedPersonIds.size()));
         assertThat(actualPersonIds, containsInAnyOrder(expectedPersonIds.toArray()));
 
-        final uk.gov.moj.cpp.domains.results.shareResults.Person person = shareResultsMessage.getHearing().getDefendants().get(0).getPerson();
+        final uk.gov.moj.cpp.domains.results.shareresults.Person person = shareResultsMessage.getHearing().getDefendants().get(0).getPerson();
 
         actualResults.forEach(resultSummary -> {
             assertThat(resultSummary.getString("hearingId"), equalTo(shareResultsMessage.getHearing().getId().toString()));
@@ -590,7 +663,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         WireMockStubUtils.mockPersonDetails(person);
     }
 
-    public static void hearingResultsHaveBeenShared(final ShareResultsMessage shareResultsMessage) {
+    public static void hearingResultsHaveBeenShared(final PublicHearingResulted shareResultsMessage) {
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 

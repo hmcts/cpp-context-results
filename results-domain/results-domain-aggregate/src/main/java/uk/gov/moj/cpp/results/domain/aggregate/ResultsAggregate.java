@@ -1,14 +1,13 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import uk.gov.justice.domain.aggregate.Aggregate;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 
-import javax.json.JsonObject;
 import java.util.stream.Stream;
 
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoNothing;
-import static uk.gov.justice.services.common.converter.ZonedDateTimes.fromJsonString;
 
 public class ResultsAggregate implements Aggregate {
 
@@ -19,8 +18,8 @@ public class ResultsAggregate implements Aggregate {
         return match(event).with(otherwiseDoNothing());
     }
 
-    public Stream<Object> saveHearingResults(final JsonObject payload) {
+    public Stream<Object> saveHearingResults(final PublicHearingResulted payload) {
 
-        return apply(Stream.of(new HearingResultsAdded(payload.getJsonObject("hearing"), fromJsonString(payload.getJsonString("sharedTime")), payload.getJsonArray("variants"))));
+        return apply(Stream.of(new HearingResultsAdded(payload.getHearing(), payload.getSharedTime(), payload.getVariants())));
     }
 }

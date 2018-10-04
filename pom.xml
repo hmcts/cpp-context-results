@@ -25,7 +25,9 @@
         <module>results-viewstore</module>
         <module>results-query</module>
         <module>results-integration-test</module>
-       <module>results-performance-test</module>
+        <module>results-performance-test</module>
+        <module>results-json</module>
+        <module>pojo-plugin</module>
     </modules>
 
     <properties>

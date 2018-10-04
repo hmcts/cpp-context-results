@@ -1,40 +1,7 @@
 package uk.gov.moj.cpp.results.query.view;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.justice.services.common.converter.LocalDates;
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
-import uk.gov.moj.cpp.domains.results.result.ResultLevel;
-import uk.gov.moj.cpp.results.persist.DefendantRepository;
-import uk.gov.moj.cpp.results.persist.HearingRepository;
-import uk.gov.moj.cpp.results.persist.HearingResultRepository;
-import uk.gov.moj.cpp.results.persist.VariantDirectoryRepository;
-import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
-import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
-import uk.gov.moj.cpp.results.query.view.service.HearingService;
-import uk.gov.moj.cpp.results.query.view.service.UserGroupsService;
-import uk.gov.moj.cpp.results.persist.entity.CourtClerk;
-import uk.gov.moj.cpp.results.persist.entity.Defendant;
-import uk.gov.moj.cpp.results.persist.entity.Hearing;
-import uk.gov.moj.cpp.results.persist.entity.HearingResult;
-import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
-import uk.gov.moj.cpp.results.persist.entity.ResultPrompt;
-import uk.gov.moj.cpp.results.persist.entity.VariantDirectory;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.UUID;
-
 import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
@@ -44,6 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
@@ -54,8 +22,48 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePaylo
 import static uk.gov.justice.services.test.utils.core.matchers.JsonValueNullMatcher.isJsonValueNull;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUIDAndName;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.*;
-import static uk.gov.moj.cpp.domains.results.result.ResultLevel.*;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.INTEGER;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_ZONED_DATE_TIME;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUID;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.randomEnum;
+import static uk.gov.moj.cpp.domains.results.result.ResultLevel.CASE;
+import static uk.gov.moj.cpp.domains.results.result.ResultLevel.DEFENDANT;
+import static uk.gov.moj.cpp.domains.results.result.ResultLevel.OFFENCE;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultsAdded;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
+import uk.gov.moj.cpp.domains.results.result.ResultLevel;
+import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
+import uk.gov.moj.cpp.results.persist.DefendantRepository;
+import uk.gov.moj.cpp.results.persist.HearingRepository;
+import uk.gov.moj.cpp.results.persist.HearingResultRepository;
+import uk.gov.moj.cpp.results.persist.VariantDirectoryRepository;
+import uk.gov.moj.cpp.results.persist.entity.Hearing;
+import uk.gov.moj.cpp.results.persist.entity.HearingResult;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
+import uk.gov.moj.cpp.results.persist.entity.ResultPrompt;
+import uk.gov.moj.cpp.results.query.view.response.DefendantView;
+import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
+import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
+import uk.gov.moj.cpp.results.query.view.service.HearingService;
+import uk.gov.moj.cpp.results.query.view.service.UserGroupsService;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.UUID;
 
 @SuppressWarnings({"CdiInjectionPointsInspection", "unused", "unchecked"})
 @RunWith(MockitoJUnitRunner.class)
@@ -85,6 +93,7 @@ public class ResultsQueryViewTest {
 
     private static final String FIELD_PERSON_ID = "personId";
     private static final String FIELD_HEARING_ID = "hearingId";
+    private static final String FIELD_DEFENDANT_ID = "defendantId";
     private static final String FIELD_FROM_DATE = "fromDate";
     private static final String FIELD_RESULTS = "results";
     private static final String FIELD_HEARING_DATE = "hearingDate";
@@ -92,7 +101,7 @@ public class ResultsQueryViewTest {
     private static final UUID HEARING_ID = randomUUID();
     private static final String[] HEARING_TYPES = {"PTPH", "SENTENCE", "TRIAL"};
     private static final String HEARING_TYPE =
-                    HEARING_TYPES[new Random().nextInt(HEARING_TYPES.length)];
+            HEARING_TYPES[new Random().nextInt(HEARING_TYPES.length)];
     private static final LocalDate HEARING_START_DATE = PAST_LOCAL_DATE.next();
     private static final LocalDate HEARING_END_DATE = HEARING_START_DATE.plusWeeks(2);
     private static final String COURT_CENTRE_NAME = STRING.next();
@@ -162,84 +171,11 @@ public class ResultsQueryViewTest {
     @Mock
     private VariantDirectoryRepository variantDirectoryRepository;
 
+    @Mock
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
+
     @InjectMocks
     private ResultsQueryView resultsQueryView;
-
-    @Test
-    public void shouldGetPersonDetails() {
-        when(defendantRepository.findPersonByPersonIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(defendant());
-
-        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
-                .add(FIELD_PERSON_ID, PERSON_ID.toString())
-                .add(FIELD_HEARING_ID, HEARING_ID.toString())
-                .build());
-
-        final JsonEnvelope actualPersonResults = resultsQueryView.getPersonDetails(query);
-
-        assertThat(actualPersonResults, is(jsonEnvelope(
-                withMetadataEnvelopedFrom(query)
-                        .withName(RESPONSE_NAME_PERSON_DETAILS),
-                payloadIsJson(allOf(
-                        withJsonPath("$.id", equalTo(PERSON_ID.toString())),
-                        withJsonPath("$.firstName", equalTo(FIRST_NAME)),
-                        withJsonPath("$.lastName", equalTo(LAST_NAME)),
-                        withJsonPath("$.dateOfBirth", equalTo(LocalDates.to(DATE_OF_BIRTH))),
-                        withJsonPath("$.address.address1", equalTo(ADDRESS_1)),
-                        withJsonPath("$.address.address2", equalTo(ADDRESS_2)),
-                        withJsonPath("$.address.address3", equalTo(ADDRESS_3)),
-                        withJsonPath("$.address.address4", equalTo(ADDRESS_4)),
-                        withJsonPath("$.address.postCode", equalTo(POST_CODE))
-                ))).thatMatchesSchema()
-        ));
-    }
-
-    @Test
-    public void shouldGetPersonDetailsWithRequiredFieldsOnly() {
-        when(defendantRepository.findPersonByPersonIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(personWithRequiredFieldsOnly());
-
-        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
-                .add(FIELD_PERSON_ID, PERSON_ID.toString())
-                .add(FIELD_HEARING_ID, HEARING_ID.toString())
-                .build());
-
-        final JsonEnvelope actualPersonResults = resultsQueryView.getPersonDetails(query);
-
-        assertThat(actualPersonResults, is(jsonEnvelope(
-                withMetadataEnvelopedFrom(query)
-                        .withName(RESPONSE_NAME_PERSON_DETAILS),
-                payloadIsJson(allOf(
-                        withJsonPath("$.id", equalTo(PERSON_ID.toString())),
-                        withJsonPath("$.firstName", equalTo(FIRST_NAME)),
-                        withJsonPath("$.lastName", equalTo(LAST_NAME)),
-                        withJsonPath("$.address.address1", equalTo(ADDRESS_1)),
-                        withoutJsonPath("$.dateOfBirth"),
-                        withoutJsonPath("$.address.address2"),
-                        withoutJsonPath("$.address.address3"),
-                        withoutJsonPath("$.address.address4"),
-                        withoutJsonPath("$.address.postCode")
-                ))).thatMatchesSchema()
-        ));
-    }
-
-    @Test
-    public void shouldNotReturnPersonDetailsWhenResultsHaveNotBeenShared() {
-        when(defendantRepository.findPersonByPersonIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(null);
-
-        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
-                .add(FIELD_PERSON_ID, PERSON_ID.toString())
-                .add(FIELD_HEARING_ID, HEARING_ID.toString())
-                .build());
-
-        final JsonEnvelope actualPersonResults = resultsQueryView.getPersonDetails(query);
-
-        assertThat(actualPersonResults, is(jsonEnvelope(
-                withMetadataEnvelopedFrom(query)
-                        .withName(RESPONSE_NAME_PERSON_DETAILS),
-                payload(isJsonValueNull()))
-//                .thatMatchesSchema() //TODO: uncomment when framework have fixed it
-        ));
-
-    }
 
     @Test
     public void shouldGetHearingDetails() {
@@ -247,23 +183,8 @@ public class ResultsQueryViewTest {
         UUID materialId1 = randomUUID();
         UUID materialId2 = randomUUID();
 
-        when(hearingRepository.findHearingByPersonIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(hearing());
-
-        when(hearingResultRepository.findCourtClerksForHearingIdAndPersonId(HEARING_ID, PERSON_ID)).thenReturn(
-                asList(CourtClerk.builder()
-                        .withClerkOfTheCourtId(CLERK_OF_THE_COURT_ID)
-                        .withClerkOfTheCourtFirstName(CLERK_OF_THE_COURT_FIRSTNAME)
-                        .withClerkOfTheCourtLastName(CLERK_OF_THE_COURT_LASTNAME)
-                        .build())
-        );
-
-        when(variantDirectoryRepository.findByDefendantIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(
-                asList(new VariantDirectory(randomUUID(), HEARING_ID, PERSON_ID, DEFENDANT_ID, randomUUID(), Arrays.asList("ADMIN"), materialId1, "description", "templateName", GENERATED),
-                        new VariantDirectory(randomUUID(), HEARING_ID, PERSON_ID, DEFENDANT_ID, randomUUID(), Arrays.asList("Court Clerk", "Listing Officer", "Police Officer"), materialId2, "description", "templateName", GENERATED))
-        );
-
         final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
-                .add(FIELD_PERSON_ID, PERSON_ID.toString())
+                .add(FIELD_DEFENDANT_ID, DEFENDANT_ID.toString())
                 .add(FIELD_HEARING_ID, HEARING_ID.toString())
                 .build());
 
@@ -271,59 +192,33 @@ public class ResultsQueryViewTest {
                 asList("Court Clerk", "Listing Officer")
         );
 
-        final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetails(query);
+        HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
+        when(hearingService.findHearingDetailsByHearingIdDefendantId(HEARING_ID, DEFENDANT_ID)).thenReturn(hearingResultsAdded);
+        String dummyVal = randomUUID().toString();
+        final JsonObject jsonResult = Json.createObjectBuilder().add("val", dummyVal).build();
 
-        assertThat(actualHearingResults, is(jsonEnvelope(
-                withMetadataEnvelopedFrom(query)
-                        .withName(RESPONSE_NAME_HEARING_DETAILS),
-                payloadIsJson(allOf(
-                        withJsonPath("$.id", equalTo(HEARING_ID.toString())),
-                        withJsonPath("$.courtCentreName", equalTo(COURT_CENTRE_NAME)),
-                        withJsonPath("$.courtCode", equalTo(COURT_CODE)),
-                        withJsonPath("$.startDate", equalTo(LocalDates.to(HEARING_START_DATE))),
-                        withJsonPath("$.judgeName", equalTo(JUDGE_NAME)),
-                        withJsonPath("$.prosecutorName", equalTo(PROSECUTOR_NAME)),
-                        withJsonPath("$.defenceName", equalTo(DEFENCE_NAME)),
-                        withJsonPath("$.clerks[0].clerkOfTheCourtId", equalTo(CLERK_OF_THE_COURT_ID.toString())),
-                        withJsonPath("$.clerks[0].clerkOfTheCourtFirstName", equalTo(CLERK_OF_THE_COURT_FIRSTNAME)),
-                        withJsonPath("$.clerks[0].clerkOfTheCourtLastName", equalTo(CLERK_OF_THE_COURT_LASTNAME)),
-                        withoutJsonPath("$.clerks[1]"),
-                        withJsonPath("$.variants[0].materialId", equalTo(materialId2.toString())),
-                        withJsonPath("$.variants[0].status", equalTo(GENERATED)),
-                        withoutJsonPath("$.variants[1]")
-                ))).thatMatchesSchema()
-        ));
-    }
-
-    @Test
-    public void shouldNotReturnHearingDetailsWhenResultsHaveNotBeenShared() {
-        when(hearingRepository.findHearingByPersonIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(null);
-
-        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
-                .add(FIELD_PERSON_ID, PERSON_ID.toString())
-                .add(FIELD_HEARING_ID, HEARING_ID.toString())
-                .build());
+        when(objectToJsonObjectConverter.convert(hearingResultsAdded)).thenReturn(jsonResult);
 
         final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetails(query);
 
-        assertThat(actualHearingResults, is(jsonEnvelope(
-                withMetadataEnvelopedFrom(query)
-                        .withName(RESPONSE_NAME_HEARING_DETAILS),
-                payload(isJsonValueNull()))
-//                .thatMatchesSchema() //TODO: uncomment when framework have fixed it
-        ));
-
+        assertThat(actualHearingResults.payloadAsJsonObject().getString("val"), is(dummyVal));
     }
 
     @Test
     public void shouldGetHearingResultSummaries() {
-        when(hearingService.findHearingResultSummariesFromDate(HEARING_RESULT.getStartDate()))
-                .thenReturn(hearingResultsView(
-                        hearingResultWithDate(HEARING_RESULT.getStartDate().plusDays(1)),
-                        hearingResultWithDate(HEARING_RESULT.getStartDate().plusDays(2))));
+        final LocalDate startDate = HEARING_RESULT.getStartDate();
+        HearingResultSummariesView result = new HearingResultSummariesView(
+                Arrays.asList(
+                        new HearingResultSummaryView(UUID.next(), STRING.next(), LocalDate.now(), asList("ABC"),
+                                new DefendantView(UUID.next(), STRING.next(), STRING.next()))
+                )
+        );
+        when(hearingService.findHearingResultSummariesFromDate(eq(startDate)))
+                .thenReturn(result);
 
+        final String strFromDate = startDate.toString();
         final JsonEnvelope query = envelopeFrom(metadataWithRandomUUID(REQUEST_NAME_GET_RESULTS_SUMMARY), createObjectBuilder()
-                .add(FIELD_FROM_DATE, HEARING_RESULT.getStartDate().toString())
+                .add(FIELD_FROM_DATE, strFromDate)
                 .build());
 
         final JsonEnvelope actualHearingResults = resultsQueryView.getResultsSummary(query);
@@ -332,12 +227,10 @@ public class ResultsQueryViewTest {
                 withMetadataEnvelopedFrom(query)
                         .withName(RESPONSE_NAME_RESULTS_SUMMARY),
                 payloadIsJson(allOf(
-                        withJsonPath(format("$.%s", FIELD_RESULTS), hasSize(2)),
-                        withJsonPath(format("$.%s[0].%s", FIELD_RESULTS, FIELD_HEARING_DATE), equalTo(HEARING_RESULT.getStartDate().plusDays(1).toString())),
-                        withJsonPath(format("$.%s[1].%s", FIELD_RESULTS, FIELD_HEARING_DATE), equalTo(HEARING_RESULT.getStartDate().plusDays(2).toString()))
+                        withJsonPath(format("$.%s", FIELD_RESULTS), hasSize(result.getResults().size())),
+                        withJsonPath(format("$.%s[0].%s", FIELD_RESULTS, FIELD_HEARING_ID), equalTo(result.getResults().get(0).getHearingId().toString()))
                 ))).thatMatchesSchema()
         ));
-
     }
 
     @Test
@@ -475,7 +368,7 @@ public class ResultsQueryViewTest {
                         withJsonPath("$.defendantLevelResults[0].court", equalTo(defendantLevelResults.getCourt())),
                         withJsonPath("$.defendantLevelResults[0].courtRoom", equalTo(defendantLevelResults.getCourtRoom())),
                         withJsonPath("$.defendantLevelResults[0].orderedDate", equalTo(defendantLevelResults.getOrderedDate().toString())),
-                        withJsonPath("$.defendantLevelResults[0].lastSharedDate", equalTo(defendantLevelResults.getLastSharedDateTime().toLocalDate().toString())),                        
+                        withJsonPath("$.defendantLevelResults[0].lastSharedDate", equalTo(defendantLevelResults.getLastSharedDateTime().toLocalDate().toString())),
                         withJsonPath("$.defendantLevelResults[0].prompts[0].label", equalTo(defendantLevelResults.getResultPrompts().get(0).getLabel())),
                         withJsonPath("$.defendantLevelResults[0].prompts[0].value", equalTo(defendantLevelResults.getResultPrompts().get(0).getValue())),
                         withJsonPath("$.cases[0].id", equalTo(offenceLevelResults.getCaseId().toString())),
@@ -484,7 +377,7 @@ public class ResultsQueryViewTest {
                         withJsonPath("$.cases[0].caseLevelResults[0].court", equalTo(caseLevelResults.getCourt())),
                         withJsonPath("$.cases[0].caseLevelResults[0].courtRoom", equalTo(caseLevelResults.getCourtRoom())),
                         withJsonPath("$.cases[0].caseLevelResults[0].orderedDate", equalTo(caseLevelResults.getOrderedDate().toString())),
-                        withJsonPath("$.cases[0].caseLevelResults[0].lastSharedDate", equalTo(caseLevelResults.getLastSharedDateTime().toLocalDate().toString())),                        
+                        withJsonPath("$.cases[0].caseLevelResults[0].lastSharedDate", equalTo(caseLevelResults.getLastSharedDateTime().toLocalDate().toString())),
                         withJsonPath("$.cases[0].caseLevelResults[0].prompts[0].label", equalTo(caseLevelResults.getResultPrompts().get(0).getLabel())),
                         withJsonPath("$.cases[0].caseLevelResults[0].prompts[0].value", equalTo(caseLevelResults.getResultPrompts().get(0).getValue())),
                         withJsonPath("$.cases[0].offences[0].plea.pleaValue", equalTo(offenceLevelResults.getPleaValue())),
@@ -497,7 +390,7 @@ public class ResultsQueryViewTest {
                         withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].court", equalTo(offenceLevelResults.getCourt())),
                         withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].courtRoom", equalTo(offenceLevelResults.getCourtRoom())),
                         withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].orderedDate", equalTo(offenceLevelResults.getOrderedDate().toString())),
-                        withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].lastSharedDate", equalTo(offenceLevelResults.getLastSharedDateTime().toLocalDate().toString())),                        
+                        withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].lastSharedDate", equalTo(offenceLevelResults.getLastSharedDateTime().toLocalDate().toString())),
                         withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].prompts[0].label", equalTo(offenceLevelResults.getResultPrompts().get(0).getLabel())),
                         withJsonPath("$.cases[0].offences[0].offenceLevelResults[0].prompts[0].value", equalTo(offenceLevelResults.getResultPrompts().get(0).getValue())),
                         withJsonPath("$.cases[0].offences[0].verdict.verdictCategory", equalTo(offenceLevelResults.getVerdictCategory())),
@@ -509,43 +402,6 @@ public class ResultsQueryViewTest {
         ));
     }
 
-    @Test
-    public void shouldNotReturnResultDetailsWhenResultsHaveNotBeenShared() {
-        when(hearingRepository.findHearingByPersonIdAndHearingId(PERSON_ID, HEARING_ID)).thenReturn(null);
-
-        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
-                .add(FIELD_PERSON_ID, PERSON_ID.toString())
-                .add(FIELD_HEARING_ID, HEARING_ID.toString())
-                .build());
-
-        final JsonEnvelope actualHearingResults = resultsQueryView.getResultsDetails(query);
-
-        assertThat(actualHearingResults, is(jsonEnvelope(
-                withMetadataEnvelopedFrom(query)
-                        .withName(RESPONSE_NAME_RESULTS_DETAILS),
-                payload(isJsonValueNull()))
-//                .thatMatchesSchema() //TODO: uncomment when framework have fixed it
-        ));
-
-    }
-
-
-    private HearingResultSummariesView hearingResultsView(final HearingResultSummary... hearingResults) {
-        return new HearingResultSummariesView(Arrays.stream(hearingResults)
-                .map(hr -> new HearingResultSummaryView.Builder(hr).build()).collect(toList()));
-    }
-
-    private Defendant defendant() {
-        return Defendant.builder().withId(PERSON_ID).withHearingId(HEARING_ID).withFirstName(FIRST_NAME)
-                .withLastName(LAST_NAME).withDateOfBirth(DATE_OF_BIRTH).withAddress1(ADDRESS_1).withAddress2(ADDRESS_2)
-                .withAddress3(ADDRESS_3).withAddress4(ADDRESS_4).withPostCode(POST_CODE).build();
-    }
-
-    private Defendant personWithRequiredFieldsOnly() {
-        return Defendant.builder().withId(PERSON_ID).withHearingId(HEARING_ID).withFirstName(FIRST_NAME)
-                .withLastName(LAST_NAME).withDateOfBirth(null).withAddress1(ADDRESS_1).withAddress2(null)
-                .withAddress3(null).withAddress4(null).withPostCode(null).build();
-    }
 
     private Hearing hearing() {
         return hearingWithStartDate(HEARING_START_DATE);

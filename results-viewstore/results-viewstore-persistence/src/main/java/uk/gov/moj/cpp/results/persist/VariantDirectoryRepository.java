@@ -20,8 +20,4 @@ public abstract class VariantDirectoryRepository extends AbstractEntityRepositor
 
     @Query("from VariantDirectory vd where vd.hearingId = :hearingId")
     public abstract List<VariantDirectory> findByHearingId(@QueryParam("hearingId") UUID hearingId);
-
-    @Query(value = "from VariantDirectory vd where vd.personId = :personId and vd.hearingId = :hearingId")
-    public abstract List<VariantDirectory> findByDefendantIdAndHearingId(@QueryParam("personId") final UUID personId, @QueryParam("hearingId") final UUID hearingId);
-
 }

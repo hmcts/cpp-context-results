@@ -1,137 +1,140 @@
 package uk.gov.moj.cpp.results.query.view.service;
 
 import static java.util.Arrays.asList;
-import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.randomEnum;
-import static uk.gov.moj.cpp.results.persist.entity.HearingResult.builder;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateDefendant;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultDocument;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultDocuments;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultsAdded;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateProsecutionCase;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import uk.gov.moj.cpp.domains.results.result.ResultLevel;
-import uk.gov.moj.cpp.results.persist.HearingRepository;
-import uk.gov.moj.cpp.results.persist.HearingResultRepository;
-import uk.gov.moj.cpp.results.persist.entity.HearingResult;
-import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
-import uk.gov.moj.cpp.results.persist.entity.ResultPrompt;
+import uk.gov.justice.json.schemas.core.Defendant;
+import uk.gov.justice.json.schemas.core.ProsecutionCase;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
+import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
+import uk.gov.moj.cpp.results.query.view.response.DefendantView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
+import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
+
+import javax.json.JsonObject;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HearingServiceTest {
 
     private static final LocalDate FROM_DATE = PAST_LOCAL_DATE.next();
-    private static final UUID PERSON_ID_1 = randomUUID();
-    private static final UUID PERSON_ID_2 = randomUUID();
-    private static final UUID HEARING_ID_1 = randomUUID();
-    private static final UUID HEARING_ID_2 = randomUUID();
     private static final String[] HEARING_TYPES = {"PTPH", "SENTENCE", "TRIAL"};
     private static final String HEARING_TYPE =
-                    HEARING_TYPES[new Random().nextInt(HEARING_TYPES.length)];
-    private static final LocalDate HEARING_DATE = PAST_LOCAL_DATE.next();
-    private static final String FIRST_NAME = STRING.next();
-    private static final String LAST_NAME = STRING.next();
-
-    private static final UUID HEARING_RESULT_ID = randomUUID();
-    private static final String CASE_URN_1_1 = STRING.next();
-    private static final String CASE_URN_1_2 = STRING.next();
-    private static final String CASE_URN_2_1 = STRING.next();
-    private static final String CASE_URN_2_2 = STRING.next();
-
-    private static final HearingResult HEARING_RESULT = builder()
-            .withId(HEARING_RESULT_ID)
-            .withUrn(STRING.next())
-            .withOffenceId(randomUUID())
-            .withOffenceTitle(STRING.next())
-            .withCaseId(randomUUID())
-            .withHearingId(randomUUID())
-            .withPersonId(randomUUID())
-            .withPleaValue(STRING.next())
-            .withPleaDate(PAST_LOCAL_DATE.next())
-            .withResultLevel(randomEnum(ResultLevel.class).next())
-            .withResultLabel(STRING.next())
-            .withCourt(STRING.next())
-            .withCourtRoom(STRING.next())
-            .withClerkOfTheCourtId(randomUUID())
-            .withClerkOfTheCourtFirstName(STRING.next())
-            .withClerkOfTheCourtLastName(STRING.next())
-            .withStartDate(PAST_LOCAL_DATE.next())
-            .withEndDate(PAST_LOCAL_DATE.next())
-            .withResultPrompts(asList(
-                    ResultPrompt.builder()
-                            .withId(randomUUID())
-                            .withLabel(STRING.next())
-                            .withValue(STRING.next())
-                            .withHearingResultId(HEARING_RESULT_ID)
-                            .build()
-
-            ))
-            .build();
+            HEARING_TYPES[new Random().nextInt(HEARING_TYPES.length)];
 
     @InjectMocks
     private HearingService hearingService;
 
     @Mock
-    private HearingRepository hearingRepository;
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
     @Mock
-    private HearingResultRepository hearingResultRepository;
+    private JsonObjectToObjectConverter jsonObjectToObjectConverter;
+
+    @Mock
+    private StringToJsonObjectConverter stringToJsonObjectConverter;
+
+    @Mock
+    private HearingResultedDocumentRepository hearingResultedDocumentRepository;
+
+    @Test
+    public void shouldSearchAndFilterHearingByDefendantId() {
+        final UUID hearingId = UUID.randomUUID();
+        final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
+        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate();
+        final UUID defendantId = publicHearingResulted.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
+                HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime(), publicHearingResulted.getVariants());
+        List<ProsecutionCase> prosecutionCases = asList(templateProsecutionCase(), templateProsecutionCase(), templateProsecutionCase());
+        payload.getHearing().setProsecutionCases(prosecutionCases);
+        for (ProsecutionCase prosecutionCase : prosecutionCases) {
+            prosecutionCase.setDefendants(asList(templateDefendant(), templateDefendant(), templateDefendant()));
+        }
+        long expectedOutputVariantCount = publicHearingResulted.getVariants().stream().filter(v->v.getKey().getDefendantId().equals(defendantId)).count();
+        long expectedSharedResultCount =  publicHearingResulted.getHearing().getSharedResultLines().stream().filter(line->line.getDefendantId().equals(defendantId)).count();
+
+        ProsecutionCase targetCase = prosecutionCases.get(1);
+        Defendant targetDefendant = targetCase.getDefendants().get(1);
+        targetDefendant.setId(defendantId);
+        JsonObject payloadJson = Mockito.mock(JsonObject.class);
+        when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
+        when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
+        when (hearingResultedDocumentRepository.findBy(hearingId)).thenReturn(hearingResultedDocument);
+
+        //The test call !!!!!!!
+        HearingResultsAdded result =hearingService.findHearingDetailsByHearingIdDefendantId(hearingId, defendantId);
+
+        assertThat(result.getHearing().getProsecutionCases().size(), is(1));
+        ProsecutionCase resultCase = result.getHearing().getProsecutionCases().get(0);
+        assertThat(resultCase.getDefendants().size(), is(1));
+        assertThat(resultCase.getId(), is(targetCase.getId()));
+        Defendant resultDefendant = resultCase.getDefendants().get(0);
+        assertThat(resultDefendant.getId(), is(targetDefendant.getId()));
+        assertThat((long) result.getVariants().size(), is(expectedOutputVariantCount));
+        assertThat((long) result.getHearing().getSharedResultLines().size(), is(expectedSharedResultCount));
+
+    }
 
     @Test
     public void shouldFindHearingResultSummariesFromDate() throws Exception {
-        when(hearingRepository.findHearingResultSummariesByFromDate(FROM_DATE)).thenReturn(hearingResultSummaries());
+        final List<HearingResultedDocument> hearingResultedDocuments = templateHearingResultDocuments(2);
+        final List<HearingResultsAdded> payloadObjects = new ArrayList<>();
+        for (HearingResultedDocument document : hearingResultedDocuments) {
+            final HearingResultsAdded payloadObject = templateHearingResultsAdded();
+            payloadObjects.add(payloadObject);
+            final JsonObject payloadJsonObject = Mockito.mock(JsonObject.class);
+            when(stringToJsonObjectConverter.convert(document.getPayload())).thenReturn(payloadJsonObject);
+            when(jsonObjectToObjectConverter.convert(payloadJsonObject, HearingResultsAdded.class)).thenReturn(payloadObject);
+        }
 
-        when(hearingResultRepository.findByHearingIdAndPersonId(HEARING_ID_1, PERSON_ID_1)).thenReturn(asList(
-                HearingResult.of(HEARING_RESULT).withUrn(CASE_URN_1_1).withPersonId(PERSON_ID_1).withHearingId(HEARING_ID_1).build(),
-                HearingResult.of(HEARING_RESULT).withUrn(CASE_URN_1_2).withPersonId(PERSON_ID_1).withHearingId(HEARING_ID_1).build()
-
-        ));
-
-        when(hearingResultRepository.findByHearingIdAndPersonId(HEARING_ID_2, PERSON_ID_2)).thenReturn(asList(
-                HearingResult.of(HEARING_RESULT).withUrn(CASE_URN_2_1).withPersonId(PERSON_ID_1).withHearingId(HEARING_ID_2).build(),
-                HearingResult.of(HEARING_RESULT).withUrn(CASE_URN_2_2).withPersonId(PERSON_ID_1).withHearingId(HEARING_ID_2).build()
-
-        ));
+        when(hearingResultedDocumentRepository.findByFromDate(FROM_DATE)).thenReturn(hearingResultedDocuments);
 
         final HearingResultSummariesView hearingSummaries = hearingService.findHearingResultSummariesFromDate(FROM_DATE);
+        assertThat(hearingSummaries.getResults().size(), is(2));
 
-        assertThat(hearingSummaries.getResults(), hasSize(2));
-        assertThat(hearingSummaries.getResults().get(0).getDefendant().getFirstName(), is(FIRST_NAME));
-        assertThat(hearingSummaries.getResults().get(0).getDefendant().getLastName(), is(LAST_NAME));
-        assertThat(hearingSummaries.getResults().get(0).getDefendant().getPersonId(), is(PERSON_ID_1));
-        assertThat(hearingSummaries.getResults().get(0).getHearingDate(), is(HEARING_DATE));
-        assertThat(hearingSummaries.getResults().get(0).getHearingId(), is(HEARING_ID_1));
-        assertThat(hearingSummaries.getResults().get(0).getHearingType(), is(HEARING_TYPE));
-
-        assertThat(hearingSummaries.getResults().get(0).getUrns(), hasSize(2));
-        assertThat(hearingSummaries.getResults().get(0).getUrns().get(0), is(CASE_URN_1_1));
-        assertThat(hearingSummaries.getResults().get(0).getUrns().get(1), is(CASE_URN_1_2));
-
-        assertThat(hearingSummaries.getResults().get(1).getUrns(), hasSize(2));
-        assertThat(hearingSummaries.getResults().get(1).getUrns().get(0), is(CASE_URN_2_1));
-        assertThat(hearingSummaries.getResults().get(1).getUrns().get(1), is(CASE_URN_2_2));
-    }
-
-    private List<HearingResultSummary> hearingResultSummaries() {
-        return Stream.of(
-                new HearingResultSummary(HEARING_ID_1, PERSON_ID_1, HEARING_TYPE, HEARING_DATE, FIRST_NAME, LAST_NAME),
-                new HearingResultSummary(HEARING_ID_2, PERSON_ID_2, HEARING_TYPE, HEARING_DATE, FIRST_NAME, LAST_NAME))
-            .collect(Collectors.toList());
+        checkSummary(hearingSummaries.getResults().get(0), payloadObjects.get(0));
 
     }
+
+    private void checkSummary(final HearingResultSummaryView summary, final HearingResultsAdded hearingResultsAdded) {
+        SharedHearing hearing0 = hearingResultsAdded.getHearing();
+        ProsecutionCase prosecutionCase0 = hearing0.getProsecutionCases().get(0);
+
+        assertThat(summary.getHearingId(), is(hearing0.getId()));
+        assertThat(summary.getHearingDate(), is(hearing0.getHearingDays().get(0).getSittingDay().toLocalDate()));
+        assertThat(summary.getHearingType(), is(hearing0.getType().getDescription()));
+        assertThat(summary.getUrns(), is(asList(prosecutionCase0.getProsecutionCaseIdentifier().getCaseURN())));
+
+        Defendant defendant = prosecutionCase0.getDefendants().get(0);
+        DefendantView defendantSummary = summary.getDefendant();
+
+        assertThat(defendantSummary.getFirstName(), is(defendant.getPersonDefendant().getPersonDetails().getFirstName()));
+        assertThat(defendantSummary.getLastName(), is(defendant.getPersonDefendant().getPersonDetails().getLastName()));
+        assertThat(defendantSummary.getPersonId(), is(defendant.getId()));
+    }
+
+
 }

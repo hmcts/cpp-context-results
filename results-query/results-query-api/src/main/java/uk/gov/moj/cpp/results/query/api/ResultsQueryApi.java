@@ -15,18 +15,8 @@ public class ResultsQueryApi {
     @Inject
     private Requester requester;
 
-    @Handles("results.get-person-details")
-    public JsonEnvelope getPersonDetails(final JsonEnvelope query) {
-        return requester.request(query);
-    }
-
     @Handles("results.get-hearing-details")
     public JsonEnvelope getHearingDetails(final JsonEnvelope query) {
-        return requester.request(query);
-    }
-
-    @Handles("results.get-results-details")
-    public JsonEnvelope getResultsDetails(final JsonEnvelope query) {
         return requester.request(query);
     }
 

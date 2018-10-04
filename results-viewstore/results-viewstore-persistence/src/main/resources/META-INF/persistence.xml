@@ -9,7 +9,7 @@
         <jta-data-source>java:/DS.results</jta-data-source>
         <class>uk.gov.moj.cpp.results.persist.entity.HearingResult</class>
         <class>uk.gov.moj.cpp.results.persist.entity.ResultPrompt</class>
-        <class>uk.gov.moj.cpp.results.persist.entity.Defendant</class>
+        <class>uk.gov.moj.cpp.results.persist.entity.HearingDefendant</class>
         <class>uk.gov.moj.cpp.results.persist.entity.Hearing</class>
     </persistence-unit>
 

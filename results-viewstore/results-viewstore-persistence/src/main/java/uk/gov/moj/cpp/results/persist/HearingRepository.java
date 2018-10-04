@@ -20,6 +20,6 @@ public abstract class HearingRepository extends AbstractEntityRepository<Hearing
     @Query(value = "from Hearing h where h.id = :hearingId and h.personId = :personId", singleResult = OPTIONAL)
     public abstract Hearing findHearingByPersonIdAndHearingId(@QueryParam("personId") final UUID personId, @QueryParam("hearingId") final UUID hearingId);
 
-    @Query(value = "select new uk.gov.moj.cpp.results.persist.entity.HearingResultSummary(h.id, h.personId, h.hearingType, h.startDate, p.firstName, p.lastName) from Hearing h, Defendant p where h.id = p.hearingId and h.personId = p.id and h.startDate >= :fromDate")
+    @Query(value = "select new uk.gov.moj.cpp.results.persist.entity.HearingResultSummary(h.id, h.personId, h.hearingType, h.startDate, p.firstName, p.lastName) from Hearing h, HearingDefendant p where h.id = p.hearingId and h.personId = p.id and h.startDate >= :fromDate")
     public abstract List<HearingResultSummary> findHearingResultSummariesByFromDate(@QueryParam("fromDate") final LocalDate fromDate);
 }

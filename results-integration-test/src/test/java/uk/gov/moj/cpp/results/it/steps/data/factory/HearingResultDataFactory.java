@@ -1,17 +1,17 @@
 package uk.gov.moj.cpp.results.it.steps.data.factory;
 
-import uk.gov.moj.cpp.domains.results.shareResults.Address;
-import uk.gov.moj.cpp.domains.results.shareResults.Case;
-import uk.gov.moj.cpp.domains.results.shareResults.CourtClerk;
-import uk.gov.moj.cpp.domains.results.shareResults.DefenceAdvocate;
-import uk.gov.moj.cpp.domains.results.shareResults.Defendant;
-import uk.gov.moj.cpp.domains.results.shareResults.Interpreter;
-import uk.gov.moj.cpp.domains.results.shareResults.Offence;
-import uk.gov.moj.cpp.domains.results.shareResults.Person;
-import uk.gov.moj.cpp.domains.results.shareResults.Plea;
-import uk.gov.moj.cpp.domains.results.shareResults.Prompt;
-import uk.gov.moj.cpp.domains.results.shareResults.SharedResultLine;
-import uk.gov.moj.cpp.domains.results.shareResults.Verdict;
+import uk.gov.moj.cpp.domains.results.shareresults.Address;
+import uk.gov.moj.cpp.domains.results.shareresults.Case;
+import uk.gov.moj.cpp.domains.results.shareresults.CourtClerk;
+import uk.gov.moj.cpp.domains.results.shareresults.DefenceAdvocate;
+import uk.gov.moj.cpp.domains.results.shareresults.Defendant;
+import uk.gov.moj.cpp.domains.results.shareresults.Interpreter;
+import uk.gov.moj.cpp.domains.results.shareresults.Offence;
+import uk.gov.moj.cpp.domains.results.shareresults.Person;
+import uk.gov.moj.cpp.domains.results.shareresults.Plea;
+import uk.gov.moj.cpp.domains.results.shareresults.Prompt;
+import uk.gov.moj.cpp.domains.results.shareresults.SharedResultLine;
+import uk.gov.moj.cpp.domains.results.shareresults.Verdict;
 
 import java.time.LocalDate;
 import java.util.Arrays;

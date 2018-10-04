@@ -11,12 +11,12 @@ public class PersonTest {
 
     @Test
     public void shouldHaveANoArgsConstructor() {
-        assertThat(Defendant.class, hasValidBeanConstructor());
+        assertThat(HearingDefendant.class, hasValidBeanConstructor());
     }
 
     @Test
     public void noArgsConstructorShouldInstantiateAnObject() {
-        assertThat(new Defendant(), not(nullValue()));
+        assertThat(new HearingDefendant(), not(nullValue()));
     }
 
 }

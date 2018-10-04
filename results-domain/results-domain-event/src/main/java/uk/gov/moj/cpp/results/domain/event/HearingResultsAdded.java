@@ -3,27 +3,28 @@ package uk.gov.moj.cpp.results.domain.event;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.justice.domain.annotation.Event;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedVariant;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Event("results.hearing-results-added")
-public final class HearingResultsAdded {
+public class HearingResultsAdded {
 
-    private final JsonObject hearing;
+    private final SharedHearing hearing;
     private final ZonedDateTime sharedTime;
-    private final JsonArray variants;
+    private final List<SharedVariant> variants;
 
     @JsonCreator
-    public HearingResultsAdded(@JsonProperty(value = "hearing", required = true) final JsonObject hearing,
-                               @JsonProperty(value = "sharedTime", required = true) final ZonedDateTime sharedTime, @JsonProperty(value = "variants", required = true) final JsonArray variants) {
+    public HearingResultsAdded(@JsonProperty(value = "hearing", required = true) final SharedHearing hearing,
+                               @JsonProperty(value = "sharedTime", required = true) final ZonedDateTime sharedTime, @JsonProperty(value = "variants", required = true) final List<SharedVariant> variants) {
         this.hearing = hearing;
         this.sharedTime = sharedTime;
         this.variants = variants;
     }
 
-    public JsonObject getHearing() {
+    public SharedHearing getHearing() {
         return hearing;
     }
 
@@ -31,7 +32,7 @@ public final class HearingResultsAdded {
         return sharedTime;
     }
 
-    public JsonArray getVariants() {
+    public List<SharedVariant> getVariants() {
         return variants;
     }
 }

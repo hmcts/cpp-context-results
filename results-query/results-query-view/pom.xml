@@ -75,6 +75,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>test-utilities</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

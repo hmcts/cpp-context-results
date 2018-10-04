@@ -1,218 +1,217 @@
 package uk.gov.moj.cpp.results.test;
 
-import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.BOOLEAN;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.INTEGER;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_ZONED_DATE_TIME;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-import static uk.gov.moj.cpp.domains.results.shareResults.Variant.variant;
 
+import uk.gov.justice.json.schemas.core.CourtCentre;
+import uk.gov.justice.json.schemas.core.Defendant;
+import uk.gov.justice.json.schemas.core.Gender;
+import uk.gov.justice.json.schemas.core.HearingDay;
+import uk.gov.justice.json.schemas.core.HearingType;
+import uk.gov.justice.json.schemas.core.InitiationCode;
+import uk.gov.justice.json.schemas.core.JudicialRole;
+import uk.gov.justice.json.schemas.core.JudicialRoleType;
+import uk.gov.justice.json.schemas.core.Offence;
+import uk.gov.justice.json.schemas.core.Person;
+import uk.gov.justice.json.schemas.core.PersonDefendant;
+import uk.gov.justice.json.schemas.core.ProsecutionCase;
+import uk.gov.justice.json.schemas.core.ProsecutionCaseIdentifier;
+import uk.gov.justice.json.schemas.core.Title;
+import uk.gov.justice.json.schemas.core.publichearingresulted.JurisdictionType;
+import uk.gov.justice.json.schemas.core.publichearingresulted.Key;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedPrompt;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedResultLine;
+import uk.gov.justice.json.schemas.core.publichearingresulted.SharedVariant;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
-import uk.gov.moj.cpp.domains.results.shareResults.Address;
-import uk.gov.moj.cpp.domains.results.shareResults.Attendee;
-import uk.gov.moj.cpp.domains.results.shareResults.Case;
-import uk.gov.moj.cpp.domains.results.shareResults.CourtCentre;
-import uk.gov.moj.cpp.domains.results.shareResults.CourtClerk;
-import uk.gov.moj.cpp.domains.results.shareResults.DefenceAdvocate;
-import uk.gov.moj.cpp.domains.results.shareResults.Defendant;
-import uk.gov.moj.cpp.domains.results.shareResults.Hearing;
-import uk.gov.moj.cpp.domains.results.shareResults.Interpreter;
-import uk.gov.moj.cpp.domains.results.shareResults.Offence;
-import uk.gov.moj.cpp.domains.results.shareResults.Person;
-import uk.gov.moj.cpp.domains.results.shareResults.Plea;
-import uk.gov.moj.cpp.domains.results.shareResults.Prompt;
-import uk.gov.moj.cpp.domains.results.shareResults.ProsecutionAdvocate;
-import uk.gov.moj.cpp.domains.results.shareResults.ShareResultsMessage;
-import uk.gov.moj.cpp.domains.results.shareResults.SharedResultLine;
-import uk.gov.moj.cpp.domains.results.shareResults.VariantKey;
-import uk.gov.moj.cpp.domains.results.shareResults.Verdict;
-
 public class TestTemplates {
+
+    public static final UUID DEFAULT_DEFENDANT_ID1 = UUID.fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");
+    public static final UUID DEFAULT_DEFENDANT_ID2 = UUID.fromString("dddd2222-1e20-4c21-916a-81a6c90239e5");
+    public static final UUID DEFAULT_DEFENDANT_ID3 = UUID.fromString("dddd3333-1e20-4c21-916a-81a6c90239e5");
+    public static final UUID DEFAULT_DEFENDANT_ID4 = UUID.fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
 
     private TestTemplates() {
 
     }
 
-    public static ShareResultsMessage basicShareResultsTemplate() {
 
-        final UUID caseId = randomUUID();
-        final UUID defendantId = randomUUID();
-        final UUID offenceId = randomUUID();
-        final UUID personId = randomUUID();
+
+        public static SharedHearing basicShareHearingTemplate(final UUID hearingId) {
+            return SharedHearing.sharedHearing()
+                    .withId(hearingId)
+                    .withType(HearingType.hearingType()
+                            .withId(randomUUID())
+                            .withDescription("Trial")
+                            .build())
+                    .withJurisdictionType(JurisdictionType.CROWN)
+                    .withJudiciary(Arrays.asList(JudicialRole.judicialRole()
+                            .withJudicialId(randomUUID())
+                            .withJudicialRoleType(JudicialRoleType.CIRCUIT_JUDGE)
+                            .build()))
+                    .withHearingDays(Arrays.asList(HearingDay.hearingDay()
+                            .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                            .withListedDurationMinutes(100)
+                            .build(), HearingDay.hearingDay()
+                            .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 4, 3), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                            .withListedDurationMinutes(100)
+                            .build(), HearingDay.hearingDay()
+                            .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                            .withListedDurationMinutes(100)
+                            .build()))
+                    .withCourtCentre(CourtCentre.courtCentre()
+                            .withId(randomUUID())
+                            .withName(STRING.next())
+                            .withRoomId(randomUUID())
+                            .withRoomName(STRING.next())
+                            .withWelshName(STRING.next())
+                            .withWelshRoomName(STRING.next())
+                            .build())
+                    .withProsecutionCases(Arrays.asList(createProsecutionCase1(), createProsecutionCase2()))
+                    .withSharedResultLines(Arrays.asList(
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID2),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID2),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID2),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID3),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID3),
+                            createSharedResultLine(DEFAULT_DEFENDANT_ID4)
+                    ))
+                    .build();
+        }
+
+
+        public static PublicHearingResulted basicShareResultsTemplate() {
+
         final UUID hearingId = randomUUID();
 
-        return ShareResultsMessage.shareResultsMessage()
-                .setHearing(Hearing.hearing()
-                        .setId(hearingId)
-                        .setHearingDates(new ArrayList<>(asList(PAST_ZONED_DATE_TIME.next())))
-                        .setHearingType(STRING.next())
-                        .setStartDateTime(ZonedDateTime.now(ZoneId.of("UTC")))
-                        .setCourtCentre(CourtCentre.courtCentre()
-                                .setCourtCentreId(randomUUID())
-                                .setCourtCentreName(STRING.next())
-                                .setCourtRoomId(randomUUID())
-                                .setCourtRoomName(STRING.next())
-                        )
-                        .setAttendees(new ArrayList<>(asList(Attendee.attendee()
-                                        .setPersonId(randomUUID())
-                                        .setType("JUDGE")
-                                        .setFirstName(STRING.next())
-                                        .setLastName(STRING.next())
-                                        .setTitle(STRING.next()),
-                                Attendee.attendee()
-                                        .setPersonId(randomUUID())
-                                        .setType("COURTCLERK")
-                                        .setFirstName(STRING.next())
-                                        .setLastName(STRING.next())
-                                        .setTitle(STRING.next()),
-                                DefenceAdvocate.defenceAdvocate()
-                                        .setType("DEFENCEADVOCATE")
-                                        .setFirstName(STRING.next())
-                                        .setLastName(STRING.next())
-                                        .setStatus(STRING.next())
-                                        .setTitle(STRING.next())
-                                        .setDefendantIds(new ArrayList<>(asList(defendantId))),
-                                ProsecutionAdvocate.prosecutionAdvocate()
-                                        .setType("PROSECUTIONADVOCATE")
-                                        .setFirstName(STRING.next())
-                                        .setLastName(STRING.next())
-                                        .setTitle(STRING.next())
-                                        .setStatus(STRING.next())
-                                        .setCaseIds(new ArrayList<>(asList(caseId)))))
-                        )
-                        .setDefendants(new ArrayList<>(asList(Defendant.defendant()
-                                .setId(defendantId)
-                                .setDefenceOrganisation(STRING.next())
-                                .setInterpreter(Interpreter.interpreter()
-                                        .setName(STRING.next())
-                                        .setLanguage(STRING.next())
-                                )
-                                .setPerson(Person.person()
-                                        .setId(personId)
-                                        .setFirstName(STRING.next())
-                                        .setLastName(STRING.next())
-                                        .setDateOfBirth(PAST_LOCAL_DATE.next())
-                                        .setNationality(STRING.next())
-                                        .setGender(STRING.next())
-                                        .setAddress(Address.address()
-                                                .setAddress1(STRING.next())
-                                                .setAddress2(STRING.next())
-                                                .setAddress3(STRING.next())
-                                                .setAddress4(STRING.next())
-                                                .setPostCode(STRING.next())
-                                        )
-                                        .setEmail(STRING.next())
-                                        .setFax(STRING.next())
-                                        .setHomeTelephone(STRING.next())
-                                        .setMobile(STRING.next())
-                                        .setWorkTelephone(STRING.next())
-                                )
-                                .setCases(new ArrayList<>(asList(Case.legalCase()
-                                        .setId(caseId)
-                                        .setBailStatus(STRING.next())
-                                        .setUrn(STRING.next())
-                                        .setCustodyTimeLimitDate(PAST_LOCAL_DATE.next())
-                                        .setOffences(new ArrayList<>(asList(Offence.offence()
-                                                .setId(offenceId)
-                                                .setCode(STRING.next())
-                                                .setConvictionDate(PAST_LOCAL_DATE.next())
-                                                .setEndDate(PAST_LOCAL_DATE.next())
-                                                .setStartDate(PAST_LOCAL_DATE.next())
-                                                .setWording(STRING.next())
-                                                .setPlea(Plea.plea()
-                                                        .setDate(PAST_LOCAL_DATE.next())
-                                                        .setEnteredHearingId(randomUUID())
-                                                        .setId(randomUUID())
-                                                        .setValue("GUILTY"))
-                                                .setVerdict(Verdict.verdict()
-                                                        .setVerdictDescription(STRING.next())
-                                                        .setVerdictCategory(STRING.next())
-                                                        .setNumberOfJurors(INTEGER.next())
-                                                        .setVerdictDate(PAST_LOCAL_DATE.next())
-                                                        .setNumberOfSplitJurors(STRING.next())
-                                                        .setUnanimous(BOOLEAN.next())
-                                                        .setEnteredHearingId(randomUUID())
-                                                )
-                                        ))))
-                                ))
-                        )))
-                        .setSharedResultLines(new ArrayList<>(asList(
-                                SharedResultLine.sharedResultLine()
-                                        .setId(randomUUID())
-                                        .setOffenceId(offenceId)
-                                        .setCaseId(caseId)
-                                        .setDefendantId(defendantId)
-                                        .setLabel(STRING.next())
-                                        .setLevel("OFFENCE")
-                                        .setLastSharedDateTime(PAST_ZONED_DATE_TIME.next().withZoneSameInstant(ZoneId.of("UTC")))
-                                        .setOrderedDate(LocalDate.now())
-                                        .setCourtClerk(CourtClerk.courtClerk()
-                                                .setId(randomUUID())
-                                                .setFirstName(STRING.next())
-                                                .setLastName(STRING.next()))
-                                        .setPrompts(asList(
-                                                Prompt.prompt()
-                                                        .setId(randomUUID())
-                                                        .setLabel(STRING.next())
-                                                        .setValue(STRING.next())
-                                        )),
-                                SharedResultLine.sharedResultLine()
-                                        .setId(randomUUID())
-                                        .setOffenceId(offenceId)
-                                        .setCaseId(caseId)
-                                        .setDefendantId(defendantId)
-                                        .setLabel(STRING.next())
-                                        .setLevel("DEFENDANT")
-                                        .setLastSharedDateTime(PAST_ZONED_DATE_TIME.next().withZoneSameInstant(ZoneId.of("UTC")))
-                                        .setOrderedDate(LocalDate.now())
-                                        .setCourtClerk(CourtClerk.courtClerk()
-                                                .setId(randomUUID())
-                                                .setFirstName(STRING.next())
-                                                .setLastName(STRING.next()))
-                                        .setPrompts(asList(
-                                                Prompt.prompt()
-                                                        .setId(randomUUID())
-                                                        .setLabel(STRING.next())
-                                                        .setValue(STRING.next())
-                                        )),
-                                SharedResultLine.sharedResultLine()
-                                        .setId(randomUUID())
-                                        .setOffenceId(offenceId)
-                                        .setCaseId(caseId)
-                                        .setDefendantId(defendantId)
-                                        .setLabel(STRING.next())
-                                        .setLevel("CASE")
-                                        .setLastSharedDateTime(PAST_ZONED_DATE_TIME.next().withZoneSameInstant(ZoneId.of("UTC")))
-                                        .setOrderedDate(LocalDate.now())
-                                        .setCourtClerk(CourtClerk.courtClerk()
-                                                .setId(randomUUID())
-                                                .setFirstName(STRING.next())
-                                                .setLastName(STRING.next()))
-                                        .setPrompts(asList(
-                                                Prompt.prompt()
-                                                        .setId(randomUUID())
-                                                        .setLabel(STRING.next())
-                                                        .setValue(STRING.next())
-                                        ))))
-                        ))
-                .setVariants(new ArrayList<>(asList(
-                        variant().setKey(VariantKey.variantKey()
-                        .setDefendantId(defendantId)
-                        .setHearingId(hearingId)
-                        .setNowsTypeId(randomUUID())
-                        .setUsergroups(new ArrayList<>(asList("Court Clerks", "Listings Officers", "Prison Admin"))))
-                        .setDescription("Imprisonment Order")
-                        .setMaterialId(randomUUID())
-                        .setTemplateName("SingleTemplate")
-                        .setStatus("BUILDING")
-                )))
+        return PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplate(hearingId))
+                .setVariants(createVariants(hearingId))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+
+    }
+
+
+    private static SharedResultLine createSharedResultLine(UUID defendantId) {
+        return SharedResultLine.sharedResultLine()
+                .withId(randomUUID())
+                .withLabel(STRING.next())
+                .withLevel("CASE")
+                .withDefendantId(defendantId)
+                .withIsAvailableForCourtExtract(true)
+                .withWelshLabel(STRING.next())
+                .withRank(BigDecimal.ONE)
+                .withProsecutionCaseId(UUID.randomUUID())
+//                .withLastSharedDateTime()
+                .withPrompts(Arrays.asList(
+                        SharedPrompt.sharedPrompt()
+                                .withValue(STRING.next())
+                                .withLabel(STRING.next())
+                                .withId(UUID.randomUUID())
+                                .withIsAvailableForCourtExtract(true)
+                                .build()
+                ))
+                .build();
+    }
+
+    private static List<SharedVariant> createVariants(UUID hearingId) {
+        return Arrays.asList(
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID1, UUID.fromString("aaaa1111-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID1, UUID.fromString("aaaa2222-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID1, UUID.fromString("aaaa3333-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID1, UUID.fromString("aaaa4444-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID2, UUID.fromString("aaaa5555-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID2, UUID.fromString("aaaa6666-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID2, UUID.fromString("aaaa7777-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID3, UUID.fromString("aaaa8888-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID3, UUID.fromString("aaaa9999-1e20-4c21-916a-81a6c90239e5")),
+                createVariant(hearingId, DEFAULT_DEFENDANT_ID4, UUID.fromString("aaaa0000-1e20-4c21-916a-81a6c90239e5"))
+        );
+    }
+
+    private static SharedVariant createVariant(UUID hearingId, UUID defendantId, UUID variantId) {
+        return SharedVariant.sharedVariant()
+                .withKey(Key.key()
+                        .withHearingId(hearingId)
+                        .withDefendantId(defendantId)
+                        .withNowsTypeId(randomUUID())
+                        .withUsergroups(Arrays.asList(STRING.next()))
+                        .build())
+                .withMaterialId(variantId)
+                .withDescription(STRING.next())
+                .withTemplateName(STRING.next())
+                .withStatus("failed")
+                .build();
+    }
+
+    protected static ProsecutionCase createProsecutionCase1() {
+        return ProsecutionCase.prosecutionCase()
+                .withId(UUID.fromString("cccc1111-1e20-4c21-916a-81a6c90239e5"))
+                .withInitiationCode(InitiationCode.C)
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                        .withProsecutionAuthorityId(randomUUID())
+                        .withProsecutionAuthorityCode(STRING.next())
+                        .withProsecutionAuthorityReference(STRING.next())
+                        .build())
+                .withDefendants(
+                        Arrays.asList(createDefendant("dddd1111-1e20-4c21-916a-81a6c90239e5"),
+                                createDefendant("dddd2222-1e20-4c21-916a-81a6c90239e5")
+                        ))
+                .build();
+    }
+
+    protected static ProsecutionCase createProsecutionCase2() {
+        return ProsecutionCase.prosecutionCase()
+                .withId(UUID.fromString("cccc2222-1e20-4c21-916a-81a6c90239e5"))
+                .withInitiationCode(InitiationCode.C)
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                        .withProsecutionAuthorityId(randomUUID())
+                        .withProsecutionAuthorityCode(STRING.next())
+                        //.withProsecutionAuthorityReference(STRING.next())
+                        .withCaseURN(STRING.next())
+                        .build())
+                .withDefendants(
+                        Arrays.asList(createDefendant("dddd3333-1e20-4c21-916a-81a6c90239e5"),
+                                createDefendant("dddd4444-1e20-4c21-916a-81a6c90239e5")
+                        ))
+                .build();
+    }
+
+    private static Defendant createDefendant(String defendantId) {
+        return Defendant.defendant()
+                .withId(UUID.fromString(defendantId))
+                .withProsecutionCaseId(randomUUID())
+                .withPersonDefendant(PersonDefendant.personDefendant()
+                        .withPersonDetails(Person.person()
+                                .withFirstName(STRING.next())
+                                .withLastName(STRING.next())
+                                .withTitle(Title.MS)
+                                .withGender(Gender.NOT_KNOWN)
+                                .build())
+                        .build())
+                .withOffences(Arrays.asList(Offence.offence()
+                        .withId(randomUUID())
+                        .withOffenceDefinitionId(randomUUID())
+                        .withOffenceCode(STRING.next())
+                        .withWording(STRING.next())
+                        .withStartDate(LocalDate.now())
+                        .withOrderIndex(65)
+                        .withCount(434)
+                        .build()))
+                .build();
     }
 }

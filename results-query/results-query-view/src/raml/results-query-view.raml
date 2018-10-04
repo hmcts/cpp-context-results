@@ -3,9 +3,9 @@ title: Results Query View
 baseUri: http://localhost:8080/results-query-view/query/view/rest/results
 protocols: [ HTTP, HTTPS ]
 
-/people/{personId}/hearings/{hearingId}:
+/people/{defendantId}/hearings/{hearingId}:
     uriParameters:
-        personId:
+        defendantId:
             description: ID of the person to fetch the results
             type: string
         hearingId:
@@ -15,28 +15,16 @@ protocols: [ HTTP, HTTPS ]
         description: |
             ...
             (mapping):
-                responseType: application/vnd.results.person-details+json
-                name: results.get-person-details
-            (mapping):
                 responseType: application/vnd.results.hearing-details+json
                 name: results.get-hearing-details
-            (mapping):
-                responseType: application/vnd.results.results-details+json
-                name: results.get-results-details
             ...
         responses:
             200:
                 description: OK
                 body:
-                     application/vnd.results.person-details+json:
-                        schema: !include json/schema/results.person-details.json
-                        example: !include json/results.person-details.json
                      application/vnd.results.hearing-details+json:
                         schema: !include json/schema/results.hearing-details.json
                         example: !include json/results.hearing-details.json
-                     application/vnd.results.results-details+json:
-                        schema: !include json/schema/results.results-details.json
-                        example: !include json/results.results-details.json
 
 /results/summary:
     get:
