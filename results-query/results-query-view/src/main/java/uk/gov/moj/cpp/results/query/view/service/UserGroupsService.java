@@ -4,8 +4,6 @@ import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.moj.cpp.results.persist.HearingRepository;
-import uk.gov.moj.cpp.results.persist.HearingResultRepository;
 
 import javax.inject.Inject;
 import javax.json.Json;
@@ -18,12 +16,6 @@ import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
 
 @SuppressWarnings("squid:S3655")
 public class UserGroupsService {
-
-    @Inject
-    private HearingRepository hearingRepository;
-
-    @Inject
-    private HearingResultRepository hearingResultRepository;
 
     @Inject
     @ServiceComponent(QUERY_VIEW)

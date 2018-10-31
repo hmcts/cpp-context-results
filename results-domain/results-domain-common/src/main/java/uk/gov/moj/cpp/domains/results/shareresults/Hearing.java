@@ -13,7 +13,6 @@ public class Hearing {
     private List<ZonedDateTime> hearingDates;
     private CourtCentre courtCentre;
     private List<Attendee> attendees;
-    private List<Defendant> defendants;
     private List<SharedResultLine> sharedResultLines;
 
     public UUID getId() {
@@ -67,15 +66,6 @@ public class Hearing {
 
     public Hearing setAttendees(List<Attendee> attendees) {
         this.attendees = attendees;
-        return this;
-    }
-
-    public List<Defendant> getDefendants() {
-        return defendants;
-    }
-
-    public Hearing setDefendants(List<Defendant> defendants) {
-        this.defendants = defendants;
         return this;
     }
 
