@@ -4,14 +4,17 @@ import uk.gov.justice.json.schemas.core.SharedHearing;
 import uk.gov.justice.json.schemas.core.SharedVariant;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"squid:S2384"})
 public class PublicHearingResulted {
     private SharedHearing hearing;
-    private List<SharedVariant> variants = new ArrayList<>();
+    private List<SharedVariant> variants;
     private ZonedDateTime sharedTime;
+
+    public static PublicHearingResulted publicHearingResulted() {
+        return new PublicHearingResulted();
+    }
 
     public SharedHearing getHearing() {
         return hearing;
@@ -38,9 +41,5 @@ public class PublicHearingResulted {
     public PublicHearingResulted setSharedTime(ZonedDateTime sharedTime) {
         this.sharedTime = sharedTime;
         return this;
-    }
-
-    public static PublicHearingResulted publicHearingResulted() {
-        return new PublicHearingResulted();
     }
 }
