@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/publichearingresulted/sharedResultLine.json",
-  "description": "Shared Result Line",
+  "id": "http://justice.gov.uk/json/schemas/core/sharedResultLine.json",
+  "description": "The shared results from a hearing resulting process",
   "type": "object",
   "properties": {
     "id": {
@@ -9,6 +9,10 @@
     },
     "delegatedPowers": {
       "$ref": "http://justice.gov.uk/json/schemas/core/delegatedPowers.json"
+    },
+    "isFinancial": {
+      "description": "Indicates if the result is a financial result",
+      "type": "boolean"
     },
     "isAvailableForCourtExtract": {
       "description": "Indicates if the result is available to be included in a court extract",
@@ -49,13 +53,13 @@
       }
     },
     "courtClerk": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtClerk.json"
+      "$ref": "http://justice.gov.uk/json/schemas/core/delegatedPowers.json"
     },
     "prompts": {
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "http://justice.gov.uk/json/schemas/core/publichearingresulted/sharedPrompt.json"
+        "$ref": "http://justice.gov.uk/json/schemas/core/resultPrompt.json"
       }
     }
   },
@@ -64,7 +68,7 @@
     "id",
     "level",
     "label",
-    "prompts",
+    "courtClerk",
     "isAvailableForCourtExtract"
   ]
 }

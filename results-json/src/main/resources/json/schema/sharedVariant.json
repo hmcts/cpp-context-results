@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/publichearingresulted/sharedVariant.json",
+  "id": "http://justice.gov.uk/json/schemas/core/sharedVariant.json",
   "description": "Shared Variant",
   "type": "object",
   "properties": {

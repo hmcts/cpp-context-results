@@ -4,7 +4,7 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedVariant;
+import uk.gov.justice.json.schemas.core.SharedVariant;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;

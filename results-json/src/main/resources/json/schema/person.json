@@ -31,12 +31,20 @@
       "description": "The person nationality code based on reference data",
       "type": "string"
     },
+    "nationalityDescription": {
+      "description": "The person nationality description based on reference data",
+      "type": "string"
+    },
     "additionalNationalityId": {
       "description": "The person nationality identifier from reference data",
       "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
     },
     "additionalNationalityCode": {
       "description": "The person additional nationality code based on reference data",
+      "type": "string"
+    },
+    "additionalNationalityDescription": {
+      "description": "The person additional nationality description based on reference data",
       "type": "string"
     },
     "disabilityStatus": {
@@ -47,8 +55,12 @@
       "description": "The person ethnicity identifier",
       "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
     },
-    "ethnicity": {
-      "description": "The person ethnicity",
+    "ethnicityCode": {
+      "description": "The person ethnicity code based on reference data",
+      "type": "string"
+    },
+    "ethnicityDescription": {
+      "description": "The person ethnicity description based on reference data",
       "type": "string"
     },
     "gender": {
@@ -89,7 +101,6 @@
     }
   },
   "required": [
-    "title",
     "lastName",
     "gender"
   ],

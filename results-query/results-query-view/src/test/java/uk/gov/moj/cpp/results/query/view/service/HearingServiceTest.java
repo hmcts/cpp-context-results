@@ -19,7 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.json.schemas.core.Defendant;
 import uk.gov.justice.json.schemas.core.ProsecutionCase;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
+import uk.gov.justice.json.schemas.core.SharedHearing;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;

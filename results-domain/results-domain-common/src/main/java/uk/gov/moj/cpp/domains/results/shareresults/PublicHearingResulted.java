@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.domains.results.shareresults;
 
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedVariant;
+import uk.gov.justice.json.schemas.core.SharedHearing;
+import uk.gov.justice.json.schemas.core.SharedVariant;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;

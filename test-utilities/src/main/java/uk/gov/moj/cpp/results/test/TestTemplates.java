@@ -16,13 +16,13 @@ import uk.gov.justice.json.schemas.core.Person;
 import uk.gov.justice.json.schemas.core.PersonDefendant;
 import uk.gov.justice.json.schemas.core.ProsecutionCase;
 import uk.gov.justice.json.schemas.core.ProsecutionCaseIdentifier;
+import uk.gov.justice.json.schemas.core.ResultPrompt;
 import uk.gov.justice.json.schemas.core.Title;
-import uk.gov.justice.json.schemas.core.publichearingresulted.JurisdictionType;
-import uk.gov.justice.json.schemas.core.publichearingresulted.Key;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedPrompt;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedResultLine;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedVariant;
+import uk.gov.justice.json.schemas.core.JurisdictionType;
+import uk.gov.justice.json.schemas.core.Key;
+import uk.gov.justice.json.schemas.core.SharedHearing;
+import uk.gov.justice.json.schemas.core.SharedResultLine;
+import uk.gov.justice.json.schemas.core.SharedVariant;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.math.BigDecimal;
@@ -118,7 +118,7 @@ public class TestTemplates {
                 .withProsecutionCaseId(UUID.randomUUID())
 //                .withLastSharedDateTime()
                 .withPrompts(Arrays.asList(
-                        SharedPrompt.sharedPrompt()
+                        ResultPrompt.resultPrompt()
                                 .withValue(STRING.next())
                                 .withLabel(STRING.next())
                                 .withId(UUID.randomUUID())

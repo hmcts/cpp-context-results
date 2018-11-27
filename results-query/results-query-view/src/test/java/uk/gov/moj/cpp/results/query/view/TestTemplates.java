@@ -9,8 +9,8 @@ import uk.gov.justice.json.schemas.core.Person;
 import uk.gov.justice.json.schemas.core.PersonDefendant;
 import uk.gov.justice.json.schemas.core.ProsecutionCase;
 import uk.gov.justice.json.schemas.core.ProsecutionCaseIdentifier;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedHearing;
-import uk.gov.justice.json.schemas.core.publichearingresulted.SharedVariant;
+import uk.gov.justice.json.schemas.core.SharedHearing;
+import uk.gov.justice.json.schemas.core.SharedVariant;
 import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 
