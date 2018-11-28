@@ -2,27 +2,27 @@ package uk.gov.moj.cpp.results.test;
 
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-
 import uk.gov.justice.json.schemas.core.CourtCentre;
 import uk.gov.justice.json.schemas.core.Defendant;
+import uk.gov.justice.json.schemas.core.DelegatedPowers;
 import uk.gov.justice.json.schemas.core.Gender;
 import uk.gov.justice.json.schemas.core.HearingDay;
 import uk.gov.justice.json.schemas.core.HearingType;
 import uk.gov.justice.json.schemas.core.InitiationCode;
 import uk.gov.justice.json.schemas.core.JudicialRole;
 import uk.gov.justice.json.schemas.core.JudicialRoleType;
+import uk.gov.justice.json.schemas.core.JurisdictionType;
+import uk.gov.justice.json.schemas.core.Key;
 import uk.gov.justice.json.schemas.core.Offence;
 import uk.gov.justice.json.schemas.core.Person;
 import uk.gov.justice.json.schemas.core.PersonDefendant;
 import uk.gov.justice.json.schemas.core.ProsecutionCase;
 import uk.gov.justice.json.schemas.core.ProsecutionCaseIdentifier;
 import uk.gov.justice.json.schemas.core.ResultPrompt;
-import uk.gov.justice.json.schemas.core.Title;
-import uk.gov.justice.json.schemas.core.JurisdictionType;
-import uk.gov.justice.json.schemas.core.Key;
 import uk.gov.justice.json.schemas.core.SharedHearing;
 import uk.gov.justice.json.schemas.core.SharedResultLine;
 import uk.gov.justice.json.schemas.core.SharedVariant;
+import uk.gov.justice.json.schemas.core.Title;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.math.BigDecimal;
@@ -46,55 +46,54 @@ public class TestTemplates {
     }
 
 
+    public static SharedHearing basicShareHearingTemplate(final UUID hearingId) {
+        return SharedHearing.sharedHearing()
+                .withId(hearingId)
+                .withType(HearingType.hearingType()
+                        .withId(randomUUID())
+                        .withDescription("Trial")
+                        .build())
+                .withJurisdictionType(JurisdictionType.CROWN)
+                .withJudiciary(Arrays.asList(JudicialRole.judicialRole()
+                        .withJudicialId(randomUUID())
+                        .withJudicialRoleType(JudicialRoleType.CIRCUIT_JUDGE)
+                        .build()))
+                .withHearingDays(Arrays.asList(HearingDay.hearingDay()
+                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                        .withListedDurationMinutes(100)
+                        .build(), HearingDay.hearingDay()
+                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 4, 3), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                        .withListedDurationMinutes(100)
+                        .build(), HearingDay.hearingDay()
+                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                        .withListedDurationMinutes(100)
+                        .build()))
+                .withCourtCentre(CourtCentre.courtCentre()
+                        .withId(randomUUID())
+                        .withName(STRING.next())
+                        .withRoomId(randomUUID())
+                        .withRoomName(STRING.next())
+                        .withWelshName(STRING.next())
+                        .withWelshRoomName(STRING.next())
+                        .build())
+                .withProsecutionCases(Arrays.asList(createProsecutionCase1(), createProsecutionCase2()))
+                .withSharedResultLines(Arrays.asList(
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID1),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID2),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID2),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID2),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID3),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID3),
+                        createSharedResultLine(DEFAULT_DEFENDANT_ID4)
+                ))
+                .build();
+    }
 
-        public static SharedHearing basicShareHearingTemplate(final UUID hearingId) {
-            return SharedHearing.sharedHearing()
-                    .withId(hearingId)
-                    .withType(HearingType.hearingType()
-                            .withId(randomUUID())
-                            .withDescription("Trial")
-                            .build())
-                    .withJurisdictionType(JurisdictionType.CROWN)
-                    .withJudiciary(Arrays.asList(JudicialRole.judicialRole()
-                            .withJudicialId(randomUUID())
-                            .withJudicialRoleType(JudicialRoleType.CIRCUIT_JUDGE)
-                            .build()))
-                    .withHearingDays(Arrays.asList(HearingDay.hearingDay()
-                            .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                            .withListedDurationMinutes(100)
-                            .build(), HearingDay.hearingDay()
-                            .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 4, 3), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                            .withListedDurationMinutes(100)
-                            .build(), HearingDay.hearingDay()
-                            .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                            .withListedDurationMinutes(100)
-                            .build()))
-                    .withCourtCentre(CourtCentre.courtCentre()
-                            .withId(randomUUID())
-                            .withName(STRING.next())
-                            .withRoomId(randomUUID())
-                            .withRoomName(STRING.next())
-                            .withWelshName(STRING.next())
-                            .withWelshRoomName(STRING.next())
-                            .build())
-                    .withProsecutionCases(Arrays.asList(createProsecutionCase1(), createProsecutionCase2()))
-                    .withSharedResultLines(Arrays.asList(
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID1),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID2),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID2),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID2),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID3),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID3),
-                            createSharedResultLine(DEFAULT_DEFENDANT_ID4)
-                    ))
-                    .build();
-        }
 
-
-        public static PublicHearingResulted basicShareResultsTemplate() {
+    public static PublicHearingResulted basicShareResultsTemplate() {
 
         final UUID hearingId = randomUUID();
 
@@ -115,16 +114,24 @@ public class TestTemplates {
                 .withIsAvailableForCourtExtract(true)
                 .withWelshLabel(STRING.next())
                 .withRank(BigDecimal.ONE)
-                .withProsecutionCaseId(UUID.randomUUID())
-//                .withLastSharedDateTime()
+                .withProsecutionCaseId(randomUUID())
+                .withCourtClerk(createCourtClerk())
                 .withPrompts(Arrays.asList(
                         ResultPrompt.resultPrompt()
                                 .withValue(STRING.next())
                                 .withLabel(STRING.next())
-                                .withId(UUID.randomUUID())
+                                .withId(randomUUID())
                                 .withIsAvailableForCourtExtract(true)
                                 .build()
                 ))
+                .build();
+    }
+
+    private static DelegatedPowers createCourtClerk() {
+        return DelegatedPowers.delegatedPowers()
+                .withLastName(STRING.next())
+                .withFirstName(STRING.next())
+                .withUserId(randomUUID())
                 .build();
     }
 
