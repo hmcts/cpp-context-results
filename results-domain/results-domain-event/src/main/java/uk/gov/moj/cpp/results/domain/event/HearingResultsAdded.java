@@ -18,7 +18,7 @@ public class HearingResultsAdded {
 
     @JsonCreator
     public HearingResultsAdded(@JsonProperty(value = "hearing", required = true) final SharedHearing hearing,
-                               @JsonProperty(value = "sharedTime", required = true) final ZonedDateTime sharedTime, @JsonProperty(value = "variants", required = true) final List<SharedVariant> variants) {
+                               @JsonProperty(value = "sharedTime", required = true) final ZonedDateTime sharedTime, @JsonProperty(value = "variants") final List<SharedVariant> variants) {
         this.hearing = hearing;
         this.sharedTime = sharedTime;
         this.variants = variants;

@@ -44,20 +44,37 @@ public class ResultsIT {
     }
 
     @Test
-    public void journey() {
+    public void journeyWithVariants() {
+        journey(true);
+    }
+
+    @Test
+    public void journeyWithoutVariants() {
+        journey(false);
+    }
+
+    private void journey(final boolean withVariants) {
         PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+
         final SharedHearing hearingIn = shareResultsMessage.getHearing();
-        UUID defendantId0 =
+        final UUID defendantId0 =
                 shareResultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
+        if (!withVariants) {
+            shareResultsMessage.setVariants(null);
+        }
 
-        final String initialStatus0 = "processing";
-        final SharedVariant variant0 = shareResultsMessage.getVariants().stream()
-                .filter(v -> v.getKey().getDefendantId().equals(defendantId0)).findFirst().orElseThrow(
-                        () -> new RuntimeException("invalid test data - no variant for chosen defendant")
-                );
-        variant0.setStatus(initialStatus0);
-        final UUID materialId0 = variant0.getMaterialId();
 
+        UUID materialId0 = null;
+        SharedVariant variant0 = null;
+        if (withVariants) {
+            final String initialStatus0 = "processing";
+            variant0 = shareResultsMessage.getVariants().stream()
+                    .filter(v -> v.getKey().getDefendantId().equals(defendantId0)).findFirst().orElseThrow(
+                            () -> new RuntimeException("invalid test data - no variant for chosen defendant")
+                    );
+            variant0.setStatus(initialStatus0);
+            materialId0 = variant0.getMaterialId();
+        }
         //share results
         hearingResultsHaveBeenShared(shareResultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -103,39 +120,52 @@ public class ResultsIT {
         ResultsStepDefinitions.getHearingDetails(shareResultsMessage.getHearing().getId(), defendantId0, matcher);
 
         final String newStatusValue0 = "generated";
-        makeCommand("results.update-nows-material-status")
-                .ofType("application/vnd.results.update-nows-material-status+json")
-                .withArgs(hearingIn.getId(), materialId0).withPayload(new HashMap<String, String>() {{
-            put("status", newStatusValue0);
-        }}).executeSuccessfully();
+        if (withVariants) {
+            makeCommand("results.update-nows-material-status")
+                    .ofType("application/vnd.results.update-nows-material-status+json")
+                    .withArgs(hearingIn.getId(), materialId0).withPayload(new HashMap<String, String>() {{
+                put("status", newStatusValue0);
+            }}).executeSuccessfully();
+        }
 
-        Matcher<HearingResultsAdded> matcherStatus = isBean(HearingResultsAdded.class)
-                .with(HearingResultsAdded::getVariants, hasItem(isBean(SharedVariant.class)
-                        .withValue(SharedVariant::getMaterialId, materialId0)
-                        .withValue(SharedVariant::getStatus, newStatusValue0)
-                ));
+        Matcher<HearingResultsAdded> matcherStatus = null;
+
+        if (withVariants) {
+            matcherStatus = isBean(HearingResultsAdded.class)
+                    .with(HearingResultsAdded::getVariants, hasItem(isBean(SharedVariant.class)
+                            .withValue(SharedVariant::getMaterialId, materialId0)
+                            .withValue(SharedVariant::getStatus, newStatusValue0)
+                    ));
+        } else {
+            matcherStatus = isBean(HearingResultsAdded.class)
+                    .with(HearingResultsAdded::getHearing, isBean(SharedHearing.class)
+                            .withValue(SharedHearing::getId, shareResultsMessage.getHearing().getId())
+                    );
+        }
+
         // get the details and check
         ResultsStepDefinitions.getHearingDetails(shareResultsMessage.getHearing().getId(), defendantId0, matcherStatus);
 
         //make a check
         shareResultsMessage.setVariants(asList(variant0));
 
-        hearingResultsHaveBeenShared(shareResultsMessage);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
-        //checking modification
-        matcher = isBean(HearingResultsAdded.class)
-                .withValue(hrs -> hrs.getVariants().size(), 1)
-                .with(HearingResultsAdded::getVariants, first(isBean(SharedVariant.class)
-                        .withValue(SharedVariant::getMaterialId, variant0.getMaterialId())
-                ))
-                .with(HearingResultsAdded::getHearing, isBean(SharedHearing.class)
-                        .withValue(SharedHearing::getId, hearingIn.getId())
-                        .withValue(SharedHearing::getJurisdictionType, hearingIn.getJurisdictionType())
-                        .withValue(SharedHearing::getType, hearingIn.getType())
-                );
-        ResultsStepDefinitions.getHearingDetails(shareResultsMessage.getHearing().getId(), defendantId0, matcher);
-
+        if (withVariants) {
+            hearingResultsHaveBeenShared(shareResultsMessage);
+            whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+            //checking modification
+            matcher = isBean(HearingResultsAdded.class)
+                    .withValue(hrs -> hrs.getVariants().size(), 1)
+                    .with(HearingResultsAdded::getVariants, first(isBean(SharedVariant.class)
+                            .withValue(SharedVariant::getMaterialId, variant0.getMaterialId())
+                    ))
+                    .with(HearingResultsAdded::getHearing, isBean(SharedHearing.class)
+                            .withValue(SharedHearing::getId, hearingIn.getId())
+                            .withValue(SharedHearing::getJurisdictionType, hearingIn.getJurisdictionType())
+                            .withValue(SharedHearing::getType, hearingIn.getType())
+                    );
+            ResultsStepDefinitions.getHearingDetails(shareResultsMessage.getHearing().getId(), defendantId0, matcher);
+        }
 
     }
 

@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -97,7 +98,9 @@ public class HearingService {
         }
         foundProsecutionCase.setDefendants(asList(foundDefendant));
         hearingResultsAdded.getHearing().setProsecutionCases(asList(foundProsecutionCase));
-        final List<SharedVariant> filteredVariants = hearingResultsAdded.getVariants().stream().filter(v -> v.getKey().getDefendantId().equals(defendantId)).collect(Collectors.toList());
+        final List<SharedVariant> filteredVariants =
+                hearingResultsAdded.getVariants() == null ? Collections.emptyList() :
+                        hearingResultsAdded.getVariants().stream().filter(v -> v.getKey().getDefendantId().equals(defendantId)).collect(Collectors.toList());
         final List<SharedResultLine> filteredSharedResultLines = hearing.getSharedResultLines().stream().filter(rl -> rl.getDefendantId().equals(defendantId)).collect(Collectors.toList());
         hearing.setSharedResultLines(filteredSharedResultLines);
         return new HearingResultsAdded(hearing, hearingResultsAdded.getSharedTime(), filteredVariants);
