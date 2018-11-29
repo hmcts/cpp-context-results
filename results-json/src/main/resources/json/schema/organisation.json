@@ -3,9 +3,6 @@
   "id": "http://justice.gov.uk/json/schemas/core/organisation.json",
   "type": "object",
   "properties": {
-    "id": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
-    },
     "name": {
       "type": "string"
     },
@@ -25,7 +22,6 @@
     }
   },
   "required": [
-    "id",
     "name"
   ],
   "additionalProperties": false
