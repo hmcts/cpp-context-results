@@ -1,24 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/verdict.json",
+  "id": "http://justice.gov.uk/core/courts/verdict.json",
   "description": "The verdict i.e. the court decision",
   "type": "object",
   "properties": {
+    "originatingHearingId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
     "offenceId": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "verdictDate": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/datePattern"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
     },
     "verdictType": {
       "type": "object",
       "properties": {
         "verdictTypeId": {
           "description": "The identifier of the verdict type from reference data",
-          "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
         },
-        "code": {
-          "type": "string"
+        "sequence": {
+          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
         },
         "description": {
           "type": "string"
@@ -27,31 +30,12 @@
           "type": "string"
         },
         "categoryType": {
-          "$ref": "#/definitions/categoryType"
-        }
-      },
-      "additionalProperties": false
-    },
-    "lesserOrAlternativeOffence": {
-      "type": "object",
-      "properties": {
-        "offenceDefinitionId": {
-          "description": "The identifier of the offence from reference data",
-          "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
-        },
-        "offenceCode": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "legislation": {
           "type": "string"
         }
       },
       "additionalProperties": false
-    },
-    "jurors": {
+    }, 
+	"jurors": {
       "type": "object",
       "properties": {
         "numberOfJurors": {
@@ -64,19 +48,47 @@
           "type": "boolean"
         }
       },
+      "additionalProperties": false,
       "required": [
         "numberOfJurors",
         "numberOfSplitJurors",
         "unanimous"
       ]
-    }
-  },
-  "definitions": {
-    "categoryType": {
-      "type": "string"
+    },    
+    "lesserOrAlternativeOffence": {
+      "type": "object",
+      "properties": {
+        "offenceDefinitionId": {
+          "description": "The identifier of the offence from reference data",
+          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+        },
+		"offenceCode": {
+			"type": "string"
+		},
+		"offenceTitle": {
+			"type": "string"
+		},
+		"offenceTitleWelsh": {
+			"type": "string"
+		},
+		"offenceLegislation": {
+			"type": "string"
+		},
+		"offenceLegislationWelsh": {
+			"type": "string"
+		}
+      },
+      "additionalProperties": false,
+      "required": [
+        "offenceDefinitionId",
+        "offenceCode",
+        "offenceTitle",
+        "offenceLegislation"
+      ]
     }
   },
   "required": [
+    "originatingHearingId",
     "offenceId",
     "verdictDate",
     "verdictType"

@@ -1,16 +1,17 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/material.json",
+  "id": "http://justice.gov.uk/core/courts/material.json",
   "type": "object",
   "properties": {
     "id": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "name": {
       "type": "string"
     },
-    "uploadDate": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/datePattern"
+    "uploadDateTime": {
+      "type": "string",
+	  "format": "date-time"
     },
     "generationStatus": {
       "type": "string"
@@ -24,8 +25,7 @@
     }
   },
   "required": [
-    "id",
-    "userGroups"
+    "id"
   ],
   "additionalProperties": false
 }

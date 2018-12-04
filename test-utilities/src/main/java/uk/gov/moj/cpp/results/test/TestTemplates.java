@@ -2,27 +2,27 @@ package uk.gov.moj.cpp.results.test;
 
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-import uk.gov.justice.json.schemas.core.CourtCentre;
-import uk.gov.justice.json.schemas.core.Defendant;
-import uk.gov.justice.json.schemas.core.DelegatedPowers;
-import uk.gov.justice.json.schemas.core.Gender;
-import uk.gov.justice.json.schemas.core.HearingDay;
-import uk.gov.justice.json.schemas.core.HearingType;
-import uk.gov.justice.json.schemas.core.InitiationCode;
-import uk.gov.justice.json.schemas.core.JudicialRole;
-import uk.gov.justice.json.schemas.core.JudicialRoleType;
-import uk.gov.justice.json.schemas.core.JurisdictionType;
-import uk.gov.justice.json.schemas.core.Key;
-import uk.gov.justice.json.schemas.core.Offence;
-import uk.gov.justice.json.schemas.core.Person;
-import uk.gov.justice.json.schemas.core.PersonDefendant;
-import uk.gov.justice.json.schemas.core.ProsecutionCase;
-import uk.gov.justice.json.schemas.core.ProsecutionCaseIdentifier;
-import uk.gov.justice.json.schemas.core.ResultPrompt;
-import uk.gov.justice.json.schemas.core.SharedHearing;
-import uk.gov.justice.json.schemas.core.SharedResultLine;
-import uk.gov.justice.json.schemas.core.SharedVariant;
-import uk.gov.justice.json.schemas.core.Title;
+import uk.gov.justice.core.courts.CourtCentre;
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DelegatedPowers;
+import uk.gov.justice.core.courts.Gender;
+import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.HearingType;
+import uk.gov.justice.core.courts.InitiationCode;
+import uk.gov.justice.core.courts.JudicialRole;
+import uk.gov.justice.core.courts.JudicialRoleType;
+import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.Key;
+import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.Person;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
+import uk.gov.justice.core.courts.ResultPrompt;
+import uk.gov.justice.core.courts.SharedHearing;
+import uk.gov.justice.core.courts.SharedResultLine;
+import uk.gov.justice.core.courts.SharedVariant;
+import uk.gov.justice.core.courts.Title;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.math.BigDecimal;
@@ -214,6 +214,7 @@ public class TestTemplates {
                         .withId(randomUUID())
                         .withOffenceDefinitionId(randomUUID())
                         .withOffenceCode(STRING.next())
+                        .withOffenceTitle(STRING.next())
                         .withWording(STRING.next())
                         .withStartDate(LocalDate.now())
                         .withOrderIndex(65)

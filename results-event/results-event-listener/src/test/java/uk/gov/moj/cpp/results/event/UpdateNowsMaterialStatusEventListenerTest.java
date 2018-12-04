@@ -26,8 +26,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import uk.gov.justice.json.schemas.core.Key;
-import uk.gov.justice.json.schemas.core.SharedVariant;
+import uk.gov.justice.core.courts.Key;
+import uk.gov.justice.core.courts.SharedVariant;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;

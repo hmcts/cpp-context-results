@@ -1,32 +1,38 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/personDefendant.json",
+  "id": "http://justice.gov.uk/core/courts/personDefendant.json",
   "type": "object",
   "properties": {
     "personDetails": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/person.json"
+      "$ref": "http://justice.gov.uk/core/courts/person.json"
     },
     "bailStatus": {
       "description": "The defendant bail status for the given case",
-      "type": "string"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/bailStatus"
     },
     "custodyTimeLimit": {
       "description": "The custody time limit for the given case when the bail status is remanded-in-custody",
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/datePattern"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
     },
     "perceivedBirthYear": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/positiveInteger"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
     },
     "observedEthnicityId": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "observedEthnicityCode": {
       "type": "string"
     },
+	"observedEthnicityDescription": {
+      "type": "string"
+    },
     "selfDefinedEthnicityId": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "selfDefinedEthnicityCode": {
+      "type": "string"
+    },
+	"selfDefinedEthnicityDescription": {
       "type": "string"
     },
     "driverNumber": {
@@ -46,7 +52,7 @@
       }
     },
     "employerOrganisation": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/organisation.json"
+      "$ref": "http://justice.gov.uk/core/courts/organisation.json"
     },
     "employerPayrollReference": {
       "type": "string"

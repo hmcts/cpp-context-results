@@ -1,14 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/notifiedPlea.json",
+  "id": "http://justice.gov.uk/core/courts/notifiedPlea.json",
   "description": "The plea notified by the defendant via online plea",
   "type": "object",
   "properties": {
     "offenceId": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "notifiedPleaDate": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/datePattern"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
     },
     "notifiedPleaValue": {
       "type": "string",

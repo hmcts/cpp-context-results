@@ -1,14 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/resultPrompt.json",
+  "id": "http://justice.gov.uk/core/courts/resultPrompt.json",
   "description": "The court clerk",
   "type": "object",
   "properties": {
 	  "id": {
-		"$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+		"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
 	  },
 	  "resultDefinitionId": {
-		  "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+		  "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
 		},
 	  "isAvailableForCourtExtract": {
 		"description": "Indicates if the result prompt is available to be included in a court extract",

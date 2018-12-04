@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/organisation.json",
+  "id": "http://justice.gov.uk/core/courts/organisation.json",
   "type": "object",
   "properties": {
     "name": {
@@ -14,11 +14,11 @@
     },
     "address": {
       "description": "The organisation address details",
-      "$ref": "http://justice.gov.uk/json/schemas/core/address.json"
+      "$ref": "http://justice.gov.uk/core/courts/address.json"
     },
     "contact": {
       "description": "The organisation contact details",
-      "$ref": "http://justice.gov.uk/json/schemas/core/contactNumber.json"
+      "$ref": "http://justice.gov.uk/core/courts/contactNumber.json"
     }
   },
   "required": [

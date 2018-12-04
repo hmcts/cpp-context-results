@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/offenceFacts.json",
+  "id": "http://justice.gov.uk/core/courts/offenceFacts.json",
   "type": "object",
   "properties": {
     "vehicleRegistration": {

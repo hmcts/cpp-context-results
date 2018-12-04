@@ -1,11 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/judicialRole.json",
+  "id": "http://justice.gov.uk/core/courts/judicialRole.json",
   "type": "object",
   "properties": {
     "judicialId": {
       "description": "The reference data identify for the judicial role.",
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "title": {
       "description": "The judicial role persons title",
@@ -25,7 +25,7 @@
     },
     "judicialRoleType": {
       "description": "The classification of the judicial role",
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/judicialRoleType"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/judicialRoleType"
     },
     "isDeputy": {
       "description": "Indicates if the judiciary acts as a deputy.  This is applicable to circuit and district judges",

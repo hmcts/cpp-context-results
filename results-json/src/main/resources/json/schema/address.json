@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/address.json",
+  "id": "http://justice.gov.uk/core/courts/address.json",
   "description": "The address",
   "type": "object",
   "properties": {
@@ -26,12 +26,11 @@
     },
     "postcode": {
       "description": "The post code",
-      "$ref": "http://justice.gov.uk/json/schemas/core/courtsDefinitions.json#/definitions/ukGovPostCode"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/ukGovPostCode"
     }
   },
   "required": [
-    "address1",
-    "postcode"
+    "address1"
   ],
   "additionalProperties": false
 }

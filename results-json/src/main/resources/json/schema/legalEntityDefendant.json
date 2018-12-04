@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/json/schemas/core/legalEntityDefendant.json",
+  "id": "http://justice.gov.uk/core/courts/legalEntityDefendant.json",
   "type": "object",
   "properties": {
     "organisation": {
-      "$ref": "http://justice.gov.uk/json/schemas/core/organisation.json"
+      "$ref": "http://justice.gov.uk/core/courts/organisation.json"
     }
   },
   "required": [

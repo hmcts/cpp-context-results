@@ -1,12 +1,12 @@
 package uk.gov.moj.cpp.results.query.view.service;
 
 import static java.util.Arrays.asList;
-import uk.gov.justice.json.schemas.core.Defendant;
-import uk.gov.justice.json.schemas.core.PersonDefendant;
-import uk.gov.justice.json.schemas.core.ProsecutionCase;
-import uk.gov.justice.json.schemas.core.SharedHearing;
-import uk.gov.justice.json.schemas.core.SharedResultLine;
-import uk.gov.justice.json.schemas.core.SharedVariant;
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.SharedHearing;
+import uk.gov.justice.core.courts.SharedResultLine;
+import uk.gov.justice.core.courts.SharedVariant;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;

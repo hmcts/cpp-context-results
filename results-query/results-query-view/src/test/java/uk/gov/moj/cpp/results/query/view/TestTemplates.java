@@ -2,15 +2,15 @@ package uk.gov.moj.cpp.results.query.view;
 
 import static java.util.Arrays.asList;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-import uk.gov.justice.json.schemas.core.Defendant;
-import uk.gov.justice.json.schemas.core.HearingDay;
-import uk.gov.justice.json.schemas.core.HearingType;
-import uk.gov.justice.json.schemas.core.Person;
-import uk.gov.justice.json.schemas.core.PersonDefendant;
-import uk.gov.justice.json.schemas.core.ProsecutionCase;
-import uk.gov.justice.json.schemas.core.ProsecutionCaseIdentifier;
-import uk.gov.justice.json.schemas.core.SharedHearing;
-import uk.gov.justice.json.schemas.core.SharedVariant;
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.HearingType;
+import uk.gov.justice.core.courts.Person;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
+import uk.gov.justice.core.courts.SharedHearing;
+import uk.gov.justice.core.courts.SharedVariant;
 import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 
