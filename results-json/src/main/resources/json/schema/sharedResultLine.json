@@ -14,7 +14,7 @@
       "description": "Indicates if the result is a financial result",
       "type": "boolean"
     },
-    "isAvailableForCourtExtract": {
+	"isAvailableForCourtExtract": {
       "description": "Indicates if the result is available to be included in a court extract",
       "type": "boolean"
     },
@@ -68,7 +68,7 @@
     "id",
     "level",
     "label",
-    "courtClerk",
+	"courtClerk",
     "isAvailableForCourtExtract"
   ]
 }

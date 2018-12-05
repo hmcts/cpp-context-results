@@ -12,7 +12,7 @@
       "minItems": 1,
       "items": {
         "$ref": "http://justice.gov.uk/core/courts/referringJudiciary.json"
-      }
+        }
     }
   },
   "required": [

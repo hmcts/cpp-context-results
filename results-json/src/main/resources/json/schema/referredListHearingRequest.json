@@ -16,9 +16,9 @@
     "estimateMinutes": {
       "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
     },
-	"reportingRestrictionReason": {
-		"type": "string"
-	},
+    "reportingRestrictionReason": {
+      "type": "string"
+    },
     "courtCentre": {
       "$ref": "http://justice.gov.uk/core/courts/referredCourtCentre.json#"
     },

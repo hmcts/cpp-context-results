@@ -3,14 +3,14 @@
   "id": "http://justice.gov.uk/core/courts/referringJudiciary.json",
   "type": "object",
   "properties": {
-    "judicialName": {
-      "description": "The judicial role persons name that made the judicial decision to refer to court",
-      "type": "string"
-    },
-    "judicialRoleTypeSJP": {
-      "description": "The classification of the judicial role",
-      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/judicialRoleTypeSJP"
-    }
+     "judicialName": {
+		"description": "The judicial role persons name that made the judicial decision to refer to court",
+		"type": "string"
+	  },
+	  "judicialRoleTypeSJP": {
+		"description": "The classification of the judicial role",
+		"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/judicialRoleTypeSJP"
+	  }
   },
   "required": [
     "judicialName",

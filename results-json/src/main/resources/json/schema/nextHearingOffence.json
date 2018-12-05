@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-04/schema#",
-	"id": "http://justice.gov.uk/core/courts/confirmedOffence.json",
+	"id": "http://justice.gov.uk/core/courts/nextHearingOffence.json",
 	"type": "object",
 	"properties": {
 		"id": {

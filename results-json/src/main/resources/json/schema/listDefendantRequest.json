@@ -3,25 +3,20 @@
   "id": "http://justice.gov.uk/core/courts/listDefendantRequest.json",
   "type": "object",
   "required": [
-    "summonsRequired",
     "referralReason",
     "prosecutionCaseId",
     "defendantOffences"
   ],
   "properties": {
     "referralReason": {
-      "$ref": "http://justice.gov.uk/core/courts/referralReason.json#"
+      "$ref": "http://justice.gov.uk/core/courts/referralReason.json"
     },
     "datesToAvoid": {
       "type": "string"
     },
     "summonsRequired": {
-      "enum": [
-				"FIRST_HEARING",
-				"SJP_REFERRAL",
-				"BREACH",
-				"APPLICATION"
-			  ]
+        "description": "The type of summons required",
+        "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/summonsRequired"
     },
     "hearingLanguageNeeds": {
       "description": "The defendants hearing needs.  Indicates the defendants preference for the hearing to be conducted in non English",

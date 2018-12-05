@@ -31,6 +31,23 @@
     },
     "courtClerk": {
       "$ref": "http://justice.gov.uk/core/courts/delegatedPowers.json"
+    },
+    "ljaDetails": {
+      "$ref": "http://justice.gov.uk/core/courts/ljaDetails.json"
+    },
+    "nowWarrants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "http://justice.gov.uk/core/courts/warrantOrderDetails.json"
+      }
+    },
+    "financialOrders": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "http://justice.gov.uk/core/courts/financialOrderDetails.json"
+      }
     }
   },
   "required": [
@@ -38,6 +55,7 @@
     "sharedResultLines",
     "nows",
     "nowTypes",
-    "courtClerk"
+    "courtClerk",
+    "ljaDetails"
   ]
 }

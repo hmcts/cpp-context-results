@@ -13,7 +13,7 @@
         {
           "caseDocument": {
             "type": "object",
-            "additionalProperties": false,
+			"additionalProperties": false,
             "properties": {
               "prosecutionCaseId": {
                 "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
@@ -23,11 +23,9 @@
               "prosecutionCaseId"
             ]
         },
-
-
           "applicationDocument": {
             "type": "object",
-            "additionalProperties": false,
+			"additionalProperties": false,
             "properties": {
               "applicationId": {
                 "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
@@ -70,7 +68,7 @@
         },
           "nowDocument": {
             "type": "object",
-            "additionalProperties": false,
+			"additionalProperties": false,
             "properties": {
               "defendantId": {
                 "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
@@ -93,7 +91,7 @@
             ]
           }
         },
-      "anyOf": [
+      "oneOf": [
         {
           "required": [
             "caseDocument"

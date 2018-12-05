@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/financialOrderDetails.json",
+  "description": "Specific data items required by Financial Orders",
+  "type": "object",
+  "properties": {
+		"nowId": {
+		  "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+		},
+        "employerOrganisation": {
+		  "$ref": "http://justice.gov.uk/core/courts/organisation.json"
+		},
+		"employerPayrollReference": {
+		  "type": "string"
+		},
+        "sumOfImpositions": {
+          "type": "string"
+        },
+        "accountDivisionCode": {
+          "type": "string"
+        },
+        "accountReference": {
+		  "description": "The response from GOB",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sumOfImpositions",
+        "nowId",
+        "accountDivisionCode"
+      ],
+      "additionalProperties": false
+}

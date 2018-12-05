@@ -7,21 +7,21 @@
 			"type": "array",
 			"minItems": 1,
 			"items": {
-				"$ref": "http://justice.gov.uk/core/courts/referredProsecutionCase.json#"
+				"$ref": "http://justice.gov.uk/core/courts/referredProsecutionCase.json"
 			}
 		},
 		"courtDocuments": {
 			"type": "array",
 			"minItems": 1,
 			"items": {
-				"$ref": "http://justice.gov.uk/core/courts/referredCourtDocument.json#"
+				"$ref": "http://justice.gov.uk/core/courts/referredCourtDocument.json"
 			}
 		},
 		"listHearingRequests": {
 			"type": "array",
 			"minItems": 1,
 			"items": {
-				"$ref": "http://justice.gov.uk/core/courts/referredListHearingRequest.json#"
+				"$ref": "http://justice.gov.uk/core/courts/referredListHearingRequest.json"
 			}
 		}
 	},

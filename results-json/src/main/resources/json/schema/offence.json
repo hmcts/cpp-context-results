@@ -4,11 +4,11 @@
 	"type": "object",
 	"properties": {
 		"id": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
 		},
 		"offenceDefinitionId": {
 			"description": "The identifier of the offence from reference data",
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
 		},
 		"offenceCode": {
 			"type": "string"
@@ -35,13 +35,13 @@
 			"type": "string"
 		},
 		"startDate": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
 		},
 		"endDate": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
 		},
 		"arrestDate": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
 		},
 		"chargeDate": {
 			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
@@ -51,19 +51,19 @@
 			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
 		},
 		"orderIndex": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
 		},
 		"count": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/positiveInteger"
 		},
 		"convictionDate": {
-          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+			"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
 		},
 		"notifiedPlea": {
-          "$ref": "http://justice.gov.uk/core/courts/notifiedPlea.json"
+			"$ref": "http://justice.gov.uk/core/courts/notifiedPlea.json"
 		},
 		"indicatedPlea": {
-          "$ref": "http://justice.gov.uk/core/courts/indicatedPlea.json"
+			"$ref": "http://justice.gov.uk/core/courts/indicatedPlea.json"
 		},
 		"plea": {
 			"$ref": "http://justice.gov.uk/core/courts/plea.json"
@@ -72,7 +72,7 @@
 			"$ref": "http://justice.gov.uk/core/courts/verdict.json"
 		},
 		"offenceFacts": {
-          "$ref": "http://justice.gov.uk/core/courts/offenceFacts.json"
+			"$ref": "http://justice.gov.uk/core/courts/offenceFacts.json"
 		}
 	},
 	"required": [
