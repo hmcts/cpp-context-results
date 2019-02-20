@@ -31,6 +31,14 @@ public class ResultsEventListener {
     @Inject
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
+
+    @Handles("results.pending-material-status-update")
+    public void processPendingMaterialStatusUpdate(final JsonEnvelope envelope) {
+             if (LOGGER.isInfoEnabled()) {
+                 LOGGER.info("pending material no action");
+             }
+    }
+
     @Transactional
     @Handles("results.hearing-results-added")
     public void hearingResultsAdded(final JsonEnvelope event) {

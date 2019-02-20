@@ -23,6 +23,7 @@ import uk.gov.justice.core.courts.SharedHearing;
 import uk.gov.justice.core.courts.SharedResultLine;
 import uk.gov.justice.core.courts.SharedVariant;
 import uk.gov.justice.core.courts.Title;
+import uk.gov.moj.cpp.domains.JudicialRoleTypeEnum;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.math.BigDecimal;
@@ -56,7 +57,7 @@ public class TestTemplates {
                 .withJurisdictionType(JurisdictionType.CROWN)
                 .withJudiciary(Arrays.asList(JudicialRole.judicialRole()
                         .withJudicialId(randomUUID())
-                        .withJudicialRoleType(JudicialRoleType.CIRCUIT_JUDGE)
+                        .withJudicialRoleType(circuitJudge())
                         .build()))
                 .withHearingDays(Arrays.asList(HearingDay.hearingDay()
                         .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 0), ZoneId.of("UTC")))
@@ -92,6 +93,11 @@ public class TestTemplates {
                 .build();
     }
 
+    public static JudicialRoleType circuitJudge() {
+        return JudicialRoleType.judicialRoleType()
+                .withJudicialRoleTypeId(UUID.randomUUID())
+                .withJudiciaryType(JudicialRoleTypeEnum.CIRCUIT_JUDGE.name()).build();
+    }
 
     public static PublicHearingResulted basicShareResultsTemplate() {
 

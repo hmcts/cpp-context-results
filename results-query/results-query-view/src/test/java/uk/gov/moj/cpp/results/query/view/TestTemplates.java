@@ -2,6 +2,8 @@ package uk.gov.moj.cpp.results.query.view;
 
 import static java.util.Arrays.asList;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+
+import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingType;
@@ -43,6 +45,7 @@ public class TestTemplates {
                                 .withSittingDay(ZonedDateTime.now())
                                 .build()
                 ))
+                .withCourtCentre(CourtCentre.courtCentre().withId(UUID.randomUUID()).build())
                 .build();
         final ZonedDateTime sharedTime = ZonedDateTime.now();
         final List<SharedVariant> variants = new ArrayList<>();

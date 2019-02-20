@@ -15,17 +15,20 @@ public class HearingResultSummaryView {
     private final LocalDate hearingDate;
     private final List<String> urns;
     private final DefendantView defendant;
+    private final UUID courtCentreId;
 
     public HearingResultSummaryView(@JsonProperty(value = "hearingId", required = true) final UUID hearingId,
                                     @JsonProperty(value = "hearingType", required = true) final String hearingType,
                                     @JsonProperty(value = "hearingDate", required = true) final LocalDate hearingDate,
                                     @JsonProperty(value = "urns", required = true) final List<String> urns,
-                                    @JsonProperty(value = "defendant", required = true) final DefendantView defendant) {
+                                    @JsonProperty(value = "defendant", required = true) final DefendantView defendant,
+                                    @JsonProperty(value = "courtCentreId", required = true) final UUID courtCentreId) {
         this.hearingId = hearingId;
         this.hearingType = hearingType;
         this.hearingDate = hearingDate;
         this.urns = urns;
         this.defendant = defendant;
+        this.courtCentreId = courtCentreId;
     }
 
     public UUID getHearingId() {
@@ -48,8 +51,12 @@ public class HearingResultSummaryView {
         return defendant;
     }
 
+    public UUID getCourtCentreId() {
+        return courtCentreId;
+    }
+
     public Builder builder() {
-        return new Builder(this.hearingId, this.hearingType, this.hearingDate, this.defendant);
+        return new Builder(this.hearingId, this.hearingType, this.hearingDate, this.defendant, this.courtCentreId);
     }
 
     @Override
@@ -60,6 +67,7 @@ public class HearingResultSummaryView {
                 ", hearingDate='" + hearingDate + '\'' +
                 ", urns='" + urns + '\'' +
                 ", defendant=" + defendant +
+                ", courtCentreId=" + courtCentreId +
                 '}';
     }
 
@@ -69,21 +77,23 @@ public class HearingResultSummaryView {
         private final String hearingType;
         private final LocalDate hearingDate;
         private final DefendantView defendant;
+        private final UUID courtCentreId;
 
         private List<String> urns;
 
         public Builder(final UUID hearingId, final String hearingType, final LocalDate hearingDate,
-                       final DefendantView defendant) {
+                       final DefendantView defendant, final UUID courtCentreId) {
 
             this.hearingId = hearingId;
             this.hearingType = hearingType;
             this.hearingDate = hearingDate;
             this.defendant = defendant;
             this.urns = new ArrayList<>();
+            this.courtCentreId = courtCentreId;
         }
 
         public HearingResultSummaryView build() {
-            return new HearingResultSummaryView(hearingId, hearingType, hearingDate, urns, defendant);
+            return new HearingResultSummaryView(hearingId, hearingType, hearingDate, urns, defendant, courtCentreId);
         }
 
         public Builder urns(final List<String> urns) {
