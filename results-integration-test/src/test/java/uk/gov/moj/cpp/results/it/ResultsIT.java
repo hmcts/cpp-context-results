@@ -169,6 +169,75 @@ public class ResultsIT {
 
     }
 
+    @Test
+    public void outOfOrderJourney() {
+        PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+
+        final SharedHearing hearingIn = shareResultsMessage.getHearing();
+        final UUID defendantId0 =
+                shareResultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
+
+        UUID materialId0 = null;
+        SharedVariant variant0 = null;
+            final String initialStatus0 = "processing";
+            variant0 = shareResultsMessage.getVariants().stream()
+                    .filter(v -> v.getKey().getDefendantId().equals(defendantId0)).findFirst().orElseThrow(
+                            () -> new RuntimeException("invalid test data - no variant for chosen defendant")
+                    );
+            variant0.setStatus(initialStatus0);
+            materialId0 = variant0.getMaterialId();
+        //share results
+
+        final String newStatusValue0 = "generated";
+        makeCommand("results.update-nows-material-status")
+                .ofType("application/vnd.results.update-nows-material-status+json")
+                .withArgs(hearingIn.getId(), materialId0).withPayload(new HashMap<String, String>() {{
+            put("status", newStatusValue0);
+        }}).executeSuccessfully();
+
+        Matcher<HearingResultsAdded> matcherStatus = null;
+
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        hearingResultsHaveBeenShared(shareResultsMessage);
+
+        LocalDate startDate = shareResultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = LocalDate.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        //search summaries
+        HearingResultSummariesView summaries = ResultsStepDefinitions.getSummariesByDate(startDate);
+
+        Function<HearingResultSummariesView, List<HearingResultSummaryView>> resultsFilter =
+                summs -> summs.getResults().stream().filter(sum -> sum.getHearingId().equals(hearingIn.getId()))
+                        .collect(Collectors.toList());
+
+        Matcher<HearingResultSummariesView> summaryCheck = isBean(HearingResultSummariesView.class)
+                .withValue(summs -> resultsFilter.apply(summs).size(),
+                        (int) hearingIn.getProsecutionCases().stream().flatMap(pc -> pc.getDefendants().stream()).count())
+                .with(summs -> resultsFilter.apply(summs),
+                        hasItem(isBean(HearingResultSummaryView.class)
+                                .withValue(HearingResultSummaryView::getHearingId, hearingIn.getId())
+                                .withValue(HearingResultSummaryView::getHearingType, hearingIn.getType().getDescription())
+                        )
+                );
+        assertThat(summaries, summaryCheck);
+
+        //matcher to check details results
+        Matcher<HearingResultsAdded> matcher = isBean(HearingResultsAdded.class)
+                .with(HearingResultsAdded::getVariants, hasItem(isBean(SharedVariant.class)
+                        .withValue(SharedVariant::getMaterialId, materialId0)
+                        .withValue(SharedVariant::getStatus, newStatusValue0)
+                ))
+                .with(HearingResultsAdded::getHearing, isBean(SharedHearing.class)
+                        .withValue(SharedHearing::getId, hearingIn.getId())
+                        .withValue(SharedHearing::getJurisdictionType, hearingIn.getJurisdictionType())
+                        .withValue(SharedHearing::getType, hearingIn.getType())
+                );
+        // check the details from query
+        ResultsStepDefinitions.getHearingDetails(shareResultsMessage.getHearing().getId(), defendantId0, matcher);
+
+    }
+
+
 
     @Test
     public void shouldReplacePreviousHearingResults() throws InterruptedException {

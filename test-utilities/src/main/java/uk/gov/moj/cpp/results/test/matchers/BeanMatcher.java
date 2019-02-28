@@ -7,6 +7,8 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.SelfDescribing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -22,6 +24,7 @@ import java.util.function.Function;
 @SuppressWarnings({"squid:S1166", "squid:S1141", "squid:S00108", "squid:S2221", "squid:S00112", "squid:S2129"})
 public class BeanMatcher<T> extends BaseMatcher<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeanMatcher.class);
     private Class<T> clazz;
     private Error error;
     private String methodName;
@@ -166,7 +169,18 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
         }
 
         if (error == Error.INVALID_ASSERTION) {
-            this.failedAssertion.getMatcher().describeMismatch(this.failedAssertion.getAccessor().apply((T) item), description);
+
+            Object value = "unavailable";
+            try {
+                value = this.failedAssertion.getAccessor().apply((T) item);
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+                value = "unavailable " + ex.toString();
+            }
+
+
+
+            this.failedAssertion.getMatcher().describeMismatch(value, description);
         }
     }
 
@@ -196,7 +210,7 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
                 if (!(args[0] instanceof BeanMatcher || args[0] instanceof ElementAtListMatcher || args[0] instanceof CollectionSearchMatcher)) {
                     description.appendText(" ");
                 }
-                SelfDescribing selfDescribing = (SelfDescribing) args[0];
+                final SelfDescribing selfDescribing = (SelfDescribing) args[0];
                 selfDescribing.describeTo((Description) proxy);
                 return proxy;
             }

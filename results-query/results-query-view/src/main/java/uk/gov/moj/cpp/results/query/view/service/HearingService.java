@@ -1,6 +1,8 @@
 package uk.gov.moj.cpp.results.query.view.service;
 
 import static java.util.Arrays.asList;
+import static java.util.Objects.isNull;
+
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
@@ -25,7 +27,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HearingService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HearingService.class);
 
     @Inject
     private HearingResultedDocumentRepository hearingResultedDocumentRepository;
@@ -46,9 +53,17 @@ public class HearingService {
             lastName = personDefendant.getPersonDetails().getLastName();
         }
         final DefendantView defendantView = new DefendantView(defendant.getId(), firstName, lastName);
+
         final String urn = prosecutionCase.getProsecutionCaseIdentifier().getCaseURN();
+
+        if(isNull(urn)) {
+            final String prosecutionAuthorityReference = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityReference();
+            return new HearingResultSummaryView(hearing.getId(), hearing.getType().getDescription(),
+                    hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(prosecutionAuthorityReference), defendantView, hearing.getCourtCentre().getId());
+        }
+        
         return new HearingResultSummaryView(hearing.getId(), hearing.getType().getDescription(),
-                hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(urn), defendantView);
+                hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(urn), defendantView, hearing.getCourtCentre().getId());
     }
 
     public HearingResultSummariesView findHearingResultSummariesFromDate(final LocalDate fromDate) {
@@ -74,6 +89,9 @@ public class HearingService {
     public HearingResultsAdded findHearingDetailsByHearingIdDefendantId(final UUID hearingId, final UUID defendantId) {
         final HearingResultedDocument document = hearingResultedDocumentRepository.findBy(hearingId);
         if (document == null) {
+            if (LOGGER.isErrorEnabled()) {
+                LOGGER.error(String.format("findHearingDetailsByHearingIdDefendantId cant find hearing %s ", hearingId));
+            }
             return null;
         }
         final JsonObject jsonPayload = stringToJsonObjectConverter.convert(document.getPayload());
@@ -94,6 +112,9 @@ public class HearingService {
             }
         }
         if (foundProsecutionCase == null) {
+            if (LOGGER.isErrorEnabled()) {
+                LOGGER.error(String.format("findHearingDetailsByHearingIdDefendantId cant find defendant %s for hearing %s in payload %s ", defendantId, hearingId, document.getPayload()));
+            }
             return null;
         }
         foundProsecutionCase.setDefendants(asList(foundDefendant));

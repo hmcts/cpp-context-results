@@ -44,6 +44,7 @@ public class HearingResultSummaryViewTest {
     private static final String CASE_URN_2_2 = STRING.next();
     private static final ResultLevel RESULT_LEVEL = randomEnum(ResultLevel.class).next();
     private static final String RESULT_LABEL = STRING.next();
+    private static final UUID courtCentreId = randomUUID();
 
     private static final String RESULT_PROMPT_LABEL = STRING.next();
     private static final String RESULT_PROMPT_VALUE = STRING.next();
@@ -82,7 +83,7 @@ public class HearingResultSummaryViewTest {
 
     private HearingResultSummaryView createHearingResultSummaryView() {
         final DefendantView defendantView = new DefendantView(PERSON_ID_1, FIRST_NAME, LAST_NAME);
-        return new HearingResultSummaryView(HEARING_ID_1, HEARING_TYPE, HEARING_DATE, emptyList(), defendantView);
+        return new HearingResultSummaryView(HEARING_ID_1, HEARING_TYPE, HEARING_DATE, emptyList(), defendantView, courtCentreId);
     }
 
 
