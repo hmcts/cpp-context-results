@@ -9,22 +9,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static uk.gov.justice.services.messaging.JsonObjectMetadata.metadataWithRandomUUID;
-import static uk.gov.justice.services.test.utils.common.reflection.ReflectionUtils.setField;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.util.Arrays;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.core.courts.Key;
 import uk.gov.justice.core.courts.SharedVariant;
@@ -36,9 +23,23 @@ import uk.gov.moj.cpp.results.domain.event.NowsMaterialStatusUpdated;
 import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 import uk.gov.moj.cpp.results.test.TestTemplates;
+
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.util.Arrays;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateNowsMaterialStatusEventListenerTest {
@@ -91,7 +92,7 @@ public class UpdateNowsMaterialStatusEventListenerTest {
         when(hearingResultedDocumentRepository.save(any(HearingResultedDocument.class))).thenReturn(document);
 
         nowsGeneratedEventListener.onNowsMaterialStatusUpdated(envelopeFrom(metadataWithRandomUUID("results.event.nows-material-status-updated"),
-        objectToJsonObjectConverter.convert(nowsMaterialStatusUpdated)));
+                objectToJsonObjectConverter.convert(nowsMaterialStatusUpdated)));
 
         final ArgumentCaptor<HearingResultedDocument> hearingResultedDocumentArgumentCaptor = ArgumentCaptor.forClass(HearingResultedDocument.class);
 
