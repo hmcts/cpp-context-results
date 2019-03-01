@@ -1,29 +1,22 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import uk.gov.justice.core.courts.SharedHearing;
 import uk.gov.justice.core.courts.SharedVariant;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.domain.event.NowsMaterialStatusUpdated;
-import uk.gov.moj.cpp.results.test.TestTemplates;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static uk.gov.justice.services.test.utils.common.reflection.ReflectionUtils.setField;
 
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResultsAggregateTest {
@@ -40,8 +33,7 @@ public class ResultsAggregateTest {
             .setHearing(SharedHearing.sharedHearing()
                     .withId(UUID.randomUUID())
                     .build())
-            .setSharedTime(ZonedDateTime.now())
-            ;
+            .setSharedTime(ZonedDateTime.now());
 
     @Test
     public void testStatusUpdateInOrder() {
@@ -78,7 +70,6 @@ public class ResultsAggregateTest {
 
     @Test
     public void testSaveShareResults_shouldRaiseHearingResultsAddedEvent() {
-
 
 
         final String newStatus = "generated";

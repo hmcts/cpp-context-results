@@ -14,8 +14,8 @@ fi
 
 declare -rx WILDFLY_DEPLOYMENT_DIR="${VAGRANT_DIR}/deployments"
 declare -rx CONTEXT_NAME=results
-declare -rx EVENT_LOG_VERSION=4.4.0
-declare -rx EVENT_BUFFER_VERSION=4.4.0
+declare -rx EVENT_LOG_VERSION=1.1.4
+declare -rx EVENT_BUFFER_VERSION=1.1.4
 
 #fail script on error
 set -e
