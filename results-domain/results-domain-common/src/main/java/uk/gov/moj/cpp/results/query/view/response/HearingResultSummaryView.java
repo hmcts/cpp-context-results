@@ -1,11 +1,11 @@
 package uk.gov.moj.cpp.results.query.view.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SuppressWarnings({"squid:S2384"})
 public class HearingResultSummaryView {

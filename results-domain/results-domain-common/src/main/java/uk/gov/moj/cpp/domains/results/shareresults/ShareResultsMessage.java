@@ -28,7 +28,7 @@ public class ShareResultsMessage {
     }
 
 
-    public static ShareResultsMessage shareResultsMessage(){
+    public static ShareResultsMessage shareResultsMessage() {
         return new ShareResultsMessage();
     }
 }

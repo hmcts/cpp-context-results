@@ -18,13 +18,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.SharedHearing;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 import uk.gov.moj.cpp.results.query.view.response.DefendantView;
@@ -67,14 +67,12 @@ public class HearingServiceTest {
         final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
         PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate();
         final UUID defendantId = publicHearingResulted.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
-                HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime(), publicHearingResulted.getVariants());
+                HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
         List<ProsecutionCase> prosecutionCases = asList(templateProsecutionCase(), templateProsecutionCase(), templateProsecutionCase());
         payload.getHearing().setProsecutionCases(prosecutionCases);
         for (ProsecutionCase prosecutionCase : prosecutionCases) {
             prosecutionCase.setDefendants(asList(templateDefendant(), templateDefendant(), templateDefendant()));
         }
-        long expectedOutputVariantCount = publicHearingResulted.getVariants().stream().filter(v->v.getKey().getDefendantId().equals(defendantId)).count();
-        long expectedSharedResultCount =  publicHearingResulted.getHearing().getSharedResultLines().stream().filter(line->line.getDefendantId().equals(defendantId)).count();
 
         ProsecutionCase targetCase = prosecutionCases.get(1);
         Defendant targetDefendant = targetCase.getDefendants().get(1);
@@ -93,9 +91,6 @@ public class HearingServiceTest {
         assertThat(resultCase.getId(), is(targetCase.getId()));
         Defendant resultDefendant = resultCase.getDefendants().get(0);
         assertThat(resultDefendant.getId(), is(targetDefendant.getId()));
-        assertThat((long) result.getVariants().size(), is(expectedOutputVariantCount));
-        assertThat((long) result.getHearing().getSharedResultLines().size(), is(expectedSharedResultCount));
-
     }
 
     @Test
@@ -120,7 +115,7 @@ public class HearingServiceTest {
     }
 
     private void checkSummary(final HearingResultSummaryView summary, final HearingResultsAdded hearingResultsAdded) {
-        SharedHearing hearing0 = hearingResultsAdded.getHearing();
+        Hearing hearing0 = hearingResultsAdded.getHearing();
         ProsecutionCase prosecutionCase0 = hearing0.getProsecutionCases().get(0);
 
         assertThat(summary.getHearingId(), is(hearing0.getId()));
@@ -135,6 +130,4 @@ public class HearingServiceTest {
         assertThat(defendantSummary.getLastName(), is(defendant.getPersonDefendant().getPersonDetails().getLastName()));
         assertThat(defendantSummary.getPersonId(), is(defendant.getId()));
     }
-
-
 }

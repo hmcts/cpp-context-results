@@ -1,0 +1,185 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2019-07-09T08:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 420,
+        "listingSequence": 0,
+        "sittingDay": "2019-07-10T09:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 420,
+        "listingSequence": 0,
+        "sittingDay": "2019-07-11T09:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 420,
+        "listingSequence": 0,
+        "sittingDay": "2019-07-13T09:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 2,
+        "listingSequence": 0,
+        "sittingDay": "2019-07-14T14:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "c5c8db9d-7e66-4f79-9db9-f748b478512a",
+    "judiciary": [
+      {
+        "firstName": "Christine Lesley",
+        "isBenchChairman": true,
+        "isDeputy": true,
+        "judicialId": "0fc170ec-bb8f-31af-b2c6-de48ea5343e7",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "0fc170ec-bb8f-31af-b2c6-de48ea5343e7",
+          "judiciaryType": "Magistrate"
+        },
+        "lastName": "Marsters",
+        "title": "Mrs"
+      }
+    ],
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "SJP_REFERRAL",
+        "defendants": [
+          {
+            "id": "14f5dca2-57c1-468b-8151-ac92975afcd0",
+            "numberOfPreviousConvictionsCited": 99,
+            "offences": [
+              {
+                "chargeDate": "2018-08-01",
+                "convictionDate": "2019-07-09",
+                "count": 1,
+                "id": "95445436-e387-4721-9fd3-867b9eba29aa",
+                "judicialResults": [
+                  {
+                    "category": "FINAL",
+                    "cjsCode": "1017",
+                    "courtClerk": {
+                      "firstName": "Emma",
+                      "lastName": "Cleaner",
+                      "userId": "676ae4c5-fdd9-469e-a528-dd5b12c90287"
+                    },
+                    "delegatedPowers": {
+                      "firstName": "Emma",
+                      "lastName": "Cleaner",
+                      "userId": "676ae4c5-fdd9-469e-a528-dd5b12c90287"
+                    },
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "judicialResultId": "c9bf4d21-9dd8-4af1-a9b2-2eb00531c9a5",
+                    "label": "Absolute discharge",
+                    "lastSharedDateTime": "2019-07-09",
+                    "orderedDate": "2019-07-09",
+                    "orderedHearingId": "c5c8db9d-7e66-4f79-9db9-f748b478512a",
+                    "rank": 83,
+                    "usergroups": [
+                      "Legal Advisers",
+                      "Court Clerks"
+                    ],
+                    "welshLabel": "Rhyddhad diamod"
+                  }
+                ],
+                "modeOfTrial": "STRAFF",
+                "notifiedPlea": {
+                  "notifiedPleaDate": "2019-07-09",
+                  "notifiedPleaValue": "NO_NOTIFICATION",
+                  "offenceId": "95445436-e387-4721-9fd3-867b9eba29aa"
+                },
+                "offenceCode": "PS90010",
+                "offenceDefinitionId": "7afc6abe-a8df-4149-b362-a04922b0bff5",
+                "offenceLegislation": "Contrary to regulation 7(1)(a) of the Public Service Vehicles (Conduct of Drivers, Inspectors, Conductors and Passengers) Regulations 1990 and section 25 of the Public Passenger Vehicles Act 1981.",
+                "offenceLegislationWelsh": "",
+                "offenceTitle": "Public service vehicle - passenger use altered / defaced   ticket",
+                "offenceTitleWelsh": "",
+                "orderIndex": 1,
+                "plea": {
+                  "offenceId": "95445436-e387-4721-9fd3-867b9eba29aa",
+                  "originatingHearingId": "c5c8db9d-7e66-4f79-9db9-f748b478512a",
+                  "pleaDate": "2019-07-09",
+                  "pleaValue": "NOT_GUILTY"
+                },
+                "startDate": "2018-07-02",
+                "verdict": {
+                  "jurors": {
+                    "numberOfJurors": 12,
+                    "numberOfSplitJurors": 0,
+                    "unanimous": true
+                  },
+                  "lesserOrAlternativeOffence": {
+                    "offenceCode": "95445436-e387-4721-9fd3-867b9eba29aa",
+                    "offenceDefinitionId": "062cedf4-b495-3a6c-9148-cec6bef362ed",
+                    "offenceLegislation": "Section 18 - attempt    wounding with intent Legislation",
+                    "offenceTitle": "Section 18 - attempt    wounding with intent"
+                  },
+                  "offenceId": "95445436-e387-4721-9fd3-867b9eba29aa",
+                  "originatingHearingId": "c5c8db9d-7e66-4f79-9db9-f748b478512a",
+                  "verdictDate": "2019-07-09",
+                  "verdictType": {
+                    "category": "Guilty",
+                    "categoryType": "GUILTY_CONVICTED",
+                    "id": "cbafaa81-85b0-4e08-8d7b-27b85f3bd5d8"
+                  }
+                },
+                "wording": "On 02/07/2018 at Bond street, being a passenger on a vehicle, namely Volvo B9TL 30x, used for the carriage of passengers at separate fares, used a ticket which had been altered or defaced."
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "address": {
+                  "address1": "Flat 1",
+                  "address2": "1 Old Road",
+                  "address3": "London",
+                  "address4": "Merton",
+                  "postcode": "SW99 1AA"
+                },
+                "contact": {
+
+                },
+                "dateOfBirth": "1965-12-27",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+
+                },
+                "firstName": "Fred",
+                "gender": "MALE",
+                "lastName": "Smith",
+                "title": "MR"
+              }
+            },
+            "prosecutionCaseId": "7e508caf-d2fe-4625-b22b-d6dd5f69198b"
+          }
+        ],
+        "id": "7e508caf-d2fe-4625-b22b-d6dd5f69198b",
+        "initiationCode": "J",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "TFL",
+          "prosecutionAuthorityId": "31af405e-7b60-4dd8-a244-c24c2d3fa595",
+          "prosecutionAuthorityReference": "TFL4499951"
+        },
+        "statementOfFacts": "Prosecution Facts"
+      }
+    ],
+    "type": {
+      "description": "Sentence",
+      "id": "c6d76309-c912-436b-a21b-a4c4450bc052"
+    }
+  },
+  "sharedTime": "2019-07-09T09:36:16.554Z"
+}

@@ -15,12 +15,6 @@
             <artifactId>framework-api-domain</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>uk.gov.moj.cpp.results</groupId>
-            <artifactId>results-domain-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
     </dependencies>
 
 

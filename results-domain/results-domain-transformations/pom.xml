@@ -12,6 +12,9 @@
     <modules>
         <module>results-domain-transformations-cleanup-and-archive</module>
         <module>results-domain-transformations-delete-all-events</module>
+        <module>results-domain-transformations-cleanup-and-archive-for-2.5</module>
+        <module>results-domain-transformations-for-2.5</module>
+        <module>results-domain-anonymization-events</module>
     </modules>
 
 

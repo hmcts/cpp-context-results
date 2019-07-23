@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.results.query.view.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DefendantView {
 

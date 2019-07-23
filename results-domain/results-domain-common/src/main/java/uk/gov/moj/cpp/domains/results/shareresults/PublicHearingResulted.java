@@ -1,36 +1,24 @@
 package uk.gov.moj.cpp.domains.results.shareresults;
 
-import uk.gov.justice.core.courts.SharedHearing;
-import uk.gov.justice.core.courts.SharedVariant;
+import uk.gov.justice.core.courts.Hearing;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @SuppressWarnings({"squid:S2384"})
 public class PublicHearingResulted {
-    private SharedHearing hearing;
-    private List<SharedVariant> variants;
+    private Hearing hearing;
     private ZonedDateTime sharedTime;
 
     public static PublicHearingResulted publicHearingResulted() {
         return new PublicHearingResulted();
     }
 
-    public SharedHearing getHearing() {
+    public Hearing getHearing() {
         return hearing;
     }
 
-    public PublicHearingResulted setHearing(SharedHearing hearing) {
+    public PublicHearingResulted setHearing(Hearing hearing) {
         this.hearing = hearing;
-        return this;
-    }
-
-    public List<SharedVariant> getVariants() {
-        return variants;
-    }
-
-    public PublicHearingResulted setVariants(List<SharedVariant> variants) {
-        this.variants = variants;
         return this;
     }
 
