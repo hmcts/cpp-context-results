@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 @SuppressWarnings({"squid:S1155","squid:S1188","squid:S3776"})
@@ -158,14 +159,22 @@ public class CommonHelper {
     public static final String STATEMENT_OF_FACTS_WELSH = "statementOfFactsWelsh";
     public static final String BREACH_PROCEEDINGS_PENDING = "breachProceedingsPending";
     public static final String APPEAL_PROCEEDINGS_PENDING = "appealProceedingsPending";
+    private static final String USER_ID = "userId";
 
     private CommonHelper() {}
 
     public static JsonObject transformDelegatePowers(final JsonObject existingCourtClerk) {
-        return createObjectBuilder()
-                .add("userId", existingCourtClerk.getJsonString("id"))
-                .add("firstName", existingCourtClerk.getJsonString("firstName"))
-                .add("lastName", existingCourtClerk.getJsonString("lastName")).build();
+        final JsonObjectBuilder jsonObjectBuilder = createObjectBuilder()
+                .add(FIRST_NAME, existingCourtClerk.getJsonString(FIRST_NAME))
+                .add(LAST_NAME, existingCourtClerk.getJsonString(LAST_NAME));
+
+        if (existingCourtClerk.containsKey(ID)) {
+            jsonObjectBuilder.add(USER_ID, existingCourtClerk.getJsonString(ID));
+        } else {
+            jsonObjectBuilder.add(USER_ID, existingCourtClerk.getJsonString(USER_ID));
+        }
+
+        return jsonObjectBuilder.build();
     }
 
     public static Map<String, JsonArray> arrangeSharedResultLineByLevel(final JsonArray sharedResultLines) {
