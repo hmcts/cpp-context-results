@@ -212,8 +212,13 @@ public class OffenceHelper {
         if (jsonObject.containsKey(VEHICLE_REGISTRATION)) {
             jsonObjectBuilder.add(VEHICLE_REGISTRATION, jsonObject.getString(VEHICLE_REGISTRATION));
         }
-        if (jsonObject.containsKey(ALCOHOL_READING_AMOUNT)) {
-            jsonObjectBuilder.add(ALCOHOL_READING_AMOUNT, jsonObject.getString(ALCOHOL_READING_AMOUNT));
+        if (jsonObject.containsKey(ALCOHOL_READING_AMOUNT) && jsonObject.getString(ALCOHOL_READING_AMOUNT) != null) {
+            try {
+                int alcoholReadingAmount = Integer.parseInt(jsonObject.getString(ALCOHOL_READING_AMOUNT).replaceAll("\\s+", ""));
+                jsonObjectBuilder.add(ALCOHOL_READING_AMOUNT, alcoholReadingAmount);
+            } catch (NumberFormatException numberFormatException) {
+                jsonObjectBuilder.add(ALCOHOL_READING_AMOUNT, 0);
+            }
         }
         if (jsonObject.containsKey(ALCOHOL_READING_METHOD)) {
             jsonObjectBuilder.add("alcoholReadingMethodCode", jsonObject.getString(ALCOHOL_READING_METHOD));
