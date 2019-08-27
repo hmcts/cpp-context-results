@@ -1,0 +1,11 @@
+subscriptions_descriptor:
+  spec_version: 1.0.0
+  service: results
+  service_component: EVENT_LISTENER
+  subscriptions:
+    - name: results event listener subscription
+      events:
+        - name: results.hearing-results-added
+          schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.hearing-results-added.json
+
+      event_source_name: results.event.source

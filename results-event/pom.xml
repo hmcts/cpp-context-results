@@ -14,4 +14,32 @@
         <module>results-event-processor</module>
     </modules>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>uk.gov.justice.framework-generators</groupId>
+                <artifactId>messaging-adapter-generator-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.moj.cpp.results</groupId>
+                        <artifactId>results-event-sources</artifactId>
+                        <classifier>yaml</classifier>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>uk.gov.justice.framework-generators</groupId>
+                <artifactId>messaging-client-generator-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.moj.cpp.results</groupId>
+                        <artifactId>results-event-sources</artifactId>
+                        <classifier>yaml</classifier>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>

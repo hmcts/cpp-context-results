@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>7.1.4</version>
+        <version>9.0.31-FRAMEWORK-SNAPSHOT</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.results</groupId>
@@ -29,6 +29,7 @@
         <module>results-performance-test</module>
         <module>results-json</module>
         <module>pojo-plugin</module>
+        <module>results-event-sources</module>
     </modules>
 
     <properties>

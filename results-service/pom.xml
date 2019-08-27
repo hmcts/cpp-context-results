@@ -45,6 +45,12 @@
             <version>${project.version}</version>
             <classifier>classes</classifier>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>results-event-sources</artifactId>
+            <version>${project.version}</version>
+            <classifier>yaml</classifier>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -62,8 +62,8 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>generator-plugin</artifactId>
-                <groupId>uk.gov.justice.maven.generator</groupId>
+                <groupId>uk.gov.justice.generators</groupId>
+                <artifactId>pojo-generation-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>pojo-generation</id>
@@ -98,29 +98,6 @@
                             </generatorProperties>
                         </configuration>
                     </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>uk.gov.moj.cpp.results</groupId>
-                        <artifactId>results-json</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>uk.gov.moj.cpp.results</groupId>
-                        <artifactId>pojo-plugin</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>uk.gov.moj.cpp.core.domain</groupId>
-                        <artifactId>criminal-court-public-model</artifactId>
-                        <version>${criminal-court-public-model.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <artifactId>generator-plugin</artifactId>
-                <groupId>uk.gov.justice.maven.generator</groupId>
-                <executions>
                     <execution>
                         <id>event-pojo-generation</id>
                         <configuration>
@@ -159,6 +136,11 @@
                     </execution>
                 </executions>
                 <dependencies>
+                    <dependency>
+                        <groupId>uk.gov.moj.cpp.results</groupId>
+                        <artifactId>results-json</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>uk.gov.moj.cpp.results</groupId>
                         <artifactId>pojo-plugin</artifactId>

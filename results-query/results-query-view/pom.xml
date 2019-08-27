@@ -19,8 +19,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>uk.gov.justice.maven.generator</groupId>
-                <artifactId>generator-plugin</artifactId>
+                <groupId>uk.gov.justice.generators</groupId>
+                <artifactId>pojo-generation-plugin</artifactId>
                 <dependencies>
                     <dependency>
                         <groupId>uk.gov.moj.cpp.usersgroups</groupId>

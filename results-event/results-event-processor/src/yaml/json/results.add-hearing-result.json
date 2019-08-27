@@ -115,16 +115,9 @@
         "offenceId":"ea0ab5f9-20bd-469b-9073-5dd2bd1d07de",
         "level":"CASE",
         "label":"GpY11hIFpu",
-        "lastSharedDateTime":"2018-04-30T18:32:04.238Z",
-        "orderedDate": "2017-12-21",
-        "courtClerk": {
-          "id": "ab746921-d839-4867-bcf9-b41db8ebc852",
-          "firstName": "David",
-          "lastName": "Walliams"
-        },
         "prompts":[
           {
-            "id" : "35b9ee94-b2f5-46fd-9d72-a5beb0dc112d",
+            "id": "35b9ee94-b2f5-46fd-9d72-a5beb0dc112d",
             "label":"5sVuexg4pZ",
             "value":"NIgU8CsKCh"
           }

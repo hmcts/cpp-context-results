@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.it.utils;
 
-import static uk.gov.justice.services.messaging.DefaultJsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
@@ -67,12 +67,13 @@ public class QueueUtil {
             throw new RuntimeException(e);
         }
     }
+
     public static JsonPath retrieveMessage(final MessageConsumer consumer) {
         return retrieveMessage(consumer, RETRIEVE_TIMEOUT);
     }
 
     public static void sendMessage(final MessageProducer messageProducer, final String commandName, final JsonObject payload, final Metadata metadata) {
-        
+
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
         final String json = jsonEnvelope.toDebugStringPrettyPrint();
 
