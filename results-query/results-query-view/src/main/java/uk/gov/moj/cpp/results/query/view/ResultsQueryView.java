@@ -1,12 +1,12 @@
 package uk.gov.moj.cpp.results.query.view;
 
+import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.services.common.converter.LocalDates;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.service.HearingService;
 

@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.results.query.view.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @SuppressWarnings({"squid:S2384"})
 public class HearingResultSummariesView {

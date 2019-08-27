@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>1.0.19-FRAMEWORK-SNAPSHOT</version>
+        <version>1.0.24-FRAMEWORK-SNAPSHOT</version>
     </parent>
     <artifactId>results-command</artifactId>
     <packaging>pom</packaging>

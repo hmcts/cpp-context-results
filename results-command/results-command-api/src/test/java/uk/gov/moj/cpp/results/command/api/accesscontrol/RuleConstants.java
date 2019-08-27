@@ -5,7 +5,7 @@ import java.util.List;
 
 public final class RuleConstants {
 
-    private static final String GROUP_LISTING_OFFICERS = "Listing Officers";
+    private static final String GROUP_LEGAL_ADVISERS = "Legal Advisers";
     private static final String GROUP_COURT_CLERKS = "Court Clerks";
 
     private RuleConstants() {
@@ -13,7 +13,7 @@ public final class RuleConstants {
     }
 
     public static List<String> getUpdateNowsStatusActionGroups() {
-        return Arrays.asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS);
+        return Arrays.asList(GROUP_LEGAL_ADVISERS, GROUP_COURT_CLERKS);
     }
 
 }

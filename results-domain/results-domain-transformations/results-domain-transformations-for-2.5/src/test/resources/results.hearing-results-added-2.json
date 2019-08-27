@@ -1,0 +1,250 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "day": "2019-07-18",
+            "isInAttendance": true
+          }
+        ],
+        "defendantId": "c712e960-ad2e-4315-8916-0373d920ef09"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2019-07-18T09:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "3b6821ba-40ae-4ae9-9da2-a36df8d9e1f6",
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "SJP_REFERRAL",
+        "defendants": [
+          {
+            "id": "c712e960-ad2e-4315-8916-0373d920ef09",
+            "numberOfPreviousConvictionsCited": 2,
+            "offences": [
+              {
+                "chargeDate": "2019-04-13",
+                "convictionDate": "2019-07-18",
+                "count": 1,
+                "id": "d6516f6e-15ed-40f4-81a6-8564710b8bc2",
+                "isAcquitted": false,
+                "modeOfTrial": "SNONIMP",
+                "notifiedPlea": {
+                  "notifiedPleaDate": "2019-06-06",
+                  "notifiedPleaValue": "NO_NOTIFICATION",
+                  "offenceId": "d6516f6e-15ed-40f4-81a6-8564710b8bc2"
+                },
+                "offenceCode": "TR11005",
+                "offenceDefinitionId": "b1d8655a-0871-44cd-b03e-94f4da913589",
+                "offenceLegislation": "Contrary to byelaws 4(1) and 23 of the Transport for London Railway Byelaws made under paragraph 26 of Schedule 11 to the Greater London Authority Act 1999 and confirmed under section 67 of the Transport Act 1962.",
+                "offenceLegislationWelsh": "",
+                "offenceTitle": "Enter / attempt to enter / remain on the Transport for London regional railway network when intoxicated",
+                "offenceTitleWelsh": "",
+                "orderIndex": 1,
+                "startDate": "2019-03-27",
+                "verdict": {
+                  "jurors": {
+                    "numberOfJurors": 12,
+                    "numberOfSplitJurors": 0,
+                    "unanimous": true
+                  },
+                  "lesserOrAlternativeOffence": {
+                    "offenceCode": "TR11005",
+                    "offenceDefinitionId": "b1d8655a-0871-44cd-b03e-94f4da913589",
+                    "offenceLegislation": "Contrary to byelaws 4(1) and 23 of the Transport for London Railway Byelaws made under paragraph 26 of Schedule 11 to the Greater London Authority Act 1999 and confirmed under section 67 of the Transport Act 1962.",
+                    "offenceTitle": "Enter / attempt to enter / remain on the Transport for London regional railway network when intoxicated"
+                  },
+                  "offenceId": "d6516f6e-15ed-40f4-81a6-8564710b8bc2",
+                  "originatingHearingId": "3b6821ba-40ae-4ae9-9da2-a36df8d9e1f6",
+                  "verdictDate": "2019-07-18",
+                  "verdictType": {
+                    "category": "Guilty",
+                    "categoryType": "GUILTY_BY_JURY_CONVICTED",
+                    "verdictTypeId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                  }
+                },
+                "wording": "On 02/07/2015 At threadneedle street EC2 Being a passenger on a Public service Vehicle operated on behalf of London Bus Services Limited being used for the carriage of passengers at separate fares where the vehicle was being operated by a Driver without a Conductor did not as directed by the Driver an Inspector or a Notice displayed on the vehicle pay the fare for the journey in accordance with the direction "
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "address": {
+                  "address1": "Flat 1, Armageddon House",
+                  "address2": "13 Old Road",
+                  "address3": "Giggleswick",
+                  "address4": "Merton",
+                  "postcode": "CR0 1XG"
+                },
+                "contact": {},
+                "dateOfBirth": "1973-05-26",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "TestPaybydate",
+                "gender": "MALE",
+                "lastName": "Shackley",
+                "title": "MR"
+              }
+            },
+            "prosecutionCaseId": "387c10e8-8b89-415e-aa96-0a67578768e4"
+          }
+        ],
+        "id": "387c10e8-8b89-415e-aa96-0a67578768e4",
+        "initiationCode": "J",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "TFL",
+          "prosecutionAuthorityId": "31af405e-7b60-4dd8-a244-c24c2d3fa595",
+          "prosecutionAuthorityReference": "TFL8084810"
+        },
+        "statementOfFacts": "An incident took place at GREEN PARK station whereby you were spoken to by a member of London Underground staff regarding your train journey and the associated fare.The facts of this incidents are now being considered and I must advise you that legal proceedings may be initiated against you regarding this matter in accordance with the LU prosecution policy"
+      }
+    ],
+    "sharedResultLines": [
+      {
+        "courtClerk": {
+          "firstName": "Erica",
+          "lastName": "Wilson",
+          "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+        },
+        "defendantId": "c712e960-ad2e-4315-8916-0373d920ef09",
+        "id": "1eaf9375-af28-479c-a1c1-67ffff3f8a37",
+        "isAvailableForCourtExtract": true,
+        "label": "Compensation",
+        "lastSharedDateTime": "2019-07-18",
+        "level": "OFFENCE",
+        "offenceId": "d6516f6e-15ed-40f4-81a6-8564710b8bc2",
+        "orderedDate": "2019-07-18",
+        "prompts": [
+          {
+            "id": "26985e5b-fe1f-4d7d-a21a-57207c5966e7",
+            "isAvailableForCourtExtract": true,
+            "label": "Amount of compensation",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "1000",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "af921cf4-06e7-4f6b-a4ea-dcb58aab0dbe",
+            "isAvailableForCourtExtract": true,
+            "label": "Major creditor name",
+            "promptSequence": 2,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "Transport for London",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "387c10e8-8b89-415e-aa96-0a67578768e4",
+        "rank": 76,
+        "welshLabel": "Iawndal"
+      },
+      {
+        "courtClerk": {
+          "firstName": "Erica",
+          "lastName": "Wilson",
+          "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+        },
+        "defendantId": "c712e960-ad2e-4315-8916-0373d920ef09",
+        "id": "f2561f2c-4d33-44cf-bf9f-09ea53fb00e7",
+        "isAvailableForCourtExtract": true,
+        "label": "Fine",
+        "lastSharedDateTime": "2019-07-18",
+        "level": "OFFENCE",
+        "offenceId": "d6516f6e-15ed-40f4-81a6-8564710b8bc2",
+        "orderedDate": "2019-07-18",
+        "prompts": [
+          {
+            "id": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+            "isAvailableForCourtExtract": true,
+            "label": "Amount of fine",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "10",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "387c10e8-8b89-415e-aa96-0a67578768e4",
+        "rank": 71,
+        "welshLabel": "Dirwy"
+      },
+      {
+        "courtClerk": {
+          "firstName": "Erica",
+          "lastName": "Wilson",
+          "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+        },
+        "defendantId": "c712e960-ad2e-4315-8916-0373d920ef09",
+        "id": "bcb9ce13-0e80-42ff-94ca-16c19f95c561",
+        "isAvailableForCourtExtract": true,
+        "label": "Pay by date",
+        "lastSharedDateTime": "2019-07-18",
+        "level": "CASE",
+        "offenceId": "d6516f6e-15ed-40f4-81a6-8564710b8bc2",
+        "orderedDate": "2019-07-18",
+        "prompts": [
+          {
+            "id": "ee7d253a-c629-11e8-a355-529269fb1459",
+            "isAvailableForCourtExtract": true,
+            "label": "Date to pay in full by",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "2019-07-23",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "387c10e8-8b89-415e-aa96-0a67578768e4",
+        "rank": 564
+      }
+    ],
+    "type": {
+      "description": "Plea",
+      "id": "511fe0a3-1391-4954-8158-6b10eed0dad9"
+    }
+  },
+  "sharedTime": "2019-07-18T10:22:51.783Z",
+  "variants": [
+    {
+      "description": "Notice of Financial Penalty",
+      "key": {
+        "defendantId": "c712e960-ad2e-4315-8916-0373d920ef09",
+        "hearingId": "3b6821ba-40ae-4ae9-9da2-a36df8d9e1f6",
+        "nowsTypeId": "66cd749a-1d51-11e8-accf-0ed5f89f718b",
+        "usergroups": [
+          "Court Clerks",
+          "Legal Advisers"
+        ]
+      },
+      "materialId": "c982f04c-7406-4427-9710-e2884fb8f022",
+      "status": "BUILDING",
+      "templateName": "NoticeOrderWarrants"
+    }
+  ]
+}

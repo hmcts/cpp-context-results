@@ -5,15 +5,14 @@ import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STR
 
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.HearingType;
 import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
-import uk.gov.justice.core.courts.SharedHearing;
-import uk.gov.justice.core.courts.SharedVariant;
-import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 
 import java.time.ZonedDateTime;
@@ -37,7 +36,7 @@ public class TestTemplates {
     }
 
     public static HearingResultsAdded templateHearingResultsAdded() {
-        final SharedHearing hearing = SharedHearing.sharedHearing()
+        final Hearing hearing = Hearing.hearing()
                 .withProsecutionCases(asList(templateProsecutionCase()))
                 .withType(HearingType.hearingType().withDescription(STRING.next()).build())
                 .withHearingDays(asList(
@@ -48,9 +47,8 @@ public class TestTemplates {
                 .withCourtCentre(CourtCentre.courtCentre().withId(UUID.randomUUID()).build())
                 .build();
         final ZonedDateTime sharedTime = ZonedDateTime.now();
-        final List<SharedVariant> variants = new ArrayList<>();
 
-        HearingResultsAdded result = new HearingResultsAdded(hearing, sharedTime, variants);
+        HearingResultsAdded result = new HearingResultsAdded(hearing, sharedTime);
 
         return result;
     }

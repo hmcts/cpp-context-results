@@ -6,10 +6,10 @@ import uk.gov.moj.cpp.results.command.api.accesscontrol.RuleConstants;
 
 global uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider userAndGroupProvider;
 
-rule "Command - Rule for update-nows-material-status"
+rule "Command - Rule for add hearing result"
   when
     $outcome: Outcome();
-    $action: Action(name == "results.update-nows-material-status");
+    $action: Action(name == "results.add-hearing-result");
     eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, RuleConstants.getUpdateNowsStatusActionGroups()));
   then
     $outcome.setSuccess(true);

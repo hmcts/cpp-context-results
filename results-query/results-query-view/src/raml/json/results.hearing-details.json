@@ -12,11 +12,5 @@
     "clerkOfTheCourtFirstName": "David",
     "clerkOfTheCourtLastName": "Walliams"
   }],
-  "variants":[{
-    "nowsTypeId" : "5a7bbb07-aa18-400d-a2de-56a5103e4ff0",
-    "materialId" : "f79bf106-84e0-4bd9-911a-fc28cd6a8c9c",
-    "description": "Imprisonment Order",
-    "templateName": "SingleTemplate",
-    "status": "GENERATED"
-  }]
+  "sharedTime":"2018-05-03T15:37:48.745Z"
 }

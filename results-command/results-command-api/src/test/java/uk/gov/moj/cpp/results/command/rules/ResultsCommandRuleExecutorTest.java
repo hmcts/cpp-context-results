@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -58,9 +59,7 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     }
 
     public enum ResultsRules {
-
-
-        RESULTS_RULES("results.update-nows-material-status", Arrays.asList("Listing Officers", "Court Clerks"));
+        RESULTS_RULES("results.add-hearing-result", Arrays.asList("Legal Advisers", "Court Clerks"));
 
         private final String actionName;
         private final List<String> allowedUserGroups;

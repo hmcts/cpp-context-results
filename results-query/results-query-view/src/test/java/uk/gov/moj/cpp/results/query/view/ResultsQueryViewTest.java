@@ -1,50 +1,41 @@
 package uk.gov.moj.cpp.results.query.view;
 
-import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
-import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
+
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUIDAndName;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.INTEGER;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultsAdded;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
-import uk.gov.moj.cpp.results.domain.event.HearingResultsAdded;
-//import uk.gov.moj.cpp.results.persist.DefendantRepository;
-//import uk.gov.moj.cpp.results.persist.HearingRepository;
-//import uk.gov.moj.cpp.results.persist.HearingResultRepository;
-//import uk.gov.moj.cpp.results.persist.entity.Hearing;
-//import uk.gov.moj.cpp.results.persist.entity.HearingResult;
-import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
-import uk.gov.moj.cpp.results.query.view.service.HearingService;
-import uk.gov.moj.cpp.results.query.view.service.UserGroupsService;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
+import uk.gov.moj.cpp.results.query.view.service.HearingService;
+import uk.gov.moj.cpp.results.query.view.service.UserGroupsService;
 
 @SuppressWarnings({"CdiInjectionPointsInspection", "unused", "unchecked"})
 @RunWith(MockitoJUnitRunner.class)
@@ -95,27 +86,14 @@ public class ResultsQueryViewTest {
     private static final UUID HEARING_RESULT_ID = randomUUID();
     private static final String GENERATED = "GENERATED";
 
-
     @Spy
     private final Enveloper enveloper = createEnveloper();
-
-//    @Mock
-//    private DefendantRepository defendantRepository;
-
-//    @Mock
-//    private HearingRepository hearingRepository;
-
-//    @Mock
-//    private HearingResultRepository hearingResultRepository;
 
     @Mock
     private HearingService hearingService;
 
     @Mock
     private UserGroupsService userGroupsService;
-
-//    @Mock
-//    private VariantDirectoryRepository variantDirectoryRepository;
 
     @Mock
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -125,10 +103,6 @@ public class ResultsQueryViewTest {
 
     @Test
     public void shouldGetHearingDetails() {
-
-        UUID materialId1 = randomUUID();
-        UUID materialId2 = randomUUID();
-
         final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
                 .add(FIELD_DEFENDANT_ID, DEFENDANT_ID.toString())
                 .add(FIELD_HEARING_ID, HEARING_ID.toString())
@@ -153,5 +127,4 @@ public class ResultsQueryViewTest {
     private HearingResultSummary hearingResultWithDate(final LocalDate date) {
         return new HearingResultSummary(HEARING_ID, PERSON_ID, HEARING_TYPE, date, FIRST_NAME, LAST_NAME);
     }
-
 }

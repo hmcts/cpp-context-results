@@ -3,7 +3,7 @@
     <parent>
         <artifactId>results-parent</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>1.0.19-FRAMEWORK-SNAPSHOT</version>
+        <version>1.0.24-FRAMEWORK-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -18,7 +18,11 @@
                     <execution>
                         <id>schema-catalog-generation</id>
                         <configuration>
-                            <sourceDirectory>src/main/resources/json/schema</sourceDirectory>
+                            <sourceDirectory>${basedir}/src/main/resources/json/schema
+                            </sourceDirectory>
+                            <includes>
+                                <include>**/*.json</include>
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>

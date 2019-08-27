@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository(forEntity = HearingResultedDocument.class)
 public abstract class HearingResultedDocumentRepository extends AbstractEntityRepository<HearingResultedDocument, UUID> {
 
-    @Query(value = "from HearingResultedDocument h where h.startDate <= :fromDate and h.endDate >= :fromDate")
+    @Query(value = "from HearingResultedDocument h where h.endDate >= :fromDate")
     public abstract List<HearingResultedDocument> findByFromDate(@QueryParam("fromDate") final LocalDate fromDate);
 
 }
