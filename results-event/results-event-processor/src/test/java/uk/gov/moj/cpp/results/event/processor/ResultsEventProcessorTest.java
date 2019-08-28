@@ -75,7 +75,7 @@ public class ResultsEventProcessorTest {
 
         assertThat(
                 envelopeArgumentCaptor.getValue(), jsonEnvelope(
-                        metadata().withName("results.add-hearing-result"),
+                        metadata().withName("results.command.add-hearing-result"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString()))))));
 

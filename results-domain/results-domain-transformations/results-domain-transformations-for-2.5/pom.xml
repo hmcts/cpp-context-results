@@ -3,7 +3,7 @@
     <parent>
         <artifactId>results-domain-transformations</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>1.0.25-FRAMEWORK-SNAPSHOT</version>
+        <version>6.0.0-FRAMEWORK-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,15 +46,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>2.2.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-domain-common</artifactId>
-            <version>1.0.25-FRAMEWORK-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

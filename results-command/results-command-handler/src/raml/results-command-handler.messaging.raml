@@ -5,6 +5,6 @@ baseUri: message://command/handler/message/results
 /results.handler.command:
   post:
     body:
-      application/vnd.results.add-hearing-result+json:
-        schema: !include json/schema/results.add-hearing-result.json
-        example: !include json/results.add-hearing-result.json
+      application/vnd.results.command.add-hearing-result+json:
+        schema: !include json/schema/results.command.add-hearing-result.json
+        example: !include json/results.command.add-hearing-result.json

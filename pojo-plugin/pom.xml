@@ -3,7 +3,7 @@
     <parent>
         <artifactId>results-parent</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>1.0.25-FRAMEWORK-SNAPSHOT</version>
+        <version>6.0.0-FRAMEWORK-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,7 +13,7 @@
         <dependency>
             <groupId>uk.gov.justice.generators</groupId>
             <artifactId>pojo-generation-core</artifactId>
-            <version>1.4.2</version>
+            <version>${cpp.jsonschema-pojo-generator.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -29,7 +29,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         this.jsonObjectToObjectConverter=jsonObjectToObjectConverter;
     }
 
-    @Handles("results.add-hearing-result")
+    @Handles("results.command.add-hearing-result")
     public void addHearingResult(final JsonEnvelope envelope) throws EventStreamException {
         final JsonObject payload = envelope.payloadAsJsonObject();
         final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(payload, PublicHearingResulted.class);
