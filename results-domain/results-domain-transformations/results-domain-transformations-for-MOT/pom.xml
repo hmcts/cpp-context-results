@@ -3,7 +3,7 @@
     <parent>
         <artifactId>results-domain-transformations</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>1.0.25-SNAPSHOT</version>
+        <version>1.0.25</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-domain-common</artifactId>
-            <version>1.0.25-SNAPSHOT</version>
+            <version>1.0.25</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
