@@ -1,0 +1,3547 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "hearing",
+    "sharedTime"
+  ],
+  "properties": {
+    "hearing": {
+      "$id": "#/properties/hearing",
+      "type": "object",
+      "title": "The Hearing Schema",
+      "required": [
+        "courtCentre",
+        "hearingDays",
+        "id",
+        "jurisdictionType",
+        "type",
+        "defendantReferralReasons",
+        "hearingLanguage",
+        "judiciary",
+        "prosecutionCases",
+        "reportingRestrictionReason",
+        "hasSharedResults",
+        "hearingCaseNotes",
+        "prosecutionCounsels",
+        "defenceCounsels",
+        "defendantAttendance"
+      ],
+      "properties": {
+        "courtCentre": {
+          "$id": "#/properties/hearing/properties/courtCentre",
+          "type": "object",
+          "title": "The Courtcentre Schema",
+          "required": [
+            "id",
+            "name",
+            "welshName",
+            "roomId",
+            "roomName",
+            "welshRoomName",
+            "address"
+          ],
+          "properties": {
+            "id": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/id",
+              "type": "string",
+              "title": "The Id Schema",
+              "default": "",
+              "examples": [
+                "00000000-0000-0000-0000-000000000000"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "name": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/name",
+              "type": "string",
+              "title": "The Name Schema",
+              "default": "",
+              "examples": [
+                "a"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "welshName": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/welshName",
+              "type": "string",
+              "title": "The Welshname Schema",
+              "default": "",
+              "examples": [
+                "a"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "roomId": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/roomId",
+              "type": "string",
+              "title": "The Roomid Schema",
+              "default": "",
+              "examples": [
+                "00000000-0000-0000-0000-000000000000"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "roomName": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/roomName",
+              "type": "string",
+              "title": "The Roomname Schema",
+              "default": "",
+              "examples": [
+                "a"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "welshRoomName": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/welshRoomName",
+              "type": "string",
+              "title": "The Welshroomname Schema",
+              "default": "",
+              "examples": [
+                "a"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "address": {
+              "$id": "#/properties/hearing/properties/courtCentre/properties/address",
+              "type": "object",
+              "title": "The Address Schema",
+              "required": [
+                "address1",
+                "address2",
+                "address3",
+                "address4",
+                "address5",
+                "postcode"
+              ],
+              "properties": {
+                "address1": {
+                  "$id": "#/properties/hearing/properties/courtCentre/properties/address/properties/address1",
+                  "type": "string",
+                  "title": "The Address1 Schema",
+                  "default": "",
+                  "examples": [
+                    "a"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "address2": {
+                  "$id": "#/properties/hearing/properties/courtCentre/properties/address/properties/address2",
+                  "type": "string",
+                  "title": "The Address2 Schema",
+                  "default": "",
+                  "examples": [
+                    "a"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "address3": {
+                  "$id": "#/properties/hearing/properties/courtCentre/properties/address/properties/address3",
+                  "type": "string",
+                  "title": "The Address3 Schema",
+                  "default": "",
+                  "examples": [
+                    "a"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "address4": {
+                  "$id": "#/properties/hearing/properties/courtCentre/properties/address/properties/address4",
+                  "type": "string",
+                  "title": "The Address4 Schema",
+                  "default": "",
+                  "examples": [
+                    "a"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "address5": {
+                  "$id": "#/properties/hearing/properties/courtCentre/properties/address/properties/address5",
+                  "type": "string",
+                  "title": "The Address5 Schema",
+                  "default": "",
+                  "examples": [
+                    "a"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "postcode": {
+                  "$id": "#/properties/hearing/properties/courtCentre/properties/address/properties/postcode",
+                  "type": "string",
+                  "title": "The Postcode Schema",
+                  "default": "",
+                  "examples": [
+                    "GIR0AA"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              }
+            }
+          }
+        },
+        "hearingDays": {
+          "$id": "#/properties/hearing/properties/hearingDays",
+          "type": "array",
+          "title": "The Hearingdays Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/hearingDays/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "sittingDay",
+              "listingSequence",
+              "listedDurationMinutes"
+            ],
+            "properties": {
+              "sittingDay": {
+                "$id": "#/properties/hearing/properties/hearingDays/items/properties/sittingDay",
+                "type": "string",
+                "title": "The Sittingday Schema",
+                "default": "",
+                "examples": [
+                  "2019-03-04T10:50:46.668Z"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "listingSequence": {
+                "$id": "#/properties/hearing/properties/hearingDays/items/properties/listingSequence",
+                "type": "integer",
+                "title": "The Listingsequence Schema",
+                "default": 0,
+                "examples": [
+                  0
+                ]
+              },
+              "listedDurationMinutes": {
+                "$id": "#/properties/hearing/properties/hearingDays/items/properties/listedDurationMinutes",
+                "type": "integer",
+                "title": "The Listeddurationminutes Schema",
+                "default": 0,
+                "examples": [
+                  0
+                ]
+              }
+            }
+          }
+        },
+        "id": {
+          "$id": "#/properties/hearing/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "265d47b3-4b23-47d0-8262-4cd335d073a7"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "jurisdictionType": {
+          "$id": "#/properties/hearing/properties/jurisdictionType",
+          "type": "string",
+          "title": "The Jurisdictiontype Schema",
+          "default": "",
+          "examples": [
+            "MAGISTRATES"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "type": {
+          "$id": "#/properties/hearing/properties/type",
+          "type": "object",
+          "title": "The Type Schema",
+          "required": [
+            "id",
+            "description"
+          ],
+          "properties": {
+            "id": {
+              "$id": "#/properties/hearing/properties/type/properties/id",
+              "type": "string",
+              "title": "The Id Schema",
+              "default": "",
+              "examples": [
+                "456d47b3-4b23-47d0-8262-4cd335d053a7"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "description": {
+              "$id": "#/properties/hearing/properties/type/properties/description",
+              "type": "string",
+              "title": "The Description Schema",
+              "default": "",
+              "examples": [
+                "a"
+              ],
+              "pattern": "^(.*)$"
+            }
+          }
+        },
+        "defendantReferralReasons": {
+          "$id": "#/properties/hearing/properties/defendantReferralReasons",
+          "type": "array",
+          "title": "The Defendantreferralreasons Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/defendantReferralReasons/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "id",
+              "description",
+              "defendantId"
+            ],
+            "properties": {
+              "id": {
+                "$id": "#/properties/hearing/properties/defendantReferralReasons/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "description": {
+                "$id": "#/properties/hearing/properties/defendantReferralReasons/items/properties/description",
+                "type": "string",
+                "title": "The Description Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "defendantId": {
+                "$id": "#/properties/hearing/properties/defendantReferralReasons/items/properties/defendantId",
+                "type": "string",
+                "title": "The Defendantid Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              }
+            }
+          }
+        },
+        "hearingLanguage": {
+          "$id": "#/properties/hearing/properties/hearingLanguage",
+          "type": "string",
+          "title": "The Hearinglanguage Schema",
+          "default": "",
+          "examples": [
+            "ENGLISH"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "judiciary": {
+          "$id": "#/properties/hearing/properties/judiciary",
+          "type": "array",
+          "title": "The Judiciary Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/judiciary/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "judicialId",
+              "title",
+              "firstName",
+              "middleName",
+              "lastName",
+              "judicialRoleType",
+              "isDeputy",
+              "isBenchChairman"
+            ],
+            "properties": {
+              "judicialId": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/judicialId",
+                "type": "string",
+                "title": "The Judicialid Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "title": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/title",
+                "type": "string",
+                "title": "The Title Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "firstName": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/firstName",
+                "type": "string",
+                "title": "The Firstname Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "middleName": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/middleName",
+                "type": "string",
+                "title": "The Middlename Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "lastName": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/lastName",
+                "type": "string",
+                "title": "The Lastname Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "judicialRoleType": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/judicialRoleType",
+                "type": "object",
+                "title": "The Judicialroletype Schema",
+                "required": [
+                  "judicialRoleTypeId",
+                  "judiciaryType"
+                ],
+                "properties": {
+                  "judicialRoleTypeId": {
+                    "$id": "#/properties/hearing/properties/judiciary/items/properties/judicialRoleType/properties/judicialRoleTypeId",
+                    "type": "string",
+                    "title": "The Judicialroletypeid Schema",
+                    "default": "",
+                    "examples": [
+                      "00000000-0000-0000-0000-000000000000"
+                    ],
+                    "pattern": "^(.*)$"
+                  },
+                  "judiciaryType": {
+                    "$id": "#/properties/hearing/properties/judiciary/items/properties/judicialRoleType/properties/judiciaryType",
+                    "type": "string",
+                    "title": "The Judiciarytype Schema",
+                    "default": "",
+                    "examples": [
+                      "a"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              },
+              "isDeputy": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/isDeputy",
+                "type": "boolean",
+                "title": "The Isdeputy Schema",
+                "default": false,
+                "examples": [
+                  true
+                ]
+              },
+              "isBenchChairman": {
+                "$id": "#/properties/hearing/properties/judiciary/items/properties/isBenchChairman",
+                "type": "boolean",
+                "title": "The Isbenchchairman Schema",
+                "default": false,
+                "examples": [
+                  true
+                ]
+              }
+            }
+          }
+        },
+        "prosecutionCases": {
+          "$id": "#/properties/hearing/properties/prosecutionCases",
+          "type": "array",
+          "title": "The Prosecutioncases Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/prosecutionCases/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "id",
+              "prosecutionCaseIdentifier",
+              "initiationCode",
+              "defendants",
+              "originatingOrganisation",
+              "caseStatus",
+              "statementOfFacts",
+              "statementOfFactsWelsh"
+            ],
+            "properties": {
+              "id": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "prosecutionCaseIdentifier": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/prosecutionCaseIdentifier",
+                "type": "object",
+                "title": "The Prosecutioncaseidentifier Schema",
+                "required": [
+                  "prosecutionAuthorityId",
+                  "prosecutionAuthorityCode",
+                  "caseURN"
+                ],
+                "properties": {
+                  "prosecutionAuthorityId": {
+                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/prosecutionCaseIdentifier/properties/prosecutionAuthorityId",
+                    "type": "string",
+                    "title": "The Prosecutionauthorityid Schema",
+                    "default": "",
+                    "examples": [
+                      "00000000-0000-0000-0000-000000000000"
+                    ],
+                    "pattern": "^(.*)$"
+                  },
+                  "prosecutionAuthorityCode": {
+                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/prosecutionCaseIdentifier/properties/prosecutionAuthorityCode",
+                    "type": "string",
+                    "title": "The Prosecutionauthoritycode Schema",
+                    "default": "",
+                    "examples": [
+                      "a"
+                    ],
+                    "pattern": "^(.*)$"
+                  },
+                  "caseURN": {
+                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/prosecutionCaseIdentifier/properties/caseURN",
+                    "type": "string",
+                    "title": "The Caseurn Schema",
+                    "default": "",
+                    "examples": [
+                      "a"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              },
+              "initiationCode": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/initiationCode",
+                "type": "string",
+                "title": "The Initiationcode Schema",
+                "default": "",
+                "examples": [
+                  "J"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "defendants": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants",
+                "type": "array",
+                "title": "The Defendants Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items",
+                  "type": "object",
+                  "title": "The Items Schema",
+                  "required": [
+                    "id",
+                    "prosecutionCaseId",
+                    "offences",
+                    "numberOfPreviousConvictionsCited",
+                    "prosecutionAuthorityReference",
+                    "witnessStatement",
+                    "witnessStatementWelsh",
+                    "mitigation",
+                    "pncId",
+                    "associatedPersons",
+                    "defenceOrganisation",
+                    "personDefendant",
+                    "legalEntityDefendant",
+                    "judicialResults",
+                    "aliases"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/id",
+                      "type": "string",
+                      "title": "The Id Schema",
+                      "default": "",
+                      "examples": [
+                        "00000000-0000-0000-0000-000000000000"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "prosecutionCaseId": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/prosecutionCaseId",
+                      "type": "string",
+                      "title": "The Prosecutioncaseid Schema",
+                      "default": "",
+                      "examples": [
+                        "00000000-0000-0000-0000-000000000000"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "offences": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences",
+                      "type": "array",
+                      "title": "The Offences Schema",
+                      "items": {
+                        "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "required": [
+                          "id",
+                          "offenceDefinitionId",
+                          "offenceCode",
+                          "offenceTitle",
+                          "wording",
+                          "startDate",
+                          "count",
+                          "endDate",
+                          "arrestDate",
+                          "chargeDate",
+                          "orderIndex",
+                          "wordingWelsh",
+                          "offenceTitleWelsh",
+                          "offenceLegislation",
+                          "offenceLegislationWelsh",
+                          "modeOfTrial",
+                          "dateOfInformation",
+                          "convictionDate",
+                          "notifiedPlea",
+                          "indicatedPlea",
+                          "verdict",
+                          "offenceFacts",
+                          "plea"
+                        ],
+                        "properties": {
+                          "id": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/id",
+                            "type": "string",
+                            "title": "The Id Schema",
+                            "default": "",
+                            "examples": [
+                              "00000000-0000-0000-0000-000000000000"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "offenceDefinitionId": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceDefinitionId",
+                            "type": "string",
+                            "title": "The Offencedefinitionid Schema",
+                            "default": "",
+                            "examples": [
+                              "00000000-0000-0000-0000-000000000000"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "offenceCode": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceCode",
+                            "type": "string",
+                            "title": "The Offencecode Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "offenceTitle": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceTitle",
+                            "type": "string",
+                            "title": "The Offencetitle Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "wording": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/wording",
+                            "type": "string",
+                            "title": "The Wording Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "startDate": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/startDate",
+                            "type": "string",
+                            "title": "The Startdate Schema",
+                            "default": "",
+                            "examples": [
+                              "0000-01-01"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "count": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/count",
+                            "type": "integer",
+                            "title": "The Count Schema",
+                            "default": 0,
+                            "examples": [
+                              0
+                            ]
+                          },
+                          "endDate": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/endDate",
+                            "type": "string",
+                            "title": "The Enddate Schema",
+                            "default": "",
+                            "examples": [
+                              "0000-01-01"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "arrestDate": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/arrestDate",
+                            "type": "string",
+                            "title": "The Arrestdate Schema",
+                            "default": "",
+                            "examples": [
+                              "0000-01-01"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "chargeDate": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/chargeDate",
+                            "type": "string",
+                            "title": "The Chargedate Schema",
+                            "default": "",
+                            "examples": [
+                              "0000-01-01"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "orderIndex": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/orderIndex",
+                            "type": "integer",
+                            "title": "The Orderindex Schema",
+                            "default": 0,
+                            "examples": [
+                              0
+                            ]
+                          },
+                          "wordingWelsh": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/wordingWelsh",
+                            "type": "string",
+                            "title": "The Wordingwelsh Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "offenceTitleWelsh": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceTitleWelsh",
+                            "type": "string",
+                            "title": "The Offencetitlewelsh Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "offenceLegislation": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceLegislation",
+                            "type": "string",
+                            "title": "The Offencelegislation Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "offenceLegislationWelsh": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceLegislationWelsh",
+                            "type": "string",
+                            "title": "The Offencelegislationwelsh Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "modeOfTrial": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/modeOfTrial",
+                            "type": "string",
+                            "title": "The Modeoftrial Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "dateOfInformation": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/dateOfInformation",
+                            "type": "string",
+                            "title": "The Dateofinformation Schema",
+                            "default": "",
+                            "examples": [
+                              "0000-01-01"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "convictionDate": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/convictionDate",
+                            "type": "string",
+                            "title": "The Convictiondate Schema",
+                            "default": "",
+                            "examples": [
+                              "0000-01-01"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "notifiedPlea": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/notifiedPlea",
+                            "type": "object",
+                            "title": "The Notifiedplea Schema",
+                            "required": [
+                              "offenceId",
+                              "notifiedPleaDate",
+                              "notifiedPleaValue"
+                            ],
+                            "properties": {
+                              "offenceId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/notifiedPlea/properties/offenceId",
+                                "type": "string",
+                                "title": "The Offenceid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "notifiedPleaDate": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/notifiedPlea/properties/notifiedPleaDate",
+                                "type": "string",
+                                "title": "The Notifiedpleadate Schema",
+                                "default": "",
+                                "examples": [
+                                  "0000-01-01"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "notifiedPleaValue": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/notifiedPlea/properties/notifiedPleaValue",
+                                "type": "string",
+                                "title": "The Notifiedpleavalue Schema",
+                                "default": "",
+                                "examples": [
+                                  "NOTIFIED_GUILTY"
+                                ],
+                                "pattern": "^(.*)$"
+                              }
+                            }
+                          },
+                          "indicatedPlea": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea",
+                            "type": "object",
+                            "title": "The Indicatedplea Schema",
+                            "required": [
+                              "offenceId",
+                              "indicatedPleaDate",
+                              "indicatedPleaValue",
+                              "source",
+                              "allocationDecision"
+                            ],
+                            "properties": {
+                              "offenceId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/offenceId",
+                                "type": "string",
+                                "title": "The Offenceid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "indicatedPleaDate": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/indicatedPleaDate",
+                                "type": "string",
+                                "title": "The Indicatedpleadate Schema",
+                                "default": "",
+                                "examples": [
+                                  "0000-01-01"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "indicatedPleaValue": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/indicatedPleaValue",
+                                "type": "string",
+                                "title": "The Indicatedpleavalue Schema",
+                                "default": "",
+                                "examples": [
+                                  "INDICATED_GUILTY"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "source": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/source",
+                                "type": "string",
+                                "title": "The Source Schema",
+                                "default": "",
+                                "examples": [
+                                  "ONLINE"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "allocationDecision": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/allocationDecision",
+                                "type": "object",
+                                "title": "The Allocationdecision Schema",
+                                "required": [
+                                  "courtDecision",
+                                  "prosecutionRepresentation",
+                                  "defendantRepresentation",
+                                  "indicationOfSentence"
+                                ],
+                                "properties": {
+                                  "courtDecision": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/allocationDecision/properties/courtDecision",
+                                    "type": "string",
+                                    "title": "The Courtdecision Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "CONSENT_SUMMARY_TRIAL"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "prosecutionRepresentation": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/allocationDecision/properties/prosecutionRepresentation",
+                                    "type": "string",
+                                    "title": "The Prosecutionrepresentation Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "CONSENT_SUMMARY_TRIAL"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "defendantRepresentation": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/allocationDecision/properties/defendantRepresentation",
+                                    "type": "string",
+                                    "title": "The Defendantrepresentation Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "CONSENT_SUMMARY_TRIAL"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "indicationOfSentence": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/indicatedPlea/properties/allocationDecision/properties/indicationOfSentence",
+                                    "type": "string",
+                                    "title": "The Indicationofsentence Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "verdict": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict",
+                            "type": "object",
+                            "title": "The Verdict Schema",
+                            "required": [
+                              "originatingHearingId",
+                              "offenceId",
+                              "verdictDate",
+                              "verdictType",
+                              "jurors",
+                              "lesserOrAlternativeOffence"
+                            ],
+                            "properties": {
+                              "originatingHearingId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/originatingHearingId",
+                                "type": "string",
+                                "title": "The Originatinghearingid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "offenceId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/offenceId",
+                                "type": "string",
+                                "title": "The Offenceid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "verdictDate": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictDate",
+                                "type": "string",
+                                "title": "The Verdictdate Schema",
+                                "default": "",
+                                "examples": [
+                                  "0000-01-01"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "verdictType": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictType",
+                                "type": "object",
+                                "title": "The Verdicttype Schema",
+                                "required": [
+                                  "id",
+                                  "category",
+                                  "categoryType",
+                                  "sequence",
+                                  "description"
+                                ],
+                                "properties": {
+                                  "id": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictType/properties/id",
+                                    "type": "string",
+                                    "title": "The Id Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "00000000-0000-0000-0000-000000000000"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "category": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictType/properties/category",
+                                    "type": "string",
+                                    "title": "The Category Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "categoryType": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictType/properties/categoryType",
+                                    "type": "string",
+                                    "title": "The Categorytype Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "sequence": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictType/properties/sequence",
+                                    "type": "integer",
+                                    "title": "The Sequence Schema",
+                                    "default": 0,
+                                    "examples": [
+                                      0
+                                    ]
+                                  },
+                                  "description": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/verdictType/properties/description",
+                                    "type": "string",
+                                    "title": "The Description Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  }
+                                }
+                              },
+                              "jurors": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/jurors",
+                                "type": "object",
+                                "title": "The Jurors Schema",
+                                "required": [
+                                  "numberOfJurors",
+                                  "numberOfSplitJurors",
+                                  "unanimous"
+                                ],
+                                "properties": {
+                                  "numberOfJurors": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/jurors/properties/numberOfJurors",
+                                    "type": "integer",
+                                    "title": "The Numberofjurors Schema",
+                                    "default": 0,
+                                    "examples": [
+                                      1
+                                    ]
+                                  },
+                                  "numberOfSplitJurors": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/jurors/properties/numberOfSplitJurors",
+                                    "type": "integer",
+                                    "title": "The Numberofsplitjurors Schema",
+                                    "default": 0,
+                                    "examples": [
+                                      1
+                                    ]
+                                  },
+                                  "unanimous": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/jurors/properties/unanimous",
+                                    "type": "boolean",
+                                    "title": "The Unanimous Schema",
+                                    "default": false,
+                                    "examples": [
+                                      true
+                                    ]
+                                  }
+                                }
+                              },
+                              "lesserOrAlternativeOffence": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence",
+                                "type": "object",
+                                "title": "The Lesseroralternativeoffence Schema",
+                                "required": [
+                                  "offenceDefinitionId",
+                                  "offenceCode",
+                                  "offenceTitle",
+                                  "offenceTitleWelsh",
+                                  "offenceLegislation",
+                                  "offenceLegislationWelsh"
+                                ],
+                                "properties": {
+                                  "offenceDefinitionId": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence/properties/offenceDefinitionId",
+                                    "type": "string",
+                                    "title": "The Offencedefinitionid Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "00000000-0000-0000-0000-000000000000"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "offenceCode": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence/properties/offenceCode",
+                                    "type": "string",
+                                    "title": "The Offencecode Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "offenceTitle": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence/properties/offenceTitle",
+                                    "type": "string",
+                                    "title": "The Offencetitle Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "offenceTitleWelsh": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence/properties/offenceTitleWelsh",
+                                    "type": "string",
+                                    "title": "The Offencetitlewelsh Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "offenceLegislation": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence/properties/offenceLegislation",
+                                    "type": "string",
+                                    "title": "The Offencelegislation Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "offenceLegislationWelsh": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/verdict/properties/lesserOrAlternativeOffence/properties/offenceLegislationWelsh",
+                                    "type": "string",
+                                    "title": "The Offencelegislationwelsh Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "offenceFacts": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceFacts",
+                            "type": "object",
+                            "title": "The Offencefacts Schema",
+                            "required": [
+                              "vehicleRegistration",
+                              "alcoholReadingAmount",
+                              "alcoholReadingMethodCode"
+                            ],
+                            "properties": {
+                              "vehicleRegistration": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceFacts/properties/vehicleRegistration",
+                                "type": "string",
+                                "title": "The Vehicleregistration Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "alcoholReadingAmount": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceFacts/properties/alcoholReadingAmount",
+                                "type": "string",
+                                "title": "The Alcoholreadingamount Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "alcoholReadingMethodCode": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/offenceFacts/properties/alcoholReadingMethodCode",
+                                "type": "string",
+                                "title": "The Alcoholreadingmethodcode Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              }
+                            }
+                          },
+                          "plea": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea",
+                            "type": "object",
+                            "title": "The Plea Schema",
+                            "required": [
+                              "originatingHearingId",
+                              "delegatedPowers",
+                              "offenceId",
+                              "pleaDate",
+                              "pleaValue"
+                            ],
+                            "properties": {
+                              "originatingHearingId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/originatingHearingId",
+                                "type": "string",
+                                "title": "The Originatinghearingid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "delegatedPowers": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/delegatedPowers",
+                                "type": "object",
+                                "title": "The Delegatedpowers Schema",
+                                "required": [
+                                  "userId",
+                                  "firstName",
+                                  "lastName"
+                                ],
+                                "properties": {
+                                  "userId": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/delegatedPowers/properties/userId",
+                                    "type": "string",
+                                    "title": "The Userid Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "00000000-0000-0000-0000-000000000000"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "firstName": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/delegatedPowers/properties/firstName",
+                                    "type": "string",
+                                    "title": "The Firstname Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "lastName": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/delegatedPowers/properties/lastName",
+                                    "type": "string",
+                                    "title": "The Lastname Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  }
+                                }
+                              },
+                              "offenceId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/offenceId",
+                                "type": "string",
+                                "title": "The Offenceid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "pleaDate": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/pleaDate",
+                                "type": "string",
+                                "title": "The Pleadate Schema",
+                                "default": "",
+                                "examples": [
+                                  "0000-01-01"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "pleaValue": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/offences/items/properties/plea/properties/pleaValue",
+                                "type": "string",
+                                "title": "The Pleavalue Schema",
+                                "default": "",
+                                "examples": [
+                                  "GUILTY"
+                                ],
+                                "pattern": "^(.*)$"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "numberOfPreviousConvictionsCited": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/numberOfPreviousConvictionsCited",
+                      "type": "integer",
+                      "title": "The Numberofpreviousconvictionscited Schema",
+                      "default": 0,
+                      "examples": [
+                        0
+                      ]
+                    },
+                    "prosecutionAuthorityReference": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/prosecutionAuthorityReference",
+                      "type": "string",
+                      "title": "The Prosecutionauthorityreference Schema",
+                      "default": "",
+                      "examples": [
+                        "a"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "witnessStatement": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/witnessStatement",
+                      "type": "string",
+                      "title": "The Witnessstatement Schema",
+                      "default": "",
+                      "examples": [
+                        "a"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "witnessStatementWelsh": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/witnessStatementWelsh",
+                      "type": "string",
+                      "title": "The Witnessstatementwelsh Schema",
+                      "default": "",
+                      "examples": [
+                        "a"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "mitigation": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/mitigation",
+                      "type": "string",
+                      "title": "The Mitigation Schema",
+                      "default": "",
+                      "examples": [
+                        "a"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "pncId": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/pncId",
+                      "type": "string",
+                      "title": "The Pncid Schema",
+                      "default": "",
+                      "examples": [
+                        "a"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "associatedPersons": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons",
+                      "type": "array",
+                      "title": "The Associatedpersons Schema",
+                      "items": {
+                        "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "required": [
+                          "role",
+                          "person"
+                        ],
+                        "properties": {
+                          "role": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/role",
+                            "type": "string",
+                            "title": "The Role Schema",
+                            "default": "",
+                            "examples": [
+                              "a"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "person": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person",
+                            "type": "object",
+                            "title": "The Person Schema",
+                            "required": [
+                              "gender",
+                              "title",
+                              "firstName",
+                              "middleName",
+                              "lastName",
+                              "dateOfBirth",
+                              "nationalityId",
+                              "nationalityCode",
+                              "nationalityDescription",
+                              "additionalNationalityId",
+                              "additionalNationalityCode",
+                              "additionalNationalityDescription",
+                              "disabilityStatus",
+                              "interpreterLanguageNeeds",
+                              "documentationLanguageNeeds",
+                              "nationalInsuranceNumber",
+                              "occupation",
+                              "occupationCode",
+                              "specificRequirements",
+                              "address",
+                              "contact"
+                            ],
+                            "properties": {
+                              "gender": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/gender",
+                                "type": "string",
+                                "title": "The Gender Schema",
+                                "default": "",
+                                "examples": [
+                                  "MALE"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "title": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/title",
+                                "type": "string",
+                                "title": "The Title Schema",
+                                "default": "",
+                                "examples": [
+                                  "MR"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "firstName": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/firstName",
+                                "type": "string",
+                                "title": "The Firstname Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "middleName": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/middleName",
+                                "type": "string",
+                                "title": "The Middlename Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "lastName": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/lastName",
+                                "type": "string",
+                                "title": "The Lastname Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "dateOfBirth": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/dateOfBirth",
+                                "type": "string",
+                                "title": "The Dateofbirth Schema",
+                                "default": "",
+                                "examples": [
+                                  "0000-01-01"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "nationalityId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/nationalityId",
+                                "type": "string",
+                                "title": "The Nationalityid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "nationalityCode": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/nationalityCode",
+                                "type": "string",
+                                "title": "The Nationalitycode Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "nationalityDescription": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/nationalityDescription",
+                                "type": "string",
+                                "title": "The Nationalitydescription Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "additionalNationalityId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/additionalNationalityId",
+                                "type": "string",
+                                "title": "The Additionalnationalityid Schema",
+                                "default": "",
+                                "examples": [
+                                  "00000000-0000-0000-0000-000000000000"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "additionalNationalityCode": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/additionalNationalityCode",
+                                "type": "string",
+                                "title": "The Additionalnationalitycode Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "additionalNationalityDescription": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/additionalNationalityDescription",
+                                "type": "string",
+                                "title": "The Additionalnationalitydescription Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "disabilityStatus": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/disabilityStatus",
+                                "type": "string",
+                                "title": "The Disabilitystatus Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "interpreterLanguageNeeds": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/interpreterLanguageNeeds",
+                                "type": "string",
+                                "title": "The Interpreterlanguageneeds Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "documentationLanguageNeeds": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/documentationLanguageNeeds",
+                                "type": "string",
+                                "title": "The Documentationlanguageneeds Schema",
+                                "default": "",
+                                "examples": [
+                                  "ENGLISH"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "nationalInsuranceNumber": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/nationalInsuranceNumber",
+                                "type": "string",
+                                "title": "The Nationalinsurancenumber Schema",
+                                "default": "",
+                                "examples": [
+                                  "AB000000C"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "occupation": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/occupation",
+                                "type": "string",
+                                "title": "The Occupation Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "occupationCode": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/occupationCode",
+                                "type": "string",
+                                "title": "The Occupationcode Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "specificRequirements": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/specificRequirements",
+                                "type": "string",
+                                "title": "The Specificrequirements Schema",
+                                "default": "",
+                                "examples": [
+                                  "a"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "address": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address",
+                                "type": "object",
+                                "title": "The Address Schema",
+                                "required": [
+                                  "address1",
+                                  "address2",
+                                  "address3",
+                                  "address4",
+                                  "address5",
+                                  "postcode"
+                                ],
+                                "properties": {
+                                  "address1": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address/properties/address1",
+                                    "type": "string",
+                                    "title": "The Address1 Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "address2": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address/properties/address2",
+                                    "type": "string",
+                                    "title": "The Address2 Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "address3": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address/properties/address3",
+                                    "type": "string",
+                                    "title": "The Address3 Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "address4": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address/properties/address4",
+                                    "type": "string",
+                                    "title": "The Address4 Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "address5": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address/properties/address5",
+                                    "type": "string",
+                                    "title": "The Address5 Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "postcode": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/address/properties/postcode",
+                                    "type": "string",
+                                    "title": "The Postcode Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "GIR0AA"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  }
+                                }
+                              },
+                              "contact": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact",
+                                "type": "object",
+                                "title": "The Contact Schema",
+                                "required": [
+                                  "home",
+                                  "work",
+                                  "mobile",
+                                  "primaryEmail",
+                                  "secondaryEmail",
+                                  "fax"
+                                ],
+                                "properties": {
+                                  "home": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact/properties/home",
+                                    "type": "string",
+                                    "title": "The Home Schema",
+                                    "default": "",
+                                    "examples": [
+                                      " "
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "work": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact/properties/work",
+                                    "type": "string",
+                                    "title": "The Work Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "mobile": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact/properties/mobile",
+                                    "type": "string",
+                                    "title": "The Mobile Schema",
+                                    "default": "",
+                                    "examples": [
+                                      " "
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "primaryEmail": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact/properties/primaryEmail",
+                                    "type": "string",
+                                    "title": "The Primaryemail Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "!.!@00.00"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "secondaryEmail": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact/properties/secondaryEmail",
+                                    "type": "string",
+                                    "title": "The Secondaryemail Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "!.!@00.00"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  },
+                                  "fax": {
+                                    "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/associatedPersons/items/properties/person/properties/contact/properties/fax",
+                                    "type": "string",
+                                    "title": "The Fax Schema",
+                                    "default": "",
+                                    "examples": [
+                                      "a"
+                                    ],
+                                    "pattern": "^(.*)$"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "defenceOrganisation": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation",
+                      "type": "object",
+                      "title": "The Defenceorganisation Schema",
+                      "required": [
+                        "name",
+                        "incorporationNumber",
+                        "registeredCharityNumber",
+                        "address",
+                        "contact"
+                      ],
+                      "properties": {
+                        "name": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/name",
+                          "type": "string",
+                          "title": "The Name Schema",
+                          "default": "",
+                          "examples": [
+                            "a"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "incorporationNumber": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/incorporationNumber",
+                          "type": "string",
+                          "title": "The Incorporationnumber Schema",
+                          "default": "",
+                          "examples": [
+                            "a"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "registeredCharityNumber": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/registeredCharityNumber",
+                          "type": "string",
+                          "title": "The Registeredcharitynumber Schema",
+                          "default": "",
+                          "examples": [
+                            "a"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "address": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address",
+                          "type": "object",
+                          "title": "The Address Schema",
+                          "required": [
+                            "address1",
+                            "address2",
+                            "address3",
+                            "address4",
+                            "address5",
+                            "postcode"
+                          ],
+                          "properties": {
+                            "address1": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address/properties/address1",
+                              "type": "string",
+                              "title": "The Address1 Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address2": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address/properties/address2",
+                              "type": "string",
+                              "title": "The Address2 Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address3": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address/properties/address3",
+                              "type": "string",
+                              "title": "The Address3 Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address4": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address/properties/address4",
+                              "type": "string",
+                              "title": "The Address4 Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address5": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address/properties/address5",
+                              "type": "string",
+                              "title": "The Address5 Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "postcode": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/address/properties/postcode",
+                              "type": "string",
+                              "title": "The Postcode Schema",
+                              "default": "",
+                              "examples": [
+                                "GIR0AA"
+                              ],
+                              "pattern": "^(.*)$"
+                            }
+                          }
+                        },
+                        "contact": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact",
+                          "type": "object",
+                          "title": "The Contact Schema",
+                          "required": [
+                            "home",
+                            "work",
+                            "mobile",
+                            "primaryEmail",
+                            "secondaryEmail",
+                            "fax"
+                          ],
+                          "properties": {
+                            "home": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact/properties/home",
+                              "type": "string",
+                              "title": "The Home Schema",
+                              "default": "",
+                              "examples": [
+                                " "
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "work": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact/properties/work",
+                              "type": "string",
+                              "title": "The Work Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "mobile": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact/properties/mobile",
+                              "type": "string",
+                              "title": "The Mobile Schema",
+                              "default": "",
+                              "examples": [
+                                " "
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "primaryEmail": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact/properties/primaryEmail",
+                              "type": "string",
+                              "title": "The Primaryemail Schema",
+                              "default": "",
+                              "examples": [
+                                "!.!@00.00"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "secondaryEmail": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact/properties/secondaryEmail",
+                              "type": "string",
+                              "title": "The Secondaryemail Schema",
+                              "default": "",
+                              "examples": [
+                                "!.!@00.00"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "fax": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/defenceOrganisation/properties/contact/properties/fax",
+                              "type": "string",
+                              "title": "The Fax Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "personDefendant": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant",
+                      "type": "object",
+                      "title": "The Persondefendant Schema",
+                      "required": [
+                        "personDetails",
+                        "bailStatus",
+                        "custodyTimeLimit",
+                        "perceivedBirthYear",
+                        "driverNumber",
+                        "arrestSummonsNumber",
+                        "employerOrganisation",
+                        "employerPayrollReference"
+                      ],
+                      "properties": {
+                        "personDetails": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails",
+                          "type": "object",
+                          "title": "The Persondetails Schema",
+                          "required": [
+                            "gender",
+                            "title",
+                            "firstName",
+                            "middleName",
+                            "lastName",
+                            "dateOfBirth",
+                            "nationalityId",
+                            "nationalityCode",
+                            "nationalityDescription",
+                            "additionalNationalityId",
+                            "additionalNationalityCode",
+                            "additionalNationalityDescription",
+                            "disabilityStatus",
+                            "interpreterLanguageNeeds",
+                            "documentationLanguageNeeds",
+                            "nationalInsuranceNumber",
+                            "occupation",
+                            "occupationCode",
+                            "specificRequirements",
+                            "address",
+                            "contact",
+                            "ethnicity"
+                          ],
+                          "properties": {
+                            "gender": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/gender",
+                              "type": "string",
+                              "title": "The Gender Schema",
+                              "default": "",
+                              "examples": [
+                                "MALE"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "title": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/title",
+                              "type": "string",
+                              "title": "The Title Schema",
+                              "default": "",
+                              "examples": [
+                                "MR"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "firstName": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/firstName",
+                              "type": "string",
+                              "title": "The Firstname Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "middleName": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/middleName",
+                              "type": "string",
+                              "title": "The Middlename Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "lastName": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/lastName",
+                              "type": "string",
+                              "title": "The Lastname Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "dateOfBirth": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/dateOfBirth",
+                              "type": "string",
+                              "title": "The Dateofbirth Schema",
+                              "default": "",
+                              "examples": [
+                                "0000-01-01"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "nationalityId": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/nationalityId",
+                              "type": "string",
+                              "title": "The Nationalityid Schema",
+                              "default": "",
+                              "examples": [
+                                "00000000-0000-0000-0000-000000000000"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "nationalityCode": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/nationalityCode",
+                              "type": "string",
+                              "title": "The Nationalitycode Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "nationalityDescription": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/nationalityDescription",
+                              "type": "string",
+                              "title": "The Nationalitydescription Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "additionalNationalityId": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/additionalNationalityId",
+                              "type": "string",
+                              "title": "The Additionalnationalityid Schema",
+                              "default": "",
+                              "examples": [
+                                "00000000-0000-0000-0000-000000000000"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "additionalNationalityCode": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/additionalNationalityCode",
+                              "type": "string",
+                              "title": "The Additionalnationalitycode Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "additionalNationalityDescription": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/additionalNationalityDescription",
+                              "type": "string",
+                              "title": "The Additionalnationalitydescription Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "disabilityStatus": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/disabilityStatus",
+                              "type": "string",
+                              "title": "The Disabilitystatus Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "interpreterLanguageNeeds": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/interpreterLanguageNeeds",
+                              "type": "string",
+                              "title": "The Interpreterlanguageneeds Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "documentationLanguageNeeds": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/documentationLanguageNeeds",
+                              "type": "string",
+                              "title": "The Documentationlanguageneeds Schema",
+                              "default": "",
+                              "examples": [
+                                "ENGLISH"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "nationalInsuranceNumber": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/nationalInsuranceNumber",
+                              "type": "string",
+                              "title": "The Nationalinsurancenumber Schema",
+                              "default": "",
+                              "examples": [
+                                "AB000000C"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "occupation": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/occupation",
+                              "type": "string",
+                              "title": "The Occupation Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "occupationCode": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/occupationCode",
+                              "type": "string",
+                              "title": "The Occupationcode Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "specificRequirements": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/specificRequirements",
+                              "type": "string",
+                              "title": "The Specificrequirements Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address",
+                              "type": "object",
+                              "title": "The Address Schema",
+                              "required": [
+                                "address1",
+                                "address2",
+                                "address3",
+                                "address4",
+                                "address5",
+                                "postcode"
+                              ],
+                              "properties": {
+                                "address1": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address/properties/address1",
+                                  "type": "string",
+                                  "title": "The Address1 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address2": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address/properties/address2",
+                                  "type": "string",
+                                  "title": "The Address2 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address3": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address/properties/address3",
+                                  "type": "string",
+                                  "title": "The Address3 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address4": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address/properties/address4",
+                                  "type": "string",
+                                  "title": "The Address4 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address5": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address/properties/address5",
+                                  "type": "string",
+                                  "title": "The Address5 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "postcode": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/address/properties/postcode",
+                                  "type": "string",
+                                  "title": "The Postcode Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "GIR0AA"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            },
+                            "contact": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact",
+                              "type": "object",
+                              "title": "The Contact Schema",
+                              "required": [
+                                "home",
+                                "work",
+                                "mobile",
+                                "primaryEmail",
+                                "secondaryEmail",
+                                "fax"
+                              ],
+                              "properties": {
+                                "home": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact/properties/home",
+                                  "type": "string",
+                                  "title": "The Home Schema",
+                                  "default": "",
+                                  "examples": [
+                                    " "
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "work": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact/properties/work",
+                                  "type": "string",
+                                  "title": "The Work Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "mobile": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact/properties/mobile",
+                                  "type": "string",
+                                  "title": "The Mobile Schema",
+                                  "default": "",
+                                  "examples": [
+                                    " "
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "primaryEmail": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact/properties/primaryEmail",
+                                  "type": "string",
+                                  "title": "The Primaryemail Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "!.!@00.00"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "secondaryEmail": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact/properties/secondaryEmail",
+                                  "type": "string",
+                                  "title": "The Secondaryemail Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "!.!@00.00"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "fax": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/contact/properties/fax",
+                                  "type": "string",
+                                  "title": "The Fax Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            },
+                            "ethnicity": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/ethnicity",
+                              "type": "object",
+                              "title": "The Ethnicity Schema",
+                              "required": [
+                                "observedEthnicityId",
+                                "observedEthnicityCode",
+                                "observedEthnicityDescription",
+                                "selfDefinedEthnicityCode",
+                                "selfDefinedEthnicityDescription"
+                              ],
+                              "properties": {
+                                "observedEthnicityId": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/ethnicity/properties/observedEthnicityId",
+                                  "type": "string",
+                                  "title": "The Observedethnicityid Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "00000000-0000-0000-0000-000000000000"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "observedEthnicityCode": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/ethnicity/properties/observedEthnicityCode",
+                                  "type": "string",
+                                  "title": "The Observedethnicitycode Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "observedEthnicityDescription": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/ethnicity/properties/observedEthnicityDescription",
+                                  "type": "string",
+                                  "title": "The Observedethnicitydescription Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "selfDefinedEthnicityCode": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/ethnicity/properties/selfDefinedEthnicityCode",
+                                  "type": "string",
+                                  "title": "The Selfdefinedethnicitycode Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "selfDefinedEthnicityDescription": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/personDetails/properties/ethnicity/properties/selfDefinedEthnicityDescription",
+                                  "type": "string",
+                                  "title": "The Selfdefinedethnicitydescription Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "bailStatus": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/bailStatus",
+                          "type": "string",
+                          "title": "The Bailstatus Schema",
+                          "default": "",
+                          "examples": [
+                            "CONDITIONAL"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "custodyTimeLimit": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/custodyTimeLimit",
+                          "type": "string",
+                          "title": "The Custodytimelimit Schema",
+                          "default": "",
+                          "examples": [
+                            "0000-01-01"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "perceivedBirthYear": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/perceivedBirthYear",
+                          "type": "integer",
+                          "title": "The Perceivedbirthyear Schema",
+                          "default": 0,
+                          "examples": [
+                            0
+                          ]
+                        },
+                        "driverNumber": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/driverNumber",
+                          "type": "string",
+                          "title": "The Drivernumber Schema",
+                          "default": "",
+                          "examples": [
+                            "a"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "arrestSummonsNumber": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/arrestSummonsNumber",
+                          "type": "string",
+                          "title": "The Arrestsummonsnumber Schema",
+                          "default": "",
+                          "examples": [
+                            "a"
+                          ],
+                          "pattern": "^(.*)$"
+                        },
+                        "employerOrganisation": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation",
+                          "type": "object",
+                          "title": "The Employerorganisation Schema",
+                          "required": [
+                            "name",
+                            "incorporationNumber",
+                            "registeredCharityNumber",
+                            "address",
+                            "contact"
+                          ],
+                          "properties": {
+                            "name": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/name",
+                              "type": "string",
+                              "title": "The Name Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "incorporationNumber": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/incorporationNumber",
+                              "type": "string",
+                              "title": "The Incorporationnumber Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "registeredCharityNumber": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/registeredCharityNumber",
+                              "type": "string",
+                              "title": "The Registeredcharitynumber Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address",
+                              "type": "object",
+                              "title": "The Address Schema",
+                              "required": [
+                                "address1",
+                                "address2",
+                                "address3",
+                                "address4",
+                                "address5",
+                                "postcode"
+                              ],
+                              "properties": {
+                                "address1": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address/properties/address1",
+                                  "type": "string",
+                                  "title": "The Address1 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address2": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address/properties/address2",
+                                  "type": "string",
+                                  "title": "The Address2 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address3": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address/properties/address3",
+                                  "type": "string",
+                                  "title": "The Address3 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address4": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address/properties/address4",
+                                  "type": "string",
+                                  "title": "The Address4 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address5": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address/properties/address5",
+                                  "type": "string",
+                                  "title": "The Address5 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "postcode": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/address/properties/postcode",
+                                  "type": "string",
+                                  "title": "The Postcode Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "GIR0AA"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            },
+                            "contact": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact",
+                              "type": "object",
+                              "title": "The Contact Schema",
+                              "required": [
+                                "home",
+                                "work",
+                                "mobile",
+                                "primaryEmail",
+                                "secondaryEmail",
+                                "fax"
+                              ],
+                              "properties": {
+                                "home": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact/properties/home",
+                                  "type": "string",
+                                  "title": "The Home Schema",
+                                  "default": "",
+                                  "examples": [
+                                    " "
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "work": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact/properties/work",
+                                  "type": "string",
+                                  "title": "The Work Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "mobile": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact/properties/mobile",
+                                  "type": "string",
+                                  "title": "The Mobile Schema",
+                                  "default": "",
+                                  "examples": [
+                                    " "
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "primaryEmail": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact/properties/primaryEmail",
+                                  "type": "string",
+                                  "title": "The Primaryemail Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "!.!@00.00"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "secondaryEmail": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact/properties/secondaryEmail",
+                                  "type": "string",
+                                  "title": "The Secondaryemail Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "!.!@00.00"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "fax": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerOrganisation/properties/contact/properties/fax",
+                                  "type": "string",
+                                  "title": "The Fax Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "employerPayrollReference": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/personDefendant/properties/employerPayrollReference",
+                          "type": "string",
+                          "title": "The Employerpayrollreference Schema",
+                          "default": "",
+                          "examples": [
+                            "a"
+                          ],
+                          "pattern": "^(.*)$"
+                        }
+                      }
+                    },
+                    "legalEntityDefendant": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant",
+                      "type": "object",
+                      "title": "The Legalentitydefendant Schema",
+                      "required": [
+                        "organisation"
+                      ],
+                      "properties": {
+                        "organisation": {
+                          "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation",
+                          "type": "object",
+                          "title": "The Organisation Schema",
+                          "required": [
+                            "name",
+                            "incorporationNumber",
+                            "registeredCharityNumber",
+                            "address",
+                            "contact"
+                          ],
+                          "properties": {
+                            "name": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/name",
+                              "type": "string",
+                              "title": "The Name Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "incorporationNumber": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/incorporationNumber",
+                              "type": "string",
+                              "title": "The Incorporationnumber Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "registeredCharityNumber": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/registeredCharityNumber",
+                              "type": "string",
+                              "title": "The Registeredcharitynumber Schema",
+                              "default": "",
+                              "examples": [
+                                "a"
+                              ],
+                              "pattern": "^(.*)$"
+                            },
+                            "address": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address",
+                              "type": "object",
+                              "title": "The Address Schema",
+                              "required": [
+                                "address1",
+                                "address2",
+                                "address3",
+                                "address4",
+                                "address5",
+                                "postcode"
+                              ],
+                              "properties": {
+                                "address1": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address/properties/address1",
+                                  "type": "string",
+                                  "title": "The Address1 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address2": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address/properties/address2",
+                                  "type": "string",
+                                  "title": "The Address2 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address3": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address/properties/address3",
+                                  "type": "string",
+                                  "title": "The Address3 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address4": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address/properties/address4",
+                                  "type": "string",
+                                  "title": "The Address4 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "address5": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address/properties/address5",
+                                  "type": "string",
+                                  "title": "The Address5 Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "postcode": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/address/properties/postcode",
+                                  "type": "string",
+                                  "title": "The Postcode Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "GIR0AA"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            },
+                            "contact": {
+                              "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact",
+                              "type": "object",
+                              "title": "The Contact Schema",
+                              "required": [
+                                "home",
+                                "work",
+                                "mobile",
+                                "primaryEmail",
+                                "secondaryEmail",
+                                "fax"
+                              ],
+                              "properties": {
+                                "home": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact/properties/home",
+                                  "type": "string",
+                                  "title": "The Home Schema",
+                                  "default": "",
+                                  "examples": [
+                                    " "
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "work": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact/properties/work",
+                                  "type": "string",
+                                  "title": "The Work Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "mobile": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact/properties/mobile",
+                                  "type": "string",
+                                  "title": "The Mobile Schema",
+                                  "default": "",
+                                  "examples": [
+                                    " "
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "primaryEmail": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact/properties/primaryEmail",
+                                  "type": "string",
+                                  "title": "The Primaryemail Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "!.!@00.00"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "secondaryEmail": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact/properties/secondaryEmail",
+                                  "type": "string",
+                                  "title": "The Secondaryemail Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "!.!@00.00"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                },
+                                "fax": {
+                                  "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/legalEntityDefendant/properties/organisation/properties/contact/properties/fax",
+                                  "type": "string",
+                                  "title": "The Fax Schema",
+                                  "default": "",
+                                  "examples": [
+                                    "a"
+                                  ],
+                                  "pattern": "^(.*)$"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "judicialResults": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults",
+                      "type": "array",
+                      "title": "The Judicialresults Schema",
+                      "items": {
+                        "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "required": [
+                          "judicialResultId",
+                          "orderedHearingId",
+                          "label",
+                          "isAdjournmentResult",
+                          "isFinancialResult",
+                          "isConvictedResult",
+                          "isAvailableForCourtExtract",
+                          "orderedDate",
+                          "category",
+                          "lastSharedDateTime",
+                          "courtClerk"
+                        ],
+                        "properties": {
+                          "judicialResultId": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/judicialResultId",
+                            "type": "string",
+                            "title": "The Judicialresultid Schema",
+                            "default": "",
+                            "examples": [
+                              "365d47b3-4b23-47d0-8262-4cd335d053a7"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "orderedHearingId": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/orderedHearingId",
+                            "type": "string",
+                            "title": "The Orderedhearingid Schema",
+                            "default": "",
+                            "examples": [
+                              "265d47b3-4b23-47d0-8262-4cd335d073a7"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "label": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/label",
+                            "type": "string",
+                            "title": "The Label Schema",
+                            "default": "",
+                            "examples": [
+                              "GpY11hIFpu"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "isAdjournmentResult": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/isAdjournmentResult",
+                            "type": "boolean",
+                            "title": "The Isadjournmentresult Schema",
+                            "default": false,
+                            "examples": [
+                              false
+                            ]
+                          },
+                          "isFinancialResult": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/isFinancialResult",
+                            "type": "boolean",
+                            "title": "The Isfinancialresult Schema",
+                            "default": false,
+                            "examples": [
+                              false
+                            ]
+                          },
+                          "isConvictedResult": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/isConvictedResult",
+                            "type": "boolean",
+                            "title": "The Isconvictedresult Schema",
+                            "default": false,
+                            "examples": [
+                              false
+                            ]
+                          },
+                          "isAvailableForCourtExtract": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/isAvailableForCourtExtract",
+                            "type": "boolean",
+                            "title": "The Isavailableforcourtextract Schema",
+                            "default": false,
+                            "examples": [
+                              false
+                            ]
+                          },
+                          "orderedDate": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/orderedDate",
+                            "type": "string",
+                            "title": "The Ordereddate Schema",
+                            "default": "",
+                            "examples": [
+                              "2017-12-21"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "category": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/category",
+                            "type": "string",
+                            "title": "The Category Schema",
+                            "default": "",
+                            "examples": [
+                              "FINAL"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "lastSharedDateTime": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/lastSharedDateTime",
+                            "type": "string",
+                            "title": "The Lastshareddatetime Schema",
+                            "default": "",
+                            "examples": [
+                              "2018-04-30T18:32:04.238Z"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "courtClerk": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/courtClerk",
+                            "type": "object",
+                            "title": "The Courtclerk Schema",
+                            "required": [
+                              "userId",
+                              "firstName",
+                              "lastName"
+                            ],
+                            "properties": {
+                              "userId": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/courtClerk/properties/userId",
+                                "type": "string",
+                                "title": "The Userid Schema",
+                                "default": "",
+                                "examples": [
+                                  "ab746921-d839-4867-bcf9-b41db8ebc852"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "firstName": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/courtClerk/properties/firstName",
+                                "type": "string",
+                                "title": "The Firstname Schema",
+                                "default": "",
+                                "examples": [
+                                  "David"
+                                ],
+                                "pattern": "^(.*)$"
+                              },
+                              "lastName": {
+                                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/judicialResults/items/properties/courtClerk/properties/lastName",
+                                "type": "string",
+                                "title": "The Lastname Schema",
+                                "default": "",
+                                "examples": [
+                                  "Walliams"
+                                ],
+                                "pattern": "^(.*)$"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "aliases": {
+                      "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/aliases",
+                      "type": "array",
+                      "title": "The Aliases Schema",
+                      "items": {
+                        "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/aliases/items",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "required": [
+                          "lastName"
+                        ],
+                        "properties": {
+                          "lastName": {
+                            "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/defendants/items/properties/aliases/items/properties/lastName",
+                            "type": "string",
+                            "title": "The Lastname Schema",
+                            "default": "",
+                            "examples": [
+                              "test_alias_1"
+                            ],
+                            "pattern": "^(.*)$"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "originatingOrganisation": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/originatingOrganisation",
+                "type": "string",
+                "title": "The Originatingorganisation Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "caseStatus": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/caseStatus",
+                "type": "string",
+                "title": "The Casestatus Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "statementOfFacts": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/statementOfFacts",
+                "type": "string",
+                "title": "The Statementoffacts Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "statementOfFactsWelsh": {
+                "$id": "#/properties/hearing/properties/prosecutionCases/items/properties/statementOfFactsWelsh",
+                "type": "string",
+                "title": "The Statementoffactswelsh Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              }
+            }
+          }
+        },
+        "reportingRestrictionReason": {
+          "$id": "#/properties/hearing/properties/reportingRestrictionReason",
+          "type": "string",
+          "title": "The Reportingrestrictionreason Schema",
+          "default": "",
+          "examples": [
+            "a"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "hasSharedResults": {
+          "$id": "#/properties/hearing/properties/hasSharedResults",
+          "type": "boolean",
+          "title": "The Hassharedresults Schema",
+          "default": false,
+          "examples": [
+            true
+          ]
+        },
+        "hearingCaseNotes": {
+          "$id": "#/properties/hearing/properties/hearingCaseNotes",
+          "type": "array",
+          "title": "The Hearingcasenotes Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/hearingCaseNotes/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "originatingHearingId",
+              "id",
+              "noteDateTime",
+              "noteType",
+              "note",
+              "courtClerk",
+              "prosecutionCases"
+            ],
+            "properties": {
+              "originatingHearingId": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/originatingHearingId",
+                "type": "string",
+                "title": "The Originatinghearingid Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "id": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "noteDateTime": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/noteDateTime",
+                "type": "string",
+                "title": "The Notedatetime Schema",
+                "default": "",
+                "examples": [
+                  "2019-03-04T10:50:46.668Z"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "noteType": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/noteType",
+                "type": "string",
+                "title": "The Notetype Schema",
+                "default": "",
+                "examples": [
+                  "HMCTS"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "note": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/note",
+                "type": "string",
+                "title": "The Note Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "courtClerk": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/courtClerk",
+                "type": "object",
+                "title": "The Courtclerk Schema",
+                "required": [
+                  "userId",
+                  "firstName",
+                  "lastName"
+                ],
+                "properties": {
+                  "userId": {
+                    "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/courtClerk/properties/userId",
+                    "type": "string",
+                    "title": "The Userid Schema",
+                    "default": "",
+                    "examples": [
+                      "00000000-0000-0000-0000-000000000000"
+                    ],
+                    "pattern": "^(.*)$"
+                  },
+                  "firstName": {
+                    "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/courtClerk/properties/firstName",
+                    "type": "string",
+                    "title": "The Firstname Schema",
+                    "default": "",
+                    "examples": [
+                      "a"
+                    ],
+                    "pattern": "^(.*)$"
+                  },
+                  "lastName": {
+                    "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/courtClerk/properties/lastName",
+                    "type": "string",
+                    "title": "The Lastname Schema",
+                    "default": "",
+                    "examples": [
+                      "a"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              },
+              "prosecutionCases": {
+                "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/prosecutionCases",
+                "type": "array",
+                "title": "The Prosecutioncases Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/hearingCaseNotes/items/properties/prosecutionCases/items",
+                  "type": "string",
+                  "title": "The Items Schema",
+                  "default": "",
+                  "examples": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              }
+            }
+          }
+        },
+        "prosecutionCounsels": {
+          "$id": "#/properties/hearing/properties/prosecutionCounsels",
+          "type": "array",
+          "title": "The Prosecutioncounsels Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/prosecutionCounsels/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "id",
+              "title",
+              "firstName",
+              "middleName",
+              "lastName",
+              "status",
+              "prosecutionCases",
+              "attendanceDays"
+            ],
+            "properties": {
+              "id": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "title": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/title",
+                "type": "string",
+                "title": "The Title Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "firstName": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/firstName",
+                "type": "string",
+                "title": "The Firstname Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "middleName": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/middleName",
+                "type": "string",
+                "title": "The Middlename Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "lastName": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/lastName",
+                "type": "string",
+                "title": "The Lastname Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "status": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/status",
+                "type": "string",
+                "title": "The Status Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "prosecutionCases": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/prosecutionCases",
+                "type": "array",
+                "title": "The Prosecutioncases Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/prosecutionCases/items",
+                  "type": "string",
+                  "title": "The Items Schema",
+                  "default": "",
+                  "examples": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              },
+              "attendanceDays": {
+                "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/attendanceDays",
+                "type": "array",
+                "title": "The Attendancedays Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/prosecutionCounsels/items/properties/attendanceDays/items",
+                  "type": "string",
+                  "title": "The Items Schema",
+                  "default": "",
+                  "examples": [
+                    "0000-01-01"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              }
+            }
+          }
+        },
+        "defenceCounsels": {
+          "$id": "#/properties/hearing/properties/defenceCounsels",
+          "type": "array",
+          "title": "The Defencecounsels Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/defenceCounsels/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "id",
+              "title",
+              "firstName",
+              "middleName",
+              "lastName",
+              "status",
+              "defendants",
+              "attendanceDays"
+            ],
+            "properties": {
+              "id": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/id",
+                "type": "string",
+                "title": "The Id Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "title": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/title",
+                "type": "string",
+                "title": "The Title Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "firstName": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/firstName",
+                "type": "string",
+                "title": "The Firstname Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "middleName": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/middleName",
+                "type": "string",
+                "title": "The Middlename Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "lastName": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/lastName",
+                "type": "string",
+                "title": "The Lastname Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "status": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/status",
+                "type": "string",
+                "title": "The Status Schema",
+                "default": "",
+                "examples": [
+                  "a"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "defendants": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/defendants",
+                "type": "array",
+                "title": "The Defendants Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/defendants/items",
+                  "type": "string",
+                  "title": "The Items Schema",
+                  "default": "",
+                  "examples": [
+                    "00000000-0000-0000-0000-000000000000"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              },
+              "attendanceDays": {
+                "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/attendanceDays",
+                "type": "array",
+                "title": "The Attendancedays Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/defenceCounsels/items/properties/attendanceDays/items",
+                  "type": "string",
+                  "title": "The Items Schema",
+                  "default": "",
+                  "examples": [
+                    "0000-01-01"
+                  ],
+                  "pattern": "^(.*)$"
+                }
+              }
+            }
+          }
+        },
+        "defendantAttendance": {
+          "$id": "#/properties/hearing/properties/defendantAttendance",
+          "type": "array",
+          "title": "The Defendantattendance Schema",
+          "items": {
+            "$id": "#/properties/hearing/properties/defendantAttendance/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "defendantId",
+              "attendanceDays"
+            ],
+            "properties": {
+              "defendantId": {
+                "$id": "#/properties/hearing/properties/defendantAttendance/items/properties/defendantId",
+                "type": "string",
+                "title": "The Defendantid Schema",
+                "default": "",
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "attendanceDays": {
+                "$id": "#/properties/hearing/properties/defendantAttendance/items/properties/attendanceDays",
+                "type": "array",
+                "title": "The Attendancedays Schema",
+                "items": {
+                  "$id": "#/properties/hearing/properties/defendantAttendance/items/properties/attendanceDays/items",
+                  "type": "object",
+                  "title": "The Items Schema",
+                  "required": [
+                    "day",
+                    "isInAttendance"
+                  ],
+                  "properties": {
+                    "day": {
+                      "$id": "#/properties/hearing/properties/defendantAttendance/items/properties/attendanceDays/items/properties/day",
+                      "type": "string",
+                      "title": "The Day Schema",
+                      "default": "",
+                      "examples": [
+                        "0000-01-01"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "isInAttendance": {
+                      "$id": "#/properties/hearing/properties/defendantAttendance/items/properties/attendanceDays/items/properties/isInAttendance",
+                      "type": "boolean",
+                      "title": "The Isinattendance Schema",
+                      "default": false,
+                      "examples": [
+                        true
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sharedTime": {
+      "$id": "#/properties/sharedTime",
+      "type": "string",
+      "title": "The Sharedtime Schema",
+      "default": "",
+      "examples": [
+        "2019-03-04T10:50:46.668Z"
+      ],
+      "pattern": "^(.*)$"
+    }
+  }
+}

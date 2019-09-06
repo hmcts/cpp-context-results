@@ -20,8 +20,6 @@ import static uk.gov.moj.cpp.results.domain.transformation.util.CommonHelper.RAN
 import static uk.gov.moj.cpp.results.domain.transformation.util.CommonHelper.USERGROUPS;
 import static uk.gov.moj.cpp.results.domain.transformation.util.CommonHelper.WELSH_LABEL;
 import static uk.gov.moj.cpp.results.domain.transformation.util.CommonHelper.transformDelegatePowers;
-import static uk.gov.moj.cpp.results.domain.transformation.util.OffenceHelper.transformOffences;
-import static uk.gov.moj.cpp.results.domain.transformation.util.PersonHelper.transformPerson;
 
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;

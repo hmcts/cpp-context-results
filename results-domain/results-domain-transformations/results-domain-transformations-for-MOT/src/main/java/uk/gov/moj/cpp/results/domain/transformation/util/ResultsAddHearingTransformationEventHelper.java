@@ -23,18 +23,18 @@ public class ResultsAddHearingTransformationEventHelper {
 
     public JsonEnvelope buildTransformedPayloadForResults(JsonEnvelope event, String newEvent) {
         final JsonObject payload = event.payloadAsJsonObject();
-        LOGGER.debug("Actual Payload as per 2.4 -> {} ", payload);
+        LOGGER.debug("Actual Payload as per master -> {} ", payload);
 
         final JsonObjectBuilder transformedPayloadObjectBuilder = createObjectBuilder()
                 .add(HEARING, transformHearing(payload.getJsonObject(HEARING)))
                 .add(SHARED_TIME, payload.getJsonString(SHARED_TIME));
 
-        JsonObject transformedObject = transformedPayloadObjectBuilder.build();
-        LOGGER.debug("Transformed Payload as per 2.5 -> {} ", transformedObject);
+        final JsonObject transformedObject = transformedPayloadObjectBuilder.build();
+        LOGGER.debug("Transformed Payload as per mot -> {} ", transformedObject);
 
         return envelopeFrom(metadataBuilder()
-                        .withName(newEvent)
-                        .withId(UUID.fromString(event.metadata().asJsonObject().getString("id"))),
+                .withName(newEvent)
+                .withId(UUID.fromString(event.metadata().asJsonObject().getString("id"))),
                 transformedObject);
     }
 }
