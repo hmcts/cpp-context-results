@@ -120,7 +120,7 @@ function runEventBufferLiquibase() {
     echo "finished running event buffer liquibase"
 }
 
-function runLiquibase {
+function runViewStoreLiquibase {
   #run liquibase for context
   mvn -f ${CONTEXT_NAME}-viewstore/${CONTEXT_NAME}-viewstore-liquibase/pom.xml -Dliquibase.url=jdbc:postgresql://localhost:5432/${CONTEXT_NAME}viewstore -Dliquibase.username=${CONTEXT_NAME} -Dliquibase.password=${CONTEXT_NAME} -Dliquibase.logLevel=info resources:resources liquibase:update
   echo "Finished executing liquibase"
@@ -168,16 +168,21 @@ function buildDeployAndTest {
   deployAndTest ${SKIP_INTEGRATION_TESTS}
 }
 
+function runLiquibase {
+   runEventLogLiquibase
+   runEventLogAggregateSnapshotLiquibase
+   runEventBufferLiquibase
+   runViewStoreLiquibase
+   runSystemLiquibase
+   runEventTrackingLiquibase
+   echo "All liquibase update scripts run"
+}
+
 function deployAndTest {
   deleteWars
   deployWireMock
   startVagrant
-  runEventLogLiquibase
-  runEventLogAggregateSnapshotLiquibase
-  runEventBufferLiquibase
   runLiquibase
-  runSystemLiquibase
-  runEventTrackingLiquibase
   deployWars
   if [[ "skipIntegrationTests" != "${1}" ]]; then
     healthCheck
