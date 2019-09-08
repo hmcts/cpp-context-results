@@ -1,5 +1,5 @@
 event_sources:
-  - name: results.event.source
+  - name: results
     is_default: true
     location:
       jms_uri:  jms:topic:results.event

@@ -8,4 +8,4 @@ subscriptions_descriptor:
         - name: results.hearing-results-added
           schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.hearing-results-added.json
 
-      event_source_name: results.event.source
+      event_source_name: results

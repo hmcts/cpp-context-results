@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.it.framework;
 
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +26,7 @@ public class RunCatchupIT {
 
     private final DatabaseCleaner databaseCleaner = new DatabaseCleaner();
     private final DataSource viewStoreDataSource = new TestJdbcDataSourceProvider().getViewStoreDataSource(CONTEXT_NAME);
-    private final Poller poller = new Poller();
+    private final Poller poller = new Poller(10, 2000l);
 
     private final ViewStoreCleaner viewStoreCleaner = new ViewStoreCleaner();
     private final ViewStoreQueryUtil viewStoreQueryUtil = new ViewStoreQueryUtil(viewStoreDataSource);
@@ -50,32 +49,26 @@ public class RunCatchupIT {
         shareHearingResults(numberOfCommands);
 
         final Optional<Integer> publishedEventCount = poller.pollUntilFound(() -> viewStoreQueryUtil.countEventsProcessed(numberOfCommands));
-
-        if (!publishedEventCount.isPresent()) {
-            fail("Failed to process events");
-        }
-
+        assertThat(publishedEventCount.isPresent(), is(true));
         assertThat(publishedEventCount.get() >= numberOfCommands, is(true));
 
-        final List<UUID> idsFromViewStore = viewStoreQueryUtil.findIdsFromViewStore();
-
-        assertThat(idsFromViewStore.size(), is(numberOfCommands));
+        final Optional<List<UUID>> idsFromViewStore = poller.pollUntilFound(() -> viewStoreQueryUtil.findIdsFromViewStore(numberOfCommands));
+        assertThat(idsFromViewStore.isPresent(), is(true));
+        assertThat(idsFromViewStore.get().size(), is(numberOfCommands));
 
         viewStoreCleaner.cleanViewstoreTables();
         databaseCleaner.cleanStreamStatusTable(CONTEXT_NAME);
 
         systemCommandCaller.callCatchup();
 
-        if (!poller.pollUntilFound(() -> viewStoreQueryUtil.countEventsProcessed(numberOfCommands)).isPresent()) {
-            fail();
-        }
+        assertThat(poller.pollUntilFound(() -> viewStoreQueryUtil.countEventsProcessed(numberOfCommands)).isPresent(), is(true));
 
-        final List<UUID> catchupIdsFromViewStore = viewStoreQueryUtil.findIdsFromViewStore();
+        final Optional<List<UUID>> catchupIdsFromViewStore = poller.pollUntilFound(() -> viewStoreQueryUtil.findIdsFromViewStore(numberOfCommands));
+        assertThat(catchupIdsFromViewStore.isPresent(), is(true));
+        assertThat(catchupIdsFromViewStore.get().size(), is(numberOfCommands));
 
-        assertThat(catchupIdsFromViewStore.size(), is(numberOfCommands));
-
-        for (int i = 0; i < catchupIdsFromViewStore.size(); i++) {
-            assertThat(catchupIdsFromViewStore, hasItem(catchupIdsFromViewStore.get(i)));
+        for (int i = 0; i < catchupIdsFromViewStore.get().size(); i++) {
+            assertThat(catchupIdsFromViewStore.get(), hasItem(idsFromViewStore.get().get(i)));
         }
     }
 }

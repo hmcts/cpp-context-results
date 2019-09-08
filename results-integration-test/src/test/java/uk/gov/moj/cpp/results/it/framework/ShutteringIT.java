@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.it.framework;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.moj.cpp.results.it.framework.ContextNameProvider.CONTEXT_NAME;
@@ -33,7 +32,7 @@ public class ShutteringIT {
     private final DatabaseCleaner databaseCleaner = new DatabaseCleaner();
     private final DataSource viewStoreDataSource = new TestJdbcDataSourceProvider().getViewStoreDataSource(CONTEXT_NAME);
     private final DataSource systemDataSource = new TestJdbcDataSourceProvider().getSystemDataSource(CONTEXT_NAME);
-    private final Poller poller = new Poller();
+    private final Poller poller = new Poller(10, 2000l);
 
     private final ViewStoreCleaner viewStoreCleaner = new ViewStoreCleaner();
     private final ViewStoreQueryUtil viewStoreQueryUtil = new ViewStoreQueryUtil(viewStoreDataSource);
@@ -57,28 +56,21 @@ public class ShutteringIT {
         shareHearingResults(numberOfCommands);
 
         final Optional<Integer> shutteredEvents = poller.pollUntilFound(() -> countEventsShuttered(numberOfCommands));
-
-        if (!shutteredEvents.isPresent()) {
-            fail("Failed to shutter events");
-        }
-
+        assertThat(shutteredEvents.isPresent(), is(true));
         assertThat(shutteredEvents.get() >= numberOfCommands, is(true));
 
         assertThat(viewStoreQueryUtil.countEventsProcessed(numberOfCommands), is(Optional.empty()));
 
-        final List<UUID> idsFromViewStore = viewStoreQueryUtil.findIdsFromViewStore();
-
-        assertThat(idsFromViewStore.size(), is(0));
+        final Optional<List<UUID>> idsFromViewStore = poller.pollUntilFound(() -> viewStoreQueryUtil.findIdsFromViewStore(numberOfCommands));
+        assertThat(idsFromViewStore, is(empty()));
 
         systemCommandCaller.callUnshutter();
 
-        if (!poller.pollUntilFound(() -> viewStoreQueryUtil.countEventsProcessed(numberOfCommands)).isPresent()) {
-            fail();
-        }
+        assertThat(poller.pollUntilFound(() -> viewStoreQueryUtil.countEventsProcessed(numberOfCommands)).isPresent(), is(true));
 
-        final List<UUID> catchupIdsFromViewStore = viewStoreQueryUtil.findIdsFromViewStore();
-
-        assertThat(catchupIdsFromViewStore.size(), is(numberOfCommands));
+        final Optional<List<UUID>> catchupIdsFromViewStore = poller.pollUntilFound(() -> viewStoreQueryUtil.findIdsFromViewStore(numberOfCommands));
+        assertThat(catchupIdsFromViewStore.isPresent(), is(true));
+        assertThat(catchupIdsFromViewStore.get().size(), is(numberOfCommands));
     }
 
     private Optional<Integer> countEventsShuttered(final int expectedNumberOfEvents) {
