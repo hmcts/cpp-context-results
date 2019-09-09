@@ -4,7 +4,10 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.jmx.api.state.ApplicationManagementState.SHUTTERED;
+import static uk.gov.justice.services.jmx.api.state.ApplicationManagementState.UNSHUTTERED;
 import static uk.gov.moj.cpp.results.it.framework.ContextNameProvider.CONTEXT_NAME;
+import static uk.gov.moj.cpp.results.it.framework.util.ApplicationStateUtil.getApplicationState;
 import static uk.gov.moj.cpp.results.it.framework.util.EventUtil.shareHearingResults;
 
 import uk.gov.justice.services.jmx.system.command.client.SystemCommandCaller;
@@ -24,6 +27,7 @@ import java.util.UUID;
 
 import javax.sql.DataSource;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,10 +51,17 @@ public class ShutteringIT {
         viewStoreCleaner.cleanViewstoreTables();
     }
 
+    @After
+    public void tearDown() {
+        systemCommandCaller.callUnshutter();
+        assertThat(getApplicationState(UNSHUTTERED), is(of(UNSHUTTERED)));
+    }
+
     @Test
     public void shouldRebuildThePublishedEventTable() throws Exception {
 
         systemCommandCaller.callShutter();
+        assertThat(getApplicationState(SHUTTERED), is(of(SHUTTERED)));
 
         final int numberOfCommands = 10;
         shareHearingResults(numberOfCommands);
@@ -65,6 +76,7 @@ public class ShutteringIT {
         assertThat(idsFromViewStore, is(empty()));
 
         systemCommandCaller.callUnshutter();
+        assertThat(getApplicationState(UNSHUTTERED), is(of(UNSHUTTERED)));
 
         assertThat(poller.pollUntilFound(() -> viewStoreQueryUtil.countEventsProcessed(numberOfCommands)).isPresent(), is(true));
 
