@@ -59,7 +59,7 @@ public class RebuildPublishEventTableIT {
         final int numberOfEvents = 1;
         shareHearingResults(1);
 
-        final Optional<List<PublishedEvent>> publishedEvents = poller.pollUntilFound(() -> findPublishedEvents(numberOfEvents));
+        final Optional<List<PublishedEvent>> publishedEvents = poller.pollUntilFound(() -> findPublishedEvents(numberOfEvents, 0));
 
         if (publishedEvents.isPresent()) {
             final Long eventNumber = publishedEvents.get().get(0).getEventNumber().orElse(-1L);
@@ -71,7 +71,7 @@ public class RebuildPublishEventTableIT {
 
         systemCommandCaller.callRebuild();
 
-        final Optional<List<PublishedEvent>> rebuiltPublishedEvents = poller.pollUntilFound(() -> findPublishedEvents(numberOfEvents));
+        final Optional<List<PublishedEvent>> rebuiltPublishedEvents = poller.pollUntilFound(() -> findPublishedEvents(numberOfEvents, nextEventNumber));
 
         if (rebuiltPublishedEvents.isPresent()) {
             final Long eventNumber = rebuiltPublishedEvents.get().get(0).getEventNumber().orElse(-1L);
@@ -82,7 +82,7 @@ public class RebuildPublishEventTableIT {
         }
     }
 
-    private Optional<List<PublishedEvent>> findPublishedEvents(final int numberOfEvents) {
+    private Optional<List<PublishedEvent>> findPublishedEvents(final int numberOfEvents, final long notEventNumber) {
 
         final List<PublishedEvent> publishedEvents = new ArrayList<>();
 
@@ -111,7 +111,9 @@ public class RebuildPublishEventTableIT {
             throw new RuntimeException("Failed to run " + sql, e);
         }
 
-        if (publishedEvents.size() >= numberOfEvents) {
+        if (publishedEvents.size() >= numberOfEvents &&
+                publishedEvents.get(0).getEventNumber().get() != notEventNumber) {
+
             return of(publishedEvents);
         }
 
