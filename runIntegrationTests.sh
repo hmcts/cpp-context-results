@@ -15,7 +15,7 @@ fi
 declare -rx WILDFLY_DEPLOYMENT_DIR="${VAGRANT_DIR}/deployments"
 declare -rx CONTEXT_NAME=results
 declare -rx FRAMEWORK_VERSION=6.0.14
-declare -rx EVENT_STORE_VERSION=2.0.16
+declare -rx EVENT_STORE_VERSION=2.0.17
 
 #fail script on error
 set -e

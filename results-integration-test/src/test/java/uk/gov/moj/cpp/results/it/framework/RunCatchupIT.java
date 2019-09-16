@@ -1,9 +1,13 @@
 package uk.gov.moj.cpp.results.it.framework;
 
+import static java.util.Optional.of;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.services.jmx.api.state.ApplicationManagementState.SHUTTERED;
+import static uk.gov.justice.services.jmx.api.state.ApplicationManagementState.UNSHUTTERED;
 import static uk.gov.moj.cpp.results.it.framework.ContextNameProvider.CONTEXT_NAME;
+import static uk.gov.moj.cpp.results.it.framework.util.ApplicationStateUtil.getApplicationState;
 import static uk.gov.moj.cpp.results.it.framework.util.EventUtil.shareHearingResults;
 
 import uk.gov.justice.services.jmx.system.command.client.SystemCommandCaller;
@@ -34,6 +38,11 @@ public class RunCatchupIT {
 
     @Before
     public void cleanDatabase() {
+        systemCommandCaller.callShutter();
+        assertThat(getApplicationState(SHUTTERED), is(of(SHUTTERED)));
+
+        systemCommandCaller.callUnshutter();
+        assertThat(getApplicationState(UNSHUTTERED), is(of(UNSHUTTERED)));
 
         databaseCleaner.cleanEventStoreTables(CONTEXT_NAME);
         databaseCleaner.cleanSystemTables(CONTEXT_NAME);
