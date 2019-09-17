@@ -54,7 +54,7 @@
         <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-domain-common</artifactId>
-            <version>1.0.27-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
