@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TRANSFORMATION_JAR=`echo target/results-domain-transformations-for-*-MOT-SNAPSHOT.jar`
+TRANSFORMATION_JAR=`echo target/results-domain-transformations-for-MOT*-SNAPSHOT.jar`
 EVENT_TOOL_VERSION=5.2.1
 EVENT_TOOL_JAR=target/event-tool-${EVENT_TOOL_VERSION}-swarm.jar
 
