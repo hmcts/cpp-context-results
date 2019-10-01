@@ -1,7 +1,11 @@
 package uk.gov.moj.cpp.results.it.utils;
 
-import static uk.gov.justice.services.messaging.DefaultJsonEnvelope.envelopeFrom;
-
+import com.jayway.restassured.path.json.JsonPath;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQTopic;
+import org.apache.activemq.command.ActiveMQTextMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 
@@ -14,12 +18,7 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.json.JsonObject;
 
-import com.jayway.restassured.path.json.JsonPath;
-import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.apache.activemq.artemis.jms.client.ActiveMQTopic;
-import org.apache.activemq.command.ActiveMQTextMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static uk.gov.justice.services.messaging.DefaultJsonEnvelope.envelopeFrom;
 
 public class QueueUtil {
 
@@ -37,6 +36,9 @@ public class QueueUtil {
     private final Topic topic;
 
     public static final QueueUtil publicEvents = new QueueUtil("public.event");
+
+    public static final QueueUtil privateEvents = new QueueUtil("results.event");
+
 
     private QueueUtil(final String topicName) {
         try {
@@ -67,12 +69,13 @@ public class QueueUtil {
             throw new RuntimeException(e);
         }
     }
+
     public static JsonPath retrieveMessage(final MessageConsumer consumer) {
         return retrieveMessage(consumer, RETRIEVE_TIMEOUT);
     }
 
     public static void sendMessage(final MessageProducer messageProducer, final String commandName, final JsonObject payload, final Metadata metadata) {
-        
+
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
         final String json = jsonEnvelope.toDebugStringPrettyPrint();
 

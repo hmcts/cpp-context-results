@@ -2,14 +2,11 @@ package uk.gov.moj.cpp.results.domain.transformation.util;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
-import static uk.gov.justice.tools.eventsourcing.transformation.api.Action.TRANSFORM;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.moj.cpp.results.domain.transformation.ResultsNewTransformerTest;
 
 import java.io.IOException;
 import java.io.InputStream;

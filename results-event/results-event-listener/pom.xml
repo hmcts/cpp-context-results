@@ -43,5 +43,10 @@
             <artifactId>test-utilities</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+            <version>2.2.1</version>
+        </dependency>
     </dependencies>
 </project>

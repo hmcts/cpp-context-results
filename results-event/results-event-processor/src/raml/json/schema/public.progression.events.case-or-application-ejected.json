@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/progression/courts/case-or-application-ejected",
+  "type": "object",
+  "properties": {
+    "hearingIds":{
+      "type": "array",
+      "minItems": 1,
+      "items":{
+        "$ref": "http://cpp.moj.gov.uk/core/domain/json/schema/data-types.json#/definitions/uuid"
+      }
+    },
+    "prosecutionCaseId": {
+      "$ref": "http://cpp.moj.gov.uk/core/domain/json/schema/data-types.json#/definitions/uuid"
+    },
+    "applicationId": {
+      "$ref": "http://cpp.moj.gov.uk/core/domain/json/schema/data-types.json#/definitions/uuid"
+    },
+    "removalReason": {
+      "type": "string"
+    }
+  },
+  "oneOf": [
+    {
+      "required": [
+        "prosecutionCaseId",
+        "removalReason"
+      ]
+    },
+    {
+      "required": [
+        "applicationId",
+        "removalReason"
+      ]
+    }
+  ],
+  "additionalProperties": false
+}

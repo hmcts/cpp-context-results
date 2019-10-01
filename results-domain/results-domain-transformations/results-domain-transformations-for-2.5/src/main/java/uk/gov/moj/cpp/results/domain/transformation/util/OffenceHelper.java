@@ -53,8 +53,7 @@ import javax.json.JsonObjectBuilder;
 
 @SuppressWarnings({"squid:S1188", "squid:S3776"})
 public class OffenceHelper {
-    private OffenceHelper() {
-    }
+    private OffenceHelper() {}
 
     public static JsonArray transformOffences(final JsonArray offenceJsonObjects) {
         final JsonArrayBuilder offenceList = createArrayBuilder();
@@ -215,8 +214,7 @@ public class OffenceHelper {
         }
         if (jsonObject.containsKey(ALCOHOL_READING_AMOUNT) && jsonObject.getString(ALCOHOL_READING_AMOUNT) != null) {
             try {
-                final int alcoholReadingAmount =
-                        Integer.parseInt(jsonObject.getString(ALCOHOL_READING_AMOUNT).replaceAll("\\s+", ""));
+                final int alcoholReadingAmount = Integer.parseInt(jsonObject.getString(ALCOHOL_READING_AMOUNT).replaceAll("\\s+", ""));
                 jsonObjectBuilder.add(ALCOHOL_READING_AMOUNT, alcoholReadingAmount);
             } catch (NumberFormatException numberFormatException) {
                 jsonObjectBuilder.add(ALCOHOL_READING_AMOUNT, 0);
