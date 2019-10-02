@@ -57,6 +57,7 @@ public class TestTemplates {
                         .build())
                 .withCourtApplications(Arrays.asList(CourtApplication.courtApplication()
                         .withId(randomUUID())
+                        .withLinkedCaseId(UUID.fromString("cccc1111-1e20-4c21-916a-81a6c90239e5"))
                         .withType(courtApplicationTypeTemplates())
                         .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
                         .withApplicant(courtApplicationPartyTemplates())

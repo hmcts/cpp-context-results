@@ -22,7 +22,6 @@ import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.UUID.randomUUID;
@@ -45,6 +44,8 @@ import static uk.gov.justice.tools.eventsourcing.transformation.api.Action.TRANS
 public class ResultsNewTransformerTest {
 
     private static final Logger LOGGER = getLogger(ResultsNewTransformerTest.class);
+    public static final String HEARING = "hearing";
+    public static final String RESULTS_HEARING_RESULTS_ADDED = "results.hearing-results-added";
 
     @Spy
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -71,7 +72,7 @@ public class ResultsNewTransformerTest {
         Metadata metadata = mock(Metadata.class);
 
         when(event.metadata()).thenReturn(metadata);
-        when(event.metadata().name()).thenReturn("results.hearing-results-added");
+        when(event.metadata().name()).thenReturn(RESULTS_HEARING_RESULTS_ADDED);
 
         assertThat(resultsNewTransformer.actionFor(event), CoreMatchers.is(TRANSFORM));
     }
@@ -83,7 +84,6 @@ public class ResultsNewTransformerTest {
 
     @Test
     public void shouldSetNoActionForEventsThatDoNotMatch() {
-        final UUID caseId = randomUUID();
         final JsonEnvelope event = buildEnvelope("wrong.results.hearing-results-added", "results.hearing-results-added.json");
 
         assertThat(resultsNewTransformer.actionFor(event), is(NO_ACTION));
@@ -91,20 +91,20 @@ public class ResultsNewTransformerTest {
 
     @Test
     public void testTransformForMOT() {
-        final JsonEnvelope event = buildEnvelope("results.hearing-results-added", "results.hearing-results-added.json");
-        final JsonObject expectedResult = event.payloadAsJsonObject().getJsonObject("hearing");
+        final JsonEnvelope event = buildEnvelope(RESULTS_HEARING_RESULTS_ADDED, "results.hearing-results-added.json");
+        final JsonObject expectedResult = event.payloadAsJsonObject().getJsonObject(HEARING);
 
         final Stream<JsonEnvelope> actualResult = resultsNewTransformer.apply(event);
         final List<JsonEnvelope> transformedEvents = actualResult.collect(toList());
 
         assertThat(transformedEvents, hasSize(1));
 
-        assertThat(transformedEvents.get(0).payloadAsJsonObject().getJsonObject("hearing").get("id"), is(expectedResult.get("id")));
+        assertThat(transformedEvents.get(0).payloadAsJsonObject().getJsonObject(HEARING).get("id"), is(expectedResult.get("id")));
 
         //allocation decision
-        assertThat(transformedEvents.get(0).payloadAsJsonObject().getJsonObject("hearing").getJsonArray("prosecutionCases").getJsonObject(0).getJsonArray("defendants").getJsonObject(0).getJsonArray("offences").getJsonObject(0).getJsonObject("allocationDecision").getString("motReasonCode"), is("1"));
+        assertThat(transformedEvents.get(0).payloadAsJsonObject().getJsonObject(HEARING).getJsonArray("prosecutionCases").getJsonObject(0).getJsonArray("defendants").getJsonObject(0).getJsonArray("offences").getJsonObject(0).getJsonObject("allocationDecision").getString("motReasonCode"), is("1"));
 
-        assertThat(transformedEvents.get(0).metadata().name(), is("results.hearing-results-added"));
+        assertThat(transformedEvents.get(0).metadata().name(), is(RESULTS_HEARING_RESULTS_ADDED));
     }
 
     private JsonEnvelope buildEnvelope(final String eventName, final String payloadFileName) {

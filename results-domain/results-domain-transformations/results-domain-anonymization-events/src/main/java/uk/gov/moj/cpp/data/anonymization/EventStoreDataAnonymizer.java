@@ -12,6 +12,7 @@ import uk.gov.justice.tools.eventsourcing.transformation.api.annotation.Transfor
 import uk.gov.moj.cpp.data.anonymization.generator.AnonymizeGenerator;
 import uk.gov.moj.cpp.data.anonymization.generator.AnonymizerType;
 import uk.gov.moj.cpp.data.anonymization.generator.DummyNumberReplacer;
+import uk.gov.moj.cpp.data.anonymization.generator.ParseDataGenerator;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -32,12 +33,14 @@ public final class EventStoreDataAnonymizer implements EventTransformation {
 
     private final AnonymizeGenerator anonymizeGenerator;
     private Enveloper enveloper;
+    private final ParseDataGenerator parseDataGenerator;
 
     private final Map<String, Map<String, String>> fieldRuleMap;
 
     public EventStoreDataAnonymizer() throws IOException {
         fieldRuleMap = new RuleParser().loadAnanymisationRules("/data.anonymization.json");
         anonymizeGenerator = new AnonymizeGenerator();
+        parseDataGenerator = new ParseDataGenerator();
     }
 
     @Override
@@ -56,10 +59,7 @@ public final class EventStoreDataAnonymizer implements EventTransformation {
 
     @Override
     public Stream<JsonEnvelope> apply(final JsonEnvelope event) {
-
-        final JsonEnvelope transformedEvent = buildTransformedPayload(event);
-        final JsonEnvelope transformedEnvelope = enveloper.withMetadataFrom(event, transformedEvent.metadata().asJsonObject().getString("name")).apply(transformedEvent.payload());
-        return Stream.of(transformedEnvelope);
+        return Stream.of(envelopeFrom(metadataFrom(event.metadata()), buildTransformedPayload(event)));
     }
 
     @Override
@@ -67,15 +67,12 @@ public final class EventStoreDataAnonymizer implements EventTransformation {
         this.enveloper = enveloper;
     }
 
-    public JsonEnvelope buildTransformedPayload(JsonEnvelope event) {
-
+    public JsonObject buildTransformedPayload(JsonEnvelope event) {
         final String eventName = event.metadata().name();
         final JsonObjectBuilder transformedPayloadObjectBuilder = createObjectBuilder();
         final JsonObject payload = event.payloadAsJsonObject();
         final Map<String, String> eventFieldRuleMap = fieldRuleMap.get(eventName);
-        final JsonObject transformedPayload = processJsonPayload(payload, eventFieldRuleMap, transformedPayloadObjectBuilder).build();
-
-        return envelopeFrom(metadataFrom(event.metadata()), transformedPayload);
+        return processJsonPayload(payload, eventFieldRuleMap, transformedPayloadObjectBuilder).build();
     }
 
     public JsonObjectBuilder processJsonPayload(JsonObject payload, Map<String, String> eventFieldRuleMap, JsonObjectBuilder transformedPayloadObjectBuilder) {
@@ -137,8 +134,10 @@ public final class EventStoreDataAnonymizer implements EventTransformation {
     private Object applyAnonymizationRule(String fieldRule, String fieldValue) {
         if (fieldRule.startsWith(AnonymizerType.DUMMY_NUMBER_PREFIX.toString())) {
             return DummyNumberReplacer.replace(fieldRule);
+        } else if (fieldRule.startsWith(AnonymizerType.STRING_ANONYMISED_PARSED_DATA.toString())) {
+            return parseDataGenerator.convert(fieldValue);
         } else {
-            return anonymizeGenerator.getGenerator(fieldRule).convert(fieldValue);
+            return anonymizeGenerator.getGenerator(fieldRule).convert();
         }
     }
 }

@@ -5,15 +5,14 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.ThreadLocalRandom;
 
-@SuppressWarnings({"squid:S2119", "squid:S2245"})
 public class FutureDateGenerator implements Generator<String> {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @Override
-    public String convert(final String fieldValue) {
+    private final SecureRandomLongGenerator secureRandomLongGenerator = new SecureRandomLongGenerator();
+
+    public String convert() {
         return randomDateBetweenNowAndTenYears().format(FORMATTER);
     }
 
@@ -23,6 +22,6 @@ public class FutureDateGenerator implements Generator<String> {
         final LocalDate maxDate = now.plusYears(10);
         final long daysBetween = DAYS.between(now, maxDate);
 
-        return now.plusDays(ThreadLocalRandom.current().nextLong(daysBetween) + 1L);
+        return now.plusDays(secureRandomLongGenerator.nextLong(daysBetween) + 1);
     }
 }

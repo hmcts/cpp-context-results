@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.event.processor;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,6 +23,11 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.test.TestTemplates;
+
+import java.util.UUID;
+
+import javax.json.Json;
+import javax.json.JsonObject;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.Before;
@@ -80,4 +86,57 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString()))))));
 
     }
+
+    @Test
+    public void testHandleCaseOrApplicationEjected_whenPayloadContainsCaseId_expectedCaseEjectedCommandRaisedWithCaseId() {
+        final UUID hearingId1 = randomUUID();
+        final UUID hearingId2 = randomUUID();
+        final UUID caseId = randomUUID();
+        final String PROSECUTION_CASE_ID = "prosecutionCaseId";
+        final String HEARING_IDS = "hearingIds";
+        final JsonObject payload = Json.createObjectBuilder()
+                .add(HEARING_IDS,
+                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                .add(PROSECUTION_CASE_ID, caseId.toString())
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.progression.events.case-or-application-ejected"), payload);
+        resultsEventProcessor.handleCaseOrApplicationEjected(envelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        assertThat(
+                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                        metadata().withName("results.case-or-application-ejected"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.caseId", is(caseId.toString()))))));
+
+
+    }
+
+    @Test
+    public void testHandleCaseOrApplicationEjected_whenPayloadContainsApplicationId_expectedCaseEjectedCommandRaisedWithApplicationId() {
+        final UUID hearingId1 = randomUUID();
+        final UUID hearingId2 = randomUUID();
+        final UUID applicationId = randomUUID();
+        final String APPLICATION_ID = "applicationId";
+        final String HEARING_IDS = "hearingIds";
+        final JsonObject payload = Json.createObjectBuilder()
+                .add(HEARING_IDS,
+                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                .add(APPLICATION_ID, applicationId.toString())
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.progression.events.case-or-application-ejected"), payload);
+        resultsEventProcessor.handleCaseOrApplicationEjected(envelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        assertThat(
+                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                        metadata().withName("results.case-or-application-ejected"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.applicationId", is(applicationId.toString()))))));
+
+
+    }
+
 }

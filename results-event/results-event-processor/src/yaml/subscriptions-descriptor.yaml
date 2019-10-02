@@ -15,4 +15,7 @@ subscriptions_descriptor:
         - name: public.hearing.resulted
           schema_uri: http://justice.gov.uk/hearing/courts/public.hearing-resulted.json
 
+        - name: public.progression.events.case-or-application-ejected
+          schema_uri: http://justice.gov.uk/progression/courts/case-or-application-ejected
+
       event_source_name: public.event.source

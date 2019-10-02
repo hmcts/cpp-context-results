@@ -14,13 +14,13 @@ public class PastDateGeneratorTest {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Test
-    public void shouldGenerateHostName() {
+    public void shouldGeneratePastDate() {
 
-        for (int index = 0; index < 100; index++) {
+        for (int index = 0; index < 1000; index++) {
             final LocalDate now = LocalDate.now();
 
             final PastDateGenerator pastDateGenerator = new PastDateGenerator();
-            final String pastDate = pastDateGenerator.convert("2018-05-19");
+            final String pastDate = pastDateGenerator.convert();
             final LocalDate resultDate = LocalDate.parse(pastDate, FORMATTER);
 
             assertThat(resultDate.isBefore(now), is(true));

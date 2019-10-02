@@ -38,6 +38,9 @@ public class QueueUtil {
 
     public static final QueueUtil publicEvents = new QueueUtil("public.event");
 
+    public static final QueueUtil privateEvents = new QueueUtil("results.event");
+
+
     private QueueUtil(final String topicName) {
         try {
             LOGGER.info("Artemis URI: {}", QUEUE_URI);

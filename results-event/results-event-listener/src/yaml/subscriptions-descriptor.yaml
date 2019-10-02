@@ -8,4 +8,10 @@ subscriptions_descriptor:
         - name: results.hearing-results-added
           schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.hearing-results-added.json
 
+        - name: results.hearing-case-ejected
+          schema_uri: http://justice.gov.uk/core/courts/results.hearing-case-ejected.json
+
+        - name: results.hearing-application-ejected
+          schema_uri: http://justice.gov.uk/core/courts/results.hearing-application-ejected.json
+
       event_source_name: results
