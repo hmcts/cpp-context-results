@@ -38,7 +38,7 @@
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <cpp.system-users.version>3.1.5</cpp.system-users.version>
         <coredomain.version>0.1.0</coredomain.version>
-        <criminal-court-public-model.version>1.0.46</criminal-court-public-model.version>
+        <criminal-court-public-model.version>1.0.48</criminal-court-public-model.version>
     </properties>
 
     <build>
