@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.moj.cpp.results</groupId>
     <artifactId>results-parent</artifactId>
-    <version>1.0.32-SNAPSHOT</version>
+    <version>1.0.32</version>
 
     <packaging>pom</packaging>
 
