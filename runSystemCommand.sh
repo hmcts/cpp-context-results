@@ -17,7 +17,7 @@
 #
 ##################################################################################################
 
-FRAMEWORK_JMX_COMMAND_CLIENT_VERSION=2.1.0
+FRAMEWORK_JMX_COMMAND_CLIENT_VERSION=2.2.1
 CONTEXT_NAME="results"
 USER_NAME="admin"
 PASSWORD="admin"
