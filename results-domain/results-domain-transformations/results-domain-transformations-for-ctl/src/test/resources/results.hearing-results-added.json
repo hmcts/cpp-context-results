@@ -1,0 +1,621 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "id": "9b583616-049b-30f9-a14f-028a53b7cfe8",
+      "name": "Liverpool Crown Court",
+      "roomId": "7cb09222-49e1-3622-a5a6-ad253d2b3c39",
+      "roomName": "Crown Court 3-1"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "day": "2019-03-02",
+            "isInAttendance": true
+          }
+        ],
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 30,
+        "listingSequence": 0,
+        "sittingDay": "2019-03-02T10:30:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "427e73de-02a0-47aa-ac4c-64ba3fdc23ed",
+    "judiciary": [
+      {
+        "firstName": "Julie",
+        "judicialId": "6f3ef77a-c0e3-319e-9815-9e9b6febf557",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "6f3ef77a-c0e3-319e-9815-9e9b6febf557",
+          "judiciaryType": "Magistrate"
+        },
+        "lastName": "Akorley",
+        "title": "Miss"
+      }
+    ],
+    "jurisdictionType": "CROWN",
+    "prosecutionCases": [
+      {
+        "caseStatus": "READY_FOR_REVIEW",
+        "defendants": [
+          {
+            "defenceOrganisation": {
+              "name": "Test"
+            },
+            "id": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+            "offences": [
+              {
+                "count": 1,
+                "endDate": "2011-08-01",
+                "id": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+                "isAcquitted": true,
+                "modeOfTrial": "EWAY",
+                "offenceCode": "OF61131",
+                "offenceDefinitionId": "6abe3e81-1de0-4c42-b0d2-2dc38f5c44c5",
+                "offenceLegislation": "Contrary to section 20 of the Offences Against the    Person Act 1861.",
+                "offenceLegislationWelsh": "Yn groes i adran 20 Deddf Troseddau Corfforol 1861.",
+                "offenceTitle": "Wound / inflict grievous bodily harm without intent",
+                "offenceTitleWelsh": "Clwyfo / peri niwed corfforol difrifol heb fwriadu",
+                "plea": {
+                  "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+                  "originatingHearingId": "427e73de-02a0-47aa-ac4c-64ba3fdc23ed",
+                  "pleaDate": "2019-03-02",
+                  "pleaValue": "NOT_GUILTY"
+                },
+                "startDate": "2010-08-01",
+                "verdict": {
+                  "jurors": {
+                    "numberOfJurors": 12,
+                    "numberOfSplitJurors": 0,
+                    "unanimous": true
+                  },
+                  "lesserOrAlternativeOffence": {
+                    "offenceCode": "OF61131",
+                    "offenceDefinitionId": "6abe3e81-1de0-4c42-b0d2-2dc38f5c44c5",
+                    "offenceLegislation": "Contrary to section 20 of the Offences Against the    Person Act 1861.",
+                    "offenceTitle": "Wound / inflict grievous bodily harm without intent"
+                  },
+                  "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+                  "originatingHearingId": "427e73de-02a0-47aa-ac4c-64ba3fdc23ed",
+                  "verdictDate": "2019-03-02",
+                  "verdictType": {
+                    "category": "Not Guilty",
+                    "categoryType": "NOT_GUILTY",
+                    "verdictTypeId": "c81e728d-9d4c-3f63-af06-7f89cc14862c"
+                  }
+                },
+                "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
+              },
+              {
+                "convictionDate": "2019-01-01",
+                "count": 2,
+                "endDate": "2011-08-01",
+                "id": "2543a906-48d7-4521-b345-82985e8d3889",
+                "isAcquitted": false,
+                "modeOfTrial": "EWAY",
+                "offenceCode": "OF61131",
+                "offenceDefinitionId": "6abe3e81-1de0-4c42-b0d2-2dc38f5c44c5",
+                "offenceLegislation": "Contrary to section 20 of the Offences Against the    Person Act 1861.",
+                "offenceLegislationWelsh": "Yn groes i adran 20 Deddf Troseddau Corfforol 1861.",
+                "offenceTitle": "Wound / inflict grievous bodily harm without intent",
+                "offenceTitleWelsh": "Clwyfo / peri niwed corfforol difrifol heb fwriadu",
+                "plea": {
+                  "offenceId": "2543a906-48d7-4521-b345-82985e8d3889",
+                  "originatingHearingId": "f85307b7-eded-4b97-bbf5-c1341fbfa763",
+                  "pleaDate": "2019-01-01",
+                  "pleaValue": "GUILTY"
+                },
+                "startDate": "2010-08-01",
+                "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
+              }
+            ],
+            "personDefendant": {
+              "bailStatus": "UNCONDITIONAL",
+              "personDetails": {
+                "address": {
+                  "address1": "14 Tottenham Court Road",
+                  "address2": "London Road",
+                  "address3": "England",
+                  "address4": "UK"
+                },
+                "dateOfBirth": "1987-02-26",
+                "firstName": "Rusty",
+                "gender": "MALE",
+                "lastName": "Green",
+                "nationalityCode": "GBR",
+                "nationalityDescription": "British",
+                "nationalityId": "49433158-3542-49c8-a9af-581a0e746152"
+              }
+            },
+            "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e"
+          },
+          {
+            "defenceOrganisation": {
+              "name": "Test"
+            },
+            "id": "c10ad520-9dbc-48be-af07-c0abc1693fe7",
+            "offences": [
+              {
+                "count": 1,
+                "endDate": "2011-08-01",
+                "id": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+                "isAcquitted": true,
+                "modeOfTrial": "EWAY",
+                "offenceCode": "OF61131",
+                "offenceDefinitionId": "6abe3e81-1de0-4c42-b0d2-2dc38f5c44c5",
+                "offenceLegislation": "Contrary to section 20 of the Offences Against the    Person Act 1861.",
+                "offenceLegislationWelsh": "Yn groes i adran 20 Deddf Troseddau Corfforol 1861.",
+                "offenceTitle": "Wound / inflict grievous bodily harm without intent",
+                "offenceTitleWelsh": "Clwyfo / peri niwed corfforol difrifol heb fwriadu",
+                "plea": {
+                  "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+                  "originatingHearingId": "427e73de-02a0-47aa-ac4c-64ba3fdc23ed",
+                  "pleaDate": "2019-03-02",
+                  "pleaValue": "NOT_GUILTY"
+                },
+                "startDate": "2010-08-01",
+                "verdict": {
+                  "jurors": {
+                    "numberOfJurors": 12,
+                    "numberOfSplitJurors": 0,
+                    "unanimous": true
+                  },
+                  "lesserOrAlternativeOffence": {
+                    "offenceCode": "OF61131",
+                    "offenceDefinitionId": "6abe3e81-1de0-4c42-b0d2-2dc38f5c44c5",
+                    "offenceLegislation": "Contrary to section 20 of the Offences Against the    Person Act 1861.",
+                    "offenceTitle": "Wound / inflict grievous bodily harm without intent"
+                  },
+                  "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+                  "originatingHearingId": "427e73de-02a0-47aa-ac4c-64ba3fdc23ed",
+                  "verdictDate": "2019-03-02",
+                  "verdictType": {
+                    "category": "Not Guilty",
+                    "categoryType": "NOT_GUILTY",
+                    "verdictTypeId": "c81e728d-9d4c-3f63-af06-7f89cc14862c"
+                  }
+                },
+                "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
+              },
+              {
+                "convictionDate": "2019-01-01",
+                "count": 2,
+                "endDate": "2011-08-01",
+                "id": "2543a906-48d7-4521-b345-82985e8d3889",
+                "isAcquitted": false,
+                "modeOfTrial": "EWAY",
+                "offenceCode": "OF61131",
+                "offenceDefinitionId": "6abe3e81-1de0-4c42-b0d2-2dc38f5c44c5",
+                "offenceLegislation": "Contrary to section 20 of the Offences Against the    Person Act 1861.",
+                "offenceLegislationWelsh": "Yn groes i adran 20 Deddf Troseddau Corfforol 1861.",
+                "offenceTitle": "Wound / inflict grievous bodily harm without intent",
+                "offenceTitleWelsh": "Clwyfo / peri niwed corfforol difrifol heb fwriadu",
+                "plea": {
+                  "offenceId": "2543a906-48d7-4521-b345-82985e8d3889",
+                  "originatingHearingId": "f85307b7-eded-4b97-bbf5-c1341fbfa763",
+                  "pleaDate": "2019-01-01",
+                  "pleaValue": "GUILTY"
+                },
+                "startDate": "2010-08-01",
+                "wording": "on 01/08/2009 at  the County public house, unlawfully and maliciously wounded, John Smith"
+              }
+            ],
+            "personDefendant": {
+              "bailStatus": "incusTODY",
+              "personDetails": {
+                "address": {
+                  "address1": "14 Tottenham Court Road",
+                  "address2": "London Road",
+                  "address3": "England",
+                  "address4": "UK"
+                },
+                "dateOfBirth": "1987-02-26",
+                "firstName": "Rusty",
+                "gender": "MALE",
+                "lastName": "Green",
+                "nationalityCode": "GBR",
+                "nationalityDescription": "British",
+                "nationalityId": "49433158-3542-49c8-a9af-581a0e746152"
+              }
+            },
+            "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e"
+          }
+        ],
+        "id": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "initiationCode": "C",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "CPS",
+          "prosecutionAuthorityId": "52b27284-0686-4894-b1c7-7d4b634cacdb",
+          "caseURN": "47GD5046119"
+        }
+      }
+    ],
+    "sharedResultLines": [
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "861cce77-4668-473c-9de6-8ea2567b4fd0",
+        "isAvailableForCourtExtract": true,
+        "label": "Imprisonment",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "OFFENCE",
+        "offenceId": "2543a906-48d7-4521-b345-82985e8d3889",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "76f15753-1706-42fb-b922-0d56d01e5706",
+            "isAvailableForCourtExtract": true,
+            "label": "Imprisonment Period",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "2 Years",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+            "isAvailableForCourtExtract": true,
+            "label": "Prison",
+            "promptSequence": 10,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "Bootle",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 46
+      },
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "2508f2d6-ffb2-48f8-91c7-279d5b2ea181",
+        "isAvailableForCourtExtract": true,
+        "label": "No collection order reason",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "DEFENDANT",
+        "offenceId": "2543a906-48d7-4521-b345-82985e8d3889",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "de27ffb3-b7ef-4308-b8c7-ca51ab0c1136",
+            "isAvailableForCourtExtract": true,
+            "label": "Reason for no collection order",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "impracticable",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 486
+      },
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "38d46d59-3f14-4051-afd8-4fd50de8e2dd",
+        "isAvailableForCourtExtract": true,
+        "label": "Total suspended imprisonment",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "DEFENDANT",
+        "offenceId": "2543a906-48d7-4521-b345-82985e8d3889",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "47ab7bd4-21ee-449e-833f-8de0642820ed",
+            "isAvailableForCourtExtract": true,
+            "label": "Total imprisonment period",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "18 Months",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "95618691-0742-417e-82b9-c4d4bff94585",
+            "isAvailableForCourtExtract": true,
+            "label": "Suspended period",
+            "promptSequence": 5,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "4 Months",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "4d125a5a-acbc-461d-a657-ba5643af85a6",
+            "isAvailableForCourtExtract": true,
+            "label": "Time of hearing",
+            "promptSequence": 14,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "10:30",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 61
+      },
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "e6a330d0-5404-45dd-8379-1b4b4d5493c8",
+        "isAvailableForCourtExtract": true,
+        "label": "Total suspended imprisonment",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "DEFENDANT",
+        "offenceId": "2543a906-48d7-4521-b345-82985e8d3889",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "47ab7bd4-21ee-449e-833f-8de0642820ed",
+            "isAvailableForCourtExtract": true,
+            "label": "Total imprisonment period",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "4 Years",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "95618691-0742-417e-82b9-c4d4bff94585",
+            "isAvailableForCourtExtract": true,
+            "label": "Suspended period",
+            "promptSequence": 5,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "1 Years, 2 Months",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "4d125a5a-acbc-461d-a657-ba5643af85a6",
+            "isAvailableForCourtExtract": true,
+            "label": "Time of hearing",
+            "promptSequence": 14,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "10:45",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 61
+      },
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "451f2928-926b-45fb-a911-228828664208",
+        "isAvailableForCourtExtract": true,
+        "label": "fine",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "OFFENCE",
+        "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+            "isAvailableForCourtExtract": true,
+            "label": "Amount of fine",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "500",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 71,
+        "welshLabel": "Dirwy"
+      },
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "d0327fa6-facd-4e56-ab29-321073b67b7f",
+        "isAvailableForCourtExtract": true,
+        "label": "Community order England / Wales",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "OFFENCE",
+        "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "d6caa3c4-ec9d-41ec-8f86-2c617ef0d5d9",
+            "isAvailableForCourtExtract": true,
+            "label": "End Date",
+            "promptSequence": 1,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "2019-03-02",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "29f5b3c7-8d15-4606-9dcf-23f32a21b5ef",
+            "isAvailableForCourtExtract": true,
+            "label": "Responsible officer",
+            "promptSequence": 2,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "a probation officer",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "f4a4f159-779e-4f35-822a-b559a2415ecb",
+            "isAvailableForCourtExtract": true,
+            "label": "Supervising Court name",
+            "promptSequence": 3,
+            "usergroups": [
+              "Legal Advisers",
+              "Court Clerks"
+            ],
+            "value": "Liverpool",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 5
+      },
+      {
+        "courtClerk": {
+          "firstName": "Marion",
+          "lastName": "Martin",
+          "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+        },
+        "defendantId": "c10ad520-9dbc-48be-af07-c0abc1693fe6",
+        "id": "2c5891cf-e2e2-4c14-a11c-06a3c5950d6c",
+        "isAvailableForCourtExtract": true,
+        "label": "Restraining order for period",
+        "lastSharedDateTime": "2019-03-02",
+        "level": "OFFENCE",
+        "offenceId": "d6ce665e-f31f-410a-9343-0586d9abfa53",
+        "orderedDate": "2019-03-02",
+        "prompts": [
+          {
+            "id": "abc9bb61-cb5b-4cf7-be24-8866bcd2fc69",
+            "isAvailableForCourtExtract": true,
+            "label": "Protected person",
+            "promptSequence": 1,
+            "usergroups": [
+              "Court Clerks",
+              "Police Admin"
+            ],
+            "value": "Ramesh Reddy",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "3054909b-15b6-499f-b44f-67b2b1215c76",
+            "isAvailableForCourtExtract": true,
+            "label": "Protected person's address",
+            "promptSequence": 2,
+            "usergroups": [
+              "Court Clerks",
+              "Police Admin"
+            ],
+            "value": "Ramesh's address",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "8df0ec7e-5985-4998-af1a-5da293d9cb3c",
+            "isAvailableForCourtExtract": true,
+            "label": "Order details",
+            "promptSequence": 3,
+            "usergroups": [
+              "Court Clerks",
+              "Probation Admin",
+              "Police Admin",
+              "Victims & Witness Care Admin"
+            ],
+            "value": "whatever the order says here..",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "a20665cc-6877-40f4-b85e-d4c87e62987b",
+            "isAvailableForCourtExtract": true,
+            "label": "Period of order",
+            "promptSequence": 4,
+            "usergroups": [
+              "Court Clerks",
+              "Probation Admin",
+              "Police Admin",
+              "Victims & Witness Care Admin"
+            ],
+            "value": "8 Months, 2 Weeks, 4 Days",
+            "welshLabel": "",
+            "welshValue": ""
+          },
+          {
+            "id": "47337f1c-e343-4093-884f-035ba96c4db0",
+            "isAvailableForCourtExtract": true,
+            "label": "Conviction / acquittal",
+            "promptSequence": 8,
+            "usergroups": [
+              "Court Clerks",
+              "Probation Admin",
+              "Police Admin",
+              "Victims & Witness Care Admin"
+            ],
+            "value": "Acquitted",
+            "welshLabel": "",
+            "welshValue": ""
+          }
+        ],
+        "prosecutionCaseId": "c86a4f27-ccd7-455a-9844-801d4dd1871e",
+        "rank": 1
+      }
+    ],
+    "type": {
+      "description": "Sentence",
+      "id": "5ae4c090-0f70-4694-b4fc-707633d2b430"
+    }
+  },
+  "sharedTime": "2019-03-02T13:40:53.804Z"
+}

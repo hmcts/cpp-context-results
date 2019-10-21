@@ -16,6 +16,8 @@
         <module>results-domain-transformations-for-2.5</module>
         <module>results-domain-anonymization-events</module>
         <module>results-domain-transformations-for-MOT</module>
+        <module>results-domain-transformation-anonymise</module>
+        <module>results-domain-transformations-for-ctl</module>
     </modules>
 
 
