@@ -63,7 +63,7 @@ public class ResultsEventProcessorTest {
     @Before
     public void setUp() {
         initMocks(this);
-        setField(jsonObjectToObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
+        setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
     }
 
