@@ -1,5 +1,9 @@
 package uk.gov.moj.cpp.data.anonymization;
 
+import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
+
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.tools.eventsourcing.transformation.api.Action;
@@ -10,21 +14,18 @@ import uk.gov.moj.cpp.data.anonymization.generator.AnonymizerType;
 import uk.gov.moj.cpp.data.anonymization.generator.DummyNumberReplacer;
 import uk.gov.moj.cpp.data.anonymization.generator.ParseDataGenerator;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static javax.json.Json.createObjectBuilder;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 @SuppressWarnings({"squid:S3776", "squid:S134", "squid:MethodCyclomaticComplexity"})
 @Transformation
@@ -133,7 +134,7 @@ public final class EventStoreDataAnonymizer implements EventTransformation {
     private Object applyAnonymizationRule(String fieldRule, String fieldValue) {
         if (fieldRule.startsWith(AnonymizerType.DUMMY_NUMBER_PREFIX.toString())) {
             return DummyNumberReplacer.replace(fieldRule);
-        } else if(fieldRule.startsWith(AnonymizerType.STRING_ANONYMISED_PARSED_DATA.toString())){
+        } else if (fieldRule.startsWith(AnonymizerType.STRING_ANONYMISED_PARSED_DATA.toString())) {
             return parseDataGenerator.convert(fieldValue);
         } else {
             return anonymizeGenerator.getGenerator(fieldRule).convert();

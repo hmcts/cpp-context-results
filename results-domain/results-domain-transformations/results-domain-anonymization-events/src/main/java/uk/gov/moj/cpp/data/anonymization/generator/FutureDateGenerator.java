@@ -1,28 +1,27 @@
 package uk.gov.moj.cpp.data.anonymization.generator;
 
-import java.security.SecureRandom;
+import static java.time.LocalDate.now;
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 public class FutureDateGenerator implements Generator<String> {
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @Override
+    private final SecureRandomLongGenerator secureRandomLongGenerator = new SecureRandomLongGenerator();
+
     public String convert() {
-        final LocalDate localDate = createRandomDate(new SecureRandom(), LocalDate.now().getYear());
-        return localDate.format(FORMATTER);
-
+        return randomDateBetweenNowAndTenYears().format(FORMATTER);
     }
 
-    private  int createRandomIntBetween(Random random, int start, int end) {
-         return random.nextInt(end - start) + start;
-    }
+    private LocalDate randomDateBetweenNowAndTenYears() {
 
-    public  LocalDate createRandomDate(Random random, int startYear) {
-        final int day = createRandomIntBetween(random, 1, 28);
-        final int month = createRandomIntBetween(random, 1, 12);
-        final int year = startYear +10 ;
-        return LocalDate.of(year, month, day);
+        final LocalDate now = now();
+        final LocalDate maxDate = now.plusYears(10);
+        final long daysBetween = DAYS.between(now, maxDate);
+
+        return now.plusDays(secureRandomLongGenerator.nextLong(daysBetween) + 1);
     }
 }

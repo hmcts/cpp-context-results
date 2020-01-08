@@ -12,10 +12,8 @@
     {
       "eventName": "results.hearing-results-added",
       "fieldsToBeAnonymised": [
-        {"title": "StringAnonymisedString"},
         {"firstName": "StringAnonymisedString"},
         {"middleName": "StringAnonymisedString"},
-        {"gender": "StringAnonymisedString"},
         {"lastName": "StringAnonymisedString"},
         {"dateOfBirth": "StringAnonymisedDOB"},
         {"defenceOrganisation": "StringAnonymisedString"},

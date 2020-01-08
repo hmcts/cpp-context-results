@@ -1,0 +1,21 @@
+subscriptions_descriptor:
+  spec_version: 1.0.0
+  service: results
+  service_component: EVENT_PROCESSOR
+  subscriptions:
+    - name: results event processor subscription
+      events:
+        - name: results.add-hearing-result
+          schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.add-hearing-result.json
+
+      event_source_name: results
+
+    - name: public events
+      events:
+        - name: public.hearing.resulted
+          schema_uri: http://justice.gov.uk/hearing/courts/public.hearing-resulted.json
+
+        - name: public.progression.events.case-or-application-ejected
+          schema_uri: http://justice.gov.uk/progression/courts/case-or-application-ejected
+
+      event_source_name: public.event.source

@@ -40,7 +40,7 @@ public class ResultsEventProcessor {
 
         LOGGER.debug("public.hearing.resulted event received {}", hearingResultPayload);
 
-        sender.sendAsAdmin(enveloper.withMetadataFrom(envelope, "results.add-hearing-result").apply(hearingResultPayload));
+        sender.sendAsAdmin(enveloper.withMetadataFrom(envelope, "results.command.add-hearing-result").apply(hearingResultPayload));
     }
 
     @Handles("public.progression.events.case-or-application-ejected")

@@ -4,7 +4,7 @@
     <parent>
         <artifactId>results-event</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>1.0.36-SNAPSHOT</version>
+        <version>6.4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-event-listener</artifactId>
@@ -19,12 +19,10 @@
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>uk.gov.moj.cpp.common</groupId>
             <artifactId>event-listener</artifactId>
         </dependency>
-
         <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-viewstore-persistence</artifactId>
@@ -37,16 +35,11 @@
             <artifactId>test-utils-core</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>test-utilities</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-            <version>2.2.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

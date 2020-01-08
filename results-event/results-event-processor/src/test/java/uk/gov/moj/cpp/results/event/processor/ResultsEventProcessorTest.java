@@ -1,27 +1,5 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.core.sender.Sender;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.test.TestTemplates;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import java.util.UUID;
-
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -36,6 +14,30 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetad
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.core.sender.Sender;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.test.TestTemplates;
+
+import java.util.UUID;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 
 @RunWith(DataProviderRunner.class)
 public class ResultsEventProcessorTest {
@@ -61,7 +63,7 @@ public class ResultsEventProcessorTest {
     @Before
     public void setUp() {
         initMocks(this);
-        setField(jsonObjectToObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
+        setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
     }
 
@@ -79,7 +81,7 @@ public class ResultsEventProcessorTest {
 
         assertThat(
                 envelopeArgumentCaptor.getValue(), jsonEnvelope(
-                        metadata().withName("results.add-hearing-result"),
+                        metadata().withName("results.command.add-hearing-result"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString()))))));
 

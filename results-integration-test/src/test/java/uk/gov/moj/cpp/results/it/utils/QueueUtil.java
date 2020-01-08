@@ -1,11 +1,7 @@
 package uk.gov.moj.cpp.results.it.utils;
 
-import com.jayway.restassured.path.json.JsonPath;
-import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-import org.apache.activemq.artemis.jms.client.ActiveMQTopic;
-import org.apache.activemq.command.ActiveMQTextMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 
@@ -18,7 +14,12 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.json.JsonObject;
 
-import static uk.gov.justice.services.messaging.DefaultJsonEnvelope.envelopeFrom;
+import com.jayway.restassured.path.json.JsonPath;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQTopic;
+import org.apache.activemq.command.ActiveMQTextMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class QueueUtil {
 
