@@ -13,7 +13,6 @@
     <version>6.4.2-SNAPSHOT</version>
 
     <packaging>pom</packaging>
-
     <name>Results Service - Parent Module</name>
     <description>Results Service</description>
 
@@ -40,7 +39,6 @@
         <coredomain.version>0.1.0</coredomain.version>
         <criminal-court-public-model.version>1.0.58</criminal-court-public-model.version>
     </properties>
-
     <build>
         <plugins>
             <plugin>
