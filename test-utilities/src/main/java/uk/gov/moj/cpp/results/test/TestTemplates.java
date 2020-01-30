@@ -25,7 +25,6 @@ import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
-import uk.gov.justice.core.courts.Title;
 import uk.gov.moj.cpp.domains.JudicialRoleTypeEnum;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
@@ -146,7 +145,7 @@ public class TestTemplates {
                         .withPersonDetails(Person.person()
                                 .withFirstName(STRING.next())
                                 .withLastName(STRING.next())
-                                .withTitle(Title.MS)
+                                .withTitle("Baroness")
                                 .withGender(Gender.NOT_KNOWN)
                                 .build())
                         .build())

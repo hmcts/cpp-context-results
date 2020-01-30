@@ -104,6 +104,7 @@ public class ResultsIT {
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, resultsMessage.getHearing().getId())
                         .withValue(Hearing::getCourtApplications, resultsMessage.getHearing().getCourtApplications())
+                        .withValue(hearing -> hearing.getProsecutionCases().get(0).getDefendants().get(0).getPersonDefendant().getPersonDetails().getTitle(),"Baroness")
                 );
 
         // get the details and check
