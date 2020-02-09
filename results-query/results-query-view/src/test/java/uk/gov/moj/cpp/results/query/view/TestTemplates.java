@@ -13,6 +13,11 @@ import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
+import uk.gov.justice.core.courts.external.ApiDefendant;
+import uk.gov.justice.core.courts.external.ApiPerson;
+import uk.gov.justice.core.courts.external.ApiPersonDefendant;
+import uk.gov.justice.core.courts.external.ApiProsecutionCase;
+import uk.gov.justice.core.courts.external.ApiProsecutionCaseIdentifier;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 
 import java.time.ZonedDateTime;
@@ -59,7 +64,12 @@ public class TestTemplates {
         ).withDefendants(asList(templateDefendant()))
                 .build();
     }
+    public static ApiProsecutionCase templateApiProsecutionCase(ProsecutionCase prosecutionCase){
+        return ApiProsecutionCase.apiProsecutionCase().withProsecutionCaseIdentifier(ApiProsecutionCaseIdentifier.apiProsecutionCaseIdentifier()
+                .withCaseURN(prosecutionCase.getProsecutionCaseIdentifier().getCaseURN()).build())
+                .withDefendants(asList(templateApiDefendant(templateDefendant()))).build();
 
+    }
     public static Defendant templateDefendant() {
         return Defendant.defendant()
                 .withId(UUID.randomUUID())
@@ -72,6 +82,15 @@ public class TestTemplates {
                         )
                         .build())
                 .build();
+    }
+
+    public static ApiDefendant templateApiDefendant(Defendant defendant){
+        return ApiDefendant.apiDefendant().withId(defendant.getId())
+                .withPersonDefendant(ApiPersonDefendant.apiPersonDefendant()
+                        .withPersonDetails(ApiPerson.apiPerson()
+                                .withFirstName(defendant.getPersonDefendant().getPersonDetails().getFirstName())
+                                .withLastName(defendant.getPersonDefendant().getPersonDetails().getLastName()).build())
+                        .build()).build();
     }
 
 }

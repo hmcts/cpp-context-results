@@ -17,6 +17,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMa
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
@@ -53,8 +54,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     private static final String CONTENT_TYPE_PERSON_DETAILS = "application/vnd.results.person-details+json";
     private static final String CONTENT_TYPE_HEARING_DETAILS = "application/vnd.results.hearing-details+json";
+    private static final String CONTENT_TYPE_HEARING_INFORMATION_DETAILS = "application/vnd.results.hearing-information-details+json";
     private static final String CONTENT_TYPE_RESULTS_DETAILS = "application/vnd.results.results-details+json";
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
+
 
     private static final String PUBLIC_EVENT_HEARING_RESULTED = "public.hearing.resulted";
 
@@ -126,7 +129,26 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     }
 
+    public static void  getHearingDetailsForHearingId(final UUID hearingId, final Matcher<ApiHearing> matcher) {
 
+        final String hearingResultDetailsUrl = format("%s%s", BASE_URI,
+                getProperty("results.get-hearing-information-details-for-hearing",
+                        hearingId));
+
+        final Matcher<ResponseData>  responseDataMatcher = jsonPayloadMatcher(ApiHearing.class, matcher);
+
+
+
+        poll(requestParams(hearingResultDetailsUrl, CONTENT_TYPE_HEARING_INFORMATION_DETAILS).withHeader(USER_ID, getLoggedInUser())) .until(
+                print(),
+                status().is(OK),
+                payload().isJson(allOf(
+                        withJsonPath("$.id", equalTo(hearingId.toString()))
+                )),
+                responseDataMatcher
+        );
+
+    }
 
 
 

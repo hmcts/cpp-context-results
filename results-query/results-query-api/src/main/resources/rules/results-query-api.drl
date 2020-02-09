@@ -44,3 +44,12 @@ rule "Query - API - results.get-results-summary"
   then
     $outcome.setSuccess(true);
 end
+
+rule "Query - API - results.get-hearing-information-details-for-hearing"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.get-hearing-information-details-for-hearing");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, resultsDetailsGroups()));
+  then
+    $outcome.setSuccess(true);
+end

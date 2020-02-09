@@ -18,6 +18,11 @@
       "name": "results.results-summary",
       "type": "action",
       "action": "results.results-summary"
+    },
+    {
+      "name": "results.hearing-information-details",
+      "type": "action",
+      "action": "results.hearing-information-details"
     }
   ]
 }

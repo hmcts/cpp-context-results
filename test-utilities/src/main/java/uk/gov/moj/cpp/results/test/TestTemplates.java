@@ -2,14 +2,18 @@ package uk.gov.moj.cpp.results.test;
 
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 
+import uk.gov.justice.core.courts.Address;
+import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.ApplicationJurisdictionType;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationParty;
 import uk.gov.justice.core.courts.CourtApplicationType;
 import uk.gov.justice.core.courts.CourtCentre;
+import uk.gov.justice.core.courts.CourtIndicatedSentence;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
@@ -37,15 +41,9 @@ import java.util.UUID;
 
 public class TestTemplates {
 
-    public static final UUID DEFAULT_DEFENDANT_ID1 = UUID.fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");
-    public static final UUID DEFAULT_DEFENDANT_ID2 = UUID.fromString("dddd2222-1e20-4c21-916a-81a6c90239e5");
-    public static final UUID DEFAULT_DEFENDANT_ID3 = UUID.fromString("dddd3333-1e20-4c21-916a-81a6c90239e5");
-    public static final UUID DEFAULT_DEFENDANT_ID4 = UUID.fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
-
     private TestTemplates() {
 
     }
-
 
     public static Hearing basicHearingTemplate(final UUID hearingId) {
         return Hearing.hearing()
@@ -84,11 +82,20 @@ public class TestTemplates {
                         .withRoomName(STRING.next())
                         .withWelshName(STRING.next())
                         .withWelshRoomName(STRING.next())
+                        .withAddress(address())
                         .build())
                 .withProsecutionCases(Arrays.asList(createProsecutionCase1(), createProsecutionCase2()))
                 .build();
     }
 
+    public static Address address(){
+        return Address.address().withAddress1(STRING.next())
+                .withAddress2(STRING.next())
+                .withAddress3(STRING.next())
+                .withAddress4(STRING.next())
+                .withAddress5(STRING.next())
+                .withPostcode("AA1 1AA").build();
+    }
     public static JudicialRoleType circuitJudge() {
         return JudicialRoleType.judicialRoleType()
                 .withJudicialRoleTypeId(UUID.randomUUID())
@@ -117,6 +124,7 @@ public class TestTemplates {
                         Arrays.asList(createDefendant("dddd1111-1e20-4c21-916a-81a6c90239e5"),
                                 createDefendant("dddd2222-1e20-4c21-916a-81a6c90239e5")
                         ))
+                .withCaseStatus("ACTIVE")
                 .build();
     }
 
@@ -127,13 +135,13 @@ public class TestTemplates {
                 .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
-                        //.withProsecutionAuthorityReference(STRING.next())
                         .withCaseURN(STRING.next())
                         .build())
                 .withDefendants(
                         Arrays.asList(createDefendant("dddd3333-1e20-4c21-916a-81a6c90239e5"),
                                 createDefendant("dddd4444-1e20-4c21-916a-81a6c90239e5")
                         ))
+                .withCaseStatus("ACTIVE")
                 .build();
     }
 
@@ -156,9 +164,33 @@ public class TestTemplates {
                         .withOffenceTitle(STRING.next())
                         .withWording(STRING.next())
                         .withStartDate(LocalDate.now())
+                        .withAllocationDecision(createAllocationDecision())
                         .withOrderIndex(65)
                         .withCount(434)
+                        .withProceedingsConcluded(true)
+                        .withIsIntroduceAfterInitialProceedings(true)
+                        .withIsDiscontinued(true)
                         .build()))
+                .build();
+    }
+
+    private static AllocationDecision createAllocationDecision() {
+        return AllocationDecision.allocationDecision()
+                .withAllocationDecisionDate(PAST_LOCAL_DATE.next())
+                .withCourtIndicatedSentence(createCourtIndicatedSentence())
+                .withMotReasonId(randomUUID())
+                .withMotReasonCode(STRING.next())
+                .withMotReasonDescription(STRING.next())
+                .withOffenceId(randomUUID())
+                .withOriginatingHearingId(randomUUID())
+                .withSequenceNumber(1)
+                .build();
+    }
+
+    private static CourtIndicatedSentence createCourtIndicatedSentence() {
+        return CourtIndicatedSentence.courtIndicatedSentence()
+                .withCourtIndicatedSentenceDescription(STRING.next())
+                .withCourtIndicatedSentenceTypeId(randomUUID())
                 .build();
     }
 

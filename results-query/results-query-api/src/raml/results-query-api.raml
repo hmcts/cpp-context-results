@@ -47,3 +47,24 @@ protocols: [ HTTP, HTTPS ]
                     application/vnd.results.results-summary+json:
                         example:  !include json/results.results-summary.json
                         schema:  !include json/schema/results.results-summary.json
+
+
+/hearingDetails/{hearingId}:
+    uriParameters:
+        hearingId:
+            description: ID of hearing to fetch the results
+            type: string
+    get:
+        description: |
+            ...
+            (mapping):
+                responseType: application/vnd.results.hearing-information-details+json
+                name: results.get-hearing-information-details-for-hearing
+            ...
+        responses:
+            200:
+                description: OK
+                body:
+                     application/vnd.results.hearing-information-details+json:
+                        schema: !include json/schema/results.hearing-information-details.json
+                        example: !include json/results.hearing-information-details.json

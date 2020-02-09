@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
@@ -21,7 +22,10 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.event.service.CacheService;
+import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.UUID;
@@ -48,6 +52,15 @@ public class ResultsEventProcessorTest {
     @Mock
     private Sender sender;
 
+    @Mock
+    private HearingHelper hearingHelper;
+
+    @Mock
+    private CacheService cacheService;
+
+    @Mock
+    private EventGridService eventGridService;
+
     @Spy
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
@@ -71,9 +84,14 @@ public class ResultsEventProcessorTest {
     public void hearingResulted_shouldForwardAsIsAsPrivateEvent() {
 
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
-
+        final String hearingId = UUID.randomUUID().toString();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
+        final JsonObject jsonResult = Json.createObjectBuilder().add("val", randomUUID().toString()).build();
+        final JsonObject transformedHearing = envelope.asJsonObject() ;
+        when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
+        when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
+        when(eventGridService.sendHearingResultedEvent(hearingId)).thenReturn(true);
 
         resultsEventProcessor.hearingResulted(envelope);
 

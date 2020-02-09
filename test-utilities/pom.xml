@@ -9,7 +9,6 @@
     </parent>
 
     <artifactId>test-utilities</artifactId>
-    
     <dependencies>
         <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
@@ -19,6 +18,12 @@
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>test-utils-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

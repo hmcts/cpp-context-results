@@ -6,36 +6,45 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
-
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUIDAndName;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.INTEGER;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateApiProsecutionCase;
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultsAdded;
+import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateProsecutionCase;
 
-import javax.json.Json;
-import javax.json.JsonObject;
+import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.external.ApiCourtCentre;
+import uk.gov.justice.core.courts.external.ApiHearing;
+import uk.gov.justice.core.courts.external.ApiHearingDay;
+import uk.gov.justice.core.courts.external.ApiHearingType;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
+import uk.gov.moj.cpp.domains.HearingHelper;
+import uk.gov.moj.cpp.domains.HearingTransformer;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
+import uk.gov.moj.cpp.results.query.view.service.HearingService;
+import uk.gov.moj.cpp.results.query.view.service.UserGroupsService;
+
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.core.enveloper.Enveloper;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
-import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
-import uk.gov.moj.cpp.results.query.view.service.HearingService;
-import uk.gov.moj.cpp.results.query.view.service.UserGroupsService;
 
 @SuppressWarnings({"CdiInjectionPointsInspection", "unused", "unchecked"})
 @RunWith(MockitoJUnitRunner.class)
@@ -93,10 +102,14 @@ public class ResultsQueryViewTest {
     private HearingService hearingService;
 
     @Mock
+    private HearingTransformer hearingTransformer;
+
+    @Mock
     private UserGroupsService userGroupsService;
 
     @Mock
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
+
 
     @InjectMocks
     private ResultsQueryView resultsQueryView;
@@ -120,6 +133,37 @@ public class ResultsQueryViewTest {
         when(objectToJsonObjectConverter.convert(hearingResultsAdded)).thenReturn(jsonResult);
 
         final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetails(query);
+
+        assertThat(actualHearingResults.payloadAsJsonObject().getString("val"), is(dummyVal));
+    }
+
+    @Test
+    public void shouldGetHearingDetailsForHearingId() {
+        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
+                .add(FIELD_HEARING_ID, HEARING_ID.toString())
+                .build());
+
+        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
+                asList("Court Clerk", "Listing Officer")
+        );
+
+        HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
+        when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(hearingResultsAdded);
+
+        final ApiHearing.Builder apiHearingBuilder = ApiHearing.apiHearing()
+                .withProsecutionCases(asList(templateApiProsecutionCase(templateProsecutionCase())))
+                .withType(ApiHearingType.apiHearingType().withDescription(hearingResultsAdded.getHearing().getType().getDescription()).build())
+                .withHearingDays(asList(ApiHearingDay.apiHearingDay().withSittingDay(hearingResultsAdded.getHearing().getHearingDays().get(0).getSittingDay()).build()))
+                .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
+
+        String dummyVal = randomUUID().toString();
+        final JsonObject jsonResult = Json.createObjectBuilder().add("val", dummyVal).build();
+
+
+        when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
+        when(objectToJsonObjectConverter.convert(apiHearingBuilder.build())).thenReturn(jsonResult);
+
+        final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsForHearingId(query);
 
         assertThat(actualHearingResults.payloadAsJsonObject().getString("val"), is(dummyVal));
     }

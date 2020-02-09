@@ -25,4 +25,8 @@ public class ResultsQueryApi {
         return requester.request(query);
     }
 
+    @Handles("results.get-hearing-information-details-for-hearing")
+    public JsonEnvelope getResultsDetails(final JsonEnvelope query) {
+        return requester.request(query);
+    }
 }

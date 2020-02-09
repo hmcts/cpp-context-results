@@ -8,12 +8,16 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.thenReturns
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
+import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.external.ApiAddress;
+import uk.gov.justice.core.courts.external.ApiCourtCentre;
+import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 import uk.gov.moj.cpp.results.it.utils.Queries;
@@ -21,6 +25,7 @@ import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -32,13 +37,15 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@SuppressWarnings({"unchecked", "serial", "squid:S2925"})
+@SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607"})
 public class ResultsIT {
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+
         setupUserAsPrisonAdminGroup(getUserId());
         stubEnableAllCapabilities();
+        stubEventGridEndpoint();
     }
 
     @Test
@@ -56,9 +63,8 @@ public class ResultsIT {
         LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
         startDate = LocalDate.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
-
         //search summaries
-        HearingResultSummariesView summaries = ResultsStepDefinitions.getSummariesByDate(startDate);
+        HearingResultSummariesView summaries;
 
         Function<HearingResultSummariesView, List<HearingResultSummaryView>> resultsFilter =
                 summs -> summs.getResults().stream().filter(sum -> sum.getHearingId().equals(hearingIn.getId()))
@@ -93,6 +99,7 @@ public class ResultsIT {
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, hearingIn.getId())
                         .withValue(Hearing::getJurisdictionType, hearingIn.getJurisdictionType())
+                        .withValue(Hearing::getCourtApplications, resultsMessage.getHearing().getCourtApplications())
                         .withValue(Hearing::getType, hearingIn.getType())
                 );
         // check the details from query
@@ -156,9 +163,42 @@ public class ResultsIT {
         ResultsStepDefinitions.getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, matcher);
     }
 
+
     @Test
     public void getHearingDetails_shouldReturnBadRequestForResultsSummaryWithoutFromDate() {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         thenReturnsBadRequestForResultsSummaryWithoutFromDate();
+    }
+
+    @Test
+    public void testJourneyHearingToDisplayAllDetailsInResults() {
+        PublicHearingResulted resultsMessage = basicShareResultsTemplate();
+
+        final Hearing hearingIn = resultsMessage.getHearing();
+
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        ApiCourtCentre expectedCourtCentre =
+                ApiCourtCentre.apiCourtCentre()
+                        .withAddress(ApiAddress.apiAddress()
+                            .withAddress1(hearingIn.getCourtCentre().getAddress().getAddress1())
+                            .withAddress2(hearingIn.getCourtCentre().getAddress().getAddress2())
+                            .withAddress3(hearingIn.getCourtCentre().getAddress().getAddress3())
+                            .withAddress4(hearingIn.getCourtCentre().getAddress().getAddress4())
+                            .withAddress5(hearingIn.getCourtCentre().getAddress().getAddress5())
+                            .withPostcode(hearingIn.getCourtCentre().getAddress().getPostcode()).build())
+                        .withId(hearingIn.getCourtCentre().getId())
+                        .withName(hearingIn.getCourtCentre().getName())
+                        .withRoomId(hearingIn.getCourtCentre().getRoomId())
+                        .withRoomName(hearingIn.getCourtCentre().getRoomName())
+                        .withWelshName(hearingIn.getCourtCentre().getWelshName())
+                        .withWelshRoomName(hearingIn.getCourtCentre().getWelshRoomName()).build();
+
+        Matcher<ApiHearing> matcher = isBean(ApiHearing.class)
+                .withValue(ApiHearing::getId, hearingIn.getId())
+                .withValue(ApiHearing::getCourtCentre, expectedCourtCentre);
+
+        ResultsStepDefinitions.getHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher);
+
     }
 }

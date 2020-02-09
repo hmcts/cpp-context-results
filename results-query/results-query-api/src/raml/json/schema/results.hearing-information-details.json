@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": [
+    "object",
+    "null"
+  ],
+  "properties": {
+    "hearing": {
+      "$ref": "http://justice.gov.uk/core/courts/external/apiHearing.json#"
+    }
+
+  },
+  "required": [
+    "hearing"
+  ],
+  "additionalProperties": false
+}
