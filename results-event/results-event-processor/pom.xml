@@ -33,6 +33,11 @@
             <groupId>uk.gov.justice.framework-generators</groupId>
             <artifactId>rest-client-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>results-domain-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Test Dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -70,8 +75,9 @@
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>test-utilities</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
-        <dependency>
+         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
             <version>5.2.1.RELEASE</version>
