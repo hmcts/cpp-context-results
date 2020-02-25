@@ -25,19 +25,19 @@ public class EventGridServiceImpl implements EventGridService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventGridServiceImpl.class);
 
     @Inject
-    @Value(key = "eventGridTopicHost", defaultValue = "eg-ste-hearingid-laa.uksouth-1.eventgrid.azure.net")
+    @Value(key = "eventGridTopicHost", defaultValue = "localhost")
     private String eventgridTopicHost;
 
     @Inject
-    @Value(key = "eventGridTopicKey", defaultValue = "TBXmRdjFiPfcaqn56rguBZ797760lXjuMJaGewGxOdA=")
+    @Value(key = "eventGridTopicKey", defaultValue = "test_key")
     private String eventgridTopicKey;
 
     @Inject
-    @Value(key = "eventGridTopicProtocol", defaultValue = "https")
+    @Value(key = "eventGridTopicProtocol", defaultValue = "http")
     private String eventgridTopicProtocol;
 
     @Inject
-    @Value(key = "eventGridTopicPort", defaultValue = "443")
+    @Value(key = "eventGridTopicPort", defaultValue = "8080")
     private String eventgridTopicPort;
 
     private EventGridClient eventGridClient;

@@ -5,6 +5,8 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -157,4 +159,46 @@ public class ResultsEventProcessorTest {
 
     }
 
+    @Test
+    public void hearingResulted_shouldContinueIfEventGridFails() {
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+        final String hearingId = shareResultsMessage.getHearing().getId().toString();
+
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
+                objectToJsonObjectConverter.convert(shareResultsMessage));
+        final JsonObject transformedHearing = envelope.asJsonObject() ;
+
+        when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
+        when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
+        when(eventGridService.sendHearingResultedEvent(hearingId)).thenThrow(new RuntimeException("Error"));
+
+        resultsEventProcessor.hearingResulted(envelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+    }
+
+    @Test
+    public void hearingResulted_shouldUseCorrectHashKey() {
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+        final String hearingId = shareResultsMessage.getHearing().getId().toString();
+
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
+                objectToJsonObjectConverter.convert(shareResultsMessage));
+        final JsonObject transformedHearing = envelope.asJsonObject() ;
+
+        when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
+
+        final String expectedCacheKey = hearingId + "_result_";
+
+        when(cacheService.add(expectedCacheKey, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
+
+        when(eventGridService.sendHearingResultedEvent(hearingId)).thenReturn(true);
+
+        resultsEventProcessor.hearingResulted(envelope);
+        verify(cacheService, times(1)).add(expectedCacheKey, transformedHearing.getJsonObject("hearing").toString());
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+    }
 }

@@ -36,7 +36,7 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <criminal-court-public-model.version>1.0.61</criminal-court-public-model.version>
+        <criminal-court-public-model.version>1.0.66</criminal-court-public-model.version>
     </properties>
     <build>
         <plugins>

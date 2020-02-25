@@ -11,11 +11,11 @@ import javax.inject.Inject;
 public class RedisCacheService implements CacheService {
 
     @Inject
-    @Value(key = "redisCacheHost", defaultValue = "RC-STE-COMMON.redis.cache.windows.net")
+    @Value(key = "redisCacheHost", defaultValue = "localhost")
     private String host;
 
     @Inject
-    @Value(key = "redisCacheKey", defaultValue = "iievMedi1N12exPmAn7SDH+KXtarprio6Bfh7tI1wQg=")
+    @Value(key = "redisCacheKey", defaultValue = "none")
     private String key;
 
     @Inject
@@ -23,21 +23,21 @@ public class RedisCacheService implements CacheService {
     private String port;
 
     @Inject
-    @Value(key = "redisCacheUseSsl", defaultValue = "true")
+    @Value(key = "redisCacheUseSsl", defaultValue = "false")
     private String useSsl;
 
     private RedisClient redisClient;
 
     @Override
-    public String add(final String hearingId, final String hearingJson) {
+    public String add(final String key, final String value) {
         if ("localhost".equals(host)) {
             return null;
         }
-        final String keyPart = ("none".equals(key) ? "" : key + "@");
+        final String keyPart = ("none".equals(this.key) ? "" : this.key + "@");
         final RedisURI redisURI = RedisURI.create("redis://" + keyPart + host + ":" + port);
         redisURI.setSsl(Boolean.valueOf(useSsl));
         redisClient = RedisClient.create(redisURI);
-        return getRedisCommand().set(hearingId, hearingJson);
+        return getRedisCommand().set(key, value);
     }
 
     @Override

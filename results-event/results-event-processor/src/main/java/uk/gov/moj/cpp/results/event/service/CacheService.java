@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.event.service;
 
 public interface CacheService {
-    String add(String hearingId, String hearingJson);
+    String add(String key, String value);
 
-    String get(String hearingId);
+    String get(String key);
 }

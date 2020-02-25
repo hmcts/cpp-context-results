@@ -31,6 +31,7 @@ public class ResultsEventProcessor {
     private static final String HEARING_ID = "id";
     private static final String HEARING = "hearing";
     private static final String RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED = "results.case-or-application-ejected";
+    private static final String CACHE_KEY_SUFFIX = "_result_";
 
     @Inject
     private Enveloper enveloper;
@@ -59,15 +60,21 @@ public class ResultsEventProcessor {
 
         final String hearingId = transformedHearing.getString(HEARING_ID);
 
+        final String cacheKey = hearingId + CACHE_KEY_SUFFIX;
+
         try {
             LOGGER.info("Adding hearing {} to Redis Cache", hearingId);
-            cacheService.add(hearingId, transformedHearing.toString());
+            cacheService.add(cacheKey, transformedHearing.toString());
         } catch (Exception e) {
-            LOGGER.error("Exception caught while connection to cache service: {}", e);
+            LOGGER.error("Exception caught while attempting to connect to cache service: {}", e);
         }
 
-        LOGGER.info("Adding Hearing Resulted for hearing {} to EventGrid", hearingId);
-        eventGridService.sendHearingResultedEvent(hearingId);
+        try {
+            LOGGER.info("Adding Hearing Resulted for hearing {} to EventGrid", hearingId);
+            eventGridService.sendHearingResultedEvent(hearingId);
+        } catch (Exception e) {
+            LOGGER.error("Exception caught while attempting to connect to EventGrid: {}", e);
+        }
 
         sender.sendAsAdmin(enveloper.withMetadataFrom(envelope, "results.command.add-hearing-result").apply(hearingResultPayload));
     }
