@@ -212,7 +212,7 @@ public class HearingTransformer {
     private ApiAttendanceDay.Builder attendanceDays(final AttendanceDay attendanceDay){
         return ApiAttendanceDay.apiAttendanceDay()
                 .withDay(attendanceDay.getDay())
-                .withIsInAttendance(attendanceDay.getIsInAttendance()) ;
+                .withIsInAttendance(AttendanceType.NOT_PRESENT == attendanceDay.getAttendanceType() ?Boolean.FALSE:Boolean.TRUE) ;
     }
     private ApiCourtCentre.Builder courtCentre(final CourtCentre courtCentre){
         final ApiCourtCentre.Builder apiCourtCentre = ApiCourtCentre.apiCourtCentre();

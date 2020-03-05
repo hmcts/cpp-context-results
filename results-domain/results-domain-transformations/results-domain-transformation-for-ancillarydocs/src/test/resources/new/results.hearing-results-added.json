@@ -1,0 +1,324 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "address": {
+        "address1": "The Court House",
+        "address2": "Civic Centre",
+        "address3": "Aldershot",
+        "address4": "Hants.",
+        "address5": "",
+        "postcode": "GU11 1NY"
+      },
+      "id": "204d3dbb-a4d4-331b-a52c-07182c55d9bc",
+      "name": "Aldershot Magistrates' Court",
+      "roomId": "3796db82-b4c7-3fd3-aec4-0e3406e0a3ac",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "day": "2020-01-24",
+            "attendanceType": "NOT_PRESENT"
+          }
+        ],
+        "defendantId": "1750bd38-5d6e-4a5b-855f-139030c820f2"
+      }
+    ],
+    "defendantReferralReasons": [
+      {
+        "defendantId": "1750bd38-5d6e-4a5b-855f-139030c820f2",
+        "description": "For a case management hearing (No need for defendant to attend)",
+        "id": "23121983-9c84-4e1e-8e5f-9b1d81124204"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 30,
+        "listingSequence": 1,
+        "sittingDay": "2020-01-24T10:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "8083599a-7ebb-482d-a7ec-1c31b33ee198",
+    "judiciary": [
+      {
+        "firstName": "Justin Lee",
+        "isBenchChairman": true,
+        "isDeputy": false,
+        "judicialId": "ea90a481-2ed1-3cb0-9ee7-c1ba94498d70",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "ea90a481-2ed1-3cb0-9ee7-c1ba94498d70",
+          "judiciaryType": "Magistrate"
+        },
+        "lastName": "Honey-Jones",
+        "title": "Mr"
+      },
+      {
+        "firstName": "Debra",
+        "isBenchChairman": false,
+        "isDeputy": true,
+        "judicialId": "90092a96-d41d-390b-9e56-9b2383465360",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "90092a96-d41d-390b-9e56-9b2383465360",
+          "judiciaryType": "Magistrate"
+        },
+        "lastName": "Davidson-Smith",
+        "title": "Mrs"
+      },
+      {
+        "firstName": "Anthony Robert",
+        "isBenchChairman": false,
+        "isDeputy": true,
+        "judicialId": "f80ebff1-6cca-39b4-8a02-24d7c489cef4",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "f80ebff1-6cca-39b4-8a02-24d7c489cef4",
+          "judiciaryType": "Magistrate"
+        },
+        "lastName": "Apperley",
+        "title": "Mr"
+      }
+    ],
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "SJP_REFERRAL",
+        "defendants": [
+          {
+            "id": "1750bd38-5d6e-4a5b-855f-139030c820f2",
+            "isYouth": false,
+            "numberOfPreviousConvictionsCited": 2,
+            "offences": [
+              {
+                "allocationDecision": {
+                  "allocationDecisionDate": "2020-01-24",
+                  "motReasonCode": "b8c37e33-defd-351c-b91e-1e03e51657da",
+                  "motReasonDescription": "Summary-only offence",
+                  "motReasonId": "b8c37e33-defd-351c-b91e-1e03e51657da",
+                  "offenceId": "a0258ce0-3630-4701-a5cd-d9e8caed9d36",
+                  "originatingHearingId": "8083599a-7ebb-482d-a7ec-1c31b33ee198",
+                  "sequenceNumber": 90
+                },
+                "chargeDate": "2019-10-09",
+                "count": 1,
+                "id": "a0258ce0-3630-4701-a5cd-d9e8caed9d36",
+                "judicialResults": [
+                  {
+                    "category": "ANCILLARY",
+                    "cjsCode": "4506",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                    },
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "judicialResultId": "c4fc16dd-7032-4fd8-883e-b3a5e2ba1a17",
+                    "judicialResultPrompts": [
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Is the defendant excused attendance?",
+                        "promptSequence": 100,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "false",
+                        "welshLabel": ""
+                      }
+                    ],
+                    "label": "Adjournment",
+                    "lastSharedDateTime": "2020-01-23",
+                    "orderedDate": "2020-01-24",
+                    "orderedHearingId": "8083599a-7ebb-482d-a7ec-1c31b33ee198",
+                    "rank": 48500,
+                    "usergroups": [],
+                    "welshLabel": "Gohiriad"
+                  },
+                  {
+                    "category": "ANCILLARY",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                    },
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "judicialResultId": "6ab1b45e-dd3b-4685-8d3f-212fa117af6e",
+                    "judicialResultPrompts": [
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Date of hearing",
+                        "promptReference": "HDATE",
+                        "promptSequence": 100,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "25 Feb 2020",
+                        "welshLabel": ""
+                      },
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Time of hearing",
+                        "promptReference": "HTIME",
+                        "promptSequence": 200,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "10:00",
+                        "welshLabel": ""
+                      },
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Courtroom",
+                        "promptReference": "HCROOM",
+                        "promptSequence": 300,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "Courtroom 01",
+                        "welshLabel": ""
+                      },
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Courthouse name",
+                        "promptReference": "HCHOUSE",
+                        "promptSequence": 400,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "Aldershot Magistrates' Court",
+                        "welshLabel": ""
+                      },
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Hearing type",
+                        "promptReference": "HTYPE",
+                        "promptSequence": 500,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "Trial",
+                        "welshLabel": ""
+                      },
+                      {
+                        "isAvailableForCourtExtract": true,
+                        "label": "Estimated duration",
+                        "promptReference": "HEST",
+                        "promptSequence": 600,
+                        "usergroups": [
+                          "Court Clerks",
+                          "Legal Advisers"
+                        ],
+                        "value": "2 Hours",
+                        "welshLabel": ""
+                      }
+                    ],
+                    "label": "Next hearing in magistrates' court",
+                    "lastSharedDateTime": "2020-01-23",
+                    "orderedDate": "2020-01-24",
+                    "orderedHearingId": "8083599a-7ebb-482d-a7ec-1c31b33ee198",
+                    "rank": 48400,
+                    "usergroups": [],
+                    "welshLabel": "Ni wnaeth y Llys barhau â’r treial yn absenoldeb y diffynnydd"
+                  },
+                  {
+                    "category": "ANCILLARY",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                    },
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "judicialResultId": "5637eba3-47b0-4e64-89b0-688896ea0179",
+                    "label": "Adjournment reason: For the trial to take place",
+                    "lastSharedDateTime": "2020-01-23",
+                    "orderedDate": "2020-01-24",
+                    "orderedHearingId": "8083599a-7ebb-482d-a7ec-1c31b33ee198",
+                    "qualifier": "GC",
+                    "rank": 10700,
+                    "usergroups": [
+                      "Court Clerks",
+                      "Legal Advisers"
+                    ],
+                    "welshLabel": "Rheswm dros ohirio: Er mwyn cynnal y treial"
+                  }
+                ],
+                "modeOfTrial": "Summary",
+                "notifiedPlea": {
+                  "notifiedPleaDate": "2020-01-23",
+                  "notifiedPleaValue": "NO_NOTIFICATION",
+                  "offenceId": "a0258ce0-3630-4701-a5cd-d9e8caed9d36"
+                },
+                "offenceCode": "PS90027",
+                "offenceDefinitionId": "90fe3d9e-88af-4857-a73a-d5e6d56de3c4",
+                "offenceLegislation": "Contrary to regulation 6(1)(d) of the Public Service Vehicles (Conduct of Drivers, Inspectors, Conductors and Passengers) Regulations 1990 and section 25(3) of the Public Passenger Vehicles Act 1981.",
+                "offenceLegislationWelsh": "",
+                "offenceTitle": "Passenger smoke on part of a public service vehicle where passengers were when prohibited by a notice",
+                "offenceTitleWelsh": "",
+                "orderIndex": 1,
+                "plea": {
+                  "offenceId": "a0258ce0-3630-4701-a5cd-d9e8caed9d36",
+                  "originatingHearingId": "8083599a-7ebb-482d-a7ec-1c31b33ee198",
+                  "pleaDate": "2020-01-24",
+                  "pleaValue": "NOT_GUILTY"
+                },
+                "startDate": "2019-09-30",
+                "wording": "On 02/07/2015 At threadneedle street EC2 Being a passenger on a Public service Vehicle operated on behalf of London Bus Services Limited being used for the carriage of passengers at separate fares where the vehicle was being operated by a Driver without a Conductor did not as directed by the Driver an Inspector or a Notice displayed on the vehicle pay the fare for the journey in accordance with the direction "
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "address": {
+                  "address1": "Flat 1, Armageddon House",
+                  "address2": "13 Old Road",
+                  "address3": "Giggleswick",
+                  "address4": "Merton",
+                  "postcode": "SW11 5TQ"
+                },
+                "contact": {},
+                "dateOfBirth": "1957-11-26",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {},
+                "firstName": "Hany",
+                "gender": "MALE",
+                "lastName": "Chamley",
+                "title": "MR"
+              }
+            },
+            "prosecutionCaseId": "fff51d22-51b0-47ee-b287-2f8eac8b7270"
+          }
+        ],
+        "id": "fff51d22-51b0-47ee-b287-2f8eac8b7270",
+        "initiationCode": "J",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "TFL",
+          "prosecutionAuthorityId": "31af405e-7b60-4dd8-a244-c24c2d3fa595",
+          "prosecutionAuthorityReference": "TFL67343NX2DQ"
+        },
+        "statementOfFacts": "An incident took place at GREEN PARK station whereby you were spoken to by a member of London Underground staff regarding your train journey and the associated fare.The facts of this incidents are now being considered and I must advise you that legal proceedings may be initiated against you regarding this matter in accordance with the LU prosecution policy"
+      }
+    ],
+    "type": {
+      "description": "Pre-Trial Review",
+      "id": "c6d76309-c912-436b-a21b-a4c4450bc052"
+    }
+  },
+  "sharedTime": "2020-01-23T17:06:39.173Z"
+}

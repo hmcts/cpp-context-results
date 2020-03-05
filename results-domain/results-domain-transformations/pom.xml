@@ -18,6 +18,7 @@
         <module>results-domain-transformations-for-MOT</module>
         <module>results-domain-transformation-anonymise</module>
         <module>results-domain-transformations-for-ctl</module>
+        <module>results-domain-transformation-for-ancillarydocs</module>
     </modules>
 
 
