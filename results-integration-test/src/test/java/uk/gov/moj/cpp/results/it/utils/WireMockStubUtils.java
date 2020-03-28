@@ -118,7 +118,7 @@ public class WireMockStubUtils {
         setupUserWithGroup(userId, "stub-data/get-groups-unauthorised-user.json");
     }
 
-    private static void setupUserWithGroup(final UUID userId, String userGroupFile) {
+    private static void setupUserWithGroup(final UUID userId, final String userGroupFile) {
         stubPingFor("usersgroups-service");
 
         stubFor(get(urlPathEqualTo(format("/usersgroups-service/query/api/rest/usersgroups/users/{0}/groups", userId)))
@@ -279,7 +279,7 @@ public class WireMockStubUtils {
                 );
     }
 
-    private static JsonObjectBuilder pleasJsonBuilder(final ProgressionCase progressionCase){
+    private static JsonObjectBuilder pleasJsonBuilder(final ProgressionCase progressionCase) {
         return createObjectBuilder()
                 .add("pleas", createArrayBuilder()
                         .add(createObjectBuilder()
@@ -375,7 +375,7 @@ public class WireMockStubUtils {
                 .add("pleaDate", LocalDates.to(offence.getPlea().getPleaDate()));
     }
 
-    private static String getJsonResponse(final String filename) {
+    public static String getJsonResponse(final String filename) {
         try {
             return Resources.toString(getResource(filename), defaultCharset());
         } catch (final IOException exception) {

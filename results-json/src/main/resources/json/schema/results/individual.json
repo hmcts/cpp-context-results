@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/individual.json",
+  "type": "object",
+  "properties": {
+    "title": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/personTitle"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "dateOfBirth": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "gender": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/gender"
+    },
+    "address": {
+      "$ref": "http://justice.gov.uk/core/courts/address.json"
+    },
+    "contact": {
+      "$ref": "http://justice.gov.uk/core/courts/contactNumber.json"
+    }
+  },
+  "required": [
+    "lastName",
+    "gender"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,83 @@
+{
+  "caseId": "cccc1111-1e20-4c21-916a-81a6c90239e5",
+  "courtCentreWithLJA": {
+    "courtHearingLocation": "courtHearingLocation",
+    "psaCode": 1010,
+    "courtCentre": {
+      "address": {
+        "address1": "address1",
+        "address2": "address2",
+        "address3": "address3",
+        "address4": "address4",
+        "postcode": "postcode"
+      },
+      "id": "7abb6e4e-3ff2-4419-8d48-3c0e9662726c",
+      "name": "courtName",
+      "roomId": "df2ce598-9f69-4857-aa91-d990a5dcb4a8",
+      "roomName": "roomName",
+      "welshName": "welshName",
+      "welshRoomName": "welshRoomName"
+    }
+  },
+  "defendant": {
+    "attendanceDays": [
+      {
+        "day": "2019-01-02",
+        "isInAttendance": false
+      }
+    ],
+    "defendantId": "dddd2222-1e20-4c21-916a-81a6c90239e5",
+    "individualDefendant": {
+      "bailStatus": {
+        "code": "code",
+        "description": "description",
+        "id": "2ab6bdbb-a9ac-435f-acda-b735971daa33"
+      },
+      "person": {
+        "firstName": "John",
+        "gender": "NOT_KNOWN",
+        "lastName": "Smith",
+        "title": "MS"
+      },
+      "presentAtHearing": "DEFAULT_VALUE",
+      "reasonForBailConditionsOrCustody": "DEFAULT_VALUE"
+    },
+    "offences": [
+      {
+        "arrestDate": "2019-04-25",
+        "chargeDate": "2019-04-25",
+        "convictingCourt": "DEFAULT_VALUE",
+        "convictionDate": "2019-04-25",
+        "endDate": "2019-04-25",
+        "finalDisposal": "DEFAULT_VALUE",
+        "id": "c74c79db-aeec-45ce-833b-b572ee636469",
+        "modeOfTrial": "modeOfTrial",
+        "offenceCode": "offenceCode",
+        "offenceDateCode": "2019-04-25",
+        "orderSequenceNumber": 65,
+        "startDate": "2019-04-25",
+        "wording": "offenceWording"
+      }
+    ],
+    "prosecutorReference": "DEFAULT_VALUE"
+  },
+  "id": "6ca907d1-b0ac-4efa-b7bc-ddd110e56179",
+  "sessionDays": [
+    {
+      "listedDurationMinutes": 100,
+      "listingSequence": 10,
+      "sittingDay": "2018-06-04T12:01:01.000Z"
+    },
+    {
+      "listedDurationMinutes": 100,
+      "listingSequence": 10,
+      "sittingDay": "2018-04-03T12:01:01.000Z"
+    },
+    {
+      "listedDurationMinutes": 100,
+      "listingSequence": 10,
+      "sittingDay": "2018-02-02T12:03:10.000Z"
+    }
+  ],
+  "urn": "DEFAULT_VALUE"
+}

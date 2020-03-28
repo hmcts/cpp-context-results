@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/nows-material-status-updated.json",
+  "type":"object",
+  "properties":{
+    "hearingId":{
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "materialId":{
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "status":{
+      "type":"string"
+    }
+  },
+  "additionalProperties":false,
+  "required":[
+    "hearingId",
+    "materialId",
+    "status"
+  ]
+}

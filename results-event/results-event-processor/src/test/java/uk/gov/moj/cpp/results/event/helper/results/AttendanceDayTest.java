@@ -1,0 +1,44 @@
+package uk.gov.moj.cpp.results.event.helper.results;
+
+import static java.util.UUID.fromString;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
+
+import uk.gov.justice.core.courts.AttendanceDay;
+import uk.gov.justice.core.courts.AttendanceType;
+import uk.gov.justice.core.courts.Hearing;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.runners.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class AttendanceDayTest {
+
+    private static final UUID DEFAULT_DEFENDANT_ID = fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");
+
+    @InjectMocks
+    uk.gov.moj.cpp.results.event.helper.results.AttendanceDay attendanceDay;
+
+
+    @Test
+    public void testBuildAttendance() {
+
+        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final Hearing hearing = shareResultsMessage.getHearing();
+
+        final List<AttendanceDay> attendanceDays = attendanceDay.buildAttendance(hearing.getDefendantAttendance(), DEFAULT_DEFENDANT_ID);
+        final uk.gov.justice.core.courts.AttendanceDay attendanceDay = attendanceDays.get(0);
+        assertThat(attendanceDay.getAttendanceType(), is(AttendanceType.IN_PERSON));
+        assertThat(attendanceDay.getDay(), is(LocalDate.of(2018, 05, 02)));
+
+    }
+
+}

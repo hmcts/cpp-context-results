@@ -1,0 +1,31 @@
+#%RAML 0.8
+title: Results command api
+version: v1
+protocols: [ HTTP ]
+
+baseUri: http://localhost:8080/results-command-api/command/api/rest/results
+
+/results/{sessionId}:
+  uriParameters:
+    sessionId:
+      type: string
+  post:
+    description: |
+      ...
+      (mapping):
+          requestType: application/vnd.results.command.generate-police-results-for-a-defendant+json
+          name: results.command.generate-police-results-for-a-defendant
+      ...
+    body:
+      application/vnd.results.command.generate-police-results-for-a-defendant+json:
+        example:
+          !include json/results.command.generate-police-results-for-a-defendant.json
+        schema:
+          !include json/schema/results.command.generate-police-results-for-a-defendant.json
+    responses:
+      202:
+        description: Accepted
+      400:
+        description: Invalid command
+      500:
+        description: Internal Server Error

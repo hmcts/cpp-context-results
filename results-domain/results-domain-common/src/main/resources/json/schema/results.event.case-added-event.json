@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/case-added-event.json",
+  "type": "object",
+  "properties": {
+    "caseId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "urn": {
+      "type": "string"
+    },
+    "prosecutionAuthorityCode": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "urn",
+    "prosecutionAuthorityCode"
+  ],
+  "additionalProperties": false
+}

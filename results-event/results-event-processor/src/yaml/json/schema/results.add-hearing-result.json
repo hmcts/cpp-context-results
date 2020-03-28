@@ -110,13 +110,13 @@
         },
         "defendantIds": {
           "type": "array",
-          "items" : {
+          "items": {
             "$ref": "#/definitions/uuid"
           }
         },
         "caseIds": {
           "type": "array",
-          "items" : {
+          "items": {
             "$ref": "#/definitions/uuid"
           }
         }
@@ -248,7 +248,7 @@
           "type": "string"
         },
         "bailStatus": {
-          "type": "string"
+          "$ref": "http://justice.gov.uk/core/courts/bailStatus.json"
         },
         "custodyTimeLimitDate": {
           "type": "string"

@@ -18,5 +18,9 @@ public final class RuleConstants {
         return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS);
     }
 
+    public static List<String> getPoliceResultsForDefendantGroups() {
+        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS);
+    }
+
 }
 

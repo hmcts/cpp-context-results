@@ -1,0 +1,11 @@
+subscriptions_descriptor:
+  spec_version: 1.0.0
+  service: results
+  service_component: EVENT_PROCESSOR
+  subscriptions:
+    - name: public event processor subscription
+      events:
+        - name: public.results.police-result-generated
+          schema_uri: http://moj.gov.uk/cpp/results/domain/public.police-result-generated.json
+
+      event_source_name: public.event.source

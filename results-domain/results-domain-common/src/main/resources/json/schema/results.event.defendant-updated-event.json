@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/defendant-updated-event.json",
+  "type": "object",
+  "properties": {
+    "caseId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "defendant": {
+      "type": "object",
+      "$ref": "http://justice.gov.uk/core/courts/caseDefendant.json"
+    }
+  },
+  "required": [
+    "id",
+    "urn"
+  ],
+  "additionalProperties": false
+}

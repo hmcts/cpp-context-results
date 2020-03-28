@@ -427,7 +427,11 @@
                   }
                 ]
               },
-              "bailStatus": "CONDITIONAL",
+              "bailStatus": {
+                "code": "code",
+                "description": "description",
+                "id": "2ab6bdbb-a9ac-435f-acda-b735971daa33"
+              },
               "bailConditions": "a",
               "custodyTimeLimit": "1950-01-01",
               "perceivedBirthYear": 0,
@@ -1050,7 +1054,11 @@
                   }
                 ]
               },
-              "bailStatus": "CONDITIONAL",
+              "bailStatus": {
+                "code": "code",
+                "description": "description",
+                "id": "2ab6bdbb-a9ac-435f-acda-b735971daa33"
+              },
               "bailConditions": "a",
               "custodyTimeLimit": "1950-01-01",
               "perceivedBirthYear": 0,
@@ -1683,7 +1691,11 @@
                       }
                     ]
                   },
-                  "bailStatus": "CONDITIONAL",
+                  "bailStatus": {
+                    "code": "code",
+                    "description": "description",
+                    "id": "2ab6bdbb-a9ac-435f-acda-b735971daa33"
+                  },
                   "bailConditions": "a",
                   "custodyTimeLimit": "1950-01-01",
                   "perceivedBirthYear": 0,

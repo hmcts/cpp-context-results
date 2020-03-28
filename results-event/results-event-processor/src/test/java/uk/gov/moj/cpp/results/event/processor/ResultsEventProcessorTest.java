@@ -1,35 +1,61 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static com.google.common.collect.ImmutableList.of;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
+import static java.util.stream.Collectors.toList;
+import static javax.json.Json.createArrayBuilder;
+import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.withMetadataEnvelopedFrom;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
+import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildAllocationDecision;
 
+import uk.gov.justice.core.courts.BailStatus;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.event.helper.BaseSessionStructureConverterForSjp;
+import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
+import uk.gov.moj.cpp.results.event.helper.CaseDetailsConverterForSjp;
+import uk.gov.moj.cpp.results.event.helper.CasesConverter;
+import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
+import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
+import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.Json;
@@ -48,8 +74,19 @@ import org.mockito.Spy;
 @RunWith(DataProviderRunner.class)
 public class ResultsEventProcessorTest {
 
+    private static final UUID PROMPT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d");
+    private static final UUID PROMPT_ID_1 = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6742d");
+    private static final UUID RESULT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6743d");
+    private static final UUID NATIONALITY_ID = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
+
     @Spy
     private final Enveloper enveloper = createEnveloper();
+
+    @Mock
+    ReferenceDataService referenceDataService;
+
+    @Mock
+    ReferenceCache referenceCache;
 
     @Mock
     private Sender sender;
@@ -62,6 +99,21 @@ public class ResultsEventProcessorTest {
 
     @Mock
     private EventGridService eventGridService;
+
+    @Mock
+    private Requester requester;
+
+    @Mock
+    private CasesConverter casesConverter;
+
+    @Mock
+    private BaseStructureConverter baseStructureConverter;
+
+    @Mock
+    private BaseSessionStructureConverterForSjp baseSessionStructureConverterForSjp;
+
+    @Mock
+    private CaseDetailsConverterForSjp caseDetailsConverterForSjp;
 
     @Spy
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
@@ -80,6 +132,25 @@ public class ResultsEventProcessorTest {
         initMocks(this);
         setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
+        final JsonObject result = createObjectBuilder()
+                .add("isoCode", "USA")
+                .add("id", NATIONALITY_ID.toString())
+                .build();
+        final JsonObject resultPayload = createObjectBuilder().add("countryNationality", createArrayBuilder()
+                .add(
+                        result)
+                .build())
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(randomUUID(), "results.hearing-results-added").build(), resultPayload);
+
+        final JsonEnvelope envelopeForCourt = envelopeFrom(metadataOf(randomUUID(), "referencedata.query.local-justice-area-national-court-code-and-oucode-mapping").build(), createObjectBuilder().
+                add("nationalCourtCode", "1234")
+                .add("oucode", "B22KS00")
+                .build());
+        when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
+        when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt);
+
     }
 
     @Test
@@ -98,13 +169,71 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.hearingResulted(envelope);
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(envelopeArgumentCaptor.getAllValues());
+
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(
+                        metadata().withName("results.command.add-hearing-result"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString())))
+                        ))));
+
+    }
+
+    @Test
+    public void hearingResulted_shouldIssueCreateResultCommand() {
+
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
+                objectToJsonObjectConverter.convert(shareResultsMessage));
+
+        resultsEventProcessor.hearingResultAdded(envelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(envelopeArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.create-results"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.session.id", is(shareResultsMessage.getHearing().getId().toString())),
+                                withJsonPath("$.session.sourceType", is("CC")),
+                                withJsonPath("$.session.sessionDays.[0].sittingDay", is("2018-05-02T12:01:01.000Z")))
+
+                        ))));
+
+    }
+
+    @Test
+    public void shouldRaiseAPublicEventPoliceResultGenerated() {
+        final String id = "d4a8d314-9cf0-411f-84fc-af603b46a388";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withName("dummy"))
+                .withPayloadOf(id, "id")
+                .withPayloadOf(createObjectBuilder().add("id", id).build(), "courtCentre")
+                .withPayloadOf(createObjectBuilder().add("id", id).build(), "sessionDays")
+                .withPayloadOf("urn123", "urn")
+                .withPayloadOf("d4a8d314-9cf0-411f-84fc-af603b46a38813", "caseId")
+                .withPayloadOf(createObjectBuilder().add("id", id).build(), "defendant")
+                .build();
+
+        resultsEventProcessor.createResult(jsonEnvelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         assertThat(
                 envelopeArgumentCaptor.getValue(), jsonEnvelope(
-                        metadata().withName("results.command.add-hearing-result"),
+                        metadata().withName("public.results.police-result-generated"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString()))))));
+                                withJsonPath("$.id", is(id))))));
 
+    }
+
+
+    private List<JsonEnvelope> convertStreamToEventList(final List<JsonEnvelope> listOfStreams) {
+        return listOfStreams.stream().collect(toList());
     }
 
     @Test
@@ -185,7 +314,7 @@ public class ResultsEventProcessorTest {
 
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
-        final JsonObject transformedHearing = envelope.asJsonObject() ;
+        final JsonObject transformedHearing = envelope.asJsonObject();
 
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
 
@@ -199,6 +328,67 @@ public class ResultsEventProcessorTest {
         verify(cacheService, times(1)).add(expectedCacheKey, transformedHearing.getJsonObject("hearing").toString());
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-
     }
+
+    @Test
+    public void sjpCaseResulted_shouldForwardAsEvent() {
+        final BailStatus bailStatus = BailStatus.bailStatus().build();
+        when(referenceCache.getBailStatusObjectByCode(any(), any())).thenReturn(Optional.of(bailStatus));
+        when(referenceCache.getAllocationDecision(any(), anyString())).thenReturn(Optional.of(buildAllocationDecision()));
+
+        final PublicSjpResulted sjpCaseResultedMessage = TestTemplates.basicSJPCaseResulted();
+
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.sjp.case-resulted"),
+                objectToJsonObjectConverter.convert(sjpCaseResultedMessage));
+
+        resultsEventProcessor.sjpCaseResulted(envelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final String id = sjpCaseResultedMessage.getSession().getSessionId().toString();
+        assertThat(
+                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                        metadata().withName("results.create-results"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.session.id", is(id)),
+                                withJsonPath("$.session.sourceType", is("SJP"))
+                        ))
+                ));
+    }
+
+    private ResultDefinition buildResultDefinition() {
+        final ResultDefinition resultDefinition = new ResultDefinition();
+        resultDefinition.setId(RESULT_ID);
+        resultDefinition.setAdjournment("Y");
+        resultDefinition.setLabel("label");
+        resultDefinition.setShortCode("shortCode");
+        resultDefinition.setLevel("level");
+        resultDefinition.setRank(1);
+        resultDefinition.setStartDate(new Date());
+        resultDefinition.setEndDate(new Date());
+        resultDefinition.setWelshLabel("welshLabel");
+        resultDefinition.setIsAvailableForCourtExtract(true);
+        resultDefinition.setFinancial("financial");
+        resultDefinition.setCategory("A");
+        resultDefinition.setCjsCode("cjsCode");
+        resultDefinition.setConvicted("Y");
+        resultDefinition.setVersion("1.0");
+        resultDefinition.setUserGroups(of("1", "2"));
+        resultDefinition.setPrompts(of(buildPrompt(PROMPT_ID), buildPrompt(PROMPT_ID_1)));
+        return resultDefinition;
+    }
+
+    private Prompt buildPrompt(final UUID promptId) {
+        final Prompt prompt = new Prompt();
+        prompt.setDuration("duration");
+        prompt.setLabel("label");
+        prompt.setWelshLabel("welshLabel");
+        prompt.setMandatory(false);
+        prompt.setType("type");
+        prompt.setSequence(2);
+        prompt.setFixedListId(randomUUID());
+        prompt.setReference("reference");
+        prompt.setId(promptId);
+        return prompt;
+    }
+
 }

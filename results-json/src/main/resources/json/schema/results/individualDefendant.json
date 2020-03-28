@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/individualDefendant.json",
+  "type": "object",
+  "properties": {
+    "person": {
+      "$ref": "http://justice.gov.uk/core/courts/individual.json"
+    },
+    "presentAtHearing": {
+      "type": "string"
+    },
+    "bailConditions": {
+      "type": "string"
+    },
+    "bailStatus": {
+      "$ref": "http://justice.gov.uk/core/courts/bailStatus.json"
+    },
+    "reasonForBailConditionsOrCustody": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "person"
+  ]
+}

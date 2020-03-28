@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/sjp/results/plea-type.json",
+  "enum": [
+    "GUILTY",
+    "GUILTY_REQUEST_HEARING",
+    "NOT_GUILTY"
+  ]
+}

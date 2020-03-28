@@ -1,7 +1,124 @@
 package uk.gov.moj.cpp.domains;
 
-import uk.gov.justice.core.courts.*;
-import uk.gov.justice.core.courts.external.*;
+import uk.gov.justice.core.courts.Address;
+import uk.gov.justice.core.courts.AllocationDecision;
+import uk.gov.justice.core.courts.ApplicantCounsel;
+import uk.gov.justice.core.courts.AssociatedDefenceOrganisation;
+import uk.gov.justice.core.courts.AssociatedPerson;
+import uk.gov.justice.core.courts.AttendanceDay;
+import uk.gov.justice.core.courts.AttendanceType;
+import uk.gov.justice.core.courts.BailStatus;
+import uk.gov.justice.core.courts.ContactNumber;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationOutcome;
+import uk.gov.justice.core.courts.CourtApplicationOutcomeType;
+import uk.gov.justice.core.courts.CourtApplicationParty;
+import uk.gov.justice.core.courts.CourtApplicationPartyAttendance;
+import uk.gov.justice.core.courts.CourtApplicationPartyCounsel;
+import uk.gov.justice.core.courts.CourtApplicationPayment;
+import uk.gov.justice.core.courts.CourtApplicationRespondent;
+import uk.gov.justice.core.courts.CourtApplicationResponse;
+import uk.gov.justice.core.courts.CourtApplicationResponseType;
+import uk.gov.justice.core.courts.CourtApplicationType;
+import uk.gov.justice.core.courts.CourtCentre;
+import uk.gov.justice.core.courts.CourtIndicatedSentence;
+import uk.gov.justice.core.courts.CrackedIneffectiveTrial;
+import uk.gov.justice.core.courts.CustodyTimeLimit;
+import uk.gov.justice.core.courts.DefenceCounsel;
+import uk.gov.justice.core.courts.DefenceOrganisation;
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantAlias;
+import uk.gov.justice.core.courts.DefendantAttendance;
+import uk.gov.justice.core.courts.DelegatedPowers;
+import uk.gov.justice.core.courts.Ethnicity;
+import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.HearingCaseNote;
+import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.HearingType;
+import uk.gov.justice.core.courts.IndicatedPlea;
+import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultPrompt;
+import uk.gov.justice.core.courts.JudicialRole;
+import uk.gov.justice.core.courts.JudicialRoleType;
+import uk.gov.justice.core.courts.LaaReference;
+import uk.gov.justice.core.courts.LegalEntityDefendant;
+import uk.gov.justice.core.courts.Marker;
+import uk.gov.justice.core.courts.NextHearing;
+import uk.gov.justice.core.courts.NextHearingDefendant;
+import uk.gov.justice.core.courts.NextHearingOffence;
+import uk.gov.justice.core.courts.NextHearingProsecutionCase;
+import uk.gov.justice.core.courts.NotifiedPlea;
+import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.OffenceFacts;
+import uk.gov.justice.core.courts.Organisation;
+import uk.gov.justice.core.courts.Person;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.PoliceOfficerInCase;
+import uk.gov.justice.core.courts.ProsecutingAuthority;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
+import uk.gov.justice.core.courts.ProsecutionCounsel;
+import uk.gov.justice.core.courts.ReferralReason;
+import uk.gov.justice.core.courts.RespondentCounsel;
+import uk.gov.justice.core.courts.external.ApiAddress;
+import uk.gov.justice.core.courts.external.ApiAllocationDecision;
+import uk.gov.justice.core.courts.external.ApiApplicantCounsel;
+import uk.gov.justice.core.courts.external.ApiAssociatedDefenceOrganisation;
+import uk.gov.justice.core.courts.external.ApiAssociatedPerson;
+import uk.gov.justice.core.courts.external.ApiAttendanceDay;
+import uk.gov.justice.core.courts.external.ApiBailStatus;
+import uk.gov.justice.core.courts.external.ApiContactNumber;
+import uk.gov.justice.core.courts.external.ApiCourtApplication;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationOutcome;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationOutcomeType;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationParty;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationPartyAttendance;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationPartyCounsel;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationPayment;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationRespondent;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationResponse;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationResponseType;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationType;
+import uk.gov.justice.core.courts.external.ApiCourtCentre;
+import uk.gov.justice.core.courts.external.ApiCourtIndicatedSentence;
+import uk.gov.justice.core.courts.external.ApiCrackedIneffectiveTrial;
+import uk.gov.justice.core.courts.external.ApiCustodyTimeLimit;
+import uk.gov.justice.core.courts.external.ApiDefenceCounsel;
+import uk.gov.justice.core.courts.external.ApiDefenceOrganisation;
+import uk.gov.justice.core.courts.external.ApiDefendant;
+import uk.gov.justice.core.courts.external.ApiDefendantAlias;
+import uk.gov.justice.core.courts.external.ApiDefendantAttendance;
+import uk.gov.justice.core.courts.external.ApiDelegatedPowers;
+import uk.gov.justice.core.courts.external.ApiEthnicity;
+import uk.gov.justice.core.courts.external.ApiHearing;
+import uk.gov.justice.core.courts.external.ApiHearingCaseNote;
+import uk.gov.justice.core.courts.external.ApiHearingDay;
+import uk.gov.justice.core.courts.external.ApiHearingType;
+import uk.gov.justice.core.courts.external.ApiIndicatedPlea;
+import uk.gov.justice.core.courts.external.ApiJudicialResult;
+import uk.gov.justice.core.courts.external.ApiJudicialResultPrompt;
+import uk.gov.justice.core.courts.external.ApiJudicialRole;
+import uk.gov.justice.core.courts.external.ApiJudicialRoleType;
+import uk.gov.justice.core.courts.external.ApiLaaReference;
+import uk.gov.justice.core.courts.external.ApiLegalEntityDefendant;
+import uk.gov.justice.core.courts.external.ApiMarker;
+import uk.gov.justice.core.courts.external.ApiNextHearing;
+import uk.gov.justice.core.courts.external.ApiNextHearingDefendant;
+import uk.gov.justice.core.courts.external.ApiNextHearingOffence;
+import uk.gov.justice.core.courts.external.ApiNextHearingProsecutionCase;
+import uk.gov.justice.core.courts.external.ApiNotifiedPlea;
+import uk.gov.justice.core.courts.external.ApiOffence;
+import uk.gov.justice.core.courts.external.ApiOffenceFacts;
+import uk.gov.justice.core.courts.external.ApiOrganisation;
+import uk.gov.justice.core.courts.external.ApiPerson;
+import uk.gov.justice.core.courts.external.ApiPersonDefendant;
+import uk.gov.justice.core.courts.external.ApiPoliceOfficerInCase;
+import uk.gov.justice.core.courts.external.ApiProsecutingAuthority;
+import uk.gov.justice.core.courts.external.ApiProsecutionCase;
+import uk.gov.justice.core.courts.external.ApiProsecutionCaseIdentifier;
+import uk.gov.justice.core.courts.external.ApiProsecutionCounsel;
+import uk.gov.justice.core.courts.external.ApiReferralReason;
+import uk.gov.justice.core.courts.external.ApiRespondentCounsel;
 import uk.gov.justice.core.courts.external.ApplicationJurisdictionType;
 import uk.gov.justice.core.courts.external.ApplicationStatus;
 import uk.gov.justice.core.courts.external.ApplicationSummonsRecipientType;
@@ -9,7 +126,6 @@ import uk.gov.justice.core.courts.external.ApplicationSummonsTemplateType;
 import uk.gov.justice.core.courts.external.Category;
 import uk.gov.justice.core.courts.external.DocumentationLanguageNeeds;
 import uk.gov.justice.core.courts.external.DriverLicenceCode;
-import uk.gov.justice.core.courts.external.FundingType;
 import uk.gov.justice.core.courts.external.Gender;
 import uk.gov.justice.core.courts.external.HearingLanguage;
 import uk.gov.justice.core.courts.external.IndicatedPleaValue;
@@ -212,7 +328,7 @@ public class HearingTransformer {
     private ApiAttendanceDay.Builder attendanceDays(final AttendanceDay attendanceDay){
         return ApiAttendanceDay.apiAttendanceDay()
                 .withDay(attendanceDay.getDay())
-                .withIsInAttendance(AttendanceType.NOT_PRESENT == attendanceDay.getAttendanceType() ?Boolean.FALSE:Boolean.TRUE) ;
+                .withIsInAttendance(AttendanceType.NOT_PRESENT != attendanceDay.getAttendanceType()) ;
     }
     private ApiCourtCentre.Builder courtCentre(final CourtCentre courtCentre){
         final ApiCourtCentre.Builder apiCourtCentre = ApiCourtCentre.apiCourtCentre();
@@ -661,8 +777,8 @@ public class HearingTransformer {
     }
     private ApiJudicialResultPrompt.Builder judicialResultPrompt(final JudicialResultPrompt judicialResultPrompt){
         return ApiJudicialResultPrompt.apiJudicialResultPrompt()
-                .withIsAvailableForCourtExtract(judicialResultPrompt.getIsAvailableForCourtExtract())
-                .withIsFinancialImposition(judicialResultPrompt.getIsAvailableForCourtExtract())
+                .withIsAvailableForCourtExtract("Y".equals(judicialResultPrompt.getCourtExtract()))
+                .withIsFinancialImposition("Y".equals(judicialResultPrompt.getCourtExtract()))
                 .withLabel(judicialResultPrompt.getLabel())
                 .withPromptReference(judicialResultPrompt.getPromptReference())
                 .withPromptSequence(judicialResultPrompt.getPromptSequence())

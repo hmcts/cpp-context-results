@@ -25,7 +25,6 @@ import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.core.random.RandomGenerator;
-import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.HearingTransformer;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultSummary;
 import uk.gov.moj.cpp.results.query.view.service.HearingService;
@@ -38,7 +37,6 @@ import java.util.UUID;
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

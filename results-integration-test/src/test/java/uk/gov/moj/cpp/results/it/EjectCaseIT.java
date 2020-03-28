@@ -1,25 +1,10 @@
 package uk.gov.moj.cpp.results.it;
 
-import com.jayway.restassured.path.json.JsonPath;
-import org.hamcrest.Matcher;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import uk.gov.justice.core.courts.Hearing;
-import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
-import uk.gov.moj.cpp.results.it.utils.QueueUtil;
-
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.json.Json;
-import javax.json.JsonObject;
-import java.util.UUID;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
@@ -29,16 +14,35 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPriso
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
+import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.it.utils.QueueUtil;
+
+import java.util.UUID;
+
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.json.Json;
+import javax.json.JsonObject;
+
+import com.jayway.restassured.path.json.JsonPath;
+import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 public class EjectCaseIT {
 
     private static final String PUBLIC_EVENT_TOPIC = "public.event";
     private static final String PUBLIC_PROGRESSION_EVENTS_CASE_OR_APPLICATION_EJECTED = "public.progression.events.case-or-application-ejected";
-    private MessageConsumer hearingCaseEjectedConsumer;
-    private MessageConsumer hearingApplicationEjectedConsumer;
     private static final String PROSECUTION_CASE_ID = "prosecutionCaseId";
     private static final String APPLICATION_ID = "applicationId";
     private static final String HEARING_IDS = "hearingIds";
     private static final String REMOVAL_REASON = "removalReason";
+    private MessageConsumer hearingCaseEjectedConsumer;
+    private MessageConsumer hearingApplicationEjectedConsumer;
 
     @Before
     public void setUp() {
@@ -47,12 +51,12 @@ public class EjectCaseIT {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         hearingCaseEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-case-ejected");
         hearingApplicationEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-application-ejected");
-
+        createMessageConsumers();
     }
 
     @Test
     public void testEjectCaseWithCaseIdInPayload() {
-        PublicHearingResulted resultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted resultsMessage = basicShareResultsTemplate();
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -64,14 +68,14 @@ public class EjectCaseIT {
         hearingResultsHaveBeenShared(resultsMessage);
 
         //matcher to check details results
-        Matcher<HearingResultsAdded> hearingResultsAddedMatcher = isBean(HearingResultsAdded.class)
+        final Matcher<HearingResultsAdded> hearingResultsAddedMatcher = isBean(HearingResultsAdded.class)
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, hearingIn.getId())
                         .withValue(Hearing::getJurisdictionType, hearingIn.getJurisdictionType())
                         .withValue(Hearing::getType, hearingIn.getType())
                 );
 
-        ResultsStepDefinitions.getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, hearingResultsAddedMatcher);
+        getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, hearingResultsAddedMatcher);
 
         final UUID hearingId = hearingIn.getId();
         final UUID caseId = hearingIn.getProsecutionCases().stream().findFirst().get().getId();
@@ -93,7 +97,7 @@ public class EjectCaseIT {
     @Test
     public void testEjectApplicationWithApplicationIdInPayload() {
 
-        PublicHearingResulted resultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted resultsMessage = basicShareResultsTemplate();
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -105,14 +109,14 @@ public class EjectCaseIT {
         hearingResultsHaveBeenShared(resultsMessage);
 
         //matcher to check details results
-        Matcher<HearingResultsAdded> hearingResultsAddedMatcher = isBean(HearingResultsAdded.class)
+        final Matcher<HearingResultsAdded> hearingResultsAddedMatcher = isBean(HearingResultsAdded.class)
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, hearingIn.getId())
                         .withValue(Hearing::getJurisdictionType, hearingIn.getJurisdictionType())
                         .withValue(Hearing::getType, hearingIn.getType())
                 );
 
-        ResultsStepDefinitions.getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, hearingResultsAddedMatcher);
+        getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, hearingResultsAddedMatcher);
 
         final UUID hearingId = hearingIn.getId();
         final UUID applicationId = hearingIn.getCourtApplications().stream().findFirst().get().getId();
@@ -136,6 +140,7 @@ public class EjectCaseIT {
     public void tearDown() throws JMSException {
         hearingCaseEjectedConsumer.close();
         hearingApplicationEjectedConsumer.close();
+        closeMessageConsumers();
     }
 
     private void raisePublicEventForEjectedCaseOrApplication(final JsonObject payload) {

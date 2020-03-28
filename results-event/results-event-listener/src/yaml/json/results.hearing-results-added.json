@@ -76,7 +76,11 @@
           {
             "id":"2baf417c-9173-4223-b543-d060148d98b8",
             "urn":"IqqvbwQUbm",
-            "bailStatus":"znHzaTImOj",
+            "bailStatus": {
+              "code": "code",
+              "description": "description",
+              "id": "2ab6bdbb-a9ac-435f-acda-b735971daa33"
+            },
             "custodyTimeLimitDate":"2018-05-03T14:37:48.490Z",
             "offences":[
               {

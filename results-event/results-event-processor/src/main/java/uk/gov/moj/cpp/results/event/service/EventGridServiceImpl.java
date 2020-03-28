@@ -1,10 +1,17 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import static java.util.UUID.randomUUID;
+
+import uk.gov.justice.services.common.configuration.Value;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import com.microsoft.azure.eventgrid.EventGridClient;
 import com.microsoft.azure.eventgrid.TopicCredentials;
@@ -13,12 +20,6 @@ import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.justice.services.common.configuration.Value;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
-import static java.util.UUID.randomUUID;
 
 public class EventGridServiceImpl implements EventGridService {
 

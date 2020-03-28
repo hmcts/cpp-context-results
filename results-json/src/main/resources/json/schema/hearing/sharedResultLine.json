@@ -27,7 +27,19 @@
       "description": "Reference data for result amendment reasons",
       "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
-	"isAvailableForCourtExtract": {
+    "isDeleted": {
+      "description": "Indicates if a result amendment is a delete action",
+      "type": "boolean"
+    },
+    "amendmentDate": {
+      "description": "Indicates if the result is amended and the date of amendment",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "amendmentReasonid": {
+      "description": "Reference data for result amendment reasons",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "isAvailableForCourtExtract": {
       "description": "Indicates if the result is available to be included in a court extract",
       "type": "boolean"
     },
@@ -71,6 +83,10 @@
 		"description": "The category of a result indicates if it is final, intermediate or ancilliary",
 		"$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/judicialResultCategory"
 	},
+    "category": {
+    "description": "The category of a result indicates if it is final, intermediate or ancilliary",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/judicialResultCategory"
+    },
     "usergroups": {
       "description": "The user groups that are authorised to view the result",
       "type": "array",
@@ -102,7 +118,7 @@
     "id",
     "level",
     "label",
-	"courtClerk",
+    "courtClerk",
     "isAvailableForCourtExtract"
   ]
 }

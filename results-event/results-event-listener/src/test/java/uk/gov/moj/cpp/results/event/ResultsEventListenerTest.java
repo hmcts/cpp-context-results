@@ -1,44 +1,5 @@
 package uk.gov.moj.cpp.results.event;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import net.minidev.json.JSONValue;
-import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Captor;
-import org.mockito.Spy;
-import org.mockito.InjectMocks;
-import org.mockito.ArgumentCaptor;
-
-
-import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.justice.core.courts.HearingDay;
-import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
-import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
-import uk.gov.moj.cpp.results.test.TestTemplates;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.UUID;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,6 +11,45 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+
+import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
+import uk.gov.moj.cpp.results.test.TestTemplates;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.UUID;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import net.minidev.json.JSONValue;
+import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -115,7 +115,7 @@ public class ResultsEventListenerTest {
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(1));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getHearingId(), is(shareResultsMessage.getHearing().getId()));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.of(2018, 02, 02)));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.of(2018, 06, 04)));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.of(2018, 05, 02)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getPayload(), is(objectToJsonObjectConverter.convert(shareResultsMessage).toString()));
     }
 

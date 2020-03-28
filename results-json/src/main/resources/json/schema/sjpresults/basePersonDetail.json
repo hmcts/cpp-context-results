@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/sjp/results/basePersonDetail.json",
+  "type": "object",
+  "description": "Personal Detail",
+  "properties": {
+    "personTitle":  {
+      "type": "string",
+      "description": "A person is the base type of a defendant.  Defendants title must be constrained to remain compliant with the GOB interface",
+      "enum": [
+        "MR",
+        "MRS",
+        "MISS",
+        "MS"
+      ]
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "telephoneNumberBusiness": {
+      "type": "string"
+    },
+    "telephoneNumberHome": {
+      "type": "string"
+    },
+    "telephoneNumberMobile": {
+      "type": "string"
+    },
+    "emailAddress1": {
+      "type": "string"
+    },
+    "emailAddress2": {
+      "type": "string"
+    },
+    "address": {
+      "$ref": "http://justice.gov.uk/core/courts/address.json"
+    },
+    "birthDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gender": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/gender"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "lastName"
+  ]
+}

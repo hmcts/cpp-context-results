@@ -2,11 +2,11 @@ package uk.gov.moj.cpp.results.event.service;
 
 import uk.gov.justice.services.common.configuration.Value;
 
+import javax.inject.Inject;
+
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.sync.RedisCommands;
-
-import javax.inject.Inject;
 
 public class RedisCacheService implements CacheService {
 

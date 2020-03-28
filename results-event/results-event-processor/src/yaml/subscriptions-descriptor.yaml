@@ -7,6 +7,10 @@ subscriptions_descriptor:
       events:
         - name: results.add-hearing-result
           schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.add-hearing-result.json
+        - name: results.event.police-result-generated
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-result-generated.json
+        - name: results.hearing-results-added
+          schema_uri: http://justice.gov.uk/core/courts/hearing-results-added.json
 
       event_source_name: results
 
@@ -17,5 +21,8 @@ subscriptions_descriptor:
 
         - name: public.progression.events.case-or-application-ejected
           schema_uri: http://justice.gov.uk/progression/courts/case-or-application-ejected
+
+        - name: public.sjp.case-resulted
+          schema_uri: http://justice.gov.uk/sjp/results/publicSjpResulted.json
 
       event_source_name: public.event.source
