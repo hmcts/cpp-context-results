@@ -16,7 +16,6 @@ import uk.gov.justice.sjp.results.BasePersonDetail;
 import uk.gov.justice.sjp.results.BaseResult;
 import uk.gov.justice.sjp.results.CaseDefendant;
 import uk.gov.justice.sjp.results.CorporateDefendant;
-import uk.gov.justice.sjp.results.PersonTitle;
 import uk.gov.justice.sjp.results.Prompts;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
@@ -173,7 +172,7 @@ public class TestTemplate {
                 .withFirstName("ParentGuardianFirstName")
                 .withGender(uk.gov.justice.sjp.results.Gender.MALE)
                 .withLastName("ParentGuardianLastName")
-                .withPersonTitle(PersonTitle.MISS)
+                .withPersonTitle("Ms")
                 .withTelephoneNumberBusiness("6666666666")
                 .withTelephoneNumberHome("77777777777")
                 .withTelephoneNumberMobile("8888888888")

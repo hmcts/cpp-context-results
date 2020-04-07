@@ -57,7 +57,6 @@ import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.justice.sjp.results.BaseResult;
 import uk.gov.justice.sjp.results.BaseSessionStructure;
 import uk.gov.justice.sjp.results.CaseDefendant;
-import uk.gov.justice.sjp.results.PersonTitle;
 import uk.gov.justice.sjp.results.Plea;
 import uk.gov.justice.sjp.results.PleaMethod;
 import uk.gov.justice.sjp.results.PleaType;
@@ -421,7 +420,7 @@ public class TestTemplates {
                         .withFirstName("ParentGuardianFirstName")
                         .withGender(uk.gov.justice.sjp.results.Gender.MALE)
                         .withLastName("ParentGuardianLastName")
-                        .withPersonTitle(PersonTitle.MISS)
+                        .withPersonTitle("Ms")
                         .withTelephoneNumberBusiness("6666666666")
                         .withTelephoneNumberHome("77777777777")
                         .withTelephoneNumberMobile("8888888888")
