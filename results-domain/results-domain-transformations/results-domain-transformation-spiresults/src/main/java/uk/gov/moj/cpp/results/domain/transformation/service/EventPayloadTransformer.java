@@ -14,6 +14,7 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -21,6 +22,7 @@ import java.util.Set;
 import javax.json.JsonReader;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -35,6 +37,8 @@ public class EventPayloadTransformer {
     public static final String JUDICIAL_RESULTS_ATTRIBUTE = "judicialResults";
     public static final String JUDICIAL_RESULT_PROMPTS_ATTRIBUTE = "judicialResultPrompts";
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String DATE_OF_HEARING_CORRECT_SPELLING = "Date of hearing";
+    public static final String DATE_OF_HEARING_INCORRECT_SPELLING = "Date of hearig";
     public static final String LABEL_ATTRIBUTE_NAME = "label";
     public static final String ATTRIBUTE_VALUE_YES = "Y";
 
@@ -169,7 +173,7 @@ public class EventPayloadTransformer {
                     final JsonObject judicialResultPrompt = (JsonObject) arrayElement;
                     final boolean isAvailableForCourtExtract = judicialResultPrompt.get("isAvailableForCourtExtract").getAsBoolean();
                     final String promptLabel = judicialResultPrompt.get(LABEL_ATTRIBUTE_NAME).getAsString();
-                    final Optional<Prompt> optionalPrompt = resultDefinition.getPrompts().stream().filter(p -> p.getLabel().equals(promptLabel)).findFirst();
+                    final Optional<Prompt> optionalPrompt = getMatchingPrompt(resultDefinition, promptLabel);
                     if (!optionalPrompt.isPresent()) {
                         throw new TransformationException(format("No matching prompt found for label '%s' for date '%s' in result definition with ID '%s'", promptLabel, eventPublishedDate, resultDefinition.getId()));
                     }
@@ -179,6 +183,20 @@ public class EventPayloadTransformer {
                 }
             });
         }
+    }
+
+    private Optional<Prompt> getMatchingPrompt(final ResultDefinition resultDefinition, final String promptLabel) {
+        return resultDefinition.getPrompts().stream().filter(p -> {
+            final boolean promptFound = p.getLabel().equals(promptLabel);
+
+            if (promptFound) {
+                return true;
+            }
+
+            // this is a workaround for mispelt prompt label
+            final List<String> possiblePromptLabelOptions = Lists.newArrayList(DATE_OF_HEARING_CORRECT_SPELLING, DATE_OF_HEARING_INCORRECT_SPELLING);
+            return possiblePromptLabelOptions.stream().anyMatch(promptLabel::equalsIgnoreCase);
+        }).findFirst();
     }
 
     private Optional<String> getHearingIdFromEvent(final String eventPayload, final String eventName) {
