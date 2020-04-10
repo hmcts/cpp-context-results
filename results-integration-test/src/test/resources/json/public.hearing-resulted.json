@@ -22,6 +22,8 @@
         "defendants": [
           {
             "id": "7ba647bd-04b1-44ad-a39d-dfae01158109",
+            "masterDefendantId": "7ba647bd-04b1-44ad-a39d-dfae01158109",
+            "courtProceedingsInitiated": "2019-03-04T14:10:07.239Z",
             "offences": [
               {
                 "arrestDate": "2017-12-12",

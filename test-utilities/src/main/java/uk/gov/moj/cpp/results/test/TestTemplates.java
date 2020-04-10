@@ -75,6 +75,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+
 import com.google.common.collect.ImmutableList;
 
 public class TestTemplates {
@@ -254,7 +259,9 @@ public class TestTemplates {
 
     private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults) {
         return Defendant.defendant()
-                .withId(fromString(defendantId))
+                       .withCourtProceedingsInitiated(ZonedDateTime.now())
+                       .withMasterDefendantId(UUID.fromString(defendantId))
+                       .withId(fromString(defendantId))
                 .withProsecutionCaseId(randomUUID())
                 .withProsecutionAuthorityReference(prosecutionAuthorityReference)
                 .withPncId("pncId")
@@ -299,7 +306,7 @@ public class TestTemplates {
                         .withIsDisposed(true)
                         .withCount(434)
                         .withProceedingsConcluded(true)
-                        .withIsIntroduceAfterInitialProceedings(true)
+                        .withIntroducedAfterInitialProceedings(true)
                         .withIsDiscontinued(true)
                         .build()))
                 .build();
@@ -542,6 +549,8 @@ public class TestTemplates {
 
         return Defendant.defendant()
                 .withId(fromString(defendantId))
+                .withMasterDefendantId(fromString(defendantId))
+                .withCourtProceedingsInitiated(ZonedDateTime.now())
                 .withProsecutionCaseId(randomUUID())
                 .withProsecutionAuthorityReference(prosecutionAuthorityReference)
                 .withPncId("pncId")
