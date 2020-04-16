@@ -13,10 +13,13 @@ import uk.gov.justice.tools.eventsourcing.transformation.api.EventTransformation
 import uk.gov.justice.tools.eventsourcing.transformation.api.annotation.Transformation;
 import uk.gov.moj.cpp.results.domain.transformation.service.EventPayloadTransformer;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import javax.json.JsonValue;
 
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +29,8 @@ public class JudicialResultsAndPromptsTransformer implements EventTransformation
     private static final Logger LOGGER = LoggerFactory.getLogger(JudicialResultsAndPromptsTransformer.class);
 
     private static final String JUDICIAL_RESULT_KEYWORD = "judicialResult";
+    private static final List<UUID> PRODUCTION_STREAM_IDS = Lists.newArrayList(UUID.fromString("1610cc70-abf7-4d7a-b81f-30048acd0fd8"), UUID.fromString("8ede7cbe-7e0d-443f-9735-b36dc8e80742"));
+
     private Enveloper enveloper;
     private EventPayloadTransformer eventPayloadTransformer;
 
@@ -37,7 +42,8 @@ public class JudicialResultsAndPromptsTransformer implements EventTransformation
     @Override
     public Action actionFor(final JsonEnvelope event) {
         final String eventName = event.metadata().name();
-        if (getEventNames().contains(eventName) && event.payload().toString().contains(JUDICIAL_RESULT_KEYWORD)) {
+        final UUID streamId = event.metadata().streamId().orElse(null);
+        if (PRODUCTION_STREAM_IDS.contains(streamId) && event.payload().toString().contains(JUDICIAL_RESULT_KEYWORD)) {
             LOGGER.debug("Found event '{}' with stream ID '{}'", eventName, event.metadata().streamId().orElse(null));
             return TRANSFORM;
         }

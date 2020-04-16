@@ -12,7 +12,7 @@
 
     <modules>
         <module>results-domain-transformation-anonymise</module>
-        <module>results-domain-transformation-spiresults</module>
+        <module>results-domain-transformation-spiresults-prodfix</module>
         <module>results-domain-transformations-for-corechanges</module>
     </modules>
 
