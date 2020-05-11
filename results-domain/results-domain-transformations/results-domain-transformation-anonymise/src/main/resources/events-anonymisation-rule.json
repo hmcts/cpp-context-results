@@ -32,7 +32,8 @@
     {
       "eventName": "results.hearing-results-added",
       "fieldsToBeIgnored": [
-        "$.hearing.prosecutionCases[*].defendants[*].offences[*].verdict.verdictType.category"
+        "$.hearing.prosecutionCases[*].defendants[*].offences[*].verdict.verdictType.category",
+        "$.hearing.defendantAttendance[*].attendanceDays[*].attendanceType"
       ]
     }
   ]
