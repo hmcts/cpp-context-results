@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.json.JsonObject;
 
 
@@ -75,7 +76,11 @@ public class ResultsQueryView {
         final UUID hearingId = fromString(payload.getString(FIELD_HEARING_ID));
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
         final ApiHearing hearing = hearingTransformer.hearing(hearingResultAdded.getHearing()).build();
-        final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearing);
+        final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
+        final JsonObject jsonResult = Json.createObjectBuilder()
+                .add("hearing", jsonValue)
+                .add("sharedTime", hearingResultAdded.getSharedTime().toString())
+                .build();
         return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
                 .apply(jsonResult);
 

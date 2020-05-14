@@ -37,6 +37,7 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,7 @@ public class ResultsEventProcessor {
     private static final String HEARING = "hearing";
     private static final String RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED = "results.case-or-application-ejected";
     private static final String CACHE_KEY_SUFFIX = "_result_";
+    private static final String SHARED_TIME = "sharedTime";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -88,7 +90,14 @@ public class ResultsEventProcessor {
 
         final JsonObject hearingResultPayload = envelope.payloadAsJsonObject();
 
+        final JsonString sharedTime = hearingResultPayload.getJsonString(SHARED_TIME);
+
         final JsonObject transformedHearing = hearingHelper.transformedHearing(hearingResultPayload.getJsonObject(HEARING));
+
+        final JsonObject responseObject = Json.createObjectBuilder()
+                .add(HEARING, transformedHearing)
+                .add(SHARED_TIME, sharedTime)
+                .build();
 
         final String hearingId = transformedHearing.getString(HEARING_ID);
 
@@ -96,7 +105,7 @@ public class ResultsEventProcessor {
 
         try {
             LOGGER.info("Adding hearing {} to Redis Cache", hearingId);
-            cacheService.add(cacheKey, transformedHearing.toString());
+            cacheService.add(cacheKey, responseObject.toString());
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to connect to cache service: {}", e);
         }
@@ -119,7 +128,7 @@ public class ResultsEventProcessor {
 
         final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
 
-        if(isNotEmpty(publicHearingResulted.getHearing().getProsecutionCases())) {
+        if (isNotEmpty(publicHearingResulted.getHearing().getProsecutionCases())) {
             publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
             final BaseStructure baseStructure = new BaseStructureConverter(referenceDataService).convert(publicHearingResulted);
             final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
@@ -130,7 +139,7 @@ public class ResultsEventProcessor {
             resultJsonPayload.add("session", objectToJsonObjectConverter.convert(baseStructure));
             resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
             sender.sendAsAdmin(enveloper.withMetadataFrom(envelope, "results.create-results").apply(resultJsonPayload.build()));
-        } else if(LOGGER.isDebugEnabled()){
+        } else if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("No Prosecution Cases present for hearing id : {} ", publicHearingResulted.getHearing().getId());
         }
     }
@@ -171,25 +180,25 @@ public class ResultsEventProcessor {
             final Metadata metadata = metadataFrom(envelope.metadata())
                     .withName(RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED)
                     .build();
-            if(payload.containsKey(PROSECUTION_CASE_ID)) {
+            if (payload.containsKey(PROSECUTION_CASE_ID)) {
                 final String caseId = payload.getString(PROSECUTION_CASE_ID);
-                    final JsonObject caseEjectedCommandPayload = Json.createObjectBuilder()
-                            .add(HEARING_IDS,hearingIds)
-                            .add(CASE_ID, caseId)
-                            .build();
-                    sender.sendAsAdmin(JsonEnvelope.envelopeFrom(metadata, caseEjectedCommandPayload));
-            } else  {
+                final JsonObject caseEjectedCommandPayload = Json.createObjectBuilder()
+                        .add(HEARING_IDS, hearingIds)
+                        .add(CASE_ID, caseId)
+                        .build();
+                sender.sendAsAdmin(JsonEnvelope.envelopeFrom(metadata, caseEjectedCommandPayload));
+            } else {
                 final String applicationId = payload.getString(APPLICATION_ID);
-                    final JsonObject applicationEjectedCommandPayload = Json.createObjectBuilder()
-                            .add(HEARING_IDS, hearingIds)
-                            .add(APPLICATION_ID, applicationId)
-                            .build();
-                    sender.sendAsAdmin(JsonEnvelope.envelopeFrom(metadata, applicationEjectedCommandPayload));
+                final JsonObject applicationEjectedCommandPayload = Json.createObjectBuilder()
+                        .add(HEARING_IDS, hearingIds)
+                        .add(APPLICATION_ID, applicationId)
+                        .build();
+                sender.sendAsAdmin(JsonEnvelope.envelopeFrom(metadata, applicationEjectedCommandPayload));
             }
 
-        } else  {
-            if(LOGGER.isInfoEnabled()) {
-                LOGGER.info("The Payload has been ignored as it does not contain hearing ids : {}" ,  envelope.toObfuscatedDebugString());
+        } else {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("The Payload has been ignored as it does not contain hearing ids : {}", envelope.toObfuscatedDebugString());
             }
         }
     }

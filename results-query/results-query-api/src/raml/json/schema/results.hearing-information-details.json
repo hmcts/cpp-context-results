@@ -7,11 +7,15 @@
   "properties": {
     "hearing": {
       "$ref": "http://justice.gov.uk/core/courts/external/apiHearing.json#"
+    },
+    "sharedTime": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/date-time"
     }
 
   },
   "required": [
-    "hearing"
+    "hearing",
+    "sharedTime"
   ],
   "additionalProperties": false
 }

@@ -21,7 +21,6 @@ import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.RETRIEVE
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
@@ -158,23 +157,15 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     }
 
-    public static void getHearingDetailsForHearingId(final UUID hearingId, final Matcher<ApiHearing> matcher) {
-
+    public static void getHearingDetailsForHearingId(final UUID hearingId, final Matcher... matchers) {
         final String hearingResultDetailsUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-hearing-information-details-for-hearing",
                         hearingId));
 
-        final Matcher<ResponseData> responseDataMatcher = jsonPayloadMatcher(ApiHearing.class, matcher);
-
-
-        poll(requestParams(hearingResultDetailsUrl, CONTENT_TYPE_HEARING_INFORMATION_DETAILS).withHeader(USER_ID, getLoggedInUser())).until(
-                print(),
-                status().is(OK),
-                payload().isJson(allOf(
-                        withJsonPath("$.id", equalTo(hearingId.toString()))
-                )),
-                responseDataMatcher
-        );
+        poll(requestParams(hearingResultDetailsUrl, CONTENT_TYPE_HEARING_INFORMATION_DETAILS).withHeader(USER_ID, getLoggedInUser()))
+                .until(status().is(OK),
+                        payload().isJson(CoreMatchers.allOf(matchers)
+                        ));
 
     }
 

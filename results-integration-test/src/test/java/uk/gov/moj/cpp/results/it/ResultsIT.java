@@ -1,8 +1,11 @@
 package uk.gov.moj.cpp.results.it;
 
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.time.LocalDate.of;
 import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
@@ -41,7 +44,6 @@ import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.external.ApiAddress;
 import uk.gov.justice.core.courts.external.ApiCourtCentre;
-import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
@@ -66,6 +68,7 @@ import javax.json.JsonReader;
 
 import com.google.common.io.Resources;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -366,6 +369,7 @@ public class ResultsIT {
         Matcher<HearingResultsAdded> matcherStatus = null;
 
         matcherStatus = isBean(HearingResultsAdded.class)
+                .with(HearingResultsAdded::getSharedTime, is(resultsMessage.getSharedTime()))
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, resultsMessage.getHearing().getId())
                         .withValue(Hearing::getCourtApplications, resultsMessage.getHearing().getCourtApplications())
@@ -452,11 +456,21 @@ public class ResultsIT {
                         .withWelshName(hearingIn.getCourtCentre().getWelshName())
                         .withWelshRoomName(hearingIn.getCourtCentre().getWelshRoomName()).build();
 
-        Matcher<ApiHearing> matcher = isBean(ApiHearing.class)
-                .withValue(ApiHearing::getId, hearingIn.getId())
-                .withValue(ApiHearing::getCourtCentre, expectedCourtCentre);
-
-        ResultsStepDefinitions.getHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher);
+        final Matcher[] matcher1 = {
+                withJsonPath("$.hearing.id", equalTo(hearingIn.getId().toString())),
+                withJsonPath("$.hearing", Matchers.notNullValue()),
+                withJsonPath("$.hearing.courtCentre.name", equalTo(expectedCourtCentre.getName())),
+                withJsonPath("$.hearing.courtCentre.id", equalTo(expectedCourtCentre.getId().toString())),
+                withJsonPath("$.hearing.courtCentre.roomId", equalTo(expectedCourtCentre.getRoomId().toString())),
+                withJsonPath("$.hearing.courtCentre.roomName", equalTo(expectedCourtCentre.getRoomName())),
+                withJsonPath("$.hearing.courtCentre.welshName", equalTo(expectedCourtCentre.getWelshName())),
+                withJsonPath("$.hearing.courtCentre.welshRoomName", equalTo(expectedCourtCentre.getWelshRoomName())),
+                withJsonPath("$.hearing.courtCentre.address.address1", equalTo(expectedCourtCentre.getAddress().getAddress1())),
+                withJsonPath("$.hearing.courtCentre.address.address2", equalTo(expectedCourtCentre.getAddress().getAddress2())),
+                withJsonPath("$.hearing.courtCentre.address.postcode", equalTo(expectedCourtCentre.getAddress().getPostcode())),
+                withJsonPath("$.sharedTime", notNullValue())
+        };
+        ResultsStepDefinitions.getHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher1);
 
     }
 }
