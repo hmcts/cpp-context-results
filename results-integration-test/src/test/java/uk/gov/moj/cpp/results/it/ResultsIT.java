@@ -373,7 +373,7 @@ public class ResultsIT {
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, resultsMessage.getHearing().getId())
                         .withValue(Hearing::getCourtApplications, resultsMessage.getHearing().getCourtApplications())
-                        .withValue(hearing -> hearing.getProsecutionCases().get(0).getDefendants().get(0).getPersonDefendant().getPersonDetails().getTitle(),"Baroness")
+                        .withValue(hearing -> hearing.getProsecutionCases().get(0).getDefendants().get(0).getPersonDefendant().getPersonDetails().getTitle(), "Baroness")
                 );
 
         // get the details and check
@@ -425,7 +425,6 @@ public class ResultsIT {
     }
 
 
-
     @Test
     public void getHearingDetails_shouldReturnBadRequestForResultsSummaryWithoutFromDate() {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -443,12 +442,12 @@ public class ResultsIT {
         ApiCourtCentre expectedCourtCentre =
                 ApiCourtCentre.apiCourtCentre()
                         .withAddress(ApiAddress.apiAddress()
-                            .withAddress1(hearingIn.getCourtCentre().getAddress().getAddress1())
-                            .withAddress2(hearingIn.getCourtCentre().getAddress().getAddress2())
-                            .withAddress3(hearingIn.getCourtCentre().getAddress().getAddress3())
-                            .withAddress4(hearingIn.getCourtCentre().getAddress().getAddress4())
-                            .withAddress5(hearingIn.getCourtCentre().getAddress().getAddress5())
-                            .withPostcode(hearingIn.getCourtCentre().getAddress().getPostcode()).build())
+                                .withAddress1(hearingIn.getCourtCentre().getAddress().getAddress1())
+                                .withAddress2(hearingIn.getCourtCentre().getAddress().getAddress2())
+                                .withAddress3(hearingIn.getCourtCentre().getAddress().getAddress3())
+                                .withAddress4(hearingIn.getCourtCentre().getAddress().getAddress4())
+                                .withAddress5(hearingIn.getCourtCentre().getAddress().getAddress5())
+                                .withPostcode(hearingIn.getCourtCentre().getAddress().getPostcode()).build())
                         .withId(hearingIn.getCourtCentre().getId())
                         .withName(hearingIn.getCourtCentre().getName())
                         .withRoomId(hearingIn.getCourtCentre().getRoomId())

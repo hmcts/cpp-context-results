@@ -47,7 +47,7 @@
         <dependency>
             <groupId>uk.gov.moj.cpp.core.domain</groupId>
             <artifactId>coredomain-common-definitions-schema</artifactId>
-                <version>${criminal-court-public-model.version}</version>
+            <version>${criminal-court-public-model.version}</version>
         </dependency>
 
         <dependency>
