@@ -63,7 +63,7 @@ public class ResultsAggregate implements Aggregate {
 
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
-    private static final long serialVersionUID = 100L;
+    private static final long serialVersionUID = 101L;
     private static final Logger LOGGER = getLogger(ResultsAggregate.class);
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
@@ -402,6 +402,14 @@ public class ResultsAggregate implements Aggregate {
 
     @SuppressWarnings({"squid:S1067", "squid:S2259"})
     private boolean findResultAmended(final OffenceDetails offenceFromRequest, final List<Result> resultDetails) {
+        if (isNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())){
+            return false;
+        }
+
+        if (isNotNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())){
+            return true;
+        }
+
         return (isNullOrEmpty(resultDetails) && isNotNullOrEmpty(offenceFromRequest.getJudicialResults()))
                 || offenceFromRequest.getJudicialResults().size() > resultDetails.size()
                 || offenceFromRequest.getJudicialResults().stream().anyMatch(r ->

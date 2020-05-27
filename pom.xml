@@ -37,7 +37,7 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <criminal-court-public-model.version>1.0.81</criminal-court-public-model.version>
-        <referencedata.version>6.4.20</referencedata.version>
+        <referencedata.version>6.4.21</referencedata.version>
     </properties>
     <build>
         <plugins>

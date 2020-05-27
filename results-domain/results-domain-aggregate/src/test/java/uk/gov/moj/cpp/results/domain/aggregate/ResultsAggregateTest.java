@@ -12,6 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.Address.address;
 import static uk.gov.justice.core.courts.AllocationDecision.allocationDecision;
@@ -324,6 +325,54 @@ public class ResultsAggregateTest {
         final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true).collect(toList());
         assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+    }
+
+    @Test
+    public void testHandleDefendantsWhenNoJudicialResultHasBeenAdded() {
+        final List<OffenceDetails> offences = new ArrayList<>();
+        offences.add(offenceDetails().withId(OFFENCE_ID).build());
+        offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult().withJudicialResultId(randomUUID()).build())).build());
+        CaseDetails caseDetails = createCaseDetails(null, offences);
+        resultsAggregate.handleCase(caseDetails);
+        resultsAggregate.handleDefendants(caseDetails, true);
+
+        caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).build()));
+
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true).collect(toList());
+        final DefendantUpdatedEvent defendantUpdatedEvent = objectList.stream().filter(e -> e instanceof DefendantUpdatedEvent)
+                .map(o -> (DefendantUpdatedEvent) o)
+                .findFirst()
+                .orElse(null);
+        assertNull(defendantUpdatedEvent);
+
+        final PoliceResultGenerated policeResultGenerated = objectList.stream().filter(e -> e instanceof PoliceResultGenerated)
+                .map(o -> (PoliceResultGenerated) o)
+                .findFirst()
+                .orElse(null);
+        assertNull(policeResultGenerated);
+    }
+
+    @Test
+    public void testHandleDefendantsWhenExistingOffenceJudicialResultsRemoved() {
+        final List<OffenceDetails> offences = new ArrayList<>();
+        offences.add(offenceDetails().withId(OFFENCE_ID).build());
+        offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult().withJudicialResultId(randomUUID()).build())).build());
+        CaseDetails caseDetails = createCaseDetails(null, offences);
+        resultsAggregate.handleCase(caseDetails);
+        resultsAggregate.handleDefendants(caseDetails, true);
+
+        final JudicialResult judicialResult = judicialResult().withJudicialResultId(randomUUID()).build();
+        caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult)).build()));
+        final List<Object> objectListAfterAdd = resultsAggregate.handleDefendants(caseDetails, true).collect(toList());
+
+        assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectListAfterAdd);
+        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectListAfterAdd);
+
+        caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).build()));
+        final List<Object> objectListAfterRemove = resultsAggregate.handleDefendants(caseDetails, true).collect(toList());
+
+        assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectListAfterRemove);
+        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectListAfterRemove);
     }
 
     @Test
