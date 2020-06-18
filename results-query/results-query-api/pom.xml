@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-query</artifactId>
-        <version>6.4.19-SNAPSHOT</version>
+        <version>6.4.20-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-query-api</artifactId>
