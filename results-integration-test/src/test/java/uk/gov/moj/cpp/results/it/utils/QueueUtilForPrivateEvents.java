@@ -30,7 +30,7 @@ public class QueueUtilForPrivateEvents {
     private static final String HOST = System.getProperty("INTEGRATION_HOST_KEY", "localhost");
     private static final String QUEUE_URI = "tcp://" + HOST + ":61616";
 
-    public static final long RETRIEVE_TIMEOUT = 30000;
+    public static final long RETRIEVE_TIMEOUT = 5000;
 
     private final Session session;
 

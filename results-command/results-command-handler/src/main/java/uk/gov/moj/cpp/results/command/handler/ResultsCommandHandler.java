@@ -1,11 +1,12 @@
 package uk.gov.moj.cpp.results.command.handler;
 
+import static java.lang.Boolean.FALSE;
 import static java.util.UUID.fromString;
-import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.core.aggregate.AggregateService;
@@ -22,6 +23,8 @@ import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 import javax.json.JsonArray;
@@ -29,16 +32,14 @@ import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 
-import org.slf4j.Logger;
-
 @ServiceComponent(COMMAND_HANDLER)
 public class ResultsCommandHandler extends AbstractCommandHandler {
 
-    final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private static final String HEARING_IDS = "hearingIds";
-    private static final Logger LOGGER = getLogger(ResultsCommandHandler.class);
-
+    private static final String POLICE_FLAG = "policeFlag";
+    private static final String SPI_OUT_FLAG = "spiOutFlag";
     private static final String SOURCE_TYPE_SJP = "SJP";
+    final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private final ReferenceDataService referenceDataService;
 
 
@@ -74,6 +75,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     public void createResult(final JsonEnvelope envelope) throws EventStreamException {
         final JsonObject payload = envelope.payloadAsJsonObject();
         final JsonObject session = payload.getJsonObject("session");
+        final Optional<JurisdictionType> jurisdictionType = JurisdictionType.valueFor(payload.containsKey("jurisdictionType") ? payload.getJsonString("jurisdictionType").getString() : "");
         final String id = session.getString("id");
         final String sourceType = session.getString("sourceType");
         final List<SessionDay> sessionDays = (List<SessionDay>) session.get("sessionDays");
@@ -100,10 +102,20 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 aggregate(ResultsAggregate.class, fromString(id),
                         envelope, a -> a.handleCase(caseDetails));
 
-                final boolean sendSpiOut = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
+                final AtomicBoolean sendSpiOut = new AtomicBoolean(FALSE);
+                final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
+                final AtomicReference<String> prosecutorEmailAddress = new AtomicReference("");
+
+                final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
+                refDataProsecutorJson.ifPresent(prosecutorJson -> {
+                    sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
+                    isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
+                    prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
+                });
+
 
                 aggregate(ResultsAggregate.class, fromString(id),
-                        envelope, a -> a.handleDefendants(caseDetails, sendSpiOut));
+                        envelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get()));
             }
 
         }
@@ -124,15 +136,26 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final Optional<String> prosecutionAuthorityCode = aggregate.getProsecutionAuthorityCode(caseId);
 
         final boolean sendSpiOut = prosecutionAuthorityCode
-                .map(referenceDataService::getSpiOutFlagForProsecutionAuthorityCode)
+                .map(this::getSpiOutFlag)
                 .orElse(false);
 
         if (sendSpiOut) {
             aggregate(ResultsAggregate.class, fromString(sessionId),
                     envelope, a -> a.generatePoliceResults(caseId, defendantId));
-        } else {
-            LOGGER.warn("spiOutFlag false, police results will not be sent");
         }
+    }
+
+    private boolean getSpiOutFlag(final String prosecutingAuthority) {
+        final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(prosecutingAuthority);
+        return refDataProsecutorJson.filter(jsonObject -> jsonObject.containsKey(SPI_OUT_FLAG) ? jsonObject.getBoolean(SPI_OUT_FLAG) : FALSE).isPresent();
+    }
+
+    private boolean getFlagValue(String key, JsonObject prosecutorJson) {
+        return prosecutorJson.containsKey(key) ? prosecutorJson.getBoolean(key) : FALSE;
+    }
+
+    private String getEmailAddress(JsonObject prosecutorJson) {
+        return prosecutorJson.containsKey("contactEmailAddress") ? prosecutorJson.getString("contactEmailAddress") : "";
     }
 
 }

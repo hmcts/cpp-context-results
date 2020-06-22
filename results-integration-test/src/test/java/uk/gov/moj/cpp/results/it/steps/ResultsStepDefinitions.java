@@ -65,6 +65,8 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String RESULTS_EVENT_DEFENDANT_UPDATED_EVENT = "results.event.defendant-updated-event";
     private static final String RESULTS_EVENT_DEFENDANT_REJECTED_EVENT = "results.event.defendant-rejected-event";
     private static final String RESULTS_EVENT_POLICE_RESULT_GENERATED = "results.event.police-result-generated";
+    private static final String RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED = "results.event.police-notification-requested";
+    private static final String RESULTS_EVENT_POLICE_NOTIFICATION_FAILED = "results.event.email-notification-failed";
 
 
     private static final String PUBLIC_EVENT_HEARING_RESULTED = "public.hearing.resulted";
@@ -78,6 +80,8 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static MessageConsumer privateDefendantUpdatedEventConsumer;
     private static MessageConsumer privateDefendantRejectedEventConsumer;
     private static MessageConsumer privatePoliceResultGeneratedConsumer;
+    private static MessageConsumer privatePoliceNotificationRequestedConsumer;
+    private static MessageConsumer privatePoliceNotificationFailedConsumer;
     private static MessageConsumerClient publicMessageConsumer;
 
 
@@ -89,6 +93,8 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         privateDefendantUpdatedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_UPDATED_EVENT);
         privateDefendantRejectedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_REJECTED_EVENT);
         privatePoliceResultGeneratedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_RESULT_GENERATED);
+        privatePoliceNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED);
+        privatePoliceNotificationFailedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_FAILED);
         publicMessageConsumer = new MessageConsumerClient();
     }
 
@@ -241,11 +247,11 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         }
     }
 
-    public static void verifyPrivateEvents() throws JMSException {
-        verifyPrivateEvents(true);
+    public static void verifyPrivateEventsWithPoliceResultGenerated() throws JMSException {
+        verifyPrivateEventsWithPoliceResultGenerated(true);
     }
 
-    public static void verifyPrivateEvents(final boolean includePoliceResults) throws JMSException {
+    public static void verifyPrivateEventsWithPoliceResultGenerated(final boolean includePoliceResults) throws JMSException {
         final Message sessionAdded = privateSessionAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(sessionAdded, notNullValue());
 
@@ -259,6 +265,27 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
             assertThat(policeResultGenerated, notNullValue());
         }
+    }
+
+    public static void verifyPrivateEventsWithPoliceNotificationRequested(final boolean isSuccessExpected) throws JMSException {
+        final Message sessionAdded = privateSessionAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+        assertThat(sessionAdded, notNullValue());
+
+        final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+        assertThat(caseAdded, notNullValue());
+
+        final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+        assertThat(defendantAdded, notNullValue());
+
+        if(isSuccessExpected){
+            final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
+            assertThat(policeNotificationRequestedGenerated, notNullValue());
+        }else{
+            final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
+            assertThat(policeNotificationFailedGenerated, notNullValue());
+        }
+
+
     }
 
     public static void verifyPrivateEventsForAmendment() throws JMSException {
@@ -303,6 +330,8 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         privateDefendantRejectedEventConsumer.close();
         privateDefendantUpdatedEventConsumer.close();
         privateCaseRejectedEventConsumer.close();
+        privatePoliceNotificationRequestedConsumer.close();
+        privatePoliceNotificationFailedConsumer.close();
         publicMessageConsumer.close();
     }
 

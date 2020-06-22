@@ -6,7 +6,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessa
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummariesByDate;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPublicTopic;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEvents;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
@@ -19,6 +19,7 @@ import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOu
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 import static uk.gov.moj.cpp.results.test.TestTemplates.sharedResultTemplateWithTwoOffences;
 
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.time.LocalDate;
@@ -43,7 +44,7 @@ public class MoveDefendantLevelResultsIT {
         stubCountryNationalities();
         stubGetOrgainsationUnit();
         stubJudicialResults();
-        stubSpiOutFlag();
+        stubSpiOutFlag(true, false);
         stubBailStatuses();
         stubModeOfTrialReasons();
         createMessageConsumers();
@@ -52,7 +53,7 @@ public class MoveDefendantLevelResultsIT {
     @Test
     public void shouldMoveJudicialResultsToOffenceLevelAndRaisePublicEvent() throws JMSException {
 
-        final PublicHearingResulted resultsMessage = sharedResultTemplateWithTwoOffences();
+        final PublicHearingResulted resultsMessage = sharedResultTemplateWithTwoOffences(JurisdictionType.MAGISTRATES);
 
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -61,7 +62,7 @@ public class MoveDefendantLevelResultsIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEvents();
+        verifyPrivateEventsWithPoliceResultGenerated();
         verifyInPublicTopic();
 
     }

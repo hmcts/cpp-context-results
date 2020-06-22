@@ -119,6 +119,59 @@
             "presentAtHearing": "true",
             "reasonForBailConditionsOrCustody": "reason"
           },
+          "judicialResults": [
+            {
+              "judicialResultId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "orderedHearingId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "applicationId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "label": "a",
+              "welshLabel": "a",
+              "isAdjournmentResult": true,
+              "isFinancialResult": true,
+              "isConvictedResult": true,
+              "isAvailableForCourtExtract": true,
+              "amendmentReasonId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "amendmentReason": "a",
+              "amendmentDate": "1950-01-01",
+              "cjsCode": "a",
+              "rank": 0.1,
+              "orderedDate": "1950-01-01",
+              "lastSharedDateTime": "a",
+              "courtClerk": {
+                "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                "firstName": "a",
+                "lastName": "a"
+              },
+              "delegatedPowers": {
+                "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                "firstName": "a",
+                "lastName": "a"
+              },
+              "fourEyesApproval": {
+                "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                "firstName": "a",
+                "lastName": "a"
+              },
+              "approvedDate": "1950-01-01",
+              "usergroups": [
+                "a"
+              ],
+              "category": "FINAL",
+              "judicialResultPrompts": [
+                {
+                  "label": "a",
+                  "isAvailableForCourtExtract": true,
+                  "welshLabel": "a",
+                  "value": "a",
+                  "promptSequence": 0.1,
+                  "promptReference": "a",
+                  "usergroups": [
+                    "a"
+                  ]
+                }
+              ]
+            }
+          ],
           "offences": [
             {
               "id": "ea0ab5f9-20bd-469b-9073-5dd2bd1d07de",
@@ -143,7 +196,60 @@
               },
               "wording": "OPIqRskMqB",
               "startDate": "2014-09-12",
-              "endDate": "2015-10-01"
+              "endDate": "2015-10-01",
+              "judicialResults": [
+                {
+                  "judicialResultId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "orderedHearingId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "applicationId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "label": "a",
+                  "welshLabel": "a",
+                  "isAdjournmentResult": true,
+                  "isFinancialResult": true,
+                  "isConvictedResult": true,
+                  "isAvailableForCourtExtract": true,
+                  "amendmentReasonId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "amendmentReason": "a",
+                  "amendmentDate": "2019-02-01",
+                  "cjsCode": "a",
+                  "rank": 0.1,
+                  "orderedDate": "1950-01-01",
+                  "lastSharedDateTime": "a",
+                  "courtClerk": {
+                    "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                    "firstName": "a",
+                    "lastName": "a"
+                  },
+                  "delegatedPowers": {
+                    "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                    "firstName": "a",
+                    "lastName": "a"
+                  },
+                  "fourEyesApproval": {
+                    "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                    "firstName": "a",
+                    "lastName": "a"
+                  },
+                  "approvedDate": "1950-01-01",
+                  "usergroups": [
+                    "a"
+                  ],
+                  "category": "FINAL",
+                  "judicialResultPrompts": [
+                    {
+                      "label": "a",
+                      "isAvailableForCourtExtract": true,
+                      "welshLabel": "a",
+                      "value": "a",
+                      "promptSequence": 0.1,
+                      "promptReference": "a",
+                      "usergroups": [
+                        "a"
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "prosecutorReference": "prosecutorReference"
@@ -153,5 +259,5 @@
       "prosecutionAuthorityCode": "someCode"
     }
   ],
-  "jurisdictionType" : "MAGISTRATES"
+  "jurisdictionType" : "CROWN"
 }

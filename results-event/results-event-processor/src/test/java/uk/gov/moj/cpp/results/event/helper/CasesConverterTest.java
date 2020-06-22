@@ -9,7 +9,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceDay;
@@ -28,6 +27,7 @@ import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +72,7 @@ public class CasesConverterTest {
     public void testConverter() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
@@ -103,7 +103,7 @@ public class CasesConverterTest {
     public void testConverter_MissingHearing() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         shareResultsMessage.setHearing(null);
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
         final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
@@ -114,7 +114,7 @@ public class CasesConverterTest {
     public void testConverter_MissingProsecutionCases() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final Hearing hearing = shareResultsMessage.getHearing();
         hearing.setProsecutionCases(null);
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);

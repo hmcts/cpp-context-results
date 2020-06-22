@@ -65,7 +65,7 @@ public class HearingServiceTest {
     public void shouldSearchAndFilterHearingByDefendantId() {
         final UUID hearingId = UUID.randomUUID();
         final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
-        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate();
+        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate();
         final UUID defendantId = publicHearingResulted.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
                 HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
         List<ProsecutionCase> prosecutionCases = asList(templateProsecutionCase(), templateProsecutionCase(), templateProsecutionCase());

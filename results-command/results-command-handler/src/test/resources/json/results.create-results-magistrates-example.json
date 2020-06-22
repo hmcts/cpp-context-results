@@ -121,7 +121,6 @@
           },
           "judicialResults": [
             {
-              "judicialResultId": "ab746921-d839-4867-bcf9-b41db8ebc852",
               "orderedHearingId": "ab746921-d839-4867-bcf9-b41db8ebc852",
               "applicationId": "ab746921-d839-4867-bcf9-b41db8ebc852",
               "label": "a",
@@ -210,7 +209,6 @@
                   "isAvailableForCourtExtract": true,
                   "amendmentReasonId": "ab746921-d839-4867-bcf9-b41db8ebc852",
                   "amendmentReason": "a",
-                  "amendmentDate": "2019-02-01",
                   "cjsCode": "a",
                   "rank": 0.1,
                   "orderedDate": "1950-01-01",
@@ -258,5 +256,6 @@
       "urn": "123445",
       "prosecutionAuthorityCode": "someCode"
     }
-  ]
+  ],
+  "jurisdictionType" : "MAGISTRATES"
 }

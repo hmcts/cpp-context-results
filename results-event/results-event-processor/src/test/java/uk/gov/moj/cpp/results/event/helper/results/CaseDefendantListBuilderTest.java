@@ -15,7 +15,6 @@ import static uk.gov.justice.core.courts.Defendant.defendant;
 import static uk.gov.justice.core.courts.Offence.offence;
 import static uk.gov.justice.core.courts.Person.person;
 import static uk.gov.justice.core.courts.PersonDefendant.personDefendant;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceDay;
@@ -31,6 +30,7 @@ import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,12 +64,12 @@ public class CaseDefendantListBuilderTest {
     }
 
     @Test
-    public void testBuildDefendants() {
+    public void shouldBuildDefendants() {
 
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
 
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final Hearing hearing = shareResultsMessage.getHearing();
 
         final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
@@ -84,8 +84,8 @@ public class CaseDefendantListBuilderTest {
     }
 
     @Test
-    public void testDefendantsNationalityAndASN() {
-        final Hearing hearing = basicShareResultsTemplate().getHearing();
+    public void shouldUpdateDefendantsNationalityAndASN() {
+        final Hearing hearing = TestTemplates.basicShareResultsWithMagistratesTemplate().getHearing();
         final List<Defendant> defendantsFromRequest = of(defendant().withOffences(of(offence().withModeOfTrial("1010").build())).withPersonDefendant(personDefendant().withPersonDetails(person().withNationalityCode("GBR").build()).withArrestSummonsNumber("1232324").build()).build());
         final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing);
         assertThat(caseDetailsDefendants, hasSize(1));

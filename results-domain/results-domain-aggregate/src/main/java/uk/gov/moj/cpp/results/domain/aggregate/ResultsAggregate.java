@@ -1,6 +1,8 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.builder;
 import static java.util.stream.Stream.empty;
@@ -35,6 +37,7 @@ import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.SessionAddedEvent;
@@ -46,6 +49,8 @@ import uk.gov.moj.cpp.domains.resultStructure.Defendant;
 import uk.gov.moj.cpp.domains.resultStructure.Offence;
 import uk.gov.moj.cpp.domains.resultStructure.Result;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.event.EmailNotificationFailed;
+import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,17 +64,20 @@ import javax.json.JsonObject;
 
 import org.slf4j.Logger;
 
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class ResultsAggregate implements Aggregate {
 
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
-    private static final long serialVersionUID = 101L;
+    private static final String INVALID_EMAIL_ID = "Police Email Address is not Available";
+    private static final long serialVersionUID = 102L;
     private static final Logger LOGGER = getLogger(ResultsAggregate.class);
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
     private UUID id;
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
+    private boolean isEligibleForSpiOut = false;
 
     @Override
     public Object apply(final Object event) {
@@ -306,56 +314,90 @@ public class ResultsAggregate implements Aggregate {
         return apply(of(sjpCaseRejectedEvent().withId(id).build()));
     }
 
-    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut) {
+    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut));
+        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor));
         return apply(builder.build());
     }
 
-    private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate, final boolean sendSpiOut) {
+    private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
+
+        isEligibleForSpiOut = false;
+
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
             if (!defendantOptional.isPresent()) {
-                buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut);
+                buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType);
             } else {
-                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, defendantOptional.get(), sendSpiOut);
+                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, defendantOptional.get(), sendSpiOut, jurisdictionType);
             }
         }
+
+        if (isEligibleForSpiOut && isEligibleForEmailNotification(jurisdictionType, isPoliceProsecutor)) {
+            if (nonNull(prosecutorEmailAddress) && !("").equals(prosecutorEmailAddress)) {
+                builder.add(PoliceNotificationRequested.policeNotificationRequested().withNotificationId(randomUUID()).withPoliceEmailAddress(prosecutorEmailAddress).withUrn(caseDetailsFromRequest.getUrn()).build());
+            } else {
+                builder.add(EmailNotificationFailed.emailNotificationFailed().withUrn(caseDetailsFromRequest.getUrn()).withErrorMessage(INVALID_EMAIL_ID).build());
+            }
+        }
+
     }
 
-    private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final boolean sendSpiOut) {
+    private boolean isEligibleForEmailNotification(final Optional<JurisdictionType> jurisdictionType, final boolean isProsecutorPolice) {
+        return isCrownCourt(jurisdictionType) && isProsecutorPolice;
+
+    }
+
+    private boolean isCrownCourt(final Optional<JurisdictionType> jurisdictionType) {
+        return jurisdictionType.map(type -> type.equals(JurisdictionType.CROWN)).orElse(false);
+
+    }
+
+
+    private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType) {
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
+
             if (sendSpiOut) {
-                builder.add(policeResultGenerated()
-                        .withId(id)
-                        .withCourtCentreWithLJA(courtCentreWithLJA)
-                        .withSessionDays(sessionDays)
-                        .withCaseId(casesDetailsFromRequest.getCaseId())
-                        .withUrn(casesDetailsFromRequest.getUrn())
-                        .withDefendant(defendantFromRequest)
-                        .build());
+
+                isEligibleForSpiOut = true;
+
+                if (!isCrownCourt(jurisdictionType)) {
+                    builder.add(policeResultGenerated()
+                            .withId(id)
+                            .withCourtCentreWithLJA(courtCentreWithLJA)
+                            .withSessionDays(sessionDays)
+                            .withCaseId(casesDetailsFromRequest.getCaseId())
+                            .withUrn(casesDetailsFromRequest.getUrn())
+                            .withDefendant(defendantFromRequest)
+                            .build());
+                }
             }
         } else {
             builder.add(defendantRejectedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendantId(defendantFromRequest.getDefendantId()).build());
         }
     }
 
-    private void updateDefendant(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final Defendant defendantFromAggregate, final boolean sendSpiOut) {
+    private void updateDefendant(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final Defendant defendantFromAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType) {
         if (defendantFromRequest.getOffences().size() > defendantFromAggregate.getOffences().size() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
 
             if (sendSpiOut) {
-                builder.add(policeResultGenerated()
-                        .withId(id)
-                        .withCourtCentreWithLJA(courtCentreWithLJA)
-                        .withSessionDays(sessionDays)
-                        .withCaseId(casesDetailsFromRequest.getCaseId())
-                        .withUrn(casesDetailsFromRequest.getUrn())
-                        .withDefendant(defendantFromRequest)
-                        .build());
+
+                isEligibleForSpiOut = true;
+
+                if (!isCrownCourt(jurisdictionType)) {
+                    builder.add(policeResultGenerated()
+                            .withId(id)
+                            .withCourtCentreWithLJA(courtCentreWithLJA)
+                            .withSessionDays(sessionDays)
+                            .withCaseId(casesDetailsFromRequest.getCaseId())
+                            .withUrn(casesDetailsFromRequest.getUrn())
+                            .withDefendant(defendantFromRequest)
+                            .build());
+                }
             } else {
                 LOGGER.info("spiOutFlag false, police results will not be sent");
             }
@@ -402,11 +444,11 @@ public class ResultsAggregate implements Aggregate {
 
     @SuppressWarnings({"squid:S1067", "squid:S2259"})
     private boolean findResultAmended(final OffenceDetails offenceFromRequest, final List<Result> resultDetails) {
-        if (isNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())){
+        if (isNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())) {
             return false;
         }
 
-        if (isNotNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())){
+        if (isNotNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())) {
             return true;
         }
 

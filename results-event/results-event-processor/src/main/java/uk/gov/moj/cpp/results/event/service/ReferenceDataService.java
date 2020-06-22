@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.event.service;
 
 import static java.lang.Integer.valueOf;
-import static java.time.LocalDate.parse;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
@@ -12,6 +11,7 @@ import static uk.gov.justice.core.courts.BailStatus.bailStatus;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
 import uk.gov.justice.core.courts.AllocationDecision;
@@ -20,6 +20,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
+import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions;
@@ -36,26 +37,28 @@ import javax.json.JsonObject;
 
 public class ReferenceDataService {
 
+    private static final String OU_CODE = "oucode";
+    private static final String CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
+    private static final String REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE = "referencedata.query.get.prosecutor.by.oucode";
+
     @Inject
     private Enveloper enveloper;
-
     @Inject
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
-
     @Inject
     @ServiceComponent(EVENT_PROCESSOR)
     private Requester requester;
 
-    // TODO: cjsOffenceCode is a queryParameter not a uriParameter so check this actually works..
-    public JsonEnvelope getOffenceByCjsCode(final String cjsOffenceCode, final JsonEnvelope event) {
+    public Envelope<JsonObject> getOffenceByCjsCode(final String cjsOffenceCode, final JsonEnvelope event) {
         final JsonObject payload = createObjectBuilder().add("cjsoffencecode", cjsOffenceCode).build();
-        final JsonEnvelope request = enveloper.withMetadataFrom(event, "referencedata.query.offences").apply(payload);
-        return requester.requestAsAdmin(request);
+        final JsonEnvelope request = envelopeFrom(metadataFrom(event.metadata()).withName("referencedata.query.offences"), payload);
+
+        return requester.requestAsAdmin(request, JsonObject.class);
     }
 
     public JsonObject getAllNationality(final JsonEnvelope envelope) {
-        final JsonEnvelope request = enveloper.withMetadataFrom(envelope, "referencedata.query.country-nationality").apply(createObjectBuilder().build());
-        return requester.requestAsAdmin(request).payloadAsJsonObject();
+        final JsonEnvelope request = envelopeFrom(metadataFrom(envelope.metadata()).withName("referencedata.query.country-nationality"), createObjectBuilder().build());
+        return requester.requestAsAdmin(request, JsonObject.class).payload();
     }
 
     public Optional<JsonObject> getNationalityById(final UUID nationalityId, final JsonEnvelope envelope) {
@@ -67,32 +70,30 @@ public class ReferenceDataService {
                 .findFirst();
     }
 
-    public JsonEnvelope getResultDefinitionById(final JsonEnvelope envelope, final LocalDate on, final UUID id) {
-        return requester.requestAsAdmin(enveloper.withMetadataFrom(envelope, "referencedata.get-result-definition")
-                .apply(createObjectBuilder().add("on", on.toString()).add("resultDefinitionId", id.toString()).build()));
+    public Envelope<JsonObject> fetchResultDefinitionById(final JsonEnvelope envelope, final LocalDate on, final UUID id) {
+        final JsonEnvelope request = envelopeFrom(metadataFrom(envelope.metadata()).withName("referencedata.get-result-definition"), createObjectBuilder().add("on", on.toString()).add("resultDefinitionId", id.toString()).build());
+        return requester.requestAsAdmin(request, JsonObject.class);
     }
 
     public AllResultDefinitions loadAllResultDefinitions(final JsonEnvelope context, final LocalDate localDate) {
         final String strLocalDate = localDate.toString();
-        final JsonEnvelope requestEnvelope = enveloper.withMetadataFrom(context, "referencedata.get-all-result-definitions")
-                .apply(createObjectBuilder().add("on", strLocalDate).build());
-
-        final JsonEnvelope jsonResultEnvelope = requester.requestAsAdmin(requestEnvelope);
-        final AllResultDefinitions allResultDefinitions = jsonObjectToObjectConverter.convert(jsonResultEnvelope.payloadAsJsonObject(), AllResultDefinitions.class);
-        allResultDefinitions.getResultDefinitions().forEach(rd -> trimUserGroups(rd));
+        final JsonEnvelope requestEnvelope = envelopeFrom(metadataFrom(context.metadata()).withName("referencedata.get-all-result-definitions"), createObjectBuilder().add("on", strLocalDate).build());
+        final JsonObject jsonResultEnvelope = requester.requestAsAdmin(requestEnvelope, JsonObject.class).payload();
+        final AllResultDefinitions allResultDefinitions = jsonObjectToObjectConverter.convert(jsonResultEnvelope, AllResultDefinitions.class);
+        allResultDefinitions.getResultDefinitions().forEach(this::trimUserGroups);
         return allResultDefinitions;
     }
 
-    public JsonEnvelope getOrgainsationUnit(final String courtId, final JsonEnvelope envelope) {
+    public JsonObject getOrgainsationUnit(final String courtId, final JsonEnvelope envelope) {
         final JsonObject payload = createObjectBuilder().add("id", courtId).build();
-        final JsonEnvelope request = enveloper.withMetadataFrom(envelope, "referencedata.query.organisation-unit.v2").apply(payload);
-        return requester.requestAsAdmin(request);
+        final JsonEnvelope requestEnvelope = envelopeFrom(metadataFrom(envelope.metadata()).withName("referencedata.query.organisation-unit.v2"), payload);
+        return requester.requestAsAdmin(requestEnvelope, JsonObject.class).payload();
     }
 
     public boolean getSpiOutFlagForProsecutorOucode(final String oucode) {
-        final JsonObject payload = createObjectBuilder().add("oucode", oucode).build();
-        final JsonEnvelope request = envelopeFrom(metadataBuilder().withId(randomUUID()).withName("referencedata.query.get.prosecutor.by.oucode").build(), payload);
-        final JsonObject response = requester.requestAsAdmin(request).payloadAsJsonObject();
+        final JsonObject payload = createObjectBuilder().add(OU_CODE, oucode).build();
+        final JsonEnvelope request = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE).build(), payload);
+        final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
         return response.getBoolean("spiOutFlag");
     }
 
@@ -115,10 +116,9 @@ public class ReferenceDataService {
         final JsonObject payload = createObjectBuilder().build();
         final Metadata metadata = envelop(payload).withName("referencedata.query.bail-statuses").withMetadataFrom(context).metadata();
         final JsonEnvelope request = envelopeFrom(metadata, payload);
-        final JsonEnvelope response = requester.requestAsAdmin(request);
+        final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
 
         return Optional.ofNullable(response)
-                .map(JsonEnvelope::payloadAsJsonObject)
                 .map(o -> o.getJsonArray("bailStatuses"))
                 .map(a -> a.getValuesAs(JsonObject.class))
                 .map(l -> l.stream()
@@ -142,10 +142,9 @@ public class ReferenceDataService {
         final JsonObject payload = createObjectBuilder().build();
         final Metadata metadata = envelop(payload).withName("referencedata.query.mode-of-trial-reasons").withMetadataFrom(context).metadata();
         final JsonEnvelope request = envelopeFrom(metadata, payload);
-        final JsonEnvelope response = requester.requestAsAdmin(request);
+        final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
 
         return Optional.ofNullable(response)
-                .map(JsonEnvelope::payloadAsJsonObject)
                 .map(o -> o.getJsonArray("modeOfTrialReasons"))
                 .map(a -> a.getValuesAs(JsonObject.class))
                 .map(l -> l.stream()
@@ -155,6 +154,13 @@ public class ReferenceDataService {
     }
 
 
+    public String fetchPoliceEmailAddressForProsecutorOuCode(final String ouCode) {
+        final JsonObject payload = createObjectBuilder().add(OU_CODE, ouCode).build();
+        final JsonEnvelope request = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE).build(), payload);
+        final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
+        return response.getString(CONTACT_EMAIL_ADDRESS);
+    }
+
     private AllocationDecision convertToAllocationDecision(final JsonObject jsonObject) {
         return allocationDecision()
                 .withMotReasonId(fromString(jsonObject.getString("id")))
@@ -163,4 +169,6 @@ public class ReferenceDataService {
                 .withMotReasonDescription(jsonObject.getString("description"))
                 .build();
     }
+
+
 }

@@ -7,7 +7,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 
 import uk.gov.justice.core.courts.BaseStructure;
 import uk.gov.justice.core.courts.Hearing;
@@ -16,6 +15,7 @@ import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,21 +42,18 @@ public class BaseStructureConverterTest {
     ReferenceDataService referenceDataService;
 
     @Mock
-    private JsonEnvelope jsonEnvelope;
+    private JsonObject jsonEnvelope;
 
     @Mock
     private BaseStructure baseStructure;
 
     @Test
     public void testConverter() throws Exception {
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 
-
-        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(jsonEnvelope);
-        when(jsonEnvelope.payloadAsJsonObject()).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
-
+        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
         baseStructure = baseStructureConverter.convert(shareResultsMessage);
         assertThat(baseStructure.getId(), is(hearing.getId()));
         assertThat(baseStructure.getCourtCentreWithLJA().getCourtCentre(), is(hearing.getCourtCentre()));

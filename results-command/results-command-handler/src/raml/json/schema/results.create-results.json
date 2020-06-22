@@ -11,6 +11,9 @@
       "items": {
         "$ref": "http://justice.gov.uk/core/courts/caseDetails.json"
       }
+    },
+    "jurisdictionType": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/jurisdictionType"
     }
   },
   "additionalProperties": true,

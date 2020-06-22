@@ -7,5 +7,4 @@ subscriptions_descriptor:
       events:
         - name: public.results.police-result-generated
           schema_uri: http://moj.gov.uk/cpp/results/domain/public.police-result-generated.json
-
       event_source_name: public.event.source

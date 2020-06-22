@@ -75,11 +75,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.UUID.randomUUID;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-
 import com.google.common.collect.ImmutableList;
 
 public class TestTemplates {
@@ -98,13 +93,14 @@ public class TestTemplates {
     public static final String FIELD_NAME_SMITH = "Smith";
     public static final String OFFENCE_WORDING = "offenceWording";
     public static final String LABEL = "label";
+    private static final String TITLE = "Baroness";
 
 
     private TestTemplates() {
 
     }
 
-    public static Hearing basicShareHearingTemplate(final UUID hearingId, final List<ProsecutionCase> prosecutionCases) {
+    public static Hearing basicShareHearingTemplate(final UUID hearingId, final List<ProsecutionCase> prosecutionCases, final JurisdictionType jurisdictionType) {
         return Hearing.hearing()
                 .withId(hearingId)
                 .withType(HearingType.hearingType()
@@ -146,7 +142,7 @@ public class TestTemplates {
                         .withApplicant(courtApplicationPartyTemplates())
                         .withApplicationStatus(ApplicationStatus.DRAFT)
                         .build()))
-                .withJurisdictionType(JurisdictionType.CROWN)
+                .withJurisdictionType(jurisdictionType)
                 .withJudiciary(asList(JudicialRole.judicialRole()
                         .withJudicialId(randomUUID())
                         .withJudicialRoleType(circuitJudge())
@@ -178,13 +174,13 @@ public class TestTemplates {
                 .build();
     }
 
-    public static PublicHearingResulted sharedResultTemplateWithTwoOffences() {
+    public static PublicHearingResulted sharedResultTemplateWithTwoOffences(final JurisdictionType jurisdictionType) {
 
         final UUID hearingId = randomUUID();
 
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId,
-                        asList(createCaseWithDefendantAndOffenceLevelJudicialResults(buildJudicialResultList()))))
+                        asList(createCaseWithDefendantAndOffenceLevelJudicialResults(buildJudicialResultList())), jurisdictionType))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
 
     }
@@ -203,22 +199,26 @@ public class TestTemplates {
                 .withJudiciaryType(JudicialRoleTypeEnum.CIRCUIT_JUDGE.name()).build();
     }
 
-    public static PublicHearingResulted basicShareResultsTemplate() {
+    public static PublicHearingResulted basicShareResultsWithMagistratesTemplate() {
+       return basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
+    }
+
+    public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType) {
 
         final UUID hearingId = randomUUID();
 
         return PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList()), createProsecutionCase2(buildJudicialResultList()))))
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList()), createProsecutionCase2(buildJudicialResultList())), jurisdictionType))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
 
     }
 
-    public static PublicHearingResulted basicShareResultsTemplateWithoutResult() {
+    public static PublicHearingResulted basicShareResultsTemplateWithoutResult(final JurisdictionType jurisdictionType) {
 
         final UUID hearingId = randomUUID();
 
         return PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null), createProsecutionCase2(null))))
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null), createProsecutionCase2(null)), jurisdictionType))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
 
     }
@@ -271,7 +271,7 @@ public class TestTemplates {
                         .withPersonDetails(person()
                                 .withFirstName("John")
                                 .withLastName(FIELD_NAME_SMITH)
-                                .withTitle("Baroness")
+                                .withTitle(TITLE)
                                 .withGender(Gender.NOT_KNOWN)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
@@ -280,7 +280,7 @@ public class TestTemplates {
                         .withPerson(person()
                                 .withFirstName("Tina")
                                 .withLastName(FIELD_NAME_SMITH)
-                                .withTitle("Baroness")
+                                .withTitle(TITLE)
                                 .withGender(Gender.MALE)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
@@ -562,7 +562,7 @@ public class TestTemplates {
                         .withPersonDetails(person()
                                 .withFirstName("John")
                                 .withLastName(FIELD_NAME_SMITH)
-                                .withTitle("Baroness")
+                                .withTitle(TITLE)
                                 .withGender(Gender.NOT_KNOWN)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
@@ -571,7 +571,7 @@ public class TestTemplates {
                         .withPerson(person()
                                 .withFirstName("Tina")
                                 .withLastName(FIELD_NAME_SMITH)
-                                .withTitle("Baroness")
+                                .withTitle(TITLE)
                                 .withGender(Gender.MALE)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())

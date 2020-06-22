@@ -3,12 +3,12 @@ package uk.gov.moj.cpp.results.event.helper.results;
 import static java.util.UUID.fromString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,7 +31,7 @@ public class AttendanceDayTest {
     @Test
     public void testBuildAttendance() {
 
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final Hearing hearing = shareResultsMessage.getHearing();
 
         final List<AttendanceDay> attendanceDays = attendanceDay.buildAttendance(hearing.getDefendantAttendance(), DEFAULT_DEFENDANT_ID);

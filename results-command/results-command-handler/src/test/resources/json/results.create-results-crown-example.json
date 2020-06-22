@@ -256,5 +256,6 @@
       "urn": "123445",
       "prosecutionAuthorityCode": "someCode"
     }
-  ]
+  ],
+  "jurisdictionType" : "CROWN"
 }

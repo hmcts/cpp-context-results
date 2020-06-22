@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/email-notification-failed.json",
+  "type": "object",
+  "properties": {
+    "urn": {
+      "type": "string"
+    },
+    "errorMessage": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "urn",
+    "errorMessage"
+  ],
+  "additionalProperties": false
+}

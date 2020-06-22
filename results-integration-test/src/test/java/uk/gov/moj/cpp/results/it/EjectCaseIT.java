@@ -11,7 +11,6 @@ import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFact
 import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Hearing;
@@ -19,6 +18,7 @@ import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.utils.QueueUtil;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.UUID;
 
@@ -55,8 +55,8 @@ public class EjectCaseIT {
     }
 
     @Test
-    public void testEjectCaseWithCaseIdInPayload() {
-        final PublicHearingResulted resultsMessage = basicShareResultsTemplate();
+    public void shouldEjectCaseWithCaseIdInPayload() {
+        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -95,9 +95,9 @@ public class EjectCaseIT {
     }
 
     @Test
-    public void testEjectApplicationWithApplicationIdInPayload() {
+    public void shouldEjectApplicationWithApplicationIdInPayload() {
 
-        final PublicHearingResulted resultsMessage = basicShareResultsTemplate();
+        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
 
         final Hearing hearingIn = resultsMessage.getHearing();
 

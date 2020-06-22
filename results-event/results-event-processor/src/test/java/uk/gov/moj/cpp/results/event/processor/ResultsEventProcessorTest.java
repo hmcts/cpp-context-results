@@ -4,13 +4,11 @@ import static com.google.common.collect.ImmutableList.of;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -22,7 +20,6 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
-import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.withMetadataEnvelopedFrom;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
@@ -37,6 +34,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
+import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.HearingHelper;
@@ -48,8 +46,10 @@ import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
+import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
@@ -78,7 +78,17 @@ public class ResultsEventProcessorTest {
     private static final UUID PROMPT_ID_1 = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6742d");
     private static final UUID RESULT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6743d");
     private static final UUID NATIONALITY_ID = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
-
+    private static final String OU_CODE = "GFL123";
+    private static final String URN = "urn123";
+    private static final String EMAIL_ADDRESS = "test@hmcts.net";
+    private static final String COMMON_PLATFORM_URL = "http://xxx.xx.com";
+    private static final String POLICE_TEMPLATE_ID = "781b970d-a13e-4440-97c3-ecf22a4540d5";
+    private static final String FIELD_SEND_TO_ADDRESS = "sendToAddress";
+    private static final String FIELD_PERSONALISATION = "personalisation";
+    private static final String FIELD_URN = "URN";
+    private static final String FIELD_COMMON_PLATFORM_URL = "common_platform_url";
+    private static final String FIELD_TEMPLATE_ID = "templateId";
+    private static final String FIELD_NOTIFICATION_ID = "notificationId";
     @Spy
     private final Enveloper enveloper = createEnveloper();
 
@@ -115,6 +125,12 @@ public class ResultsEventProcessorTest {
     @Mock
     private CaseDetailsConverterForSjp caseDetailsConverterForSjp;
 
+    @Mock
+    private ApplicationParameters applicationParameters;
+
+    @Mock
+    private NotificationNotifyService notificationNotifyService;
+
     @Spy
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
@@ -125,7 +141,14 @@ public class ResultsEventProcessorTest {
     private ResultsEventProcessor resultsEventProcessor;
 
     @Captor
-    private ArgumentCaptor<JsonEnvelope> envelopeArgumentCaptor;
+    private ArgumentCaptor<Envelope<JsonObject>> envelopeArgumentCaptor;
+
+     @Captor
+     private ArgumentCaptor<JsonEnvelope> jsonEnvelopeArgumentCaptor;
+
+
+    @Captor
+    private ArgumentCaptor<JsonObject> jsonObjectArgumentCaptor;
 
     @Before
     public void setUp() {
@@ -149,14 +172,14 @@ public class ResultsEventProcessorTest {
                 .build());
         when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
         when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
-        when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt);
+        when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
 
     }
 
     @Test
-    public void hearingResulted_shouldForwardAsIsAsPrivateEvent() {
+    public void shouldForwardAsIsAsPrivateEventWhenHearingResulted() {
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final String hearingId = UUID.randomUUID().toString();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
@@ -169,22 +192,25 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.hearingResulted(envelope);
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-        final List<JsonEnvelope> allValues = convertStreamToEventList(envelopeArgumentCaptor.getAllValues());
+
+        final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
 
 
-        assertThat(allValues, containsInAnyOrder(
+        assertThat(allValues,
                 jsonEnvelope(
                         metadata().withName("results.command.add-hearing-result"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString())))
-                        ))));
+                        )));
 
     }
 
     @Test
-    public void hearingResulted_shouldIssueCreateResultCommand() {
+    public void shouldIssueCreateResultCommandWhenHearingResulted() {
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
 
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
@@ -192,17 +218,20 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.hearingResultAdded(envelope);
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-        final List<JsonEnvelope> allValues = convertStreamToEventList(envelopeArgumentCaptor.getAllValues());
 
-        assertThat(allValues, containsInAnyOrder(
+        final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
+
+        final JsonEnvelope requestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
+
+        assertThat(requestPayload,
                 jsonEnvelope(
-                        withMetadataEnvelopedFrom(envelope).withName("results.create-results"),
+                        metadata().withName("results.create-results"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.session.id", is(shareResultsMessage.getHearing().getId().toString())),
                                 withJsonPath("$.session.sourceType", is("CC")),
                                 withJsonPath("$.session.sessionDays.[0].sittingDay", is("2018-05-02T12:01:01.000Z")))
 
-                        ))));
+                        )));
 
     }
 
@@ -223,21 +252,46 @@ public class ResultsEventProcessorTest {
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
 
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+
+
         assertThat(
-                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                allValues, jsonEnvelope(
                         metadata().withName("public.results.police-result-generated"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.id", is(id))))));
 
     }
 
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequested() {
+        final UUID notificationId = randomUUID();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withName("dummy"))
+                .withPayloadOf(URN, "urn")
+                .withPayloadOf(EMAIL_ADDRESS, "policeEmailAddress")
+                .withPayloadOf(notificationId, "notificationId")
+                .build();
 
-    private List<JsonEnvelope> convertStreamToEventList(final List<JsonEnvelope> listOfStreams) {
-        return listOfStreams.stream().collect(toList());
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getEmailTemplateId()).thenReturn(POLICE_TEMPLATE_ID);
+        resultsEventProcessor.handlePoliceNotificationRequested(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                jsonEnvelopeArgumentCaptor.capture(), jsonObjectArgumentCaptor.capture());
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_NOTIFICATION_ID), is(notificationId.toString()));
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_TEMPLATE_ID), is(POLICE_TEMPLATE_ID));
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL), is(COMMON_PLATFORM_URL));
+
     }
 
     @Test
-    public void testHandleCaseOrApplicationEjected_whenPayloadContainsCaseId_expectedCaseEjectedCommandRaisedWithCaseId() {
+    public void shouldHandleCaseOrApplicationEjectedWhenPayloadContainsCaseIdExpectedCaseEjectedCommandRaisedWithCaseId() {
         final UUID hearingId1 = randomUUID();
         final UUID hearingId2 = randomUUID();
         final UUID caseId = randomUUID();
@@ -252,9 +306,13 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.handleCaseOrApplicationEjected(envelope);
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+
 
         assertThat(
-                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                allValues, jsonEnvelope(
                         metadata().withName("results.case-or-application-ejected"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.caseId", is(caseId.toString()))))));
@@ -263,7 +321,7 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void testHandleCaseOrApplicationEjected_whenPayloadContainsApplicationId_expectedCaseEjectedCommandRaisedWithApplicationId() {
+    public void shouldHandleCaseOrApplicationEjectedWhenPayloadContainsApplicationIdExpectedCaseEjectedCommandRaisedWithApplicationId() {
         final UUID hearingId1 = randomUUID();
         final UUID hearingId2 = randomUUID();
         final UUID applicationId = randomUUID();
@@ -278,9 +336,12 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.handleCaseOrApplicationEjected(envelope);
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
 
         assertThat(
-                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                allValues, jsonEnvelope(
                         metadata().withName("results.case-or-application-ejected"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.applicationId", is(applicationId.toString()))))));
@@ -289,8 +350,8 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void hearingResulted_shouldContinueIfEventGridFails() {
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+    public void shouldContinueIfEventGridFailsWhenHearingResulted() {
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
 
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -308,8 +369,8 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void hearingResulted_shouldUseCorrectHashKey() {
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate();
+    public void shouldUseCorrectHashKeyWhenHearingResulted() {
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
 
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -335,7 +396,7 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void sjpCaseResulted_shouldForwardAsEvent() {
+    public void shouldForwardAsEventWhenSjpCaseResulted() {
         final BailStatus bailStatus = BailStatus.bailStatus().build();
         when(referenceCache.getBailStatusObjectByCode(any(), any())).thenReturn(Optional.of(bailStatus));
         when(referenceCache.getAllocationDecision(any(), anyString())).thenReturn(Optional.of(buildAllocationDecision()));
@@ -349,8 +410,12 @@ public class ResultsEventProcessorTest {
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
         final String id = sjpCaseResultedMessage.getSession().getSessionId().toString();
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+
         assertThat(
-                envelopeArgumentCaptor.getValue(), jsonEnvelope(
+                allValues, jsonEnvelope(
                         metadata().withName("results.create-results"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.session.id", is(id)),
