@@ -5,12 +5,12 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>9.4.30</version>
+        <version>10.0.2</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.results</groupId>
     <artifactId>results-parent</artifactId>
-    <version>6.4.22-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Results Service - Parent Module</name>
@@ -36,9 +36,13 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <criminal-court-public-model.version>1.0.87</criminal-court-public-model.version>
         <referencedata.version>6.4.25</referencedata.version>
         <coredomain.version>1.0.87</coredomain.version>
+        <lettuce.core.version>5.2.1.RELEASE</lettuce.core.version>
+        <azure-client-authentication.version>1.5.2</azure-client-authentication.version>
+        <azure-eventgrid.version>1.0.0</azure-eventgrid.version>
+        <junit-dataprovider.version>1.13.1</junit-dataprovider.version>
+        <notification.notify.version>0.0.38</notification.notify.version>
     </properties>
     <build>
         <plugins>

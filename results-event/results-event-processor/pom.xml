@@ -4,15 +4,14 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-event</artifactId>
-        <version>6.4.22-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
     </parent>
+    
+    <artifactId>results-event-processor</artifactId>
 
     <properties>
         <cpp.service-component>EVENT_PROCESSOR</cpp.service-component>
-        <junit-dataprovider.version>1.13.1</junit-dataprovider.version>
-        <notification.notify.version>0.0.38</notification.notify.version>
     </properties>
-    <artifactId>results-event-processor</artifactId>
 
     <packaging>war</packaging>
 
@@ -95,17 +94,17 @@
          <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
-            <version>5.2.1.RELEASE</version>
+            <version>${lettuce.core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <version>1.5.2</version>
+            <version>${azure-client-authentication.version}</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-eventgrid</artifactId>
-            <version>1.0.0</version>
+            <version>${azure-eventgrid.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
@@ -145,7 +144,7 @@
                     <dependency>
                         <groupId>io.lettuce</groupId>
                         <artifactId>lettuce-core</artifactId>
-                        <version>5.2.1.RELEASE</version>
+                        <version>${lettuce.core.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -174,7 +173,7 @@
                     <dependency>
                         <groupId>io.lettuce</groupId>
                         <artifactId>lettuce-core</artifactId>
-                        <version>5.2.1.RELEASE</version>
+                        <version>${lettuce.core.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
