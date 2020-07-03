@@ -36,8 +36,8 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
+        <coredomain.version>1.0.93</coredomain.version>
         <referencedata.version>7.0.1</referencedata.version>
-        <coredomain.version>1.0.91</coredomain.version>
         <lettuce.core.version>5.2.1.RELEASE</lettuce.core.version>
         <azure-client-authentication.version>1.5.2</azure-client-authentication.version>
         <azure-eventgrid.version>1.0.0</azure-eventgrid.version>
