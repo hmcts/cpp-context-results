@@ -3,6 +3,8 @@ package uk.gov.moj.cpp.results.query.view;
 import static java.util.UUID.fromString;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.services.common.converter.LocalDates;
@@ -26,6 +28,8 @@ import javax.json.JsonObject;
 @SuppressWarnings({"CdiInjectionPointsInspection", "SpringAutowiredFieldsWarningInspection", "WeakerAccess", "squid:S1188", "squid:CallToDeprecatedMethod"})
 @ServiceComponent(QUERY_VIEW)
 public class ResultsQueryView {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsQueryView.class);
 
     private static final String RESPONSE_NAME_HEARING_DETAILS = "results.hearing-details";
     private static final String RESPONSE_NAME_RESULTS_SUMMARY = "results.results-summary";
@@ -75,12 +79,27 @@ public class ResultsQueryView {
         final JsonObject payload = query.payloadAsJsonObject();
         final UUID hearingId = fromString(payload.getString(FIELD_HEARING_ID));
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
-        final ApiHearing hearing = hearingTransformer.hearing(hearingResultAdded.getHearing()).build();
-        final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
-        final JsonObject jsonResult = Json.createObjectBuilder()
-                .add("hearing", jsonValue)
-                .add("sharedTime", hearingResultAdded.getSharedTime().toString())
-                .build();
+        if(hearingResultAdded != null){
+            final ApiHearing hearing = hearingTransformer.hearing(hearingResultAdded.getHearing()).build();
+            final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
+            final JsonObject jsonResult = Json.createObjectBuilder()
+                    .add("hearing", jsonValue)
+                    .add("sharedTime", hearingResultAdded.getSharedTime().toString())
+                    .build();
+            return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                    .apply(jsonResult);
+        }
+        LOGGER.warn("No records exists for Hearing id {}", hearingId);
+        return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                .apply(Json.createObjectBuilder().build());
+    }
+
+    @Handles("results.get-hearing-details-internal")
+    public JsonEnvelope getHearingDetailsInternal(final JsonEnvelope query) {
+        final JsonObject payload = query.payloadAsJsonObject();
+        final UUID hearingId = fromString(payload.getString(FIELD_HEARING_ID));
+        final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
+        final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
         return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
                 .apply(jsonResult);
 

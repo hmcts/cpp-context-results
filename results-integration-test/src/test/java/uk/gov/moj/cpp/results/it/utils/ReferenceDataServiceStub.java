@@ -17,8 +17,6 @@ import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.getJsonResponse;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.waitForStubToBeReady;
 
-import java.util.Objects;
-
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 

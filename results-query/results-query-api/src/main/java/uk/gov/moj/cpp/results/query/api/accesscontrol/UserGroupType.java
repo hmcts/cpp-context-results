@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 
 public enum UserGroupType {
 
+    CJSE("CJSE"),
+    LEGAL_ADVISERS("Legal Advisers"),
     PRISON_ADMIN("Prison Admin"),
     PROBATION_ADMIN("Probation Admin"),
     POLICE_ADMIN("Police Admin"),
@@ -41,7 +43,7 @@ public enum UserGroupType {
     }
 
     public static List<String> resultsDetailsGroups() {
-        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS)
+        return Stream.of(CJSE, LEGAL_ADVISERS, PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS)
                 .map(UserGroupType::getName).collect(toList());
     }
 

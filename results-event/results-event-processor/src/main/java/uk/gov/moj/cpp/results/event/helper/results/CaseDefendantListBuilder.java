@@ -4,6 +4,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
 import static uk.gov.justice.core.courts.CaseDefendant.caseDefendant;
@@ -14,7 +15,9 @@ import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getPrese
 import uk.gov.justice.core.courts.AssociatedPerson;
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
@@ -22,6 +25,7 @@ import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -39,15 +43,24 @@ public class CaseDefendantListBuilder {
 
     public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final List<Defendant> defendants, final Hearing hearing) {
         final List<uk.gov.justice.core.courts.CaseDefendant> defendantList = new ArrayList<>();
+
+        final List<DefendantJudicialResult> hearingLevelResults = hearing.getDefendantJudicialResults();
+
         for (final Defendant defendant : defendants) {
-            final List<AttendanceDay> attendanceDays = null != hearing.getDefendantAttendance() ? new uk.gov.moj.cpp.results.event.helper.results.AttendanceDay().buildAttendance(hearing.getDefendantAttendance(), defendant.getId()) : emptyList();
+
+            final List<AttendanceDay> attendanceDays = null != hearing.getDefendantAttendance() ?
+                    new uk.gov.moj.cpp.results.event.helper.results.AttendanceDay().buildAttendance(hearing.getDefendantAttendance(), defendant.getId())
+                    : emptyList();
 
             final uk.gov.justice.core.courts.CaseDefendant.Builder builder = caseDefendant()
                     .withDefendantId(defendant.getId())
                     .withProsecutorReference(getProsecutorReference(defendant.getProsecutionAuthorityReference(), defendant.getPersonDefendant()))
                     .withPncId(defendant.getPncId())
                     .withAttendanceDays(attendanceDays)
-                    .withJudicialResults(defendant.getJudicialResults())
+                    .withJudicialResults(combineDefendantJudicialResults(
+                            defendant,
+                            hearingLevelResultsForDefendant(defendant, hearingLevelResults))
+                    )
                     .withOffences(new OffenceDetails().buildOffences(defendant))
                     .withAssociatedPerson(buildAssociatedDefendant(defendant.getAssociatedPersons()));
 
@@ -58,6 +71,35 @@ public class CaseDefendantListBuilder {
         }
 
         return defendantList;
+    }
+
+    private List<JudicialResult> combineDefendantJudicialResults(Defendant defendant, List<JudicialResult> hearingLevelResultsForDefendant) {
+
+        if (hearingLevelResultsForDefendant == null) {
+            return defendant.getDefendantCaseJudicialResults();
+        }
+
+        if (defendant.getDefendantCaseJudicialResults() == null) {
+            return hearingLevelResultsForDefendant;
+        }
+
+        return Stream.concat(
+                hearingLevelResultsForDefendant.stream(),
+                defendant.getDefendantCaseJudicialResults().stream())
+                .collect(toList());
+    }
+
+    private List<JudicialResult> hearingLevelResultsForDefendant(
+            final Defendant defendant,
+            List<DefendantJudicialResult> hearingLevelResults
+    ) {
+        final List<JudicialResult> combinedList = hearingLevelResults == null ? null :
+                hearingLevelResults.stream()
+                .filter(r -> r.getMasterDefendantId().equals(defendant.getMasterDefendantId()))
+                .map(DefendantJudicialResult::getJudicialResult)
+                .collect(toList());
+
+        return (combinedList == null || combinedList.isEmpty()) ? null : combinedList;
     }
 
     private List<uk.gov.justice.core.courts.AssociatedIndividual> buildAssociatedDefendant(final List<AssociatedPerson> associatedPersons) {

@@ -57,6 +57,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String CONTENT_TYPE_HEARING_DETAILS = "application/vnd.results.hearing-details+json";
     private static final String CONTENT_TYPE_HEARING_INFORMATION_DETAILS = "application/vnd.results.hearing-information-details+json";
     private static final String CONTENT_TYPE_RESULTS_DETAILS = "application/vnd.results.results-details+json";
+    private static final String CONTENT_TYPE_HEARING_DETAILS_INTERNAL = "application/vnd.results.hearing-details-internal+json";
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
     private static final String RESULTS_EVENT_SESSION_ADDED_EVENT = "results.event.session-added-event";
     private static final String RESULTS_EVENT_CASE_REJECTED_EVENT = "results.event.sjp-case-rejected-event";
@@ -333,6 +334,19 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         privatePoliceNotificationRequestedConsumer.close();
         privatePoliceNotificationFailedConsumer.close();
         publicMessageConsumer.close();
+    }
+
+    public static void getInternalHearingDetailsForHearingId(final UUID hearingId, final Matcher... matchers) {
+
+        final String url = format("%s%s", BASE_URI,
+                getProperty("results.get-hearing-details-internal", hearingId));
+
+        poll(requestParams(url, CONTENT_TYPE_HEARING_DETAILS_INTERNAL).withHeader(USER_ID, getLoggedInUser())).until(
+                print(),
+                status().is(OK),
+                payload().isJson(CoreMatchers.allOf(matchers))
+        );
+
     }
 
 }

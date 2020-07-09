@@ -18,6 +18,7 @@ import org.junit.Test;
 public class ResultTextHelperTest {
 
     private static final String FIELD_LABEL_VALUE = "label";
+    private final String EOL = System.getProperty("line.separator");
 
     @Test
     public void testResultText_whenJudicialResultPromptSequenceIsNotNull() {
@@ -26,7 +27,7 @@ public class ResultTextHelperTest {
         final String resultText = new ResultTextHelper().getResultText(resultDefinition, buildJudicialResultPromptList());
 
         assertThat(resultDefinition.getLabel(), is(FIELD_LABEL_VALUE));
-        assertThat(resultText, is("label\nlabel1 11111\nlabel2 22222\nlabel3 33333\nlabel4 44444\nlabel5 55555\n"));
+        assertThat(resultText, is("label"+EOL+"label1 11111"+EOL+"label2 22222"+EOL+"label3 33333"+EOL+"label4 44444"+EOL+"label5 55555"+EOL));
     }
 
 
@@ -40,7 +41,7 @@ public class ResultTextHelperTest {
         final String resultText = new ResultTextHelper().getResultText(resultDefinition, judicialResultPromptList);
 
         assertThat(resultDefinition.getLabel(), is(FIELD_LABEL_VALUE));
-        assertThat(resultText, is("label\nlabel3 33333\nlabel4 44444\nlabel5 55555\nlabel2 22222\nlabel1 11111\n"));
+        assertThat(resultText, is("label"+EOL+"label3 33333"+EOL+"label4 44444"+EOL+"label5 55555"+EOL+"label2 22222"+EOL+"label1 11111"+EOL));
     }
 
     private ImmutableList<JudicialResultPrompt> buildJudicialResultPromptList() {

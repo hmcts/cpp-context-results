@@ -1,0 +1,436 @@
+{
+  "caseId": "1e49ba9a-a3d3-4981-ae1d-b943760265d9",
+  "defendant": {
+    "defendantId": "49837832-f2f0-4285-9d65-65d79b747e0d",
+    "offences": [
+      {
+        "allocationDecision": {
+          "allocationDecisionDate": "2020-04-17",
+          "motReasonCode": "01",
+          "motReasonDescription": "Summary-only offence",
+          "motReasonId": "b8c37e33-defd-351c-b91e-1e03e51657da",
+          "offenceId": "e55f6bb6-7f98-4e2a-bd44-4cffdf43093b",
+          "originatingHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+          "sequenceNumber": 90
+        },
+        "chargeDate": "2019-04-15",
+        "convictingCourt": 2577,
+        "convictionDate": "2020-04-17",
+        "finalDisposal": "N",
+        "id": "e55f6bb6-7f98-4e2a-bd44-4cffdf43093b",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "1",
+        "offenceCode": "CA03012",
+        "offenceDateCode": 1,
+        "offenceFacts": {},
+        "offenceSequenceNumber": 1,
+        "startDate": "2019-04-01",
+        "wording": "Prosecution charge wording Prosecution charge wording "
+      },
+      {
+        "allocationDecision": {
+          "allocationDecisionDate": "2020-04-17",
+          "motReasonCode": "01",
+          "motReasonDescription": "Summary-only offence",
+          "motReasonId": "b8c37e33-defd-351c-b91e-1e03e51657da",
+          "offenceId": "05f52f37-f71b-47c2-8248-a6d918c4c4d4",
+          "originatingHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+          "sequenceNumber": 90
+        },
+        "chargeDate": "2019-04-15",
+        "convictingCourt": 2577,
+        "convictionDate": "2020-04-17",
+        "finalDisposal": "N",
+        "id": "05f52f37-f71b-47c2-8248-a6d918c4c4d4",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "1",
+        "offenceCode": "CA03012",
+        "offenceDateCode": 1,
+        "offenceFacts": {},
+        "offenceSequenceNumber": 2,
+        "startDate": "2019-04-01",
+        "wording": "Prosecution charge wording Prosecution charge wording "
+      },
+      {
+        "allocationDecision": {
+          "allocationDecisionDate": "2020-04-17",
+          "motReasonCode": "01",
+          "motReasonDescription": "Summary-only offence",
+          "motReasonId": "b8c37e33-defd-351c-b91e-1e03e51657da",
+          "offenceId": "134281f4-9100-4ae2-bfc1-9dd69ceb91f8",
+          "originatingHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+          "sequenceNumber": 90
+        },
+        "chargeDate": "2019-04-16",
+        "convictingCourt": 2577,
+        "convictionDate": "2020-04-17",
+        "finalDisposal": "N",
+        "id": "134281f4-9100-4ae2-bfc1-9dd69ceb91f8",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "category": "FINAL",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "judicialResultId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "bca4e07c-17e0-48f1-84f4-7b6ff8bab5e2",
+                "label": "Reasons for referring to court",
+                "promptSequence": 100,
+                "usergroups": [
+                  "Court Clerks",
+                  "Legal Advisers"
+                ],
+                "value": "Defence request"
+              }
+            ],
+            "judicialResultTypeId": "600edfc3-a584-4f9f-a52e-5bb8a99646c1",
+            "label": "Refer for a full court hearing",
+            "lifeDuration": false,
+            "orderedDate": "2020-04-17",
+            "orderedHearingId": "512b9281-38cf-4099-b19d-78e20967a3fa",
+            "publishedAsAPrompt": false,
+            "rank": 57400,
+            "resultText": "Refer for a full court hearing\nReasons for referring to court Defence request\n",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "1",
+        "offenceCode": "VE94006",
+        "offenceDateCode": 1,
+        "offenceFacts": {},
+        "offenceSequenceNumber": 3,
+        "startDate": "2019-04-02",
+        "wording": "Prosecution charge wording Prosecution charge wording "
+      }
+    ],
+    "prosecutorReference": "0800NP0100000000001H",
+    "individualDefendant": {
+      "bailStatus": {
+        "code": "A",
+        "description": "Not applicable",
+        "id": "86009c70-759d-3308-8de4-194886ff9a77"
+      },
+      "person": {
+        "address": {
+          "address1": "Line 11",
+          "address2": "Line 22",
+          "address3": "Line 33",
+          "address4": "Line 44",
+          "address5": "Line 55",
+          "postcode": "SW11 5TQ"
+        },
+        "contact": {
+          "home": "1111111111",
+          "mobile": "22222222222",
+          "primaryEmail": "a@b.co"
+        },
+        "dateOfBirth": "1990-01-01",
+        "firstName": "Dvlab Lady Gaga",
+        "gender": "MALE",
+        "lastName": "SOLO",
+        "nationality": "0"
+      },
+      "presentAtHearing": "N"
+    }
+  }
+}

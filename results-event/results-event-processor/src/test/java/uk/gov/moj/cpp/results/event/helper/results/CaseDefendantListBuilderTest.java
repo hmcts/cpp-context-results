@@ -105,7 +105,7 @@ public class CaseDefendantListBuilderTest {
                 assertThat(caseDetailsDefendant.getProsecutorReference(), is("0800PP0100000000001H"));
             }
             assertThat(caseDetailsDefendant.getPncId(), is(defendantFromRequest.getPncId()));
-            assertThat(caseDetailsDefendant.getJudicialResults(), is(defendantFromRequest.getJudicialResults()));
+            assertThat(caseDetailsDefendant.getJudicialResults(), is(defendantFromRequest.getDefendantCaseJudicialResults()));
             assertThat(caseDetailsDefendant.getCorporateDefendant(), is(defendantFromRequest.getDefenceOrganisation()));
             if (null != defendantFromRequest.getAssociatedPersons()) {
                 defendantFromRequest.getAssociatedPersons().forEach(a -> {

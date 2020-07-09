@@ -16,17 +16,22 @@ public class ResultsQueryApi {
     private Requester requester;
 
     @Handles("results.get-hearing-details")
-    public JsonEnvelope getHearingDetails(final JsonEnvelope query) {
+    public JsonEnvelope handleGetHearingDetails(final JsonEnvelope query) {
         return requester.request(query);
     }
 
     @Handles("results.get-results-summary")
-    public JsonEnvelope getResultsSummary(final JsonEnvelope query) {
+    public JsonEnvelope handleGetResultsSummary(final JsonEnvelope query) {
         return requester.request(query);
     }
 
     @Handles("results.get-hearing-information-details-for-hearing")
-    public JsonEnvelope getResultsDetails(final JsonEnvelope query) {
+    public JsonEnvelope handleGetResultsDetails(final JsonEnvelope query) {
+        return requester.request(query);
+    }
+
+    @Handles("results.get-hearing-details-internal")
+    public JsonEnvelope handleGetResultsDetailsInternal(final JsonEnvelope query) {
         return requester.request(query);
     }
 }

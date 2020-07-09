@@ -36,7 +36,7 @@ public class JudicialResult {
         this.referenceCache = referenceCache;
     }
 
-    @SuppressWarnings("squid:S1188")
+    @SuppressWarnings({"squid:S1188", "squid:S1067"})
     public List<uk.gov.justice.core.courts.JudicialResult> buildJudicialResults(final List<BaseResult> baseResults, final ZonedDateTime dateAndTimeOfSession, final UUID sessionId) {
 
         final JsonEnvelope context = envelopeFrom(metadataBuilder().withId(randomUUID()).withName("public.sjp.case-resulted").build(), createObjectBuilder().build());
@@ -77,7 +77,9 @@ public class JudicialResult {
                                     .withExcludedFromResults(resultDefinition.getExcludedFromResults())
                                     .withAlwaysPublished(resultDefinition.getAlwaysPublished())
                                     .withUrgent(resultDefinition.getUrgent())
-                                    .withD20(resultDefinition.getD20());
+                                    .withD20(resultDefinition.getD20())
+                                    .withPublishedForNows(isNull(resultDefinition.getPublishedForNows()) ? Boolean.FALSE : resultDefinition.getPublishedForNows())
+                                    .withRollUpPrompts(isNull(resultDefinition.getRollUpPrompts()) ? Boolean.FALSE : resultDefinition.getRollUpPrompts());
 
                             if (isNotEmpty(judicialResultPrompts)) {
                                 builder.withJudicialResultPrompts(judicialResultPrompts);

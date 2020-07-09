@@ -69,6 +69,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 
 @RunWith(DataProviderRunner.class)
@@ -143,10 +144,6 @@ public class ResultsEventProcessorTest {
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> envelopeArgumentCaptor;
 
-     @Captor
-     private ArgumentCaptor<JsonEnvelope> jsonEnvelopeArgumentCaptor;
-
-
     @Captor
     private ArgumentCaptor<JsonObject> jsonObjectArgumentCaptor;
 
@@ -181,13 +178,14 @@ public class ResultsEventProcessorTest {
 
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final String hearingId = UUID.randomUUID().toString();
+        final UUID userId = UUID.randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
         final JsonObject jsonResult = Json.createObjectBuilder().add("val", randomUUID().toString()).build();
         final JsonObject transformedHearing = envelope.asJsonObject();
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
-        when(eventGridService.sendHearingResultedEvent(hearingId)).thenReturn(true);
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId)).thenReturn(true);
 
         resultsEventProcessor.hearingResulted(envelope);
 
@@ -278,10 +276,11 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getEmailTemplateId()).thenReturn(POLICE_TEMPLATE_ID);
+
         resultsEventProcessor.handlePoliceNotificationRequested(jsonEnvelope);
 
         verify(notificationNotifyService, times(1)).sendEmailNotification(
-                jsonEnvelopeArgumentCaptor.capture(), jsonObjectArgumentCaptor.capture());
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
         assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_NOTIFICATION_ID), is(notificationId.toString()));
         assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_TEMPLATE_ID), is(POLICE_TEMPLATE_ID));
         assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
@@ -353,14 +352,14 @@ public class ResultsEventProcessorTest {
     public void shouldContinueIfEventGridFailsWhenHearingResulted() {
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
-
+        final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
         final JsonObject transformedHearing = envelope.asJsonObject();
 
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
-        when(eventGridService.sendHearingResultedEvent(hearingId)).thenThrow(new RuntimeException("Error"));
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId)).thenThrow(new RuntimeException("Error"));
 
         resultsEventProcessor.hearingResulted(envelope);
 
@@ -372,25 +371,38 @@ public class ResultsEventProcessorTest {
     public void shouldUseCorrectHashKeyWhenHearingResulted() {
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
-
+        final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
+
         final JsonObject payload = envelope.asJsonObject();
-        final JsonObject responseObject = Json.createObjectBuilder()
+        final JsonObject internalPayload = Json.createObjectBuilder()
                 .add("hearing", payload.getJsonObject("hearing"))
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
 
-        when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(payload.getJsonObject("hearing"));
+        final JsonObject transformedHearing = payload.getJsonObject("hearing");
 
-        final String expectedCacheKey = hearingId + "_result_";
+        when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing")))
+                .thenReturn(transformedHearing);
 
-        when(cacheService.add(expectedCacheKey, responseObject.toString())).thenReturn("");
+        final JsonObject externalPayload = Json.createObjectBuilder()
+                .add("hearing", transformedHearing)
+                .add("sharedTime", payload.getJsonString("sharedTime"))
+                .build();
 
-        when(eventGridService.sendHearingResultedEvent(hearingId)).thenReturn(true);
+        final String expectedCacheKeyExternal = "EXT_" + hearingId + "_result_";
+        final String expectedCacheKeyInternal = "INT_" + hearingId + "_result_";
+
+        when(cacheService.add(expectedCacheKeyExternal, externalPayload.toString())).thenReturn("");
+        when(cacheService.add(expectedCacheKeyInternal, internalPayload.toString())).thenReturn("");
+
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId)).thenReturn(true);
 
         resultsEventProcessor.hearingResulted(envelope);
-        verify(cacheService, times(1)).add(expectedCacheKey, responseObject.toString());
+
+        verify(cacheService, times(1)).add(expectedCacheKeyExternal, externalPayload.toString());
+        verify(cacheService, times(1)).add(expectedCacheKeyInternal, internalPayload.toString());
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
     }

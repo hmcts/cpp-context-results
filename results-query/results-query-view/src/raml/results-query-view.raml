@@ -67,3 +67,23 @@ protocols: [ HTTP, HTTPS ]
                      application/vnd.results.hearing-information-details+json:
                         schema: !include json/schema/results.hearing-information-details.json
                         example: !include json/results.hearing-information-details.json
+
+/hearingDetails/{hearingId}/internal:
+    uriParameters:
+        hearingId:
+            description: ID of hearing to fetch the results
+            type: string
+    get:
+        description: |
+            ...
+            (mapping):
+                responseType: application/vnd.results.hearing-details-internal+json
+                name: results.get-hearing-details-internal
+            ...
+        responses:
+            200:
+                description: OK
+                body:
+                     application/vnd.results.hearing-details-internal+json:
+                        schema: !include json/schema/results.hearing-details.json
+                        example: !include json/results.hearing-details.json

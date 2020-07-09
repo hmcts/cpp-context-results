@@ -34,7 +34,7 @@ public class MoveDefendantJudicialResultsHelperTest {
     public void testBuildOffenceAndDefendantJudicialResults() {
         final List<Offence> offenceDetailsList =  getOffencesForNoneMatchWithNotInterimAndNotWithdrawn();
         final Defendant defendant = getDefendant(offenceDetailsList);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(3));
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(1));
@@ -58,7 +58,7 @@ public class MoveDefendantJudicialResultsHelperTest {
     public void testNoneMatchBuildOffenceAndDefendantJudicialResults() {
         final List<Offence> offenceDetailsList =  getOffencesForNoneMatch();
         final Defendant defendant = getDefendant(offenceDetailsList);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(4));
         assertThat(updatedOffenceList.get(3).getJudicialResults().size(), is(2));
@@ -73,7 +73,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         final List<Offence> offenceDetailsList =  getOffencesForNoneMatchWithNotInterimAndNotWithdrawn();
         final Defendant defendant = getDefendant(offenceDetailsList);
         final List<Defendant> defendantsFromRequest = Arrays.asList(defendant, defendant);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(3));
         assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(2));
@@ -88,7 +88,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         final List<Offence> offenceDetailsList =  getOffencesToChooseFirstNoneMatchWithNotInterimAndNotWithdrawn();
         final Defendant defendant = getDefendant(offenceDetailsList);
         final List<Defendant> defendantsFromRequest = Arrays.asList(defendant, defendant);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(3));
         assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(2));
@@ -104,7 +104,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         final List<Offence> offenceDetailsList = getOffences(true, Category.INTERMEDIARY);
         final Defendant defendant = getDefendant(offenceDetailsList);
         final List<Defendant> defendantsFromRequest = Arrays.asList(defendant, defendant);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.allMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.allMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(1));
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(2));
@@ -121,7 +121,7 @@ public class MoveDefendantJudicialResultsHelperTest {
 
         final List<Offence> offenceDetailsList = getOffencesWithAllInterimOrWithdrawn();
         final Defendant defendant = getDefendant(offenceDetailsList);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(3));
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(2));
@@ -137,7 +137,7 @@ public class MoveDefendantJudicialResultsHelperTest {
 
         final List<Offence> offenceDetailsList = getOffencesWithAllWithdrawn();
         final Defendant defendant = getDefendant(offenceDetailsList);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(3));
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(2));
@@ -153,7 +153,7 @@ public class MoveDefendantJudicialResultsHelperTest {
 
         final List<Offence> offenceDetailsList = getOffences(null, null);
         final Defendant defendant = getDefendant(offenceDetailsList);
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getJudicialResults());
+        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults());
 
         assertThat(updatedOffenceList.size(), is(1));
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(1));
@@ -164,7 +164,7 @@ public class MoveDefendantJudicialResultsHelperTest {
     }
 
     private Defendant getDefendant(final List<Offence> offenceDetails) {
-        return Defendant.defendant().withOffences(offenceDetails).withJudicialResults(buildDefendantJudicialResultList()).build();
+        return Defendant.defendant().withOffences(offenceDetails).withDefendantCaseJudicialResults(buildDefendantJudicialResultList()).build();
     }
 
     private List<Offence> getOffences(Boolean terminatesOffenceProceedings, Category category) {

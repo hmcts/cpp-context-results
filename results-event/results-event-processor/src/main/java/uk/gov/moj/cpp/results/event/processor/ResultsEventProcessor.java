@@ -6,8 +6,8 @@ import static javax.json.Json.createArrayBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
-import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 
 import uk.gov.justice.core.courts.BaseStructure;
 import uk.gov.justice.core.courts.CaseDetails;
@@ -39,6 +39,8 @@ import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.Json;
@@ -63,13 +65,15 @@ public class ResultsEventProcessor {
     private static final String HEARING = "hearing";
     private static final String RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED = "results.case-or-application-ejected";
     private static final String CACHE_KEY_SUFFIX = "_result_";
+    private static final String CACHE_KEY_EXTERNAL_PREFIX = "EXT_";
+    private static final String CACHE_KEY_INTERNAL_PREFIX = "INT_";
     private static final String SHARED_TIME = "sharedTime";
     private static final String URN = "URN";
     private static final String COMMON_PLATFORM_URL = "common_platform_url";
 
-
     @Inject
     ReferenceDataService referenceDataService;
+
     @Inject
     ReferenceCache referenceCache;
 
@@ -103,42 +107,46 @@ public class ResultsEventProcessor {
 
         LOGGER.info("Hearing Resulted Event Received");
 
-        final JsonObject hearingResultPayload = envelope.payloadAsJsonObject();
+        final JsonObject internalPayload = envelope.payloadAsJsonObject();
 
-        final JsonString sharedTime = hearingResultPayload.getJsonString(SHARED_TIME);
+        final JsonString sharedTime = internalPayload.getJsonString(SHARED_TIME);
 
-        final JsonObject transformedHearing = hearingHelper.transformedHearing(hearingResultPayload.getJsonObject(HEARING));
+        final JsonObject transformedHearing = hearingHelper.transformedHearing(internalPayload.getJsonObject(HEARING));
 
-        final JsonObject responseObject = Json.createObjectBuilder()
+        final JsonObject externalPayload = Json.createObjectBuilder()
                 .add(HEARING, transformedHearing)
                 .add(SHARED_TIME, sharedTime)
                 .build();
 
         final String hearingId = transformedHearing.getString(HEARING_ID);
 
-        final String cacheKey = hearingId + CACHE_KEY_SUFFIX;
+        final String cacheKeyExternal = CACHE_KEY_EXTERNAL_PREFIX + hearingId + CACHE_KEY_SUFFIX;
+        final String cacheKeyInternal = CACHE_KEY_INTERNAL_PREFIX + hearingId + CACHE_KEY_SUFFIX;
+
+        final Optional<String> userId = envelope.metadata().userId();
 
         try {
-            LOGGER.info("Adding hearing {} to Redis Cache", hearingId);
-            cacheService.add(cacheKey, responseObject.toString());
+            LOGGER.info("Adding external JSON document for hearing {} to Redis Cache", hearingId);
+            cacheService.add(cacheKeyExternal, externalPayload.toString());
+
+            LOGGER.info("Adding internal JSON document for hearing {} to Redis Cache", hearingId);
+            cacheService.add(cacheKeyInternal, internalPayload.toString());
         } catch (Exception e) {
-            LOGGER.error("Exception caught while attempting to connect to cache service: {}", e);
+            LOGGER.error("Exception caught while attempting to connect to cache service: ", e);
         }
 
         try {
             LOGGER.info("Adding Hearing Resulted for hearing {} to EventGrid", hearingId);
-            eventGridService.sendHearingResultedEvent(hearingId);
+            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId));
         } catch (Exception e) {
-            LOGGER.error("Exception caught while attempting to connect to EventGrid: {}", e);
+            LOGGER.error("Exception caught while attempting to connect to EventGrid: ", e);
         }
 
-        final Envelope<JsonObject> jsonObjectEnvelope = envelop(hearingResultPayload)
+        final Envelope<JsonObject> jsonObjectEnvelope = envelop(internalPayload)
                 .withName("results.command.add-hearing-result")
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
-
     }
-
 
     @Handles("results.hearing-results-added")
     public void hearingResultAdded(final JsonEnvelope envelope) {
@@ -169,7 +177,6 @@ public class ResultsEventProcessor {
             LOGGER.debug("No Prosecution Cases present for hearing id : {} ", publicHearingResulted.getHearing().getId());
         }
     }
-
 
     @Handles("results.event.police-result-generated")
     public void createResult(final JsonEnvelope envelope) {
@@ -206,7 +213,6 @@ public class ResultsEventProcessor {
                 .build();
         sender.sendAsAdmin(envelopeFrom(metadata, resultJsonPayload.build()));
     }
-
 
     @Handles("public.progression.events.case-or-application-ejected")
     public void handleCaseOrApplicationEjected(final JsonEnvelope envelope) {
@@ -259,5 +265,4 @@ public class ResultsEventProcessor {
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
         return new Notification(policeNotificationRequested.getNotificationId(), fromString(applicationParameters.getEmailTemplateId()), policeNotificationRequested.getPoliceEmailAddress(), personalisationProperties);
     }
-
 }

@@ -10,6 +10,7 @@ import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.Offence;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -116,7 +117,7 @@ public class MoveDefendantJudicialResultsHelper {
     }
 
     private List<Offence> updatedOffencesWithJudicialResultsForNoneMatch(final List<Offence> originalOffences, List<JudicialResult> updatedJudicialResults) {
-        final List<Offence> updatedOffenceList = originalOffences;
+        final List<Offence> updatedOffenceList = new ArrayList<>(originalOffences);
         final Optional<Offence> optionalOffence = updatedOffenceList.stream()
                 .filter(Objects::nonNull).filter(offence -> !(nonNull(offence)&& isNotEmpty(offence.getJudicialResults()) && offence.getJudicialResults()
                         .stream()
@@ -137,7 +138,7 @@ public class MoveDefendantJudicialResultsHelper {
     }
 
     private List<Offence> updatedOffencesWithJudicialResultsForAllMatch(final List<Offence> originalOffences, List<JudicialResult> updatedJudicialResults) {
-        final List<Offence> updatedOffenceList = originalOffences;
+        final List<Offence> updatedOffenceList = new ArrayList<>(originalOffences);
         final Optional<Offence> optionalOffence = updatedOffenceList.stream().filter(Objects::nonNull).filter(offence ->offence
                 .getJudicialResults()
                 .stream()

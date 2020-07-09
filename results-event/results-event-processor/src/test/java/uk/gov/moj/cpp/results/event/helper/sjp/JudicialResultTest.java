@@ -2,8 +2,6 @@ package uk.gov.moj.cpp.results.event.helper.sjp;
 
 import static com.google.common.collect.ImmutableList.of;
 import static java.math.BigDecimal.valueOf;
-import static java.util.Objects.nonNull;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertNotNull;
@@ -19,18 +17,13 @@ import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefini
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.getBaseResults;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.getBaseResultsWithNoPrompts;
 
-import uk.gov.justice.core.courts.*;
-import uk.gov.justice.core.courts.JudicialResultPrompt;
+import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.sjp.results.BaseResult;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -38,6 +31,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JudicialResultTest {
+
+    private final String EOL = System.getProperty("line.separator");
 
     @Mock
     private ReferenceCache referenceCache;
@@ -107,7 +102,7 @@ public class JudicialResultTest {
             assertThat(judicialResult.getRank(), is(valueOf(1)));
             assertThat(judicialResult.getUsergroups(), is(of("1", "2")));
             assertThat(judicialResult.getWelshLabel(), is("welshLabel"));
-            assertThat(judicialResult.getResultText(), is("label\nlabel +10.00\nlabel +10.00\n"));
+            assertThat(judicialResult.getResultText(), is("label"+EOL+"label +10.00"+EOL+"label +10.00"+EOL));
             assertThat(judicialResult.getTerminatesOffenceProceedings(), is(false));
             assertThat(judicialResult.getLifeDuration(), is(false));
             assertThat(judicialResult.getPublishedAsAPrompt(), is(false));
@@ -138,7 +133,7 @@ public class JudicialResultTest {
             assertThat(judicialResult.getRank(), is(valueOf(1)));
             assertThat(judicialResult.getUsergroups(), is(of("1", "2")));
             assertThat(judicialResult.getWelshLabel(), is("welshLabel"));
-            assertThat(judicialResult.getResultText(), is("label\nlabel +10.00\nlabel +10.00\n"));
+            assertThat(judicialResult.getResultText(), is("label"+EOL+"label +10.00"+EOL+"label +10.00"+EOL));
             assertThat(judicialResult.getTerminatesOffenceProceedings(), is(false));
             assertThat(judicialResult.getLifeDuration(), is(true));
             assertThat(judicialResult.getPublishedAsAPrompt(), is(false));

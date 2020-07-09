@@ -17,7 +17,7 @@ public class OffenceDetails {
     public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant) {
         final List<Offence> offences = defendant.getOffences();
         final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new ArrayList<>();
-       final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences,defendant.getJudicialResults() );
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences,defendant.getDefendantCaseJudicialResults());
 
         for (final Offence offence : updatedOffences) {
             final uk.gov.justice.core.courts.OffenceDetails.Builder offenceDetailsBuilder = offenceDetails()

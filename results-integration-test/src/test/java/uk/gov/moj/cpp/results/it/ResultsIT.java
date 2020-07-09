@@ -42,6 +42,8 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplat
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
+import uk.gov.justice.core.courts.Address;
+import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.JurisdictionType;
@@ -59,6 +61,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -367,11 +370,11 @@ public class ResultsIT {
                         .collect(Collectors.toList());
 
 
-        final long defendantCount = hearingIn.getProsecutionCases().stream().flatMap(c -> c.getDefendants().stream()).count();
+        final long defendantCount = hearingIn.getProsecutionCases().stream().mapToLong(c -> c.getDefendants().size()).sum();
 
         final BeanMatcher<HearingResultSummariesView> summaryCheck = isBean(HearingResultSummariesView.class)
                 .withValue(summs -> resultsFilter.apply(summs).size(),
-                        (int) hearingIn.getProsecutionCases().stream().flatMap(pc -> pc.getDefendants().stream()).count())
+                        (int) hearingIn.getProsecutionCases().stream().mapToLong(pc -> pc.getDefendants().size()).sum())
                 .with(summs -> resultsFilter.apply(summs),
                         hasItem(isBean(HearingResultSummaryView.class)
                                 .withValue(HearingResultSummaryView::getHearingId, hearingIn.getId())
@@ -382,8 +385,8 @@ public class ResultsIT {
         final LocalDate searchStartDate = startDate;
         Queries.pollForMatch(15, 500, () -> getSummariesByDate(searchStartDate), summaryCheck);
 
-        final LocalDate earlierDate = hearingIn.getHearingDays().stream().map(hd -> hd.getSittingDay().toLocalDate()).min((a, b) -> a.compareTo(b)).orElse(null).minusDays(1);
-        final LocalDate laterDate = hearingIn.getHearingDays().stream().map(hd -> hd.getSittingDay().toLocalDate()).max((a, b) -> a.compareTo(b)).orElse(null).plusDays(1);
+        final LocalDate earlierDate = hearingIn.getHearingDays().stream().map(hd -> hd.getSittingDay().toLocalDate()).min(Comparator.naturalOrder()).orElse(null).minusDays(1);
+        final LocalDate laterDate = hearingIn.getHearingDays().stream().map(hd -> hd.getSittingDay().toLocalDate()).max(Comparator.naturalOrder()).orElse(null).plusDays(1);
 
         //check that date filters work
         summaries = getSummariesByDate(earlierDate);
@@ -402,9 +405,7 @@ public class ResultsIT {
         // check the details from query
         getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, matcher);
 
-        Matcher<HearingResultsAdded> matcherStatus = null;
-
-        matcherStatus = isBean(HearingResultsAdded.class)
+        Matcher<HearingResultsAdded> matcherStatus = isBean(HearingResultsAdded.class)
                 .with(HearingResultsAdded::getSharedTime, is(resultsMessage.getSharedTime()))
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, resultsMessage.getHearing().getId())
@@ -432,21 +433,25 @@ public class ResultsIT {
         LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
         //search summaries
-        final HearingResultSummariesView summaries = getSummariesByDate(startDate);
+        HearingResultSummariesView summaries;
 
         final Function<HearingResultSummariesView, List<HearingResultSummaryView>> resultsFilter =
                 summs -> summs.getResults().stream().filter(sum -> sum.getHearingId().equals(hearingIn.getId()))
                         .collect(Collectors.toList());
 
-        final Matcher<HearingResultSummariesView> summaryCheck = isBean(HearingResultSummariesView.class)
+        final BeanMatcher<HearingResultSummariesView> summaryCheck = isBean(HearingResultSummariesView.class)
                 .withValue(summs -> resultsFilter.apply(summs).size(),
-                        (int) hearingIn.getProsecutionCases().stream().flatMap(pc -> pc.getDefendants().stream()).count())
-                .with(summs -> resultsFilter.apply(summs),
+                        (int) hearingIn.getProsecutionCases().stream().mapToLong(pc -> pc.getDefendants().size()).sum())
+                .with(resultsFilter::apply,
                         hasItem(isBean(HearingResultSummaryView.class)
                                 .withValue(HearingResultSummaryView::getHearingId, hearingIn.getId())
                                 .withValue(HearingResultSummaryView::getHearingType, hearingIn.getType().getDescription())
                         )
                 );
+        final LocalDate searchStartDate = startDate;
+        Queries.pollForMatch(15, 500, () -> getSummariesByDate(searchStartDate), summaryCheck);
+
+        summaries = getSummariesByDate(startDate);
         assertThat(summaries, summaryCheck);
 
         //matcher to check details results
@@ -506,6 +511,48 @@ public class ResultsIT {
                 withJsonPath("$.sharedTime", notNullValue())
         };
         ResultsStepDefinitions.getHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher1);
+
+    }
+
+    @Test
+    public void shouldDisplayAllInternalDetailsInHearingResults() {
+        PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
+
+        final Hearing hearingIn = resultsMessage.getHearing();
+
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        CourtCentre expectedCourtCentre =
+                CourtCentre.courtCentre()
+                        .withAddress(Address.address()
+                                .withAddress1(hearingIn.getCourtCentre().getAddress().getAddress1())
+                                .withAddress2(hearingIn.getCourtCentre().getAddress().getAddress2())
+                                .withAddress3(hearingIn.getCourtCentre().getAddress().getAddress3())
+                                .withAddress4(hearingIn.getCourtCentre().getAddress().getAddress4())
+                                .withAddress5(hearingIn.getCourtCentre().getAddress().getAddress5())
+                                .withPostcode(hearingIn.getCourtCentre().getAddress().getPostcode()).build())
+                        .withId(hearingIn.getCourtCentre().getId())
+                        .withName(hearingIn.getCourtCentre().getName())
+                        .withRoomId(hearingIn.getCourtCentre().getRoomId())
+                        .withRoomName(hearingIn.getCourtCentre().getRoomName())
+                        .withWelshName(hearingIn.getCourtCentre().getWelshName())
+                        .withWelshRoomName(hearingIn.getCourtCentre().getWelshRoomName()).build();
+
+        final Matcher[] matcher = {
+                withJsonPath("$.hearing.id", equalTo(hearingIn.getId().toString())),
+                withJsonPath("$.hearing", Matchers.notNullValue()),
+                withJsonPath("$.hearing.courtCentre.name", equalTo(expectedCourtCentre.getName())),
+                withJsonPath("$.hearing.courtCentre.id", equalTo(expectedCourtCentre.getId().toString())),
+                withJsonPath("$.hearing.courtCentre.roomId", equalTo(expectedCourtCentre.getRoomId().toString())),
+                withJsonPath("$.hearing.courtCentre.roomName", equalTo(expectedCourtCentre.getRoomName())),
+                withJsonPath("$.hearing.courtCentre.welshName", equalTo(expectedCourtCentre.getWelshName())),
+                withJsonPath("$.hearing.courtCentre.welshRoomName", equalTo(expectedCourtCentre.getWelshRoomName())),
+                withJsonPath("$.hearing.courtCentre.address.address1", equalTo(expectedCourtCentre.getAddress().getAddress1())),
+                withJsonPath("$.hearing.courtCentre.address.address2", equalTo(expectedCourtCentre.getAddress().getAddress2())),
+                withJsonPath("$.hearing.courtCentre.address.postcode", equalTo(expectedCourtCentre.getAddress().getPostcode())),
+                withJsonPath("$.sharedTime", notNullValue())
+        };
+        ResultsStepDefinitions.getInternalHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher);
 
     }
 }

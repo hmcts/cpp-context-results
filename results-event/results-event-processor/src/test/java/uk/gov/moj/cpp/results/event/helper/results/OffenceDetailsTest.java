@@ -46,7 +46,7 @@ public class OffenceDetailsTest {
 
 
     private Defendant getDefendant(final List<Offence> offenceDetails) {
-        return Defendant.defendant().withOffences(offenceDetails).withJudicialResults(buildDefendantJudicialResultList()).build();
+        return Defendant.defendant().withOffences(offenceDetails).withDefendantCaseJudicialResults(buildDefendantJudicialResultList()).build();
     }
 
     private void assertOffenceDetails(final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList, final uk.gov.justice.core.courts.OffenceDetails offenceDetailsFromRequest) {

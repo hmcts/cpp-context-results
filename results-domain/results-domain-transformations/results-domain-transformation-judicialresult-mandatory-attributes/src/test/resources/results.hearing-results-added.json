@@ -1,0 +1,149 @@
+{
+  "hearing": {
+    "id": "47febc4e-cae6-4ac7-aa22-5a7ee654ad06",
+    "jurisdictionType": "MAGISTRATES",
+    "courtCentre": {
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "f1ead1d2-4b26-3230-b781-508d6aaafd26",
+      "roomName": "Courtroom 03"
+    },
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 90,
+        "listingSequence": 0,
+        "sittingDay": "2019-03-25T11:00:00.000Z"
+      }
+    ],
+    "type": {
+      "description": "Judgment",
+      "id": "edb25956-282c-4cee-9934-5686d901a029"
+    },
+    "hearingLanguage": "ENGLISH",
+    "prosecutionCases": [
+      {
+        "id": "b1d1862e-3701-477c-98b0-0e413b5dc131",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "TFL",
+          "prosecutionAuthorityId": "31af405e-7b60-4dd8-a244-c24c2d3fa595",
+          "prosecutionAuthorityReference": "TFL34467MTY0A"
+        },
+        "initiationCode": "J",
+        "defendants": [
+          {
+            "id": "60879488-71a9-4dcd-afc9-963f3991dad7",
+            "masterDefendantId": "60879488-71a9-4dcd-afc9-963f3991dad7",
+            "prosecutionCaseId": "b1d1862e-3701-477c-98b0-0e413b5dc131",
+            "offences": [
+              {
+                "id": "559ecc4d-9a87-4e2f-b9a1-cafc27ecba5f",
+                "offenceDefinitionId": "b1d8655a-0871-44cd-b03e-94f4da913589",
+                "offenceCode": "TR11005",
+                "offenceTitle": "Enter / attempt to enter / remain on the Transport for London regional railway network when intoxicated",
+                "wording": "On 02/07/2015 At threadneedle street EC2 Being a passenger on a Public service Vehicle operated on behalf of London Bus Services Limited being used for the carriage of passengers at separate fares where the vehicle was being operated by a Driver without a Conductor did not as directed by the Driver an Inspector or a Notice displayed on the vehicle pay the fare for the journey in accordance with the direction ",
+                "startDate": "2019-01-19",
+                "offenceTitleWelsh": "",
+                "offenceLegislation": "Contrary to byelaws 4(1) and 23 of the Transport for London Railway Byelaws made under paragraph 26 of Schedule 11 to the Greater London Authority Act 1999 and confirmed under section 67 of the Transport Act 1962.",
+                "offenceLegislationWelsh": "",
+                "modeOfTrial": "Summary",
+                "chargeDate": "2019-01-25",
+                "orderIndex": 1,
+                "count": 1,
+                "convictionDate": "2019-03-22",
+                "notifiedPlea": {
+                  "notifiedPleaDate": "2019-03-21",
+                  "notifiedPleaValue": "NOTIFIED_GUILTY",
+                  "offenceId": "559ecc4d-9a87-4e2f-b9a1-cafc27ecba5f"
+                },
+                "plea": {
+                  "delegatedPowers": {
+                    "firstName": "Marion",
+                    "lastName": "Martin",
+                    "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+                  },
+                  "offenceId": "559ecc4d-9a87-4e2f-b9a1-cafc27ecba5f",
+                  "originatingHearingId": "e0a9c29a-1017-4997-ae84-207620e3e694",
+                  "pleaDate": "2019-03-22",
+                  "pleaValue": "GUILTY"
+                },
+                "allocationDecision": {
+                  "originatingHearingId": "e0a9c29a-1017-4997-ae84-207620e3e694",
+                  "allocationDecisionDate": "2019-03-22",
+                  "motReasonId": "b8c37e33-defd-351c-b91e-1e03e51657da",
+                  "motReasonDescription": "Summary-only offence",
+                  "motReasonCode": "1",
+                  "sequenceNumber": 10
+                }
+              }
+            ],
+            "numberOfPreviousConvictionsCited": 2,
+            "personDefendant": {
+              "personDetails": {
+                "gender": "FEMALE",
+                "title": "MR",
+                "firstName": "Pijus",
+                "lastName": "Poyntz",
+                "dateOfBirth": "1956-03-16",
+                "interpreterLanguageNeeds": "French",
+                "documentationLanguageNeeds": "ENGLISH",
+                "address": {
+                  "address1": "Flat 1, Armageddon House",
+                  "address2": "13 Old Road",
+                  "address3": "Giggleswick",
+                  "address4": "Merton",
+                  "postcode": "IP27 1AB"
+                },
+                "contact": {}
+              }
+            },
+            "judicialResults": [
+              {
+                "judicialResultId": "b5b54613-81b7-4d1c-99fd-7c7b69cb9f38",
+                "orderedHearingId": "47febc4e-cae6-4ac7-aa22-5a7ee654ad06",
+                "label": "Attachment of earnings order",
+                "isAdjournmentResult": false,
+                "isFinancialResult": false,
+                "isConvictedResult": false,
+                "isAvailableForCourtExtract": false,
+                "orderedDate": "2019-03-25",
+                "welshLabel": "Gorchymyn atafaelu enillion",
+                "rank": 555,
+                "lastSharedDateTime": "2019-03-25",
+                "courtClerk": {
+                  "firstName": "Marion",
+                  "lastName": "Martin",
+                  "userId": "10e850ec-6602-48e7-b216-c0891f7dc981"
+                },
+                "judicialResultTypeId": "bdb32555-8d55-4dc1-b4b6-580db5132496",
+                "urgent": false,
+                "d20": false,
+                "resultText": "NA",
+                "terminatesOffenceProceedings": false,
+                "lifeDuration": false,
+                "publishedAsAPrompt": false,
+                "excludedFromResults": false,
+                "alwaysPublished": false
+              }
+            ],
+            "courtProceedingsInitiated": "2019-03-25T09:18:56.241Z"
+          }
+        ],
+        "caseStatus": "SJP_REFERRAL",
+        "statementOfFacts": "An incident took place at GREEN PARK station whereby you were spoken to by a member of London Underground staff regarding your train journey and the associated fare.The facts of this incidents are now being considered and I must advise you that legal proceedings may be initiated against you regarding this matter in accordance with the LU prosecution policy"
+      }
+    ],
+    "hasSharedResults": true,
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "day": "2019-03-25",
+            "attendanceType": "IN_PERSON"
+          }
+        ],
+        "defendantId": "60879488-71a9-4dcd-afc9-963f3991dad7"
+      }
+    ]
+  },
+  "sharedTime": "2019-03-25T09:18:37.291Z"
+}

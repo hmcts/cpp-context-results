@@ -70,7 +70,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -107,9 +106,9 @@ public class TestTemplates {
                         .withId(randomUUID())
                         .withDescription("Trial")
                         .build())
-                .withCourtApplications(Arrays.asList(CourtApplication.courtApplication()
+                .withCourtApplications(asList(CourtApplication.courtApplication()
                         .withId(randomUUID())
-                        .withLinkedCaseId(UUID.fromString("cccc1111-1e20-4c21-916a-81a6c90239e5"))
+                        .withLinkedCaseId(fromString("cccc1111-1e20-4c21-916a-81a6c90239e5"))
                         .withType(courtApplicationTypeTemplates())
                         .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
                         .withApplicant(courtApplicationPartyTemplates())
@@ -133,7 +132,7 @@ public class TestTemplates {
                                 .withDefendantId(DEFAULT_DEFENDANT_ID4)
                                 .build()
                 ))
-                .withDefenceCounsels(of(defenceCounsel().withId(randomUUID()).withAttendanceDays(of(LocalDate.now())).withDefendants(of(randomUUID(), randomUUID(), DEFAULT_DEFENDANT_ID1)).build(),
+                .withDefenceCounsels(of(defenceCounsel().withId(randomUUID()).withAttendanceDays(of(now())).withDefendants(of(randomUUID(), randomUUID(), DEFAULT_DEFENDANT_ID1)).build(),
                         defenceCounsel().withId(randomUUID()).withAttendanceDays(of(LocalDate.of(2018, 5, 2))).withDefendants(of(randomUUID(), DEFAULT_DEFENDANT_ID3, randomUUID())).build()))
                 .withCourtApplications(asList(CourtApplication.courtApplication()
                         .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
@@ -169,7 +168,7 @@ public class TestTemplates {
                         .withWelshRoomName(STRING.next())
                         .withAddress(address())
                         .build())
-                .withProsecutionCases(Arrays.asList(createProsecutionCase1(null), createProsecutionCase2(null)))
+                .withProsecutionCases(asList(createProsecutionCase1(null), createProsecutionCase2(null)))
                 .withProsecutionCases(prosecutionCases)
                 .build();
     }
@@ -200,7 +199,7 @@ public class TestTemplates {
     }
 
     public static PublicHearingResulted basicShareResultsWithMagistratesTemplate() {
-       return basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
+        return basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
     }
 
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType) {
@@ -259,9 +258,9 @@ public class TestTemplates {
 
     private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults) {
         return Defendant.defendant()
-                       .withCourtProceedingsInitiated(ZonedDateTime.now())
-                       .withMasterDefendantId(UUID.fromString(defendantId))
-                       .withId(fromString(defendantId))
+                .withCourtProceedingsInitiated(ZonedDateTime.now())
+                .withMasterDefendantId(UUID.fromString(defendantId))
+                .withId(fromString(defendantId))
                 .withProsecutionCaseId(randomUUID())
                 .withProsecutionAuthorityReference(prosecutionAuthorityReference)
                 .withPncId("pncId")
@@ -355,6 +354,8 @@ public class TestTemplates {
                 .withAlwaysPublished(false)
                 .withUrgent(false)
                 .withD20(false)
+                .withPublishedForNows(false)
+                .withRollUpPrompts(false)
                 .withJudicialResultTypeId(randomUUID())
                 .build());
     }
@@ -555,7 +556,7 @@ public class TestTemplates {
                 .withProsecutionAuthorityReference(prosecutionAuthorityReference)
                 .withPncId("pncId")
                 // Defendant Level JudicialResults
-                .withJudicialResults(judicialResults)
+                .withDefendantCaseJudicialResults(judicialResults)
                 .withPersonDefendant(PersonDefendant.personDefendant()
                         .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
                         .withBailReasons(REASON)
@@ -640,12 +641,12 @@ public class TestTemplates {
                 .withPublishedAsAPrompt(false)
                 .withExcludedFromResults(false)
                 .withAlwaysPublished(false)
+                .withRollUpPrompts(false)
+                .withPublishedForNows(false)
                 .withUrgent(false)
                 .withD20(false)
                 .withJudicialResultTypeId(randomUUID())
                 .build());
 
     }
-
-
 }

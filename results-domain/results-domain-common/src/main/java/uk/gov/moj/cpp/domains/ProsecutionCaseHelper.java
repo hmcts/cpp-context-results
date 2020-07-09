@@ -1,10 +1,8 @@
 package uk.gov.moj.cpp.domains;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
+import static uk.gov.moj.cpp.domains.HearingHelper.filterJudicialResults;
 import static uk.gov.moj.cpp.domains.OffenceHelper.transformOffences;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ALIASES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPEAL_PROCEEDINGS_PENDING;
@@ -15,6 +13,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CASE_MARKERS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CASE_STATUS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CRO_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANTS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_CASE_JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INITIATION_CODE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
@@ -42,6 +41,9 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S3776"})
 public class ProsecutionCaseHelper {
@@ -171,7 +173,11 @@ public class ProsecutionCaseHelper {
         }
 
         if (defendant.containsKey(JUDICIAL_RESULTS)) {
-            transformDefendantBuilder.add(JUDICIAL_RESULTS, defendant.getJsonArray(JUDICIAL_RESULTS));
+            transformDefendantBuilder.add(JUDICIAL_RESULTS, filterJudicialResults(defendant.getJsonArray(JUDICIAL_RESULTS)));
+        }
+
+        if (defendant.containsKey(DEFENDANT_CASE_JUDICIAL_RESULTS)) {
+            transformDefendantBuilder.add(JUDICIAL_RESULTS, filterJudicialResults(defendant.getJsonArray(DEFENDANT_CASE_JUDICIAL_RESULTS)));
         }
 
         if (defendant.containsKey(CRO_NUMBER)) {

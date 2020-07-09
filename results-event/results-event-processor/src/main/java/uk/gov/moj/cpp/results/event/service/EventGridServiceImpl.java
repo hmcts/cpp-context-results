@@ -55,13 +55,14 @@ public class EventGridServiceImpl implements EventGridService {
     @SuppressWarnings({"squid:ClassVariableVisibilityCheck"})
     public static class HearingResultedEventData {
         public String hearingId;
-
-        public HearingResultedEventData(String hearingId) {
+        public UUID userId;
+        public HearingResultedEventData(UUID userId, String hearingId) {
             this.hearingId = hearingId;
+            this.userId = userId;
         }
     }
 
-    public boolean sendHearingResultedEvent(String hearingId) {
+    public boolean sendHearingResultedEvent(UUID userId, String hearingId) {
 
         if ("localhost".equals(eventgridTopicHost)) {
             return true;
@@ -73,7 +74,7 @@ public class EventGridServiceImpl implements EventGridService {
         eventsList.add(new EventGridEvent(
                 uuid.toString(),
                 String.format("HearingResulted%s", hearingId),
-                new HearingResultedEventData(hearingId),
+                new HearingResultedEventData(userId, hearingId),
                 "Hearing_Resulted",
                 DateTime.now(),
                 "2.0"

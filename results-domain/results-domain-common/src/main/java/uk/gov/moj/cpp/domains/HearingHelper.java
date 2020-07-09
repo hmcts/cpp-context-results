@@ -1,9 +1,7 @@
 package uk.gov.moj.cpp.domains;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import static javax.json.Json.createObjectBuilder;
+import static uk.gov.moj.cpp.domains.ApplicationHelper.transformApplications;
 import static uk.gov.moj.cpp.domains.ProsecutionCaseHelper.transformProsecutionCases;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPLICANT_COUNSELS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPLICATION_PARTY_COUNSELS;
@@ -13,6 +11,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_CENTRE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CRACKED_INEFFECTIVE_TRIAL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENCE_COUNSELS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_ATTENDANCE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_REFERRAL_REASONS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HAS_SHARED_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HEARING_CASE_NOTES;
@@ -20,16 +19,27 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HEARING_DAYS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HEARING_LANGUAGE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_BOX_HEARING;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIARY;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JURISDICTION_TYPE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_COUNSELS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PUBLISHED_FOR_NOWS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.REPORTING_RESTRICTION_REASON;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.RESPONDENT_COUNSELS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.TYPE;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({"squid:MethodCyclomaticComplexity","squid:S3776"})
 public class HearingHelper {
@@ -55,6 +65,10 @@ public class HearingHelper {
             transformedPayloadObjectBuilder.add(HEARING_LANGUAGE, hearing.getString(HEARING_LANGUAGE));
         }
 
+        if (hearing.containsKey(DEFENDANT_JUDICIAL_RESULTS)) {
+            transformedPayloadObjectBuilder.add(DEFENDANT_JUDICIAL_RESULTS, filterDefendantJudicialResults(hearing.getJsonArray(DEFENDANT_JUDICIAL_RESULTS)));
+        }
+
         if (hearing.containsKey(PROSECUTION_CASES)) {
             transformedPayloadObjectBuilder.add(PROSECUTION_CASES, transformProsecutionCases(hearing.getJsonArray(PROSECUTION_CASES)));
         }
@@ -64,7 +78,7 @@ public class HearingHelper {
         }
 
         if (hearing.containsKey(COURT_APPLICATIONS)) {
-            transformedPayloadObjectBuilder.add(COURT_APPLICATIONS, hearing.getJsonArray(COURT_APPLICATIONS));
+            transformedPayloadObjectBuilder.add(COURT_APPLICATIONS, transformApplications(hearing.getJsonArray(COURT_APPLICATIONS)));
         }
 
         if (hearing.containsKey(DEFENDANT_REFERRAL_REASONS)) {
@@ -116,5 +130,23 @@ public class HearingHelper {
         }
 
         return transformedPayloadObjectBuilder.build();
+    }
+
+    private static JsonArray filterDefendantJudicialResults(final JsonArray judicialResults) {
+        final JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        final List<JsonObject> filteredResults =  judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getJsonObject(JUDICIAL_RESULT).getBoolean(PUBLISHED_FOR_NOWS))
+                .collect(Collectors.toList());
+
+        filteredResults.forEach(jsonArrayBuilder::add);
+        return jsonArrayBuilder.build();
+    }
+
+    public static JsonArray filterJudicialResults(final JsonArray judicialResults) {
+        final JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        final List<JsonObject> filteredResults =  judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getBoolean(PUBLISHED_FOR_NOWS))
+                .collect(Collectors.toList());
+
+        filteredResults.forEach(jsonArrayBuilder::add);
+        return jsonArrayBuilder.build();
     }
 }

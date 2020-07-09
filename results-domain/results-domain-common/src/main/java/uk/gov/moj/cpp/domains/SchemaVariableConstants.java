@@ -97,6 +97,26 @@ public final class SchemaVariableConstants {
     public static final String LAA_APPLN_REFERENCE = "laaApplnReference";
     public static final String CUSTODY_TIME_LIMIT = "custodyTimeLimit";
     public static final String PROCEEDINGS_CONCLUDED = "proceedingsConcluded" ;
+    public static final String PUBLISHED_FOR_NOWS = "publishedForNows";
+    public static final String DEFENDANT_CASE_JUDICIAL_RESULTS = "defendantCaseJudicialResults";
+    public static final String DEFENDANT_JUDICIAL_RESULTS = "defendantJudicialResults";
+    public static final String JUDICIAL_RESULT = "judicialResult";
+    public static final String APPLICATION_RECEIVED_DATE = "applicationReceivedDate";
+    public static final String APPLICANT = "applicant";
+    public static final String APPLICATION_STATUS = "applicationStatus";
+    public static final String APPLICATION_REFERENCE = "applicationReference";
+    public static final String RESPONDENTS = "respondents";
+    public static final String APPLICATION_OUTCOME = "applicationOutcome";
+    public static final String LINKED_CASE_ID = "linkedCaseId";
+    public static final String PARENT_APPLICATION_ID = "parentApplicationId";
+    public static final String APPLICATION_PARTICULARS = "applicationParticulars";
+    public static final String COURT_APPLICATION_PAYMENT = "courtApplicationPayment";
+    public static final String APPLICATION_DECISION_SOUGHT_BY_DATE = "applicationDecisionSoughtByDate";
+    public static final String OUT_OF_TIME_REASONS = "outOfTimeReasons";
+    public static final String BREACHED_ORDER = "breachedOrder";
+    public static final String BREACHED_ORDER_DATE = "breachedOrderDate";
+    public static final String ORDERING_COURT = "orderingCourt";
+    public static final String REMOVAL_REASON = "removalReason";
     private SchemaVariableConstants() {
     }
 }

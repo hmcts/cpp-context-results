@@ -11,12 +11,6 @@ import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingRes
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultsAdded;
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateProsecutionCase;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
@@ -31,12 +25,20 @@ import uk.gov.moj.cpp.results.query.view.response.DefendantView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 
-import javax.json.JsonObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import javax.json.JsonObject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HearingServiceTest {

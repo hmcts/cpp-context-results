@@ -62,6 +62,10 @@ public class ResultDefinition {
 
     private Boolean d20;
 
+    private Boolean publishedForNows;
+
+    private Boolean rollUpPrompts;
+
     public static ResultDefinition resultDefinition() {
         return new ResultDefinition();
     }
@@ -288,6 +292,24 @@ public class ResultDefinition {
 
     public ResultDefinition setD20(final Boolean d20) {
         this.d20 = d20;
+        return this;
+    }
+
+    public Boolean getPublishedForNows() {
+        return publishedForNows;
+    }
+
+    public ResultDefinition setPublishedForNows(final Boolean publishedForNows) {
+        this.publishedForNows = publishedForNows;
+        return this;
+    }
+
+    public Boolean getRollUpPrompts() {
+        return rollUpPrompts;
+    }
+
+    public ResultDefinition setRollUpPrompts(final Boolean rollUpPrompts) {
+        this.rollUpPrompts = rollUpPrompts;
         return this;
     }
 }

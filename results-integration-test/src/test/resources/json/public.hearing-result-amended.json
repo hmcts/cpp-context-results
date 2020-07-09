@@ -48,6 +48,8 @@
                     "isAvailableForCourtExtract": true,
                     "isConvictedResult": true,
                     "isFinancialResult": false,
+                    "publishedForNows":  false,
+                    "rollUpPrompts":  false,
                     "judicialResultId": "dafafd26-e5d7-4f7d-9389-d614c506d160",
                     "judicialResultTypeId": "e2ed6042-35d5-4cf0-b88f-4d19a4fd363a",
                     "judicialResultPrompts": [
@@ -133,6 +135,8 @@
                     "isAvailableForCourtExtract": true,
                     "isConvictedResult": true,
                     "isFinancialResult": false,
+                    "publishedForNows":  false,
+                    "rollUpPrompts":  false,
                     "judicialResultId": "ea5eb48e-387c-4921-8f9d-d779d731fc38",
                     "judicialResultTypeId": "1726363f-e216-48a3-b0aa-567fd269f0cb",
                     "judicialResultPrompts": [

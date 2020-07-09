@@ -1,0 +1,260 @@
+{
+  "session": {
+    "id": "88f0fdda-5248-4919-8bcb-45e7abd38551",
+    "sourceType": "CC",
+    "courtCentreWithLJA": {
+      "courtHearingLocation": "courtHearingLocation",
+      "psaCode": 1010,
+      "courtCentre": {
+        "address": {
+          "address1": "address1",
+          "address2": "address2",
+          "address3": "address3",
+          "address4": "address4",
+          "postcode": "postcode"
+        },
+        "id": "7abb6e4e-3ff2-4419-8d48-3c0e9662726c",
+        "name": "courtName",
+        "roomId": "df2ce598-9f69-4857-aa91-d990a5dcb4a8",
+        "roomName": "roomName",
+        "welshName": "welshName",
+        "welshRoomName": "welshRoomName"
+      }
+    },
+    "sessionDays": [
+      {
+        "listedDurationMinutes": 10,
+        "listingSequence": 15,
+        "sittingDay": "1970/10/10"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "caseId": "bfd697f8-31ae-4e25-8654-4a10b812f5dd",
+      "defendants": [
+        {
+          "associatedPerson": [
+            {
+              "person": {
+                "address": {
+                  "address1": "101 blue house",
+                  "postcode": "AE10 FR"
+                },
+                "contact": {
+                  "fax": "12345",
+                  "home": "5678",
+                  "mobile": "91010",
+                  "primaryEmail": "efg@com.uk",
+                  "secondaryEmail": "ljk@com.uk",
+                  "work": "1233"
+                },
+                "dateOfBirth": "1980-11-15",
+                "firstName": "Jane",
+                "gender": "FEMALE",
+                "lastName": "Johnson",
+                "middleName": "middle",
+                "nationalityId": "0dfc5923-e2d3-4aa2-931d-c82add604594",
+                "title": "MR"
+              },
+              "role": "role"
+            }
+          ],
+          "attendanceDays": [
+            {
+              "isInAttendance": "true",
+              "day": "1970-01-10"
+            }
+          ],
+          "corporateDefendant": {
+            "address": {
+              "address1": "101 green house",
+              "postcode": "XE10 FR"
+            },
+            "contact": {
+              "fax": "454645",
+              "home": "56567",
+              "mobile": "123232",
+              "primaryEmail": "abc@com.uk",
+              "secondaryEmail": "xyx@com.uk",
+              "work": "5465767"
+            },
+            "incorporationNumber": "incorporationNumber",
+            "name": "corporateDefendant",
+            "registeredCharityNumber": "registeredCharityNumber"
+          },
+          "defendantId": "1db6bdbb-a9ac-435f-acda-b735971daa74",
+          "individualDefendant": {
+            "bailConditions": "bailCondition",
+            "bailStatus": {
+              "code": "code",
+              "description": "description",
+              "id": "2ab6bdbb-a9ac-435f-acda-b735971daa33"
+            },
+            "person": {
+              "address": {
+                "address1": "101 green house",
+                "address2": "101 green house",
+                "address3": "101 green house",
+                "address4": "101 green house",
+                "address5": "101 green house",
+                "postcode": "XE10 FR"
+              },
+              "contact": {
+                "fax": "454645",
+                "home": "56567",
+                "mobile": "123232",
+                "primaryEmail": "abc@com.uk",
+                "secondaryEmail": "xyx@com.uk",
+                "work": "5465767"
+              },
+              "dateOfBirth": "1970-01-10",
+              "firstName": "John",
+              "gender": "MALE",
+              "lastName": "Smith",
+              "middleName": "middle",
+              "nationalityId": "5648d32a-8f5a-4985-8b67-3864230a1def",
+              "title": "MR"
+            },
+            "presentAtHearing": "true",
+            "reasonForBailConditionsOrCustody": "reason"
+          },
+          "judicialResults": [
+            {
+              "orderedHearingId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "applicationId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "label": "a",
+              "welshLabel": "a",
+              "isAdjournmentResult": true,
+              "isFinancialResult": true,
+              "isConvictedResult": true,
+              "isAvailableForCourtExtract": true,
+              "amendmentReasonId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+              "amendmentReason": "a",
+              "amendmentDate": "1950-01-01",
+              "cjsCode": "a",
+              "rank": 0.1,
+              "orderedDate": "1950-01-01",
+              "lastSharedDateTime": "a",
+              "courtClerk": {
+                "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                "firstName": "a",
+                "lastName": "a"
+              },
+              "delegatedPowers": {
+                "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                "firstName": "a",
+                "lastName": "a"
+              },
+              "fourEyesApproval": {
+                "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                "firstName": "a",
+                "lastName": "a"
+              },
+              "approvedDate": "1950-01-01",
+              "usergroups": [
+                "a"
+              ],
+              "category": "FINAL",
+              "judicialResultPrompts": [
+                {
+                  "label": "a",
+                  "isAvailableForCourtExtract": true,
+                  "welshLabel": "a",
+                  "value": "a",
+                  "promptSequence": 0.1,
+                  "promptReference": "a",
+                  "usergroups": [
+                    "a"
+                  ]
+                }
+              ]
+            }
+          ],
+          "offences": [
+            {
+              "id": "ea0ab5f9-20bd-469b-9073-5dd2bd1d07de",
+              "offenceCode": "hcDSY8eFdM",
+              "orderSequenceNumber": "1122",
+              "convictionDate": "2018-03-04",
+              "ooffenceDateCode": "2018-03-04",
+              "plea": {
+                "id": "ea0ab5f9-20bd-469b-9073-5dd2bd1d07de",
+                "date": "2013-05-17",
+                "value": "VLMB7wSE9q",
+                "enteredHearingId": "0377ffea-4c17-4a1b-aebf-a87f1d01c8b1"
+              },
+              "verdict": {
+                "verdictDescription": "pzQohlYA9O",
+                "verdictCategory": "4bR9XRcOSI",
+                "numberOfSplitJurors": "9-0",
+                "verdictDate": "2014-11-08",
+                "numberOfJurors": 9,
+                "unanimous": false,
+                "enteredHearingId": "0377ffea-4c17-4a1b-aebf-a87f1d01c8b1"
+              },
+              "wording": "OPIqRskMqB",
+              "startDate": "2014-09-12",
+              "endDate": "2015-10-01",
+              "judicialResults": [
+                {
+                  "judicialResultId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "orderedHearingId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "applicationId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "label": "a",
+                  "welshLabel": "a",
+                  "isAdjournmentResult": true,
+                  "isFinancialResult": true,
+                  "isConvictedResult": true,
+                  "isAvailableForCourtExtract": true,
+                  "amendmentReasonId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                  "amendmentReason": "a",
+                  "cjsCode": "a",
+                  "rank": 0.1,
+                  "orderedDate": "1950-01-01",
+                  "lastSharedDateTime": "a",
+                  "courtClerk": {
+                    "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                    "firstName": "a",
+                    "lastName": "a"
+                  },
+                  "delegatedPowers": {
+                    "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                    "firstName": "a",
+                    "lastName": "a"
+                  },
+                  "fourEyesApproval": {
+                    "userId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+                    "firstName": "a",
+                    "lastName": "a"
+                  },
+                  "approvedDate": "1950-01-01",
+                  "usergroups": [
+                    "a"
+                  ],
+                  "category": "FINAL",
+                  "judicialResultPrompts": [
+                    {
+                      "label": "a",
+                      "isAvailableForCourtExtract": true,
+                      "welshLabel": "a",
+                      "value": "a",
+                      "promptSequence": 0.1,
+                      "promptReference": "a",
+                      "usergroups": [
+                        "a"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "prosecutorReference": "prosecutorReference"
+        }
+      ],
+      "urn": "123445",
+      "prosecutionAuthorityCode": "someCode"
+    }
+  ]
+}

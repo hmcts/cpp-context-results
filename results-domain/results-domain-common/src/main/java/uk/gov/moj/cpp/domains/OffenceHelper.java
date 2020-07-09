@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.domains;
 
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
+import static uk.gov.moj.cpp.domains.HearingHelper.filterJudicialResults;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ALLOCATION_DECISION;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ALLOCATION_DECISION_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.AQUITTAL_DATE;
@@ -37,6 +38,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCE_TITLE_WELSH
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ORDER_INDEX;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ORIGINATING_HEARING_ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PLEA;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROCEEDINGS_CONCLUDED;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SEQUENCE_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SOURCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.START_DATE;
@@ -44,7 +46,6 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.VERDICT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.VICTIMS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.WORDING;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.WORDING_WELSH;
-import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROCEEDINGS_CONCLUDED;
 
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -153,28 +154,28 @@ public class OffenceHelper {
         }
 
         if (offence.containsKey(JUDICIAL_RESULTS)) {
-            offenceBuilder.add(JUDICIAL_RESULTS, offence.getJsonArray(JUDICIAL_RESULTS));
+            offenceBuilder.add(JUDICIAL_RESULTS, filterJudicialResults(offence.getJsonArray(JUDICIAL_RESULTS)));
         }
 
         if (offence.containsKey(VICTIMS)) {
             offenceBuilder.add(VICTIMS, offence.getJsonArray(VICTIMS));
         }
 
-        if(offence.containsKey(ALLOCATION_DECISION)){
+        if (offence.containsKey(ALLOCATION_DECISION)) {
             offenceBuilder.add(ALLOCATION_DECISION, transformAllocationDecision(offence.getJsonObject(ALLOCATION_DECISION), offence.getString(ID)));
         }
 
-        if(offence.containsKey(IS_DISCONTINUED)){
+        if (offence.containsKey(IS_DISCONTINUED)) {
             offenceBuilder.add(IS_DISCONTINUED, offence.getBoolean(IS_DISCONTINUED));
         }
-        if(offence.containsKey(IS_INTRODUCEAFTERINITIALPROCEEDINGS)){
+        if (offence.containsKey(IS_INTRODUCEAFTERINITIALPROCEEDINGS)) {
             offenceBuilder.add(IS_INTRODUCEAFTERINITIALPROCEEDINGS, offence.getBoolean(IS_INTRODUCEAFTERINITIALPROCEEDINGS));
         }
 
-        if(offence.containsKey(LAA_APPLN_REFERENCE)){
+        if (offence.containsKey(LAA_APPLN_REFERENCE)) {
             offenceBuilder.add(LAA_APPLN_REFERENCE, offence.getJsonObject(LAA_APPLN_REFERENCE));
         }
-        if(offence.containsKey(CUSTODY_TIME_LIMIT)){
+        if (offence.containsKey(CUSTODY_TIME_LIMIT)) {
             offenceBuilder.add(CUSTODY_TIME_LIMIT, offence.getJsonObject(CUSTODY_TIME_LIMIT));
         }
         if (offence.containsKey(PROCEEDINGS_CONCLUDED)) {
@@ -219,5 +220,4 @@ public class OffenceHelper {
         }
         return jsonObjectBuilder.build();
     }
-
 }

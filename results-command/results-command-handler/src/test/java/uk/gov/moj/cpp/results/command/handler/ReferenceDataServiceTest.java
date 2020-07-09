@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.command.handler;
 
+import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -10,15 +11,16 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory;
 
 import java.util.Optional;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -99,5 +101,19 @@ public class ReferenceDataServiceTest {
 
         Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode");;
         assertThat(refDataProsecutorJson.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenSpiOutIsSetToNull() {
+        final JsonObject prosecutor = createObjectBuilder()
+                .add("spiOutFlag", JsonValue.NULL).build();
+        final JsonArray prosecutors = createArrayBuilder()
+                .add(prosecutor).build();
+
+        final JsonObject responsePayload = createObjectBuilder().add("prosecutors", prosecutors).build();
+        final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
+
+        when(requester.requestAsAdmin(any())).thenReturn(queryResponse);
+        assertThat(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode") , is(Optional.empty()));
     }
 }

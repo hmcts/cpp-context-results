@@ -27,6 +27,7 @@ import uk.gov.justice.core.courts.DefenceCounsel;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantAlias;
 import uk.gov.justice.core.courts.DefendantAttendance;
+import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.DelegatedPowers;
 import uk.gov.justice.core.courts.Ethnicity;
 import uk.gov.justice.core.courts.Hearing;
@@ -134,6 +135,7 @@ import uk.gov.justice.core.courts.external.Source;
 import uk.gov.justice.core.courts.external.VehicleCode;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -180,6 +182,8 @@ public class HearingTransformer {
                         hearing.getHearingDays().stream().map(hd -> hearingDay(hd).build()).collect(Collectors.toList()))
                 .withProsecutionCases(hearing.getProsecutionCases() == null ? Collections.emptyList() :
                         hearing.getProsecutionCases().stream().map(pc -> prosecutionCase(pc).build()).collect(Collectors.toList()))
+                .withDefendantJudicialResults(hearing.getDefendantJudicialResults() == null ?
+                        Collections.emptyList() : filterDefendantJudicialResults(hearing.getDefendantJudicialResults()))
                 .withProsecutionCounsels(hearing.getProsecutionCounsels() == null ? Collections.emptyList() :
                         hearing.getProsecutionCounsels().stream().map(pc -> prosecutionCounsel(pc).build()).collect(Collectors.toList()));
     }
@@ -349,6 +353,7 @@ public class HearingTransformer {
             apiCourtCentre.withAddress(address(courtCentre.getAddress()).build());
         }
         return apiCourtCentre
+                .withCode(courtCentre.getCode())
                 .withId(courtCentre.getId())
                 .withName(courtCentre.getName())
                 .withRoomId(courtCentre.getRoomId())
@@ -394,8 +399,8 @@ public class HearingTransformer {
                 .withBreachedOrder(courtApplication.getBreachedOrder())
                 .withBreachedOrderDate(courtApplication.getBreachedOrderDate())
                 .withId(courtApplication.getId())
-                .withJudicialResults(courtApplication.getJudicialResults() == null ? Collections.emptyList() :
-                        courtApplication.getJudicialResults().stream().map(jr -> judicialResult(jr).build()).collect(Collectors.toList()))
+                .withJudicialResults(courtApplication.getJudicialResults() == null ?
+                        Collections.emptyList() : filterJudicialResults(courtApplication.getJudicialResults()))
                 .withLinkedCaseId(courtApplication.getLinkedCaseId())
                 .withOutOfTimeReasons(courtApplication.getOutOfTimeReasons())
                 .withParentApplicationId(courtApplication.getParentApplicationId())
@@ -539,8 +544,8 @@ public class HearingTransformer {
                 .withAssociatedPersons((defendant.getAssociatedPersons() == null ? Collections.emptyList() :
                         defendant.getAssociatedPersons().stream().map(ap -> associatedPerson(ap).build()).collect(Collectors.toList())))
                 .withId(defendant.getId())
-                .withJudicialResults(defendant.getJudicialResults() == null ? Collections.emptyList() :
-                        defendant.getJudicialResults().stream().map(jr -> judicialResult(jr).build()).collect(Collectors.toList()))
+                .withJudicialResults(defendant.getDefendantCaseJudicialResults() == null ?
+                        Collections.emptyList() : filterJudicialResults(defendant.getDefendantCaseJudicialResults()))
                 .withMitigation(defendant.getMitigation())
                 .withMitigationWelsh(defendant.getMitigationWelsh())
                 .withNumberOfPreviousConvictionsCited(defendant.getNumberOfPreviousConvictionsCited())
@@ -569,7 +574,7 @@ public class HearingTransformer {
             final Optional<uk.gov.justice.core.courts.external.FundingType> fundingTypeOptional
                     = uk.gov.justice.core.courts.external.FundingType.valueFor(fundingTypeString);
             final uk.gov.justice.core.courts.external.FundingType fundingType =
-                    fundingTypeOptional.isPresent() ? fundingTypeOptional.get() : null;
+                    fundingTypeOptional.orElse(null);
 
             apiAssociatedDefenceOrganisation.withFundingType(fundingType);
         }
@@ -645,8 +650,8 @@ public class HearingTransformer {
                 .withDateOfInformation(offence.getDateOfInformation())
                 .withEndDate(offence.getEndDate())
                 .withId(offence.getId())
-                .withJudicialResults(offence.getJudicialResults() == null ? Collections.emptyList() :
-                        offence.getJudicialResults().stream().map(jr -> judicialResult(jr).build()).collect(Collectors.toList()))
+                .withJudicialResults(offence.getJudicialResults() == null ?
+                        Collections.emptyList() : filterJudicialResults(offence.getJudicialResults()))
                 .withModeOfTrial(offence.getModeOfTrial())
                 .withOffenceCode(offence.getOffenceCode())
                 .withOffenceDefinitionId(offence.getOffenceDefinitionId());
@@ -909,5 +914,17 @@ public class HearingTransformer {
                 .withPrimaryEmail(contactNumber.getPrimaryEmail())
                 .withSecondaryEmail(contactNumber.getSecondaryEmail())
                 .withWork(contactNumber.getWork());
+    }
+
+    private List<ApiJudicialResult> filterJudicialResults(final List<JudicialResult> judicialResults) {
+        return judicialResults.stream().filter(jr -> !jr.getPublishedForNows())
+                .map(jr -> judicialResult(jr).build())
+                .collect(Collectors.toList());
+    }
+
+    private List<ApiJudicialResult> filterDefendantJudicialResults(final List<DefendantJudicialResult> judicialResults) {
+        return judicialResults.stream().filter(defendantJr -> !defendantJr.getJudicialResult().getPublishedForNows())
+                .map(defendantJr -> judicialResult(defendantJr.getJudicialResult()).build())
+                .collect(Collectors.toList());
     }
 }
