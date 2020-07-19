@@ -40,12 +40,14 @@ import uk.gov.justice.core.courts.CourtApplicationType;
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.CourtIndicatedSentence;
 import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingType;
 import uk.gov.justice.core.courts.InitiationCode;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JudicialRole;
 import uk.gov.justice.core.courts.JudicialRoleType;
 import uk.gov.justice.core.courts.JurisdictionType;
@@ -92,7 +94,11 @@ public class TestTemplates {
     public static final String FIELD_NAME_SMITH = "Smith";
     public static final String OFFENCE_WORDING = "offenceWording";
     public static final String LABEL = "label";
+    public static final String HEARING_LABEL = "hearingLabel";
+    public static final String WELSH_LABEL = "welshLabel";
     private static final String TITLE = "Baroness";
+    private static final String RESULT_TEXT = "resultText";
+    private static final String CJS_CODE = "cjsCode";
 
 
     private TestTemplates() {
@@ -170,6 +176,43 @@ public class TestTemplates {
                         .build())
                 .withProsecutionCases(asList(createProsecutionCase1(null), createProsecutionCase2(null)))
                 .withProsecutionCases(prosecutionCases)
+                .withDefendantJudicialResults(asList(DefendantJudicialResult.defendantJudicialResult()
+                        .withMasterDefendantId(randomUUID())
+                        .withJudicialResult( JudicialResult.judicialResult()
+                                .withJudicialResultId(randomUUID())
+                                .withCategory(Category.FINAL)
+                                .withCjsCode(CJS_CODE)
+                                .withIsAdjournmentResult(false)
+                                .withIsAvailableForCourtExtract(false)
+                                .withIsConvictedResult(false)
+                                .withIsFinancialResult(false)
+                                .withLabel(HEARING_LABEL)
+                                .withOrderedHearingId(ID)
+                                .withOrderedDate(now())
+                                .withRank(BigDecimal.ZERO)
+                                .withWelshLabel(WELSH_LABEL)
+                                .withResultText(RESULT_TEXT)
+                                .withLifeDuration(false)
+                                .withTerminatesOffenceProceedings(Boolean.FALSE)
+                                .withLifeDuration(false)
+                                .withPublishedAsAPrompt(false)
+                                .withExcludedFromResults(false)
+                                .withAlwaysPublished(false)
+                                .withUrgent(false)
+                                .withD20(false)
+                                .withPublishedForNows(false)
+                                .withRollUpPrompts(false)
+                                .withJudicialResultTypeId(randomUUID())
+                                .withJudicialResultPrompts(asList(JudicialResultPrompt.judicialResultPrompt()
+                                        .withIsFinancialImposition(true)
+                                        .withJudicialResultPromptTypeId(randomUUID())
+                                        .withCourtExtract("Y")
+                                        .withLabel(LABEL)
+                                        .withValue("value")
+                                        .withTotalPenaltyPoints(BigDecimal.TEN)
+                                        .build()))
+                                .build())
+                        .build()))
                 .build();
     }
 
@@ -335,7 +378,7 @@ public class TestTemplates {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(Category.FINAL)
-                .withCjsCode("cjsCode")
+                .withCjsCode(CJS_CODE)
                 .withIsAdjournmentResult(false)
                 .withIsAvailableForCourtExtract(false)
                 .withIsConvictedResult(false)
@@ -345,7 +388,7 @@ public class TestTemplates {
                 .withOrderedDate(now())
                 .withRank(BigDecimal.ZERO)
                 .withWelshLabel(LABEL)
-                .withResultText("resultText")
+                .withResultText(RESULT_TEXT)
                 .withLifeDuration(false)
                 .withTerminatesOffenceProceedings(Boolean.FALSE)
                 .withLifeDuration(false)
@@ -624,7 +667,7 @@ public class TestTemplates {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(Category.INTERMEDIARY)
-                .withCjsCode("cjsCode")
+                .withCjsCode(CJS_CODE)
                 .withIsAdjournmentResult(false)
                 .withIsAvailableForCourtExtract(false)
                 .withIsConvictedResult(false)
@@ -634,7 +677,7 @@ public class TestTemplates {
                 .withOrderedDate(now())
                 .withRank(BigDecimal.ZERO)
                 .withWelshLabel(LABEL)
-                .withResultText("resultText")
+                .withResultText(RESULT_TEXT)
                 .withLifeDuration(false)
                 .withTerminatesOffenceProceedings(Boolean.TRUE)
                 .withLifeDuration(false)

@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.event.helper.results;
 import static uk.gov.justice.core.courts.OffenceDetails.offenceDetails;
 
 import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.Offence;
 
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ public class OffenceDetails {
     private static final String FINAL_DISPOSAL_N = "N";
     private static final String FINAL_DISPOSAL_Y = "Y";
 
-    public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant) {
+    public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant, final List<DefendantJudicialResult> hearingLevelResults ) {
         final List<Offence> offences = defendant.getOffences();
         final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new ArrayList<>();
-        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences,defendant.getDefendantCaseJudicialResults());
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences,defendant.getDefendantCaseJudicialResults(), hearingLevelResults);
 
         for (final Offence offence : updatedOffences) {
             final uk.gov.justice.core.courts.OffenceDetails.Builder offenceDetailsBuilder = offenceDetails()

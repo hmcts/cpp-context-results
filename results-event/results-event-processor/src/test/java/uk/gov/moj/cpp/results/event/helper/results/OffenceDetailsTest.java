@@ -13,8 +13,10 @@ import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STR
 
 import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
 
 import java.math.BigDecimal;
@@ -25,6 +27,7 @@ import java.util.UUID;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 public class OffenceDetailsTest {
 
@@ -36,10 +39,13 @@ public class OffenceDetailsTest {
     @Test
     public void testBuildOffences() {
 
+        final Hearing hearing = TestTemplates.basicShareResultsTemplate(JurisdictionType.CROWN).getHearing();
+        hearing.getDefendantJudicialResults().get(0).getJudicialResult().setLabel("label");
+        hearing.getDefendantJudicialResults().get(0).getJudicialResult().setCategory(Category.INTERMEDIARY);
         List<Offence> offenceDetails = getOffences();
         Defendant defendant = getDefendant(offenceDetails);
 
-        List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new OffenceDetails().buildOffences(defendant);
+        List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new OffenceDetails().buildOffences(defendant, hearing.getDefendantJudicialResults());
         uk.gov.justice.core.courts.OffenceDetails offenceDetailsFromRequest = offenceDetailsList.get(0);
         assertOffenceDetails(offenceDetailsList, offenceDetailsFromRequest);
     }

@@ -1,41 +1,45 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.UUID.fromString;
-import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.DefendantJudicialResult.defendantJudicialResult;
-import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
-
-import uk.gov.justice.core.courts.*;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
-import uk.gov.moj.cpp.results.test.TestTemplates;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.json.JsonObject;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import uk.gov.justice.core.courts.AssociatedIndividual;
+import uk.gov.justice.core.courts.AttendanceDay;
+import uk.gov.justice.core.courts.CaseDefendant;
+import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantAttendance;
+import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.Individual;
+import uk.gov.justice.core.courts.IndividualDefendant;
+import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.OffenceDetails;
+import uk.gov.justice.core.courts.Person;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.test.TestTemplates;
+
+import javax.json.JsonObject;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class CasesConverterTest {
@@ -104,58 +108,6 @@ public class CasesConverterTest {
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
         final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
         assertThat(caseDetailsList, hasSize(0));
-    }
-
-    @Test
-    public void testConverter_HearingLevelResultsAddedToDefendantLevelResults() {
-        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
-        final PublicHearingResulted shareResultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
-
-        shareResultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0)
-                .setDefendantCaseJudicialResults(Collections.singletonList(judicialResult().withJudicialResultId(randomUUID()).build()));
-        shareResultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(1)
-                .setDefendantCaseJudicialResults(Collections.singletonList(judicialResult().withJudicialResultId(randomUUID()).build()));
-
-        when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
-        final List<CaseDetails> caseDetailsListNoHearingLevelResults = casesConverter.convert(shareResultsMessage);
-        final List<CaseDefendant> defendantsCase1NoHearingLevelResults = caseDetailsListNoHearingLevelResults.get(0).getDefendants();
-        final List<CaseDefendant> defendantsCase2NoHearingLevelResults = caseDetailsListNoHearingLevelResults.get(1).getDefendants();
-
-        // sanity check
-        assertThat(defendantsCase1NoHearingLevelResults.get(0).getDefendantId(), is(DEFAULT_DEFENDANT_ID1));
-        assertThat(defendantsCase1NoHearingLevelResults.get(1).getDefendantId(), is(DEFAULT_DEFENDANT_ID2));
-        assertThat(defendantsCase2NoHearingLevelResults.get(0).getDefendantId(), is(DEFAULT_DEFENDANT_ID3));
-        assertThat(defendantsCase2NoHearingLevelResults.get(1).getDefendantId(), is(DEFAULT_DEFENDANT_ID4));
-
-        assertThat(defendantsCase1NoHearingLevelResults.get(0).getJudicialResults(), hasSize(1));
-        assertThat(defendantsCase1NoHearingLevelResults.get(1).getJudicialResults(), hasSize(1));
-        assertNull(defendantsCase2NoHearingLevelResults.get(0).getJudicialResults());
-        assertNull(defendantsCase2NoHearingLevelResults.get(1).getJudicialResults());
-
-        // Add some hearing-level results
-        shareResultsMessage.getHearing().setDefendantJudicialResults(asList(
-                defendantJudicialResult()
-                        .withMasterDefendantId(DEFAULT_DEFENDANT_ID1)
-                        .withJudicialResult(judicialResult()
-                                .withLabel("DefendantJudicialResult for Defendant " + DEFAULT_DEFENDANT_ID1)
-                                .build()
-                        ).build(),
-                defendantJudicialResult()
-                        .withMasterDefendantId(DEFAULT_DEFENDANT_ID4)
-                        .withJudicialResult(judicialResult()
-                                .withLabel("DefendantJudicialResult for Defendant " + DEFAULT_DEFENDANT_ID4)
-                                .build()
-                        ).build()
-        ));
-
-        final List<CaseDetails> caseDetailsListWithHearingLevelResults = casesConverter.convert(shareResultsMessage);
-        final List<CaseDefendant> defendantsCase1WithHearingLevelResults = caseDetailsListWithHearingLevelResults.get(0).getDefendants();
-        final List<CaseDefendant> defendantsCase2WithHearingLevelResults = caseDetailsListWithHearingLevelResults.get(1).getDefendants();
-
-        assertThat(defendantsCase1WithHearingLevelResults.get(0).getJudicialResults(), hasSize(2));
-        assertThat(defendantsCase1WithHearingLevelResults.get(1).getJudicialResults(), hasSize(1));
-        assertNull(defendantsCase2WithHearingLevelResults.get(0).getJudicialResults());
-        assertThat(defendantsCase2WithHearingLevelResults.get(1).getJudicialResults(), hasSize(1));
     }
 
     @Test
