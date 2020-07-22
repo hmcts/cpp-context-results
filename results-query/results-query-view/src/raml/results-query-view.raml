@@ -68,7 +68,7 @@ protocols: [ HTTP, HTTPS ]
                         schema: !include json/schema/results.hearing-information-details.json
                         example: !include json/results.hearing-information-details.json
 
-/hearingDetails/{hearingId}/internal:
+/hearingDetails/internal/{hearingId}:
     uriParameters:
         hearingId:
             description: ID of hearing to fetch the results
