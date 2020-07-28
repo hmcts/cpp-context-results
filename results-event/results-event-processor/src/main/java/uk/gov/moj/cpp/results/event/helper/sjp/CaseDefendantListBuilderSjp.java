@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.helper.sjp;
 
+import static java.util.Optional.ofNullable;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
 import static uk.gov.justice.core.courts.CaseDefendant.caseDefendant;
 import static uk.gov.justice.core.courts.Individual.individual;
@@ -43,7 +44,6 @@ public class CaseDefendantListBuilderSjp {
             final uk.gov.justice.core.courts.CaseDefendant.Builder builder = caseDefendant()
                     .withDefendantId(sjpDefendant.getDefendantId())
                     .withAssociatedPerson(null != sjpDefendant.getParentGuardianDetails() ? buildIndividualList(sjpDefendant.getParentGuardianDetails()) : null)
-                    // .withAttendanceDays() //NOt available
                     .withOffences(new OffenceDetails(referenceCache).buildOffences(sjpDefendant, dateAndTimeOfSession, sessionId))
                     .withProsecutorReference(sjpDefendant.getProsecutorReference());
 
@@ -87,12 +87,10 @@ public class CaseDefendantListBuilderSjp {
                 .withFirstName(basePersonDetails.getFirstName())
                 .withLastName(basePersonDetails.getLastName())
                 .withNationality(personStatedNationality)
-                // .withMiddleName(basePersonDetails())  //Not Available
                 .withContact(buildContactNumber(basePersonDetails))
                 .withAddress(basePersonDetails.getAddress())
-                // .withTitle(basePersonDetails.getPersonTitle()) //Enum type , need to set later
-                .withGender(buildGender(basePersonDetails.getGender())) // need to test
-                .withDateOfBirth(basePersonDetails.getBirthDate().toLocalDate())
+                .withGender(buildGender(basePersonDetails.getGender()))
+                .withDateOfBirth(ofNullable(basePersonDetails.getBirthDate()).map(ZonedDateTime::toLocalDate).orElse(null))
                 .build();
     }
 

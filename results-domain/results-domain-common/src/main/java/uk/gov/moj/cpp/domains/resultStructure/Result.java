@@ -37,13 +37,21 @@ public class Result implements Serializable {
     private Boolean isDeleted;
     private Boolean lifeDuration;
     private String resultText;
+    private Boolean terminatesOffenceProceedings;
+    private Boolean publishedAsAPrompt;
+    private Boolean excludedFromResults;
+    private Boolean alwaysPublished;
+    private Boolean urgent;
+    private Boolean d20;
+    private UUID judicialResultTypeId;
 
     @SuppressWarnings("squid:S00107")
     public Result(final UUID resultId, final LocalDate amendmentDate, final String amendmentReason, final LocalDate approvedDate, final Category category, final String cjsCode,
                   final DelegatedPowers courtClerk, final DelegatedPowers delegatedPowers, final DelegatedPowers fourEyesApproval, final Boolean isAdjournmentResult,
                   final Boolean isAvailableForCourtExtract, final Boolean isConvictedResult, final Boolean isFinancialResult, final List<JudicialResultPrompt> judicialResultPrompts,
                   final String label, final String lastSharedDateTime, final LocalDate orderedDate, final UUID orderedHearingId, final BigDecimal rank, final List<String> usergroups,
-                  final String welshLabel, final Boolean isDeleted, final Boolean lifeDuration, final String resultText) {
+                  final String welshLabel, final Boolean isDeleted, final Boolean lifeDuration, final String resultText, final Boolean terminatesOffenceProceedings, final Boolean publishedAsAPrompt,
+                  final Boolean excludedFromResults, final Boolean alwaysPublished, final Boolean urgent, final Boolean d20, final UUID judicialResultTypeId) {
         this.resultId = resultId;
         this.amendmentDate = amendmentDate;
         this.amendmentReason = amendmentReason;
@@ -67,6 +75,13 @@ public class Result implements Serializable {
         this.welshLabel = welshLabel;
         this.lifeDuration = lifeDuration;
         this.resultText = resultText;
+        this.terminatesOffenceProceedings = terminatesOffenceProceedings;
+        this.publishedAsAPrompt = publishedAsAPrompt;
+        this.excludedFromResults = excludedFromResults;
+        this.alwaysPublished = alwaysPublished;
+        this.urgent = urgent;
+        this.d20 = d20;
+        this.judicialResultTypeId = judicialResultTypeId;
     }
 
     public static Builder result() {
@@ -281,6 +296,34 @@ public class Result implements Serializable {
         this.resultText = resultText;
     }
 
+    public Boolean getTerminatesOffenceProceedings() {
+        return terminatesOffenceProceedings;
+    }
+
+    public Boolean getPublishedAsAPrompt() {
+        return publishedAsAPrompt;
+    }
+
+    public Boolean getExcludedFromResults() {
+        return excludedFromResults;
+    }
+
+    public Boolean getAlwaysPublished() {
+        return alwaysPublished;
+    }
+
+    public Boolean getUrgent() {
+        return urgent;
+    }
+
+    public Boolean getD20() {
+        return d20;
+    }
+
+    public UUID getJudicialResultTypeId() {
+        return judicialResultTypeId;
+    }
+
     @SuppressWarnings("squid:S3776")
     @Override
     public boolean equals(final Object o) {
@@ -362,6 +405,27 @@ public class Result implements Serializable {
         if (resultText != null ? !resultText.equals(that.resultText) : that.resultText != null) {
             return false;
         }
+        if (terminatesOffenceProceedings != null ? !terminatesOffenceProceedings.equals(that.terminatesOffenceProceedings) : that.terminatesOffenceProceedings != null) {
+            return false;
+        }
+        if (publishedAsAPrompt != null ? !publishedAsAPrompt.equals(that.publishedAsAPrompt) : that.publishedAsAPrompt != null) {
+            return false;
+        }
+        if (excludedFromResults != null ? !excludedFromResults.equals(that.excludedFromResults) : that.excludedFromResults != null) {
+            return false;
+        }
+        if (alwaysPublished != null ? !alwaysPublished.equals(that.alwaysPublished) : that.alwaysPublished != null) {
+            return false;
+        }
+        if (urgent != null ? !urgent.equals(that.urgent) : that.urgent != null) {
+            return false;
+        }
+        if (d20 != null ? !d20.equals(that.d20) : that.d20 != null) {
+            return false;
+        }
+        if (judicialResultTypeId != null ? !judicialResultTypeId.equals(that.judicialResultTypeId) : that.judicialResultTypeId != null) {
+            return false;
+        }
         return welshLabel != null ? welshLabel.equals(that.welshLabel) : that.welshLabel == null;
     }
 
@@ -391,6 +455,13 @@ public class Result implements Serializable {
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         result = 31 * result + (lifeDuration != null ? lifeDuration.hashCode() : 0);
         result = 31 * result + (resultText != null ? resultText.hashCode() : 0);
+        result = 31 * result + (terminatesOffenceProceedings != null ? terminatesOffenceProceedings.hashCode() : 0);
+        result = 31 * result + (publishedAsAPrompt != null ? publishedAsAPrompt.hashCode() : 0);
+        result = 31 * result + (excludedFromResults != null ? excludedFromResults.hashCode() : 0);
+        result = 31 * result + (alwaysPublished != null ? alwaysPublished.hashCode() : 0);
+        result = 31 * result + (urgent != null ? urgent.hashCode() : 0);
+        result = 31 * result + (d20 != null ? d20.hashCode() : 0);
+        result = 31 * result + (judicialResultTypeId != null ? judicialResultTypeId.hashCode() : 0);
         result = 31 * result + (int) (serialVersionUID ^ (serialVersionUID >>> 32));
         return result;
     }
@@ -443,6 +514,20 @@ public class Result implements Serializable {
         private Boolean lifeDuration;
 
         private String resultText;
+
+        private Boolean terminatesOffenceProceedings;
+
+        private Boolean publishedAsAPrompt;
+
+        private Boolean excludedFromResults;
+
+        private Boolean alwaysPublished;
+
+        private Boolean urgent;
+
+        private Boolean d20;
+
+        private UUID judicialResultTypeId;
 
         public Builder withResultId(final UUID resultId) {
             this.resultId = resultId;
@@ -564,8 +649,43 @@ public class Result implements Serializable {
             return this;
         }
 
+        public Builder withTerminatesOffenceProceedings(final Boolean terminatesOffenceProceedings) {
+            this.terminatesOffenceProceedings = terminatesOffenceProceedings;
+            return this;
+        }
+        public Builder withPublishedAsAPrompt(final Boolean publishedAsAPrompt) {
+            this.publishedAsAPrompt = publishedAsAPrompt;
+            return this;
+        }
+
+        public Builder withExcludedFromResults(final Boolean excludedFromResults) {
+            this.excludedFromResults = excludedFromResults;
+            return this;
+        }
+
+        public Builder withAlwaysPublished(final Boolean alwaysPublished) {
+            this.alwaysPublished = alwaysPublished;
+            return this;
+        }
+
+        public Builder withUrgent(final Boolean urgent) {
+            this.urgent = urgent;
+            return this;
+        }
+
+        public Builder withD20(final Boolean d20) {
+            this.d20 = d20;
+            return this;
+        }
+
+        public Builder withJudicialResultTypeId(final UUID judicialResultTypeId) {
+            this.judicialResultTypeId = judicialResultTypeId;
+            return this;
+        }
+
         public Result build() {
-            return new Result(resultId, amendmentDate, amendmentReason, approvedDate, category, cjsCode, courtClerk, delegatedPowers, fourEyesApproval, isAdjournmentResult, isAvailableForCourtExtract, isConvictedResult, isFinancialResult, judicialResultPrompts, label, lastSharedDateTime, orderedDate, orderedHearingId, rank, usergroups, welshLabel, isDeleted, lifeDuration, resultText);
+            return new Result(resultId, amendmentDate, amendmentReason, approvedDate, category, cjsCode, courtClerk, delegatedPowers, fourEyesApproval, isAdjournmentResult, isAvailableForCourtExtract, isConvictedResult, isFinancialResult, judicialResultPrompts, label, lastSharedDateTime, orderedDate, orderedHearingId, rank, usergroups, welshLabel, isDeleted, lifeDuration, resultText,
+            terminatesOffenceProceedings, publishedAsAPrompt, excludedFromResults,  alwaysPublished, urgent, d20, judicialResultTypeId);
         }
     }
 }

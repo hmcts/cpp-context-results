@@ -262,6 +262,23 @@ public class ResultsIT {
     }
 
     @Test
+    public void testSjpForNullDateOfBirth() throws JMSException {
+
+        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
+        sjpResulted.getCases().forEach(caseDetails -> {
+            caseDetails.getDefendants().forEach(caseDefendant -> {
+                caseDefendant.getParentGuardianDetails().setBirthDate(null);
+                caseDefendant.getIndividualDefendant().getBasePersonDetails().setBirthDate(null);
+            });
+        });
+
+        publicSjpResultedShared(sjpResulted);
+
+        verifyPrivateEventsWithPoliceResultGenerated();
+        verifyInPublicTopic();
+    }
+
+    @Test
     public void testGeneratePoliceResultsForDefendantCC() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
 

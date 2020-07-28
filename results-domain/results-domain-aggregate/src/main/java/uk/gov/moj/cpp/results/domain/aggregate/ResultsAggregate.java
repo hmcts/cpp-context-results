@@ -281,6 +281,13 @@ public class ResultsAggregate implements Aggregate {
                 .withIsDeleted(judicialResultFromEvent.getIsDeleted())
                 .withLifeDuration(judicialResultFromEvent.getLifeDuration())
                 .withResultText(judicialResultFromEvent.getResultText())
+                .withTerminatesOffenceProceedings(judicialResultFromEvent.getTerminatesOffenceProceedings())
+                .withPublishedAsAPrompt(judicialResultFromEvent.getPublishedAsAPrompt())
+                .withExcludedFromResults(judicialResultFromEvent.getExcludedFromResults())
+                .withAlwaysPublished(judicialResultFromEvent.getAlwaysPublished())
+                .withUrgent(judicialResultFromEvent.getUrgent())
+                .withD20(judicialResultFromEvent.getD20())
+                .withJudicialResultTypeId(judicialResultFromEvent.getJudicialResultTypeId())
                 .build();
     }
 

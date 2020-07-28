@@ -6,7 +6,9 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.DATE_AND_TIME_OF_SESSION;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.SESSION_ID;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.hamcrest.core.Is;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -35,25 +38,42 @@ public class CaseDefendantListBuilderSjpTest {
     @Mock
     private ReferenceCache referenceCache;
 
+    final Optional<BailStatus> bailStatusMock = of(mock(BailStatus.class));
+
+    @Before
+    public void setUp() {
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
+        when(referenceCache.getBailStatusObjectByCode(any(), any())).thenReturn(bailStatusMock);
+        when(referenceCache.getAllocationDecision(any(), anyString())).thenReturn(of(buildAllocationDecision()));
+    }
+
     @Test
     public void testBuildCaseDefendants() {
+        uk.gov.justice.sjp.results.CaseDetails sjpCaseDetail = getSjpCaseDetail();
+        final List<uk.gov.justice.core.courts.CaseDefendant> caseDefendantList = new CaseDefendantListBuilderSjp(referenceCache).buildDefendantList(sjpCaseDetail, DATE_AND_TIME_OF_SESSION, SESSION_ID);
+        verifyMocks();
+        assertDefendants(caseDefendantList, sjpCaseDetail.getDefendants(), bailStatusMock.get());
+    }
 
-        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
+    @Test
+    public void shouldNotFailWhenPersonDateOfBirthIsNull() {
+        final uk.gov.justice.sjp.results.CaseDetails sjpCaseDetail = getSjpCaseDetail();
+        sjpCaseDetail.getDefendants().forEach(defendant -> {
+            defendant.getIndividualDefendant().getBasePersonDetails().setBirthDate(null);
+            defendant.getParentGuardianDetails().setBirthDate(null);
+        });
+    }
 
-        final Optional<BailStatus> bailStatusMock = of(mock(BailStatus.class));
-        when(referenceCache.getBailStatusObjectByCode(any(), any())).thenReturn(bailStatusMock);
-
-        when(referenceCache.getAllocationDecision(any(), anyString())).thenReturn(of(buildAllocationDecision()));
-
-
+    private uk.gov.justice.sjp.results.CaseDetails getSjpCaseDetail() {
         final PublicSjpResulted publicSjpCaseResulted = basicSJPCaseResulted();
         final List<uk.gov.justice.sjp.results.CaseDetails> sjpCaseDetails = publicSjpCaseResulted.getCases();
-        final uk.gov.justice.sjp.results.CaseDetails sjpCaseDetail = sjpCaseDetails.get(0);
-        final List<uk.gov.justice.sjp.results.CaseDefendant> sjpCaseDefendants = sjpCaseDetails.get(0).getDefendants();
+        return sjpCaseDetails.get(0);
+    }
 
-        final List<uk.gov.justice.core.courts.CaseDefendant> caseDefendantList = new CaseDefendantListBuilderSjp(referenceCache).buildDefendantList(sjpCaseDetail, DATE_AND_TIME_OF_SESSION, SESSION_ID);
-
-        assertDefendants(caseDefendantList, sjpCaseDefendants, bailStatusMock.get());
+    private void verifyMocks() {
+        verify(referenceCache, atLeastOnce()).getResultDefinitionById(any(), any(), any());
+        verify(referenceCache, atLeastOnce()).getBailStatusObjectByCode(any(), any());
+        verify(referenceCache, atLeastOnce()).getAllocationDecision(any(), anyString());
     }
 
     private void assertDefendants(final List<CaseDefendant> caseDefendants, final List<uk.gov.justice.sjp.results.CaseDefendant> sjpCaseDefendants, final BailStatus bailStatus) {

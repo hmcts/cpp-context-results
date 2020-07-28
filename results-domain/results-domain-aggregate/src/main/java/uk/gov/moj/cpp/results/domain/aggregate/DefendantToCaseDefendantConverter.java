@@ -144,6 +144,13 @@ public class DefendantToCaseDefendantConverter {
                     .withWelshLabel(resultDetail.getWelshLabel())
                     .withLifeDuration(resultDetail.getLifeDuration())
                     .withResultText(resultDetail.getResultText())
+                    .withTerminatesOffenceProceedings(resultDetail.getTerminatesOffenceProceedings())
+                    .withPublishedAsAPrompt(resultDetail.getPublishedAsAPrompt())
+                    .withExcludedFromResults(resultDetail.getExcludedFromResults())
+                    .withAlwaysPublished(resultDetail.getAlwaysPublished())
+                    .withUrgent(resultDetail.getUrgent())
+                    .withD20(resultDetail.getD20())
+                    .withJudicialResultTypeId(resultDetail.getJudicialResultTypeId())
                     .build());
         }
         return judicialResults;

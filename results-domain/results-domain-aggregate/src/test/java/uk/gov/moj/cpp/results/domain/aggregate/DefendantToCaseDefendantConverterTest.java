@@ -55,6 +55,7 @@ public class DefendantToCaseDefendantConverterTest {
     private static final UUID RESULT_ID = randomUUID();
     private static final UUID USER_ID = randomUUID();
     private static final UUID ORDERED_HEARING_ID = randomUUID();
+    private static final UUID JUDICIAL_RESULT_TYPE_ID = randomUUID();
 
     @Test
     public void testConvert() {
@@ -161,6 +162,14 @@ public class DefendantToCaseDefendantConverterTest {
             assertThat(judicialResult.getWelshLabel(), is(resultFromRequest.getWelshLabel()));
             assertThat(judicialResult.getUsergroups(), is(resultFromRequest.getUsergroups()));
             assertThat(judicialResult.getIsDeleted(), is(resultFromRequest.getDeleted()));
+            assertThat(judicialResult.getTerminatesOffenceProceedings(), is(resultFromRequest.getTerminatesOffenceProceedings()));
+            assertThat(judicialResult.getPublishedAsAPrompt(), is(resultFromRequest.getPublishedAsAPrompt()));
+            assertThat(judicialResult.getExcludedFromResults(), is(resultFromRequest.getExcludedFromResults()));
+            assertThat(judicialResult.getAlwaysPublished(), is(resultFromRequest.getAlwaysPublished()));
+            assertThat(judicialResult.getUrgent(), is(resultFromRequest.getUrgent()));
+            assertThat(judicialResult.getD20(), is(resultFromRequest.getD20()));
+            assertThat(judicialResult.getJudicialResultTypeId(), is(resultFromRequest.getJudicialResultTypeId()));
+
         }
     }
     private Defendant buildDefendant() {
@@ -295,7 +304,15 @@ public class DefendantToCaseDefendantConverterTest {
                 .withUsergroups(asList("usergroup1","usergroup2"))
                 .withWelshLabel("WS")
                 .withIsDeleted(true)
-                .withApprovedDate(LocalDate.of(2018, 10, 2)).build();
+                .withApprovedDate(LocalDate.of(2018, 10, 2))
+                .withAlwaysPublished(true)
+                .withPublishedAsAPrompt(true)
+                .withExcludedFromResults(true)
+                .withTerminatesOffenceProceedings(true)
+                .withUrgent(true)
+                .withD20(true)
+                .withJudicialResultTypeId(JUDICIAL_RESULT_TYPE_ID)
+                .build();
     }
 
     private List<JudicialResultPrompt> buildJudicialPrompts() {

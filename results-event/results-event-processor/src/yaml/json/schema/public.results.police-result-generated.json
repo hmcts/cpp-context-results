@@ -31,7 +31,7 @@
     "id",
     "sessionDays",
     "courtCentreWithLJA",
-    "id",
+    "caseId",
     "urn",
     "defendant"
   ],
