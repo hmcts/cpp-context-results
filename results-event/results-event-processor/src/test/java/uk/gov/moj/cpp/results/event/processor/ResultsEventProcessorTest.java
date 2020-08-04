@@ -176,7 +176,7 @@ public class ResultsEventProcessorTest {
     @Test
     public void shouldForwardAsIsAsPrivateEventWhenHearingResulted() {
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithShadowListedOffencesTemplate();
         final String hearingId = UUID.randomUUID().toString();
         final UUID userId = UUID.randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -200,7 +200,8 @@ public class ResultsEventProcessorTest {
                 jsonEnvelope(
                         metadata().withName("results.command.add-hearing-result"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString())))
+                                withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString())),
+                                withJsonPath("$.shadowListedOffences[0]", is(shareResultsMessage.getShadowListedOffences().get(0).toString())))
                         )));
 
     }

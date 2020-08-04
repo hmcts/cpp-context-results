@@ -255,6 +255,16 @@ public class TestTemplates {
 
     }
 
+    public static PublicHearingResulted basicShareResultsWithShadowListedOffencesTemplate() {
+
+        final UUID hearingId = randomUUID();
+
+        return PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList()), createProsecutionCase2(buildJudicialResultList())), JurisdictionType.MAGISTRATES))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")))
+                .setShadowListedOffences(Collections.singletonList(UUID.randomUUID()));
+    }
+
     public static PublicHearingResulted basicShareResultsTemplateWithoutResult(final JurisdictionType jurisdictionType) {
 
         final UUID hearingId = randomUUID();

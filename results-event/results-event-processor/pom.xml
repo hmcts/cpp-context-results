@@ -6,11 +6,12 @@
         <artifactId>results-event</artifactId>
         <version>7.0.8-SNAPSHOT</version>
     </parent>
-    
+
     <artifactId>results-event-processor</artifactId>
 
     <properties>
         <cpp.service-component>EVENT_PROCESSOR</cpp.service-component>
+        <junit-dataprovider.version>1.13.1</junit-dataprovider.version>
     </properties>
 
     <packaging>war</packaging>
@@ -35,8 +36,17 @@
             <artifactId>system-users-library</artifactId>
         </dependency>
         <dependency>
+            <groupId>uk.gov.moj.cpp.common</groupId>
+            <artifactId>system-users-library</artifactId>
+        </dependency>
+        <dependency>
             <groupId>uk.gov.justice.framework-generators</groupId>
             <artifactId>rest-client-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>results-domain-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <!-- Test Dependencies -->
         <dependency>
