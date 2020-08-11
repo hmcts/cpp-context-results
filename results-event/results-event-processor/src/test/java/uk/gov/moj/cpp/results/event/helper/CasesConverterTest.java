@@ -10,11 +10,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.CaseDefendant;
@@ -34,11 +29,17 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
-import javax.json.JsonObject;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.json.JsonObject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -180,7 +181,7 @@ public class CasesConverterTest {
             assertThat(offence.getModeOfTrial(), is(offenceFromRequest.getModeOfTrial()));
             assertThat(offence.getOffenceCode(), is(offenceFromRequest.getOffenceCode()));
             assertThat(offence.getOffenceFacts(), is(offenceFromRequest.getOffenceFacts()));
-            assertThat(offence.getOffenceSequenceNumber(), is(offenceFromRequest.getCount()));
+            assertThat(offence.getOffenceSequenceNumber(), is(offenceFromRequest.getOrderIndex()));
             assertThat(offence.getStartDate(), is(offenceFromRequest.getStartDate()));
             assertThat(offence.getWording(), is(offenceFromRequest.getWording()));
         }

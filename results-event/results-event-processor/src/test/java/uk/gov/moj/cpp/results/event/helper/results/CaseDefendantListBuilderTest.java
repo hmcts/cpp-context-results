@@ -153,23 +153,23 @@ public class CaseDefendantListBuilderTest {
             assertThat(offence.getModeOfTrial(), is("1010"));
             assertThat(offence.getOffenceCode(), is(offenceFromRequest.getOffenceCode()));
             assertThat(offence.getOffenceFacts(), is(offenceFromRequest.getOffenceFacts()));
-            assertThat(offence.getOffenceSequenceNumber(), is(offenceFromRequest.getCount()));
+            assertThat(offence.getOffenceSequenceNumber(), is(offenceFromRequest.getOrderIndex()));
             assertThat(offence.getStartDate(), is(offenceFromRequest.getStartDate()));
             assertThat(offence.getWording(), is(offenceFromRequest.getWording()));
-            assertAllocationDecision(offence,offenceFromRequest);
+            assertAllocationDecision(offence, offenceFromRequest);
 
         }
     }
 
     private void assertAllocationDecision(final OffenceDetails offenceDetail, final Offence offenceFromRequest) {
-        if(nonNull(offenceDetail.getAllocationDecision())) {
+        if (nonNull(offenceDetail.getAllocationDecision())) {
             assertThat(offenceDetail.getAllocationDecision().getMotReasonDescription(), is(offenceFromRequest.getAllocationDecision().getMotReasonDescription()));
             assertThat(offenceDetail.getAllocationDecision().getAllocationDecisionDate(), is(offenceFromRequest.getAllocationDecision().getAllocationDecisionDate()));
             assertThat(offenceDetail.getAllocationDecision().getMotReasonCode(), is(offenceFromRequest.getAllocationDecision().getMotReasonCode()));
             assertThat(offenceDetail.getAllocationDecision().getMotReasonId(), is(offenceFromRequest.getAllocationDecision().getMotReasonId()));
             assertThat(offenceDetail.getAllocationDecision().getOffenceId(), is(offenceFromRequest.getAllocationDecision().getOffenceId()));
             assertThat(offenceDetail.getAllocationDecision().getOriginatingHearingId(), is(offenceFromRequest.getAllocationDecision().getOriginatingHearingId()));
-            if(nonNull(offenceDetail.getAllocationDecision().getCourtIndicatedSentence())) {
+            if (nonNull(offenceDetail.getAllocationDecision().getCourtIndicatedSentence())) {
                 assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId(),
                         is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId()));
                 assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription(),

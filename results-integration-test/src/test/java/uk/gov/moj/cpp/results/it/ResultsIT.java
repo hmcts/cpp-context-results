@@ -63,6 +63,7 @@ import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -75,6 +76,7 @@ import javax.json.JsonReader;
 import com.google.common.io.Resources;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -107,11 +109,6 @@ public class ResultsIT {
         return reader.readObject();
     }
 
-    @After
-    public void teardown() throws JMSException {
-        closeMessageConsumers();
-    }
-
     @BeforeClass
     public static void setUpClass() throws IOException {
 
@@ -123,6 +120,11 @@ public class ResultsIT {
         stubJudicialResults();
         stubBailStatuses();
         stubModeOfTrialReasons();
+    }
+
+    @After
+    public void teardown() throws JMSException {
+        closeMessageConsumers();
     }
 
     @Before
@@ -162,7 +164,9 @@ public class ResultsIT {
 
         getSummariesByDate(startDate);
         verifyPrivateEventsWithPoliceResultGenerated();
-        verifyInPublicTopic();
+
+        Optional<String> response = verifyInPublicTopic();
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
     }
 
     @Test
@@ -339,7 +343,9 @@ public class ResultsIT {
         sendGeneratePoliceResultsForADefendantCommand(payload);
 
         verifyPrivateEventsForPoliceGenerateResultsForDefendant();
-        verifyInPublicTopic();
+        Optional<String> response = verifyInPublicTopic();
+        assertThat(sjpResulted.getCases().get(0).getDefendants().get(0).getOffences().get(0).getBaseOffenceDetails().getOffenceSequenceNumber(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
+
     }
 
     @Test
@@ -435,7 +441,7 @@ public class ResultsIT {
     }
 
     @Test
-    public void outOfOrderJourney() throws Exception{
+    public void outOfOrderJourney() throws Exception {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
 
         final Hearing hearingIn = resultsMessage.getHearing();

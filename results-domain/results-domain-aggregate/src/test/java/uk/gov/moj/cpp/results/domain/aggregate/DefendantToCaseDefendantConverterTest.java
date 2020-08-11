@@ -57,10 +57,21 @@ public class DefendantToCaseDefendantConverterTest {
     private static final UUID ORDERED_HEARING_ID = randomUUID();
     private static final UUID JUDICIAL_RESULT_TYPE_ID = randomUUID();
 
+    private static Address buildAddress() {
+        return address()
+                .withAddress1("Fitzalan Place")
+                .withAddress2("Cardiff")
+                .withAddress3("addressline3")
+                .withAddress4("address4")
+                .withAddress5("address5")
+                .withPostcode("CF24 0RZ")
+                .build();
+    }
+
     @Test
     public void testConvert() {
         final Defendant defendantFromAggregate = buildDefendant();
-        final CaseDefendant caseDefendant  =  convert(defendantFromAggregate);
+        final CaseDefendant caseDefendant = convert(defendantFromAggregate);
         assertThat(caseDefendant.getDefendantId(), is(defendantFromAggregate.getId()));
         assertThat(caseDefendant.getPncId(), is(defendantFromAggregate.getPncId()));
         assertThat(caseDefendant.getProsecutorReference(), is(defendantFromAggregate.getProsecutorReference()));
@@ -118,19 +129,19 @@ public class DefendantToCaseDefendantConverterTest {
     }
 
     private void assertAllocationDecision(final OffenceDetails offenceDetail, final Offence offenceFromRequest) {
-        if(nonNull(offenceDetail.getAllocationDecision())) {
-        assertThat(offenceDetail.getAllocationDecision().getMotReasonDescription(), is(offenceFromRequest.getAllocationDecision().getMotReasonDescription()));
-        assertThat(offenceDetail.getAllocationDecision().getAllocationDecisionDate(), is(offenceFromRequest.getAllocationDecision().getAllocationDecisionDate()));
-        assertThat(offenceDetail.getAllocationDecision().getMotReasonCode(), is(offenceFromRequest.getAllocationDecision().getMotReasonCode()));
-        assertThat(offenceDetail.getAllocationDecision().getMotReasonId(), is(offenceFromRequest.getAllocationDecision().getMotReasonId()));
-        assertThat(offenceDetail.getAllocationDecision().getOffenceId(), is(offenceFromRequest.getAllocationDecision().getOffenceId()));
-        assertThat(offenceDetail.getAllocationDecision().getOriginatingHearingId(), is(offenceFromRequest.getAllocationDecision().getOriginatingHearingId()));
-        if(nonNull(offenceDetail.getAllocationDecision().getCourtIndicatedSentence())) {
-            assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId(),
-                    is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId()));
-            assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription(),
-                    is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription()));
-          }
+        if (nonNull(offenceDetail.getAllocationDecision())) {
+            assertThat(offenceDetail.getAllocationDecision().getMotReasonDescription(), is(offenceFromRequest.getAllocationDecision().getMotReasonDescription()));
+            assertThat(offenceDetail.getAllocationDecision().getAllocationDecisionDate(), is(offenceFromRequest.getAllocationDecision().getAllocationDecisionDate()));
+            assertThat(offenceDetail.getAllocationDecision().getMotReasonCode(), is(offenceFromRequest.getAllocationDecision().getMotReasonCode()));
+            assertThat(offenceDetail.getAllocationDecision().getMotReasonId(), is(offenceFromRequest.getAllocationDecision().getMotReasonId()));
+            assertThat(offenceDetail.getAllocationDecision().getOffenceId(), is(offenceFromRequest.getAllocationDecision().getOffenceId()));
+            assertThat(offenceDetail.getAllocationDecision().getOriginatingHearingId(), is(offenceFromRequest.getAllocationDecision().getOriginatingHearingId()));
+            if (nonNull(offenceDetail.getAllocationDecision().getCourtIndicatedSentence())) {
+                assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId(),
+                        is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId()));
+                assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription(),
+                        is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription()));
+            }
         }
     }
 
@@ -172,6 +183,7 @@ public class DefendantToCaseDefendantConverterTest {
 
         }
     }
+
     private Defendant buildDefendant() {
         final Defendant defendant = new Defendant(DEFAULT_DEFENDANT_ID);
         defendant.setPresentAtHearing("T");
@@ -198,14 +210,14 @@ public class DefendantToCaseDefendantConverterTest {
     }
 
     private List<AttendanceDay> buildAttendanceDays() {
-        final List<AttendanceDay> attendanceDays =  new ArrayList<>();
+        final List<AttendanceDay> attendanceDays = new ArrayList<>();
         final AttendanceDay attendanceDay = new AttendanceDay(LocalDate.of(2018, 5, 2), true);
         attendanceDays.add(attendanceDay);
         return attendanceDays;
     }
 
     private List<AssociatedIndividual> buildAssociatedIndividuals() {
-        final List<AssociatedIndividual> associatedIndividuals =  new ArrayList<>();
+        final List<AssociatedIndividual> associatedIndividuals = new ArrayList<>();
         associatedIndividuals.add(associatedIndividual()
                 .withRole("role")
                 .withPerson(individual()
@@ -233,53 +245,41 @@ public class DefendantToCaseDefendantConverterTest {
                 .build();
     }
 
-    private static Address buildAddress() {
-        return address()
-                .withAddress1("Fitzalan Place")
-                .withAddress2("Cardiff")
-                .withAddress3("addressline3")
-                .withAddress4("address4")
-                .withAddress5("address5")
-                .withPostcode("CF24 0RZ")
-                .build();
-    }
-
-
     private List<Offence> buildOffences() {
         final List<Offence> offences = new ArrayList<>();
-        final Offence offence = new Offence(OFFENCE_ID,"offenceCode" ,1 ,"offenceWording"
-                ,2 , now(),now() ,now() , now(), buildOffenceFacts(), buildPlea(),"1010" ,24,
-                LocalDate.of(2018, 5, 2) ,"N" ,buildListOfResults() ,"finding", buildAllocationDecision());
+        final Offence offence = new Offence(OFFENCE_ID, "offenceCode", 1, "offenceWording"
+                , 2, now(), now(), now(), now(), buildOffenceFacts(), buildPlea(), "1010", 24,
+                LocalDate.of(2018, 5, 2), "N", buildListOfResults(), "finding", buildAllocationDecision());
         offences.add(offence);
         return offences;
     }
 
     private AllocationDecision buildAllocationDecision() {
         return allocationDecision()
-                    .withAllocationDecisionDate(LocalDate.of(2019,10,01))
-                    .withMotReasonCode("motReasonCode")
-                    .withSequenceNumber(1)
-                    .withOriginatingHearingId(randomUUID())
-                    .withMotReasonId(randomUUID())
-                    .withMotReasonDescription("motReasonDescription")
-                    .withOffenceId(OFFENCE_ID)
-                    .withCourtIndicatedSentence(courtIndicatedSentence().
-                            withCourtIndicatedSentenceTypeId(randomUUID())
-                            .withCourtIndicatedSentenceDescription("description").build())
-                    .build();
+                .withAllocationDecisionDate(LocalDate.of(2019, 10, 01))
+                .withMotReasonCode("motReasonCode")
+                .withSequenceNumber(1)
+                .withOriginatingHearingId(randomUUID())
+                .withMotReasonId(randomUUID())
+                .withMotReasonDescription("motReasonDescription")
+                .withOffenceId(OFFENCE_ID)
+                .withCourtIndicatedSentence(courtIndicatedSentence().
+                        withCourtIndicatedSentenceTypeId(randomUUID())
+                        .withCourtIndicatedSentenceDescription("description").build())
+                .build();
     }
 
     private Plea buildPlea() {
-       return new Plea(randomUUID(), LocalDate.of(2018, 5, 2), PleaValue.GUILTY, randomUUID());
+        return new Plea(randomUUID(), LocalDate.of(2018, 5, 2), PleaValue.GUILTY, randomUUID());
     }
 
     private DelegatedPowers buildDelegatPowers() {
-       return DelegatedPowers.delegatedPowers().withUserId(USER_ID)
+        return DelegatedPowers.delegatedPowers().withUserId(USER_ID)
                 .withLastName("lastName").withFirstName("firstName").build();
     }
 
-    private  Result buildResult() {
-        return  result()
+    private Result buildResult() {
+        return result()
                 .withAmendmentDate(LocalDate.of(2018, 6, 2))
                 .withAmendmentReason("reason")
                 .withApprovedDate(LocalDate.of(2018, 7, 2))
@@ -301,7 +301,7 @@ public class DefendantToCaseDefendantConverterTest {
                 .withOrderedHearingId(ORDERED_HEARING_ID)
                 .withRank(new BigDecimal(23))
                 .withResultId(RESULT_ID)
-                .withUsergroups(asList("usergroup1","usergroup2"))
+                .withUsergroups(asList("usergroup1", "usergroup2"))
                 .withWelshLabel("WS")
                 .withIsDeleted(true)
                 .withApprovedDate(LocalDate.of(2018, 10, 2))
@@ -316,20 +316,20 @@ public class DefendantToCaseDefendantConverterTest {
     }
 
     private List<JudicialResultPrompt> buildJudicialPrompts() {
-       final List<JudicialResultPrompt> judicialResultPrompts = new ArrayList<>();
+        final List<JudicialResultPrompt> judicialResultPrompts = new ArrayList<>();
         final JudicialResultPrompt judicialResultPrompt = JudicialResultPrompt.judicialResultPrompt().build();
         judicialResultPrompts.add(judicialResultPrompt);
-        return  judicialResultPrompts;
+        return judicialResultPrompts;
     }
 
     private List<Result> buildListOfResults() {
-       final List<Result> results = new ArrayList<>();
-       results.add(buildResult());
+        final List<Result> results = new ArrayList<>();
+        results.add(buildResult());
         return results;
     }
 
-   private  OffenceFacts buildOffenceFacts() {
-    OffenceFacts offenceFacts = new OffenceFacts(1,"alcoholreadingMethod", VehicleCode.LARGE_GOODS_VEHICLE,"12345");
-       return offenceFacts;
-   }
+    private OffenceFacts buildOffenceFacts() {
+        OffenceFacts offenceFacts = new OffenceFacts(1, "alcoholreadingMethod", VehicleCode.LARGE_GOODS_VEHICLE, "12345");
+        return offenceFacts;
+    }
 }

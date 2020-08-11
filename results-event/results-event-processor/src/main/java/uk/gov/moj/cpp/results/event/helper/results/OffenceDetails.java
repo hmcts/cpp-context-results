@@ -15,10 +15,10 @@ public class OffenceDetails {
     private static final String FINAL_DISPOSAL_N = "N";
     private static final String FINAL_DISPOSAL_Y = "Y";
 
-    public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant, final List<DefendantJudicialResult> hearingLevelResults ) {
+    public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant, final List<DefendantJudicialResult> hearingLevelResults) {
         final List<Offence> offences = defendant.getOffences();
         final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new ArrayList<>();
-        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences,defendant.getDefendantCaseJudicialResults(), hearingLevelResults);
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences, defendant.getDefendantCaseJudicialResults(), hearingLevelResults);
 
         for (final Offence offence : updatedOffences) {
             final uk.gov.justice.core.courts.OffenceDetails.Builder offenceDetailsBuilder = offenceDetails()
@@ -33,7 +33,7 @@ public class OffenceDetails {
                     .withOffenceCode(offence.getOffenceCode())
                     .withOffenceDateCode(OFFENCE_DATE_CODE_DEFAULT_VALUE)
                     .withOffenceFacts(offence.getOffenceFacts())
-                    .withOffenceSequenceNumber(offence.getCount())
+                    .withOffenceSequenceNumber(offence.getOrderIndex())
                     .withPlea(offence.getPlea())
                     .withStartDate(offence.getStartDate())
                     .withJudicialResults(offence.getJudicialResults())

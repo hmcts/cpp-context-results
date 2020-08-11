@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.event.helper.sjp;
 
 import static java.lang.String.valueOf;
 import static java.time.LocalDate.parse;
-import static java.util.Objects.isNull;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static org.hamcrest.Matchers.is;
@@ -22,9 +21,7 @@ import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,18 +35,18 @@ public class OffenceDetailsTest {
     private ReferenceCache referenceCache;
 
     @Test
-    public void testBuildOffences(){
+    public void testBuildOffences() {
 
-        when(referenceCache.getResultDefinitionById(any(),any(), any())).thenReturn(buildResultDefinition());
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
         when(referenceCache.getAllocationDecision(any(), anyString())).thenReturn(of(buildAllocationDecision()));
 
 
         final PublicSjpResulted publicSjpCaseResulted = basicSJPCaseResulted();
         final List<uk.gov.justice.sjp.results.CaseDetails> sjpCaseDetails = publicSjpCaseResulted.getCases();
         final List<uk.gov.justice.sjp.results.CaseDefendant> sjpCaseDefendants = sjpCaseDetails.get(0).getDefendants();
-        final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new OffenceDetails(referenceCache).buildOffences(sjpCaseDefendants.get(0), DATE_AND_TIME_OF_SESSION,SESSION_ID);
+        final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new OffenceDetails(referenceCache).buildOffences(sjpCaseDefendants.get(0), DATE_AND_TIME_OF_SESSION, SESSION_ID);
 
-        assertOffences(offenceDetailsList,sjpCaseDefendants.get(0).getOffences());
+        assertOffences(offenceDetailsList, sjpCaseDefendants.get(0).getOffences());
 
     }
 
@@ -66,6 +63,7 @@ public class OffenceDetailsTest {
                 assertThat(offenceDetails.getFinalDisposal(), is("N"));
                 assertThat(offenceDetails.getModeOfTrial(), is(valueOf(sjpCaseOffence.getModeOfTrial())));
                 assertThat(offenceDetails.getConvictingCourt(), is(sjpCaseOffence.getConvictingCourt()));
+                assertThat(offenceDetails.getOffenceSequenceNumber(), is(sjpCaseOffence.getBaseOffenceDetails().getOffenceSequenceNumber()));
                 assertAllocationDecision(offenceDetails, sjpCaseOffence);
                 assertOffenceFacts(offenceDetails, sjpCaseOffence);
 
@@ -74,13 +72,13 @@ public class OffenceDetailsTest {
     }
 
     private void assertAllocationDecision(final uk.gov.justice.core.courts.OffenceDetails offenceDetails, final CaseOffence sjpCaseOffence) {
-        if(null != offenceDetails.getAllocationDecision()){
-        assertThat(offenceDetails.getAllocationDecision().getOriginatingHearingId(), is(fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d")));
-        assertThat(offenceDetails.getAllocationDecision().getOffenceId(), is(sjpCaseOffence.getBaseOffenceDetails().getOffenceId()));
-        assertThat(offenceDetails.getAllocationDecision().getAllocationDecisionDate(), is(parse("2019-05-02")));
-        assertThat(offenceDetails.getAllocationDecision().getMotReasonDescription(), is("motDescription"));
-        assertThat(offenceDetails.getAllocationDecision().getMotReasonCode(), is("10"));
-        assertThat(offenceDetails.getAllocationDecision().getSequenceNumber(), is(10));
+        if (null != offenceDetails.getAllocationDecision()) {
+            assertThat(offenceDetails.getAllocationDecision().getOriginatingHearingId(), is(fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d")));
+            assertThat(offenceDetails.getAllocationDecision().getOffenceId(), is(sjpCaseOffence.getBaseOffenceDetails().getOffenceId()));
+            assertThat(offenceDetails.getAllocationDecision().getAllocationDecisionDate(), is(parse("2019-05-02")));
+            assertThat(offenceDetails.getAllocationDecision().getMotReasonDescription(), is("motDescription"));
+            assertThat(offenceDetails.getAllocationDecision().getMotReasonCode(), is("10"));
+            assertThat(offenceDetails.getAllocationDecision().getSequenceNumber(), is(10));
         }
     }
 

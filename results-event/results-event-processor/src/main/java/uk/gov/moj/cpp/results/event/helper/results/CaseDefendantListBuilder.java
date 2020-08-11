@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.event.helper.results;
 
 import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
@@ -80,8 +81,8 @@ public class CaseDefendantListBuilder {
     }
 
     private void addCorporateDefendant(final Defendant defendant, final uk.gov.justice.core.courts.CaseDefendant.Builder builder, final String presentAtHearing) {
-        if (null != defendant.getDefenceOrganisation()) {
-            builder.withCorporateDefendant(new OrganisationDetails().buildCorporateDefendant(defendant.getDefenceOrganisation(), presentAtHearing));
+        if (nonNull(defendant.getLegalEntityDefendant()) && nonNull(defendant.getLegalEntityDefendant().getOrganisation())) {
+            builder.withCorporateDefendant(new OrganisationDetails().buildCorporateDefendant(defendant.getLegalEntityDefendant().getOrganisation(), presentAtHearing));
         }
     }
 

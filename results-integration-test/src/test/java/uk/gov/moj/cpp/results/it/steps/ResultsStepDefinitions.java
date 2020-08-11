@@ -313,9 +313,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         assertThat(caseRejected, notNullValue());
     }
 
-    public static void verifyInPublicTopic() {
+    public static Optional<String> verifyInPublicTopic() {
         final Optional<String> response = publicMessageConsumer.retrieveMessage();
         assertThat(response, not(empty()));
+        return response;
     }
 
     public static void verifyNotInPublicTopic() {
