@@ -152,7 +152,8 @@
               },
               "offenceFacts" : {
                 "alcoholReadingAmount": 1,
-                "alcoholReadingMethodDescription": "desc"
+                "alcoholReadingMethodDescription": "desc",
+                "vehicleCode": "PASSENGER_CARRYING_VEHICLE"
               }
             }
           ],

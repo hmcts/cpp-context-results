@@ -1,12 +1,15 @@
 package uk.gov.moj.cpp.results.domain.common;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.external.ApiDefendant;
 import uk.gov.justice.core.courts.external.ApiHearing;
+import uk.gov.justice.core.courts.external.ApiOffence;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -40,8 +43,8 @@ public class HearingTransformerTest {
     }
 
     @Test
-    public void shouldTransformHearing() {
-        final JsonObject hearingJson = getHearingJson();
+    public void shouldTransformHearingWithOutVehicleCode() {
+        final JsonObject hearingJson = getHearingJson("hearing.json");
         final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
         final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
         final ApiDefendant apiDefendant = apiHearing.getProsecutionCases().get(0).getDefendants().get(0);
@@ -51,14 +54,32 @@ public class HearingTransformerTest {
         assertThat(apiDefendant.getOffences().get(0).getJudicialResults().size(), is(2));
         assertThat(apiHearing.getCourtApplications().get(0).getJudicialResults().size(), is(2));
         assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
+        final ApiOffence apiOffence = apiDefendant.getOffences().get(0);
+        assertThat(apiOffence.getOffenceFacts().getVehicleCode(), nullValue());
+    }
+
+    @Test
+    public void shouldTransformHearingWithVehicleCode() {
+        final JsonObject hearingJson = getHearingJson("hearingWithVehicleCode.json");
+        final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
+        final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
+        final ApiDefendant apiDefendant = apiHearing.getProsecutionCases().get(0).getDefendants().get(0);
+
+        assertThat(apiHearing.getDefendantJudicialResults(), hasSize(1));
+        assertThat(apiDefendant.getJudicialResults(), hasSize(2));
+        assertThat(apiDefendant.getOffences().get(0).getJudicialResults(), hasSize(2));
+        assertThat(apiHearing.getCourtApplications().get(0).getJudicialResults(), hasSize(2));
+        assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
+        final ApiOffence apiOffence = apiDefendant.getOffences().get(0);
+        assertThat(apiOffence.getOffenceFacts().getVehicleCode().toString(), is("PASSENGER_CARRYING_VEHICLE"));
     }
 
 
-    private static JsonObject getHearingJson() {
+    private static JsonObject getHearingJson(final String resourceName) {
         String response = null;
         try {
             response = Resources.toString(
-                    Resources.getResource("hearing.json"),
+                    Resources.getResource(resourceName),
                     Charset.defaultCharset()
             );
         } catch (final Exception e) {

@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.domains;
 
+import static java.util.Objects.nonNull;
+
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.ApplicantCounsel;
@@ -706,11 +708,14 @@ public class HearingTransformer {
     }
 
     private ApiOffenceFacts.Builder offenceFacts(final OffenceFacts offenceFacts) {
-        return ApiOffenceFacts.apiOffenceFacts().withAlcoholReadingAmount(offenceFacts.getAlcoholReadingAmount())
+        final ApiOffenceFacts.Builder builder = ApiOffenceFacts.apiOffenceFacts().withAlcoholReadingAmount(offenceFacts.getAlcoholReadingAmount())
                 .withAlcoholReadingMethodCode(offenceFacts.getAlcoholReadingMethodCode())
                 .withAlcoholReadingMethodDescription(offenceFacts.getAlcoholReadingMethodDescription())
-                .withVehicleCode(VehicleCode.valueOf(offenceFacts.getVehicleCode().name()))
                 .withVehicleRegistration(offenceFacts.getVehicleRegistration());
+        if (nonNull(offenceFacts.getVehicleCode())) {
+            builder.withVehicleCode(VehicleCode.valueOf(offenceFacts.getVehicleCode().name()));
+        }
+        return builder;
     }
 
     private ApiLegalEntityDefendant.Builder legalEntityDefendant(final LegalEntityDefendant legalEntityDefendant) {
@@ -718,8 +723,11 @@ public class HearingTransformer {
     }
 
     private ApiOrganisation.Builder organisation(final Organisation organisation) {
-        return ApiOrganisation.apiOrganisation().withAddress(address(organisation.getAddress()).build())
-                .withContact(contactNumber(organisation.getContact()).build())
+        final ApiOrganisation.Builder apiOrganisation = ApiOrganisation.apiOrganisation();
+        if(organisation.getContact() != null) {
+            apiOrganisation.withContact(contactNumber(organisation.getContact()).build());
+        }
+        return apiOrganisation.withAddress(address(organisation.getAddress()).build())
                 .withIncorporationNumber(organisation.getIncorporationNumber())
                 .withName(organisation.getName())
                 .withRegisteredCharityNumber(organisation.getRegisteredCharityNumber());
