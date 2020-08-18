@@ -51,6 +51,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.json.JSONObject;
 
 public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
@@ -317,6 +318,16 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         final Optional<String> response = publicMessageConsumer.retrieveMessage();
         assertThat(response, not(empty()));
         return response;
+    }
+
+    public static void verifyInPublicPoliceResultGeneratedMessage(final String expectedFindingValue) {
+
+        final String eventStr=publicMessageConsumer.retrieveMessage().orElse(null);
+        assertThat(eventStr,notNullValue());
+
+        final JSONObject event=new JSONObject(eventStr);
+        assertThat(event.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("finding"), is(expectedFindingValue));
+
     }
 
     public static void verifyNotInPublicTopic() {

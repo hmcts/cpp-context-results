@@ -16,6 +16,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummarie
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.publicSjpResultedShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.thenReturnsBadRequestForResultsSummaryWithoutFromDate;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPublicPoliceResultGeneratedMessage;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPublicTopic;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyNotInPublicTopic;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForAmendment;
@@ -94,6 +95,8 @@ public class ResultsIT {
     private static final String CASE_ID_VALUE = "cccc1111-1e20-4c21-916a-81a6c90239e5";
     private static final String DEFENDANT_ID_VALUE = "dddd1111-1e20-4c21-916a-81a6c90239e5";
     private static final String EMAIL = "email@email.com";
+    private static final String FINDING_VALUE_DEFAULT = "G";
+    private static final String FINDING_VALUE_NOT_GUILTY = "N";
 
     private static JsonObject getPayload(final String path, final UUID hearingId) {
         String request = null;
@@ -168,6 +171,29 @@ public class ResultsIT {
         Optional<String> response = verifyInPublicTopic();
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
     }
+
+    @Test
+    public void whenVerdictNotPresentAndConvictedDatePresentThenPoliceResultGeneratedHasFindingWithDefaultValue() throws JMSException {
+        final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
+
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        verifyInPublicPoliceResultGeneratedMessage(FINDING_VALUE_DEFAULT);
+    }
+
+    @Test
+    public void whenVerdictPresentThenPoliceResultGeneratedHasFindingWithVerdictCode() throws JMSException {
+        final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate(true);
+
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        verifyInPublicPoliceResultGeneratedMessage(FINDING_VALUE_NOT_GUILTY);
+    }
+
 
     @Test
     public void testCCForEmailNotificationFailWhenEmailIsEmpty() throws JMSException {

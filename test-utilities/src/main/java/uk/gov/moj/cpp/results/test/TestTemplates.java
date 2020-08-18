@@ -56,6 +56,8 @@ import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
+import uk.gov.justice.core.courts.Verdict;
+import uk.gov.justice.core.courts.VerdictType;
 import uk.gov.justice.sjp.results.BaseResult;
 import uk.gov.justice.sjp.results.BaseSessionStructure;
 import uk.gov.justice.sjp.results.CaseDefendant;
@@ -174,7 +176,7 @@ public class TestTemplates {
                         .withWelshRoomName(STRING.next())
                         .withAddress(address())
                         .build())
-                .withProsecutionCases(asList(createProsecutionCase1(null), createProsecutionCase2(null)))
+                .withProsecutionCases(asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)))
                 .withProsecutionCases(prosecutionCases)
                 .withDefendantJudicialResults(asList(DefendantJudicialResult.defendantJudicialResult()
                         .withMasterDefendantId(randomUUID())
@@ -245,12 +247,20 @@ public class TestTemplates {
         return basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
     }
 
+    public static PublicHearingResulted basicShareResultsWithMagistratesTemplate(final boolean isWithVerdict) {
+        return basicShareResultsTemplate(JurisdictionType.MAGISTRATES, isWithVerdict);
+    }
+
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType) {
+        return basicShareResultsTemplate(jurisdictionType, false);
+    }
+
+    public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict) {
 
         final UUID hearingId = randomUUID();
 
         return PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList()), createProsecutionCase2(buildJudicialResultList())), jurisdictionType))
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), isWithVerdict), createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
 
     }
@@ -260,7 +270,7 @@ public class TestTemplates {
         final UUID hearingId = randomUUID();
 
         return PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList()), createProsecutionCase2(buildJudicialResultList())), JurisdictionType.MAGISTRATES))
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), false), createProsecutionCase2(buildJudicialResultList(), false)), JurisdictionType.MAGISTRATES))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")))
                 .setShadowListedOffences(Collections.singletonList(UUID.randomUUID()));
     }
@@ -270,12 +280,12 @@ public class TestTemplates {
         final UUID hearingId = randomUUID();
 
         return PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null), createProsecutionCase2(null)), jurisdictionType))
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)), jurisdictionType))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
 
     }
 
-    private static ProsecutionCase createProsecutionCase1(final List<JudicialResult> judicialResults) {
+    private static ProsecutionCase createProsecutionCase1(final List<JudicialResult> judicialResults, final boolean isWithVerdict) {
         return ProsecutionCase.prosecutionCase()
                 .withId(fromString("cccc1111-1e20-4c21-916a-81a6c90239e5"))
                 .withInitiationCode(InitiationCode.C)
@@ -285,14 +295,14 @@ public class TestTemplates {
                         .withProsecutionAuthorityReference("authorityReference")
                         .build())
                 .withDefendants(
-                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults),
-                                createDefendant(DEFAULT_DEFENDANT_ID2.toString(), DEFAULT_VALUE, judicialResults)
+                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict),
+                                createDefendant(DEFAULT_DEFENDANT_ID2.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict)
                         ))
                 .withCaseStatus("ACTIVE")
                 .build();
     }
 
-    protected static ProsecutionCase createProsecutionCase2(final List<JudicialResult> judicialResults) {
+    protected static ProsecutionCase createProsecutionCase2(final List<JudicialResult> judicialResults, final boolean isWithVerdict) {
         return ProsecutionCase.prosecutionCase()
                 .withId(fromString("cccc2222-1e20-4c21-916a-81a6c90239e5"))
                 .withInitiationCode(InitiationCode.C)
@@ -302,14 +312,14 @@ public class TestTemplates {
                         .withCaseURN(STRING.next())
                         .build())
                 .withDefendants(
-                        asList(createDefendant(DEFAULT_DEFENDANT_ID3.toString(), DEFAULT_VALUE, judicialResults),
-                                createDefendant(DEFAULT_DEFENDANT_ID4.toString(), null, judicialResults)
+                        asList(createDefendant(DEFAULT_DEFENDANT_ID3.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict),
+                                createDefendant(DEFAULT_DEFENDANT_ID4.toString(), null, judicialResults, isWithVerdict)
                         ))
                 .withCaseStatus("ACTIVE")
                 .build();
     }
 
-    private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults) {
+    private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults, final boolean isWithVerdict) {
         return Defendant.defendant()
                 .withCourtProceedingsInitiated(ZonedDateTime.now())
                 .withMasterDefendantId(UUID.fromString(defendantId))
@@ -338,30 +348,54 @@ public class TestTemplates {
                                 .build())
                         .withRole("parentGuardian")
                         .build()))
-                .withOffences(asList(Offence.offence()
-                        .withId(ID)
-                        .withOffenceDefinitionId(randomUUID())
-                        .withOffenceCode("offenceCode")
-                        .withOffenceTitle(STRING.next())
-                        .withWording(STRING.next())
-                        .withStartDate(now())
-                        .withEndDate(now())
-                        .withArrestDate(now())
-                        .withChargeDate(now())
-                        .withConvictionDate(now())
-                        .withEndDate(now())
-                        .withModeOfTrial("1010")
-                        .withAllocationDecision(createAllocationDecision())
-                        .withJudicialResults(judicialResults)
-                        .withOrderIndex(12)
-                        .withOrderIndex(65)
-                        .withIsDisposed(true)
-                        .withCount(434)
-                        .withProceedingsConcluded(true)
-                        .withIntroducedAfterInitialProceedings(true)
-                        .withIsDiscontinued(true)
-                        .build()))
+                .withOffences(
+                        getOffenceList(judicialResults,isWithVerdict)
+                )
                 .build();
+    }
+
+    private static List<Offence> getOffenceList(final List<JudicialResult> judicialResults, final boolean isWithVerdict) {
+
+        final Offence.Builder builder = Offence.offence();
+        builder.withId(ID)
+                .withOffenceDefinitionId(randomUUID())
+                .withOffenceCode("offenceCode")
+                .withOffenceTitle(STRING.next())
+                .withWording(STRING.next())
+                .withStartDate(now())
+                .withEndDate(now())
+                .withArrestDate(now())
+                .withChargeDate(now())
+                .withConvictionDate(now())
+                .withEndDate(now())
+                .withModeOfTrial("1010")
+                .withAllocationDecision(createAllocationDecision())
+                .withJudicialResults(judicialResults)
+                .withOrderIndex(12)
+                .withOrderIndex(65)
+                .withIsDisposed(true)
+                .withCount(434)
+                .withProceedingsConcluded(true)
+                .withIntroducedAfterInitialProceedings(true)
+                .withIsDiscontinued(true);
+        if(isWithVerdict){
+            builder.withVerdict(Verdict.verdict()
+                    .withVerdictType(VerdictType.verdictType()
+                            .withId(fromString("3f0d69d0-2fda-3472-8d4c-a6248f661825"))
+                            .withCategory(STRING.next())
+                            .withCategoryType(STRING.next())
+                            .withCjsVerdictCode("N")
+                            .build())
+                    .withOriginatingHearingId(randomUUID())
+                    .withOffenceId(ID)
+                    .withVerdictDate(now())
+                    .build());
+        }
+
+
+        return asList(
+                builder.build()
+        );
     }
 
     private static AllocationDecision createAllocationDecision() {
