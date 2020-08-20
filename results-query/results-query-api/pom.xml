@@ -14,34 +14,16 @@
         <cpp.service-component>QUERY_API</cpp.service-component>
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>uk.gov.justice.framework-generators</groupId>
-                <artifactId>rest-client-generator-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>uk.gov.moj.cpp.results</groupId>
-                        <artifactId>results-query-view</artifactId>
-                        <version>${project.version}</version>
-                        <classifier>raml</classifier>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>*</groupId>
-                                <artifactId>*</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
 
         <dependency>
             <groupId>uk.gov.moj.cpp.common</groupId>
             <artifactId>query-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>results-query-view</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

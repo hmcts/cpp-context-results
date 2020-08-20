@@ -9,7 +9,6 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPub
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
-import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
@@ -40,7 +39,6 @@ public class MoveDefendantLevelResultsIT {
     @Before
     public void setUp() {
         setupUserAsPrisonAdminGroup(getUserId());
-        stubEnableAllCapabilities();
         stubCountryNationalities();
         stubGetOrgainsationUnit();
         stubJudicialResults();

@@ -8,7 +8,6 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingD
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
-import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
@@ -47,7 +46,6 @@ public class EjectCaseIT {
     @Before
     public void setUp() {
         setupUserAsPrisonAdminGroup(getUserId());
-        stubEnableAllCapabilities();
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         hearingCaseEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-case-ejected");
         hearingApplicationEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-application-ejected");

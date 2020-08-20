@@ -9,7 +9,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
-import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupAsAuthorisedUser;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupAsSystemUser;
 
@@ -69,7 +68,6 @@ final class TestUtilities {
             requestSpec = new RequestSpecBuilder().setBaseUri(baseUri).build();
             setupAsAuthorisedUser(USER_ID_VALUE);
             setupAsSystemUser(USER_ID_VALUE_AS_ADMIN);
-            stubEnableAllCapabilities();
         } catch (final IOException e) {
             LOGGER.warn("Error reading properties from {}", ENDPOINT_PROPERTIES_FILE, e);
             throw new ExceptionInInitializerError(e);

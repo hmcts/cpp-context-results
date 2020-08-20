@@ -27,7 +27,6 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPriva
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
-import static uk.gov.moj.cpp.results.it.utils.AuthorisationServiceStub.stubEnableAllCapabilities;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
@@ -116,7 +115,6 @@ public class ResultsIT {
     public static void setUpClass() throws IOException {
 
         setupUserAsPrisonAdminGroup(getUserId());
-        stubEnableAllCapabilities();
         stubEventGridEndpoint();
         stubCountryNationalities();
         stubGetOrgainsationUnit();

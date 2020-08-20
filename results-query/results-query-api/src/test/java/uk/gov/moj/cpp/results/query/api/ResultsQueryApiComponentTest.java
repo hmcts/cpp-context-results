@@ -18,7 +18,7 @@ import static uk.gov.justice.services.core.annotation.Component.QUERY_API;
 import static uk.gov.justice.services.test.utils.core.matchers.HandlerClassMatcher.isHandlerClass;
 import static uk.gov.justice.services.test.utils.core.matchers.HandlerMethodMatcher.method;
 
-public class ResultsQueryApiTest {
+public class ResultsQueryApiComponentTest {
 
     private static final String PATH_TO_RAML = "src/raml/results-query-api.raml";
     private static final String NAME = "name:";
@@ -46,8 +46,7 @@ public class ResultsQueryApiTest {
         apiMethodsToHandlerNames.forEach((key, value) ->
                 assertThat(ResultsQueryApi.class, isHandlerClass(QUERY_API)
                         .with(method(key)
-                                .thatHandles(value)
-                                .withRequesterPassThrough())));
+                                .thatHandles(value))));
     }
 
 }
