@@ -9,17 +9,18 @@ public final class RuleConstants {
     private static final String GROUP_COURT_CLERKS = "Court Clerks";
     private static final String GROUP_LEGAL_ADVISERS = "Legal Advisers";
     private static final String GROUP_SYSTEM_USERS = "System Users";
+    private static final String GROUP_COURT_ASSOCIATE = "Court Associate";
 
     private RuleConstants() {
         throw new IllegalAccessError("Utility class");
     }
 
     public static List<String> getUpdateNowsStatusActionGroups() {
-        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS);
+        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
     }
 
     public static List<String> getPoliceResultsForDefendantGroups() {
-        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS);
+        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
     }
 
 }

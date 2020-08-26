@@ -15,7 +15,8 @@ public enum UserGroupType {
     VICTIMS_AND_WITNESS_CARE_ADMIN("Victims & Witness Care Admin"),
     YOUTH_OFFENDING_SERVICE_ADMIN("Youth Offending Service Admin"),
     LEGAL_AID_AGENCY_ADMIN("Legal Aid Agency Admin"),
-    COURT_CLERKS("Court Clerks");
+    COURT_CLERKS("Court Clerks"),
+    COURT_ASSOCIATE("Court Associate");
 
     private final String name;
 
@@ -33,22 +34,22 @@ public enum UserGroupType {
     }
 
     public static List<String> personDetailsGroups() {
-        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS)
+        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
                 .map(UserGroupType::getName).collect(toList());
     }
 
     public static List<String> hearingDetailsGroups() {
-        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS)
+        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
                 .map(UserGroupType::getName).collect(toList());
     }
 
     public static List<String> resultsDetailsGroups() {
-        return Stream.of(CJSE, LEGAL_ADVISERS, PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS)
+        return Stream.of(CJSE, LEGAL_ADVISERS, PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
                 .map(UserGroupType::getName).collect(toList());
     }
 
     public static List<String> resultsSummaryGroups() {
-        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS)
+        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
                 .map(UserGroupType::getName).collect(toList());
     }
 }
