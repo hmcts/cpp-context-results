@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-viewstore</artifactId>
-        <version>7.0.14-SNAPSHOT</version>
+        <version>7.0.15-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-viewstore-persistence</artifactId>
