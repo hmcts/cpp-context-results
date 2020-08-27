@@ -36,7 +36,7 @@ public class OffenceDetails {
                     .withModeOfTrial(offence.getModeOfTrial())
                     .withAllocationDecision(offence.getAllocationDecision())
                     .withOffenceCode(offence.getOffenceCode())
-                    .withOffenceDateCode(OFFENCE_DATE_CODE_DEFAULT_VALUE)
+                    .withOffenceDateCode(nonNull(offence.getOffenceDateCode()) ? offence.getOffenceDateCode() : OFFENCE_DATE_CODE_DEFAULT_VALUE)
                     .withOffenceFacts(offence.getOffenceFacts())
                     .withOffenceSequenceNumber(offence.getOrderIndex())
                     .withPlea(offence.getPlea())

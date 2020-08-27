@@ -39,6 +39,7 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPriso
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicSJPCaseResulted;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplateWithoutResult;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesAlongWithOffenceDateCodeTemplate;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
@@ -169,6 +170,46 @@ public class ResultsIT {
         Optional<String> response = verifyInPublicTopic();
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
     }
+
+
+    @Test
+    public void testCCForSpiOutWithOffenceDateCode() throws JMSException {
+        final Integer offenceDateCode = 4;
+        final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesAlongWithOffenceDateCodeTemplate(offenceDateCode);
+
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOffenceDateCode(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceDateCode")));
+    }
+
+
+    @Test
+    public void testCCForSpiOutDefaultOffenceDateCode() throws JMSException {
+        final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
+
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
+        assertThat(1, is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceDateCode")));
+    }
+
 
     @Test
     public void whenVerdictNotPresentAndConvictedDatePresentThenPoliceResultGeneratedHasFindingWithDefaultValue() throws JMSException {
