@@ -1,6 +1,5 @@
 {
   "id": "1828f356-f746-4f2d-932b-79ef2df95c80",
-  "jurisdictionType": "MAGISTRATES",
   "hearingLanguage": "ENGLISH",
   "type": {
     "description": "Sentence",
@@ -63,7 +62,21 @@
                   "isUrgent": false,
                   "isD20": false,
                   "amendmentDate": "2019-06-24",
-                  "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+                  "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                  "nextHearing": {
+                    "adjournmentReason": "reason",
+                    "courtCentre": {
+                      "id": "9b583616-049b-30f9-a14f-028a53b7cfe8",
+                      "name": "Liverpool Crown Court",
+                      "roomId": "7cb09222-49e1-3622-a5a6-ad253d2b3c39",
+                      "roomName": "Crown Court 3-1"
+                    },
+                    "type" : {
+                      "id" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                      "description" : "PTP",
+                      "welshDescription" : "welsh PTP"
+                    }
+                  }
                 },
                 {
                   "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17002",

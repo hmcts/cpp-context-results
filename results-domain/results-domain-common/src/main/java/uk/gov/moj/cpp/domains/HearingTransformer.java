@@ -724,7 +724,7 @@ public class HearingTransformer {
 
     private ApiOrganisation.Builder organisation(final Organisation organisation) {
         final ApiOrganisation.Builder apiOrganisation = ApiOrganisation.apiOrganisation();
-        if(organisation.getContact() != null) {
+        if (organisation.getContact() != null) {
             apiOrganisation.withContact(contactNumber(organisation.getContact()).build());
         }
         return apiOrganisation.withAddress(address(organisation.getAddress()).build())
@@ -774,13 +774,12 @@ public class HearingTransformer {
     }
 
     private ApiNextHearing.Builder nextHearing(final NextHearing nextHearing) {
-        return ApiNextHearing.apiNextHearing()
-                .withCourtCentre(courtCentre(nextHearing.getCourtCentre()).build())
+        final ApiNextHearing.Builder builder = ApiNextHearing.apiNextHearing();
+        builder.withCourtCentre(courtCentre(nextHearing.getCourtCentre()).build())
                 .withEstimatedMinutes(nextHearing.getEstimatedMinutes())
-                .withHearingLanguage(HearingLanguage.valueOf(nextHearing.getHearingLanguage().name()))
                 .withJudiciary(nextHearing.getJudiciary() == null ? Collections.emptyList() :
                         nextHearing.getJudiciary().stream().map(jr -> judicialRole(jr).build()).collect(Collectors.toList()))
-                .withJurisdictionType(JurisdictionType.valueOf(nextHearing.getJurisdictionType().name()))
+
                 .withListedStartDateTime(nextHearing.getListedStartDateTime())
                 .withNextHearingCourtApplicationId(nextHearing.getNextHearingCourtApplicationId())
                 .withNextHearingProsecutionCases(nextHearing.getNextHearingProsecutionCases() == null ? Collections.emptyList() :
@@ -788,6 +787,13 @@ public class HearingTransformer {
                 .withReportingRestrictionReason(nextHearing.getReportingRestrictionReason())
                 .withType(hearingType(nextHearing.getType()).build());
 
+        if (nonNull(nextHearing.getHearingLanguage())) {
+            builder.withHearingLanguage(HearingLanguage.valueOf(nextHearing.getHearingLanguage().name()));
+        }
+        if (nonNull(nextHearing.getJurisdictionType())) {
+            builder.withJurisdictionType(JurisdictionType.valueOf(nextHearing.getJurisdictionType().name()));
+        }
+        return builder;
     }
 
     private ApiHearingType.Builder hearingType(final HearingType hearingType) {

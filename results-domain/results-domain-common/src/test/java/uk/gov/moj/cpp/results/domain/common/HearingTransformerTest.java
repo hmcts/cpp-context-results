@@ -7,9 +7,12 @@ import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.HearingLanguage;
 import uk.gov.justice.core.courts.external.ApiDefendant;
 import uk.gov.justice.core.courts.external.ApiHearing;
+import uk.gov.justice.core.courts.external.ApiJudicialResult;
 import uk.gov.justice.core.courts.external.ApiOffence;
+import uk.gov.justice.core.courts.external.JurisdictionType;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -56,6 +59,9 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
         final ApiOffence apiOffence = apiDefendant.getOffences().get(0);
         assertThat(apiOffence.getOffenceFacts().getVehicleCode(), nullValue());
+        final ApiJudicialResult apiJudicialResult = apiOffence.getJudicialResults().get(0);
+        assertThat(apiJudicialResult.getNextHearing().getHearingLanguage().name(), is(HearingLanguage.ENGLISH.name()));
+        assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));
     }
 
     @Test
@@ -72,6 +78,9 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
         final ApiOffence apiOffence = apiDefendant.getOffences().get(0);
         assertThat(apiOffence.getOffenceFacts().getVehicleCode().toString(), is("PASSENGER_CARRYING_VEHICLE"));
+        final ApiJudicialResult apiJudicialResult = apiOffence.getJudicialResults().get(0);
+        assertThat(apiJudicialResult.getNextHearing().getHearingLanguage(), nullValue());
+        assertThat(apiHearing.getJurisdictionType(), nullValue());
     }
 
 
