@@ -42,6 +42,7 @@ import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
 import uk.gov.justice.core.courts.DefendantRejectedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
+import uk.gov.justice.core.courts.DelegatedPowers;
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
@@ -51,6 +52,8 @@ import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
+import uk.gov.justice.core.courts.Plea;
+import uk.gov.justice.core.courts.PleaValue;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
@@ -237,7 +240,15 @@ public class ResultsAggregateTest {
 
     @Test
     public void testHandleDefendantsWhenOffenceAndTheirResultIsPresent() {
-        final CaseDetails caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withAllocationDecision(buildAllocationDecision()).withJudicialResults(of(judicialResult().build())).build()));
+        final CaseDetails caseDetails = createCaseDetails(null, of(offenceDetails()
+                .withId(OFFENCE_ID).withAllocationDecision(buildAllocationDecision())
+                .withJudicialResults(of(judicialResult().build()))
+                .withPlea(Plea.plea()
+                        .withOffenceId(OFFENCE_ID)
+                        .withDelegatedPowers(DelegatedPowers.delegatedPowers().withUserId(randomUUID()).build())
+                        .withPleaValue(PleaValue.DENIES)
+                        .build())
+                .build()));
         resultsAggregate.handleCase(caseDetails);
         final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true ).collect(toList());
         assertDefendantAddedEvent(caseDetails.getDefendants().get(0), objectList);
