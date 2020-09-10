@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.domains.resultStructure;
 
-import uk.gov.justice.core.courts.PleaValue;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,10 +9,10 @@ public class Plea implements Serializable {
     private long serialVersionUID = -9176890205806560222L;
     private UUID id;
     private LocalDate date;
-    private PleaValue value;
+    private String value;
     private UUID enteredHearingId;
 
-    public Plea(UUID id, LocalDate date, PleaValue value, UUID enteredHearingId) {
+    public Plea(UUID id, LocalDate date, String value, UUID enteredHearingId) {
         this.id = id;
         this.date = date;
         this.value = value;
@@ -50,7 +49,7 @@ public class Plea implements Serializable {
         return date;
     }
 
-    public PleaValue getValue() {
+    public String getValue() {
         return value;
     }
 

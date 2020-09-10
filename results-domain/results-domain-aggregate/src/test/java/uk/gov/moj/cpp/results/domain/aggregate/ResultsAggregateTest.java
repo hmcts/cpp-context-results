@@ -1,4 +1,3 @@
-
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static com.google.common.collect.ImmutableList.of;
@@ -53,7 +52,6 @@ import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.Plea;
-import uk.gov.justice.core.courts.PleaValue;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
@@ -77,6 +75,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ResultsAggregateTest {
 
+    public static final String PLEA_VALUE_DENIES = "DENIES";
     private static final UUID OFFENCE_ID = randomUUID();
     private static final String FIRST_NAME_1 = "Jane";
     private static final String LAST_NAME_1 = "Johnson";
@@ -129,8 +128,8 @@ public class ResultsAggregateTest {
                 .add(HEARING_ID, hearingId.toString())
                 .add(CASE_ID, caseId.toString())
                 .build();
-        final HearingCaseEjected hearingCaseEjected =resultsAggregate.ejectCaseOrApplication(hearingId, payload)
-                .map(o->(HearingCaseEjected)o)
+        final HearingCaseEjected hearingCaseEjected = resultsAggregate.ejectCaseOrApplication(hearingId, payload)
+                .map(o -> (HearingCaseEjected) o)
                 .findFirst().orElse(null);
         assertNotNull(hearingCaseEjected);
         assertEquals(hearingId, hearingCaseEjected.getHearingId());
@@ -150,8 +149,8 @@ public class ResultsAggregateTest {
                 .add(HEARING_ID, hearingId.toString())
                 .add(APPLICATION_ID, applicationId.toString())
                 .build();
-        final HearingApplicationEjected hearingApplicationEjected =resultsAggregate.ejectCaseOrApplication(hearingId, payload)
-                .map(o->(HearingApplicationEjected)o)
+        final HearingApplicationEjected hearingApplicationEjected = resultsAggregate.ejectCaseOrApplication(hearingId, payload)
+                .map(o -> (HearingApplicationEjected) o)
                 .findFirst().orElse(null);
         assertNotNull(hearingApplicationEjected);
         assertEquals(hearingId, hearingApplicationEjected.getHearingId());
@@ -246,11 +245,11 @@ public class ResultsAggregateTest {
                 .withPlea(Plea.plea()
                         .withOffenceId(OFFENCE_ID)
                         .withDelegatedPowers(DelegatedPowers.delegatedPowers().withUserId(randomUUID()).build())
-                        .withPleaValue(PleaValue.DENIES)
+                        .withPleaValue(PLEA_VALUE_DENIES)
                         .build())
                 .build()));
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true ).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
         assertDefendantAddedEvent(caseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
     }
@@ -425,13 +424,13 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         resultsAggregate.handleCase(caseDetails);
         resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
-        
+
         judicialResult.setJudicialResultId(randomUUID());
         final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
         assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
     }
-    
+
     @Test
     public void shouldRaisePoliceResultGeneratedEvent() {
 
@@ -520,15 +519,15 @@ public class ResultsAggregateTest {
     }
 
     private void assertAllocationDecision(final CaseDefendant caseDefendant, final PoliceResultGenerated policeResultGenerated) {
-        final OffenceDetails offenceDetails = caseDefendant.getOffences().stream().findFirst().isPresent() ?caseDefendant.getOffences().stream().findFirst().get() : null;
-        if(nonNull(offenceDetails) && nonNull(offenceDetails.getAllocationDecision())) {
+        final OffenceDetails offenceDetails = caseDefendant.getOffences().stream().findFirst().isPresent() ? caseDefendant.getOffences().stream().findFirst().get() : null;
+        if (nonNull(offenceDetails) && nonNull(offenceDetails.getAllocationDecision())) {
             assertThat(offenceDetails.getAllocationDecision().getMotReasonDescription(), is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getMotReasonDescription()));
             assertThat(offenceDetails.getAllocationDecision().getAllocationDecisionDate(), is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getAllocationDecisionDate()));
             assertThat(offenceDetails.getAllocationDecision().getMotReasonCode(), is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getMotReasonCode()));
             assertThat(offenceDetails.getAllocationDecision().getMotReasonId(), is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getMotReasonId()));
             assertThat(offenceDetails.getAllocationDecision().getOffenceId(), is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getOffenceId()));
             assertThat(offenceDetails.getAllocationDecision().getOriginatingHearingId(), is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getOriginatingHearingId()));
-            if(nonNull(offenceDetails.getAllocationDecision().getCourtIndicatedSentence())) {
+            if (nonNull(offenceDetails.getAllocationDecision().getCourtIndicatedSentence())) {
                 assertThat(offenceDetails.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId(),
                         is(policeResultGenerated.getDefendant().getOffences().get(0).getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId()));
                 assertThat(offenceDetails.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription(),
@@ -551,7 +550,7 @@ public class ResultsAggregateTest {
 
     private AllocationDecision buildAllocationDecision() {
         return allocationDecision()
-                .withAllocationDecisionDate(LocalDate.of(2019,10,01))
+                .withAllocationDecisionDate(LocalDate.of(2019, 10, 01))
                 .withMotReasonCode("motReasonCode")
                 .withSequenceNumber(1)
                 .withOriginatingHearingId(randomUUID())

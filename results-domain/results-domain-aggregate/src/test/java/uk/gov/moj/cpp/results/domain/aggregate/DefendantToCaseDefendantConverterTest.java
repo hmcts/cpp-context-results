@@ -28,7 +28,6 @@ import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
-import uk.gov.justice.core.courts.PleaValue;
 import uk.gov.justice.core.courts.VehicleCode;
 import uk.gov.moj.cpp.domains.resultStructure.AttendanceDay;
 import uk.gov.moj.cpp.domains.resultStructure.CorporateDefendant;
@@ -56,6 +55,7 @@ public class DefendantToCaseDefendantConverterTest {
     private static final UUID USER_ID = randomUUID();
     private static final UUID ORDERED_HEARING_ID = randomUUID();
     private static final UUID JUDICIAL_RESULT_TYPE_ID = randomUUID();
+    public static final Plea GUILTY = new Plea(randomUUID(), LocalDate.of(2018, 5, 2), "GUILTY", randomUUID());
 
     private static Address buildAddress() {
         return address()
@@ -248,7 +248,7 @@ public class DefendantToCaseDefendantConverterTest {
     private List<Offence> buildOffences() {
         final List<Offence> offences = new ArrayList<>();
         final Offence offence = new Offence(OFFENCE_ID, "offenceCode", 1, "offenceWording"
-                , 2, now(), now(), now(), now(), buildOffenceFacts(), buildPlea(), "1010", 24,
+                , 2, now(), now(), now(), now(), buildOffenceFacts(), GUILTY, "1010", 24,
                 LocalDate.of(2018, 5, 2), "N", buildListOfResults(), "finding", buildAllocationDecision());
         offences.add(offence);
         return offences;
@@ -269,9 +269,6 @@ public class DefendantToCaseDefendantConverterTest {
                 .build();
     }
 
-    private Plea buildPlea() {
-        return new Plea(randomUUID(), LocalDate.of(2018, 5, 2), PleaValue.GUILTY, randomUUID());
-    }
 
     private DelegatedPowers buildDelegatPowers() {
         return DelegatedPowers.delegatedPowers().withUserId(USER_ID)
