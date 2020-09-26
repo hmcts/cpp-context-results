@@ -16,6 +16,7 @@
         <module>results-domain-transformations-for-corechanges</module>
         <module>results-domain-transformation-judicialresult-mandatory-attributes</module>
         <module>results-domain-transformations-pilotdata</module>
+        <module>results-domain-transformations-deactivate-stream</module>
     </modules>
 
 
