@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-declare -rx FRAMEWORK_VERSION=6.4.0
-declare -rx EVENT_STORE_VERSION=2.4.5
+declare -rx FRAMEWORK_VERSION=7.0.10
+declare -rx EVENT_STORE_VERSION=7.0.8
 
 . functions.sh
 

@@ -17,7 +17,7 @@
 #
 ##################################################################################################
 
-FRAMEWORK_LIBRARIES_VERSION=7.0.8
+FRAMEWORK_LIBRARIES_VERSION=7.0.10
 CONTEXT_NAME="results"
 USER_NAME="admin"
 PASSWORD="admin"
