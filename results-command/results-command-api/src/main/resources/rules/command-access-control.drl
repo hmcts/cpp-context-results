@@ -19,10 +19,18 @@ rule "Command - Rule for generate police results for a defendant"
   when
     $outcome: Outcome();
     $action: Action(name == "results.command.generate-police-results-for-a-defendant");
-     eval(true);
+    eval(true);
   then
     $outcome.setSuccess(true);
 end
 
+rule "Command - Rule for creating hearing results"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.api.create-results");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, RuleConstants.getCreateResultsActionGroups()));
+  then
+    $outcome.setSuccess(true);
+end
 
 

@@ -120,7 +120,76 @@ public class TestTemplate {
         return resultDefinition;
     }
 
+    public static ResultDefinition buildResultDefinitionWithMissingCourtExtractFromPrompts() {
+        final ResultDefinition resultDefinition = new ResultDefinition();
+        resultDefinition.setId(RESULT_ID);
+        resultDefinition.setAdjournment("Y");
+        resultDefinition.setLabel("label");
+        resultDefinition.setShortCode("shortCode");
+        resultDefinition.setLevel("level");
+        resultDefinition.setRank(1);
+        resultDefinition.setStartDate(new Date());
+        resultDefinition.setEndDate(new Date());
+        resultDefinition.setWelshLabel("welshLabel");
+        resultDefinition.setIsAvailableForCourtExtract(true);
+        resultDefinition.setFinancial("Y");
+        resultDefinition.setCategory("A");
+        resultDefinition.setCjsCode("cjsCode");
+        resultDefinition.setConvicted("Y");
+        resultDefinition.setVersion("1.0");
+        resultDefinition.setUserGroups(of("1", "2"));
+        resultDefinition.setPrompts(of(buildPromptWithMissingCourtExtract(PROMPT_ID), buildPrompt(PROMPT_ID_1)));
+        resultDefinition.setTerminatesOffenceProceedings(false);
+        resultDefinition.setLifeDuration(false);
+        resultDefinition.setPublishedAsAPrompt(false);
+        resultDefinition.setExcludedFromResults(false);
+        resultDefinition.setAlwaysPublished(false);
+        resultDefinition.setUrgent(false);
+        resultDefinition.setD20(false);
+        return resultDefinition;
+    }
+
+    public static ResultDefinition buildResultDefinitionWithMissingMandatoryAttributesForOldDefinition() {
+        final ResultDefinition resultDefinition = new ResultDefinition();
+        resultDefinition.setId(RESULT_ID);
+        resultDefinition.setAdjournment("Y");
+        resultDefinition.setLabel("label");
+        resultDefinition.setShortCode("shortCode");
+        resultDefinition.setLevel("level");
+        resultDefinition.setRank(1);
+        resultDefinition.setStartDate(new Date());
+        resultDefinition.setEndDate(new Date());
+        resultDefinition.setWelshLabel("welshLabel");
+        resultDefinition.setIsAvailableForCourtExtract(true);
+        resultDefinition.setFinancial("Y");
+        resultDefinition.setCategory("A");
+        resultDefinition.setCjsCode("cjsCode");
+        resultDefinition.setConvicted("Y");
+        resultDefinition.setVersion("1.0");
+        resultDefinition.setUserGroups(of("1", "2"));
+        resultDefinition.setPrompts(of(buildPrompt(PROMPT_ID), buildPrompt(PROMPT_ID_1)));
+        resultDefinition.setUrgent(false);
+        resultDefinition.setD20(false);
+        return resultDefinition;
+    }
+
     public static Prompt buildPrompt(final UUID promptId) {
+        final Prompt prompt = new Prompt();
+        prompt.setDuration("duration");
+        prompt.setLabel("label");
+        prompt.setWelshLabel("welshLabel");
+        prompt.setMandatory(false);
+        prompt.setType("type");
+        prompt.setSequence(2);
+        prompt.setFixedListId(randomUUID());
+        prompt.setReference("AOF");
+        prompt.setId(promptId);
+        prompt.setDurationSequence(1);
+        prompt.setCourtExtract("Y");
+        return prompt;
+    }
+
+    public static Prompt buildPromptWithMissingCourtExtract(final UUID promptId) {
         final Prompt prompt = new Prompt();
         prompt.setDuration("duration");
         prompt.setLabel("label");
@@ -134,8 +203,6 @@ public class TestTemplate {
         prompt.setDurationSequence(1);
         return prompt;
     }
-
-
 
     public static CaseDefendant getCaseDefendant() {
         return CaseDefendant.caseDefendant()

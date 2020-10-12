@@ -1,7 +1,10 @@
 package uk.gov.moj.cpp.results.command.api.accesscontrol;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 public final class RuleConstants {
 
@@ -16,12 +19,15 @@ public final class RuleConstants {
     }
 
     public static List<String> getUpdateNowsStatusActionGroups() {
-        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
+        return asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
     }
 
     public static List<String> getPoliceResultsForDefendantGroups() {
-        return Arrays.asList(GROUP_LISTING_OFFICERS,GROUP_COURT_CLERKS,GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
+        return asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
     }
 
+    public static List<String> getCreateResultsActionGroups() {
+        return ImmutableList.of(GROUP_SYSTEM_USERS);
+    }
 }
 

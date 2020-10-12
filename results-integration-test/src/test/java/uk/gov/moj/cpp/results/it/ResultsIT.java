@@ -1,8 +1,10 @@
 package uk.gov.moj.cpp.results.it;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.time.LocalDate.of;
 import static java.util.UUID.randomUUID;
+import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -12,6 +14,7 @@ import static org.junit.Assert.fail;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getInternalHearingDetailsForHearingId;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummariesByDate;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.publicSjpResultedShared;
@@ -26,6 +29,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPriva
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequested;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResultsAreCreatedBySystemAdmin;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
@@ -58,9 +62,8 @@ import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -74,9 +77,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import com.google.common.io.Resources;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -98,23 +102,8 @@ public class ResultsIT {
     private static final String FINDING_VALUE_DEFAULT = "G";
     private static final String FINDING_VALUE_NOT_GUILTY = "N";
 
-    private static JsonObject getPayload(final String path, final UUID hearingId) {
-        String request = null;
-        try {
-            request = Resources.toString(
-                    Resources.getResource(path),
-                    Charset.defaultCharset());
-            request = request.replace("HEARING_ID", hearingId.toString());
-        } catch (final Exception e) {
-            fail("Error consuming file from location " + path);
-        }
-        final JsonReader reader = Json.createReader(new StringReader(request));
-        return reader.readObject();
-    }
-
     @BeforeClass
-    public static void setUpClass() throws IOException {
-
+    public static void setUpClass() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
         stubCountryNationalities();
@@ -130,7 +119,7 @@ public class ResultsIT {
     }
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         stubSpiOutFlag(true, true);
         createMessageConsumers();
     }
@@ -640,7 +629,26 @@ public class ResultsIT {
                 withJsonPath("$.hearing.courtCentre.address.postcode", equalTo(expectedCourtCentre.getAddress().getPostcode())),
                 withJsonPath("$.sharedTime", notNullValue())
         };
-        ResultsStepDefinitions.getInternalHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher);
+        getInternalHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher);
+    }
 
+    @Test
+    public void shouldGenerateAllTheRequiredEventsWhenResultsAreCreatedByIssuingTheCommandByAnAdmin() throws JMSException {
+        whenResultsAreCreatedBySystemAdmin();
+
+        verifyPrivateEventsWithPoliceResultGenerated();
+    }
+
+    private static JsonObject getPayload(final String path, final UUID hearingId) {
+        String request = null;
+        try {
+            final InputStream inputStream = ResultsIT.class.getClassLoader().getResourceAsStream(path);
+            assertThat(inputStream, IsNull.notNullValue());
+            request = IOUtils.toString(inputStream, defaultCharset()).replace("HEARING_ID", hearingId.toString());
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = createReader(new StringReader(request));
+        return reader.readObject();
     }
 }

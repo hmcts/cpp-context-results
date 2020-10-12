@@ -1,32 +1,39 @@
 package uk.gov.moj.cpp.results.command.rules;
 
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider;
+import uk.gov.moj.cpp.accesscontrol.drools.Action;
+import uk.gov.moj.cpp.accesscontrol.test.utils.BaseDroolsAccessControlTest;
+
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.runtime.ExecutionResults;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider;
-import uk.gov.moj.cpp.accesscontrol.drools.Action;
-import uk.gov.moj.cpp.accesscontrol.test.utils.BaseDroolsAccessControlTest;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest {
 
+    private static final String GROUP_LISTING_OFFICERS = "Listing Officers";
+    private static final String GROUP_COURT_CLERKS = "Court Clerks";
+    private static final String GROUP_LEGAL_ADVISERS = "Legal Advisers";
+    private static final String GROUP_SYSTEM_USERS = "System Users";
+    private static final String GROUP_COURT_ASSOCIATE = "Court Associate";
 
     protected Action action;
+
     @Mock
     protected UserAndGroupProvider userAndGroupProvider;
-
 
     @Override
     protected Map<Class, Object> getProviderMocks() {
@@ -35,11 +42,13 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     }
 
     @Test
-    public void whenUserIsAMemberOfAllowedUserGroups_thenSuccessfullyAllowUpload() throws Exception {
-        Arrays.stream(ResultsRules.values()).forEach(ruleTest -> {
+    public void whenUserIsAMemberOfAllowedUserGroups_thenSuccessfullyAllowUpload() {
+        stream(ResultsRules.values()).forEach(ruleTest -> {
             action = createActionFor(ruleTest.actionName);
             when(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action, ruleTest.allowedUserGroups)).thenReturn(true);
+
             final ExecutionResults executionResults = executeRulesWith(action);
+
             assertSuccessfulOutcome(executionResults);
             verify(userAndGroupProvider).isMemberOfAnyOfTheSuppliedGroups(action, ruleTest.allowedUserGroups);
             verifyNoMoreInteractions(userAndGroupProvider);
@@ -47,11 +56,13 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     }
 
     @Test
-    public void whenUserIsNotAMemberOfAllowedUserGroups_thenFailUpload() throws Exception {
-        Arrays.stream(ResultsRules.values()).forEach(ruleTest -> {
+    public void whenUserIsNotAMemberOfAllowedUserGroups_thenFailUpload() {
+        stream(ResultsRules.values()).forEach(ruleTest -> {
             action = createActionFor(ruleTest.actionName);
             when(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action, ruleTest.allowedUserGroups)).thenReturn(false);
+
             final ExecutionResults executionResults = executeRulesWith(action);
+
             assertFailureOutcome(executionResults);
             verify(userAndGroupProvider).isMemberOfAnyOfTheSuppliedGroups(action, ruleTest.allowedUserGroups);
             verifyNoMoreInteractions(userAndGroupProvider);
@@ -59,7 +70,8 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     }
 
     public enum ResultsRules {
-        RESULTS_RULES("results.add-hearing-result", Arrays.asList("Legal Advisers", "Court Clerks"));
+        ADD_HEARING_RESULT_RULE("results.add-hearing-result", asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE)),
+        CREATE_RESULTS_RULE("results.api.create-results", ImmutableList.of(GROUP_SYSTEM_USERS));
 
         private final String actionName;
         private final List<String> allowedUserGroups;

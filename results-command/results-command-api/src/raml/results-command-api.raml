@@ -29,3 +29,21 @@ baseUri: http://localhost:8080/results-command-api/command/api/rest/results
         description: Invalid command
       500:
         description: Internal Server Error
+
+/create-results:
+  post:
+    description: |
+      ...
+      (mapping):
+          requestType: application/vnd.results.api.create-results+json
+          name: results.api.create-results
+      ...
+    body:
+      application/vnd.results.api.create-results+json:
+        example:
+          !include json/results.api.create-results.json
+        schema:
+          !include json/schema/results.api.create-results.json
+    responses:
+      202:
+        description: Accepted

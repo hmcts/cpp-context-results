@@ -1,0 +1,581 @@
+{
+  "session": {
+    "courtCentreWithLJA": {
+      "courtCentre": {
+        "address": {
+          "address1": "175 MALLERTON WAY",
+          "address2": "DUNSTABLE",
+          "postcode": "LN5 5TT"
+        },
+        "id": "a02df768-a722-4b0e-b851-7496e13b82d4",
+        "name": "Bexley Magistrates' Court",
+        "roomId": "1367f99a-1f37-434c-a185-351d3c594369",
+        "roomName": "Courtroom 01",
+        "welshName": "Bexley Magistrates' Court",
+        "welshRoomName": "Courtroom 01"
+      },
+      "courtHearingLocation": "B01LY",
+      "psaCode": 1234
+    },
+    "id": "SESSION_ID",
+    "sessionDays": [
+      {
+        "listedDurationMinutes": 100,
+        "listingSequence": 10,
+        "sittingDay": "2018-05-02T12:01:01.000Z"
+      },
+      {
+        "listedDurationMinutes": 100,
+        "listingSequence": 10,
+        "sittingDay": "2018-04-03T12:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 100,
+        "listingSequence": 10,
+        "sittingDay": "2018-02-02T12:00:00.000Z"
+      }
+    ],
+    "sourceType": "CC"
+  },
+  "cases": [
+    {
+      "caseId": "cccc1111-1e20-4c21-916a-81a6c90239e5",
+      "defendants": [
+        {
+          "associatedPerson": [
+            {
+              "person": {
+                "firstName": "Tina",
+                "gender": "MALE",
+                "lastName": "Smith",
+                "nationality": "USA",
+                "title": "Baroness"
+              },
+              "role": "parentGuardian"
+            }
+          ],
+          "attendanceDays": [
+            {
+              "attendanceType": "IN_PERSON",
+              "day": "2018-05-02"
+            }
+          ],
+          "defendantId": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+          "offences": [
+            {
+              "allocationDecision": {
+                "allocationDecisionDate": "2019-06-25",
+                "courtIndicatedSentence": {
+                  "courtIndicatedSentenceDescription": "EIPp0mjL05",
+                  "courtIndicatedSentenceTypeId": "8eaaa7b0-c057-4abf-8f4f-a76114c42d28"
+                },
+                "motReasonCode": "wKXq1Rh1Dg",
+                "motReasonDescription": "ZnGgcpU46q",
+                "motReasonId": "79c43855-1a6b-4315-af1e-ef854b2b3cf0",
+                "offenceId": "737b655c-20fd-4266-9fa5-382a3968e925",
+                "originatingHearingId": "c6eeab54-295b-4074-aa6d-59bb02be5950",
+                "sequenceNumber": 1
+              },
+              "arrestDate": "2020-10-12",
+              "chargeDate": "2020-10-12",
+              "convictionDate": "2020-10-12",
+              "endDate": "2020-10-12",
+              "finalDisposal": "Y",
+              "finding": "G",
+              "id": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "12e43c9a-4fe4-4a77-980e-0d4eb3800ec3",
+                  "judicialResultTypeId": "8438613c-51b6-4fe1-b543-5bfc1ea89db0",
+                  "label": "label",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "label"
+                },
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "b68284b2-c384-4f52-a39e-316c819f17ff",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "61a2a8cc-3a7a-4585-a716-e4c4ec8abd12",
+                      "label": "label",
+                      "totalPenaltyPoints": 10,
+                      "value": "value"
+                    }
+                  ],
+                  "judicialResultTypeId": "b62488b6-cecc-45ac-916b-d2b06c7884ad",
+                  "label": "hearingLabel",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "welshLabel"
+                }
+              ],
+              "modeOfTrial": "1010",
+              "offenceCode": "offenceCode",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 65,
+              "startDate": "2020-10-12",
+              "wording": "CShqgF0sQv"
+            }
+          ],
+          "pncId": "pncId",
+          "prosecutorReference": "0800PP0100000000001H",
+          "individualDefendant": {
+            "bailStatus": {
+              "code": "Bail status code",
+              "description": "Bail status description",
+              "id": "2c29685d-3505-4d11-b568-5970bbf13db6"
+            },
+            "person": {
+              "firstName": "John",
+              "gender": "NOT_KNOWN",
+              "lastName": "Smith",
+              "nationality": "USA",
+              "title": "Baroness"
+            },
+            "presentAtHearing": "Y",
+            "reasonForBailConditionsOrCustody": "reason"
+          }
+        },
+        {
+          "associatedPerson": [
+            {
+              "person": {
+                "firstName": "Tina",
+                "gender": "MALE",
+                "lastName": "Smith",
+                "nationality": "USA",
+                "title": "Baroness"
+              },
+              "role": "parentGuardian"
+            }
+          ],
+          "attendanceDays": [
+            {
+              "attendanceType": "NOT_PRESENT",
+              "day": "2019-01-02"
+            }
+          ],
+          "defendantId": "dddd2222-1e20-4c21-916a-81a6c90239e5",
+          "offences": [
+            {
+              "allocationDecision": {
+                "allocationDecisionDate": "2017-11-02",
+                "courtIndicatedSentence": {
+                  "courtIndicatedSentenceDescription": "ZSePYs2FJf",
+                  "courtIndicatedSentenceTypeId": "2fc82a41-0474-4a73-b78d-d17a11a0f350"
+                },
+                "motReasonCode": "76xgsQTKFf",
+                "motReasonDescription": "k5DnKmQRDw",
+                "motReasonId": "86d27498-f0bf-4d8b-9d3f-f90bb0ed899d",
+                "offenceId": "a0c2be7d-461f-46cd-8a98-e79f3411f3b4",
+                "originatingHearingId": "a91be336-997b-4659-adca-683165043198",
+                "sequenceNumber": 1
+              },
+              "arrestDate": "2020-10-12",
+              "chargeDate": "2020-10-12",
+              "convictionDate": "2020-10-12",
+              "endDate": "2020-10-12",
+              "finalDisposal": "Y",
+              "finding": "G",
+              "id": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "12e43c9a-4fe4-4a77-980e-0d4eb3800ec3",
+                  "judicialResultTypeId": "8438613c-51b6-4fe1-b543-5bfc1ea89db0",
+                  "label": "label",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "label"
+                },
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "b68284b2-c384-4f52-a39e-316c819f17ff",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "61a2a8cc-3a7a-4585-a716-e4c4ec8abd12",
+                      "label": "label",
+                      "totalPenaltyPoints": 10,
+                      "value": "value"
+                    }
+                  ],
+                  "judicialResultTypeId": "b62488b6-cecc-45ac-916b-d2b06c7884ad",
+                  "label": "hearingLabel",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "welshLabel"
+                }
+              ],
+              "modeOfTrial": "1010",
+              "offenceCode": "offenceCode",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 65,
+              "startDate": "2020-10-12",
+              "wording": "PjBocN9Hao"
+            }
+          ],
+          "pncId": "pncId",
+          "prosecutorReference": "DEFAULT_VALUE",
+          "individualDefendant": {
+            "bailStatus": {
+              "code": "Bail status code",
+              "description": "Bail status description",
+              "id": "e1439bd2-ef05-4675-9799-613e9930e5e4"
+            },
+            "person": {
+              "firstName": "John",
+              "gender": "NOT_KNOWN",
+              "lastName": "Smith",
+              "nationality": "USA",
+              "title": "Baroness"
+            },
+            "presentAtHearing": "N",
+            "reasonForBailConditionsOrCustody": "reason"
+          }
+        }
+      ],
+      "prosecutionAuthorityCode": "m1Khp55mUN",
+      "urn": "authorityReference"
+    },
+    {
+      "caseId": "cccc2222-1e20-4c21-916a-81a6c90239e5",
+      "defendants": [
+        {
+          "associatedPerson": [
+            {
+              "person": {
+                "firstName": "Tina",
+                "gender": "MALE",
+                "lastName": "Smith",
+                "nationality": "USA",
+                "title": "Baroness"
+              },
+              "role": "parentGuardian"
+            }
+          ],
+          "attendanceDays": [
+            {
+              "attendanceType": "NOT_PRESENT",
+              "day": "2018-05-02"
+            }
+          ],
+          "defendantId": "dddd3333-1e20-4c21-916a-81a6c90239e5",
+          "offences": [
+            {
+              "allocationDecision": {
+                "allocationDecisionDate": "2019-07-27",
+                "courtIndicatedSentence": {
+                  "courtIndicatedSentenceDescription": "YNz6JWmQPb",
+                  "courtIndicatedSentenceTypeId": "8a8a4916-ff85-48a6-9a81-9967c913ffca"
+                },
+                "motReasonCode": "xLdxor1T43",
+                "motReasonDescription": "WpXt0rdv6y",
+                "motReasonId": "e659bdb2-4f7f-46bd-96c3-37c10ec1d7f5",
+                "offenceId": "e67be70c-d738-4dae-bfb9-bb44ac4d5800",
+                "originatingHearingId": "392c8a4d-fb0c-4228-855c-2eb88e188d9a",
+                "sequenceNumber": 1
+              },
+              "arrestDate": "2020-10-12",
+              "chargeDate": "2020-10-12",
+              "convictionDate": "2020-10-12",
+              "endDate": "2020-10-12",
+              "finalDisposal": "Y",
+              "finding": "G",
+              "id": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "c6a1de74-5f91-48d2-ba96-9f7d469a3641",
+                  "judicialResultTypeId": "615d4f63-b1f5-4a8d-80f5-586945f47d91",
+                  "label": "label",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "label"
+                },
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "b68284b2-c384-4f52-a39e-316c819f17ff",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "61a2a8cc-3a7a-4585-a716-e4c4ec8abd12",
+                      "label": "label",
+                      "totalPenaltyPoints": 10,
+                      "value": "value"
+                    }
+                  ],
+                  "judicialResultTypeId": "b62488b6-cecc-45ac-916b-d2b06c7884ad",
+                  "label": "hearingLabel",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "welshLabel"
+                }
+              ],
+              "modeOfTrial": "1010",
+              "offenceCode": "offenceCode",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 65,
+              "startDate": "2020-10-12",
+              "wording": "iXqP2PKoZb"
+            }
+          ],
+          "pncId": "pncId",
+          "prosecutorReference": "DEFAULT_VALUE",
+          "individualDefendant": {
+            "bailStatus": {
+              "code": "Bail status code",
+              "description": "Bail status description",
+              "id": "40bf7c5c-312a-4279-a3e0-06a0b799938d"
+            },
+            "person": {
+              "firstName": "John",
+              "gender": "NOT_KNOWN",
+              "lastName": "Smith",
+              "nationality": "USA",
+              "title": "Baroness"
+            },
+            "presentAtHearing": "A",
+            "reasonForBailConditionsOrCustody": "reason"
+          }
+        },
+        {
+          "associatedPerson": [
+            {
+              "person": {
+                "firstName": "Tina",
+                "gender": "MALE",
+                "lastName": "Smith",
+                "nationality": "USA",
+                "title": "Baroness"
+              },
+              "role": "parentGuardian"
+            }
+          ],
+          "attendanceDays": [
+            {
+              "attendanceType": "IN_PERSON",
+              "day": "2018-05-02"
+            }
+          ],
+          "defendantId": "dddd4444-1e20-4c21-916a-81a6c90239e5",
+          "offences": [
+            {
+              "allocationDecision": {
+                "allocationDecisionDate": "2019-12-17",
+                "courtIndicatedSentence": {
+                  "courtIndicatedSentenceDescription": "Jozh6oXfT0",
+                  "courtIndicatedSentenceTypeId": "1de7da84-0bfb-412e-86f5-52890620d92b"
+                },
+                "motReasonCode": "o8Qy7BEpQx",
+                "motReasonDescription": "tnlOnoKtlk",
+                "motReasonId": "d99074f9-d7ee-4f92-8886-d13973d8b52e",
+                "offenceId": "84cbc0e5-c874-4233-b5d8-536a2ac6a7cb",
+                "originatingHearingId": "7ea62ece-b672-469d-bc8f-b7880bfb8a5b",
+                "sequenceNumber": 1
+              },
+              "arrestDate": "2020-10-12",
+              "chargeDate": "2020-10-12",
+              "convictionDate": "2020-10-12",
+              "endDate": "2020-10-12",
+              "finalDisposal": "Y",
+              "finding": "G",
+              "id": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "c6a1de74-5f91-48d2-ba96-9f7d469a3641",
+                  "judicialResultTypeId": "615d4f63-b1f5-4a8d-80f5-586945f47d91",
+                  "label": "label",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "label"
+                },
+                {
+                  "alwaysPublished": false,
+                  "category": "FINAL",
+                  "cjsCode": "cjsCode",
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": false,
+                  "isConvictedResult": false,
+                  "isFinancialResult": false,
+                  "judicialResultId": "b68284b2-c384-4f52-a39e-316c819f17ff",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "61a2a8cc-3a7a-4585-a716-e4c4ec8abd12",
+                      "label": "label",
+                      "totalPenaltyPoints": 10,
+                      "value": "value"
+                    }
+                  ],
+                  "judicialResultTypeId": "b62488b6-cecc-45ac-916b-d2b06c7884ad",
+                  "label": "hearingLabel",
+                  "lifeDuration": false,
+                  "orderedDate": "2020-10-12",
+                  "orderedHearingId": "3e0c07a5-594b-42d9-b958-b67e5ea0737d",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 0,
+                  "resultText": "resultText",
+                  "rollUpPrompts": false,
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "welshLabel": "welshLabel"
+                }
+              ],
+              "modeOfTrial": "1010",
+              "offenceCode": "offenceCode",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 65,
+              "startDate": "2020-10-12",
+              "wording": "UvfzG8ekKA"
+            }
+          ],
+          "pncId": "pncId",
+          "prosecutorReference": "0800PP0100000000001H",
+          "individualDefendant": {
+            "bailStatus": {
+              "code": "Bail status code",
+              "description": "Bail status description",
+              "id": "3c33995e-e674-42e3-a565-6a403e35d1da"
+            },
+            "person": {
+              "firstName": "John",
+              "gender": "NOT_KNOWN",
+              "lastName": "Smith",
+              "nationality": "USA",
+              "title": "Baroness"
+            },
+            "presentAtHearing": "Y",
+            "reasonForBailConditionsOrCustody": "reason"
+          }
+        }
+      ],
+      "prosecutionAuthorityCode": "VcILMjrgCm",
+      "urn": "qyaFADZGhF"
+    }
+  ],
+  "jurisdictionType": "MAGISTRATES"
+}

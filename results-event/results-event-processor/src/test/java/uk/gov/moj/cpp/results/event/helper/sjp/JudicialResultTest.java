@@ -14,6 +14,7 @@ import static uk.gov.moj.cpp.results.event.helper.TestTemplate.SESSION_ID;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinition;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinitionForPrimaryDuration;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinitionWithEmptyPrompts;
+import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinitionWithMissingMandatoryAttributesForOldDefinition;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.getBaseResults;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.getBaseResultsWithNoPrompts;
 
@@ -40,22 +41,22 @@ public class JudicialResultTest {
     @Test
     public void testBuildJudicialResults() {
 
-        when(referenceCache.getResultDefinitionById(any(),any(), any())).thenReturn(buildResultDefinition());
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
 
         List<BaseResult> baseResultList = getBaseResults();
 
-        List<uk.gov.justice.core.courts.JudicialResult> judicialResultList =  new JudicialResult(referenceCache).buildJudicialResults(baseResultList,DATE_AND_TIME_OF_SESSION,SESSION_ID);
-        assertResult(baseResultList,judicialResultList);
+        List<uk.gov.justice.core.courts.JudicialResult> judicialResultList = new JudicialResult(referenceCache).buildJudicialResults(baseResultList, DATE_AND_TIME_OF_SESSION, SESSION_ID);
+        assertResult(baseResultList, judicialResultList);
     }
 
     @Test
     public void testWhenBaseResultPromptsAreEmptyThenJudicialResultPromptShouldBeNull() {
 
-        when(referenceCache.getResultDefinitionById(any(),any(), any())).thenReturn(buildResultDefinitionWithEmptyPrompts());
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinitionWithEmptyPrompts());
 
         final List<BaseResult> baseResultList = getBaseResultsWithNoPrompts();
 
-        final List<uk.gov.justice.core.courts.JudicialResult> judicialResultList =  new JudicialResult(referenceCache).buildJudicialResults(baseResultList,DATE_AND_TIME_OF_SESSION,SESSION_ID);
+        final List<uk.gov.justice.core.courts.JudicialResult> judicialResultList = new JudicialResult(referenceCache).buildJudicialResults(baseResultList, DATE_AND_TIME_OF_SESSION, SESSION_ID);
 
         final Optional<uk.gov.justice.core.courts.JudicialResult> jrPrompt = judicialResultList.stream().findFirst();
 
@@ -66,29 +67,38 @@ public class JudicialResultTest {
     @Test
     public void testPrimaryDurationInJudicialResults() {
 
-        when(referenceCache.getResultDefinitionById(any(),any(), any())).thenReturn(buildResultDefinitionForPrimaryDuration(false));
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinitionForPrimaryDuration(false));
 
         List<BaseResult> baseResultList = getBaseResults();
 
-        List<uk.gov.justice.core.courts.JudicialResult> judicialResultList =  new JudicialResult(referenceCache).buildJudicialResults(baseResultList,DATE_AND_TIME_OF_SESSION,SESSION_ID);
-        assertResult(baseResultList,judicialResultList);
+        List<uk.gov.justice.core.courts.JudicialResult> judicialResultList = new JudicialResult(referenceCache).buildJudicialResults(baseResultList, DATE_AND_TIME_OF_SESSION, SESSION_ID);
+        assertResult(baseResultList, judicialResultList);
     }
 
     @Test
     public void testPrimaryDurationUnitAndValueInJudicialResult() {
 
-        when(referenceCache.getResultDefinitionById(any(),any(), any())).thenReturn(buildResultDefinitionForPrimaryDuration(true));
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinitionForPrimaryDuration(true));
 
         List<BaseResult> baseResultList = getBaseResults();
 
-        List<uk.gov.justice.core.courts.JudicialResult> judicialResultList =  new JudicialResult(referenceCache).buildJudicialResults(baseResultList,DATE_AND_TIME_OF_SESSION,SESSION_ID);
-        assertJudicialPromptsWithPrimaryDuration(baseResultList,judicialResultList);
+        List<uk.gov.justice.core.courts.JudicialResult> judicialResultList = new JudicialResult(referenceCache).buildJudicialResults(baseResultList, DATE_AND_TIME_OF_SESSION, SESSION_ID);
+        assertJudicialPromptsWithPrimaryDuration(baseResultList, judicialResultList);
     }
 
+    @Test
+    public void shouldApplyDefaultValuesWhenMandatoryAttributesAreMissingOnOldResultDefinition() {
+        when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinitionWithMissingMandatoryAttributesForOldDefinition());
+        final List<BaseResult> baseResultList = getBaseResults();
+
+        final List<uk.gov.justice.core.courts.JudicialResult> judicialResultList = new JudicialResult(referenceCache).buildJudicialResults(baseResultList, DATE_AND_TIME_OF_SESSION, SESSION_ID);
+
+        assertResultHasDefaultValuesForMissingMandatoryAttributes(baseResultList, judicialResultList);
+    }
 
     private void assertResult(List<BaseResult> results, List<uk.gov.justice.core.courts.JudicialResult> judicialResults) {
         assertThat(results.size(), is(judicialResults.size()));
-        judicialResults.forEach( judicialResult -> {
+        judicialResults.forEach(judicialResult -> {
             final Optional<BaseResult> baseResultOptional = results.stream().filter(r -> r.getId().equals(judicialResult.getJudicialResultId())).findFirst();
             assertThat(baseResultOptional.isPresent(), is(true));
             assertThat(judicialResult.getCjsCode(), is("cjsCode"));
@@ -102,7 +112,7 @@ public class JudicialResultTest {
             assertThat(judicialResult.getRank(), is(valueOf(1)));
             assertThat(judicialResult.getUsergroups(), is(of("1", "2")));
             assertThat(judicialResult.getWelshLabel(), is("welshLabel"));
-            assertThat(judicialResult.getResultText(), is("label"+EOL+"label +10.00"+EOL+"label +10.00"+EOL));
+            assertThat(judicialResult.getResultText(), is("label" + EOL + "label +10.00" + EOL + "label +10.00" + EOL));
             assertThat(judicialResult.getTerminatesOffenceProceedings(), is(false));
             assertThat(judicialResult.getLifeDuration(), is(false));
             assertThat(judicialResult.getPublishedAsAPrompt(), is(false));
@@ -111,13 +121,22 @@ public class JudicialResultTest {
             assertThat(judicialResult.getUrgent(), is(false));
             assertThat(judicialResult.getD20(), is(false));
         });
-
     }
 
+    private void assertResultHasDefaultValuesForMissingMandatoryAttributes(final List<BaseResult> results, final List<uk.gov.justice.core.courts.JudicialResult> judicialResults) {
+        assertThat(results.size(), is(judicialResults.size()));
+        judicialResults.forEach(judicialResult -> {
+            assertThat(judicialResult.getTerminatesOffenceProceedings(), is(false));
+            assertThat(judicialResult.getLifeDuration(), is(false));
+            assertThat(judicialResult.getPublishedAsAPrompt(), is(false));
+            assertThat(judicialResult.getExcludedFromResults(), is(false));
+            assertThat(judicialResult.getAlwaysPublished(), is(false));
+        });
+    }
 
     private void assertJudicialPromptsWithPrimaryDuration(List<BaseResult> results, List<uk.gov.justice.core.courts.JudicialResult> judicialResults) {
         assertThat(results.size(), is(judicialResults.size()));
-        judicialResults.forEach( judicialResult -> {
+        judicialResults.forEach(judicialResult -> {
             final Optional<BaseResult> baseResultOptional = results.stream().filter(r -> r.getId().equals(judicialResult.getJudicialResultId())).findFirst();
             assertThat(baseResultOptional.isPresent(), is(true));
             assertThat(judicialResult.getCjsCode(), is("cjsCode"));
@@ -133,7 +152,7 @@ public class JudicialResultTest {
             assertThat(judicialResult.getRank(), is(valueOf(1)));
             assertThat(judicialResult.getUsergroups(), is(of("1", "2")));
             assertThat(judicialResult.getWelshLabel(), is("welshLabel"));
-            assertThat(judicialResult.getResultText(), is("label"+EOL+"label +10.00"+EOL+"label +10.00"+EOL));
+            assertThat(judicialResult.getResultText(), is("label" + EOL + "label +10.00" + EOL + "label +10.00" + EOL));
             assertThat(judicialResult.getTerminatesOffenceProceedings(), is(false));
             assertThat(judicialResult.getLifeDuration(), is(true));
             assertThat(judicialResult.getPublishedAsAPrompt(), is(false));
@@ -142,6 +161,5 @@ public class JudicialResultTest {
             assertThat(judicialResult.getUrgent(), is(false));
             assertThat(judicialResult.getD20(), is(false));
         });
-
     }
 }

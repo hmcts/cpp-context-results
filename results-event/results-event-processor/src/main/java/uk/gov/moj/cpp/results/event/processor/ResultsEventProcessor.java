@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.event.processor;
 import static java.util.Comparator.comparing;
 import static java.util.UUID.fromString;
 import static javax.json.Json.createArrayBuilder;
+import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
@@ -43,7 +44,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -113,7 +113,7 @@ public class ResultsEventProcessor {
 
         final JsonObject transformedHearing = hearingHelper.transformedHearing(internalPayload.getJsonObject(HEARING));
 
-        final JsonObject externalPayload = Json.createObjectBuilder()
+        final JsonObject externalPayload = createObjectBuilder()
                 .add(HEARING, transformedHearing)
                 .add(SHARED_TIME, sharedTime)
                 .build();
@@ -160,8 +160,8 @@ public class ResultsEventProcessor {
             final BaseStructure baseStructure = new BaseStructureConverter(referenceDataService).convert(publicHearingResulted);
             final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
             final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
-            caseDetails.stream().forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
-            final JsonObjectBuilder resultJsonPayload = Json.createObjectBuilder();
+            caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
+            final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
             baseStructure.setSourceType("CC");
             resultJsonPayload.add("session", objectToJsonObjectConverter.convert(baseStructure));
             resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
@@ -202,8 +202,8 @@ public class ResultsEventProcessor {
         final BaseStructure baseStructure = new BaseSessionStructureConverterForSjp().convert(publicSjpCaseResulted);
         final List<CaseDetails> caseDetails = new CaseDetailsConverterForSjp(referenceCache).convert(publicSjpCaseResulted);
         final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
-        caseDetails.stream().forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
-        final JsonObjectBuilder resultJsonPayload = Json.createObjectBuilder();
+        caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
+        final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
         baseStructure.setSourceType("SJP");
         resultJsonPayload.add("session", objectToJsonObjectConverter.convert(baseStructure));
         resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
@@ -221,29 +221,21 @@ public class ResultsEventProcessor {
             final JsonArray hearingIds = payload.getJsonArray(HEARING_IDS);
             if (payload.containsKey(PROSECUTION_CASE_ID)) {
                 final String caseId = payload.getString(PROSECUTION_CASE_ID);
-                final JsonObject caseEjectedCommandPayload = Json.createObjectBuilder()
+                final JsonObject caseEjectedCommandPayload = createObjectBuilder()
                         .add(HEARING_IDS, hearingIds)
                         .add(CASE_ID, caseId)
                         .build();
 
-                final Envelope<JsonObject> jsonObjectEnvelope = envelop(caseEjectedCommandPayload)
-                        .withName(RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED)
-                        .withMetadataFrom(envelope);
-                sender.sendAsAdmin(jsonObjectEnvelope);
-
+                raiseHandlerEvent(envelope, caseEjectedCommandPayload);
             } else {
                 final String applicationId = payload.getString(APPLICATION_ID);
-                final JsonObject applicationEjectedCommandPayload = Json.createObjectBuilder()
+                final JsonObject applicationEjectedCommandPayload = createObjectBuilder()
                         .add(HEARING_IDS, hearingIds)
                         .add(APPLICATION_ID, applicationId)
                         .build();
 
-                final Envelope<JsonObject> jsonObjectEnvelope = envelop(applicationEjectedCommandPayload)
-                        .withName(RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED)
-                        .withMetadataFrom(envelope);
-                sender.sendAsAdmin(jsonObjectEnvelope);
+                raiseHandlerEvent(envelope, applicationEjectedCommandPayload);
             }
-
         } else {
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("The Payload has been ignored as it does not contain hearing ids : {}", envelope.toObfuscatedDebugString());
@@ -258,11 +250,17 @@ public class ResultsEventProcessor {
         notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
     }
 
-
     private Notification buildNotification(final PoliceNotificationRequested policeNotificationRequested) {
-        final Map<String, String> personalisationProperties = new HashMap();
+        final Map<String, String> personalisationProperties = new HashMap<>();
         personalisationProperties.put(URN, policeNotificationRequested.getUrn());
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
         return new Notification(policeNotificationRequested.getNotificationId(), fromString(applicationParameters.getEmailTemplateId()), policeNotificationRequested.getPoliceEmailAddress(), personalisationProperties);
+    }
+
+    private void raiseHandlerEvent(final JsonEnvelope envelope, final JsonObject commandPayload) {
+        final Envelope<JsonObject> jsonObjectEnvelope = envelop(commandPayload)
+                .withName(RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED)
+                .withMetadataFrom(envelope);
+        sender.sendAsAdmin(jsonObjectEnvelope);
     }
 }

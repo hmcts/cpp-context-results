@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.event.helper.sjp;
 
 import static java.math.BigDecimal.valueOf;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
 import static junit.framework.TestCase.assertNull;
 import static org.hamcrest.core.Is.is;
@@ -9,6 +10,7 @@ import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildListOfPrompt
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildPromptsWithPromptIdAndValue;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinition;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinitionWithId;
+import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefinitionWithMissingCourtExtractFromPrompts;
 
 import uk.gov.justice.sjp.results.Prompts;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
@@ -25,17 +27,17 @@ public class JudicialResultPromptTest {
     @Test
     public void testBuildJudicialResultPrompt() {
 
-       final  ResultDefinition resultDefinition = buildResultDefinition();
-       final  List<Prompts> promptsList = buildListOfPrompt();
+        final ResultDefinition resultDefinition = buildResultDefinition();
+        final List<Prompts> promptsList = buildListOfPrompt();
 
         final List<uk.gov.justice.core.courts.JudicialResultPrompt> judicialResultPromptList = new JudicialResultPrompt().buildJudicialResultPrompt(resultDefinition, promptsList);
         final uk.gov.justice.core.courts.JudicialResultPrompt judicialResultPrompt = judicialResultPromptList.get(0);
 
-        assertJudicialResultPrompt(resultDefinition, promptsList, judicialResultPrompt, resultDefinition.getPrompts().get(0));
+        assertJudicialResultPrompt(resultDefinition, judicialResultPrompt, resultDefinition.getPrompts().get(0));
     }
 
     @Test
-    public void testPenaltyPointsInJudicialResultPrompt(){
+    public void testPenaltyPointsInJudicialResultPrompt() {
 
         final UUID id = randomUUID();
         final String value = "108.00";
@@ -47,13 +49,12 @@ public class JudicialResultPromptTest {
 
         final List<uk.gov.justice.core.courts.JudicialResultPrompt> judicialResultPromptList = new JudicialResultPrompt().buildJudicialResultPrompt(resultDefinition, promptsList);
         final uk.gov.justice.core.courts.JudicialResultPrompt judicialResultPrompt = judicialResultPromptList.get(0);
-        assertThat(judicialResultPrompt.getTotalPenaltyPoints().toString() , is(value) ) ;
+        assertThat(judicialResultPrompt.getTotalPenaltyPoints().toString(), is(value));
 
     }
 
-
     @Test
-    public void testPenaltyPointsIsNullInJudicialResultPrompt(){
+    public void testPenaltyPointsIsNullInJudicialResultPrompt() {
 
         final UUID id = randomUUID();
         final String value = "108.00";
@@ -65,13 +66,24 @@ public class JudicialResultPromptTest {
 
         final List<uk.gov.justice.core.courts.JudicialResultPrompt> judicialResultPromptList = new JudicialResultPrompt().buildJudicialResultPrompt(resultDefinition, promptsList);
         final uk.gov.justice.core.courts.JudicialResultPrompt judicialResultPrompt = judicialResultPromptList.get(0);
-        assertNull(judicialResultPrompt.getTotalPenaltyPoints()) ;
+        assertNull(judicialResultPrompt.getTotalPenaltyPoints());
 
     }
 
-    private void assertJudicialResultPrompt(final ResultDefinition resultDefinition, final List<Prompts> promptsList, final uk.gov.justice.core.courts.JudicialResultPrompt judicialResultPrompt, final Prompt prompt) {
+    @Test
+    public void shouldApplyDefaultValueWhenMandatoryAttributeCourtExtractIsMissingOnOldResultPrompt() {
+        final ResultDefinition resultDefinition = buildResultDefinitionWithMissingCourtExtractFromPrompts();
+        final List<Prompts> promptsList = buildListOfPrompt();
+
+        final List<uk.gov.justice.core.courts.JudicialResultPrompt> judicialResultPromptList = new JudicialResultPrompt().buildJudicialResultPrompt(resultDefinition, promptsList);
+
+        final uk.gov.justice.core.courts.JudicialResultPrompt judicialResultPrompt = judicialResultPromptList.get(0);
+        assertJudicialResultPrompt(resultDefinition, judicialResultPrompt, resultDefinition.getPrompts().get(0));
+    }
+
+    private void assertJudicialResultPrompt(final ResultDefinition resultDefinition, final uk.gov.justice.core.courts.JudicialResultPrompt judicialResultPrompt, final Prompt prompt) {
         assertThat(judicialResultPrompt.getLabel(), is(resultDefinition.getLabel()));
-        assertThat(judicialResultPrompt.getCourtExtract(), is(prompt.getCourtExtract()));
+        assertThat(judicialResultPrompt.getCourtExtract(), is(ofNullable(prompt.getCourtExtract()).orElse("N")));
         assertThat(judicialResultPrompt.getPromptReference(), is(prompt.getReference()));
         assertThat(judicialResultPrompt.getPromptSequence(), is(valueOf(prompt.getSequence())));
         assertThat(judicialResultPrompt.getValue(), is("+10.00"));
@@ -80,7 +92,5 @@ public class JudicialResultPromptTest {
         assertThat(judicialResultPrompt.getUsergroups(), is(prompt.getUserGroups()));
         assertThat(judicialResultPrompt.getDurationSequence(), is(prompt.getDurationSequence()));
     }
-
-
 }
 

@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.it.steps;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
+import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.hamcrest.CoreMatchers.not;
@@ -17,8 +18,13 @@ import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.
 import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
+import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
+import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
+import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.createResultsCommand;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.RETRIEVE_TIMEOUT;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupAsSystemUser;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -29,7 +35,6 @@ import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.it.utils.WireMockStubUtils;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.test.matchers.MapJsonObjectToTypeMatcher;
 
@@ -55,9 +60,10 @@ import org.json.JSONObject;
 
 public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
+    private static final String CREATE_RESULTS_TEMPLATE_PAYLOAD = "json/results.api.create-results.json";
+
     private static final String CONTENT_TYPE_HEARING_DETAILS = "application/vnd.results.hearing-details+json";
     private static final String CONTENT_TYPE_HEARING_INFORMATION_DETAILS = "application/vnd.results.hearing-information-details+json";
-    private static final String CONTENT_TYPE_RESULTS_DETAILS = "application/vnd.results.results-details+json";
     private static final String CONTENT_TYPE_HEARING_DETAILS_INTERNAL = "application/vnd.results.hearing-details-internal+json";
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
     private static final String RESULTS_EVENT_SESSION_ADDED_EVENT = "results.event.session-added-event";
@@ -69,7 +75,6 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String RESULTS_EVENT_POLICE_RESULT_GENERATED = "results.event.police-result-generated";
     private static final String RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED = "results.event.police-notification-requested";
     private static final String RESULTS_EVENT_POLICE_NOTIFICATION_FAILED = "results.event.email-notification-failed";
-
 
     private static final String PUBLIC_EVENT_HEARING_RESULTED = "public.hearing.resulted";
     private static final String PUBLIC_EVENT_SJP_RESULTED = "public.sjp.case-resulted";
@@ -101,7 +106,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void whenPrisonAdminTriesToViewResultsForThePerson(final UUID userId) {
-        WireMockStubUtils.setupUserAsPrisonAdminGroup(userId);
+        setupUserAsPrisonAdminGroup(userId);
         setLoggedInUser(userId);
     }
 
@@ -172,7 +177,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
         poll(requestParams(hearingResultDetailsUrl, CONTENT_TYPE_HEARING_INFORMATION_DETAILS).withHeader(USER_ID, getLoggedInUser()))
                 .until(status().is(OK),
-                        payload().isJson(CoreMatchers.allOf(matchers)
+                        payload().isJson(allOf(matchers)
                         ));
 
     }
@@ -279,10 +284,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(defendantAdded, notNullValue());
 
-        if(isSuccessExpected){
+        if (isSuccessExpected) {
             final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
             assertThat(policeNotificationRequestedGenerated, notNullValue());
-        }else{
+        } else {
             final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
             assertThat(policeNotificationFailedGenerated, notNullValue());
         }
@@ -322,10 +327,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     public static void verifyInPublicPoliceResultGeneratedMessage(final String expectedFindingValue) {
 
-        final String eventStr=publicMessageConsumer.retrieveMessage().orElse(null);
-        assertThat(eventStr,notNullValue());
+        final String eventStr = publicMessageConsumer.retrieveMessage().orElse(null);
+        assertThat(eventStr, notNullValue());
 
-        final JSONObject event=new JSONObject(eventStr);
+        final JSONObject event = new JSONObject(eventStr);
         assertThat(event.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("finding"), is(expectedFindingValue));
 
     }
@@ -356,9 +361,13 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         poll(requestParams(url, CONTENT_TYPE_HEARING_DETAILS_INTERNAL).withHeader(USER_ID, getLoggedInUser())).until(
                 print(),
                 status().is(OK),
-                payload().isJson(CoreMatchers.allOf(matchers))
+                payload().isJson(allOf(matchers))
         );
 
     }
 
+    public static void whenResultsAreCreatedBySystemAdmin() {
+        setupAsSystemUser(getUserId());
+        createResultsCommand(getPayload(CREATE_RESULTS_TEMPLATE_PAYLOAD).replace("SESSION_ID", randomUUID().toString()));
+    }
 }

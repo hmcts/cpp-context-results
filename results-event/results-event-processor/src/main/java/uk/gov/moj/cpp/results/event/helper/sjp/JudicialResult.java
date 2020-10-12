@@ -1,9 +1,10 @@
 package uk.gov.moj.cpp.results.event.helper.sjp;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
@@ -49,43 +50,42 @@ public class JudicialResult {
                             }
                             final List<uk.gov.justice.core.courts.JudicialResultPrompt> judicialResultPrompts = new JudicialResultPrompt().buildJudicialResultPrompt(resultDefinition, baseResult.getPrompts());
 
-                            Optional<JudicialResultPromptDurationElement> judicialResultPromptDurationElement = empty();
-                            judicialResultPromptDurationElement = new JudicialResultPromptDurationHelper().populate(judicialResultPrompts, dateAndTimeOfSession, resultDefinition);
+                            final Optional<JudicialResultPromptDurationElement> judicialResultPromptDurationElement = new JudicialResultPromptDurationHelper().populate(judicialResultPrompts, dateAndTimeOfSession, resultDefinition);
 
                             final uk.gov.justice.core.courts.JudicialResult.Builder builder = uk.gov.justice.core.courts.JudicialResult.judicialResult();
 
-                            builder
-                                    .withJudicialResultId(baseResult.getId())
-                                    .withJudicialResultTypeId(resultDefinition.getId())
-                                    .withCategory(getCategory(resultDefinition))
-                                    .withCjsCode(resultDefinition.getCjsCode())
-                                    .withIsAdjournmentResult(resultDefinition.isAdjournment())
-                                    .withIsAvailableForCourtExtract(resultDefinition.getIsAvailableForCourtExtract())
-                                    .withIsConvictedResult(resultDefinition.isConvicted())
-                                    .withDurationElement(judicialResultPromptDurationElement.isPresent() ? judicialResultPromptDurationElement.get() : null)
-                                    .withIsFinancialResult(resultDefinition.isFinancial())
-                                    .withLabel(resultDefinition.getLabel())
-                                    .withOrderedHearingId(sessionId)
-                                    .withOrderedDate(dateAndTimeOfSession.toLocalDate())
-                                    .withRank(isNull(resultDefinition.getRank()) ? BigDecimal.ZERO : new BigDecimal(resultDefinition.getRank()))
-                                    .withUsergroups(resultDefinition.getUserGroups())
-                                    .withWelshLabel(resultDefinition.getWelshLabel())
-                                    .withResultText(new ResultTextHelper().getResultText(resultDefinition, judicialResultPrompts))
-                                    .withTerminatesOffenceProceedings(resultDefinition.getTerminatesOffenceProceedings())
-                                    .withLifeDuration(resultDefinition.getLifeDuration())
-                                    .withPublishedAsAPrompt(resultDefinition.getPublishedAsAPrompt())
-                                    .withExcludedFromResults(resultDefinition.getExcludedFromResults())
-                                    .withAlwaysPublished(resultDefinition.getAlwaysPublished())
-                                    .withUrgent(resultDefinition.getUrgent())
-                                    .withD20(resultDefinition.getD20())
-                                    .withPublishedForNows(isNull(resultDefinition.getPublishedForNows()) ? Boolean.FALSE : resultDefinition.getPublishedForNows())
-                                    .withRollUpPrompts(isNull(resultDefinition.getRollUpPrompts()) ? Boolean.FALSE : resultDefinition.getRollUpPrompts());
+                    builder
+                            .withJudicialResultId(baseResult.getId())
+                            .withJudicialResultTypeId(resultDefinition.getId())
+                            .withCategory(getCategory(resultDefinition))
+                            .withCjsCode(resultDefinition.getCjsCode())
+                            .withIsAdjournmentResult(resultDefinition.isAdjournment())
+                            .withIsAvailableForCourtExtract(resultDefinition.getIsAvailableForCourtExtract())
+                            .withIsConvictedResult(resultDefinition.isConvicted())
+                            .withDurationElement(judicialResultPromptDurationElement.orElse(null))
+                            .withIsFinancialResult(resultDefinition.isFinancial())
+                            .withLabel(resultDefinition.getLabel())
+                            .withOrderedHearingId(sessionId)
+                            .withOrderedDate(dateAndTimeOfSession.toLocalDate())
+                            .withRank(isNull(resultDefinition.getRank()) ? BigDecimal.ZERO : new BigDecimal(resultDefinition.getRank()))
+                            .withUsergroups(resultDefinition.getUserGroups())
+                            .withWelshLabel(resultDefinition.getWelshLabel())
+                            .withResultText(new ResultTextHelper().getResultText(resultDefinition, judicialResultPrompts))
+                            .withTerminatesOffenceProceedings(ofNullable(resultDefinition.getTerminatesOffenceProceedings()).orElse(FALSE))
+                            .withLifeDuration(ofNullable(resultDefinition.getLifeDuration()).orElse(FALSE))
+                            .withPublishedAsAPrompt(ofNullable(resultDefinition.getPublishedAsAPrompt()).orElse(FALSE))
+                            .withExcludedFromResults(ofNullable(resultDefinition.getExcludedFromResults()).orElse(FALSE))
+                            .withAlwaysPublished(ofNullable(resultDefinition.getAlwaysPublished()).orElse(FALSE))
+                            .withUrgent(resultDefinition.getUrgent())
+                            .withD20(resultDefinition.getD20())
+                            .withPublishedForNows(ofNullable(resultDefinition.getPublishedForNows()).orElse(FALSE))
+                            .withRollUpPrompts(ofNullable(resultDefinition.getRollUpPrompts()).orElse(FALSE));
 
                             if (isNotEmpty(judicialResultPrompts)) {
                                 builder.withJudicialResultPrompts(judicialResultPrompts);
                             }
 
-                            return builder.build(); 
+                            return builder.build();
                         }
                 ).collect(Collectors.toList());
     }
