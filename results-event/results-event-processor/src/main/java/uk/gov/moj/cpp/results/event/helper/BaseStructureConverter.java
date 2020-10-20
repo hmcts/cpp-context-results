@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static java.lang.Integer.valueOf;
+import static java.util.Objects.isNull;
 import static java.util.Optional.of;
 import static javax.json.JsonValue.NULL;
 import static uk.gov.justice.core.courts.BaseStructure.baseStructure;
@@ -27,7 +27,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 
 public class BaseStructureConverter implements Converter<PublicHearingResulted, BaseStructure> {
 
@@ -54,14 +57,21 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
                 .withListingSequence(h.getListingSequence())
                 .withSittingDay(getParseDate(h.getSittingDay())).build()).collect(Collectors.toList());
 
-        final JsonObject payload = getJsonObjectFromReferenceDataService(hearing.getCourtCentre().getId());
+        final JsonObject organisationUnitPayload = getOrganisationUnitDetails(hearing.getCourtCentre().getId());
 
-        final Optional<String> nationalCourtCodeOptional = of(FIELD_NATIONAL_COURT_CODE).filter(payload::containsKey).map(payload::getString);
-        final Integer nationalCourtCode =  nationalCourtCodeOptional.isPresent()? valueOf(nationalCourtCodeOptional.get()) :null;
-        final String ouCode = of(FIELD_OU_CODE).filter(payload::containsKey).map(payload::getString).orElse(null);
+        final Optional<String> nationalCourtCodeOptional = of(FIELD_NATIONAL_COURT_CODE).filter(organisationUnitPayload::containsKey).map(organisationUnitPayload::getString);
+        final Integer nationalCourtCode = nationalCourtCodeOptional.map(Integer::valueOf).orElse(null);
 
-        final CourtCentreWithLJA courtCentreWithLJA = courtCentreWithLJA().withCourtCentre(hearing.getCourtCentre()).withCourtHearingLocation(ouCode).withPsaCode(nationalCourtCode).build();
+
+        final String organisationUnitOuCode = of(FIELD_OU_CODE).filter(organisationUnitPayload::containsKey).map(organisationUnitPayload::getString).orElse(null);
+
+        final CourtCentreWithLJA courtCentreWithLJA = courtCentreWithLJA().withCourtCentre(hearing.getCourtCentre()).withCourtHearingLocation(getCourtHearingLocation(organisationUnitOuCode, hearing.getCourtCentre().getRoomId())).withPsaCode(nationalCourtCode).build();
         return baseStructure().withCourtCentreWithLJA(courtCentreWithLJA).withId(hearing.getId()).withSessionDays(sessionDays).build();
+    }
+
+    private String getCourtHearingLocation(final String organisationUnitOuCode, final UUID roomId) {
+        final String roomOuCode = getCourtRoomOuCode(roomId);
+        return isNull(roomOuCode) ? organisationUnitOuCode : roomOuCode;
     }
 
     private ZonedDateTime getParseDate(ZonedDateTime sittingDay) {
@@ -70,8 +80,21 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
         return ZonedDateTime.parse(s);
     }
 
-    private JsonObject getJsonObjectFromReferenceDataService(final UUID courtId) {
+    private JsonObject getOrganisationUnitDetails(final UUID courtId) {
         final JsonEnvelope event = envelopeFrom(metadataBuilder().withName(RESULTS_HEARING_RESULTS_ADDED).withId(courtId).build(), NULL);
         return referenceDataService.getOrgainsationUnit(courtId.toString(),event);
+    }
+
+    private String getCourtRoomOuCode(final UUID courtRoomUuid){
+        final JsonObject payload = referenceDataService.getCourtRoomOuCode(courtRoomUuid.toString());
+        if(isNull(payload)){
+            return null;
+        }
+        final Optional<JsonArray> nationalCourtCodeOptional = of("ouCourtRoomCodes").filter(payload::containsKey).map(payload::getJsonArray);
+        return nationalCourtCodeOptional.isPresent() ? convertToString(nationalCourtCodeOptional.get().stream().findFirst().orElse(null)) : null;
+    }
+
+    private String convertToString(final JsonValue jsonValue) {
+        return isNull(jsonValue) ? null : ((JsonString) jsonValue).getString();
     }
 }

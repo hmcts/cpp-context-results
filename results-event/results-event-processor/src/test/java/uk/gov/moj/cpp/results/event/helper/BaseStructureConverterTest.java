@@ -33,6 +33,7 @@ public class BaseStructureConverterTest {
 
     private static final String FIELD_NATIONAL_COURT_CODE = "lja";
     private static final String FIELD_OU_CODE = "oucode";
+    public static final String COURT_ROOM_OUCODE_FROM_REFDATA = "B01BH01";
 
     @InjectMocks
     BaseStructureConverter baseStructureConverter;
@@ -53,11 +54,12 @@ public class BaseStructureConverterTest {
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 
         when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
+        when(referenceDataService.getCourtRoomOuCode(anyString())).thenReturn(getJsonObjectForCourtRoomRefDataResponse());
         baseStructure = baseStructureConverter.convert(shareResultsMessage);
         assertThat(baseStructure.getId(), is(hearing.getId()));
         assertThat(baseStructure.getCourtCentreWithLJA().getCourtCentre(), is(hearing.getCourtCentre()));
 
-        assertThat(baseStructure.getCourtCentreWithLJA().getCourtHearingLocation(), is(getJsonObjectWithNationalCourtCodeAndOuCode().getString(FIELD_OU_CODE)));
+        assertThat(baseStructure.getCourtCentreWithLJA().getCourtHearingLocation(), is(COURT_ROOM_OUCODE_FROM_REFDATA));
         assertThat(baseStructure.getCourtCentreWithLJA().getPsaCode(), is(valueOf(getJsonObjectWithNationalCourtCodeAndOuCode().getString(FIELD_NATIONAL_COURT_CODE))));
 
         final List<SessionDay> sessionDays = baseStructure.getSessionDays();
@@ -76,5 +78,12 @@ public class BaseStructureConverterTest {
                 .add(FIELD_OU_CODE, "B01BH00")
                 .build();
     }
+
+    private JsonObject getJsonObjectForCourtRoomRefDataResponse() {
+        return Json.createObjectBuilder()
+                .add("ouCourtRoomCodes", Json.createArrayBuilder().add(COURT_ROOM_OUCODE_FROM_REFDATA).build())
+                .build();
+    }
+
 
 }

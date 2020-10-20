@@ -40,6 +40,7 @@ public class ReferenceDataService {
     private static final String OU_CODE = "oucode";
     private static final String CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
     private static final String REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE = "referencedata.query.get.prosecutor.by.oucode";
+    private static final String REFERENCE_DATA_QUERY_GET_POLICE_COURT_ROOM_CODE = "referencedata.query.get.police-opt-courtroom-ou-courtroom-code";
 
     @Inject
     private Enveloper enveloper;
@@ -87,6 +88,12 @@ public class ReferenceDataService {
     public JsonObject getOrgainsationUnit(final String courtId, final JsonEnvelope envelope) {
         final JsonObject payload = createObjectBuilder().add("id", courtId).build();
         final JsonEnvelope requestEnvelope = envelopeFrom(metadataFrom(envelope.metadata()).withName("referencedata.query.organisation-unit.v2"), payload);
+        return requester.requestAsAdmin(requestEnvelope, JsonObject.class).payload();
+    }
+
+    public JsonObject getCourtRoomOuCode(final String courtRoomUuid) {
+        final JsonObject payload = createObjectBuilder().add("courtRoomUuid", courtRoomUuid).build();
+        final JsonEnvelope requestEnvelope = envelopeFrom(metadataBuilder().withName(REFERENCE_DATA_QUERY_GET_POLICE_COURT_ROOM_CODE).withId(randomUUID()).build(), payload);
         return requester.requestAsAdmin(requestEnvelope, JsonObject.class).payload();
     }
 
