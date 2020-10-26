@@ -190,18 +190,24 @@ public class OffenceHelper {
 
         //required
         jsonObjectBuilder
-                .add(ORIGINATING_HEARING_ID, jsonObject.getString(ORIGINATING_HEARING_ID))
                 .add(OFFENCE_ID, offenceId)
-                .add(ALLOCATION_DECISION_DATE, jsonObject.getString(ALLOCATION_DECISION_DATE))
                 .add(MOT_REASON_ID, jsonObject.getString(MOT_REASON_ID))
                 .add(SEQUENCE_NUMBER, jsonObject.getInt(SEQUENCE_NUMBER))
                 .add(MOT_REASON_DESCRIPTION, jsonObject.getString(MOT_REASON_DESCRIPTION))
                 .add(MOT_REASON_CODE, jsonObject.getString(MOT_REASON_CODE));
-        // add optional attribute
+
+        // add optional attributes
         if (jsonObject.containsKey(COURT_INDICATED_SENTENCE)) {
             jsonObjectBuilder.add(COURT_INDICATED_SENTENCE, jsonObject.getJsonObject(COURT_INDICATED_SENTENCE))
                     .build();
         }
+        if (jsonObject.containsKey(ORIGINATING_HEARING_ID)) {
+            jsonObjectBuilder.add(ORIGINATING_HEARING_ID, jsonObject.getString(ORIGINATING_HEARING_ID));
+        }
+        if (jsonObject.containsKey(ALLOCATION_DECISION_DATE)) {
+            jsonObjectBuilder.add(ALLOCATION_DECISION_DATE, jsonObject.getString(ALLOCATION_DECISION_DATE));
+        }
+
         return jsonObjectBuilder.build();
     }
 
