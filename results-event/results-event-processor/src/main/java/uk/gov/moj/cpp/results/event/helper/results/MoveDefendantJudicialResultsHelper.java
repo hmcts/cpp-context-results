@@ -96,7 +96,7 @@ public class MoveDefendantJudicialResultsHelper {
 
     private Offence getFilteredOffenceForNoneMatch(final List<Offence> filteredOffenceList, final Offence offence) {
         final Optional<Offence> optionalFilteredOffence = filteredOffenceList.stream().filter(Objects::nonNull)
-                .filter(off -> !(nonNull(offence)&& isNotEmpty(offence.getJudicialResults()) && off.getJudicialResults().stream().filter(Objects::nonNull)
+                .filter(off -> !(nonNull(offence)&& isNotEmpty(offence.getJudicialResults()) && nonNull(off.getJudicialResults()) && off.getJudicialResults().stream().filter(Objects::nonNull)
                         .filter(notInterimAndNotWithdrawnResultPredicate).collect(toList()).isEmpty())).findFirst();
         return optionalFilteredOffence.isPresent() ? optionalFilteredOffence.get() : offence;
     }
