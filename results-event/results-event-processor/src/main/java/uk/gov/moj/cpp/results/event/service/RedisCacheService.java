@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import io.lettuce.core.api.StatefulRedisConnection;
 import uk.gov.justice.services.common.configuration.Value;
 
 import javax.inject.Inject;
@@ -33,19 +34,42 @@ public class RedisCacheService implements CacheService {
         if ("localhost".equals(host)) {
             return null;
         }
+        setRedisClient();
+        return executeAddCommand(key, value);
+    }
+
+    private void setRedisClient() {
         final String keyPart = ("none".equals(this.key) ? "" : this.key + "@");
         final RedisURI redisURI = RedisURI.create("redis://" + keyPart + host + ":" + port);
         redisURI.setSsl(Boolean.valueOf(useSsl));
         redisClient = RedisClient.create(redisURI);
-        return getRedisCommand().set(key, value);
     }
 
     @Override
     public String get(final String hearingId) {
-        return getRedisCommand().get(hearingId);
+        setRedisClient();
+        return executeGetCommand(hearingId);
     }
 
-    private RedisCommands<String, String> getRedisCommand() {
-        return redisClient.connect().sync();
+    private String executeAddCommand(final String key, final String value) {
+
+        try (final StatefulRedisConnection<String, String> connection = this.redisClient.connect()) {
+
+            //Obtain the command API for synchronous execution.
+            final RedisCommands<String, String> command = connection.sync();
+
+            return command.set(key, value);
+        }
+    }
+
+    private String executeGetCommand(final String hearingId) {
+
+        try (final StatefulRedisConnection<String, String> connection = this.redisClient.connect()) {
+
+            //Obtain the command API for synchronous execution.
+            final RedisCommands<String, String> command = connection.sync();
+
+            return command.get(hearingId);
+        }
     }
 }
