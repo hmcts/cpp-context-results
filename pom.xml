@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.moj.cpp.results</groupId>
     <artifactId>results-parent</artifactId>
-    <version>7.0.37-SNAPSHOT</version>
+    <version>7.0.37</version>
 
     <packaging>pom</packaging>
     <name>Results Service - Parent Module</name>
