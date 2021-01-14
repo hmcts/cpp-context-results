@@ -16,7 +16,8 @@ public enum UserGroupType {
     YOUTH_OFFENDING_SERVICE_ADMIN("Youth Offending Service Admin"),
     LEGAL_AID_AGENCY_ADMIN("Legal Aid Agency Admin"),
     COURT_CLERKS("Court Clerks"),
-    COURT_ASSOCIATE("Court Associate");
+    COURT_ASSOCIATE("Court Associate"),
+    SYSTEM_USERS("System Users");
 
     private final String name;
 
@@ -44,7 +45,7 @@ public enum UserGroupType {
     }
 
     public static List<String> resultsDetailsGroups() {
-        return Stream.of(CJSE, LEGAL_ADVISERS, PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
+        return Stream.of(CJSE, LEGAL_ADVISERS, PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE, SYSTEM_USERS)
                 .map(UserGroupType::getName).collect(toList());
     }
 
