@@ -34,6 +34,7 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                                         .withUrn(getUrn(prosecutionCase.getProsecutionCaseIdentifier()))
                                         .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(prosecutionCase.getDefendants(), hearing))
                                         .withProsecutionAuthorityCode(prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode())
+                                        .withOriginatingOrganisation(prosecutionCase.getOriginatingOrganisation())
                                         .build()
                         ).collect(Collectors.toList())
                 ).orElse(emptyList())).orElse(emptyList());

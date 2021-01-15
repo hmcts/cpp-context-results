@@ -136,7 +136,7 @@ public class ResultsIT {
     @Test
     public void shouldProcessPublicSjpResultedSpiOutFalse() throws JMSException {
         final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        sjpResulted.getCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         publicSjpResultedShared(sjpResulted);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(false);
@@ -253,8 +253,8 @@ public class ResultsIT {
     @Test
     public void testCCForSpiOutFalse() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(1).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -360,8 +360,8 @@ public class ResultsIT {
     @Test
     public void testGeneratePoliceResultsForDefendantCCWhenSpiOutFalse() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(1).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(false);
@@ -405,7 +405,7 @@ public class ResultsIT {
     @Test
     public void testGeneratePoliceResultsForDefendantSJPWhenSpiOutFalse() throws JMSException {
         final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        sjpResulted.getCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         publicSjpResultedShared(sjpResulted);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(false);

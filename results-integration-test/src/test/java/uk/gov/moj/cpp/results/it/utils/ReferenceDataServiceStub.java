@@ -79,11 +79,7 @@ public class ReferenceDataServiceStub {
             prosecutorBodyBuilder.add("contactEmailAddress", email);
         }
 
-        final JsonObject response = createObjectBuilder()
-                .add("prosecutors", createArrayBuilder()
-                        .add(prosecutorBodyBuilder.build())
-                        .build())
-                .build();
+        final JsonObject response = prosecutorBodyBuilder.build();
 
         stubFor(get(urlPathEqualTo(urlPath))
                 .willReturn(aResponse().withStatus(SC_OK)
@@ -99,21 +95,17 @@ public class ReferenceDataServiceStub {
             prosecutorBodyBuilder.add("contactEmailAddress", email);
         }
 
-        final JsonObject responseFalse = createObjectBuilder()
-                .add("prosecutors", createArrayBuilder()
-                        .add(prosecutorBodyBuilder.build())
-                        .build())
-                .build();
+        final JsonObject responseFalse = prosecutorBodyBuilder.build();
 
         stubFor(get(urlPathEqualTo(urlPath))
-                .withQueryParam("prosecutorCode", equalTo("prosecutorWithSpiOutFalse"))
+                .withQueryParam("oucode", equalTo("prosecutorWithSpiOutFalse"))
                 .willReturn(aResponse().withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(responseFalse.toString())));
 
         waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.get.prosecutor+json");
-        waitForStubToBeReady(urlPath + "?prosecutorCode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
+        waitForStubToBeReady(urlPath + "?oucode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
     }
 
     public static void stubBailStatuses() {

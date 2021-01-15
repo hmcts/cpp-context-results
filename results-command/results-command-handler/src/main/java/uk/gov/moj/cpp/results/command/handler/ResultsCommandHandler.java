@@ -106,7 +106,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
                 final AtomicReference<String> prosecutorEmailAddress = new AtomicReference("");
 
-                final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
+                final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(caseDetails.getOriginatingOrganisation());
                 refDataProsecutorJson.ifPresent(prosecutorJson -> {
                     sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                     isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
@@ -132,12 +132,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final EventStream eventStream = eventSource.getStreamById(fromString(sessionId));
         final ResultsAggregate aggregate = aggregateService.get(eventStream, ResultsAggregate.class);
 
-
-        final Optional<String> prosecutionAuthorityCode = aggregate.getProsecutionAuthorityCode(caseId);
-
-        final boolean sendSpiOut = prosecutionAuthorityCode
-                .map(this::getSpiOutFlag)
-                .orElse(false);
+        final String originatingOrg = aggregate.getOriginatingOrganisation();
+        boolean sendSpiOut = false;
+        if(null != originatingOrg) {
+            sendSpiOut = getSpiOutFlag(originatingOrg);
+        }
 
         if (sendSpiOut) {
             aggregate(ResultsAggregate.class, fromString(sessionId),
@@ -145,8 +144,8 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         }
     }
 
-    private boolean getSpiOutFlag(final String prosecutingAuthority) {
-        final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(prosecutingAuthority);
+    private boolean getSpiOutFlag(final String originatingOrg) {
+        final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrg);
         return refDataProsecutorJson.filter(jsonObject -> jsonObject.containsKey(SPI_OUT_FLAG) ? jsonObject.getBoolean(SPI_OUT_FLAG) : FALSE).isPresent();
     }
 

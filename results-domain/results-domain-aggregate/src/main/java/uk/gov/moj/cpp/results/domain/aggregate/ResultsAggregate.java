@@ -78,6 +78,7 @@ public class ResultsAggregate implements Aggregate {
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
     private boolean isEligibleForSpiOut = false;
+    private String originatingOrganisation;
 
     @Override
     public Object apply(final Object event) {
@@ -293,6 +294,7 @@ public class ResultsAggregate implements Aggregate {
 
     private void storeCaseAddedEvent(final CaseAddedEvent caseAddedEvent) {
         this.cases.add(new Case(caseAddedEvent.getCaseId(), caseAddedEvent.getUrn(), caseAddedEvent.getProsecutionAuthorityCode()));
+        this.originatingOrganisation = caseAddedEvent.getOriginatingOrganisation();
     }
 
     private void storeSessionAddedEvent(final SessionAddedEvent sessionAddedEvent) {
@@ -312,7 +314,11 @@ public class ResultsAggregate implements Aggregate {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOption = this.cases.stream().filter(c -> caseFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
         if (!aCaseAggregateOption.isPresent()) {
-            builder.add(caseAddedEvent().withCaseId(caseFromRequest.getCaseId()).withUrn(caseFromRequest.getUrn()).withProsecutionAuthorityCode(caseFromRequest.getProsecutionAuthorityCode()).build());
+            builder.add(caseAddedEvent()
+                    .withCaseId(caseFromRequest.getCaseId())
+                    .withUrn(caseFromRequest.getUrn())
+                    .withProsecutionAuthorityCode(caseFromRequest.getProsecutionAuthorityCode())
+                    .withOriginatingOrganisation(caseFromRequest.getOriginatingOrganisation()).build());
         }
         return apply(builder.build());
     }
@@ -493,5 +499,9 @@ public class ResultsAggregate implements Aggregate {
                 .filter(c -> caseIdFromApi.equals(c.getCaseId().toString()))
                 .findFirst()
                 .map(Case::getProsecutionAuthorityCode);
+    }
+
+    public String getOriginatingOrganisation() {
+        return this.originatingOrganisation;
     }
 }

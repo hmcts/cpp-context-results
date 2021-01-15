@@ -11,6 +11,9 @@
     },
     "prosecutionAuthorityCode": {
       "type": "string"
+    },
+    "originatingOrganisation": {
+      "type": "string"
     }
   },
   "required": [

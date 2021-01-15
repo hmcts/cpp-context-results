@@ -305,6 +305,7 @@ public class TestTemplates {
         return ProsecutionCase.prosecutionCase()
                 .withId(fromString(LINKED_CASE_ID))
                 .withInitiationCode(InitiationCode.C)
+                .withOriginatingOrganisation(STRING.next())
                 .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
@@ -322,6 +323,7 @@ public class TestTemplates {
         return ProsecutionCase.prosecutionCase()
                 .withId(fromString("cccc2222-1e20-4c21-916a-81a6c90239e5"))
                 .withInitiationCode(InitiationCode.C)
+                .withOriginatingOrganisation(STRING.next())
                 .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
@@ -339,6 +341,7 @@ public class TestTemplates {
         return ProsecutionCase.prosecutionCase()
                 .withId(fromString(LINKED_CASE_ID))
                 .withInitiationCode(InitiationCode.C)
+                .withOriginatingOrganisation(STRING.next())
                 .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
@@ -515,6 +518,7 @@ public class TestTemplates {
                         buildSjpDefendant(DEFAULT_DEFENDANT_ID2.toString())
                 ))
                 .withProsecutionAuthorityCode("someProsecutingAuthority")
+                .withOriginatingOrganisation("someOriginatingOrganisation")
                 .build());
         return caseDetails;
     }
@@ -652,6 +656,7 @@ public class TestTemplates {
         return ProsecutionCase.prosecutionCase()
                 .withId(fromString("cccc2222-1e20-4c21-916a-81a6c90239e5"))
                 .withInitiationCode(InitiationCode.C)
+                .withOriginatingOrganisation(STRING.next())
                 .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
