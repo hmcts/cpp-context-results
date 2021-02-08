@@ -144,6 +144,17 @@ public class ResultsIT {
     }
 
     @Test
+    public void shouldProcessPublicSjpResultedWhenOriginatingOrganisationIsNull() throws JMSException {
+        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
+        sjpResulted.getCases().get(0).setOriginatingOrganisation(null);
+        sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        publicSjpResultedShared(sjpResulted);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(false);
+        verifyNotInPublicTopic();
+    }
+
+    @Test
     public void testCCForSpiOut() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
 

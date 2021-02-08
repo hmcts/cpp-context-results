@@ -7,8 +7,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
+import static javax.json.Json.createArrayBuilder;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -97,6 +97,12 @@ public class ReferenceDataServiceStub {
 
         final JsonObject responseFalse = prosecutorBodyBuilder.build();
 
+        final JsonObject prosecutorCodeResponse = createObjectBuilder()
+                .add("prosecutors", createArrayBuilder()
+                        .add(prosecutorBodyBuilder.build())
+                        .build())
+                .build();
+
         stubFor(get(urlPathEqualTo(urlPath))
                 .withQueryParam("oucode", equalTo("prosecutorWithSpiOutFalse"))
                 .willReturn(aResponse().withStatus(SC_OK)
@@ -106,6 +112,16 @@ public class ReferenceDataServiceStub {
 
         waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.get.prosecutor+json");
         waitForStubToBeReady(urlPath + "?oucode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("prosecutorCode", equalTo("prosecutorWithSpiOutFalse"))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(prosecutorCodeResponse.toString())));
+
+        waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.get.prosecutor+json");
+        waitForStubToBeReady(urlPath + "?prosecutorCode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
     }
 
     public static void stubBailStatuses() {

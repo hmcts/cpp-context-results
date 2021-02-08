@@ -36,4 +36,16 @@ public class ReferenceDataService {
         return Optional.ofNullable(null != response ? response.payload() : null);
 
     }
+
+    Optional<JsonObject> getSpiOutFlagForProsecutionAuthorityCode(final String prosecutingAuthority) {
+        final JsonObject payload = createObjectBuilder().add("prosecutorCode", prosecutingAuthority).build();
+        final Metadata metadata = metadataBuilder()
+                .withId(randomUUID())
+                .withName("referencedata.query.prosecutors")
+                .build();
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
+        final JsonObject response = requester.requestAsAdmin(jsonEnvelope, JsonObject.class).payload();
+        return Optional.ofNullable(response.getJsonArray("prosecutors").getJsonObject(0));
+    }
 }
