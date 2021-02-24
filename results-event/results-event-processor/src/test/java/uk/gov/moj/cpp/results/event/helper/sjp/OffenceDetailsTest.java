@@ -17,6 +17,7 @@ import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildResultDefini
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicSJPCaseResulted;
 
 import uk.gov.justice.sjp.results.CaseOffence;
+import uk.gov.justice.sjp.results.Plea;
 import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 
@@ -66,6 +67,7 @@ public class OffenceDetailsTest {
                 assertThat(offenceDetails.getOffenceSequenceNumber(), is(sjpCaseOffence.getBaseOffenceDetails().getOffenceSequenceNumber()));
                 assertAllocationDecision(offenceDetails, sjpCaseOffence);
                 assertOffenceFacts(offenceDetails, sjpCaseOffence);
+                assertPlea(offenceDetails, sjpCaseOffence);
 
             }
         }
@@ -87,6 +89,15 @@ public class OffenceDetailsTest {
         assertThat(offenceDetails.getOffenceFacts().getAlcoholReadingMethodCode(), is(sjpCaseOffence.getBaseOffenceDetails().getAlcoholLevelMethod()));
         assertThat(offenceDetails.getOffenceFacts().getVehicleRegistration(), is(sjpCaseOffence.getBaseOffenceDetails().getVehicleRegistrationMark()));
         assertThat(offenceDetails.getOffenceFacts().getVehicleCode(), is(nullValue()));
+    }
+
+    private void assertPlea(final uk.gov.justice.core.courts.OffenceDetails offenceDetails, final CaseOffence sjpCaseOffence) {
+        final Plea plea = sjpCaseOffence.getPlea();
+        assertThat(offenceDetails.getPlea().getPleaValue(), is(plea.getPleaType().toString()));
+        assertThat(offenceDetails.getPlea().getPleaDate().getYear(), is(plea.getPleaDate().getYear()));
+        assertThat(offenceDetails.getPlea().getPleaDate().getMonth(), is(plea.getPleaDate().getMonth()));
+        assertThat(offenceDetails.getPlea().getPleaDate().getDayOfYear(), is(plea.getPleaDate().getDayOfYear()));
+        assertThat(offenceDetails.getPlea().getOffenceId(), is(sjpCaseOffence.getBaseOffenceDetails().getOffenceId()));
     }
 
 }

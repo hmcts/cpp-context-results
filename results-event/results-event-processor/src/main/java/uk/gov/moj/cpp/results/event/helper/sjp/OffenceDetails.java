@@ -12,6 +12,8 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
 import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.OffenceFacts;
+import uk.gov.justice.core.courts.Plea;
+import uk.gov.justice.core.courts.VehicleCode;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.sjp.results.CaseOffence;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
@@ -42,7 +44,7 @@ public class OffenceDetails {
 
         for (final CaseOffence caseOffence : caseOffenceList) {
             offenceDetailsList.add(offenceDetails()
-                    .withAllocationDecision(buildAllocationDecision(caseOffence.getBaseOffenceDetails().getOffenceId(),sessionId, caseOffence.getModeOfTrial(),dateAndTimeOfSession))
+                    .withAllocationDecision(buildAllocationDecision(caseOffence.getBaseOffenceDetails().getOffenceId(), sessionId, caseOffence.getModeOfTrial(), dateAndTimeOfSession))
                     .withArrestDate(caseOffence.getBaseOffenceDetails().getArrestDate())
                     .withChargeDate(caseOffence.getBaseOffenceDetails().getChargeDate())
                     .withConvictingCourt(caseOffence.getConvictingCourt())
@@ -55,14 +57,25 @@ public class OffenceDetails {
                     .withFinding(caseOffence.getFinding())
                     .withOffenceCode(caseOffence.getBaseOffenceDetails().getOffenceCode())
                     .withOffenceDateCode(caseOffence.getBaseOffenceDetails().getOffenceDateCode()) // it should be zonedatetime
-                    //.withPlea(caseOffence.getPlea())  // Not Available
-                    .withOffenceFacts(buildOffenceFacts(caseOffence)) //NotAvailable
+                    .withPlea(plea(caseOffence).orElse(null))
+                    .withOffenceFacts(buildOffenceFacts(caseOffence))
                     .withOffenceSequenceNumber(caseOffence.getBaseOffenceDetails().getOffenceSequenceNumber())
                     .withStartDate(caseOffence.getInitiatedDate().toLocalDate())
                     .withWording(caseOffence.getBaseOffenceDetails().getOffenceWording())
                     .build());
         }
         return offenceDetailsList;
+    }
+
+    private Optional<Plea> plea(final CaseOffence caseOffence) {
+        final uk.gov.justice.sjp.results.Plea plea = caseOffence.getPlea();
+        if (plea != null) {
+            return Optional.ofNullable(Plea.plea()
+                    .withPleaValue(plea.getPleaType().toString())
+                    .withOffenceId(caseOffence.getBaseOffenceDetails().getOffenceId())
+                    .withPleaDate(plea.getPleaDate().toLocalDate()).build());
+        }
+        return Optional.empty();
     }
 
     private AllocationDecision buildAllocationDecision(final UUID offenceId, final UUID sessionId, final Integer modeOfTrial, final ZonedDateTime dateAndTimeOfSession) {
@@ -88,8 +101,16 @@ public class OffenceDetails {
         return offenceFacts()
                 .withAlcoholReadingAmount(caseOffence.getBaseOffenceDetails().getAlcoholLevelAmount())
                 .withAlcoholReadingMethodCode(caseOffence.getBaseOffenceDetails().getAlcoholLevelMethod())
-//                .withVehicleCode(null != caseOffence.getBaseOffenceDetails().getVehicleCode()?caseOffence.getBaseOffenceDetails().getVehicleCode().toString():null)  // enum type expected
+                .withVehicleCode(vehicleCode(caseOffence).orElse(null))
                 .withVehicleRegistration(caseOffence.getBaseOffenceDetails().getVehicleRegistrationMark())
                 .build();
+    }
+
+    private Optional<VehicleCode> vehicleCode(final CaseOffence caseOffence) {
+        final String vehicleCode = caseOffence.getBaseOffenceDetails().getVehicleCode();
+        if (vehicleCode != null) {
+            return VehicleCode.valueFor(vehicleCode);
+        }
+        return Optional.empty();
     }
 }
