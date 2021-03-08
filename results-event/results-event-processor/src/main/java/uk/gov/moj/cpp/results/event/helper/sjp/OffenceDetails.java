@@ -69,7 +69,7 @@ public class OffenceDetails {
 
     private Optional<Plea> plea(final CaseOffence caseOffence) {
         final uk.gov.justice.sjp.results.Plea plea = caseOffence.getPlea();
-        if (plea != null) {
+        if (plea != null && plea.getPleaType() != null) {
             return Optional.ofNullable(Plea.plea()
                     .withPleaValue(plea.getPleaType().toString())
                     .withOffenceId(caseOffence.getBaseOffenceDetails().getOffenceId())
