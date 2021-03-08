@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>7.0.45</version>
+        <version>7.0.46-SNAPSHOT</version>
     </parent>
     <artifactId>results-service</artifactId>
     <packaging>war</packaging>
