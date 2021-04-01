@@ -151,6 +151,8 @@ public class DefendantToCaseDefendantConverter {
                     .withUrgent(resultDetail.getUrgent())
                     .withD20(resultDetail.getD20())
                     .withJudicialResultTypeId(resultDetail.getJudicialResultTypeId())
+                    .withPublishedForNows(resultDetail.getPublishedForNows())
+                    .withRollUpPrompts(resultDetail.getRollUpPrompts())
                     .build());
         }
         return judicialResults;

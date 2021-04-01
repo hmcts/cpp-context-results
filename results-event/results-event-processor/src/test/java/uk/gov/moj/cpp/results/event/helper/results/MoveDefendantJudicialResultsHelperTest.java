@@ -4,8 +4,8 @@ import static com.google.common.collect.ImmutableList.of;
 import static java.time.LocalDate.now;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
 import static uk.gov.justice.core.courts.JudicialResultPrompt.judicialResultPrompt;
 
@@ -236,7 +236,7 @@ public class MoveDefendantJudicialResultsHelperTest {
 
     private Offence buildOffence(final Boolean terminatesOffenceProceedings, final Category category) {
         return Offence.offence()
-                .withId(ID)
+                .withId(randomUUID())
                 .withOffenceDefinitionId(randomUUID())
                 .withOffenceCode(OFFENCE_CODE)
                 .withJudicialResults(buildOffenceJudicialResultList(terminatesOffenceProceedings, category))

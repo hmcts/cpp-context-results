@@ -5,12 +5,15 @@ import static uk.gov.moj.cpp.domains.ApplicationHelper.transformApplications;
 import static uk.gov.moj.cpp.domains.ProsecutionCaseHelper.transformProsecutionCases;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPLICANT_COUNSELS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPLICATION_PARTY_COUNSELS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPROVALS_REQUESTED;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COMPANY_REPRESENTATIVES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_APPLICATIONS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_APPLICATION_PARTY_ATTENDANCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_CENTRE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CRACKED_INEFFECTIVE_TRIAL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENCE_COUNSELS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_ATTENDANCE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_HEARING_YOUTH_MARKERS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_REFERRAL_REASONS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HAS_SHARED_RESULTS;
@@ -19,6 +22,8 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HEARING_DAYS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HEARING_LANGUAGE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_BOX_HEARING;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_EFFECTIVE_TRIAL;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_VACATED_TRIAL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIARY;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JURISDICTION_TYPE;
@@ -27,6 +32,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_COUNSEL
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PUBLISHED_FOR_NOWS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.REPORTING_RESTRICTION_REASON;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.RESPONDENT_COUNSELS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SEEDING_HEARING;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.TYPE;
 
 import java.util.List;
@@ -54,8 +60,11 @@ public class HearingHelper {
                 .add(ID, hearing.getString(ID))
                 .add(JURISDICTION_TYPE, hearing.getString(JURISDICTION_TYPE))
                 .add(COURT_CENTRE, hearing.getJsonObject(COURT_CENTRE))
-                .add(HEARING_DAYS, hearing.getJsonArray(HEARING_DAYS))
                 .add(TYPE, hearing.getJsonObject(TYPE));
+
+        if (hearing.containsKey(HEARING_DAYS)) {
+            transformedPayloadObjectBuilder.add(HEARING_DAYS, hearing.getJsonArray(HEARING_DAYS));
+        }
 
         if (hearing.containsKey(REPORTING_RESTRICTION_REASON)) {
             transformedPayloadObjectBuilder.add(REPORTING_RESTRICTION_REASON, hearing.getString(REPORTING_RESTRICTION_REASON));
@@ -127,6 +136,30 @@ public class HearingHelper {
 
         if (hearing.containsKey(IS_BOX_HEARING)) {
             transformedPayloadObjectBuilder.add(IS_BOX_HEARING, hearing.getBoolean(IS_BOX_HEARING));
+        }
+
+        if (hearing.containsKey(DEFENDANT_HEARING_YOUTH_MARKERS)) {
+            transformedPayloadObjectBuilder.add(DEFENDANT_HEARING_YOUTH_MARKERS, hearing.getJsonArray(DEFENDANT_HEARING_YOUTH_MARKERS));
+        }
+
+        if (hearing.containsKey(IS_EFFECTIVE_TRIAL)) {
+            transformedPayloadObjectBuilder.add(IS_EFFECTIVE_TRIAL, hearing.getBoolean(IS_EFFECTIVE_TRIAL));
+        }
+
+        if (hearing.containsKey(COMPANY_REPRESENTATIVES)) {
+            transformedPayloadObjectBuilder.add(COMPANY_REPRESENTATIVES, hearing.getJsonArray(COMPANY_REPRESENTATIVES));
+        }
+
+        if (hearing.containsKey(IS_VACATED_TRIAL)) {
+            transformedPayloadObjectBuilder.add(IS_VACATED_TRIAL, hearing.getBoolean(IS_VACATED_TRIAL));
+        }
+
+        if (hearing.containsKey(APPROVALS_REQUESTED)) {
+            transformedPayloadObjectBuilder.add(APPROVALS_REQUESTED, hearing.getJsonArray(APPROVALS_REQUESTED));
+        }
+
+        if (hearing.containsKey(SEEDING_HEARING)) {
+            transformedPayloadObjectBuilder.add(SEEDING_HEARING, hearing.getJsonObject(SEEDING_HEARING));
         }
 
         return transformedPayloadObjectBuilder.build();

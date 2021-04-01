@@ -1,23 +1,33 @@
 package uk.gov.moj.cpp.results.event.helper;
 
 import static java.lang.Integer.valueOf;
+
+import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
+
 import uk.gov.justice.core.courts.BaseStructure;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -70,6 +80,37 @@ public class BaseStructureConverterTest {
                     && h.getSittingDay().equals(sessionDay.getSittingDay())).findFirst();
             assertThat(hearingDay.isPresent(), is(false));
         }
+    }
+
+    @Test
+    public void testConverter2() {
+        final UUID hearingId = randomUUID();
+
+        final PublicHearingResulted shareResultsMessage = PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplateWithApplication(hearingId, JurisdictionType.MAGISTRATES))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+
+        final Hearing hearing = shareResultsMessage.getHearing();
+        final List<HearingDay> hearingDays = hearing.getHearingDays();
+
+        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
+        when(referenceDataService.getCourtRoomOuCode(anyString())).thenReturn(getJsonObjectForCourtRoomRefDataResponse());
+        baseStructure = baseStructureConverter.convert(shareResultsMessage);
+        assertEquals(baseStructure.getId(), hearing.getId());
+        assertEquals(baseStructure.getCourtCentreWithLJA().getCourtCentre(), hearing.getCourtCentre());
+
+        assertEquals(COURT_ROOM_OUCODE_FROM_REFDATA, baseStructure.getCourtCentreWithLJA().getCourtHearingLocation());
+        assertEquals(baseStructure.getCourtCentreWithLJA().getPsaCode(), valueOf(getJsonObjectWithNationalCourtCodeAndOuCode().getString(FIELD_NATIONAL_COURT_CODE)));
+
+        final List<SessionDay> sessionDays = baseStructure.getSessionDays();
+        assertEquals(sessionDays.size(), hearingDays.size());
+        for (final SessionDay sessionDay : sessionDays) {
+            final Optional<HearingDay> hearingDay = hearingDays.stream().filter(h -> h.getListedDurationMinutes().equals(sessionDay.getListedDurationMinutes())
+                    && h.getListingSequence().equals(sessionDay.getListingSequence())
+                    && h.getSittingDay().equals(sessionDay.getSittingDay())).findFirst();
+            assertFalse(hearingDay.isPresent());
+        }
+        assertEquals("CC", baseStructure.getSourceType());
     }
 
     private JsonObject getJsonObjectWithNationalCourtCodeAndOuCode() {

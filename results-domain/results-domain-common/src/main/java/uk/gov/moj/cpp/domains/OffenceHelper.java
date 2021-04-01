@@ -8,11 +8,13 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ALLOCATION_DECISION
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.AQUITTAL_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ARREST_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CHARGE_DATE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COMMITTING_COURT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CONVICTION_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COUNT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_INDICATED_SENTENCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CUSTODY_TIME_LIMIT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DATE_OF_INFORMATION;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DVLA_OFFENCE_CODE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.END_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INDICATED_PLEA;
@@ -22,12 +24,14 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_DISCONTINUED;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_INTRODUCEAFTERINITIALPROCEEDINGS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAA_APPLN_REFERENCE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAID_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MODE_OF_TRIAL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MOT_REASON_CODE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MOT_REASON_DESCRIPTION;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MOT_REASON_ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.NOTIFIED_PLEA;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCE_CODE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCE_DATE_CODE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCE_DEFINITION_ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCE_FACTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCE_ID;
@@ -39,6 +43,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ORDER_INDEX;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ORIGINATING_HEARING_ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PLEA;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROCEEDINGS_CONCLUDED;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.REPORTING_RESTRICTIONS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SEQUENCE_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SOURCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.START_DATE;
@@ -206,6 +211,26 @@ public class OffenceHelper {
         }
         if (jsonObject.containsKey(ALLOCATION_DECISION_DATE)) {
             jsonObjectBuilder.add(ALLOCATION_DECISION_DATE, jsonObject.getString(ALLOCATION_DECISION_DATE));
+        }
+
+        if (jsonObject.containsKey(LAID_DATE)) {
+            jsonObjectBuilder.add(LAID_DATE, jsonObject.getString(LAID_DATE));
+        }
+
+        if (jsonObject.containsKey(COMMITTING_COURT)) {
+            jsonObjectBuilder.add(COMMITTING_COURT, jsonObject.getJsonObject(COMMITTING_COURT));
+        }
+
+        if (jsonObject.containsKey(OFFENCE_DATE_CODE)) {
+            jsonObjectBuilder.add(OFFENCE_DATE_CODE, jsonObject.getInt(OFFENCE_DATE_CODE));
+        }
+
+        if (jsonObject.containsKey(DVLA_OFFENCE_CODE)) {
+            jsonObjectBuilder.add(DVLA_OFFENCE_CODE, jsonObject.getString(DVLA_OFFENCE_CODE));
+        }
+
+        if (jsonObject.containsKey(REPORTING_RESTRICTIONS)) {
+            jsonObjectBuilder.add(REPORTING_RESTRICTIONS, jsonObject.getJsonArray(REPORTING_RESTRICTIONS));
         }
 
         return jsonObjectBuilder.build();

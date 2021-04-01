@@ -54,6 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ServiceComponent(EVENT_PROCESSOR)
+@SuppressWarnings({"squid:S2221"})
 public class ResultsEventProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsEventProcessor.class);
@@ -65,6 +66,7 @@ public class ResultsEventProcessor {
     private static final String HEARING = "hearing";
     private static final String RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED = "results.case-or-application-ejected";
     private static final String CACHE_KEY_SUFFIX = "_result_";
+    private static final String CACHE_KEY_SJP_PREFIX = "SJP_";
     private static final String CACHE_KEY_EXTERNAL_PREFIX = "EXT_";
     private static final String CACHE_KEY_INTERNAL_PREFIX = "INT_";
     private static final String SHARED_TIME = "sharedTime";
@@ -102,50 +104,63 @@ public class ResultsEventProcessor {
     private NotificationNotifyService notificationNotifyService;
 
     @Handles("public.hearing.resulted")
-    @SuppressWarnings({"squid:S2221"})
     public void hearingResulted(final JsonEnvelope envelope) {
 
         LOGGER.info("Hearing Resulted Event Received");
 
-        final JsonObject internalPayload = envelope.payloadAsJsonObject();
-
-        final JsonString sharedTime = internalPayload.getJsonString(SHARED_TIME);
-
-        final JsonObject transformedHearing = hearingHelper.transformedHearing(internalPayload.getJsonObject(HEARING));
-
+        final JsonObject hearingPayload = envelope.payloadAsJsonObject();
+        final JsonString sharedTime = hearingPayload.getJsonString(SHARED_TIME);
+        final JsonObject transformedHearing = hearingHelper.transformedHearing(hearingPayload.getJsonObject(HEARING));
         final JsonObject externalPayload = createObjectBuilder()
                 .add(HEARING, transformedHearing)
                 .add(SHARED_TIME, sharedTime)
                 .build();
-
         final String hearingId = transformedHearing.getString(HEARING_ID);
 
-        final String cacheKeyExternal = CACHE_KEY_EXTERNAL_PREFIX + hearingId + CACHE_KEY_SUFFIX;
-        final String cacheKeyInternal = CACHE_KEY_INTERNAL_PREFIX + hearingId + CACHE_KEY_SUFFIX;
+        if (hearingPayload.getJsonObject(HEARING).getBoolean("isSJPHearing", false)) {
 
-        final Optional<String> userId = envelope.metadata().userId();
+            final String cacheKeySjp = CACHE_KEY_SJP_PREFIX + hearingId + CACHE_KEY_SUFFIX;
 
-        try {
-            LOGGER.info("Adding external JSON document for hearing {} to Redis Cache", hearingId);
-            cacheService.add(cacheKeyExternal, externalPayload.toString());
+            try {
+                LOGGER.info("Adding external JSON document for hearing {} with sjp key {} to Redis Cache", hearingId, cacheKeySjp);
+                cacheService.add(cacheKeySjp, hearingPayload.toString());
+            } catch (Exception e) {
+                LOGGER.error("Exception caught while attempting to connect to cache service: {} with sjp key {}", e, cacheKeySjp);
+            }
 
-            LOGGER.info("Adding internal JSON document for hearing {} to Redis Cache", hearingId);
-            cacheService.add(cacheKeyInternal, internalPayload.toString());
-        } catch (Exception e) {
-            LOGGER.error("Exception caught while attempting to connect to cache service: ", e);
+            sendEventToGrid(envelope, hearingId, "SJP_Hearing_Resulted");
+        } else {
+            final String cacheKeyExternal = CACHE_KEY_EXTERNAL_PREFIX + hearingId + CACHE_KEY_SUFFIX;
+            final String cacheKeyInternal = CACHE_KEY_INTERNAL_PREFIX + hearingId + CACHE_KEY_SUFFIX;
+
+            try {
+                LOGGER.info("Adding external JSON document for hearing {} with external key {} to Redis Cache", hearingId, cacheKeyExternal);
+                cacheService.add(cacheKeyExternal, externalPayload.toString());
+
+                LOGGER.info("Adding internal JSON document for hearing {} with internal key {} to Redis Cache", hearingId, cacheKeyInternal);
+                cacheService.add(cacheKeyInternal, hearingPayload.toString());
+            } catch (Exception e) {
+                LOGGER.error("Exception caught while attempting to connect to cache service: {} with LAA key {} {}", e, cacheKeyExternal, cacheKeyInternal);
+            }
+
+            sendEventToGrid(envelope, hearingId, "Hearing_Resulted");
         }
 
-        try {
-            LOGGER.info("Adding Hearing Resulted for hearing {} to EventGrid", hearingId);
-            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId));
-        } catch (Exception e) {
-            LOGGER.error("Exception caught while attempting to connect to EventGrid: ", e);
-        }
-
-        final Envelope<JsonObject> jsonObjectEnvelope = envelop(internalPayload)
+        final Envelope<JsonObject> jsonObjectEnvelope = envelop(hearingPayload)
                 .withName("results.command.add-hearing-result")
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
+    }
+
+    private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, String eventType) {
+        final Optional<String> userId = envelope.metadata().userId();
+        try {
+            LOGGER.info("Adding Hearing Resulted for hearing {} and eventType {} to EventGrid", hearingId, eventType);
+            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId, eventType));
+        }
+        catch (Exception e) {
+            LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
+        }
     }
 
     @Handles("results.hearing-results-added")
@@ -155,26 +170,25 @@ public class ResultsEventProcessor {
 
         final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
 
-        if (isNotEmpty(publicHearingResulted.getHearing().getProsecutionCases())) {
+        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
+
+        if(isNotEmpty(caseDetails)) {
+
             publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
-            final BaseStructure baseStructure = new BaseStructureConverter(referenceDataService).convert(publicHearingResulted);
-            final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
+
             final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
             caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
+
             final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
-            baseStructure.setSourceType("CC");
-            resultJsonPayload.add("session", objectToJsonObjectConverter.convert(baseStructure));
+            resultJsonPayload.add("session", objectToJsonObjectConverter.convert(new BaseStructureConverter(referenceDataService).convert(publicHearingResulted)));
             resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
             resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
 
             final Metadata metadata = metadataFrom(envelope.metadata())
                     .withName("results.create-results")
                     .build();
-
-            sender.sendAsAdmin(envelopeFrom(metadata, resultJsonPayload.build()));
-
-        } else if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("No Prosecution Cases present for hearing id : {} ", publicHearingResulted.getHearing().getId());
+            final JsonObject payload = resultJsonPayload.build();
+            sender.sendAsAdmin(envelopeFrom(metadata, payload));
         }
     }
 

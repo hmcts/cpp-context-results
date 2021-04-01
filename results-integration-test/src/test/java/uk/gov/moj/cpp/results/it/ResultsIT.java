@@ -2,7 +2,10 @@ package uk.gov.moj.cpp.results.it;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
+import static java.util.Arrays.asList;
+import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -11,6 +14,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
@@ -41,30 +47,43 @@ import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeO
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicSJPCaseResulted;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithCustomApplication;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplateWithoutResult;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesAlongWithOffenceDateCodeTemplate;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate;
+import static uk.gov.moj.cpp.results.test.TestTemplates.buildJudicialResultList;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.gov.justice.core.courts.Address;
+import uk.gov.justice.core.courts.ApplicationStatus;
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.Verdict;
+import uk.gov.justice.core.courts.VerdictType;
 import uk.gov.justice.core.courts.external.ApiAddress;
 import uk.gov.justice.core.courts.external.ApiCourtCentre;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 import uk.gov.moj.cpp.results.it.utils.Queries;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
 
 import java.io.InputStream;
 import java.io.StringReader;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -102,6 +121,9 @@ public class ResultsIT {
     private static final String FINDING_VALUE_DEFAULT = "G";
     private static final String FINDING_VALUE_NOT_GUILTY = "N";
 
+    private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+    private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
+
     @BeforeClass
     public static void setUpClass() {
         setupUserAsPrisonAdminGroup(getUserId());
@@ -122,6 +144,7 @@ public class ResultsIT {
     public void setUp() {
         stubSpiOutFlag(true, true);
         createMessageConsumers();
+        setField(this.jsonToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
     }
 
     @Test
@@ -145,6 +168,7 @@ public class ResultsIT {
 
     @Test
     public void shouldProcessPublicSjpResultedWhenOriginatingOrganisationIsNull() throws JMSException {
+        stubSpiOutFlag(false, false, null);
         final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
         sjpResulted.getCases().get(0).setOriginatingOrganisation(null);
         sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
@@ -171,7 +195,6 @@ public class ResultsIT {
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
     }
 
-
     @Test
     public void testCCForSpiOutWithOffenceDateCode() throws JMSException {
         final Integer offenceDateCode = 4;
@@ -191,7 +214,6 @@ public class ResultsIT {
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOffenceDateCode(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceDateCode")));
     }
 
-
     @Test
     public void testCCForSpiOutDefaultOffenceDateCode() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
@@ -210,7 +232,6 @@ public class ResultsIT {
         assertThat(1, is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceDateCode")));
     }
 
-
     @Test
     public void whenVerdictNotPresentAndConvictedDatePresentThenPoliceResultGeneratedHasFindingWithDefaultValue() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate();
@@ -224,7 +245,7 @@ public class ResultsIT {
 
     @Test
     public void whenVerdictPresentThenPoliceResultGeneratedHasFindingWithVerdictCode() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate(true);
+        final PublicHearingResulted resultsMessage = basicShareResultsWithMagistratesTemplate(true, false);
 
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -232,7 +253,6 @@ public class ResultsIT {
 
         verifyInPublicPoliceResultGeneratedMessage(FINDING_VALUE_NOT_GUILTY);
     }
-
 
     @Test
     public void testCCForEmailNotificationFailWhenEmailIsEmpty() throws JMSException {
@@ -661,5 +681,106 @@ public class ResultsIT {
         }
         final JsonReader reader = createReader(new StringReader(request));
         return reader.readObject();
+    }
+
+
+    @Test
+    public void shouldBeSentToSpiOutForApplicationWithNoJudicialResults() throws JMSException {
+
+         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), JurisdictionType.MAGISTRATES))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        System.out.println("the response is -->>" + response.get());
+        final JSONObject firstOffenceJson = new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0);
+        assertThat(firstOffenceJson.get("offenceSequenceNumber"), is(65));
+        assertThat(new JSONObject(response.get()).getJSONObject("defendant").get("prosecutorReference"), is("ARREST_1234"));
+        assertThat(firstOffenceJson.get("finding"), is("N"));
+        assertThat(firstOffenceJson.getJSONObject("plea").get("pleaValue"), is("NOT_GUILTY"));
+    }
+
+
+    @Test
+    public void shouldBeSentToSpiOutForApplicationWithJudicialResults() throws JMSException {
+
+         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplateWithCustomApplication(randomUUID(), JurisdictionType.MAGISTRATES,
+                        asList(CourtApplication.courtApplication()
+                                .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
+                                .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                                .withApplicationReference("OFFENCE_CODE_REFERENCE")
+                                .withType(TestTemplates.courtApplicationTypeTemplates())
+                                .withApplicant(TestTemplates.courtApplicationPartyTemplates())
+                                .withApplicationStatus(ApplicationStatus.DRAFT)
+                                .withSubject(TestTemplates.courtApplicationPartyTemplates())
+                                .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffences()))
+                                .withApplicationParticulars("bail application")
+                                .withJudicialResults(buildJudicialResultList())
+                                .withAllegationOrComplaintStartDate(LocalDate.now())
+                                .withPlea(uk.gov.justice.core.courts.Plea.plea().withOffenceId(UUID.randomUUID()).withPleaDate(LocalDate.now()).withPleaValue("NOT_GUILTY").build())
+                                .withVerdict(Verdict.verdict()
+                                        .withVerdictType(VerdictType.verdictType()
+                                                .withId(fromString("3f0d69d0-2fda-3472-8d4c-a6248f661825"))
+                                                .withCategory(STRING.next())
+                                                .withCategoryType(STRING.next())
+                                                .withCjsVerdictCode("N")
+                                                .build())
+                                        .withOriginatingHearingId(randomUUID())
+                                        .withOffenceId(UUID.randomUUID())
+                                        .withVerdictDate(now())
+                                        .build())
+                                .build())))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        hearingResultsHaveBeenShared(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        final JSONObject firstOffenceJson = new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0);
+        assertThat(firstOffenceJson.get("offenceSequenceNumber"), is(0));
+        assertThat(new JSONObject(response.get()).getJSONObject("defendant").get("prosecutorReference"), is("ARREST_1234"));
+        assertThat(firstOffenceJson.get("finding"), is("N"));
+        assertThat(firstOffenceJson.getJSONObject("plea").get("pleaValue"), is("NOT_GUILTY"));
+    }
+
+    @Test
+    public void shouldSentSpiOutForApplicationWithCourtOrderOnly() throws JMSException {
+        final JsonObject payload = getPayload("json/public.hearing-resulted-court-order.json", randomUUID());
+        final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
+        hearingResultsHaveBeenShared(publicHearingResulted);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = publicHearingResulted.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        System.out.println("the response is -->>" + response.get());
+        final JSONObject jsonObject = new JSONObject(response.get());
+        assertThat(jsonObject.getString("caseId"), is("4d7fd02d-2297-4249-a7c6-d1d7bd567d58"));
+        assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").length(), is(2));
+        assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("id"), is("b729153d-50e3-4ce4-811c-f16799043d4f"));
     }
 }

@@ -50,8 +50,8 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
     public BaseStructure convert(PublicHearingResulted source) {
         final Hearing hearing = source.getHearing();
 
-
         final List<HearingDay> hearingDays = hearing.getHearingDays();
+
         final List<SessionDay> sessionDays = hearingDays.stream().map(h -> sessionDay()
                 .withListedDurationMinutes(h.getListedDurationMinutes())
                 .withListingSequence(h.getListingSequence())
@@ -60,13 +60,14 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
         final JsonObject organisationUnitPayload = getOrganisationUnitDetails(hearing.getCourtCentre().getId());
 
         final Optional<String> nationalCourtCodeOptional = of(FIELD_NATIONAL_COURT_CODE).filter(organisationUnitPayload::containsKey).map(organisationUnitPayload::getString);
-        final Integer nationalCourtCode = nationalCourtCodeOptional.map(Integer::valueOf).orElse(null);
 
+        final Integer nationalCourtCode = nationalCourtCodeOptional.map(Integer::valueOf).orElse(null);
 
         final String organisationUnitOuCode = of(FIELD_OU_CODE).filter(organisationUnitPayload::containsKey).map(organisationUnitPayload::getString).orElse(null);
 
         final CourtCentreWithLJA courtCentreWithLJA = courtCentreWithLJA().withCourtCentre(hearing.getCourtCentre()).withCourtHearingLocation(getCourtHearingLocation(organisationUnitOuCode, hearing.getCourtCentre().getRoomId())).withPsaCode(nationalCourtCode).build();
-        return baseStructure().withCourtCentreWithLJA(courtCentreWithLJA).withId(hearing.getId()).withSessionDays(sessionDays).build();
+
+        return baseStructure().withCourtCentreWithLJA(courtCentreWithLJA).withId(hearing.getId()).withSessionDays(sessionDays).withSourceType("CC").build();
     }
 
     private String getCourtHearingLocation(final String organisationUnitOuCode, final UUID roomId) {
@@ -86,6 +87,9 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
     }
 
     private String getCourtRoomOuCode(final UUID courtRoomUuid){
+        if(isNull(courtRoomUuid)) {
+            return null;
+        }
         final JsonObject payload = referenceDataService.getCourtRoomOuCode(courtRoomUuid.toString());
         if(isNull(payload)){
             return null;

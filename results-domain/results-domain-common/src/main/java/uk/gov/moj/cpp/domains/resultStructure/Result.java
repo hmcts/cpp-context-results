@@ -8,12 +8,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Result implements Serializable {
 
     private final UUID resultId;
-    private final long serialVersionUID = -4449907148803214679L;
+    private static final long serialVersionUID = -6415383762899689220L;
     private LocalDate amendmentDate;
     private String amendmentReason;
     private LocalDate approvedDate;
@@ -44,6 +45,8 @@ public class Result implements Serializable {
     private Boolean urgent;
     private Boolean d20;
     private UUID judicialResultTypeId;
+    private Boolean publishedForNows;
+    private Boolean rollUpPrompts;
 
     @SuppressWarnings("squid:S00107")
     public Result(final UUID resultId, final LocalDate amendmentDate, final String amendmentReason, final LocalDate approvedDate, final Category category, final String cjsCode,
@@ -51,7 +54,7 @@ public class Result implements Serializable {
                   final Boolean isAvailableForCourtExtract, final Boolean isConvictedResult, final Boolean isFinancialResult, final List<JudicialResultPrompt> judicialResultPrompts,
                   final String label, final String lastSharedDateTime, final LocalDate orderedDate, final UUID orderedHearingId, final BigDecimal rank, final List<String> usergroups,
                   final String welshLabel, final Boolean isDeleted, final Boolean lifeDuration, final String resultText, final Boolean terminatesOffenceProceedings, final Boolean publishedAsAPrompt,
-                  final Boolean excludedFromResults, final Boolean alwaysPublished, final Boolean urgent, final Boolean d20, final UUID judicialResultTypeId) {
+                  final Boolean excludedFromResults, final Boolean alwaysPublished, final Boolean urgent, final Boolean d20, final UUID judicialResultTypeId,final Boolean publishedForNows, final Boolean rollUpPrompts) {
         this.resultId = resultId;
         this.amendmentDate = amendmentDate;
         this.amendmentReason = amendmentReason;
@@ -82,6 +85,8 @@ public class Result implements Serializable {
         this.urgent = urgent;
         this.d20 = d20;
         this.judicialResultTypeId = judicialResultTypeId;
+        this.publishedForNows = publishedForNows;
+        this.rollUpPrompts = rollUpPrompts;
     }
 
     public static Builder result() {
@@ -324,6 +329,14 @@ public class Result implements Serializable {
         return judicialResultTypeId;
     }
 
+    public Boolean getPublishedForNows() {
+        return publishedForNows;
+    }
+
+    public Boolean getRollUpPrompts() {
+        return rollUpPrompts;
+    }
+
     @SuppressWarnings("squid:S3776")
     @Override
     public boolean equals(final Object o) {
@@ -336,10 +349,7 @@ public class Result implements Serializable {
 
         final Result that = (Result) o;
 
-        if (serialVersionUID != that.serialVersionUID) {
-            return false;
-        }
-        if (amendmentDate != null ? !amendmentDate.equals(that.amendmentDate) : that.amendmentDate != null) {
+         if (amendmentDate != null ? !amendmentDate.equals(that.amendmentDate) : that.amendmentDate != null) {
             return false;
         }
         if (amendmentReason != null ? !amendmentReason.equals(that.amendmentReason) : that.amendmentReason != null) {
@@ -426,6 +436,12 @@ public class Result implements Serializable {
         if (judicialResultTypeId != null ? !judicialResultTypeId.equals(that.judicialResultTypeId) : that.judicialResultTypeId != null) {
             return false;
         }
+        if (!Objects.equals(rollUpPrompts, that.rollUpPrompts)) {
+            return false;
+        }
+        if (!Objects.equals(publishedForNows, that.publishedForNows)) {
+            return false;
+        }
         return welshLabel != null ? welshLabel.equals(that.welshLabel) : that.welshLabel == null;
     }
 
@@ -461,6 +477,8 @@ public class Result implements Serializable {
         result = 31 * result + (alwaysPublished != null ? alwaysPublished.hashCode() : 0);
         result = 31 * result + (urgent != null ? urgent.hashCode() : 0);
         result = 31 * result + (d20 != null ? d20.hashCode() : 0);
+        result = 31 * result + (rollUpPrompts != null ? rollUpPrompts.hashCode() : 0);
+        result = 31 * result + (publishedForNows != null ? publishedForNows.hashCode() : 0);
         result = 31 * result + (judicialResultTypeId != null ? judicialResultTypeId.hashCode() : 0);
         result = 31 * result + (int) (serialVersionUID ^ (serialVersionUID >>> 32));
         return result;
@@ -528,6 +546,10 @@ public class Result implements Serializable {
         private Boolean d20;
 
         private UUID judicialResultTypeId;
+
+        private Boolean publishedForNows;
+
+        private Boolean rollUpPrompts;
 
         public Builder withResultId(final UUID resultId) {
             this.resultId = resultId;
@@ -683,9 +705,19 @@ public class Result implements Serializable {
             return this;
         }
 
+        public Builder withPublishedForNows(final Boolean publishedForNows) {
+            this.publishedForNows = publishedForNows;
+            return this;
+        }
+
+        public Builder withRollUpPrompts(final Boolean rollUpPrompts) {
+            this.rollUpPrompts = rollUpPrompts;
+            return this;
+        }
+
         public Result build() {
             return new Result(resultId, amendmentDate, amendmentReason, approvedDate, category, cjsCode, courtClerk, delegatedPowers, fourEyesApproval, isAdjournmentResult, isAvailableForCourtExtract, isConvictedResult, isFinancialResult, judicialResultPrompts, label, lastSharedDateTime, orderedDate, orderedHearingId, rank, usergroups, welshLabel, isDeleted, lifeDuration, resultText,
-            terminatesOffenceProceedings, publishedAsAPrompt, excludedFromResults,  alwaysPublished, urgent, d20, judicialResultTypeId);
+            terminatesOffenceProceedings, publishedAsAPrompt, excludedFromResults,  alwaysPublished, urgent, d20, judicialResultTypeId, publishedForNows, rollUpPrompts);
         }
     }
 }

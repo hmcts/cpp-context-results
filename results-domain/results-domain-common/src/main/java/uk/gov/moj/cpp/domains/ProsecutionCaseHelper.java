@@ -16,8 +16,10 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_CASE_JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INITIATION_CODE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_YOUTH;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LEGAL_ENTITY_DEFENDANT;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MASTER_DEFENDANT_ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MITIGATION;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MITIGATION_WELSH;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.NUMBER_OF_PREVIOUS_CONVICTIONS_CITED;
@@ -32,6 +34,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASE_ID
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASE_IDENTIFIER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.STATEMENT_OF_FACTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.STATEMENT_OF_FACTS_WELSH;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SUMMONS_CODE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.WITNESS_STATEMENT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.WITNESS_STATEMENT_WELSH;
 
@@ -107,6 +110,10 @@ public class ProsecutionCaseHelper {
 
         if (prosecutionCase.containsKey(CASE_MARKERS)) {
             transformProsecutionCaseBuilder.add(CASE_MARKERS, prosecutionCase.getJsonArray(CASE_MARKERS));
+        }
+
+        if (prosecutionCase.containsKey(SUMMONS_CODE)) {
+            transformProsecutionCaseBuilder.add(SUMMONS_CODE, prosecutionCase.getString(SUMMONS_CODE));
         }
 
         return transformProsecutionCaseBuilder;
@@ -191,6 +198,13 @@ public class ProsecutionCaseHelper {
             transformDefendantBuilder.add(PROCEEDINGS_CONCLUDED, defendant.getBoolean(PROCEEDINGS_CONCLUDED));
         }
 
+        if (defendant.containsKey(MASTER_DEFENDANT_ID)) {
+            transformDefendantBuilder.add(MASTER_DEFENDANT_ID, defendant.getJsonString(MASTER_DEFENDANT_ID));
+        }
+
+        if (defendant.containsKey(IS_YOUTH)) {
+            transformDefendantBuilder.add(IS_YOUTH, defendant.getBoolean(IS_YOUTH));
+        }
         return transformDefendantBuilder;
     }
 }

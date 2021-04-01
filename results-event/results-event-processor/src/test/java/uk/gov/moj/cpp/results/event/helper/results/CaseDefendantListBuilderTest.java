@@ -1,47 +1,59 @@
 package uk.gov.moj.cpp.results.event.helper.results;
 
 import static com.google.common.collect.ImmutableList.of;
+import static java.time.LocalDate.now;
+import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
+import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.core.courts.Defendant.defendant;
 import static uk.gov.justice.core.courts.Offence.offence;
 import static uk.gov.justice.core.courts.Person.person;
 import static uk.gov.justice.core.courts.PersonDefendant.personDefendant;
-
-import uk.gov.justice.core.courts.AssociatedIndividual;
-import uk.gov.justice.core.courts.AttendanceDay;
-import uk.gov.justice.core.courts.Defendant;
-import uk.gov.justice.core.courts.DefendantAttendance;
-import uk.gov.justice.core.courts.Hearing;
-import uk.gov.justice.core.courts.Individual;
-import uk.gov.justice.core.courts.IndividualDefendant;
-import uk.gov.justice.core.courts.Offence;
-import uk.gov.justice.core.courts.OffenceDetails;
-import uk.gov.justice.core.courts.Person;
-import uk.gov.justice.core.courts.PersonDefendant;
-import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
-import uk.gov.moj.cpp.results.test.TestTemplates;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.json.JsonObject;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+import static uk.gov.moj.cpp.results.test.TestTemplates.buildJudicialResultList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import uk.gov.justice.core.courts.ApplicationStatus;
+import uk.gov.justice.core.courts.AssociatedIndividual;
+import uk.gov.justice.core.courts.AttendanceDay;
+import uk.gov.justice.core.courts.CaseDefendant;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationCase;
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantAttendance;
+import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.Individual;
+import uk.gov.justice.core.courts.IndividualDefendant;
+import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.MasterDefendant;
+import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.OffenceDetails;
+import uk.gov.justice.core.courts.Person;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.Verdict;
+import uk.gov.justice.core.courts.VerdictType;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
+import uk.gov.moj.cpp.results.test.TestTemplates;
+
+import javax.json.JsonObject;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CaseDefendantListBuilderTest {
@@ -77,10 +89,50 @@ public class CaseDefendantListBuilderTest {
 
         final List<Defendant> defendantsFromRequest = prosecutionCase.getDefendants();
         final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing);
-        assertThat(caseDetailsDefendants, hasSize(2));
-        assertThat(caseDetailsDefendants, hasSize(defendantsFromRequest.size()));
+        assertEquals(2, caseDetailsDefendants.size());
+        assertEquals(caseDetailsDefendants.size(), defendantsFromRequest.size());
         assertDefendants(defendantsFromRequest, caseDetailsDefendants, hearing);
+    }
 
+    @Test
+    public void shouldBuildDefendantsForApplication() {
+
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+
+        final Hearing hearing = TestTemplates.basicShareHearingTemplateWithCustomApplication(randomUUID(), JurisdictionType.MAGISTRATES,
+                asList(CourtApplication.courtApplication()
+                        .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
+                        .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                        .withApplicationReference("OFFENCE_CODE_REFERENCE")
+                        .withType(TestTemplates.courtApplicationTypeTemplates())
+                        .withApplicant(TestTemplates.courtApplicationPartyTemplates())
+                        .withApplicationStatus(ApplicationStatus.DRAFT)
+                        .withSubject(TestTemplates.courtApplicationPartyTemplates())
+                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffences()))
+                        .withApplicationParticulars("bail application")
+                        .withJudicialResults(buildJudicialResultList())
+                        .withAllegationOrComplaintStartDate(LocalDate.now())
+                        .withPlea(uk.gov.justice.core.courts.Plea.plea().withOffenceId(UUID.randomUUID()).withPleaDate(LocalDate.now()).withPleaValue("NOT_GUILTY").build())
+                        .withVerdict(Verdict.verdict()
+                                .withVerdictType(VerdictType.verdictType()
+                                        .withId(fromString("3f0d69d0-2fda-3472-8d4c-a6248f661825"))
+                                        .withCategory(STRING.next())
+                                        .withCategoryType(STRING.next())
+                                        .withCjsVerdictCode("N")
+                                        .build())
+                                .withOriginatingHearingId(randomUUID())
+                                .withOffenceId(UUID.randomUUID())
+                                .withVerdictDate(now())
+                                .build())
+                        .build()));
+
+        final CourtApplication courtApplication = hearing.getCourtApplications().get(0);
+        final CourtApplicationCase courtApplicationCase = courtApplication.getCourtApplicationCases().get(0);
+
+        final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache)
+                .buildDefendantList(courtApplicationCase, courtApplication, hearing);
+        assertEquals(1, caseDetailsDefendants.size());
+        assertDefendants(courtApplication, hearing.getCourtApplications().get(0).getSubject().getMasterDefendant(), caseDetailsDefendants, hearing);
     }
 
     @Test
@@ -88,31 +140,31 @@ public class CaseDefendantListBuilderTest {
         final Hearing hearing = TestTemplates.basicShareResultsWithMagistratesTemplate().getHearing();
         final List<Defendant> defendantsFromRequest = of(defendant().withOffences(of(offence().withModeOfTrial("1010").build())).withPersonDefendant(personDefendant().withPersonDetails(person().withNationalityCode("GBR").build()).withArrestSummonsNumber("1232324").build()).build());
         final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing);
-        assertThat(caseDetailsDefendants, hasSize(1));
+        assertEquals(1, caseDetailsDefendants.size());
         final uk.gov.justice.core.courts.CaseDefendant caseDefendant = caseDetailsDefendants.get(0);
-        assertThat(caseDefendant.getIndividualDefendant().getPerson().getNationality(), is("GBR"));
-        assertThat(caseDefendant.getProsecutorReference(), is("1232324"));
+        assertEquals("GBR", caseDefendant.getIndividualDefendant().getPerson().getNationality());
+        assertEquals("1232324", caseDefendant.getProsecutorReference());
     }
 
     private void assertDefendants(final List<Defendant> defendantsFromRequest, final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
         for (final uk.gov.justice.core.courts.CaseDefendant caseDetailsDefendant : caseDetailsDefendants) {
             final Optional<Defendant> defendantOptional = defendantsFromRequest.stream().filter(d -> d.getId().equals(caseDetailsDefendant.getDefendantId())).findFirst();
-            assertThat(defendantOptional.isPresent(), is(true));
+            assertTrue(defendantOptional.isPresent());
             final Defendant defendantFromRequest = defendantOptional.get();
             if (isNotEmpty(defendantFromRequest.getProsecutionAuthorityReference())) {
-                assertThat(caseDetailsDefendant.getProsecutorReference(), is(defendantFromRequest.getProsecutionAuthorityReference()));
+                assertEquals(caseDetailsDefendant.getProsecutorReference(),defendantFromRequest.getProsecutionAuthorityReference());
             } else {
-                assertThat(caseDetailsDefendant.getProsecutorReference(), is("0800PP0100000000001H"));
+                assertEquals("0800PP0100000000001H", caseDetailsDefendant.getProsecutorReference());
             }
-            assertThat(caseDetailsDefendant.getPncId(), is(defendantFromRequest.getPncId()));
-            assertThat(caseDetailsDefendant.getJudicialResults(), is(defendantFromRequest.getDefendantCaseJudicialResults()));
-            assertThat(caseDetailsDefendant.getCorporateDefendant(), is(defendantFromRequest.getDefenceOrganisation()));
+            assertEquals(caseDetailsDefendant.getPncId(), defendantFromRequest.getPncId());
+            assertEquals(caseDetailsDefendant.getJudicialResults(), defendantFromRequest.getDefendantCaseJudicialResults());
+            assertEquals(caseDetailsDefendant.getCorporateDefendant(), defendantFromRequest.getDefenceOrganisation());
             if (null != defendantFromRequest.getAssociatedPersons()) {
                 defendantFromRequest.getAssociatedPersons().forEach(a -> {
                     final Optional<AssociatedIndividual> associatedIndividualOptional = caseDetailsDefendant.getAssociatedPerson().stream().filter(a1 -> a1.getPerson().getLastName().equalsIgnoreCase(a.getPerson().getLastName())).findFirst();
-                    assertThat(associatedIndividualOptional.isPresent(), is(true));
+                    assertTrue(associatedIndividualOptional.isPresent());
                     final AssociatedIndividual associatedIndividual = associatedIndividualOptional.get();
-                    assertThat(associatedIndividual.getRole(), is("parentGuardian"));
+                    assertEquals("parentGuardian", associatedIndividual.getRole());
                     assertPerson(associatedIndividual.getPerson(), a.getPerson());
                 });
             }
@@ -126,15 +178,40 @@ public class CaseDefendantListBuilderTest {
 
     }
 
+    private void assertDefendants(final CourtApplication courtApplication, final MasterDefendant defendant, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
+        for (final uk.gov.justice.core.courts.CaseDefendant caseDetailsDefendant : caseDetailsDefendants) {
+            assertEquals("ARREST_1234", caseDetailsDefendant.getProsecutorReference());
+            assertEquals(caseDetailsDefendant.getPncId(), defendant.getPncId());
+            assertEquals(caseDetailsDefendant.getCorporateDefendant(), defendant.getLegalEntityDefendant());
+            if (null != defendant.getAssociatedPersons()) {
+                defendant.getAssociatedPersons().forEach(a -> {
+                    final Optional<AssociatedIndividual> associatedIndividualOptional = caseDetailsDefendant.getAssociatedPerson().stream().filter(a1 -> a1.getPerson().getLastName().equalsIgnoreCase(a.getPerson().getLastName())).findFirst();
+                    assertTrue(associatedIndividualOptional.isPresent());
+                    assertTrue(associatedIndividualOptional.isPresent());
+                    final AssociatedIndividual associatedIndividual = associatedIndividualOptional.get();
+                    assertEquals("parentGuardian", associatedIndividual.getRole());
+                    assertPerson(associatedIndividual.getPerson(), a.getPerson());
+                });
+            }
+            if (null != hearing.getDefendantAttendance()) {
+                assertAttendanceDays(caseDetailsDefendant.getAttendanceDays(), hearing.getDefendantAttendance(), caseDetailsDefendant.getDefendantId());
+            }
+            assertPresentAtHearing(caseDetailsDefendant);
+            assertDefendantPerson(caseDetailsDefendant.getIndividualDefendant(), defendant.getPersonDefendant());
+            assertOffences(caseDetailsDefendant.getOffences(), courtApplication);
+        }
+
+    }
+
     private void assertPresentAtHearing(final uk.gov.justice.core.courts.CaseDefendant caseDetailsDefendant) {
         if (DEFAULT_DEFENDANT_ID1.equals(caseDetailsDefendant.getDefendantId()) || DEFAULT_DEFENDANT_ID4.equals(caseDetailsDefendant.getDefendantId())) {
-            assertThat(caseDetailsDefendant.getIndividualDefendant().getPresentAtHearing(), is("Y"));
+            assertEquals("Y", caseDetailsDefendant.getIndividualDefendant().getPresentAtHearing());
         }
         if (DEFAULT_DEFENDANT_ID2.equals(caseDetailsDefendant.getDefendantId())) {
-            assertThat(caseDetailsDefendant.getIndividualDefendant().getPresentAtHearing(), is("N"));
+            assertEquals("N", caseDetailsDefendant.getIndividualDefendant().getPresentAtHearing());
         }
         if (DEFAULT_DEFENDANT_ID3.equals(caseDetailsDefendant.getDefendantId())) {
-            assertThat(caseDetailsDefendant.getIndividualDefendant().getPresentAtHearing(), is("A"));
+            assertEquals("A", caseDetailsDefendant.getIndividualDefendant().getPresentAtHearing());
         }
     }
 
@@ -142,71 +219,86 @@ public class CaseDefendantListBuilderTest {
 
         for (final OffenceDetails offence : offences) {
             final Optional<Offence> offenceOptional = defendantFromRequestOffences.stream().filter(o -> o.getId().equals(offence.getId())).findFirst();
-            assertThat(offenceOptional.isPresent(), is(true));
+            assertTrue(offenceOptional.isPresent());
             final Offence offenceFromRequest = offenceOptional.get();
-            assertThat(offence.getArrestDate(), is(offenceFromRequest.getArrestDate()));
-            assertThat(offence.getChargeDate(), is(offenceFromRequest.getChargeDate()));
-            assertThat(offence.getConvictingCourt(), is(nullValue()));
-            assertThat(offence.getConvictionDate(), is(offenceFromRequest.getConvictionDate()));
-            assertThat(offence.getEndDate(), is(offenceFromRequest.getEndDate()));
-            assertThat(offence.getFinalDisposal(), is("Y"));
-            assertThat(offence.getModeOfTrial(), is("1010"));
-            assertThat(offence.getOffenceCode(), is(offenceFromRequest.getOffenceCode()));
-            assertThat(offence.getOffenceFacts(), is(offenceFromRequest.getOffenceFacts()));
-            assertThat(offence.getOffenceSequenceNumber(), is(offenceFromRequest.getOrderIndex()));
-            assertThat(offence.getStartDate(), is(offenceFromRequest.getStartDate()));
-            assertThat(offence.getWording(), is(offenceFromRequest.getWording()));
+            assertEquals(offence.getArrestDate(), offenceFromRequest.getArrestDate());
+            assertEquals(offence.getChargeDate(), offenceFromRequest.getChargeDate());
+            assertNull(offence.getConvictingCourt());
+            assertEquals(offence.getConvictionDate(), offenceFromRequest.getConvictionDate());
+            assertEquals(offence.getEndDate(), offenceFromRequest.getEndDate());
+            assertEquals("Y", offence.getFinalDisposal());
+            assertEquals("1010", offence.getModeOfTrial());
+            assertEquals(offence.getOffenceCode(), offenceFromRequest.getOffenceCode());
+            assertEquals(offence.getOffenceFacts(), offenceFromRequest.getOffenceFacts());
+            assertEquals(offence.getOffenceSequenceNumber(), offenceFromRequest.getOrderIndex());
+            assertEquals(offence.getStartDate(), offenceFromRequest.getStartDate());
+            assertEquals(offence.getWording(), offenceFromRequest.getWording());
             assertAllocationDecision(offence, offenceFromRequest);
-
         }
+    }
+
+    private void assertOffences(final List<uk.gov.justice.core.courts.OffenceDetails> offences, final CourtApplication courtApplication) {
+        assertEquals(2, offences.size());
+        final OffenceDetails offence = offences.get(0);
+        assertNull(offence.getArrestDate());
+        assertEquals(offence.getChargeDate(), courtApplication.getApplicationReceivedDate());
+        assertNull(offence.getConvictingCourt());
+        assertEquals(offence.getConvictionDate(), courtApplication.getConvictionDate());
+        assertEquals(offence.getEndDate(), courtApplication.getAllegationOrComplaintEndDate());
+        assertEquals("Y", offence.getFinalDisposal());
+        assertEquals("", offence.getModeOfTrial());
+        assertEquals(offence.getOffenceCode(), courtApplication.getType().getCode());
+        assertEquals(offence.getWording(), courtApplication.getApplicationParticulars());
+        assertEquals(new Integer(0), offence.getOffenceSequenceNumber());
+        assertEquals(offence.getStartDate(), courtApplication.getAllegationOrComplaintStartDate());
     }
 
     private void assertAllocationDecision(final OffenceDetails offenceDetail, final Offence offenceFromRequest) {
         if (nonNull(offenceDetail.getAllocationDecision())) {
-            assertThat(offenceDetail.getAllocationDecision().getMotReasonDescription(), is(offenceFromRequest.getAllocationDecision().getMotReasonDescription()));
-            assertThat(offenceDetail.getAllocationDecision().getAllocationDecisionDate(), is(offenceFromRequest.getAllocationDecision().getAllocationDecisionDate()));
-            assertThat(offenceDetail.getAllocationDecision().getMotReasonCode(), is(offenceFromRequest.getAllocationDecision().getMotReasonCode()));
-            assertThat(offenceDetail.getAllocationDecision().getMotReasonId(), is(offenceFromRequest.getAllocationDecision().getMotReasonId()));
-            assertThat(offenceDetail.getAllocationDecision().getOffenceId(), is(offenceFromRequest.getAllocationDecision().getOffenceId()));
-            assertThat(offenceDetail.getAllocationDecision().getOriginatingHearingId(), is(offenceFromRequest.getAllocationDecision().getOriginatingHearingId()));
+            assertEquals(offenceDetail.getAllocationDecision().getMotReasonDescription(), offenceFromRequest.getAllocationDecision().getMotReasonDescription());
+            assertEquals(offenceDetail.getAllocationDecision().getAllocationDecisionDate(), offenceFromRequest.getAllocationDecision().getAllocationDecisionDate());
+            assertEquals(offenceDetail.getAllocationDecision().getMotReasonCode(), offenceFromRequest.getAllocationDecision().getMotReasonCode());
+            assertEquals(offenceDetail.getAllocationDecision().getMotReasonId(), offenceFromRequest.getAllocationDecision().getMotReasonId());
+            assertEquals(offenceDetail.getAllocationDecision().getOffenceId(), offenceFromRequest.getAllocationDecision().getOffenceId());
+            assertEquals(offenceDetail.getAllocationDecision().getOriginatingHearingId(), offenceFromRequest.getAllocationDecision().getOriginatingHearingId());
             if (nonNull(offenceDetail.getAllocationDecision().getCourtIndicatedSentence())) {
-                assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId(),
-                        is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId()));
-                assertThat(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription(),
-                        is(offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription()));
+                assertEquals(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId(),
+                        offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceTypeId());
+                assertEquals(offenceDetail.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription(),
+                        offenceFromRequest.getAllocationDecision().getCourtIndicatedSentence().getCourtIndicatedSentenceDescription());
             }
         }
     }
 
     private void assertDefendantPerson(final IndividualDefendant individualDefendant, final PersonDefendant defendantFromRequest) {
-        assertThat(individualDefendant.getBailStatus(), is(defendantFromRequest.getBailStatus()));
-        assertThat(individualDefendant.getBailConditions(), is(defendantFromRequest.getBailConditions()));
-        assertThat(individualDefendant.getReasonForBailConditionsOrCustody(), is(defendantFromRequest.getBailReasons()));
+        assertEquals(individualDefendant.getBailStatus(), defendantFromRequest.getBailStatus());
+        assertEquals(individualDefendant.getBailConditions(), defendantFromRequest.getBailConditions());
+        assertEquals(individualDefendant.getReasonForBailConditionsOrCustody(), defendantFromRequest.getBailReasons());
         assertPerson(individualDefendant.getPerson(), defendantFromRequest.getPersonDetails());
     }
 
     private void assertAttendanceDays(final List<uk.gov.justice.core.courts.AttendanceDay> attendanceDays, final List<DefendantAttendance> defendantAttendance, final UUID defendantId) {
         final Optional<List<uk.gov.justice.core.courts.AttendanceDay>> attendanceDaysFromRequest = defendantAttendance.stream().filter(a -> a.getDefendantId().equals(defendantId)).findFirst().map(a -> a.getAttendanceDays());
-        assertThat(attendanceDaysFromRequest.isPresent(), is(true));
+        assertEquals(true, attendanceDaysFromRequest.isPresent());
         final List<uk.gov.justice.core.courts.AttendanceDay> attendanceDaysListFromRequest = attendanceDaysFromRequest.get();
-        assertThat(attendanceDaysListFromRequest, hasSize(1));
-        assertThat(attendanceDays, hasSize(attendanceDaysListFromRequest.size()));
+        assertEquals(1, attendanceDaysListFromRequest.size());
+        assertEquals(attendanceDays.size(), attendanceDaysListFromRequest.size());
         final uk.gov.justice.core.courts.AttendanceDay attendanceDay = attendanceDays.get(0);
         final AttendanceDay attendanceDayFromRequest = attendanceDaysListFromRequest.get(0);
-        assertThat(attendanceDay.getAttendanceType(), is(attendanceDayFromRequest.getAttendanceType()));
-        assertThat(attendanceDay.getDay(), is(attendanceDayFromRequest.getDay()));
+        assertEquals(attendanceDay.getAttendanceType(), attendanceDayFromRequest.getAttendanceType());
+        assertEquals(attendanceDay.getDay(), attendanceDayFromRequest.getDay());
 
     }
 
     private void assertPerson(final Individual associatedPerson, final Person person) {
-        assertThat(associatedPerson.getFirstName(), is(person.getFirstName()));
-        assertThat(associatedPerson.getAddress(), is(person.getAddress()));
-        assertThat(associatedPerson.getLastName(), is(person.getLastName()));
-        assertThat(associatedPerson.getContact(), is(person.getContact()));
-        assertThat(associatedPerson.getDateOfBirth(), is(person.getDateOfBirth()));
-        assertThat(associatedPerson.getGender(), is(person.getGender()));
-        assertThat(associatedPerson.getMiddleName(), is(person.getMiddleName()));
-        assertThat(associatedPerson.getNationality(), is("UK"));
-        assertThat(associatedPerson.getTitle(), is(person.getTitle()));
+        assertEquals(associatedPerson.getFirstName(), person.getFirstName());
+        assertEquals(associatedPerson.getAddress(), person.getAddress());
+        assertEquals(associatedPerson.getLastName(), person.getLastName());
+        assertEquals(associatedPerson.getContact(), person.getContact());
+        assertEquals(associatedPerson.getDateOfBirth(), person.getDateOfBirth());
+        assertEquals(associatedPerson.getGender(), person.getGender());
+        assertEquals(associatedPerson.getMiddleName(), person.getMiddleName());
+        assertEquals("UK", associatedPerson.getNationality());
+        assertEquals(associatedPerson.getTitle(), person.getTitle());
     }
 }

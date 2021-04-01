@@ -99,7 +99,7 @@ public class ReferenceDataServiceStub {
 
         final JsonObject prosecutorCodeResponse = createObjectBuilder()
                 .add("prosecutors", createArrayBuilder()
-                        .add(prosecutorBodyBuilder.build())
+                        .add(response)
                         .build())
                 .build();
 

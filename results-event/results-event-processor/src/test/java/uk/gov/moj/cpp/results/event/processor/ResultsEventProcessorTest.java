@@ -26,6 +26,7 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildAllocationDecision;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate;
 
 import uk.gov.justice.core.courts.BailStatus;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -55,11 +56,14 @@ import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.Before;
@@ -185,7 +189,7 @@ public class ResultsEventProcessorTest {
         final JsonObject transformedHearing = envelope.asJsonObject();
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
-        when(eventGridService.sendHearingResultedEvent(userId, hearingId)).thenReturn(true);
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId, "Hearing_Resulted")).thenReturn(true);
 
         resultsEventProcessor.hearingResulted(envelope);
 
@@ -210,7 +214,7 @@ public class ResultsEventProcessorTest {
     @Test
     public void shouldIssueCreateResultCommandWhenHearingResulted() {
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate();
 
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
@@ -352,7 +356,7 @@ public class ResultsEventProcessorTest {
 
     @Test
     public void shouldContinueIfEventGridFailsWhenHearingResulted() {
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate();
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
         final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -361,7 +365,7 @@ public class ResultsEventProcessorTest {
 
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
-        when(eventGridService.sendHearingResultedEvent(userId, hearingId)).thenThrow(new RuntimeException("Error"));
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId, "Hearing_Resulted")).thenThrow(new RuntimeException("Error"));
 
         resultsEventProcessor.hearingResulted(envelope);
 
@@ -370,8 +374,8 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void shouldUseCorrectHashKeyWhenHearingResulted() {
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+    public void shouldUseLAAEventTypeWhenHearingResulted() {
+        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate(false, false);
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
         final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -399,12 +403,46 @@ public class ResultsEventProcessorTest {
         when(cacheService.add(expectedCacheKeyExternal, externalPayload.toString())).thenReturn("");
         when(cacheService.add(expectedCacheKeyInternal, internalPayload.toString())).thenReturn("");
 
-        when(eventGridService.sendHearingResultedEvent(userId, hearingId)).thenReturn(true);
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId, "Hearing_Resulted")).thenReturn(true);
 
         resultsEventProcessor.hearingResulted(envelope);
 
         verify(cacheService, times(1)).add(expectedCacheKeyExternal, externalPayload.toString());
         verify(cacheService, times(1)).add(expectedCacheKeyInternal, internalPayload.toString());
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+    }
+
+    @Test
+    public void shouldUseSJPEventTypeWhenHearingResulted() {
+        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate(false, true);
+        final String hearingId = shareResultsMessage.getHearing().getId().toString();
+        final UUID userId = randomUUID();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
+                objectToJsonObjectConverter.convert(shareResultsMessage));
+
+        final JsonObject payload = envelope.asJsonObject();
+
+        JsonObject transformedHearing = payload.getJsonObject("hearing");
+        transformedHearing = jsonObjectToBuilder(transformedHearing).add("isSJPHearing", true).build();
+
+        when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing")))
+                .thenReturn(transformedHearing);
+
+        final JsonObject externalPayload = Json.createObjectBuilder()
+                .add("hearing", transformedHearing)
+                .add("sharedTime", payload.getJsonString("sharedTime"))
+                .build();
+
+        final String expectedCacheKeyExternal = "SJP_" + hearingId + "_result_";
+
+        when(cacheService.add(expectedCacheKeyExternal, externalPayload.toString())).thenReturn("");
+
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId, "SJP_Hearing_Resulted")).thenReturn(true);
+
+        resultsEventProcessor.hearingResulted(envelope);
+
+        verify(cacheService, times(1)).add(expectedCacheKeyExternal, externalPayload.toString());
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
     }
@@ -436,6 +474,14 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.session.sourceType", is("SJP"))
                         ))
                 ));
+    }
+
+    private JsonObjectBuilder jsonObjectToBuilder(JsonObject jo) {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        for (Map.Entry<String, JsonValue> entry : jo.entrySet()) {
+            builder.add(entry.getKey(), entry.getValue());
+        }
+        return builder;
     }
 
     private ResultDefinition buildResultDefinition() {

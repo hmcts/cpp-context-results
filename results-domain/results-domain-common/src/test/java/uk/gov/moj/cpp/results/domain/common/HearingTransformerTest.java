@@ -12,13 +12,18 @@ import uk.gov.justice.core.courts.external.ApiDefendant;
 import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.core.courts.external.ApiJudicialResult;
 import uk.gov.justice.core.courts.external.ApiOffence;
+import uk.gov.justice.core.courts.external.BreachType;
 import uk.gov.justice.core.courts.external.JurisdictionType;
+import uk.gov.justice.core.courts.external.LinkType;
+import uk.gov.justice.core.courts.external.OffenceActiveOrder;
+import uk.gov.justice.core.courts.external.SummonsTemplateType;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.HearingTransformer;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 
 import javax.json.JsonObject;
 
@@ -62,6 +67,49 @@ public class HearingTransformerTest {
         final ApiJudicialResult apiJudicialResult = apiOffence.getJudicialResults().get(0);
         assertThat(apiJudicialResult.getNextHearing().getHearingLanguage().name(), is(HearingLanguage.ENGLISH.name()));
         assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));
+    }
+
+    @Test
+    public void shouldTransformHearingWithCourtApplications() {
+        final JsonObject hearingJson = getHearingJson("hearingWithCourtApplications.json");
+        final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
+        final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
+        final ApiDefendant apiDefendant = apiHearing.getProsecutionCases().get(0).getDefendants().get(0);
+
+        assertThat(apiHearing.getDefendantJudicialResults().size(), is(1));
+        assertThat(apiDefendant.getJudicialResults().size(), is(2));
+        assertThat(apiDefendant.getOffences().get(0).getJudicialResults().size(), is(2));
+        assertThat(apiHearing.getCourtApplications().get(0).getJudicialResults().size(), is(2));
+        assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
+        final ApiOffence apiOffence = apiDefendant.getOffences().get(0);
+        assertThat(apiOffence.getOffenceFacts().getVehicleCode(), nullValue());
+        final ApiJudicialResult apiJudicialResult = apiOffence.getJudicialResults().get(0);
+        assertThat(apiJudicialResult.getNextHearing().getHearingLanguage().name(), is(HearingLanguage.ENGLISH.name()));
+        assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));
+
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getPersonDetails().getFirstName(), is("Fred"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getPersonDetails().getLastName(), is("Smith"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getPersonDetails().getFirstName(), is("John"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getPersonDetails().getLastName(), is("Beard"));
+        
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getId().toString(), is("c10e3b71-6a6d-45ef-9b62-34df4d54972b"));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getCategoryCode(), is("App category code"));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getLinkType().name(), is(LinkType.STANDALONE.name()));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getJurisdiction().name(), is(JurisdictionType.MAGISTRATES.name()));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getSummonsTemplateType().name(), is(SummonsTemplateType.GENERIC_APPLICATION.name()));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getBreachType().name(), is(BreachType.GENERIC_BREACH.name()));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getAppealFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getApplicantAppellantFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getPleaApplicableFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getCommrOfOathFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getCourtOfAppealFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getCourtExtractAvlFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getProsecutorThirdPartyFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getSpiOutApplicableFlag(), is(false));
+        assertThat(apiHearing.getCourtApplications().get(0).getType().getOffenceActiveOrder().name(), is(OffenceActiveOrder.OFFENCE.name()));
+
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicationReceivedDate(), is(LocalDate.of(2020,1,20)));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicationStatus().toString(), is("DRAFT"));
     }
 
     @Test

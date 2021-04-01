@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public interface EventGridService {
 
-    boolean sendHearingResultedEvent(UUID userId, String hearingId);
+    boolean sendHearingResultedEvent(UUID userId, String hearingId, String eventType);
 
 }

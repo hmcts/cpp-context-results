@@ -14,17 +14,25 @@ import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getPrese
 
 import uk.gov.justice.core.courts.AssociatedPerson;
 import uk.gov.justice.core.courts.AttendanceDay;
+import uk.gov.justice.core.courts.CaseDefendant;
+import uk.gov.justice.core.courts.CourtApplication;
+
+import uk.gov.justice.core.courts.CourtApplicationCase;
+import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.LegalEntityDefendant;
+import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.inject.Inject;
+import javax.json.JsonObject;
 
 
 
@@ -32,7 +40,7 @@ public class CaseDefendantListBuilder {
 
     private static final String POLICE_ASN_DEFAULT_VALUE = "0800PP0100000000001H";
 
-    ReferenceCache referenceCache;
+    private final ReferenceCache referenceCache;
 
     @Inject
     public CaseDefendantListBuilder(final ReferenceCache referenceCache) {
@@ -56,8 +64,8 @@ public class CaseDefendantListBuilder {
                     .withAssociatedPerson(buildAssociatedDefendant(defendant.getAssociatedPersons()));
 
             final String presentAtHearing = getPresentAtHearing(attendanceDays, hearing, defendant);
-            addCorporateDefendant(defendant, builder, presentAtHearing);
-            addIndividualDefendant(defendant, builder, presentAtHearing);
+            addCorporateDefendant(defendant.getLegalEntityDefendant(), builder, presentAtHearing);
+            addIndividualDefendant(defendant.getPersonDefendant(), builder, presentAtHearing);
             defendantList.add(builder.build());
         }
 
@@ -65,24 +73,54 @@ public class CaseDefendantListBuilder {
     }
 
 
+    public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final CourtApplicationCase courtApplicationCase,
+                                                                             final CourtApplication courtApplication, final Hearing hearing) {
+        return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtApplicationCase, courtApplication));
+    }
+
+    public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final CourtOrderOffence courtOrderOffence,
+                                                                             final CourtApplication courtApplication, final Hearing hearing) {
+        return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtOrderOffence, courtApplication));
+    }
+
+    private List<CaseDefendant> buildDefendantList(CourtApplication courtApplication, Hearing hearing, List<uk.gov.justice.core.courts.OffenceDetails> offences) {
+        final List<uk.gov.justice.core.courts.CaseDefendant> defendantList = new ArrayList<>();
+        final MasterDefendant masterDefendant = courtApplication.getSubject().getMasterDefendant();
+        if(nonNull(masterDefendant)) {
+            final List<AttendanceDay> attendanceDays = null != hearing.getDefendantAttendance() ? new uk.gov.moj.cpp.results.event.helper.results.AttendanceDay().buildAttendance(hearing.getDefendantAttendance(), masterDefendant.getMasterDefendantId()) : emptyList();
+            final uk.gov.justice.core.courts.CaseDefendant.Builder builder = caseDefendant()
+                    .withDefendantId(masterDefendant.getMasterDefendantId())
+                    .withProsecutorReference(getProsecutorReference(masterDefendant.getProsecutionAuthorityReference(), masterDefendant.getPersonDefendant()))
+                    .withPncId(masterDefendant.getPncId())
+                    .withAttendanceDays(attendanceDays)
+                    .withOffences(offences)
+                    .withAssociatedPerson(buildAssociatedDefendant(masterDefendant.getAssociatedPersons()));
+
+            final String presentAtHearing = getPresentAtHearing(attendanceDays, hearing, masterDefendant);
+            addCorporateDefendant(masterDefendant.getLegalEntityDefendant(), builder, presentAtHearing);
+            addIndividualDefendant(masterDefendant.getPersonDefendant(), builder, presentAtHearing);
+            defendantList.add(builder.build());
+        }
+        return defendantList;
+    }
+
     private List<uk.gov.justice.core.courts.AssociatedIndividual> buildAssociatedDefendant(final List<AssociatedPerson> associatedPersons) {
         final List<uk.gov.justice.core.courts.AssociatedIndividual> resultList = new ArrayList<>();
         if (null != associatedPersons) {
-            associatedPersons.stream().forEach(a -> resultList.add(associatedIndividual().withRole(a.getRole()).withPerson(buildIndividual(a.getPerson())).build()));
+            associatedPersons.forEach(a -> resultList.add(associatedIndividual().withRole(a.getRole()).withPerson(buildIndividual(a.getPerson())).build()));
         }
         return resultList;
     }
 
-
-    private void addIndividualDefendant(final Defendant defendant, final uk.gov.justice.core.courts.CaseDefendant.Builder builder, final String presentAtHearing) {
-        if (null != defendant.getPersonDefendant()) {
-            builder.withIndividualDefendant(buildIndividualDefendant(defendant.getPersonDefendant(), presentAtHearing));
+    private void addIndividualDefendant(final PersonDefendant defendant, final uk.gov.justice.core.courts.CaseDefendant.Builder builder, final String presentAtHearing) {
+        if (null != defendant) {
+            builder.withIndividualDefendant(buildIndividualDefendant(defendant, presentAtHearing));
         }
     }
 
-    private void addCorporateDefendant(final Defendant defendant, final uk.gov.justice.core.courts.CaseDefendant.Builder builder, final String presentAtHearing) {
-        if (nonNull(defendant.getLegalEntityDefendant()) && nonNull(defendant.getLegalEntityDefendant().getOrganisation())) {
-            builder.withCorporateDefendant(new OrganisationDetails().buildCorporateDefendant(defendant.getLegalEntityDefendant().getOrganisation(), presentAtHearing));
+    private void addCorporateDefendant(final LegalEntityDefendant defendant, final uk.gov.justice.core.courts.CaseDefendant.Builder builder, final String presentAtHearing) {
+        if (nonNull(defendant) && nonNull(defendant.getOrganisation())) {
+            builder.withCorporateDefendant(new OrganisationDetails().buildCorporateDefendant(defendant.getOrganisation(), presentAtHearing));
         }
     }
 

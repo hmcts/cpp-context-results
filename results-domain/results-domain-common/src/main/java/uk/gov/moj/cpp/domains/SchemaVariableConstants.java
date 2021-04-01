@@ -117,6 +117,55 @@ public final class SchemaVariableConstants {
     public static final String BREACHED_ORDER_DATE = "breachedOrderDate";
     public static final String ORDERING_COURT = "orderingCourt";
     public static final String REMOVAL_REASON = "removalReason";
+    public static final String SUBJECT = "subject";
+    public static final String COURT_APPLICATION_CASES = "courtApplicationCases";
+    public static final String ALLEGATION_OR_COMPLAINT_START_DATE = "allegationOrComplaintStartDate";
+    public static final String COURT_ORDER = "courtOrder";
+    public static final String ALLEGATION_OR_COMPLAINT_END_DATE = "allegationOrComplaintEndDate";
+    public static final String THIRD_PARTIES = "thirdParties";
+    public static final String DEFENDANT_ASN = "defendantASN";
+    public static final String COMMISSIONER_OF_OATH = "commissionerOfOath";
+    public static final String FUTURE_SUMMONS_HEARING = "futureSummonsHearing";
+    public static final String HAS_SUMMONS_SUPPLIED = "hasSummonsSupplied";
+    public static final String MASTER_DEFENDANT_ID = "masterDefendantId";
+    public static final String IS_YOUTH = "isYouth";
+    public static final String LAID_DATE = "laidDate";
+    public static final String COMMITTING_COURT = "committingCourt";
+    public static final String OFFENCE_DATE_CODE = "offenceDateCode";
+    public static final String DVLA_OFFENCE_CODE= "dvlaOffenceCode";
+    public static final String REPORTING_RESTRICTIONS= "reportingRestrictions";
+    public static final String DEFENDANT_HEARING_YOUTH_MARKERS = "defendantHearingYouthMarkers";
+    public static final String IS_EFFECTIVE_TRIAL = "isEffectiveTrial";
+    public static final String COMPANY_REPRESENTATIVES = "companyRepresentatives";
+    public static final String IS_VACATED_TRIAL = "isVacatedTrial";
+    public static final String APPROVALS_REQUESTED = "approvalsRequested";
+    public static final String SEEDING_HEARING = "seedingHearing";
+    public static final String IS_VIRTUALBOX_HEARING = "isVirtualBoxHearing";
+    public static final String IS_SJP_HEARING = "isSJPHearing";
+    public static final String CLASS_OF_CASE = "classOfCase";
+    public static final String IS_CPS_ORG_VERIFY_ERROR = "isCpsOrgVerifyError";
+    public static final String  SUMMONS_CODE = "summonsCode";
+    public static final String IS_SJP = "isSJP";
+    public static final String JUDICIAL_RESULT_TYPE_ID = "judicialResultTypeId";
+    public static final String LABEL = "label";
+    public static final String ORDER_DATE = "orderDate";
+    public static final String ORDERING_HEARING_ID = "orderingHearingId";
+    public static final String IS_SJP_ORDER = "isSJPOrder";
+    public static final String CAN_BE_SUBJECT_OF_BREACH_PROCEEDINGS =  "canBeSubjectOfBreachProceedings";
+    public static final String CAN_BE_SUBJECT_OF_VARIATION_PROCEEDINGS =  "canBeSubjectOfVariationProceedings";
+    public static final String COURT_ORDER_OFFENCES =  "courtOrderOffences";
+    public static final String DEFENDANT_IDS = "defendantIds";
+    public static final String SYNONYM = "synonym";
+    public static final String SUMMONS_REQUIRED = "summonsRequired";
+    public static final String NOTIFICATION_REQUIRED = "notificationRequired";
+    public static final String APPOINTMENT_NOTIFICATION_REQUIRED = "appointmentNotificationRequired";
+    public static final String PERSON_DETAILS = "personDetails";
+    public static final String ORGANISATION = "organisation";
+    public static final String ORGANISATION_PERSONS = "organisationPersons";
+    public static final String PROSECUTING_AUTHORITY = "prosecutingAuthority";
+    public static final String MASTER_DEFENDANT = "masterDefendant";
+    public static final String REPRESENTATION_ORGANISATION = "representationOrganisation";
+
     private SchemaVariableConstants() {
     }
 }

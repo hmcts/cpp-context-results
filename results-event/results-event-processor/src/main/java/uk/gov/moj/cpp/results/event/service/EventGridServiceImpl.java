@@ -62,7 +62,7 @@ public class EventGridServiceImpl implements EventGridService {
         }
     }
 
-    public boolean sendHearingResultedEvent(UUID userId, String hearingId) {
+    public boolean sendHearingResultedEvent(UUID userId, String hearingId, String eventType) {
 
         if ("localhost".equals(eventgridTopicHost)) {
             return true;
@@ -75,7 +75,7 @@ public class EventGridServiceImpl implements EventGridService {
                 uuid.toString(),
                 String.format("HearingResulted%s", hearingId),
                 new HearingResultedEventData(userId, hearingId),
-                "Hearing_Resulted",
+                eventType,
                 DateTime.now(),
                 "2.0"
         ));

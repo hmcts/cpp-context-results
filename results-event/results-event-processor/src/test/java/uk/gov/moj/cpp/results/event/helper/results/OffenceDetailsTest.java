@@ -6,12 +6,15 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
 import static uk.gov.justice.core.courts.JudicialResultPrompt.judicialResultPrompt;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 
 import uk.gov.justice.core.courts.Category;
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
@@ -22,6 +25,7 @@ import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -95,6 +99,33 @@ public class OffenceDetailsTest {
         List<uk.gov.justice.core.courts.OffenceDetails> offenceDetailsList = new OffenceDetails().buildOffences(defendant, hearing.getDefendantJudicialResults());
         uk.gov.justice.core.courts.OffenceDetails offenceDetailsFromRequest = offenceDetailsList.get(0);
         assertOffenceDetails(offenceDetailsList, offenceDetailsFromRequest, offenceDetails.get(0).getOrderIndex());
+    }
+
+    @Test
+    public void prepareSpiOutApplicationPayloadOnlyWhenCJSCodeIsSet() {
+        final Hearing hearing = basicShareHearingTemplateWithApplication(randomUUID(), JurisdictionType.MAGISTRATES);
+        final CourtApplication courtApplication = hearing.getCourtApplications().get(0);
+        courtApplication.getType().setCode("CJS").setSpiOutApplicableFlag(true);
+        courtApplication.setJudicialResults(Collections.singletonList(judicialResult().build()));
+        hearing.setCourtApplications(Collections.singletonList(courtApplication));
+        final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetails = new OffenceDetails().buildOffences(courtApplication.getCourtApplicationCases().get(0), courtApplication);
+        assertEquals(2, offenceDetails.size());
+        assertEquals("CJS", offenceDetails.get(0).getOffenceCode());
+        assertEquals(courtApplication.getCourtApplicationCases().get(0).getOffences().get(0).getOffenceCode(), offenceDetails.get(1).getOffenceCode());
+
+    }
+
+    @Test
+    public void shouldNotPrepareSpiOutApplicationPayloadWhenCJSCodeIsNotSet() {
+        final Hearing hearing = basicShareHearingTemplateWithApplication(randomUUID(), JurisdictionType.MAGISTRATES);
+        final CourtApplication courtApplication = hearing.getCourtApplications().get(0);
+        courtApplication.getType().setCode(null).setSpiOutApplicableFlag(true);
+        courtApplication.setJudicialResults(Collections.singletonList(judicialResult().build()));
+        hearing.setCourtApplications(Collections.singletonList(courtApplication));
+        final List<uk.gov.justice.core.courts.OffenceDetails> offenceDetails = new OffenceDetails().buildOffences(courtApplication.getCourtApplicationCases().get(0), courtApplication);
+        assertEquals(1, offenceDetails.size());
+        assertEquals(courtApplication.getCourtApplicationCases().get(0).getOffences().get(0).getOffenceCode(), offenceDetails.get(0).getOffenceCode());
+
     }
 
     private Defendant getDefendant(final List<Offence> offenceDetails) {

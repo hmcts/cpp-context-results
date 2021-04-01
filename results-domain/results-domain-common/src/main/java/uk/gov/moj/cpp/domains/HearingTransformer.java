@@ -5,24 +5,25 @@ import static java.util.Objects.nonNull;
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.ApplicantCounsel;
+import uk.gov.justice.core.courts.ApprovalRequest;
 import uk.gov.justice.core.courts.AssociatedDefenceOrganisation;
 import uk.gov.justice.core.courts.AssociatedPerson;
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.BailStatus;
+import uk.gov.justice.core.courts.CommittingCourt;
+import uk.gov.justice.core.courts.CompanyRepresentative;
 import uk.gov.justice.core.courts.ContactNumber;
 import uk.gov.justice.core.courts.CourtApplication;
-import uk.gov.justice.core.courts.CourtApplicationOutcome;
-import uk.gov.justice.core.courts.CourtApplicationOutcomeType;
+import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtApplicationParty;
 import uk.gov.justice.core.courts.CourtApplicationPartyAttendance;
 import uk.gov.justice.core.courts.CourtApplicationPartyCounsel;
 import uk.gov.justice.core.courts.CourtApplicationPayment;
-import uk.gov.justice.core.courts.CourtApplicationRespondent;
-import uk.gov.justice.core.courts.CourtApplicationResponse;
-import uk.gov.justice.core.courts.CourtApplicationResponseType;
 import uk.gov.justice.core.courts.CourtApplicationType;
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.CourtIndicatedSentence;
+import uk.gov.justice.core.courts.CourtOrder;
+import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.CrackedIneffectiveTrial;
 import uk.gov.justice.core.courts.CustodyTimeLimit;
 import uk.gov.justice.core.courts.DefenceCounsel;
@@ -41,9 +42,12 @@ import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JudicialRole;
 import uk.gov.justice.core.courts.JudicialRoleType;
+import uk.gov.justice.core.courts.Jurors;
 import uk.gov.justice.core.courts.LaaReference;
 import uk.gov.justice.core.courts.LegalEntityDefendant;
+import uk.gov.justice.core.courts.LesserOrAlternativeOffence;
 import uk.gov.justice.core.courts.Marker;
+import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.NextHearing;
 import uk.gov.justice.core.courts.NextHearingDefendant;
 import uk.gov.justice.core.courts.NextHearingOffence;
@@ -54,40 +58,48 @@ import uk.gov.justice.core.courts.OffenceFacts;
 import uk.gov.justice.core.courts.Organisation;
 import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.Plea;
 import uk.gov.justice.core.courts.PoliceOfficerInCase;
 import uk.gov.justice.core.courts.ProsecutingAuthority;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.justice.core.courts.ProsecutionCounsel;
 import uk.gov.justice.core.courts.ReferralReason;
+import uk.gov.justice.core.courts.ReportingRestriction;
 import uk.gov.justice.core.courts.RespondentCounsel;
+import uk.gov.justice.core.courts.SeedingHearing;
+import uk.gov.justice.core.courts.Verdict;
+import uk.gov.justice.core.courts.VerdictType;
 import uk.gov.justice.core.courts.external.ApiAddress;
 import uk.gov.justice.core.courts.external.ApiAllocationDecision;
 import uk.gov.justice.core.courts.external.ApiApplicantCounsel;
+import uk.gov.justice.core.courts.external.ApiApprovalRequest;
 import uk.gov.justice.core.courts.external.ApiAssociatedDefenceOrganisation;
 import uk.gov.justice.core.courts.external.ApiAssociatedPerson;
 import uk.gov.justice.core.courts.external.ApiAttendanceDay;
 import uk.gov.justice.core.courts.external.ApiBailStatus;
+import uk.gov.justice.core.courts.external.ApiCommittingCourt;
+import uk.gov.justice.core.courts.external.ApiCompanyRepresentative;
 import uk.gov.justice.core.courts.external.ApiContactNumber;
 import uk.gov.justice.core.courts.external.ApiCourtApplication;
-import uk.gov.justice.core.courts.external.ApiCourtApplicationOutcome;
-import uk.gov.justice.core.courts.external.ApiCourtApplicationOutcomeType;
+import uk.gov.justice.core.courts.external.ApiCourtApplicationCase;
 import uk.gov.justice.core.courts.external.ApiCourtApplicationParty;
 import uk.gov.justice.core.courts.external.ApiCourtApplicationPartyAttendance;
 import uk.gov.justice.core.courts.external.ApiCourtApplicationPartyCounsel;
 import uk.gov.justice.core.courts.external.ApiCourtApplicationPayment;
-import uk.gov.justice.core.courts.external.ApiCourtApplicationRespondent;
-import uk.gov.justice.core.courts.external.ApiCourtApplicationResponse;
-import uk.gov.justice.core.courts.external.ApiCourtApplicationResponseType;
 import uk.gov.justice.core.courts.external.ApiCourtApplicationType;
 import uk.gov.justice.core.courts.external.ApiCourtCentre;
 import uk.gov.justice.core.courts.external.ApiCourtIndicatedSentence;
+import uk.gov.justice.core.courts.external.ApiCourtOrder;
+import uk.gov.justice.core.courts.external.ApiCourtOrderOffence;
 import uk.gov.justice.core.courts.external.ApiCrackedIneffectiveTrial;
 import uk.gov.justice.core.courts.external.ApiCustodyTimeLimit;
 import uk.gov.justice.core.courts.external.ApiDefenceCounsel;
 import uk.gov.justice.core.courts.external.ApiDefendant;
 import uk.gov.justice.core.courts.external.ApiDefendantAlias;
 import uk.gov.justice.core.courts.external.ApiDefendantAttendance;
+import uk.gov.justice.core.courts.external.ApiDefendantCase;
+import uk.gov.justice.core.courts.external.ApiDefendantJudicialResult;
 import uk.gov.justice.core.courts.external.ApiDelegatedPowers;
 import uk.gov.justice.core.courts.external.ApiEthnicity;
 import uk.gov.justice.core.courts.external.ApiHearing;
@@ -99,9 +111,12 @@ import uk.gov.justice.core.courts.external.ApiJudicialResult;
 import uk.gov.justice.core.courts.external.ApiJudicialResultPrompt;
 import uk.gov.justice.core.courts.external.ApiJudicialRole;
 import uk.gov.justice.core.courts.external.ApiJudicialRoleType;
+import uk.gov.justice.core.courts.external.ApiJurors;
 import uk.gov.justice.core.courts.external.ApiLaaReference;
 import uk.gov.justice.core.courts.external.ApiLegalEntityDefendant;
+import uk.gov.justice.core.courts.external.ApiLesserOrAlternativeOffence;
 import uk.gov.justice.core.courts.external.ApiMarker;
+import uk.gov.justice.core.courts.external.ApiMasterDefendant;
 import uk.gov.justice.core.courts.external.ApiNextHearing;
 import uk.gov.justice.core.courts.external.ApiNextHearingDefendant;
 import uk.gov.justice.core.courts.external.ApiNextHearingOffence;
@@ -112,33 +127,40 @@ import uk.gov.justice.core.courts.external.ApiOffenceFacts;
 import uk.gov.justice.core.courts.external.ApiOrganisation;
 import uk.gov.justice.core.courts.external.ApiPerson;
 import uk.gov.justice.core.courts.external.ApiPersonDefendant;
+import uk.gov.justice.core.courts.external.ApiPlea;
 import uk.gov.justice.core.courts.external.ApiPoliceOfficerInCase;
 import uk.gov.justice.core.courts.external.ApiProsecutingAuthority;
 import uk.gov.justice.core.courts.external.ApiProsecutionCase;
 import uk.gov.justice.core.courts.external.ApiProsecutionCaseIdentifier;
 import uk.gov.justice.core.courts.external.ApiProsecutionCounsel;
 import uk.gov.justice.core.courts.external.ApiReferralReason;
+import uk.gov.justice.core.courts.external.ApiReportingRestriction;
 import uk.gov.justice.core.courts.external.ApiRespondentCounsel;
-import uk.gov.justice.core.courts.external.ApplicationJurisdictionType;
-import uk.gov.justice.core.courts.external.ApplicationStatus;
-import uk.gov.justice.core.courts.external.ApplicationSummonsRecipientType;
-import uk.gov.justice.core.courts.external.ApplicationSummonsTemplateType;
+import uk.gov.justice.core.courts.external.ApiSeedingHearing;
+import uk.gov.justice.core.courts.external.ApiVerdict;
+import uk.gov.justice.core.courts.external.ApiVerdictType;
+import uk.gov.justice.core.courts.external.ApprovalType;
+import uk.gov.justice.core.courts.external.BreachType;
 import uk.gov.justice.core.courts.external.Category;
+import uk.gov.justice.core.courts.external.CourtHouseType;
 import uk.gov.justice.core.courts.external.DocumentationLanguageNeeds;
 import uk.gov.justice.core.courts.external.DriverLicenceCode;
 import uk.gov.justice.core.courts.external.Gender;
 import uk.gov.justice.core.courts.external.HearingLanguage;
 import uk.gov.justice.core.courts.external.IndicatedPleaValue;
 import uk.gov.justice.core.courts.external.InitiationCode;
+import uk.gov.justice.core.courts.external.Jurisdiction;
 import uk.gov.justice.core.courts.external.JurisdictionType;
+import uk.gov.justice.core.courts.external.LinkType;
 import uk.gov.justice.core.courts.external.NoteType;
 import uk.gov.justice.core.courts.external.NotifiedPleaValue;
+import uk.gov.justice.core.courts.external.OffenceActiveOrder;
+import uk.gov.justice.core.courts.external.Position;
 import uk.gov.justice.core.courts.external.Source;
+import uk.gov.justice.core.courts.external.SummonsTemplateType;
 import uk.gov.justice.core.courts.external.VehicleCode;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S3776", "squid:S1067"})
@@ -187,8 +209,39 @@ public class HearingTransformer {
                 .withDefendantJudicialResults(hearing.getDefendantJudicialResults() == null ?
                         Collections.emptyList() : filterDefendantJudicialResults(hearing.getDefendantJudicialResults()))
                 .withProsecutionCounsels(hearing.getProsecutionCounsels() == null ? Collections.emptyList() :
-                        hearing.getProsecutionCounsels().stream().map(pc -> prosecutionCounsel(pc).build()).collect(Collectors.toList()));
+                        hearing.getProsecutionCounsels().stream().map(pc -> prosecutionCounsel(pc).build()).collect(Collectors.toList()))
+                .withCompanyRepresentatives(hearing.getCompanyRepresentatives() == null ? Collections.emptyList() :
+                        hearing.getCompanyRepresentatives().stream().map(cr -> companyRepresentatives(cr).build()).collect(Collectors.toList()))
+                .withIsVacatedTrial(hearing.getIsVacatedTrial())
+                .withApprovalsRequested(hearing.getApprovalsRequested() == null ? Collections.emptyList() :
+                        hearing.getApprovalsRequested().stream().map(ar -> approvalsRequested(ar).build()).collect(Collectors.toList()))
+                .withSeedingHearing(hearing.getSeedingHearing() == null ? null : seedingHearing(hearing.getSeedingHearing()).build());
     }
+
+    private ApiCompanyRepresentative.Builder companyRepresentatives(final CompanyRepresentative companyRepresentative) {
+        return ApiCompanyRepresentative.apiCompanyRepresentative().withId(companyRepresentative.getId())
+                .withFirstName(companyRepresentative.getFirstName())
+                .withLastName(companyRepresentative.getLastName())
+                .withPosition(companyRepresentative.getPosition() == null ? null : Position.valueOf(companyRepresentative.getPosition().name()))
+                .withAttendanceDays(companyRepresentative.getAttendanceDays())
+                .withTitle(companyRepresentative.getTitle())
+                .withDefendants(companyRepresentative.getDefendants());
+    }
+
+    private ApiApprovalRequest.Builder approvalsRequested(final ApprovalRequest approvalRequest) {
+        return ApiApprovalRequest.apiApprovalRequest().withUserId(approvalRequest.getUserId())
+                .withHearingId(approvalRequest.getHearingId())
+                .withRequestApprovalTime(approvalRequest.getRequestApprovalTime())
+                .withApprovalType(approvalRequest.getApprovalType() == null ? null : ApprovalType.valueOf(approvalRequest.getApprovalType().name()));
+    }
+
+    private ApiSeedingHearing.Builder seedingHearing(final SeedingHearing seedingHearing) {
+        return ApiSeedingHearing.apiSeedingHearing()
+                .withSeedingHearingId(seedingHearing.getSeedingHearingId())
+                .withSittingDay(seedingHearing.getSittingDay())
+                .withJurisdictionType(seedingHearing.getJurisdictionType() == null ? null : JurisdictionType.valueOf(seedingHearing.getJurisdictionType().name()));
+    }
+
 
     private ApiProsecutionCounsel.Builder prosecutionCounsel(ProsecutionCounsel prosecutionCounsel) {
         return ApiProsecutionCounsel.apiProsecutionCounsel().withAttendanceDays(prosecutionCounsel.getAttendanceDays())
@@ -224,7 +277,8 @@ public class HearingTransformer {
                 .withId(prosecutionCase.getId())
                 .withOriginatingOrganisation(prosecutionCase.getOriginatingOrganisation())
                 .withStatementOfFacts(prosecutionCase.getStatementOfFacts())
-                .withStatementOfFactsWelsh(prosecutionCase.getStatementOfFactsWelsh());
+                .withStatementOfFactsWelsh(prosecutionCase.getStatementOfFactsWelsh())
+                .withSummonsCode(prosecutionCase.getSummonsCode());
     }
 
     private ApiProsecutionCaseIdentifier.Builder prosecutionCaseIdentifier(final ProsecutionCaseIdentifier prosecutionCaseIdentifier) {
@@ -378,92 +432,125 @@ public class HearingTransformer {
         if (courtApplication.getCourtApplicationPayment() != null) {
             apiCourtApplication.withCourtApplicationPayment(courtApplicationPayment(courtApplication.getCourtApplicationPayment()).build());
         }
-        if (courtApplication.getOrderingCourt() != null) {
-            apiCourtApplication.withOrderingCourt(courtCentre(courtApplication.getOrderingCourt()).build());
-        }
+
         if (courtApplication.getType() != null) {
             apiCourtApplication.withType(courtApplicationType(courtApplication.getType()).build());
         }
-        if (courtApplication.getApplicationOutcome() != null) {
-            apiCourtApplication.withApplicationOutcome(courtApplicationOutcome(courtApplication.getApplicationOutcome()).build());
-        }
+
         if (courtApplication.getApplicant() != null) {
             apiCourtApplication.withApplicant(courtApplicationParty(courtApplication.getApplicant()).build());
         }
-        if (courtApplication.getApplicationStatus() != null) {
-            apiCourtApplication.withApplicationStatus(ApplicationStatus.valueOf(courtApplication.getApplicationStatus().name()));
+        if (courtApplication.getSubject() != null) {
+            apiCourtApplication.withSubject(courtApplicationParty(courtApplication.getSubject()).build());
         }
-        return ApiCourtApplication.apiCourtApplication()
+        if (courtApplication.getApplicationStatus() != null) {
+            apiCourtApplication.withApplicationStatus(courtApplication.getApplicationStatus().name());
+        }
+
+        if (courtApplication.getPlea() != null) {
+            apiCourtApplication.withPlea(applicationPlea(courtApplication.getPlea()).build());
+        }
+
+        if (courtApplication.getVerdict() != null) {
+            apiCourtApplication.withVerdict(verdict(courtApplication.getVerdict()).build());
+        }
+
+        return apiCourtApplication
                 .withApplicationParticulars(courtApplication.getApplicationParticulars())
                 .withApplicationDecisionSoughtByDate(courtApplication.getApplicationDecisionSoughtByDate())
                 .withApplicationReference(courtApplication.getApplicationReference())
                 .withApplicationReceivedDate(courtApplication.getApplicationReceivedDate())
-                .withBreachedOrder(courtApplication.getBreachedOrder())
-                .withBreachedOrderDate(courtApplication.getBreachedOrderDate())
                 .withId(courtApplication.getId())
                 .withJudicialResults(courtApplication.getJudicialResults() == null ?
                         Collections.emptyList() : filterJudicialResults(courtApplication.getJudicialResults()))
-                .withLinkedCaseId(courtApplication.getLinkedCaseId())
                 .withOutOfTimeReasons(courtApplication.getOutOfTimeReasons())
                 .withParentApplicationId(courtApplication.getParentApplicationId())
-                .withRespondents(courtApplication.getRespondents() == null ? Collections.emptyList() : courtApplication.getRespondents().stream().map(res -> courtApplicationRespondent(res).build()).collect(Collectors.toList()));
+                .withRespondents(courtApplication.getRespondents() == null ? Collections.emptyList() : courtApplication.getRespondents().stream().map(res -> courtApplicationParty(res).build()).collect(Collectors.toList()))
+                .withConvictionDate(courtApplication.getConvictionDate())
+                .withDefendantASN(courtApplication.getDefendantASN())
+                .withAllegationOrComplaintEndDate(courtApplication.getAllegationOrComplaintEndDate())
+                .withAllegationOrComplaintStartDate(courtApplication.getAllegationOrComplaintStartDate())
+                .withCourtOrder(courtApplication.getCourtOrder() == null ? null : courtorder(courtApplication.getCourtOrder()).build())
+                .withCourtApplicationCases(courtApplication.getCourtApplicationCases() == null ? Collections.emptyList() :
+                        courtApplication.getCourtApplicationCases().stream().map(cac -> courtApplicationCases(cac).build()).collect(Collectors.toList()))
+                .withThirdParties(courtApplication.getThirdParties() == null ? Collections.emptyList() :
+                        courtApplication.getThirdParties().stream().map(tp -> courtApplicationParty(tp).build()).collect(Collectors.toList()));
+    }
+
+    private ApiCourtApplicationCase.Builder courtApplicationCases(final CourtApplicationCase courtApplicationCase) {
+        return ApiCourtApplicationCase.apiCourtApplicationCase().withCaseStatus(courtApplicationCase.getCaseStatus())
+                .withIsSJP(courtApplicationCase.getIsSJP())
+                .withOffences(courtApplicationCase.getOffences() == null ? Collections.emptyList() : courtApplicationCase.getOffences().stream().map(offence -> courtApplicationOffence(offence).build()).collect(Collectors.toList()))
+                .withProsecutionCaseId(courtApplicationCase.getProsecutionCaseId())
+                .withProsecutionCaseIdentifier(courtApplicationCase.getProsecutionCaseIdentifier() == null ? null : prosecutionCaseIdentifier(courtApplicationCase.getProsecutionCaseIdentifier()).build());
+    }
+
+    private ApiOffence.Builder courtApplicationOffence(final Offence courtApplicationOffence) {
+       return ApiOffence.apiOffence()
+               .withValuesFrom(offence(courtApplicationOffence).build());
+    }
+
+    private ApiCourtOrder.Builder courtorder(final CourtOrder courtOrder) {
+        return ApiCourtOrder.apiCourtOrder().withId(courtOrder.getId())
+                .withCanBeSubjectOfBreachProceedings(courtOrder.getCanBeSubjectOfBreachProceedings())
+                .withCanBeSubjectOfVariationProceedings(courtOrder.getCanBeSubjectOfVariationProceedings())
+                .withCourtOrderOffences(courtOrder.getCourtOrderOffences() == null ? Collections.emptyList() : courtOrder.getCourtOrderOffences().stream().map(coo -> courtOrderOffence(coo).build()).collect(Collectors.toList()))
+                .withDefendantIds(courtOrder.getDefendantIds())
+                .withEndDate(courtOrder.getEndDate())
+                .withIsSJPOrder(courtOrder.getIsSJPOrder())
+                .withJudicialResultTypeId(courtOrder.getJudicialResultTypeId())
+                .withLabel(courtOrder.getLabel())
+                .withMasterDefendantId(courtOrder.getMasterDefendantId())
+                .withOrderDate(courtOrder.getOrderDate())
+                .withOrderingCourt(courtOrder.getOrderingCourt() == null ? null : courtCentre(courtOrder.getOrderingCourt()).build())
+                .withOrderingHearingId(courtOrder.getOrderingHearingId())
+                .withStartDate(courtOrder.getStartDate());
+    }
+
+    private ApiCourtOrderOffence.Builder courtOrderOffence(final CourtOrderOffence courtOrderOffence) {
+        return ApiCourtOrderOffence.apiCourtOrderOffence().withOffence(courtOrderOffence.getOffence() == null ? null : offence(courtOrderOffence.getOffence()).build())
+                .withProsecutionCaseId(courtOrderOffence.getProsecutionCaseId())
+                .withProsecutionCaseIdentifier(courtOrderOffence.getProsecutionCaseIdentifier() == null ? null : prosecutionCaseIdentifier(courtOrderOffence.getProsecutionCaseIdentifier()).build());
     }
 
     private ApiCourtApplicationType.Builder courtApplicationType(final CourtApplicationType courtApplicationType) {
         final ApiCourtApplicationType.Builder apiCourtApplicationType = ApiCourtApplicationType.apiCourtApplicationType();
-        if (courtApplicationType.getApplicationJurisdictionType() != null) {
-            apiCourtApplicationType.withApplicationJurisdictionType(ApplicationJurisdictionType.valueOf(courtApplicationType.getApplicationJurisdictionType().name()));
+        if (courtApplicationType.getJurisdiction() != null) {
+            apiCourtApplicationType.withJurisdiction(Jurisdiction.valueOf(courtApplicationType.getJurisdiction().name()));
         }
-        if (courtApplicationType.getApplicationSummonsRecipientType() != null) {
-            apiCourtApplicationType.withApplicationSummonsRecipientType(ApplicationSummonsRecipientType.valueOf(courtApplicationType.getApplicationSummonsRecipientType().name()));
 
-        }
         if (courtApplicationType.getLinkType() != null) {
-            apiCourtApplicationType.withLinkType(uk.gov.justice.core.courts.external.LinkType.valueOf(courtApplicationType.getLinkType().name()));
+            apiCourtApplicationType.withLinkType(LinkType.valueOf(courtApplicationType.getLinkType().name()));
         }
-        if (courtApplicationType.getApplicationSummonsTemplateType() != null) {
-            apiCourtApplicationType.withApplicationSummonsTemplateType(ApplicationSummonsTemplateType.valueOf(courtApplicationType.getApplicationSummonsTemplateType().name()));
+        if (courtApplicationType.getSummonsTemplateType() != null) {
+            apiCourtApplicationType.withSummonsTemplateType(SummonsTemplateType.valueOf(courtApplicationType.getSummonsTemplateType().name()));
         }
+        if (courtApplicationType.getBreachType() != null) {
+            apiCourtApplicationType.withBreachType(BreachType.valueOf(courtApplicationType.getBreachType().name()));
+        }
+
+        if (courtApplicationType.getOffenceActiveOrder() != null) {
+            apiCourtApplicationType.withOffenceActiveOrder(OffenceActiveOrder.valueOf(courtApplicationType.getOffenceActiveOrder().name()));
+        }
+
         return apiCourtApplicationType
-                .withApplicantSynonym(courtApplicationType.getApplicantSynonym())
-                .withApplicationCategory(courtApplicationType.getApplicationCategory())
-                .withApplicationCode(courtApplicationType.getApplicationCode())
-                .withApplicationLegislation(courtApplicationType.getApplicationLegislation())
-                .withApplicationLegislationWelsh(courtApplicationType.getApplicationLegislationWelsh())
+                .withCategoryCode(courtApplicationType.getCategoryCode())
+                .withCode(courtApplicationType.getCode())
+                .withLegislation(courtApplicationType.getLegislation())
+                .withLegislationWelsh(courtApplicationType.getLegislationWelsh())
                 .withId(courtApplicationType.getId())
-                .withIsAppealApplication(courtApplicationType.getIsAppealApplication())
-                .withIsApplicationToRecordCourtOfAppealDecision(courtApplicationType.getIsApplicationToRecordCourtOfAppealDecision())
-                .withIsBreachApplication(courtApplicationType.getIsBreachApplication())
-                .withApplicationType(courtApplicationType.getApplicationType())
-                .withApplicationTypeWelsh(courtApplicationType.getApplicationTypeWelsh())
-                .withRespondentSynonym(courtApplicationType.getRespondentSynonym());
-    }
-
-    private ApiCourtApplicationRespondent.Builder courtApplicationRespondent(final CourtApplicationRespondent courtApplicationRespondent) {
-        final ApiCourtApplicationRespondent.Builder apiCoourtApplicantRespondent = ApiCourtApplicationRespondent.apiCourtApplicationRespondent();
-        if (courtApplicationRespondent.getApplicationResponse() != null) {
-            apiCoourtApplicantRespondent.withApplicationResponse(courtApplicationResponse(courtApplicationRespondent.getApplicationResponse()).build());
-        }
-        if (courtApplicationRespondent.getPartyDetails() != null) {
-            apiCoourtApplicantRespondent.withPartyDetails(courtApplicationParty(courtApplicationRespondent.getPartyDetails()).build());
-        }
-        return apiCoourtApplicantRespondent;
-    }
-
-    private ApiCourtApplicationResponse.Builder courtApplicationResponse(final CourtApplicationResponse courtApplicationResponse) {
-        final ApiCourtApplicationResponse.Builder apiCourtApplicationResponse = ApiCourtApplicationResponse.apiCourtApplicationResponse();
-        if (courtApplicationResponse.getApplicationResponseType() != null) {
-            apiCourtApplicationResponse.withApplicationResponseType(courtApplicationResponseType(courtApplicationResponse.getApplicationResponseType()).build());
-        }
-        return apiCourtApplicationResponse.withApplicationId(courtApplicationResponse.getApplicationId())
-                .withApplicationResponseDate(courtApplicationResponse.getApplicationResponseDate())
-                .withOriginatingHearingId(courtApplicationResponse.getOriginatingHearingId());
-    }
-
-    private ApiCourtApplicationResponseType.Builder courtApplicationResponseType(final CourtApplicationResponseType courtApplicationResponseType) {
-        return ApiCourtApplicationResponseType.apiCourtApplicationResponseType().withDescription(courtApplicationResponseType.getDescription())
-                .withId(courtApplicationResponseType.getId())
-                .withSequence(courtApplicationResponseType.getSequence());
+                .withAppealFlag(courtApplicationType.getAppealFlag())
+                .withCourtOfAppealFlag(courtApplicationType.getCourtOfAppealFlag())
+                .withType(courtApplicationType.getType())
+                .withTypeWelsh(courtApplicationType.getTypeWelsh())
+                .withAppealFlag(courtApplicationType.getAppealFlag())
+                .withApplicantAppellantFlag(courtApplicationType.getApplicantAppellantFlag())
+                .withPleaApplicableFlag(courtApplicationType.getPleaApplicableFlag())
+                .withCommrOfOathFlag(courtApplicationType.getCommrOfOathFlag())
+                .withCourtOfAppealFlag(courtApplicationType.getCourtOfAppealFlag())
+                .withCourtExtractAvlFlag(courtApplicationType.getCourtExtractAvlFlag())
+                .withProsecutorThirdPartyFlag(courtApplicationType.getProsecutorThirdPartyFlag())
+                .withSpiOutApplicableFlag(courtApplicationType.getSpiOutApplicableFlag());
     }
 
     private ApiCourtApplicationPayment.Builder courtApplicationPayment(final CourtApplicationPayment courtApplicationPayment) {
@@ -473,26 +560,10 @@ public class HearingTransformer {
                 .withPaymentReference(courtApplicationPayment.getPaymentReference());
     }
 
-    private ApiCourtApplicationOutcome.Builder courtApplicationOutcome(final CourtApplicationOutcome courtApplicationOutcome) {
-        final ApiCourtApplicationOutcome.Builder apiCourtApplicationOutcome = ApiCourtApplicationOutcome.apiCourtApplicationOutcome();
-        if (courtApplicationOutcome.getApplicationOutcomeType() != null) {
-            apiCourtApplicationOutcome.withApplicationOutcomeType(courtApplicationOutcomeType(courtApplicationOutcome.getApplicationOutcomeType()).build());
-        }
-        return apiCourtApplicationOutcome.withApplicationId(courtApplicationOutcome.getApplicationId())
-                .withApplicationOutcomeDate(courtApplicationOutcome.getApplicationOutcomeDate())
-                .withOriginatingHearingId(courtApplicationOutcome.getOriginatingHearingId());
-    }
-
-    private ApiCourtApplicationOutcomeType.Builder courtApplicationOutcomeType(final CourtApplicationOutcomeType courtApplicationOutcomeType) {
-        return ApiCourtApplicationOutcomeType.apiCourtApplicationOutcomeType().withDescription(courtApplicationOutcomeType.getDescription())
-                .withId(courtApplicationOutcomeType.getId())
-                .withSequence(courtApplicationOutcomeType.getSequence());
-    }
-
     private ApiCourtApplicationParty.Builder courtApplicationParty(final CourtApplicationParty courtApplicationParty) {
         final ApiCourtApplicationParty.Builder apiCourtApplicationParty = ApiCourtApplicationParty.apiCourtApplicationParty();
-        if (courtApplicationParty.getDefendant() != null) {
-            apiCourtApplicationParty.withDefendant(defendant(courtApplicationParty.getDefendant()).build());
+        if (courtApplicationParty.getMasterDefendant() != null) {
+            apiCourtApplicationParty.withMasterDefendant(masterDefendant(courtApplicationParty.getMasterDefendant()).build());
         }
         if (courtApplicationParty.getOrganisation() != null) {
             apiCourtApplicationParty.withOrganisation(organisation(courtApplicationParty.getOrganisation()).build());
@@ -557,8 +628,32 @@ public class HearingTransformer {
                 .withProsecutionAuthorityReference(defendant.getProsecutionAuthorityReference())
                 .withWitnessStatement(defendant.getWitnessStatement())
                 .withWitnessStatementWelsh(defendant.getWitnessStatementWelsh())
-                .withCourtProceedingsInitiated(defendant.getCourtProceedingsInitiated())
-                .withMasterDefendantId(defendant.getMasterDefendantId());
+                .withMasterDefendantId(defendant.getMasterDefendantId())
+                .withLegalAidStatus(defendant.getLegalAidStatus())
+                .withIsYouth(defendant.getIsYouth())
+                .withProceedingsConcluded(defendant.getProceedingsConcluded());
+    }
+
+    private ApiMasterDefendant.Builder masterDefendant(final MasterDefendant defendant) {
+
+        final ApiMasterDefendant.Builder apiMasterDefendant = ApiMasterDefendant.apiMasterDefendant();
+        if (defendant.getLegalEntityDefendant() != null) {
+            apiMasterDefendant.withLegalEntityDefendant(legalEntityDefendant(defendant.getLegalEntityDefendant()).build());
+        }
+        if (defendant.getPersonDefendant() != null) {
+            apiMasterDefendant.withPersonDefendant(personDefendant(defendant.getPersonDefendant()).build());
+        }
+        if (defendant.getDefendantCase() != null) {
+            apiMasterDefendant.withDefendantCase(
+                    defendant.getDefendantCase().stream().map( defendantCase ->
+                        ApiDefendantCase.apiDefendantCase()
+                                .withCaseId(defendantCase.getCaseId())
+                                .withDefendantId(defendantCase.getDefendantId())
+                                .withCaseReference(defendantCase.getCaseReference()).build()
+                    ).collect(Collectors.toList()));
+        }
+
+        return apiMasterDefendant.withMasterDefendantId(defendant.getMasterDefendantId());
     }
 
     private ApiAssociatedDefenceOrganisation.Builder associatedDefenceOrganisation(
@@ -643,6 +738,15 @@ public class HearingTransformer {
         if (offence.getLaaApplnReference() != null) {
             apiOffence.withLaaApplnReference(laaReference(offence.getLaaApplnReference()).build());
         }
+
+        if(offence.getVerdict() != null){
+            apiOffence.withVerdict(verdict(offence.getVerdict()).build());
+        }
+
+        if(offence.getPlea() != null){
+          apiOffence.withPlea(applicationPlea(offence.getPlea()).build());
+        }
+
         return apiOffence
                 .withAquittalDate(offence.getAquittalDate())
                 .withArrestDate(offence.getArrestDate())
@@ -656,7 +760,41 @@ public class HearingTransformer {
                         Collections.emptyList() : filterJudicialResults(offence.getJudicialResults()))
                 .withModeOfTrial(offence.getModeOfTrial())
                 .withOffenceCode(offence.getOffenceCode())
-                .withOffenceDefinitionId(offence.getOffenceDefinitionId());
+                .withOffenceDefinitionId(offence.getOffenceDefinitionId())
+                .withWordingWelsh(offence.getWordingWelsh())
+                .withWording(offence.getWording())
+                .withStartDate(offence.getStartDate())
+                .withProceedingsConcluded(offence.getProceedingsConcluded())
+                .withOrderIndex(offence.getOrderIndex())
+                .withOffenceTitleWelsh(offence.getOffenceTitleWelsh())
+                .withOffenceTitle(offence.getOffenceTitle())
+                .withOffenceLegislationWelsh(offence.getOffenceLegislationWelsh())
+                .withOffenceLegislation(offence.getOffenceLegislation())
+                .withOffenceDateCode(offence.getOffenceDateCode())
+                .withLaidDate(offence.getLaidDate())
+                .withIsIntroduceAfterInitialProceedings(offence.getIntroducedAfterInitialProceedings())
+                .withDvlaOffenceCode(offence.getDvlaOffenceCode())
+                .withVictims(offence.getVictims() == null ? Collections.emptyList() : offence.getVictims().stream().map(o -> person(o).build()).collect(Collectors.toList()))
+                .withReportingRestrictions(offence.getReportingRestrictions() == null ? Collections.emptyList() : offence.getReportingRestrictions().stream().map(rr -> reportingRestrictions(rr).build()).collect(Collectors.toList()))
+                .withCommittingCourt(offence.getCommittingCourt() == null ? null : committingCourt(offence.getCommittingCourt()).build());
+
+    }
+
+    private ApiCommittingCourt.Builder committingCourt(final CommittingCourt committingCourt) {
+        return ApiCommittingCourt.apiCommittingCourt().withCourtCentreId(committingCourt.getCourtCentreId())
+                .withCourtHouseCode(committingCourt.getCourtHouseCode())
+                .withCourtHouseName(committingCourt.getCourtHouseName())
+                .withCourtHouseShortName(committingCourt.getCourtHouseShortName())
+                .withCourtHouseType(CourtHouseType.valueOf(committingCourt.getCourtHouseType().name()));
+
+    }
+
+    private ApiReportingRestriction.Builder reportingRestrictions(final ReportingRestriction reportingRestriction) {
+        return ApiReportingRestriction.apiReportingRestriction().withId(reportingRestriction.getId())
+                .withJudicialResultId(reportingRestriction.getJudicialResultId())
+                .withLabel(reportingRestriction.getLabel())
+                .withOrderedDate(reportingRestriction.getOrderedDate());
+
     }
 
     private ApiNotifiedPlea.Builder notifiedPlea(final NotifiedPlea notifiedPlea) {
@@ -664,6 +802,55 @@ public class HearingTransformer {
                 .withNotifiedPleaValue(NotifiedPleaValue.valueOf(notifiedPlea.getNotifiedPleaValue().name()))
                 .withOffenceId(notifiedPlea.getOffenceId());
     }
+
+    private ApiPlea.Builder applicationPlea(final Plea plea) {
+        return ApiPlea.apiPlea().withApplicationId(plea.getApplicationId() == null ? null : plea.getApplicationId())
+                .withOriginatingHearingId(plea.getOriginatingHearingId())
+                .withPleaDate(plea.getPleaDate())
+                .withPleaValue(plea.getPleaValue())
+                .withDelegatedPowers(plea.getDelegatedPowers() == null ? null : delegatePowers(plea.getDelegatedPowers()).build())
+                .withLesserOrAlternativeOffence(plea.getLesserOrAlternativeOffence() ==null ? null : lesserOrAlternativeOffence(plea.getLesserOrAlternativeOffence()).build())
+                .withOffenceId(plea.getOffenceId());
+    }
+
+    private ApiLesserOrAlternativeOffence.Builder lesserOrAlternativeOffence(final LesserOrAlternativeOffence lesserOrAlternativeOffence) {
+        return ApiLesserOrAlternativeOffence.apiLesserOrAlternativeOffence()
+                .withOffenceCode(lesserOrAlternativeOffence.getOffenceCode())
+                .withOffenceDefinitionId(lesserOrAlternativeOffence.getOffenceDefinitionId())
+                .withOffenceLegislation(lesserOrAlternativeOffence.getOffenceLegislation())
+                .withOffenceLegislationWelsh(lesserOrAlternativeOffence.getOffenceLegislationWelsh())
+                .withOffenceTitle(lesserOrAlternativeOffence.getOffenceTitle())
+                .withOffenceTitleWelsh(lesserOrAlternativeOffence.getOffenceTitleWelsh());
+    }
+
+    private ApiVerdict.Builder verdict(final Verdict verdict) {
+        return ApiVerdict.apiVerdict()
+                .withApplicationId(verdict.getApplicationId())
+                .withJurors(jurors(verdict.getJurors()).build())
+                .withVerdictDate(verdict.getVerdictDate())
+                .withVerdictType(verdictType(verdict.getVerdictType()).build())
+                .withOriginatingHearingId(verdict.getOriginatingHearingId())
+                .withLesserOrAlternativeOffence(lesserOrAlternativeOffence(verdict.getLesserOrAlternativeOffence()).build());
+    }
+
+    private ApiJurors.Builder jurors(final Jurors applicationJurors) {
+        return ApiJurors.apiJurors()
+                .withNumberOfJurors(applicationJurors.getNumberOfJurors())
+                .withUnanimous(applicationJurors.getUnanimous())
+                .withNumberOfSplitJurors(applicationJurors.getNumberOfSplitJurors());
+    }
+
+    private ApiVerdictType.Builder verdictType(final VerdictType applicationVerdict) {
+        return ApiVerdictType.apiVerdictType()
+                .withId(applicationVerdict.getId())
+                .withCategory(applicationVerdict.getCategory())
+                .withCategoryType(applicationVerdict.getCategoryType())
+                .withDescription(applicationVerdict.getDescription())
+                .withSequence(applicationVerdict.getSequence())
+                .withVerdictCode(applicationVerdict.getVerdictCode())
+                .withCjsVerdictCode(applicationVerdict.getCjsVerdictCode());
+    }
+
 
     private ApiCustodyTimeLimit.Builder custodyTimeLimit(final CustodyTimeLimit custodyTimeLimit) {
         return ApiCustodyTimeLimit.apiCustodyTimeLimit().withDaysSpent(custodyTimeLimit.getDaysSpent())
@@ -824,7 +1011,7 @@ public class HearingTransformer {
         if (judicialRole.getJudicialRoleType() != null) {
             apiJudicialRole.withJudicialRoleType(judicialRoleType(judicialRole.getJudicialRoleType()).build());
         }
-        return ApiJudicialRole.apiJudicialRole().withFirstName(judicialRole.getFirstName())
+        return apiJudicialRole.withFirstName(judicialRole.getFirstName())
                 .withIsBenchChairman(judicialRole.getIsBenchChairman())
                 .withIsDeputy(judicialRole.getIsDeputy())
                 .withJudicialId(judicialRole.getJudicialId())
@@ -936,9 +1123,15 @@ public class HearingTransformer {
                 .collect(Collectors.toList());
     }
 
-    private List<ApiJudicialResult> filterDefendantJudicialResults(final List<DefendantJudicialResult> judicialResults) {
+    private List<ApiDefendantJudicialResult> filterDefendantJudicialResults(final List<DefendantJudicialResult> judicialResults) {
         return judicialResults.stream().filter(defendantJr -> !defendantJr.getJudicialResult().getPublishedForNows())
-                .map(defendantJr -> judicialResult(defendantJr.getJudicialResult()).build())
+                .map(defendantJr -> defendantJudicialResult(judicialResult(defendantJr.getJudicialResult()), defendantJr.getMasterDefendantId()).build())
                 .collect(Collectors.toList());
+    }
+
+    private ApiDefendantJudicialResult.Builder defendantJudicialResult(final ApiJudicialResult.Builder judicialResultBuilder, UUID masterDefendantId) {
+        return ApiDefendantJudicialResult.apiDefendantJudicialResult()
+                .withJudicialResult(judicialResultBuilder.build())
+                .withMasterDefendantId(masterDefendantId);
     }
 }

@@ -289,6 +289,8 @@ public class ResultsAggregate implements Aggregate {
                 .withUrgent(judicialResultFromEvent.getUrgent())
                 .withD20(judicialResultFromEvent.getD20())
                 .withJudicialResultTypeId(judicialResultFromEvent.getJudicialResultTypeId())
+                .withPublishedForNows(judicialResultFromEvent.getPublishedForNows())
+                .withRollUpPrompts(judicialResultFromEvent.getRollUpPrompts())
                 .build();
     }
 
@@ -334,7 +336,8 @@ public class ResultsAggregate implements Aggregate {
         return apply(builder.build());
     }
 
-    private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor) {
+    private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate,
+                                         final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
 
         isEligibleForSpiOut = false;

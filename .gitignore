@@ -5,6 +5,7 @@
 **/.project
 **/bin
 **/.prefs
+/.gradle
 
 # IntelliJ
 .idea/
