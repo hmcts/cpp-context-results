@@ -7,6 +7,8 @@ import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static uk.gov.justice.core.courts.CaseDetails.caseDetails;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getUrn;
 
+import org.apache.commons.collections.CollectionUtils;
+import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
@@ -17,17 +19,16 @@ import uk.gov.justice.services.common.converter.Converter;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.helper.results.CaseDefendantListBuilder;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.inject.Inject;
-
-import org.apache.commons.collections.CollectionUtils;
 
 public class CasesConverter implements Converter<PublicHearingResulted, List<CaseDetails>> {
 
@@ -58,10 +59,10 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
 
         final Supplier<Stream<CourtApplication>> streamSupplier = () -> ofNullable(source.getHearing().getCourtApplications()).map(Collection::stream).orElseGet(Stream::empty);
 
-        final List<CaseDetails> applicationCaseDetails = streamSupplier.get().map(courtApplication ->
+        final List<CaseDetails> applicationCaseDetails = streamSupplier.get().filter(this::doesApplicationOrApplicationCaseHasJudicialResults).map(courtApplication ->
                 ofNullable(courtApplication.getCourtApplicationCases()).map(Collection::stream).orElseGet(Stream::empty)
-                        .filter(this::doesApplicationCaseHasJudicialResults).map(buildCaseDetails(source, courtApplication)
-                ).collect(Collectors.toList())
+                        .map(buildCaseDetails(source, courtApplication)
+                        ).collect(Collectors.toList())
         ).flatMap(List::stream).collect(Collectors.toList());
 
         ofNullable(applicationCaseDetails).filter(CollectionUtils::isNotEmpty).ifPresent(caseDetailsList::addAll);
@@ -73,8 +74,29 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
 
         ofNullable(applicationCaseDetailsFromCourtOrder).filter(CollectionUtils::isNotEmpty).ifPresent(caseDetailsList::addAll);
 
-        return caseDetailsList;
+        return this.mergeCaseDetailsForMatchingCaseAndDefendants(caseDetailsList);
 
+    }
+
+    private List<CaseDetails> mergeCaseDetailsForMatchingCaseAndDefendants(final List<CaseDetails> originalCaseDetails) {
+        final List<CaseDetails> mergedCaseDetails = new ArrayList<>();
+        originalCaseDetails.forEach(caseDetails -> {
+            final Optional<CaseDetails> matchedCaseDetail = mergedCaseDetails.stream().filter(caseDetails1 -> caseDetails1.getCaseId().equals(caseDetails.getCaseId())).findFirst();
+            if (matchedCaseDetail.isPresent()) {
+                caseDetails.getDefendants().forEach(caseDefendant -> {
+                    final Stream<CaseDefendant> mergedCaseDefendantStream = matchedCaseDetail.get().getDefendants().stream();
+                    final Optional<CaseDefendant> matchedDefendant = mergedCaseDefendantStream.filter(caseDefendant1 -> caseDefendant1.getDefendantId().equals(caseDefendant.getDefendantId())).findFirst();
+                    if (matchedDefendant.isPresent()) {
+                        matchedDefendant.get().getOffences().addAll(caseDefendant.getOffences());
+                    } else {
+                        matchedCaseDetail.get().getDefendants().add(caseDefendant);
+                    }
+                });
+            } else {
+                mergedCaseDetails.add(caseDetails);
+            }
+        });
+        return mergedCaseDetails;
     }
 
     private Function<CourtApplicationCase, CaseDetails> buildCaseDetails(PublicHearingResulted source, CourtApplication courtApplication) {
@@ -99,9 +121,12 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                         .build();
     }
 
-    private boolean doesApplicationCaseHasJudicialResults(final CourtApplicationCase courtApplicationCase) {
-        return ofNullable(courtApplicationCase.getOffences()).map(Collection::stream).orElseGet(Stream::empty)
-                .anyMatch(courtApplicationOffence -> isNotEmpty(courtApplicationOffence.getJudicialResults()));
+    private boolean doesApplicationOrApplicationCaseHasJudicialResults(final CourtApplication courtApplication) {
+        return isNotEmpty(courtApplication.getJudicialResults()) ||
+                ofNullable(courtApplication.getCourtApplicationCases()).map(Collection::stream).orElseGet(Stream::empty).
+                        map(courtApplicationCase -> Optional.ofNullable(courtApplicationCase.getOffences()))
+                        .flatMap(offences -> offences.orElseGet(Collections::emptyList).stream())
+                        .anyMatch(courtApplicationOffence -> isNotEmpty(courtApplicationOffence.getJudicialResults()));
     }
 
 }

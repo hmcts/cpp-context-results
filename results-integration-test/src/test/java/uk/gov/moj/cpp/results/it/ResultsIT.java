@@ -57,6 +57,15 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.buildJudicialResultList;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.IsNull;
+import org.json.JSONObject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.CourtApplication;
@@ -79,6 +88,10 @@ import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
 
+import javax.jms.JMSException;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.time.LocalDate;
@@ -90,21 +103,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.jms.JMSException;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.IsNull;
-import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607"})
 public class ResultsIT {
@@ -687,7 +685,7 @@ public class ResultsIT {
     @Test
     public void shouldBeSentToSpiOutForApplicationWithNoJudicialResults() throws JMSException {
 
-         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
+        final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), JurisdictionType.MAGISTRATES))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
         resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
@@ -703,10 +701,11 @@ public class ResultsIT {
         verifyPrivateEventsWithPoliceResultGenerated();
 
         Optional<String> response = verifyInPublicTopic();
+
         System.out.println("the response is -->>" + response.get());
-        final JSONObject firstOffenceJson = new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0);
+        final JSONObject firstOffenceJson = new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(1);
         assertThat(firstOffenceJson.get("offenceSequenceNumber"), is(65));
-        assertThat(new JSONObject(response.get()).getJSONObject("defendant").get("prosecutorReference"), is("ARREST_1234"));
+        assertThat(new JSONObject(response.get()).getJSONObject("defendant").get("prosecutorReference"), is("0800PP0100000000001H"));
         assertThat(firstOffenceJson.get("finding"), is("N"));
         assertThat(firstOffenceJson.getJSONObject("plea").get("pleaValue"), is("NOT_GUILTY"));
     }
@@ -715,7 +714,7 @@ public class ResultsIT {
     @Test
     public void shouldBeSentToSpiOutForApplicationWithJudicialResults() throws JMSException {
 
-         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
+        final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplateWithCustomApplication(randomUUID(), JurisdictionType.MAGISTRATES,
                         asList(CourtApplication.courtApplication()
                                 .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
@@ -756,9 +755,10 @@ public class ResultsIT {
         verifyPrivateEventsWithPoliceResultGenerated();
 
         Optional<String> response = verifyInPublicTopic();
-        final JSONObject firstOffenceJson = new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0);
+        System.out.println("Response -->>" + response.get());
+        final JSONObject firstOffenceJson = new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(1);
         assertThat(firstOffenceJson.get("offenceSequenceNumber"), is(0));
-        assertThat(new JSONObject(response.get()).getJSONObject("defendant").get("prosecutorReference"), is("ARREST_1234"));
+        assertThat(new JSONObject(response.get()).getJSONObject("defendant").get("prosecutorReference"), is("0800PP0100000000001H"));
         assertThat(firstOffenceJson.get("finding"), is("N"));
         assertThat(firstOffenceJson.getJSONObject("plea").get("pleaValue"), is("NOT_GUILTY"));
     }

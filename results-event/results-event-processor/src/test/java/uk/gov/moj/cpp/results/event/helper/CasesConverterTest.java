@@ -119,23 +119,27 @@ public class CasesConverterTest {
         final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
         final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
-        assertThat(caseDetailsList.size(), is(prosecutionCases.size() + hearing.getCourtApplications().size()));
-        for (final CaseDetails caseDetails : caseDetailsList) {
-            final Optional<ProsecutionCase> prosecutionCaseOptional = prosecutionCases.stream().filter(p -> p.getId().equals(caseDetails.getCaseId())).findFirst();
-            assertThat(prosecutionCaseOptional.isPresent(), is(true));
-            final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
-            final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
-            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
-                assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
-            } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-                assertThat(caseDetails.getUrn(), is("authorityReference"));
-            } else {
-                assertThat(caseDetails.getUrn(), is("00PP0000008"));
-            }
+        assertThat(caseDetailsList.size(), is(1));
+        final CaseDetails caseDetails = caseDetailsList.get(0);
+        final Optional<ProsecutionCase> prosecutionCaseOptional = prosecutionCases.stream().filter(p -> p.getId().equals(caseDetails.getCaseId())).findFirst();
+        assertThat(prosecutionCaseOptional.isPresent(), is(true));
+        final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
+        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
+            assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
+        } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
+            assertThat(caseDetails.getUrn(), is("authorityReference"));
+        } else {
+            assertThat(caseDetails.getUrn(), is("00PP0000008"));
         }
-        assertThat(caseDetailsList.get(0).getDefendants(), hasSize(2));
-        assertThat(caseDetailsList.get(1).getDefendants(), hasSize(1));
-        assertDefendants(hearing.getProsecutionCases().get(0).getDefendants(), caseDetailsList.get(0).getDefendants(), hearing);
+        assertThat(caseDetails.getDefendants(), hasSize(2));
+        Optional<CaseDefendant> caseDefendant = caseDetails.getDefendants().stream().filter(x -> x.getDefendantId().equals(hearing.getProsecutionCases().get(0).getDefendants().get(0).getMasterDefendantId())).findFirst();
+        assertThat(caseDefendant.isPresent(), is(true));
+        assertThat(caseDefendant.get().getOffences().size(), is(2));
+        caseDefendant = caseDetails.getDefendants().stream().filter(x -> x.getDefendantId().equals(hearing.getProsecutionCases().get(0).getDefendants().get(1).getMasterDefendantId())).findFirst();
+        assertThat(caseDefendant.isPresent(), is(true));
+        assertThat(caseDefendant.get().getOffences().size(), is(1));
+
     }
 
     @Test
@@ -236,21 +240,99 @@ public class CasesConverterTest {
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
         assertThat(caseDetailsList.size(), is(1));
         final CourtOrder courtOrder = publicHearingResulted.getHearing().getCourtApplications().get(0).getCourtOrder();
-        for (final CaseDetails caseDetails : caseDetailsList) {
-            final Optional<CourtOrderOffence> courtOrderOffence = courtOrder.getCourtOrderOffences().stream().filter(p -> p.getProsecutionCaseId().equals(caseDetails.getCaseId())).findFirst();
-            assertThat(courtOrderOffence.isPresent(), is(true));
-            final CourtOrderOffence orderOffence = courtOrderOffence.get();
-            final ProsecutionCaseIdentifier prosecutionCaseIdentifier = orderOffence.getProsecutionCaseIdentifier();
-            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
-                assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
-            } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-                assertThat(caseDetails.getUrn(), is("authorityReference"));
-            } else {
-                assertThat(caseDetails.getUrn(), is("00PP0000008"));
-            }
-            assertDefendants(courtOrderOffence.get(), hearing.getCourtApplications().get(0).getSubject(), caseDetails.getDefendants(), hearing);
+        final Optional<CourtOrderOffence> courtOrderOffence = courtOrder.getCourtOrderOffences().stream().filter(p -> p.getProsecutionCaseId().equals(caseDetailsList.get(0).getCaseId())).findFirst();
+        assertThat(courtOrderOffence.isPresent(), is(true));
+        final CourtOrderOffence orderOffence = courtOrderOffence.get();
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = orderOffence.getProsecutionCaseIdentifier();
+        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
+            assertThat(caseDetailsList.get(0).getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
+        } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
+            assertThat(caseDetailsList.get(0).getUrn(), is("authorityReference"));
+        } else {
+            assertThat(caseDetailsList.get(0).getUrn(), is("00PP0000008"));
         }
+        assertDefendants(courtOrderOffence.get(), hearing.getCourtApplications().get(0).getSubject(), caseDetailsList.get(0).getDefendants(), hearing, false);
         assertThat(caseDetailsList.get(0).getDefendants(), hasSize(1));
+    }
+
+    @Test
+    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults() {
+        final UUID hearingId = randomUUID();
+        final JsonObject payload = getPayload("public.hearing-resulted-court-order-with-no-judicial-results.json", hearingId);
+        final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
+
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+
+        final Hearing hearing = publicHearingResulted.getHearing();
+        when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
+        final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
+        assertThat(caseDetailsList.size(), is(1));
+        final CourtOrder courtOrder = publicHearingResulted.getHearing().getCourtApplications().get(0).getCourtOrder();
+        final Optional<CourtOrderOffence> courtOrderOffence = courtOrder.getCourtOrderOffences().stream().filter(orderOffence -> orderOffence.getProsecutionCaseId().equals(caseDetailsList.get(0).getCaseId())).findFirst();
+        assertThat(courtOrderOffence.isPresent(), is(true));
+        final CourtOrderOffence orderOffence = courtOrderOffence.get();
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = orderOffence.getProsecutionCaseIdentifier();
+        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
+            assertThat(caseDetailsList.get(0).getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
+        } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
+            assertThat(caseDetailsList.get(0).getUrn(), is("authorityReference"));
+        } else {
+            assertThat(caseDetailsList.get(0).getUrn(), is("00PP0000008"));
+        }
+        assertDefendants(courtOrderOffence.get(), hearing.getCourtApplications().get(0).getSubject(), caseDetailsList.get(0).getDefendants(), hearing, true);
+        assertThat(caseDetailsList.get(0).getDefendants(), hasSize(1));
+    }
+
+    @Test
+    public void courtApplicationWithJustJudicialResultsAndNoCaseJudicialResults() {
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+
+        final UUID hearingId = randomUUID();
+        final List<CourtApplication> courtApplications = singletonList(CourtApplication.courtApplication()
+                .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
+                .withType(courtApplicationTypeTemplates())
+                .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                .withApplicant(courtApplicationPartyTemplates())
+                .withApplicationStatus(ApplicationStatus.DRAFT)
+                .withSubject(courtApplicationPartyTemplates())
+                .withCourtApplicationCases(singletonList(createCourtApplicationCaseWithoutOffences()))
+                .withApplicationParticulars("bail application")
+                .withAllegationOrComplaintStartDate(now())
+                .withJudicialResults(TestTemplates.buildJudicialResultList())
+                .build());
+        final PublicHearingResulted shareResultsMessage = PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplateWithCustomApplication(hearingId, JurisdictionType.MAGISTRATES, courtApplications))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        final Hearing hearing = shareResultsMessage.getHearing();
+        final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
+        when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
+        final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
+        assertThat(caseDetailsList.size(), is(1));
+        final CaseDetails caseDetails = caseDetailsList.get(0);
+        final Optional<ProsecutionCase> prosecutionCaseOptional = prosecutionCases.stream().filter(p -> p.getId().equals(caseDetails.getCaseId())).findFirst();
+        assertThat(prosecutionCaseOptional.isPresent(), is(true));
+        final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
+        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
+            assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
+        } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
+            assertThat(caseDetails.getUrn(), is("authorityReference"));
+        } else {
+            assertThat(caseDetails.getUrn(), is("00PP0000008"));
+        }
+        assertThat(caseDetails.getDefendants(), hasSize(2));
+        assertDefendantsWithJudicialResultsAndNoCaseJudicialResults(caseDetailsList.get(0).getDefendants(), hearing);
+    }
+
+    private void assertDefendantsWithJudicialResultsAndNoCaseJudicialResults(final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
+        assertThat(caseDetailsDefendants.size(), is(2));
+        Optional<CaseDefendant> caseDefendant = caseDetailsDefendants.stream().filter(x -> x.getDefendantId().equals(hearing.getProsecutionCases().get(0).getDefendants().get(0).getMasterDefendantId())).findFirst();
+        assertThat(caseDefendant.isPresent(), is(true));
+        assertThat(caseDefendant.get().getOffences().size(), is(2));
+        caseDefendant = caseDetailsDefendants.stream().filter(x -> x.getDefendantId().equals(hearing.getProsecutionCases().get(0).getDefendants().get(1).getMasterDefendantId())).findFirst();
+        assertThat(caseDefendant.isPresent(), is(true));
+        assertThat(caseDefendant.get().getOffences().size(), is(1));
+
     }
 
     private void assertDefendants(final List<Defendant> defendantsFromRequest, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
@@ -283,7 +365,7 @@ public class CasesConverterTest {
         }
     }
 
-    private void assertDefendants(final CourtOrderOffence courtOrderOffence, final CourtApplicationParty courtApplicationParty, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
+    private void assertDefendants(final CourtOrderOffence courtOrderOffence, final CourtApplicationParty courtApplicationParty, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing, final boolean courtApplicationWithJudicialResults) {
         for (final CaseDefendant caseDetailsDefendant : caseDetailsDefendants) {
             final MasterDefendant masterDefendant = courtApplicationParty.getMasterDefendant();
             assertThat(caseDetailsDefendant.getProsecutorReference(), is(masterDefendant.getPersonDefendant().getArrestSummonsNumber()));
@@ -294,7 +376,12 @@ public class CasesConverterTest {
             }
             assertPresentAtHearing(caseDetailsDefendant);
             assertDefendantPerson(caseDetailsDefendant.getIndividualDefendant(), masterDefendant.getPersonDefendant());
-            assertOffences(caseDetailsDefendant.getOffences(), Lists.newArrayList(courtOrderOffence.getOffence()));
+            final Optional<OffenceDetails> courtApplicationOffence = caseDetailsDefendant.getOffences().stream().filter(offenceDetails -> offenceDetails.getId().equals(hearing.getCourtApplications().get(0).getId())).findFirst();
+            if (courtApplicationWithJudicialResults) {
+                assertThat(courtApplicationOffence.isPresent(), is(true));
+            } else {
+                assertOffences(caseDetailsDefendant.getOffences(), Lists.newArrayList(courtOrderOffence.getOffence()));
+            }
         }
     }
 
