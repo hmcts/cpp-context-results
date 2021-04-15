@@ -24,6 +24,8 @@ public final class SchemaVariableConstants {
     public static final String PROSECUTION_CASES = "prosecutionCases";
     public static final String ORIGINATING_HEARING_ID = "originatingHearingId";
     public static final String HEARING_DAYS = "hearingDays";
+    public static final String YOUTH_COURT = "youthCourt";
+    public static final String YOUTH_COURT_DEFENDANT_IDS = "youthCourtDefendantIds";
     public static final String JURISDICTION_TYPE = "jurisdictionType";
     public static final String TYPE = "type";
     public static final String DEFENDANT_REFERRAL_REASONS = "defendantReferralReasons";

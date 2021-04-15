@@ -12,6 +12,8 @@ public class Hearing {
     private ZonedDateTime startDateTime;
     private List<ZonedDateTime> hearingDates;
     private CourtCentre courtCentre;
+    private YouthCourt youthCourt;
+    private List<UUID> youthCourtDefendantIds;
     private List<Attendee> attendees;
     private List<SharedResultLine> sharedResultLines;
 
@@ -76,6 +78,22 @@ public class Hearing {
     public Hearing setSharedResultLines(List<SharedResultLine> sharedResultLines) {
         this.sharedResultLines = sharedResultLines;
         return this;
+    }
+
+    public YouthCourt getYouthCourt() {
+        return youthCourt;
+    }
+
+    public void setYouthCourt(YouthCourt youthCourt) {
+        this.youthCourt = youthCourt;
+    }
+
+    public List<UUID> getYouthCourtDefendantIds() {
+        return youthCourtDefendantIds;
+    }
+
+    public void setYouthCourtDefendantIds(List<UUID> youthCourtDefendantIds) {
+        this.youthCourtDefendantIds = youthCourtDefendantIds;
     }
 
     public static Hearing hearing() {

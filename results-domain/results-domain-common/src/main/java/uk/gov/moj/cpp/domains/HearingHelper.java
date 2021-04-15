@@ -34,6 +34,8 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.REPORTING_RESTRICTI
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.RESPONDENT_COUNSELS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.SEEDING_HEARING;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.TYPE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.YOUTH_COURT;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.YOUTH_COURT_DEFENDANT_IDS;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -136,6 +138,13 @@ public class HearingHelper {
 
         if (hearing.containsKey(IS_BOX_HEARING)) {
             transformedPayloadObjectBuilder.add(IS_BOX_HEARING, hearing.getBoolean(IS_BOX_HEARING));
+        }
+
+        if (hearing.containsKey(YOUTH_COURT)) {
+            transformedPayloadObjectBuilder.add(YOUTH_COURT, hearing.getJsonObject(YOUTH_COURT));
+        }
+        if (hearing.containsKey(YOUTH_COURT_DEFENDANT_IDS)) {
+            transformedPayloadObjectBuilder.add(YOUTH_COURT_DEFENDANT_IDS, hearing.getJsonArray(YOUTH_COURT_DEFENDANT_IDS));
         }
 
         if (hearing.containsKey(DEFENDANT_HEARING_YOUTH_MARKERS)) {

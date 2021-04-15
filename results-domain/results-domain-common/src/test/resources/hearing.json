@@ -491,6 +491,14 @@
       "welshLjaName": "East Hampshire Magistrates' Court"
     }
   },
+  "youthCourt": {
+      "yourtCourtId": 192883,
+      "name": "Cheshire Youth Court"
+  },
+  "youthCourtDefendantIds": [
+    "a285e3e9-0b71-4352-be31-670a8963359d",
+    "09a147b4-7e6b-11eb-9439-0242ac130002"
+  ],
   "hearingDays": [
     {
       "sittingDay": "2018-03-20T16:14:29.000Z"

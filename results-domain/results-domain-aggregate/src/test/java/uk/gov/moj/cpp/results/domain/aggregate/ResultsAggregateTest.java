@@ -1,19 +1,22 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static com.google.common.collect.ImmutableList.of;
+import static java.lang.Integer.valueOf;
 import static java.time.ZonedDateTime.now;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
+import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.Address.address;
 import static uk.gov.justice.core.courts.AllocationDecision.allocationDecision;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
@@ -21,15 +24,19 @@ import static uk.gov.justice.core.courts.BailStatus.bailStatus;
 import static uk.gov.justice.core.courts.CaseDefendant.caseDefendant;
 import static uk.gov.justice.core.courts.CaseDetails.caseDetails;
 import static uk.gov.justice.core.courts.ContactNumber.contactNumber;
+import static uk.gov.justice.core.courts.CourtCentre.courtCentre;
 import static uk.gov.justice.core.courts.CourtCentreWithLJA.courtCentreWithLJA;
 import static uk.gov.justice.core.courts.CourtIndicatedSentence.courtIndicatedSentence;
 import static uk.gov.justice.core.courts.Gender.FEMALE;
 import static uk.gov.justice.core.courts.Gender.MALE;
+import static uk.gov.justice.core.courts.Hearing.hearing;
 import static uk.gov.justice.core.courts.Individual.individual;
 import static uk.gov.justice.core.courts.IndividualDefendant.individualDefendant;
 import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
 import static uk.gov.justice.core.courts.OffenceDetails.offenceDetails;
 import static uk.gov.justice.core.courts.SessionDay.sessionDay;
+import static uk.gov.justice.core.courts.YouthCourt.youthCourt;
+import static uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted.publicHearingResulted;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.AllocationDecision;
@@ -43,13 +50,13 @@ import uk.gov.justice.core.courts.DefendantRejectedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
 import uk.gov.justice.core.courts.DelegatedPowers;
 import uk.gov.justice.core.courts.Gender;
-import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
 import uk.gov.justice.core.courts.HearingCaseEjected;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.LjaDetails;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.Plea;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
@@ -64,7 +71,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.junit.Test;
@@ -96,8 +102,20 @@ public class ResultsAggregateTest {
     private static final UUID DEFENDANT_ID = randomUUID();
     private static final String EMAIL_ADDRESS = "test@hmcts.net";
     private final PublicHearingResulted input = PublicHearingResulted.publicHearingResulted()
-            .setHearing(Hearing.hearing()
+            .setHearing(hearing()
                     .withId(UUID.randomUUID())
+                    .build())
+            .setSharedTime(ZonedDateTime.now());
+
+    private final UUID hearingId = UUID.randomUUID();
+    private final String courtCode = "cc123";
+    private final PublicHearingResulted hearingResultedWithYouthCourt = publicHearingResulted()
+            .setHearing(hearing()
+                    .withId(hearingId)
+                    .withYouthCourt(youthCourt()
+                            .withCourtCode(1234)
+                            .build())
+                    .withYouthCourtDefendantIds(singletonList(DEFENDANT_ID))
                     .build())
             .setSharedTime(ZonedDateTime.now());
 
@@ -124,7 +142,7 @@ public class ResultsAggregateTest {
         final String HEARING_ID = "hearingId";
         input.getHearing().setId(hearingId);
         resultsAggregate.saveHearingResults(input);
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_ID, hearingId.toString())
                 .add(CASE_ID, caseId.toString())
                 .build();
@@ -145,7 +163,7 @@ public class ResultsAggregateTest {
         final String HEARING_ID = "hearingId";
         input.getHearing().setId(hearingId);
         resultsAggregate.saveHearingResults(input);
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_ID, hearingId.toString())
                 .add(APPLICATION_ID, applicationId.toString())
                 .build();
@@ -165,7 +183,7 @@ public class ResultsAggregateTest {
         final String APPLICATION_ID = "applicationId";
         final String HEARING_ID = "hearingId";
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_ID, hearingId.toString())
                 .add(APPLICATION_ID, applicationId.toString())
                 .build();
@@ -198,7 +216,7 @@ public class ResultsAggregateTest {
     }
 
     @Test
-    public void shouldNotRaiseSessionAddedEventForDuplciateSession() {
+    public void shouldNotRaiseSessionAddedEventForDuplicateSession() {
         final UUID id = randomUUID();
         final CourtCentreWithLJA courtCentre = courtCentreWithLJA().build();
         final ZonedDateTime sittingDay = now();
@@ -286,6 +304,19 @@ public class ResultsAggregateTest {
         offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
         final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
         final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
+        final UUID hearingId = UUID.randomUUID();
+
+        final CourtCentreWithLJA courtCentre = courtCentreWithLJA()
+                .withCourtCentre(courtCentre()
+                        .withCode(courtCode)
+                        .withLja(LjaDetails.ljaDetails().withLjaCode("123").build())
+                        .withPsaCode(987).build()).build();
+        final ZonedDateTime sittingDay = now();
+        final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
+        final List<SessionDay> sessionDays = of(sessionDay);
+
+        resultsAggregate.saveHearingResults(hearingResultedWithYouthCourt);
+        resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
         resultsAggregate.handleCase(caseDetails);
         resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
 
@@ -293,6 +324,12 @@ public class ResultsAggregateTest {
         final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
         assertDefendantUpdatedEvent(caseDefendant, objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+
+        final PoliceResultGenerated policeResultGenerated = (PoliceResultGenerated) objectList.get(1);
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
+        assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("1234"));
     }
 
     @Test
@@ -433,6 +470,19 @@ public class ResultsAggregateTest {
 
     @Test
     public void shouldRaisePoliceResultGeneratedEvent() {
+        final CourtCentreWithLJA courtCentre = courtCentreWithLJA()
+                .withCourtCentre(courtCentre()
+                        .withCode(courtCode)
+                        .withLja(LjaDetails.ljaDetails().withLjaCode("123").build())
+                        .withPsaCode(987)
+                        .build())
+                .build();
+        final ZonedDateTime sittingDay = now();
+        final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
+        final List<SessionDay> sessionDays = of(sessionDay);
+
+        resultsAggregate.saveHearingResults(hearingResultedWithYouthCourt);
+        resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
 
         final CaseDetails caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withAllocationDecision(buildAllocationDecision()).withJudicialResults(of(judicialResult().build())).build()));
         resultsAggregate.handleCase(caseDetails);
@@ -449,6 +499,11 @@ public class ResultsAggregateTest {
         assertThat(policeResultGenerated.getUrn(), is(URN));
         assertThat(policeResultGenerated.getDefendant().getDefendantId(), is(defendantId));
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
+        assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("1234"));
 
     }
 
@@ -468,6 +523,36 @@ public class ResultsAggregateTest {
         final UUID id = randomUUID();
         final Optional<String> result = resultsAggregate.getProsecutionAuthorityCode(id.toString());
         assertThat(result, is(empty()));
+    }
+
+    @Test
+    public void shouldSendYouthCourtCodeWhenTheHearingIsDoneAsAYouthCourtSession() {
+        final CourtCentreWithLJA courtCentre = courtCentreWithLJA()
+                .withCourtCentre(courtCentre()
+                        .withCode(courtCode)
+                        .withLja(LjaDetails.ljaDetails().withLjaCode("123").build())
+                        .withPsaCode(987)
+                        .build())
+                .build();
+        final ZonedDateTime sittingDay = now();
+        final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
+        final List<SessionDay> sessionDays = of(sessionDay);
+
+        final List<OffenceDetails> offenceDetailsList = new ArrayList<>();
+        offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
+        final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
+
+        resultsAggregate.saveHearingResults(hearingResultedWithYouthCourt);
+        resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
+        resultsAggregate.handleCase(caseDetails);
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+
+        final PoliceResultGenerated policeResultGenerated = (PoliceResultGenerated) objectList.get(1);
+        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
+        assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("1234"));
     }
 
     private CaseDetails createCaseDetails(final List<JudicialResult> defendantResults, final List<OffenceDetails> offenceDetailsList) {
@@ -550,7 +635,7 @@ public class ResultsAggregateTest {
 
     private AllocationDecision buildAllocationDecision() {
         return allocationDecision()
-                .withAllocationDecisionDate(LocalDate.of(2019, 10, 01))
+                .withAllocationDecisionDate(LocalDate.of(2019, 10, 1))
                 .withMotReasonCode("motReasonCode")
                 .withSequenceNumber(1)
                 .withOriginatingHearingId(randomUUID())

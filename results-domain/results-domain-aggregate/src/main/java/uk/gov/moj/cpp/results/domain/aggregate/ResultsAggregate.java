@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -9,9 +10,12 @@ import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.CaseAddedEvent.caseAddedEvent;
+import static uk.gov.justice.core.courts.CourtCentre.courtCentre;
+import static uk.gov.justice.core.courts.CourtCentreWithLJA.courtCentreWithLJA;
 import static uk.gov.justice.core.courts.DefendantAddedEvent.defendantAddedEvent;
 import static uk.gov.justice.core.courts.DefendantRejectedEvent.defendantRejectedEvent;
 import static uk.gov.justice.core.courts.DefendantUpdatedEvent.defendantUpdatedEvent;
+import static uk.gov.justice.core.courts.LjaDetails.ljaDetails;
 import static uk.gov.justice.core.courts.PoliceResultGenerated.policeResultGenerated;
 import static uk.gov.justice.core.courts.SessionAddedEvent.sessionAddedEvent;
 import static uk.gov.justice.core.courts.SjpCaseRejectedEvent.sjpCaseRejectedEvent;
@@ -28,9 +32,11 @@ import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CaseAddedEvent;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
+import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
 import uk.gov.justice.core.courts.HearingCaseEjected;
 import uk.gov.justice.core.courts.HearingResultsAdded;
@@ -38,10 +44,12 @@ import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.LjaDetails;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
+import uk.gov.justice.core.courts.YouthCourt;
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.moj.cpp.domains.resultStructure.AttendanceDay;
 import uk.gov.moj.cpp.domains.resultStructure.Case;
@@ -70,7 +78,7 @@ public class ResultsAggregate implements Aggregate {
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
     private static final String INVALID_EMAIL_ID = "Police Email Address is not Available";
-    private static final long serialVersionUID = 102L;
+    private static final long serialVersionUID = 103L;
     private static final Logger LOGGER = getLogger(ResultsAggregate.class);
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
@@ -80,6 +88,9 @@ public class ResultsAggregate implements Aggregate {
     private boolean isEligibleForSpiOut = false;
     private String originatingOrganisation;
 
+    private YouthCourt youthCourt;
+    private List<UUID> youthCourtDefendantIds;
+
     @Override
     public Object apply(final Object event) {
         return match(event).with(
@@ -87,10 +98,18 @@ public class ResultsAggregate implements Aggregate {
                 when(CaseAddedEvent.class).apply(this::storeCaseAddedEvent),
                 when(DefendantAddedEvent.class).apply(this::storeDefendantAddedEvent),
                 when(DefendantUpdatedEvent.class).apply(this::storeDefendantUpdatedEvent),
-                when(HearingResultsAdded.class).apply(
-                        e -> this.hearingIds.add(e.getHearing().getId())
-                ),
+                when(HearingResultsAdded.class).apply(this::handleHearingResultsAdded),
                 otherwiseDoNothing());
+    }
+
+    private void handleHearingResultsAdded(final HearingResultsAdded hearingResultsAdded) {
+        final Hearing hearing = hearingResultsAdded.getHearing();
+        this.hearingIds.add(hearing.getId());
+
+        this.youthCourt = hearing.getYouthCourt();
+        this.youthCourtDefendantIds = new ArrayList<>(); // interested in the latest event
+        ofNullable(hearing.getYouthCourtDefendantIds())
+                .ifPresent(e -> youthCourtDefendantIds.addAll(e));
     }
 
     private void storeDefendantUpdatedEvent(final DefendantUpdatedEvent defendantUpdatedEvent) {
@@ -375,7 +394,7 @@ public class ResultsAggregate implements Aggregate {
     private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType) {
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
-
+            final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {
 
                 isEligibleForSpiOut = true;
@@ -383,7 +402,7 @@ public class ResultsAggregate implements Aggregate {
                 if (!isCrownCourt(jurisdictionType)) {
                     builder.add(policeResultGenerated()
                             .withId(id)
-                            .withCourtCentreWithLJA(courtCentreWithLJA)
+                            .withCourtCentreWithLJA(enhancedCourtCenter)
                             .withSessionDays(sessionDays)
                             .withCaseId(casesDetailsFromRequest.getCaseId())
                             .withUrn(casesDetailsFromRequest.getUrn())
@@ -399,7 +418,7 @@ public class ResultsAggregate implements Aggregate {
     private void updateDefendant(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final Defendant defendantFromAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType) {
         if (defendantFromRequest.getOffences().size() > defendantFromAggregate.getOffences().size() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
-
+            final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {
 
                 isEligibleForSpiOut = true;
@@ -407,7 +426,7 @@ public class ResultsAggregate implements Aggregate {
                 if (!isCrownCourt(jurisdictionType)) {
                     builder.add(policeResultGenerated()
                             .withId(id)
-                            .withCourtCentreWithLJA(courtCentreWithLJA)
+                            .withCourtCentreWithLJA(enhancedCourtCenter)
                             .withSessionDays(sessionDays)
                             .withCaseId(casesDetailsFromRequest.getCaseId())
                             .withUrn(casesDetailsFromRequest.getUrn())
@@ -435,11 +454,12 @@ public class ResultsAggregate implements Aggregate {
     private void buildPoliceResultGeneratedEvent(final Case aCaseAggregate, final Stream.Builder<Object> builder, final Defendant defendant) {
 
         final CaseDefendant caseDefendant = DefendantToCaseDefendantConverter.convert(defendant);
+        final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendant.getId());
 
         if (isResultPresent(caseDefendant)) {
             builder.add(policeResultGenerated()
                     .withId(id)
-                    .withCourtCentreWithLJA(courtCentreWithLJA)
+                    .withCourtCentreWithLJA(enhancedCourtCenter)
                     .withSessionDays(sessionDays)
                     .withCaseId(aCaseAggregate.getCaseId())
                     .withUrn(aCaseAggregate.getUrn())
@@ -491,6 +511,40 @@ public class ResultsAggregate implements Aggregate {
 
     private boolean isNullOrEmpty(final List list) {
         return null == list || list.isEmpty();
+    }
+
+    private CourtCentreWithLJA enhanceCourtCenter(final UUID defendantId) {
+
+        if (youthCourtDefendantIds != null &&
+                youthCourtDefendantIds.stream().anyMatch(defendantId::equals)) {
+            final CourtCentre.Builder courtCentreBuilder =
+                    courtCentre()
+                            .withValuesFrom(this.courtCentreWithLJA.getCourtCentre())
+                            .withPsaCode(youthCourt.getCourtCode());
+
+            populateLjaDetails().ifPresent(courtCentreBuilder::withLja);
+
+            return courtCentreWithLJA()
+                    .withValuesFrom(this.courtCentreWithLJA)
+                    .withCourtCentre(courtCentreBuilder.build())
+                    .withPsaCode(youthCourt.getCourtCode())
+                    .build();
+        }
+
+        return this.courtCentreWithLJA;
+    }
+
+    private Optional<LjaDetails> populateLjaDetails() {
+        if (courtCentreWithLJA.getCourtCentre() != null &&
+                courtCentreWithLJA.getCourtCentre().getLja() != null) {
+            return Optional.of(ljaDetails()
+                    .withValuesFrom(courtCentreWithLJA
+                            .getCourtCentre()
+                            .getLja())
+                    .withLjaCode(youthCourt.getCourtCode().toString())
+                    .build());
+        }
+        return Optional.empty();
     }
 
     public List<UUID> getCaseIds() {

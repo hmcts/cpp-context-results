@@ -7,6 +7,15 @@
       "roomId": "8e912353-3b5d-36c3-953e-ad3b94b19de3",
       "roomName": "Courtroom 01"
     },
+    "youthCourt": {
+      "youthCourtId": "323c3d48-07a5-4048-a650-30e8b1948ca6",
+      "courtCode": 1982782,
+      "name": "Bexley Youth Court"
+    },
+    "youthCourtDefendantIds": [
+      "a285e3e9-0b71-4352-be31-670a8963359d",
+      "09a147b4-7e6b-11eb-9439-0242ac130002"
+    ],
     "hasSharedResults": true,
     "hearingDays": [
       {

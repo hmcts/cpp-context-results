@@ -131,6 +131,12 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getJurisdictionType(), nullValue());
     }
 
+    @Test
+    public void shouldTransformYouthCourtDetails() {
+        final JsonObject hearingJson = getHearingJson("hearing.json");
+        final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
+        final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
+    }
 
     private static JsonObject getHearingJson(final String resourceName) {
         String response = null;
