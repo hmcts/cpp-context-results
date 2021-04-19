@@ -37,7 +37,7 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>1.0.148</coredomain.version>
-        <criminal-court-public-model.version>1.0.143</criminal-court-public-model.version>
+        <criminal-court-public-model.version>${coredomain.version}</criminal-court-public-model.version>
         <referencedata.version>7.0.44</referencedata.version>
         <lettuce.core.version>5.2.1.RELEASE</lettuce.core.version>
         <azure-client-authentication.version>1.5.2</azure-client-authentication.version>
