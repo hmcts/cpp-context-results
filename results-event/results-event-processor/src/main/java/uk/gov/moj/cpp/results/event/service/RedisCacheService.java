@@ -1,12 +1,16 @@
 package uk.gov.moj.cpp.results.event.service;
 
-import io.lettuce.core.api.StatefulRedisConnection;
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.Long.parseLong;
+
 import uk.gov.justice.services.common.configuration.Value;
 
 import javax.inject.Inject;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SetArgs;
+import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 
 public class RedisCacheService implements CacheService {
@@ -27,6 +31,16 @@ public class RedisCacheService implements CacheService {
     @Value(key = "redisCacheUseSsl", defaultValue = "false")
     private String useSsl;
 
+    @Inject
+    @Value(key = "redisExternalCacheKeyTTL", defaultValue = "7890000")
+    private String extTTLSeconds;
+
+    @Inject
+    @Value(key = "redisInternalCacheKeyTTL", defaultValue = "86400")
+    private String intTTLSeconds;
+
+    private static final String CACHE_KEY_EXTERNAL_PREFIX = "EXT_";
+
     private RedisClient redisClient;
 
     @Override
@@ -41,8 +55,8 @@ public class RedisCacheService implements CacheService {
     private void setRedisClient() {
         final String keyPart = ("none".equals(this.key) ? "" : this.key + "@");
         final RedisURI redisURI = RedisURI.create("redis://" + keyPart + host + ":" + port);
-        redisURI.setSsl(Boolean.valueOf(useSsl));
-        if(redisClient == null) {
+        redisURI.setSsl(parseBoolean(useSsl));
+        if (redisClient == null) {
             redisClient = RedisClient.create(redisURI);
         }
     }
@@ -59,8 +73,10 @@ public class RedisCacheService implements CacheService {
 
             //Obtain the command API for synchronous execution.
             final RedisCommands<String, String> command = connection.sync();
+            final String ttlSeconds = key.startsWith(CACHE_KEY_EXTERNAL_PREFIX) ? extTTLSeconds : intTTLSeconds;
+            final SetArgs args = new SetArgs().ex(parseLong(ttlSeconds));
+            return command.set(key, value, args);
 
-            return command.set(key, value);
         }
     }
 
