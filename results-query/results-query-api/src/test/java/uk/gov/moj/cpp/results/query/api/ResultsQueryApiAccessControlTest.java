@@ -22,6 +22,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     private static final String ACTION_NAME_GET_RESULTS_DETAILS = "results.get-results-details";
     private static final String ACTION_NAME_GET_RESULTS_SUMMARY = "results.get-results-summary";
     private static final String ACTION_NAME_GET_HEARING_DETAILS_FOR_HEARING_ID = "results.get-hearing-information-details-for-hearing";
+    private static final String ACTION_NAME_GET_PROSECUTOR_RESULTS = "results.prosecutor-results";
 
     @Mock
     private UserAndGroupProvider mockUserAndGroupProvider;
@@ -150,6 +151,26 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
                 asList(UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
                         UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName())))
+                .willReturn(false);
+
+        final ExecutionResults results = executeRulesWith(action);
+        assertFailureOutcome(results);
+    }
+
+    @Test
+    public void shouldAllowAuthorisedUserToGetProsecutorResults() {
+        final Action action = createActionFor(ACTION_NAME_GET_PROSECUTOR_RESULTS);
+        given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action, UserGroupType.CPPI_CONSUMERS.getName()))
+                .willReturn(true);
+
+        final ExecutionResults results = executeRulesWith(action);
+        assertSuccessfulOutcome(results);
+    }
+
+    @Test
+    public void shouldNotAllowUnauthorisedUserToGetProsecutorResults() {
+        final Action action = createActionFor(ACTION_NAME_GET_PROSECUTOR_RESULTS);
+        given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action, UserGroupType.SYSTEM_USERS.getName()))
                 .willReturn(false);
 
         final ExecutionResults results = executeRulesWith(action);

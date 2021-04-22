@@ -17,4 +17,13 @@ subscriptions_descriptor:
         - name: results.hearing-application-ejected
           schema_uri: http://justice.gov.uk/core/courts/results.hearing-application-ejected.json
 
+        - name: results.event.informant-register-recorded
+          schema_uri: http://justice.gov.uk/core/courts/informant-register-recorded.json
+
+        - name: results.event.informant-register-generated
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
+
+        - name: results.event.informant-register-notified
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-notified.json
+
       event_source_name: results

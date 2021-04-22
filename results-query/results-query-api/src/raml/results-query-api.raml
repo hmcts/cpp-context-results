@@ -48,7 +48,6 @@ protocols: [ HTTP, HTTPS ]
                         example:  !include json/results.results-summary.json
                         schema:  !include json/schema/results.results-summary.json
 
-
 /hearingDetails/{hearingId}:
     uriParameters:
         hearingId:
@@ -88,3 +87,101 @@ protocols: [ HTTP, HTTPS ]
                      application/vnd.results.hearing-details-internal+json:
                         schema: !include json/schema/results.hearing-details.json
                         example: !include json/results.hearing-details.json
+
+/informant-register/request/{requestStatus}:
+  uriParameters:
+        requestStatus:
+          description: informant register document by request sttaus
+          type: string
+  get:
+      description: |
+        Return all the informant register document generation requests
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-request+json
+            name: results.query.informant-register-document-request
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-request+json:
+                    example:  !include json/results.query.informant-register-document-request.json
+                    schema:  !include json/schema/results.query.informant-register-document-request.json
+
+/informant-register/material/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular prosecution authority
+          type: string
+  get:
+      description: |
+        Return all the informant register document generation requests
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-by-material+json
+            name: results.query.informant-register-document-by-material
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-by-material+json:
+                    example:  !include json/results.query.informant-register-document-by-material.json
+                    schema:  !include json/schema/results.query.informant-register-document-by-material.json
+
+/informant-register/requestByDate:
+  get:
+      description: |
+        Return all the informant register document generation requests by request date
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-by-request-date+json
+            name: results.query.informant-register-document-by-request-date
+        ...
+      queryParameters:
+          registerDate:
+            description: registerDate
+            type: string
+            required: true
+          prosecutionAuthorityCode:
+            description: comma seperated prosecution authorities
+            type: string
+            required: false
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-by-request-date+json:
+                    example:  !include json/results.query.informant-register-document-by-request-date.json
+                    schema:  !include json/schema/results.query.informant-register-document-by-request-date.json
+
+/prosecutor/{ouCode}:
+  uriParameters:
+        ouCode:
+          description: prosecutor organisation unit
+          type: string
+  get:
+      description: |
+        Return all results for prosecutor identified by ouCode for a single date or a date range
+        ...
+        (mapping):
+            responseType: application/vnd.results.prosecutor-results+json
+            name: results.prosecutor-results
+        ...
+      queryParameters:
+          startDate:
+            description: start date of date range (or can be just this without an end date)
+            type: string
+            required: true
+          endDate:
+            description: end date for date range
+            type: string
+            required: false
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.prosecutor-results+json:
+                    example:  !include json/results.prosecutor-results.json
+                    schema:  !include json/schema/results.prosecutor-results.json

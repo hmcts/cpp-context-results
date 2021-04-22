@@ -11,10 +11,10 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -40,7 +40,9 @@ import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
+import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.spi.DefaultJsonMetadata;
 import uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
@@ -52,10 +54,10 @@ import java.util.UUID;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,10 +89,14 @@ public class ReferenceDataServiceTest {
     private static final String EMAIL_ADDRESS = "test@hmcts.net";
     private static final String REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE = "referencedata.query.get.prosecutor.by.oucode";
     private final JsonEnvelope envelope = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), createObjectBuilder().build());
+
     @Spy
     private final Enveloper enveloper = createEnveloper();
     @Mock
     private Requester requester;
+
+    @Mock
+    private JsonArray prosecutors;
 
     @InjectMocks
     private ReferenceDataService referenceDataService;
@@ -233,10 +239,10 @@ public class ReferenceDataServiceTest {
                 .build();
 
         when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(mock ->
-             envelope()
-                    .with(metadataWithRandomUUID("referencedata.query.organisation-unit.v2"))
-                    .withPayloadOf(courtId, FIELD_COURT_ID)
-                    .build()
+                envelope()
+                        .with(metadataWithRandomUUID("referencedata.query.organisation-unit.v2"))
+                        .withPayloadOf(courtId, FIELD_COURT_ID)
+                        .build()
         );
 
         referenceDataService.getOrgainsationUnit(courtId, event);
@@ -249,41 +255,37 @@ public class ReferenceDataServiceTest {
                 payloadIsJson(
                         withJsonPath("$.id", equalTo(courtId))
                 ))
+
         ));
         verifyNoMoreInteractions(requester);
     }
 
     private void mockCountryNationalityResponseAndAssertOnResult(final JsonObject nationality, final Matcher nationalityMatcher, final UUID nationalityId) {
-
         final JsonArray nationalities = createArrayBuilder()
                 .add(nationality)
                 .build();
+
         when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(mock -> {
-                    final JsonEnvelope envelope = (JsonEnvelope) mock.getArguments()[0];
-                    JsonObject responsePayload = createObjectBuilder()
-                            .add("countryNationality", nationalities)
-                            .build();
+            final JsonEnvelope envelope = (JsonEnvelope) mock.getArguments()[0];
+            JsonObject responsePayload = createObjectBuilder()
+                    .add("countryNationality", nationalities)
+                    .build();
             return envelopeFrom(envelope.metadata(), responsePayload);
         });
 
 
         final Optional<JsonObject> nationalityResult = referenceDataService.getNationalityById(nationalityId, envelope);
-        MatcherAssert.assertThat(nationalityResult, nationalityMatcher);
+        assertThat(nationalityResult, nationalityMatcher);
     }
 
     @Test
     public void shouldReturnTrueWhenSpiOutFlagTrue() {
-
         final JsonObject responsePayload = createObjectBuilder().add("spiOutFlag", true).build();
         final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
-
-
         final String originatingOrganisation = "GAFTL00";
 
         when(requester.requestAsAdmin(any(), any())).thenAnswer(mock -> queryResponse);
-
-        assertTrue(referenceDataService.getSpiOutFlagForProsecutorOucode(originatingOrganisation));
-
+        assertTrue(referenceDataService.getSpiOutFlag(originatingOrganisation));
         verify(requester).requestAsAdmin(envelopeArgumentCaptor.capture(), any());
 
         assertThat(envelopeArgumentCaptor.getValue(), is(jsonEnvelope(
@@ -297,17 +299,12 @@ public class ReferenceDataServiceTest {
 
     @Test
     public void shouldReturnFalseWhenSpiOutFlagFalse() {
-
         final JsonObject responsePayload = createObjectBuilder().add("spiOutFlag", false).build();
         final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
-
-
         final String originatingOrganisation = "GAFTL00";
 
         when(requester.requestAsAdmin(any(), any())).then(mock -> queryResponse);
-
-        assertFalse(referenceDataService.getSpiOutFlagForProsecutorOucode(originatingOrganisation));
-
+        assertFalse(referenceDataService.getSpiOutFlag(originatingOrganisation));
         verify(requester).requestAsAdmin(envelopeArgumentCaptor.capture(), any());
 
         assertThat(envelopeArgumentCaptor.getValue(), is(jsonEnvelope(
@@ -321,16 +318,13 @@ public class ReferenceDataServiceTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldFailWhenSpiOutFlagNotFound() {
-
         final JsonObject responsePayload = createObjectBuilder().build();
         final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
-
-
         final String originatingOrganisation = "GAFTL00";
 
         when(requester.requestAsAdmin(any(), any())).then(mock -> queryResponse);
 
-        referenceDataService.getSpiOutFlagForProsecutorOucode(originatingOrganisation);
+        referenceDataService.getSpiOutFlag(originatingOrganisation);
     }
 
     @Test
@@ -400,16 +394,12 @@ public class ReferenceDataServiceTest {
 
     @Test
     public void shouldReturnPoliceEmailAddress() {
-
-        final JsonObject responsePayload = createObjectBuilder().add(FIELD_CONTACT_EMAIL_ADDRESS,EMAIL_ADDRESS).build();
+        final JsonObject responsePayload = createObjectBuilder().add(FIELD_CONTACT_EMAIL_ADDRESS, EMAIL_ADDRESS).build();
         final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
-
         final String ouCode = GAFTL_00;
 
         when(requester.requestAsAdmin(any(), any())).then(mock -> queryResponse);
-
-        assertThat(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(ouCode),is(EMAIL_ADDRESS));
-
+        assertThat(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(ouCode), is(EMAIL_ADDRESS));
         verify(requester).requestAsAdmin(envelopeArgumentCaptor.capture(), any());
 
         assertThat(envelopeArgumentCaptor.getValue(), is(jsonEnvelope(
@@ -419,5 +409,99 @@ public class ReferenceDataServiceTest {
                         withJsonPath("$.oucode", equalTo(GAFTL_00)))
                 )))
         );
+    }
+
+    @Test
+    public void shouldGetSpiOutFlagForOriginatingOrganisationAsTrue() {
+        final JsonObject jsonProsecutor = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true).build();
+
+        when(requester.requestAsAdmin(any(), any())).thenReturn(Envelope.envelopeFrom(DefaultJsonMetadata.metadataBuilder().withId(randomUUID()).withName("referencedata.query.get.prosecutor.by.oucode"), jsonProsecutor));
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByOriginatingOrganisation("someCode");
+        assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(true));
+        assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(true));
+    }
+
+    @Test
+    public void shouldGetSpiOutFlagForProsecutionAuthorityCodeAsTrue () {
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
+        jsonProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("policeFlag", true);
+
+        when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(invocationOnMock -> {
+            final JsonEnvelope envelope = (JsonEnvelope) invocationOnMock.getArguments()[0];
+            JsonObject responsePayload = createObjectBuilder()
+                    .add("prosecutors", prosecutors)
+                    .build();
+
+            return envelopeFrom(envelope.metadata(), responsePayload);
+
+        });
+
+        when(prosecutors.getJsonObject(0)).thenReturn(jsonProsecutorBuilder.build());
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByProsecutionAuthority("someCode");
+        assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(true));
+        assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(true));
+    }
+
+
+    @Test
+    public void shouldGetSpiOutFlagForProsecutionAuthorityCodeAsFalse() {
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
+        jsonProsecutorBuilder
+                .add("spiOutFlag", false)
+                .add("policeFlag", false);
+        when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(invocationOnMock -> {
+            final JsonEnvelope envelope = (JsonEnvelope) invocationOnMock.getArguments()[0];
+            JsonObject responsePayload = createObjectBuilder()
+                    .add("prosecutors", prosecutors)
+                    .build();
+
+            return envelopeFrom(envelope.metadata(), responsePayload);
+
+        });
+
+        when(prosecutors.getJsonObject(0)).thenReturn(jsonProsecutorBuilder.build());
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByProsecutionAuthority("someCode");
+        assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(false));
+        assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(false));
+    }
+
+    @Test
+    public void shouldGetSpiOutFlagForOriginatingOrganisationAsFalse() {
+        final JsonObject jsonProsecutor = createObjectBuilder()
+                .add("spiOutFlag", false)
+                .add("policeFlag", false).build();
+
+        when(requester.requestAsAdmin(any(), any())).thenReturn(Envelope.envelopeFrom(DefaultJsonMetadata.metadataBuilder().withId(randomUUID()).withName("referencedata.query.get.prosecutor.by.oucode"), jsonProsecutor));
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByOriginatingOrganisation("someCode");
+        assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(false));
+        assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(false));
+    }
+
+    @Test
+    public void shouldReturnFalseProsecutorsNotFoundInResponseJson() {
+        when(requester.requestAsAdmin(any(), any())).thenReturn(null);
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByOriginatingOrganisation("someCode");
+        assertThat(refDataProsecutorJson.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldNotReturnWhenSpiOutIsNotSet() {
+        final JsonObject jsonProsecutor = createObjectBuilder()
+                .add("policeFlag", false).build();
+
+        when(requester.requestAsAdmin(any(), any())).thenReturn(Envelope.envelopeFrom(DefaultJsonMetadata.metadataBuilder().withId(randomUUID()).withName("referencedata.query.get.prosecutor.by.oucode"), jsonProsecutor));
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByOriginatingOrganisation("someCode");
+        assertThat(refDataProsecutorJson.get().containsKey("spiOutFlag"), is(false));
+        assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(false));
     }
 }

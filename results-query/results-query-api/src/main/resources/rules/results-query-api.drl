@@ -62,3 +62,41 @@ rule "Query - API - results.get-hearing-details-internal"
   then
     $outcome.setSuccess(true);
 end
+
+rule "results - Query - API - results.query.informant-register-document-request"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.query.informant-register-document-request");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "System Users", "Listing Officers", "Court Clerks", "Legal Advisers", "Prison Admin", "Probation Admin", "Police Admin", "Victims & Witness Care Admin", "Youth Offending Service Admin", "Legal Aid Agency Admin", "Probation Admin", "Court Associate"))
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "results - Query - API - results.query.informant-register-document-by-material"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.query.informant-register-document-by-material");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "System Users", "Listing Officers", "Court Clerks", "Legal Advisers", "Prison Admin", "Probation Admin", "Police Admin", "Victims & Witness Care Admin",
+    "Youth Offending Service Admin", "Legal Aid Agency Admin", "Probation Admin", "Court Associate"))
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "results - Query - API - results.query.informant-register-document-by-request-date"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.query.informant-register-document-by-request-date");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "System Users", "Listing Officers", "Court Clerks", "Legal Advisers", "Prison Admin", "Probation Admin", "Police Admin", "Victims & Witness Care Admin",
+    "Youth Offending Service Admin", "Legal Aid Agency Admin", "Probation Admin", "Court Associate"))
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "results - Query - API - results.prosecutor-results"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.prosecutor-results");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "CPPI Consumers"))
+  then
+    $outcome.setSuccess(true);
+end

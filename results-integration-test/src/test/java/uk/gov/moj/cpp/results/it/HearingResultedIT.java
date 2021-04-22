@@ -7,6 +7,7 @@ import static java.time.LocalDate.of;
 import static java.util.Arrays.asList;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
+import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -14,6 +15,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
+import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
@@ -150,7 +152,7 @@ public class HearingResultedIT {
 
     @Test
     public void testCCForSpiOut() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -168,7 +170,7 @@ public class HearingResultedIT {
     @Test
     public void testCCForSpiOutForHearingDay() throws JMSException {
         final LocalDate hearingDay = LocalDate.now();
-        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithHearingDay(JurisdictionType.MAGISTRATES, hearingDay);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithHearingDay(MAGISTRATES, hearingDay);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -204,7 +206,7 @@ public class HearingResultedIT {
 
     @Test
     public void testCCForSpiOutDefaultOffenceDateCode() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -223,7 +225,7 @@ public class HearingResultedIT {
 
     @Test
     public void whenVerdictNotPresentAndConvictedDatePresentThenPoliceResultGeneratedHasFindingWithDefaultValue() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -234,7 +236,7 @@ public class HearingResultedIT {
 
     @Test
     public void whenVerdictPresentThenPoliceResultGeneratedHasFindingWithVerdictCode() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2WithVerdictTemplate(JurisdictionType.MAGISTRATES, true, false);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2WithVerdictTemplate(MAGISTRATES, true, false);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -273,7 +275,7 @@ public class HearingResultedIT {
 
     @Test
     public void testCCForSpiOutFalse() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         resultsMessage.getHearing().getProsecutionCases().get(1).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenSharedV2(resultsMessage);
@@ -283,13 +285,13 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(false);
-        verifyNotInPublicTopic();
+        verifyPrivateEventsWithPoliceResultGenerated(true);
+        verifyInPublicTopic();
     }
 
     @Test
     public void testCCForRejectedEvent() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithoutResult(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithoutResult(MAGISTRATES);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
@@ -328,14 +330,14 @@ public class HearingResultedIT {
 
     @Test
     public void testGeneratePoliceResultsForDefendantCC() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         verifyPrivateEventsWithPoliceResultGenerated();
         verifyInPublicTopic();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(SESSION_ID, resultsMessage.getHearing().getId().toString())
                 .add(CASE_ID, CASE_ID_VALUE)
                 .add(DEFENDANT_ID, DEFENDANT_ID_VALUE)
@@ -349,15 +351,15 @@ public class HearingResultedIT {
 
     @Test
     public void testGeneratePoliceResultsForDefendantCCWhenSpiOutFalse() throws JMSException {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         resultsMessage.getHearing().getProsecutionCases().get(1).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(false);
-        verifyNotInPublicTopic();
+        verifyPrivateEventsWithPoliceResultGenerated(true);
+        verifyInPublicTopic();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(SESSION_ID, resultsMessage.getHearing().getId().toString())
                 .add(CASE_ID, CASE_ID_VALUE)
                 .add(DEFENDANT_ID, DEFENDANT_ID_VALUE)
@@ -365,13 +367,13 @@ public class HearingResultedIT {
 
         sendGeneratePoliceResultsForADefendantCommand(payload);
 
-        verifyPrivateEventsForPoliceGenerateResultsForDefendant(false);
-        verifyNotInPublicTopic();
+        verifyPrivateEventsForPoliceGenerateResultsForDefendant(true);
+        verifyInPublicTopic();
     }
 
     @Test
     public void journeyHearingToResults() {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
         final UUID defendantId0 =
@@ -442,7 +444,7 @@ public class HearingResultedIT {
 
     @Test
     public void outOfOrderJourney() throws Exception {
-        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
         final UUID defendantId0 =
@@ -496,7 +498,7 @@ public class HearingResultedIT {
 
     @Test
     public void testJourneyHearingToDisplayAllDetailsInResults() {
-        PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -538,7 +540,7 @@ public class HearingResultedIT {
 
     @Test
     public void shouldDisplayAllInternalDetailsInHearingResults() {
-        PublicHearingResulted resultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -601,7 +603,7 @@ public class HearingResultedIT {
     public void shouldBeSentToSpiOutForApplicationWithNoJudicialResultsV2() throws JMSException {
 
         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), JurisdictionType.MAGISTRATES))
+                .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), MAGISTRATES))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
         resultsMessage.setIsReshare(Optional.of(false));
         resultsMessage.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
@@ -633,7 +635,7 @@ public class HearingResultedIT {
     public void shouldBeSentToSpiOutForApplicationWithJudicialResultsV2() throws JMSException {
 
         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplateWithCustomApplication(randomUUID(), JurisdictionType.MAGISTRATES,
+                .setHearing(basicShareHearingTemplateWithCustomApplication(randomUUID(), MAGISTRATES,
                         asList(CourtApplication.courtApplication()
                                 .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
                                 .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())

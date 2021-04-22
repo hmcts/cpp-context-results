@@ -12,6 +12,7 @@ import static uk.gov.justice.sjp.results.Prompts.prompts;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.AllocationDecision;
+import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.sjp.results.BasePersonDetail;
 import uk.gov.justice.sjp.results.BaseResult;
 import uk.gov.justice.sjp.results.CaseDefendant;

@@ -271,7 +271,7 @@ public class ResultsEventProcessor {
 
         final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
 
-        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
+        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache, referenceDataService).convert(publicHearingResulted);
 
         if (isNotEmpty(caseDetails)) {
             publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());

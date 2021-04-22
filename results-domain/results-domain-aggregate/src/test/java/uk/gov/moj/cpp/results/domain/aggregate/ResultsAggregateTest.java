@@ -360,17 +360,6 @@ public class ResultsAggregateTest {
     }
 
     @Test
-    public void shouldNotRaisePoliceResultGeneratedEventWhenSpiOutFlagFalse() {
-        final List<OffenceDetails> offenceDetailsList = new ArrayList<>();
-        offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
-        final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
-        resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, false, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
-        assertDefendantAddedEvent(caseDetails.getDefendants().get(0), objectList);
-        assertThat(objectList.size(), is(1));
-    }
-
-    @Test
     public void testHandleDefendantsWhenAJudicialResultHasBeenAmended() {
         final List<OffenceDetails> offences = new ArrayList<>();
         final JudicialResult judicialResult = judicialResult().withJudicialResultId(randomUUID()).build();

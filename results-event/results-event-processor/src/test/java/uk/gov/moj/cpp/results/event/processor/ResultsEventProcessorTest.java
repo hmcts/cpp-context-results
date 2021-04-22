@@ -236,7 +236,6 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.session.sessionDays.[0].sittingDay", is("2018-05-02T12:01:01.000Z")))
 
                         )));
-
     }
 
     @Test

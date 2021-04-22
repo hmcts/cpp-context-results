@@ -140,6 +140,13 @@ function runEventTrackingLiquibase {
     echo "Finished executing event tracking liquibase"
 }
 
+function runFileServiceLiquibase() {
+    echo "running file service liquibase"
+    mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.1:copy -DoutputDirectory=target -Dartifact=uk.gov.justice.services:file-service-liquibase:${FRAMEWORK_VERSION}:jar
+    java -jar target/file-service-liquibase-${FRAMEWORK_VERSION}.jar --url=jdbc:postgresql://localhost:5432/fileservice --username=fileservice --password=fileservice --logLevel=info update
+    echo "finished file service  liquibase"
+}
+
 function buildDeployAndTest {
 
   local OPTIND
@@ -175,6 +182,7 @@ function runLiquibase {
    runViewStoreLiquibase
    runSystemLiquibase
    runEventTrackingLiquibase
+   runFileServiceLiquibase
    echo "All liquibase update scripts run"
 }
 

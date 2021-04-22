@@ -13,6 +13,7 @@
     <properties>
         <cpp.framework.action.mapping.enabled>true</cpp.framework.action.mapping.enabled>
         <usersgroups.version>2.0.115</usersgroups.version>
+        <cpp.service-component>QUERY_VIEW</cpp.service-component>
     </properties>
 
     <build>
@@ -39,6 +40,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.common</groupId>
+            <artifactId>query-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>

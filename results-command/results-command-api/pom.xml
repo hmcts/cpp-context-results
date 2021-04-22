@@ -38,8 +38,12 @@
             <artifactId>access-control-test-utils</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.access-control</groupId>
+            <artifactId>access-control-refdata-providers</artifactId>
+            <version>${cpp.platform-libraries.version}</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

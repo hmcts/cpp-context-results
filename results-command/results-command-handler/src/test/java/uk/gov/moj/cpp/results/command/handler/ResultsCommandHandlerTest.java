@@ -16,7 +16,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -581,13 +580,13 @@ public class ResultsCommandHandlerTest {
     }
 
     @Test
-    public void shouldGeneratePoliceResultsForDefendantWhenProsecutionAuthorityCodeSetAndSpiOutFlagTrue() throws EventStreamException {
+    public void shouldGeneratePoliceResultsForDefendantWhenProsecutionAuthorityCodeSet() throws EventStreamException {
         final String code = randomAlphanumeric(5);
         when(resultsAggregateSpy.getOriginatingOrganisation()).thenReturn(code);
 
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
         jsonProsecutorBuilder
-                .add("spiOutFlag", true)
+                .add("spiOutFlag", false)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(any())).thenReturn(of(jsonProsecutorBuilder.build()));
@@ -595,36 +594,7 @@ public class ResultsCommandHandlerTest {
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
         resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy, Mockito.times(1)).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
-    }
-
-    @Test
-    public void shouldNotGeneratePoliceResultsForDefendantWhenProsecutionAuthorityCodeSetAndSpiOutFlagFalse() throws EventStreamException {
-        final String code = randomAlphanumeric(5);
-        when(resultsAggregateSpy.getOriginatingOrganisation()).thenReturn(code);
-
-        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
-        jsonProsecutorBuilder
-                .add("spiOutFlag", false)
-                .add("policeFlag", false)
-                .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(any())).thenReturn(of(jsonProsecutorBuilder.build()));
-
-        final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
-        final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
-        resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy, never()).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
-    }
-
-    @Test
-    public void shouldNotGeneratePoliceResultsForDefendantWhenUnableToQuerySpiOutFlag() throws EventStreamException {
-        final String code = randomAlphanumeric(5);
-        when(resultsAggregateSpy.getOriginatingOrganisation()).thenReturn(null);
-
-        final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
-        final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
-        resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy, never()).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
+        verify(resultsAggregateSpy).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
     }
 
     @Test
@@ -683,6 +653,5 @@ public class ResultsCommandHandlerTest {
         return listOfStreams.stream()
                 .flatMap(jsonEnvelopeStream -> jsonEnvelopeStream).collect(toList());
     }
-
 }
 

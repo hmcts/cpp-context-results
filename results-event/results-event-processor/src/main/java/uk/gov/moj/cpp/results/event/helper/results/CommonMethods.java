@@ -4,7 +4,6 @@ import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
-import org.apache.commons.collections.CollectionUtils;
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CourtApplication;
@@ -26,9 +25,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CommonMethods {
+import org.apache.commons.collections.CollectionUtils;
 
+public class CommonMethods {
     private static final String POLICE_URN_DEFAULT_VALUE = "00PP0000008";
+    private static final String NON_POLICE_URN_DEFAULT_VALUE = "00NP0000008";
     private static final String N = "N";
     private static final String Y = "Y";
 
@@ -39,7 +40,7 @@ public class CommonMethods {
         String result = N;
         final Optional<ZonedDateTime> sittingDayOptional = hearing.getHearingDays().stream().map(HearingDay::getSittingDay).findFirst();
         if (null != attendanceDays && sittingDayOptional.isPresent()) {
-            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(sittingDayOptional.get().toLocalDate()) && a.getAttendanceType()!= AttendanceType.NOT_PRESENT).findFirst();
+            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(sittingDayOptional.get().toLocalDate()) && a.getAttendanceType() != AttendanceType.NOT_PRESENT).findFirst();
             if (attendanceDay.isPresent()) {
                 result = Y;
             }
@@ -54,7 +55,7 @@ public class CommonMethods {
         String result = N;
         final Optional<ZonedDateTime> sittingDayOptional = hearing.getHearingDays().stream().map(HearingDay::getSittingDay).findFirst();
         if (null != attendanceDays && sittingDayOptional.isPresent()) {
-            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(sittingDayOptional.get().toLocalDate()) && a.getAttendanceType()!= AttendanceType.NOT_PRESENT).findFirst();
+            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(sittingDayOptional.get().toLocalDate()) && a.getAttendanceType() != AttendanceType.NOT_PRESENT).findFirst();
             if (attendanceDay.isPresent()) {
                 result = Y;
             }
@@ -89,16 +90,21 @@ public class CommonMethods {
         return defendantDefenceCounsel;
     }
 
-    public static String getUrn(final ProsecutionCaseIdentifier prosecutionCaseIdentifier) {
+    public static String getUrn(final ProsecutionCaseIdentifier prosecutionCaseIdentifier, final boolean isPoliceProsecutor) {
         if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
             return prosecutionCaseIdentifier.getCaseURN();
         } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
             return prosecutionCaseIdentifier.getProsecutionAuthorityReference();
         }
-        return POLICE_URN_DEFAULT_VALUE;
+
+        if (isPoliceProsecutor) {
+            return POLICE_URN_DEFAULT_VALUE;
+        }
+
+        return NON_POLICE_URN_DEFAULT_VALUE;
     }
 
-    public static String getUrn(final CourtApplication courtApplication) {
+    public static String getUrn(final CourtApplication courtApplication, final boolean isPoliceProsecutor) {
 
         final List<String> urnList = new ArrayList<>();
 
@@ -106,15 +112,15 @@ public class CommonMethods {
 
         final Stream<CourtOrderOffence> courtOrderOffenceStream = ofNullable(courtApplication.getCourtOrder()).map(courtOrder -> courtOrder.getCourtOrderOffences().stream()).orElseGet(Stream::empty);
 
-        final List<String> courtApplicationCasesUrn = courtApplicationCasesStream.map(c -> getUrn(c.getProsecutionCaseIdentifier())).collect(Collectors.toList());
+        final List<String> courtApplicationCasesUrn = courtApplicationCasesStream.map(c -> getUrn(c.getProsecutionCaseIdentifier(), isPoliceProsecutor)).collect(Collectors.toList());
 
-        final List<String> courtOrderUrn = courtOrderOffenceStream.map(o -> getUrn(o.getProsecutionCaseIdentifier())).collect(Collectors.toList());
+        final List<String> courtOrderUrn = courtOrderOffenceStream.map(o -> getUrn(o.getProsecutionCaseIdentifier(), isPoliceProsecutor)).collect(Collectors.toList());
 
-        if(CollectionUtils.isNotEmpty(courtApplicationCasesUrn)) {
+        if (CollectionUtils.isNotEmpty(courtApplicationCasesUrn)) {
             urnList.addAll(courtApplicationCasesUrn);
         }
 
-        if(CollectionUtils.isNotEmpty(courtOrderUrn)) {
+        if (CollectionUtils.isNotEmpty(courtOrderUrn)) {
             urnList.addAll(courtOrderUrn);
         }
 
@@ -133,11 +139,11 @@ public class CommonMethods {
 
         final List<String> courtOrderCode = courtOrderOffenceStream.map(o -> o.getProsecutionCaseIdentifier().getProsecutionAuthorityCode()).collect(Collectors.toList());
 
-        if(CollectionUtils.isNotEmpty(courtApplicationCasesCode)) {
+        if (CollectionUtils.isNotEmpty(courtApplicationCasesCode)) {
             urnList.addAll(courtApplicationCasesCode);
         }
 
-        if(CollectionUtils.isNotEmpty(courtOrderCode)) {
+        if (CollectionUtils.isNotEmpty(courtOrderCode)) {
             urnList.addAll(courtOrderCode);
         }
 

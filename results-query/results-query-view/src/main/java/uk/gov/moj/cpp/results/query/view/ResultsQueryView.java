@@ -1,10 +1,10 @@
 package uk.gov.moj.cpp.results.query.view;
 
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
+import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.services.common.converter.LocalDates;
@@ -21,8 +21,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonObject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @SuppressWarnings({"CdiInjectionPointsInspection", "SpringAutowiredFieldsWarningInspection", "WeakerAccess", "squid:S1188", "squid:CallToDeprecatedMethod"})
@@ -82,7 +84,7 @@ public class ResultsQueryView {
         if(hearingResultAdded != null){
             final ApiHearing hearing = hearingTransformer.hearing(hearingResultAdded.getHearing()).build();
             final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
-            final JsonObject jsonResult = Json.createObjectBuilder()
+            final JsonObject jsonResult = createObjectBuilder()
                     .add("hearing", jsonValue)
                     .add("sharedTime", hearingResultAdded.getSharedTime().toString())
                     .build();
@@ -91,7 +93,7 @@ public class ResultsQueryView {
         }
         LOGGER.warn("No records exists for Hearing id {}", hearingId);
         return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
-                .apply(Json.createObjectBuilder().build());
+                .apply(createObjectBuilder().build());
     }
 
     @Handles("results.get-hearing-details-internal")
@@ -99,9 +101,13 @@ public class ResultsQueryView {
         final JsonObject payload = query.payloadAsJsonObject();
         final UUID hearingId = fromString(payload.getString(FIELD_HEARING_ID));
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
-        final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
+        if (nonNull(hearingResultAdded)) {
+            final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
+            return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                    .apply(jsonResult);
+        }
+        LOGGER.warn("No record exists for Hearing id {}", hearingId);
         return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
-                .apply(jsonResult);
-
+                .apply(createObjectBuilder().build());
     }
 }

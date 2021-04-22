@@ -2,11 +2,10 @@ package uk.gov.moj.cpp.results.event.helper.results;
 
 import static java.time.LocalDate.now;
 import static java.util.Arrays.asList;
-import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.DefenceCounsel.defenceCounsel;
 import static uk.gov.justice.core.courts.Defendant.defendant;
 import static uk.gov.justice.core.courts.Hearing.hearing;
@@ -27,7 +26,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableList;
@@ -37,16 +35,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommonMethodsTest {
-
-
     private static final UUID DEFAULT_DEFENDANT_ID1 = fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");
-    private static final UUID DEFAULT_DEFENDANT_ID2 = fromString("dddd2222-1e20-4c21-916a-81a6c90239e5");
     private static final UUID DEFAULT_DEFENDANT_ID3 = fromString("dddd3333-1e20-4c21-916a-81a6c90239e5");
-    private static final UUID DEFAULT_DEFENDANT_ID4 = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
-    private static final Optional<UUID> OPTIONAL_UUID = of(fromString("dddd1111-1e20-4c21-916a-81a6c90239e5"));
     private static final String DEFAULT_URN = "URN12345";
     private static final String PROSECUTION_AUTHORITY_REFERENCE = "reference";
     private static final String POLICE_URN_DEFAULT_VALUE = "00PP0000008";
+    private static final String NON_POLICE_URN_DEFAULT_VALUE = "00NP0000008";
 
     @Test
     public void testGetPresentAtHearingAsYWhenDefendantIsPresentAtHearing() {
@@ -55,7 +49,6 @@ public class CommonMethodsTest {
 
         final String result = getPresentAtHearing(attendanceDays, buildHearing(), buildDefendant());
         assertThat(result, is("Y"));
-
     }
 
     @Test
@@ -65,7 +58,6 @@ public class CommonMethodsTest {
 
         final String result = getPresentAtHearing(attendanceDays, buildHearingForDefenceCounsel(), buildDefendant());
         assertThat(result, is("A"));
-
     }
 
     @Test
@@ -80,40 +72,38 @@ public class CommonMethodsTest {
                 .build())).build();
         final String result = getPresentAtHearing(attendanceDays, hearing, buildDefendant());
         assertThat(result, is("N"));
-
     }
 
     @Test
     public void testGetUrn() {
-
         final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCaseIdentifier().withCaseURN(DEFAULT_URN)
                 .withProsecutionAuthorityCode("12345")
                 .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
                 .withProsecutionAuthorityReference("reference")
+                .withCaseURN("URN-12345678")
                 .build();
-        String result = getUrn(prosecutionCaseIdentifier);
-        assertThat(result, is(DEFAULT_URN));
+        String result = getUrn(prosecutionCaseIdentifier, true);
+        assertThat(result, is("URN-12345678"));
     }
 
     @Test
-    public void testGetUrnWhenURNIsEmpty() {
-        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCaseIdentifier()
-                .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
-                .withProsecutionAuthorityReference(PROSECUTION_AUTHORITY_REFERENCE)
-                .build();
-
-        final String result = getUrn(prosecutionCaseIdentifier);
-        assertThat(result, is(PROSECUTION_AUTHORITY_REFERENCE));
-    }
-
-    @Test
-    public void testGetUrnWhenURNIsEmptyAndProsecutionAuthrorityReferenceIsEmpty() {
+    public void testGetUrnWhenURNIsEmptyForPoliceProsecutor() {
         final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCaseIdentifier()
                 .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
                 .build();
 
-        final String result = getUrn(prosecutionCaseIdentifier);
+        String result = getUrn(prosecutionCaseIdentifier, true);
         assertThat(result, is(POLICE_URN_DEFAULT_VALUE));
+    }
+
+    @Test
+    public void testGetUrnWhenURNIsEmptyForNonPoliceProsecutor() {
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCaseIdentifier()
+                .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
+                .build();
+
+        String result = getUrn(prosecutionCaseIdentifier, false);
+        assertThat(result, is(NON_POLICE_URN_DEFAULT_VALUE));
     }
 
     private Defendant buildDefendant() {

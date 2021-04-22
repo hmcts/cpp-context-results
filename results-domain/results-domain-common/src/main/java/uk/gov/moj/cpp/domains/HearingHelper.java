@@ -49,12 +49,12 @@ import javax.json.JsonObjectBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings({"squid:MethodCyclomaticComplexity","squid:S3776"})
+@SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S3776"})
 public class HearingHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HearingHelper.class);
 
-    public JsonObject transformedHearing(final JsonObject hearing){
+    public JsonObject transformedHearing(final JsonObject hearing) {
 
         LOGGER.info("Transforming Hearing");
 
@@ -176,7 +176,7 @@ public class HearingHelper {
 
     private static JsonArray filterDefendantJudicialResults(final JsonArray judicialResults) {
         final JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
-        final List<JsonObject> filteredResults =  judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getJsonObject(JUDICIAL_RESULT).getBoolean(PUBLISHED_FOR_NOWS))
+        final List<JsonObject> filteredResults = judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getJsonObject(JUDICIAL_RESULT).getBoolean(PUBLISHED_FOR_NOWS))
                 .collect(Collectors.toList());
 
         filteredResults.forEach(jsonArrayBuilder::add);
@@ -185,7 +185,7 @@ public class HearingHelper {
 
     public static JsonArray filterJudicialResults(final JsonArray judicialResults) {
         final JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
-        final List<JsonObject> filteredResults =  judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getBoolean(PUBLISHED_FOR_NOWS))
+        final List<JsonObject> filteredResults = judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getBoolean(PUBLISHED_FOR_NOWS))
                 .collect(Collectors.toList());
 
         filteredResults.forEach(jsonArrayBuilder::add);

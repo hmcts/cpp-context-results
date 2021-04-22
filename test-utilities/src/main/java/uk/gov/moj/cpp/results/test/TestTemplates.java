@@ -10,11 +10,15 @@ import static uk.gov.justice.core.courts.AllocationDecision.allocationDecision;
 import static uk.gov.justice.core.courts.AssociatedPerson.associatedPerson;
 import static uk.gov.justice.core.courts.AttendanceDay.attendanceDay;
 import static uk.gov.justice.core.courts.BailStatus.bailStatus;
+import static uk.gov.justice.core.courts.CourtApplicationCase.courtApplicationCase;
 import static uk.gov.justice.core.courts.CourtIndicatedSentence.courtIndicatedSentence;
 import static uk.gov.justice.core.courts.DefenceCounsel.defenceCounsel;
 import static uk.gov.justice.core.courts.DefendantAttendance.defendantAttendance;
+import static uk.gov.justice.core.courts.Gender.MALE;
+import static uk.gov.justice.core.courts.Gender.NOT_KNOWN;
 import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
 import static uk.gov.justice.core.courts.Person.person;
+import static uk.gov.justice.core.courts.ProsecutionCaseIdentifier.prosecutionCaseIdentifier;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
@@ -43,7 +47,6 @@ import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.CourtIndicatedSentence;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantJudicialResult;
-import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingType;
@@ -60,7 +63,6 @@ import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceActiveOrder;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.justice.core.courts.SummonsTemplateType;
 import uk.gov.justice.core.courts.Verdict;
 import uk.gov.justice.core.courts.VerdictType;
@@ -407,7 +409,7 @@ public class TestTemplates {
                 .withId(fromString(LINKED_CASE_ID))
                 .withInitiationCode(InitiationCode.C)
                 .withOriginatingOrganisation(STRING.next())
-                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
@@ -421,11 +423,11 @@ public class TestTemplates {
     }
 
     public static CourtApplicationCase createCourtApplicationCaseWithOffences() {
-        return CourtApplicationCase.courtApplicationCase()
+        return courtApplicationCase()
                 .withCaseStatus(ACTIVE)
                 .withIsSJP(false)
                 .withProsecutionCaseId(fromString(LINKED_CASE_ID))
-                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
@@ -435,11 +437,11 @@ public class TestTemplates {
     }
 
     public static CourtApplicationCase createCourtApplicationCaseWithoutOffences() {
-        return CourtApplicationCase.courtApplicationCase()
+        return courtApplicationCase()
                 .withCaseStatus(ACTIVE)
                 .withIsSJP(false)
                 .withProsecutionCaseId(fromString(LINKED_CASE_ID))
-                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
@@ -452,7 +454,7 @@ public class TestTemplates {
                 .withId(fromString("cccc2222-1e20-4c21-916a-81a6c90239e5"))
                 .withInitiationCode(InitiationCode.C)
                 .withOriginatingOrganisation(STRING.next())
-                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withCaseURN(STRING.next())
@@ -470,7 +472,7 @@ public class TestTemplates {
                 .withId(fromString(LINKED_CASE_ID))
                 .withInitiationCode(InitiationCode.C)
                 .withOriginatingOrganisation(STRING.next())
-                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
@@ -498,7 +500,7 @@ public class TestTemplates {
                                 .withFirstName("John")
                                 .withLastName(FIELD_NAME_SMITH)
                                 .withTitle(TITLE)
-                                .withGender(Gender.NOT_KNOWN)
+                                .withGender(NOT_KNOWN)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
                         .build())
@@ -507,7 +509,7 @@ public class TestTemplates {
                                 .withFirstName("Tina")
                                 .withLastName(FIELD_NAME_SMITH)
                                 .withTitle(TITLE)
-                                .withGender(Gender.MALE)
+                                .withGender(MALE)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
                         .withRole("parentGuardian")
@@ -665,7 +667,7 @@ public class TestTemplates {
                                         .withFirstName("John")
                                         .withLastName(FIELD_NAME_SMITH)
                                         .withTitle(TITLE)
-                                        .withGender(Gender.NOT_KNOWN)
+                                        .withGender(NOT_KNOWN)
                                         .withNationalityId(NATIONALITY_ID)
                                         .build())
                                 .withArrestSummonsNumber("ARREST_1234")
@@ -831,7 +833,7 @@ public class TestTemplates {
                 .withId(fromString("cccc2222-1e20-4c21-916a-81a6c90239e5"))
                 .withInitiationCode(InitiationCode.C)
                 .withOriginatingOrganisation(STRING.next())
-                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withCaseURN("urn123")
@@ -864,7 +866,7 @@ public class TestTemplates {
                                 .withFirstName("John")
                                 .withLastName(FIELD_NAME_SMITH)
                                 .withTitle(TITLE)
-                                .withGender(Gender.NOT_KNOWN)
+                                .withGender(NOT_KNOWN)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
                         .build())
@@ -873,7 +875,7 @@ public class TestTemplates {
                                 .withFirstName("Tina")
                                 .withLastName(FIELD_NAME_SMITH)
                                 .withTitle(TITLE)
-                                .withGender(Gender.MALE)
+                                .withGender(MALE)
                                 .withNationalityId(NATIONALITY_ID)
                                 .build())
                         .withRole("parentGuardian")

@@ -33,6 +33,10 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>uk.gov.justice.services</groupId>
+            <artifactId>file-service-persistence</artifactId>
+        </dependency>
+        <dependency>
             <groupId>uk.gov.moj.cpp.common</groupId>
             <artifactId>system-users-library</artifactId>
         </dependency>
@@ -48,6 +52,11 @@
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-domain-common</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-csv</artifactId>
+            <version>${jackson-data-format.version}</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.framework-api</groupId>

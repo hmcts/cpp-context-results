@@ -17,7 +17,8 @@ public enum UserGroupType {
     LEGAL_AID_AGENCY_ADMIN("Legal Aid Agency Admin"),
     COURT_CLERKS("Court Clerks"),
     COURT_ASSOCIATE("Court Associate"),
-    SYSTEM_USERS("System Users");
+    SYSTEM_USERS("System Users"),
+    CPPI_CONSUMERS("CPPI Consumers");
 
     private final String name;
 

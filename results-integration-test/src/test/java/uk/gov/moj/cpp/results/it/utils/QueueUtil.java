@@ -40,7 +40,6 @@ public class QueueUtil {
 
     public static final QueueUtil privateEvents = new QueueUtil("results.event");
 
-
     private QueueUtil(final String topicName) {
         try {
             LOGGER.info("Artemis URI: {}", QUEUE_URI);
@@ -99,8 +98,6 @@ public class QueueUtil {
                 LOGGER.error("No message retrieved using consumer with selector {}", consumer.getMessageSelector());
                 return null;
             }
-            System.out.println("public queue:");
-            System.out.println(message.getText());
             return new JsonPath(message.getText());
         } catch (final JMSException e) {
             throw new RuntimeException(e);

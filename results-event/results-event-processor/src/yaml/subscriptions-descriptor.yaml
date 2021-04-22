@@ -15,6 +15,10 @@ subscriptions_descriptor:
           schema_uri: http://justice.gov.uk/core/courts/hearing-results-added.json
         - name: results.events.hearing-results-added-for-day
           schema_uri: http://justice.gov.uk/core/courts/results.events.hearing-results-added-for-day.json
+        - name: results.event.informant-register-generated
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
+        - name: results.event.informant-register-notified
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-notified.json
 
       event_source_name: results
 

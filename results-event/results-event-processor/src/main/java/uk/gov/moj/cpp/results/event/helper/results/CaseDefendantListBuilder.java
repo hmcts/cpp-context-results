@@ -16,7 +16,6 @@ import uk.gov.justice.core.courts.AssociatedPerson;
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CourtApplication;
-
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.Defendant;
@@ -34,11 +33,10 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 
-
-
 public class CaseDefendantListBuilder {
 
     private static final String POLICE_ASN_DEFAULT_VALUE = "0800PP0100000000001H";
+    private static final String NON_POLICE_ASN_DEFAULT_VALUE = "0800NP0100000000001H";
 
     private final ReferenceCache referenceCache;
 
@@ -47,16 +45,15 @@ public class CaseDefendantListBuilder {
         this.referenceCache = referenceCache;
     }
 
-    public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final List<Defendant> defendants, final Hearing hearing) {
+    public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final List<Defendant> defendants, final Hearing hearing, final boolean isPoliceProsecutor) {
         final List<uk.gov.justice.core.courts.CaseDefendant> defendantList = new ArrayList<>();
 
         for (final Defendant defendant : defendants) {
-
             final List<AttendanceDay> attendanceDays = null != hearing.getDefendantAttendance() ? new uk.gov.moj.cpp.results.event.helper.results.AttendanceDay().buildAttendance(hearing.getDefendantAttendance(), defendant.getId()) : emptyList();
 
             final uk.gov.justice.core.courts.CaseDefendant.Builder builder = caseDefendant()
                     .withDefendantId(defendant.getId())
-                    .withProsecutorReference(getProsecutorReference(defendant.getProsecutionAuthorityReference(), defendant.getPersonDefendant()))
+                    .withProsecutorReference(getProsecutorReference(defendant.getProsecutionAuthorityReference(), defendant.getPersonDefendant(), isPoliceProsecutor))
                     .withPncId(defendant.getPncId())
                     .withAttendanceDays(attendanceDays)
                     .withJudicialResults(defendant.getDefendantCaseJudicialResults())
@@ -74,23 +71,30 @@ public class CaseDefendantListBuilder {
 
 
     public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final CourtApplicationCase courtApplicationCase,
-                                                                             final CourtApplication courtApplication, final Hearing hearing) {
-        return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtApplicationCase, courtApplication));
+                                                                             final CourtApplication courtApplication,
+                                                                             final Hearing hearing,
+                                                                             final boolean isPoliceProsecutor) {
+        return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtApplicationCase, courtApplication), isPoliceProsecutor);
     }
 
     public List<uk.gov.justice.core.courts.CaseDefendant> buildDefendantList(final CourtOrderOffence courtOrderOffence,
-                                                                             final CourtApplication courtApplication, final Hearing hearing) {
-        return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtOrderOffence, courtApplication));
+                                                                             final CourtApplication courtApplication,
+                                                                             final Hearing hearing,
+                                                                             final boolean isPoliceProsecutor) {
+        return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtOrderOffence, courtApplication), isPoliceProsecutor);
     }
 
-    private List<CaseDefendant> buildDefendantList(CourtApplication courtApplication, Hearing hearing, List<uk.gov.justice.core.courts.OffenceDetails> offences) {
+    private List<CaseDefendant> buildDefendantList(final CourtApplication courtApplication,
+                                                   final Hearing hearing,
+                                                   final List<uk.gov.justice.core.courts.OffenceDetails> offences,
+                                                   final boolean isPoliceProsecutor) {
         final List<uk.gov.justice.core.courts.CaseDefendant> defendantList = new ArrayList<>();
         final MasterDefendant masterDefendant = courtApplication.getSubject().getMasterDefendant();
         if(nonNull(masterDefendant)) {
             final List<AttendanceDay> attendanceDays = null != hearing.getDefendantAttendance() ? new uk.gov.moj.cpp.results.event.helper.results.AttendanceDay().buildAttendance(hearing.getDefendantAttendance(), masterDefendant.getMasterDefendantId()) : emptyList();
             final uk.gov.justice.core.courts.CaseDefendant.Builder builder = caseDefendant()
                     .withDefendantId(masterDefendant.getMasterDefendantId())
-                    .withProsecutorReference(getProsecutorReference(masterDefendant.getProsecutionAuthorityReference(), masterDefendant.getPersonDefendant()))
+                    .withProsecutorReference(getProsecutorReference(masterDefendant.getProsecutionAuthorityReference(), masterDefendant.getPersonDefendant(), isPoliceProsecutor))
                     .withPncId(masterDefendant.getPncId())
                     .withAttendanceDays(attendanceDays)
                     .withOffences(offences)
@@ -124,13 +128,16 @@ public class CaseDefendantListBuilder {
         }
     }
 
-    private String getProsecutorReference(final String prosecutionAuthorityReference, final PersonDefendant personDefendant) {
+    private String getProsecutorReference(final String prosecutionAuthorityReference, final PersonDefendant personDefendant, final boolean isPoliceProsecutor) {
         if (isNotEmpty(prosecutionAuthorityReference)) {
             return prosecutionAuthorityReference;
         } else if (null != personDefendant && null != personDefendant.getArrestSummonsNumber()) {
             return personDefendant.getArrestSummonsNumber();
         }
-        return POLICE_ASN_DEFAULT_VALUE;
+        if (isPoliceProsecutor) {
+            return POLICE_ASN_DEFAULT_VALUE;
+        }
+        return NON_POLICE_ASN_DEFAULT_VALUE;
     }
 
     private uk.gov.justice.core.courts.Individual buildIndividual(final Person personDetails) {

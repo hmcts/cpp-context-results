@@ -19,13 +19,9 @@ import static uk.gov.justice.core.courts.Person.person;
 import static uk.gov.justice.core.courts.PersonDefendant.personDefendant;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-import static uk.gov.moj.cpp.results.test.TestTemplates.buildJudicialResultList;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
+import static uk.gov.moj.cpp.results.test.TestTemplates.buildJudicialResultList;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceDay;
@@ -39,7 +35,6 @@ import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.MasterDefendant;
-import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.Person;
@@ -51,11 +46,17 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
-import javax.json.JsonObject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.json.JsonObject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CaseDefendantListBuilderTest {
@@ -90,7 +91,7 @@ public class CaseDefendantListBuilderTest {
         final ProsecutionCase prosecutionCase = prosecutionCases.get(0);
 
         final List<Defendant> defendantsFromRequest = prosecutionCase.getDefendants();
-        final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing);
+        final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing, true);
         assertEquals(2, caseDetailsDefendants.size());
         assertEquals(caseDetailsDefendants.size(), defendantsFromRequest.size());
         assertDefendants(defendantsFromRequest, caseDetailsDefendants, hearing);
@@ -132,7 +133,7 @@ public class CaseDefendantListBuilderTest {
         final CourtApplicationCase courtApplicationCase = courtApplication.getCourtApplicationCases().get(0);
 
         final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache)
-                .buildDefendantList(courtApplicationCase, courtApplication, hearing);
+                .buildDefendantList(courtApplicationCase, courtApplication, hearing, false);
         assertEquals(1, caseDetailsDefendants.size());
         assertDefendants(courtApplication, hearing.getCourtApplications().get(0).getSubject().getMasterDefendant(), caseDetailsDefendants, hearing);
     }
@@ -141,7 +142,7 @@ public class CaseDefendantListBuilderTest {
     public void shouldUpdateDefendantsNationalityAndASN() {
         final Hearing hearing = basicShareResultsTemplate(JurisdictionType.MAGISTRATES).getHearing();
         final List<Defendant> defendantsFromRequest = of(defendant().withOffences(of(offence().withModeOfTrial("1010").build())).withPersonDefendant(personDefendant().withPersonDetails(person().withNationalityCode("GBR").build()).withArrestSummonsNumber("1232324").build()).build());
-        final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing);
+        final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache).buildDefendantList(defendantsFromRequest, hearing, false);
         assertEquals(1, caseDetailsDefendants.size());
         final uk.gov.justice.core.courts.CaseDefendant caseDefendant = caseDetailsDefendants.get(0);
         assertEquals("GBR", caseDefendant.getIndividualDefendant().getPerson().getNationality());

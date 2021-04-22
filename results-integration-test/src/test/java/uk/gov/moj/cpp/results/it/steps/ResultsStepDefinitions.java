@@ -128,7 +128,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         return MapJsonObjectToTypeMatcher.convert(HearingResultSummariesView.class, resultsSummaryResponse.getPayload());
     }
 
-    private static <T> Matcher<ResponseData> jsonPayloadMatcher(final Class<T> theClass, final Matcher<T> matcher) {
+    public static <T> Matcher<ResponseData> jsonPayloadMatcher(final Class<T> theClass, final Matcher<T> matcher) {
         return new BaseMatcher<ResponseData>() {
             @Override
             public boolean matches(final Object o) {
@@ -332,8 +332,6 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
             assertThat(policeNotificationFailedGenerated, notNullValue());
         }
-
-
     }
 
     public static void verifyPrivateEventsForAmendment() throws JMSException {

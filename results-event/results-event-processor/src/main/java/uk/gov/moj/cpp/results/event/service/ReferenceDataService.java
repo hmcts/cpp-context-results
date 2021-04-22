@@ -1,11 +1,14 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Integer.valueOf;
 import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createObjectBuilder;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.core.courts.AllocationDecision.allocationDecision;
 import static uk.gov.justice.core.courts.BailStatus.bailStatus;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
@@ -38,9 +41,13 @@ import javax.json.JsonObject;
 public class ReferenceDataService {
 
     private static final String OU_CODE = "oucode";
+    private static final String PROSECUTOR_CODE = "prosecutorCode";
     private static final String CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
     private static final String REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE = "referencedata.query.get.prosecutor.by.oucode";
+    private static final String REFERENCE_DATA_QUERY_GET_PROSECUTORS = "referencedata.query.prosecutors";
     private static final String REFERENCE_DATA_QUERY_GET_POLICE_COURT_ROOM_CODE = "referencedata.query.get.police-opt-courtroom-ou-courtroom-code";
+    private static final String POLICE_FLAG = "policeFlag";
+    private static final String SPI_OUT_FLAG = "spiOutFlag";
 
     @Inject
     private Enveloper enveloper;
@@ -97,11 +104,53 @@ public class ReferenceDataService {
         return requester.requestAsAdmin(requestEnvelope, JsonObject.class).payload();
     }
 
-    public boolean getSpiOutFlagForProsecutorOucode(final String oucode) {
-        final JsonObject payload = createObjectBuilder().add(OU_CODE, oucode).build();
+    public boolean getSpiOutFlag(final String originatingOrganisation) {
+        final JsonObject payload = createObjectBuilder().add(OU_CODE, originatingOrganisation).build();
         final JsonEnvelope request = envelopeFrom(metadataBuilder().withId(randomUUID()).withName(REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE).build(), payload);
         final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
-        return response.getBoolean("spiOutFlag");
+        return response.getBoolean(SPI_OUT_FLAG);
+    }
+
+    public boolean getPoliceFlag(final String originatingOrganisation, final String prosecutionAuthority) {
+        Optional<JsonObject> optionalJsonObject;
+
+        if (isNotEmpty(originatingOrganisation)) {
+            optionalJsonObject = getProsecutorByOriginatingOrganisation(originatingOrganisation);
+        } else if (isNotEmpty(prosecutionAuthority)) {
+            optionalJsonObject = getProsecutorByProsecutionAuthority(prosecutionAuthority);
+        } else {
+            return FALSE;
+        }
+
+        if (optionalJsonObject.isPresent()) {
+            final JsonObject jsonObject = optionalJsonObject.get();
+            return jsonObject.containsKey(POLICE_FLAG) ? jsonObject.getBoolean(POLICE_FLAG) : FALSE;
+        }
+
+        return FALSE;
+    }
+
+    public Optional<JsonObject> getProsecutorByOriginatingOrganisation(final String originatingOrganisation) {
+        final JsonObject payload = createObjectBuilder().add(OU_CODE, originatingOrganisation).build();
+        final Metadata metadata = JsonEnvelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName(REFERENCE_DATA_QUERY_GET_PROSECUTOR_BY_OUCODE)
+                .build();
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
+        final Envelope<JsonObject> response = requester.requestAsAdmin(jsonEnvelope, JsonObject.class);
+        return ofNullable(nonNull(response) ? response.payload() : null);
+    }
+
+    public Optional<JsonObject> getProsecutorByProsecutionAuthority(final String prosecutionAuthority) {
+        final JsonObject payload = createObjectBuilder().add(PROSECUTOR_CODE, prosecutionAuthority).build();
+        final Metadata metadata = JsonEnvelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName(REFERENCE_DATA_QUERY_GET_PROSECUTORS)
+                .build();
+
+        final Envelope<JsonObject> response = requester.requestAsAdmin(envelopeFrom(metadata, payload), JsonObject.class);
+        return ofNullable(response.payload().getJsonArray("prosecutors").getJsonObject(0));
     }
 
     private void trimUserGroups(final ResultDefinition resultDefinition) {
@@ -125,7 +174,7 @@ public class ReferenceDataService {
         final JsonEnvelope request = envelopeFrom(metadata, payload);
         final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
 
-        return Optional.ofNullable(response)
+        return ofNullable(response)
                 .map(o -> o.getJsonArray("bailStatuses"))
                 .map(a -> a.getValuesAs(JsonObject.class))
                 .map(l -> l.stream()
@@ -151,7 +200,7 @@ public class ReferenceDataService {
         final JsonEnvelope request = envelopeFrom(metadata, payload);
         final JsonObject response = requester.requestAsAdmin(request, JsonObject.class).payload();
 
-        return Optional.ofNullable(response)
+        return ofNullable(response)
                 .map(o -> o.getJsonArray("modeOfTrialReasons"))
                 .map(a -> a.getValuesAs(JsonObject.class))
                 .map(l -> l.stream()
@@ -176,6 +225,4 @@ public class ReferenceDataService {
                 .withMotReasonDescription(jsonObject.getString("description"))
                 .build();
     }
-
-
 }

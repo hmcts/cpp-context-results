@@ -114,6 +114,12 @@
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-client-all</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.junit.dataprovider</groupId>
+            <artifactId>junit4-dataprovider</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -157,15 +163,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <skipITs>false</skipITs>
-                            <systemProperties>
-                                <property>
-                                    <name>baseUri</name>
-                                    <value>${INTEGRATION_HOST_KEY}</value>
-                                </property>
-                            </systemProperties>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>

@@ -186,6 +186,24 @@ public class ResultsQueryViewTest {
         assertThat(actualHearingResults.payloadAsJsonObject(), is(notNullValue()));
     }
 
+    @Test
+    public void shouldGetEmptyHearingDetailsForHearingIdDoesntExistsForHearingDetailsInternal() {
+        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
+                .add(FIELD_HEARING_ID, HEARING_ID.toString())
+                .build());
+
+        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
+                asList("Court Clerk", "Listing Officer")
+        );
+
+        HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
+        when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(null);
+
+        final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsInternal(query);
+
+        assertThat(actualHearingResults.payloadAsJsonObject(), is(notNullValue()));
+    }
+
     private HearingResultSummary hearingResultWithDate(final LocalDate date) {
         return new HearingResultSummary(HEARING_ID, PERSON_ID, HEARING_TYPE, date, FIRST_NAME, LAST_NAME);
     }

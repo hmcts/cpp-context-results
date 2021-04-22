@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
-import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
@@ -105,26 +104,15 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final String caseId = payload.getString("caseId");
         final String defendantId = payload.getString("defendantId");
 
-        final EventStream eventStream = eventSource.getStreamById(fromString(sessionId));
-        final ResultsAggregate aggregate = aggregateService.get(eventStream, ResultsAggregate.class);
-
-        final String originatingOrg = aggregate.getOriginatingOrganisation();
-        boolean sendSpiOut = false;
-        if (nonNull(originatingOrg)) {
-            sendSpiOut = getSpiOutFlag(originatingOrg);
+        if (payload.containsKey(HEARING_DAY)) {
+            final Optional<LocalDate> hearingDay = Optional.of(LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE));
+            aggregate(ResultsAggregate.class, fromString(sessionId),
+                    envelope, a -> a.generatePoliceResults(caseId, defendantId, hearingDay));
+        } else {
+            aggregate(ResultsAggregate.class, fromString(sessionId),
+                    envelope, a -> a.generatePoliceResults(caseId, defendantId, Optional.empty()));
         }
 
-        if (sendSpiOut) {
-            if (payload.containsKey(HEARING_DAY)) {
-                final Optional<LocalDate> hearingDay = Optional.of(LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE));
-                aggregate(ResultsAggregate.class, fromString(sessionId),
-                        envelope, a -> a.generatePoliceResults(caseId, defendantId, hearingDay));
-            } else {
-                aggregate(ResultsAggregate.class, fromString(sessionId),
-                        envelope, a -> a.generatePoliceResults(caseId, defendantId, Optional.empty()));
-            }
-
-        }
     }
 
     private void createResults(final JsonEnvelope commandEnvelope, final Optional<LocalDate> hearingDay) throws EventStreamException {
@@ -181,11 +169,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             }
 
         }
-    }
-
-    private boolean getSpiOutFlag(final String originatingOrg) {
-        final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrg);
-        return refDataProsecutorJson.filter(jsonObject -> jsonObject.containsKey(SPI_OUT_FLAG) ? jsonObject.getBoolean(SPI_OUT_FLAG) : FALSE).isPresent();
     }
 
     private boolean getFlagValue(String key, JsonObject prosecutorJson) {
