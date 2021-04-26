@@ -39,6 +39,7 @@ import uk.gov.justice.core.courts.DefendantUpdatedEvent;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
 import uk.gov.justice.core.courts.HearingCaseEjected;
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.HearingResultsAddedForDay;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
 import uk.gov.justice.core.courts.SessionAddedEvent;
@@ -61,7 +62,9 @@ import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -111,7 +114,8 @@ public class ResultsCommandHandlerTest {
             DefendantRejectedEvent.class,
             PoliceResultGenerated.class,
             SjpCaseRejectedEvent.class,
-            PoliceNotificationRequested.class
+            PoliceNotificationRequested.class,
+            HearingResultsAddedForDay.class
     );
 
     @Captor
@@ -147,7 +151,7 @@ public class ResultsCommandHandlerTest {
 
     @BeforeClass
     public static void init() {
-        shareResultsWithMagistratesMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        shareResultsWithMagistratesMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         shareResultsWithCrownMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.CROWN);
         metadataId = randomUUID();
     }
@@ -193,6 +197,32 @@ public class ResultsCommandHandlerTest {
                         withMetadataEnvelopedFrom(envelope).withName("results.hearing-results-added"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.hearing.id", is(shareResultsWithMagistratesMessage.getHearing().getId().toString()))
+                                )
+                        ))));
+    }
+
+    @Test
+    public void shouldRaiseHearingResultsForDayAddedWhenSaveShareResultsForDay() throws EventStreamException {
+        final LocalDate hearingDay = LocalDate.now();
+        final UUID hearingId = UUID.randomUUID();
+        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
+
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.add-hearing-result-for-day"),
+                Json.createObjectBuilder()
+                        .add("hearingDay", hearingDay.toString())
+                        .add("hearing", Json.createObjectBuilder()
+                                .add("id", hearingId.toString())
+                                .build())
+                        .build());
+
+        this.resultsCommandHandler.addHearingResultForDay(envelope);
+
+        assertThat(verifyAppendAndGetArgumentFrom(this.eventStream), streamContaining(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.events.hearing-results-added-for-day"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.hearing.id", is(hearingId.toString())),
+                                withJsonPath("$.hearingDay", is(hearingDay.toString()))
                                 )
                         ))));
 
@@ -350,7 +380,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true);
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
         this.resultsCommandHandler.createResult(envelope);
         verify(enveloper, Mockito.times(2)).withMetadataFrom(envelope);
         verify(eventStream, Mockito.times(2)).append(streamArgumentCaptor.capture());
@@ -405,7 +435,7 @@ public class ResultsCommandHandlerTest {
         final CaseDetails caseDetails = jsonObjectToObjectConverter.convert(caseDetailsJson, CaseDetails.class);
         verify(resultsAggregateSpy, Mockito.times(1)).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
         verify(resultsAggregateSpy, Mockito.times(1)).handleCase(eq(caseDetails));
-        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean());
+        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(Optional.empty()));
     }
 
     @Test
@@ -429,7 +459,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true);
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_2);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
@@ -471,7 +501,6 @@ public class ResultsCommandHandlerTest {
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(any())).thenReturn(of(jsonProsecutorBuilder.build()));
 
 
-
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_7);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
         final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
@@ -480,7 +509,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true);
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_6);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
@@ -508,7 +537,6 @@ public class ResultsCommandHandlerTest {
         ));
     }
 
-
     @Test
     public void shouldUpdateResultCommandWithJurisdictionCrownAndRaisePoliceResultGenerated() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
@@ -530,7 +558,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true);
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_6);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
@@ -567,7 +595,7 @@ public class ResultsCommandHandlerTest {
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
         resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy, Mockito.times(1)).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"));
+        verify(resultsAggregateSpy, Mockito.times(1)).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
     }
 
     @Test
@@ -585,7 +613,7 @@ public class ResultsCommandHandlerTest {
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
         resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy, never()).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"));
+        verify(resultsAggregateSpy, never()).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
     }
 
     @Test
@@ -596,7 +624,7 @@ public class ResultsCommandHandlerTest {
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
         resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy, never()).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"));
+        verify(resultsAggregateSpy, never()).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
     }
 
     @Test
@@ -621,7 +649,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true);
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_8);
 

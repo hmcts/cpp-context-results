@@ -1,0 +1,202 @@
+package uk.gov.moj.cpp.results.event.processor;
+
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.UUID.randomUUID;
+import static javax.json.Json.createObjectBuilder;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
+import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
+
+import uk.gov.justice.services.common.converter.ZonedDateTimes;
+import uk.gov.justice.services.common.util.UtcClock;
+import uk.gov.justice.services.core.sender.Sender;
+import uk.gov.justice.services.messaging.Envelope;
+import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.HearingHelper;
+import uk.gov.moj.cpp.results.event.service.CacheService;
+import uk.gov.moj.cpp.results.event.service.EventGridService;
+
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import javax.json.JsonObject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class HearingResultedEventProcessorTest {
+
+    @Mock
+    private Sender sender;
+
+    @Mock
+    private HearingHelper hearingHelper;
+
+    @Mock
+    private CacheService cacheService;
+
+    @Mock
+    private EventGridService eventGridService;
+
+    @InjectMocks
+    private HearingResultedEventProcessor eventProcessor;
+
+    @Captor
+    private ArgumentCaptor<Envelope<JsonObject>> envelopeArgumentCaptor;
+
+    private static final UtcClock clock = new UtcClock();
+
+    @Test
+    public void shouldHandlePublicHearingResultedEvent() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+        final boolean reshare = false;
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .build();
+
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(cacheService).add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString());
+        verify(cacheService).add(eq("INT_" + hearingId + "_2021-03-15_result_"), anyString());
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+
+        final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
+        assertThat(allValues,
+                jsonEnvelope(
+                        metadata().withName("results.command.add-hearing-result-for-day"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.hearing.id", is(hearingId.toString())),
+                                withJsonPath("$.hearingDay", is(hearingDay)),
+                                withJsonPath("$.sharedTime", is(ZonedDateTimes.toString(sharedTime))))
+                        )));
+    }
+
+    @Test
+    public void shouldUseSJPEventTypeWhenSJPHearingResulted() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+        final boolean reshare = false;
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .add("isSJPHearing", true)
+                .build();
+
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder()
+                .add("id", hearingId.toString())
+                .add("hearing", createObjectBuilder()
+                        .add("isSJPHearing", true)
+                        .build())
+                .build());
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(cacheService).add(eq("SJP_" + hearingId + "_2021-03-15_result_"), anyString());
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "SJP_Hearing_Resulted");
+    }
+
+    @Test
+    public void shouldContinueIfCacheServiceFailsWhenHearingResulted() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+        final boolean reshare = false;
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .build();
+
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(cacheService.add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString())).thenThrow(new RuntimeException("Error"));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(cacheService).add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString());
+        verify(cacheService, never()).add(eq("INT_" + hearingId + "_2021-03-15_result_"), anyString());
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+    }
+
+    @Test
+    public void shouldContinueIfEventGridFailsWhenHearingResulted() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+        final boolean reshare = false;
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .build();
+
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(eventGridService.sendHearingResultedEvent(userId, hearingId.toString(), "Hearing_Resulted")).thenThrow(new RuntimeException("Error"));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(cacheService).add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString());
+        verify(cacheService).add(eq("INT_" + hearingId + "_2021-03-15_result_"), anyString());
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+    }
+
+
+    private JsonEnvelope createPublicEvent(final UUID userId, final JsonObject hearing, final ZonedDateTime sharedTime, final String hearingDay, final boolean reshare) {
+        final JsonObject resultPayload = createObjectBuilder()
+                .add("isReshare", reshare)
+                .add("hearingDay", hearingDay)
+                .add("sharedTime", ZonedDateTimes.toString(sharedTime))
+                .add("hearing", hearing)
+                .build();
+
+        return envelopeFrom(metadataOf(randomUUID(), "public.events.hearing.hearing-resulted")
+                        .withUserId(userId.toString())
+                        .build(),
+                resultPayload);
+    }
+}

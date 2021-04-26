@@ -1,9 +1,10 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
-import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
@@ -21,6 +22,8 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,6 +43,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     private static final String POLICE_FLAG = "policeFlag";
     private static final String SPI_OUT_FLAG = "spiOutFlag";
     private static final String SOURCE_TYPE_SJP = "SJP";
+    private static final String HEARING_DAY = "hearingDay";
     final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private final ReferenceDataService referenceDataService;
 
@@ -61,6 +65,16 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 envelope, a -> a.saveHearingResults(publicHearingResulted));
     }
 
+    @Handles("results.command.add-hearing-result-for-day")
+    public void addHearingResultForDay(final JsonEnvelope envelope) throws EventStreamException {
+        final JsonObject payload = envelope.payloadAsJsonObject();
+        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(payload, PublicHearingResulted.class);
+        final LocalDate hearingDay = LocalDate.parse(payload.getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
+
+        aggregate(ResultsAggregate.class, fromString(payload.getJsonObject("hearing").getString("id")),
+                envelope, a -> a.saveHearingResultsForDay(publicHearingResulted, hearingDay));
+    }
+
     @Handles("results.case-or-application-ejected")
     public void handleCaseOrApplicationEjected(final JsonEnvelope envelope) throws EventStreamException {
         final JsonObject payload = envelope.payloadAsJsonObject();
@@ -72,9 +86,49 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         }
     }
 
+    @Handles("results.command.create-results-for-day")
+    public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
+        final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
+        createResults(envelope, Optional.of(hearingDay));
+    }
+
     @Handles("results.create-results")
     public void createResult(final JsonEnvelope envelope) throws EventStreamException {
+        createResults(envelope, Optional.empty());
+    }
+
+    @Handles("results.command.generate-police-results-for-a-defendant")
+    public void generatePoliceResultsForDefendant(final JsonEnvelope envelope) throws
+            EventStreamException {
         final JsonObject payload = envelope.payloadAsJsonObject();
+        final String sessionId = payload.getString("sessionId");
+        final String caseId = payload.getString("caseId");
+        final String defendantId = payload.getString("defendantId");
+
+        final EventStream eventStream = eventSource.getStreamById(fromString(sessionId));
+        final ResultsAggregate aggregate = aggregateService.get(eventStream, ResultsAggregate.class);
+
+        final String originatingOrg = aggregate.getOriginatingOrganisation();
+        boolean sendSpiOut = false;
+        if (nonNull(originatingOrg)) {
+            sendSpiOut = getSpiOutFlag(originatingOrg);
+        }
+
+        if (sendSpiOut) {
+            if (payload.containsKey(HEARING_DAY)) {
+                final Optional<LocalDate> hearingDay = Optional.of(LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE));
+                aggregate(ResultsAggregate.class, fromString(sessionId),
+                        envelope, a -> a.generatePoliceResults(caseId, defendantId, hearingDay));
+            } else {
+                aggregate(ResultsAggregate.class, fromString(sessionId),
+                        envelope, a -> a.generatePoliceResults(caseId, defendantId, Optional.empty()));
+            }
+
+        }
+    }
+
+    private void createResults(final JsonEnvelope commandEnvelope, final Optional<LocalDate> hearingDay) throws EventStreamException {
+        final JsonObject payload = commandEnvelope.payloadAsJsonObject();
         final JsonObject session = payload.getJsonObject("session");
         final Optional<JurisdictionType> jurisdictionType = JurisdictionType.valueFor(payload.containsKey("jurisdictionType") ? payload.getJsonString("jurisdictionType").getString() : "");
         final String id = session.getString("id");
@@ -86,9 +140,8 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final EventStream eventStream = eventSource.getStreamById(fromString(id));
         final ResultsAggregate aggregate = aggregateService.get(eventStream, ResultsAggregate.class);
 
-
         aggregate(ResultsAggregate.class, fromString(id),
-                envelope, a -> a.handleSession(fromString(id), courtCentre, sessionDays));
+                commandEnvelope, a -> a.handleSession(fromString(id), courtCentre, sessionDays));
 
         final List<UUID> caseIdsFromAggregate = aggregate.getCaseIds();
 
@@ -98,10 +151,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
             if (SOURCE_TYPE_SJP.equalsIgnoreCase(sourceType) && caseIdsFromAggregate.contains(caseDetails.getCaseId())) {
                 aggregate(ResultsAggregate.class, fromString(id),
-                        envelope, a -> a.handleRejectedSjpCase(caseDetails.getCaseId()));
+                        commandEnvelope, a -> a.handleRejectedSjpCase(caseDetails.getCaseId()));
             } else {
                 aggregate(ResultsAggregate.class, fromString(id),
-                        envelope, a -> a.handleCase(caseDetails));
+                        commandEnvelope, a -> a.handleCase(caseDetails));
 
                 final AtomicBoolean sendSpiOut = new AtomicBoolean(FALSE);
                 final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
@@ -123,34 +176,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                     });
                 }
 
-
                 aggregate(ResultsAggregate.class, fromString(id),
-                        envelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get()));
+                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay));
             }
 
-        }
-    }
-
-    @Handles("results.command.generate-police-results-for-a-defendant")
-    public void generatePoliceResultsForDefendant(final JsonEnvelope envelope) throws
-            EventStreamException {
-        final JsonObject payload = envelope.payloadAsJsonObject();
-        final String sessionId = payload.getString("sessionId");
-        final String caseId = payload.getString("caseId");
-        final String defendantId = payload.getString("defendantId");
-
-        final EventStream eventStream = eventSource.getStreamById(fromString(sessionId));
-        final ResultsAggregate aggregate = aggregateService.get(eventStream, ResultsAggregate.class);
-
-        final String originatingOrg = aggregate.getOriginatingOrganisation();
-        boolean sendSpiOut = false;
-        if(null != originatingOrg) {
-            sendSpiOut = getSpiOutFlag(originatingOrg);
-        }
-
-        if (sendSpiOut) {
-            aggregate(ResultsAggregate.class, fromString(sessionId),
-                    envelope, a -> a.generatePoliceResults(caseId, defendantId));
         }
     }
 

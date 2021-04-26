@@ -11,6 +11,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template;
 
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 
@@ -21,7 +22,6 @@ import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
-import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -59,7 +59,7 @@ public class BaseStructureConverterTest {
 
     @Test
     public void testConverter() throws Exception {
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 

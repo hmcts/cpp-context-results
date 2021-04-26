@@ -40,6 +40,7 @@ import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
 import uk.gov.justice.core.courts.HearingCaseEjected;
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.HearingResultsAddedForDay;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
@@ -47,6 +48,7 @@ import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.LjaDetails;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
+import uk.gov.justice.core.courts.PoliceResultGenerated;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.YouthCourt;
@@ -60,12 +62,14 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.EmailNotificationFailed;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.json.JsonObject;
@@ -78,7 +82,7 @@ public class ResultsAggregate implements Aggregate {
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
     private static final String INVALID_EMAIL_ID = "Police Email Address is not Available";
-    private static final long serialVersionUID = 103L;
+    private static final long serialVersionUID = 104L;
     private static final Logger LOGGER = getLogger(ResultsAggregate.class);
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
@@ -98,6 +102,10 @@ public class ResultsAggregate implements Aggregate {
                 when(CaseAddedEvent.class).apply(this::storeCaseAddedEvent),
                 when(DefendantAddedEvent.class).apply(this::storeDefendantAddedEvent),
                 when(DefendantUpdatedEvent.class).apply(this::storeDefendantUpdatedEvent),
+                when(HearingResultsAdded.class).apply(this::handleHearingResultsAdded),
+                when(HearingResultsAddedForDay.class).apply(
+                        e -> this.hearingIds.add(e.getHearing().getId())
+                ),
                 when(HearingResultsAdded.class).apply(this::handleHearingResultsAdded),
                 otherwiseDoNothing());
     }
@@ -137,6 +145,10 @@ public class ResultsAggregate implements Aggregate {
 
     public Stream<Object> saveHearingResults(final PublicHearingResulted payload) {
         return apply(Stream.of(new HearingResultsAdded(payload.getHearing(), payload.getSharedTime())));
+    }
+
+    public Stream<Object> saveHearingResultsForDay(final PublicHearingResulted payload, final LocalDate hearingDay) {
+        return apply(Stream.of(new HearingResultsAddedForDay(payload.getHearing(), hearingDay, payload.getSharedTime())));
     }
 
     public Stream<Object> ejectCaseOrApplication(final UUID hearingId, final JsonObject payload) {
@@ -325,7 +337,7 @@ public class ResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> handleSession(final UUID id, final CourtCentreWithLJA courtCentreWithLJA, final List<uk.gov.justice.core.courts.SessionDay> sessionDays) {
-        if (id != null && !id.equals(this.id)) {
+        if (id != null && this.sessionDays != null && !this.sessionDays.containsAll(sessionDays)) {
             return apply(of(sessionAddedEvent().withId(id).withCourtCentreWithLJA(courtCentreWithLJA).withSessionDays(sessionDays).build()));
         }
         return apply(builder().build());
@@ -349,14 +361,18 @@ public class ResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor) {
+        return handleDefendants(caseDetailsFromRequest, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, Optional.empty());
+    }
+
+    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor));
+        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay));
         return apply(builder.build());
     }
 
     private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate,
-                                         final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor) {
+                                         final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
 
         isEligibleForSpiOut = false;
@@ -364,9 +380,9 @@ public class ResultsAggregate implements Aggregate {
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
             if (!defendantOptional.isPresent()) {
-                buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType);
+                buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay);
             } else {
-                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, defendantOptional.get(), sendSpiOut, jurisdictionType);
+                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, defendantOptional.get(), sendSpiOut, jurisdictionType, hearingDay);
             }
         }
 
@@ -390,8 +406,7 @@ public class ResultsAggregate implements Aggregate {
 
     }
 
-
-    private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType) {
+    private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay) {
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
@@ -400,14 +415,9 @@ public class ResultsAggregate implements Aggregate {
                 isEligibleForSpiOut = true;
 
                 if (!isCrownCourt(jurisdictionType)) {
-                    builder.add(policeResultGenerated()
-                            .withId(id)
-                            .withCourtCentreWithLJA(enhancedCourtCenter)
-                            .withSessionDays(sessionDays)
-                            .withCaseId(casesDetailsFromRequest.getCaseId())
-                            .withUrn(casesDetailsFromRequest.getUrn())
-                            .withDefendant(defendantFromRequest)
-                            .build());
+                    builder.add(
+                            buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
+                    );
                 }
             }
         } else {
@@ -415,7 +425,7 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
-    private void updateDefendant(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final Defendant defendantFromAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType) {
+    private void updateDefendant(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final Defendant defendantFromAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay) {
         if (defendantFromRequest.getOffences().size() > defendantFromAggregate.getOffences().size() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
@@ -424,14 +434,9 @@ public class ResultsAggregate implements Aggregate {
                 isEligibleForSpiOut = true;
 
                 if (!isCrownCourt(jurisdictionType)) {
-                    builder.add(policeResultGenerated()
-                            .withId(id)
-                            .withCourtCentreWithLJA(enhancedCourtCenter)
-                            .withSessionDays(sessionDays)
-                            .withCaseId(casesDetailsFromRequest.getCaseId())
-                            .withUrn(casesDetailsFromRequest.getUrn())
-                            .withDefendant(defendantFromRequest)
-                            .build());
+                    builder.add(
+                            buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
+                    );
                 }
             } else {
                 LOGGER.info("spiOutFlag false, police results will not be sent");
@@ -439,33 +444,56 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
-    public Stream<Object> generatePoliceResults(final String caseIdFromApi, final String defendantIdFromApi) {
+    public Stream<Object> generatePoliceResults(final String caseIdFromApi, final String defendantIdFromApi, final Optional<LocalDate> hearingDay) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseIdFromApi.equals(c.getCaseId().toString())).findFirst();
 
         if (aCaseAggregateOptional.isPresent()) {
             final Case aCaseAggregate = aCaseAggregateOptional.get();
             final Optional<Defendant> defendantOptional = aCaseAggregate.getDefendants().stream().filter(d -> d.getId().toString().equals(defendantIdFromApi)).findFirst();
-            defendantOptional.ifPresent(defendant -> buildPoliceResultGeneratedEvent(aCaseAggregate, builder, defendant));
+            defendantOptional.ifPresent(defendant -> buildPoliceResultGeneratedEvent(aCaseAggregate, builder, defendant, hearingDay));
         }
         return apply(builder.build());
     }
 
-    private void buildPoliceResultGeneratedEvent(final Case aCaseAggregate, final Stream.Builder<Object> builder, final Defendant defendant) {
+    private void buildPoliceResultGeneratedEvent(final Case aCaseAggregate, final Stream.Builder<Object> builder, final Defendant defendant, final Optional<LocalDate> hearingDay) {
 
         final CaseDefendant caseDefendant = DefendantToCaseDefendantConverter.convert(defendant);
         final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendant.getId());
 
         if (isResultPresent(caseDefendant)) {
-            builder.add(policeResultGenerated()
-                    .withId(id)
-                    .withCourtCentreWithLJA(enhancedCourtCenter)
-                    .withSessionDays(sessionDays)
-                    .withCaseId(aCaseAggregate.getCaseId())
-                    .withUrn(aCaseAggregate.getUrn())
-                    .withDefendant(caseDefendant)
-                    .build());
+            builder.add(
+                    buildPoliceResultGeneratedEvent(aCaseAggregate.getCaseId(), aCaseAggregate.getUrn(), caseDefendant, hearingDay, enhancedCourtCenter)
+            );
         }
+    }
+
+    /**
+     * Builds an {@link PoliceResultGenerated} event. If the request is from a specific hearingDay
+     * then that day will become the session day, to be send to SPI.
+     *
+     * @param caseId     - the caseId
+     * @param caseUrn    - the caseUrn
+     * @param defendant  - the defendant
+     * @param hearingDay - Optional day of the hearing (should be mandatory after multi-day hearings
+     *                   implemented)
+     * @return Event with session day representing the hearingDay being processed if provided from
+     * command.
+     */
+    private PoliceResultGenerated buildPoliceResultGeneratedEvent(final UUID caseId, final String caseUrn, final CaseDefendant defendant, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
+        List<SessionDay> sessionDayList = this.sessionDays;
+        if (hearingDay.isPresent()) {
+            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().toLocalDate())).collect(Collectors.toList());
+        }
+
+        return policeResultGenerated()
+                .withId(id)
+                .withCourtCentreWithLJA(enhancedCourtCenter)
+                .withSessionDays(sessionDayList)
+                .withCaseId(caseId)
+                .withUrn(caseUrn)
+                .withDefendant(defendant)
+                .build();
     }
 
     private boolean checkJudicialResultsUpdated(final List<OffenceDetails> offenceFromRequestList, final List<Offence> aggregateOffences) {

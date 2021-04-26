@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
@@ -31,7 +32,7 @@ public class AttendanceDayTest {
     @Test
     public void testBuildAttendance() {
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
 
         final List<AttendanceDay> attendanceDays = attendanceDay.buildAttendance(hearing.getDefendantAttendance(), DEFAULT_DEFENDANT_ID);

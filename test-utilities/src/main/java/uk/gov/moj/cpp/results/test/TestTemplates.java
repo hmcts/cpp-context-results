@@ -82,6 +82,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableList;
@@ -131,6 +132,8 @@ public class TestTemplates {
     }
 
     public static Hearing basicShareHearingTemplateWithCustomApplication(final UUID hearingId, final JurisdictionType jurisdictionType, final List<CourtApplication> courtApplications) {
+        final List<HearingDay> hearingDays = buildHearingDays();
+
         return Hearing.hearing()
                 .withId(hearingId)
                 .withType(HearingType.hearingType()
@@ -140,19 +143,7 @@ public class TestTemplates {
                 .withCourtApplications(courtApplications)
                 .withProsecutionCases(singletonList(createProsecutionCase1(null, false)))
                 .withJurisdictionType(jurisdictionType)
-                .withHearingDays(asList(HearingDay.hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
-                        .withListedDurationMinutes(100)
-                        .withListingSequence(10)
-                        .build(), HearingDay.hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 4, 3), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                        .withListedDurationMinutes(100)
-                        .withListingSequence(10)
-                        .build(), HearingDay.hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                        .withListedDurationMinutes(100)
-                        .withListingSequence(10)
-                        .build()))
+                .withHearingDays(hearingDays)
                 .withCourtCentre(CourtCentre.courtCentre()
                         .withId(randomUUID())
                         .withName("courtName")
@@ -174,8 +165,9 @@ public class TestTemplates {
                 .build();
     }
 
-
     public static Hearing basicShareHearingTemplate(final UUID hearingId, final List<ProsecutionCase> prosecutionCases, final JurisdictionType jurisdictionType, final boolean isSJPHearing) {
+        final List<HearingDay> hearingDays = buildHearingDays();
+
         return Hearing.hearing()
                 .withId(hearingId)
                 .withIsSJPHearing(isSJPHearing)
@@ -183,6 +175,13 @@ public class TestTemplates {
                         .withId(randomUUID())
                         .withDescription("Trial")
                         .build())
+                .withCourtApplications(asList(CourtApplication.courtApplication()
+                        .withId(randomUUID())
+                        .withType(courtApplicationTypeTemplates())
+                        .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                        .withApplicant(courtApplicationPartyTemplates())
+                        .withApplicationStatus(ApplicationStatus.DRAFT)
+                        .build()))
                 .withDefendantAttendance(of(
                         defendantAttendance()
                                 .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2018, 5, 2)).withAttendanceType(AttendanceType.IN_PERSON).build()))
@@ -216,19 +215,7 @@ public class TestTemplates {
                         .withApplicant(courtApplicationPartyTemplates())
                         .withApplicationStatus(ApplicationStatus.DRAFT)
                         .build()))
-                .withHearingDays(asList(HearingDay.hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
-                        .withListedDurationMinutes(100)
-                        .withListingSequence(10)
-                        .build(), HearingDay.hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 4, 3), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                        .withListedDurationMinutes(100)
-                        .withListingSequence(10)
-                        .build(), HearingDay.hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 0), ZoneId.of("UTC")))
-                        .withListedDurationMinutes(100)
-                        .withListingSequence(10)
-                        .build()))
+                .withHearingDays(hearingDays)
                 .withCourtCentre(CourtCentre.courtCentre()
                         .withId(randomUUID())
                         .withName("courtName")
@@ -291,7 +278,7 @@ public class TestTemplates {
 
     }
 
-    public static Address address(){
+    public static Address address() {
         return Address.address().withAddress1(STRING.next())
                 .withAddress2(STRING.next())
                 .withAddress3(STRING.next())
@@ -299,26 +286,67 @@ public class TestTemplates {
                 .withAddress5(STRING.next())
                 .withPostcode("AA1 1AA").build();
     }
+
     public static JudicialRoleType circuitJudge() {
         return JudicialRoleType.judicialRoleType()
                 .withJudicialRoleTypeId(UUID.randomUUID())
                 .withJudiciaryType(JudicialRoleTypeEnum.CIRCUIT_JUDGE.name()).build();
     }
 
-    public static PublicHearingResulted basicShareResultsWithMagistratesTemplate() {
-        return basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
-    }
-
     public static PublicHearingResulted basicShareResultsWithMagistratesAlongWithOffenceDateCodeTemplate(final Integer offenceDateCode) {
         return basicShareResultsTemplate(JurisdictionType.MAGISTRATES, false, offenceDateCode);
     }
 
-    public static PublicHearingResulted basicShareResultsWithMagistratesTemplate(final boolean isWithVerdict, final boolean isSJPHearing) {
-        return basicShareResultsTemplate(JurisdictionType.MAGISTRATES, isWithVerdict, isSJPHearing);
+    public static PublicHearingResulted basicShareResultsV2WithMagistratesAlongWithOffenceDateCodeTemplate(final Integer offenceDateCode) {
+        final PublicHearingResulted publicHearingResulted = basicShareResultsTemplate(JurisdictionType.MAGISTRATES, false, offenceDateCode);
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
+        return publicHearingResulted;
+    }
+
+    public static PublicHearingResulted basicShareResultsV2Template(final JurisdictionType jurisdictionType) {
+        final PublicHearingResulted publicHearingResulted = basicShareResultsTemplate(jurisdictionType, false);
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
+        return publicHearingResulted;
+    }
+
+    public static PublicHearingResulted basicShareResultsV2TemplateWithHearingDay(final JurisdictionType jurisdictionType, final LocalDate hearingDay) {
+        final PublicHearingResulted publicHearingResulted = basicShareResultsTemplate(jurisdictionType, false);
+        publicHearingResulted.getHearing().getHearingDays().add(HearingDay.hearingDay()
+                .withSittingDay(ZonedDateTime.of(hearingDay, LocalTime.MIDNIGHT, ZoneId.of("UTC")))
+                .withListedDurationMinutes(100)
+                .withListingSequence(10)
+                .build());
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(hearingDay));
+        return publicHearingResulted;
+    }
+
+    public static PublicHearingResulted basicShareResultsV2WithVerdictTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing) {
+        final PublicHearingResulted publicHearingResulted = basicShareResultsTemplate(jurisdictionType, isWithVerdict, isSJPHearing);
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
+        return publicHearingResulted;
+    }
+
+    public static PublicHearingResulted basicShareResultsV2WithVerdictTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict) {
+        final PublicHearingResulted publicHearingResulted = basicShareResultsTemplate(jurisdictionType, isWithVerdict);
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
+        return publicHearingResulted;
     }
 
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType) {
         return basicShareResultsTemplate(jurisdictionType, false, false);
+    }
+
+    public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType, final boolean isSJPHearing) {
+        return basicShareResultsTemplate(jurisdictionType, false, isSJPHearing);
+    }
+
+    public static PublicHearingResulted basicShareResultsWithVerdictTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict) {
+        return basicShareResultsTemplate(jurisdictionType, isWithVerdict);
     }
 
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing) {
@@ -328,7 +356,6 @@ public class TestTemplates {
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), isWithVerdict), createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType, isSJPHearing))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-
     }
 
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final Integer offenceDateCode) {
@@ -338,7 +365,6 @@ public class TestTemplates {
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCaseWithOffenceDateCode(buildJudicialResultList(), isWithVerdict, offenceDateCode), createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType, false))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-
     }
 
     public static PublicHearingResulted basicShareResultsWithShadowListedOffencesTemplate() {
@@ -358,6 +384,21 @@ public class TestTemplates {
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)), jurisdictionType, false))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+
+    }
+
+    public static PublicHearingResulted basicShareResultsV2TemplateWithoutResult(final JurisdictionType jurisdictionType) {
+
+        final UUID hearingId = randomUUID();
+
+        final PublicHearingResulted publicHearingResulted = PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)), jurisdictionType, false))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(LocalDate.now()));
+
+        return publicHearingResulted;
 
     }
 
@@ -472,9 +513,29 @@ public class TestTemplates {
                         .withRole("parentGuardian")
                         .build()))
                 .withOffences(
-                        getOffenceList(judicialResults,isWithVerdict, offenceDateCode)
+                        getOffenceList(judicialResults, isWithVerdict, offenceDateCode)
                 )
                 .build();
+    }
+
+    private static List<HearingDay> buildHearingDays() {
+        final List<HearingDay> hearingDays = new ArrayList<>();
+        hearingDays.add(HearingDay.hearingDay()
+                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
+                .withListedDurationMinutes(100)
+                .withListingSequence(10)
+                .build());
+        hearingDays.add(HearingDay.hearingDay()
+                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 4, 3), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                .withListedDurationMinutes(100)
+                .withListingSequence(10)
+                .build());
+        hearingDays.add(HearingDay.hearingDay()
+                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 0), ZoneId.of("UTC")))
+                .withListedDurationMinutes(100)
+                .withListingSequence(10)
+                .build());
+        return hearingDays;
     }
 
     private static List<Offence> getOffenceList(final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode) {
@@ -502,7 +563,7 @@ public class TestTemplates {
                 .withIntroducedAfterInitialProceedings(true)
                 .withOffenceDateCode(offenceDateCode)
                 .withIsDiscontinued(true);
-        if(isWithVerdict){
+        if (isWithVerdict) {
             builder.withVerdict(Verdict.verdict()
                     .withVerdictType(VerdictType.verdictType()
                             .withId(fromString("3f0d69d0-2fda-3472-8d4c-a6248f661825"))
@@ -748,11 +809,11 @@ public class TestTemplates {
                 .build();
     }
 
-    private  static AllocationDecision buildAllocationDecision(final UUID offenceId) {
+    private static AllocationDecision buildAllocationDecision(final UUID offenceId) {
         return allocationDecision()
                 .withOriginatingHearingId(randomUUID())
-                .withAllocationDecisionDate(LocalDate.of(2018,3,14))
-                .withAllocationDecisionDate(LocalDate.of(2018,12,12))
+                .withAllocationDecisionDate(LocalDate.of(2018, 3, 14))
+                .withAllocationDecisionDate(LocalDate.of(2018, 12, 12))
                 .withMotReasonDescription("motDescription")
                 .withMotReasonCode("01")
                 .withMotReasonId(randomUUID())
@@ -859,7 +920,8 @@ public class TestTemplates {
                                 .build()))
                 .build();
     }
-    private static ImmutableList<JudicialResult> offenceLevelJudicialResults(){
+
+    private static ImmutableList<JudicialResult> offenceLevelJudicialResults() {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(Category.INTERMEDIARY)

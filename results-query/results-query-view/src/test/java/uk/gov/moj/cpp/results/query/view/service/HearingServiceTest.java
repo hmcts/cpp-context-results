@@ -14,6 +14,7 @@ import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateProsecutio
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -67,7 +68,7 @@ public class HearingServiceTest {
     public void shouldSearchAndFilterHearingByDefendantId() {
         final UUID hearingId = UUID.randomUUID();
         final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
-        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate();
+        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final UUID defendantId = publicHearingResulted.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
                 HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
         List<ProsecutionCase> prosecutionCases = asList(templateProsecutionCase(), templateProsecutionCase(), templateProsecutionCase());
@@ -82,10 +83,10 @@ public class HearingServiceTest {
         JsonObject payloadJson = Mockito.mock(JsonObject.class);
         when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
         when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
-        when (hearingResultedDocumentRepository.findBy(hearingId)).thenReturn(hearingResultedDocument);
+        when (hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId)).thenReturn(hearingResultedDocument);
 
         //The test call !!!!!!!
-        HearingResultsAdded result =hearingService.findHearingDetailsByHearingIdDefendantId(hearingId, defendantId);
+        HearingResultsAdded result = hearingService.findHearingDetailsByHearingIdDefendantId(hearingId, defendantId);
 
         assertThat(result.getHearing().getProsecutionCases().size(), is(1));
         ProsecutionCase resultCase = result.getHearing().getProsecutionCases().get(0);

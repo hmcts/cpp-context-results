@@ -56,14 +56,35 @@ public class EventGridServiceImpl implements EventGridService {
     public static class HearingResultedEventData {
         public String hearingId;
         public UUID userId;
-        public HearingResultedEventData(UUID userId, String hearingId) {
-            this.hearingId = hearingId;
+
+        public HearingResultedEventData(final UUID userId, final String hearingId) {
             this.userId = userId;
+            this.hearingId = hearingId;
         }
     }
 
-    public boolean sendHearingResultedEvent(UUID userId, String hearingId, String eventType) {
+    @SuppressWarnings({"squid:ClassVariableVisibilityCheck"})
+    public static class HearingResultedForDayEventData {
+        public String hearingId;
+        public UUID userId;
+        public String hearingDay;
 
+        public HearingResultedForDayEventData(final UUID userId, final String hearingId, final String hearingDay) {
+            this.userId = userId;
+            this.hearingId = hearingId;
+            this.hearingDay = hearingDay;
+        }
+    }
+
+    public boolean sendHearingResultedEvent(final UUID userId, final String hearingId, final String eventType) {
+        return sendEventToEventGrid(hearingId, new HearingResultedEventData(userId, hearingId), eventType);
+    }
+
+    public boolean sendHearingResultedForDayEvent(final UUID userId, final String hearingId, final String hearingDay, final String eventType) {
+        return sendEventToEventGrid(hearingId, new HearingResultedForDayEventData(userId, hearingId, hearingDay), eventType);
+    }
+
+    private boolean sendEventToEventGrid(final String hearingId, final Object payload, final String eventType) {
         if ("localhost".equals(eventgridTopicHost)) {
             return true;
         }
@@ -74,7 +95,7 @@ public class EventGridServiceImpl implements EventGridService {
         eventsList.add(new EventGridEvent(
                 uuid.toString(),
                 String.format("HearingResulted%s", hearingId),
-                new HearingResultedEventData(userId, hearingId),
+                payload,
                 eventType,
                 DateTime.now(),
                 "2.0"
@@ -89,8 +110,8 @@ public class EventGridServiceImpl implements EventGridService {
             );
             eventGridClient.publishEvents(eventGridEndpoint, eventsList);
             LOGGER.debug("Done publishing hearing resulted event to the EventGrid");
-        } catch(URISyntaxException e) {
-            LOGGER.error("Exception occured while sending hearing resulted event: {} ", e);
+        } catch (URISyntaxException e) {
+            LOGGER.error("Exception occurred while sending hearing resulted event: {} ", e);
             return false;
         }
 

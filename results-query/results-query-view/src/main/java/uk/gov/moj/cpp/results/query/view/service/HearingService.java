@@ -116,8 +116,9 @@ public class HearingService {
         return new HearingResultsAdded(hearing, hearingResultsAdded.getSharedTime());
     }
 
-    public HearingResultsAdded findHearingForHearingId(final UUID hearingId){
-        final HearingResultedDocument document = hearingResultedDocumentRepository.findBy(hearingId);
+    public HearingResultsAdded findHearingForHearingId(final UUID hearingId ){
+        final HearingResultedDocument document = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId);
+
         if (document == null) {
             if (LOGGER.isErrorEnabled()) {
                 LOGGER.error(String.format("findHearingDetailsByHearingIdDefendantId cant find hearing %s ", hearingId));
@@ -127,5 +128,7 @@ public class HearingService {
         final JsonObject jsonPayload = stringToJsonObjectConverter.convert(document.getPayload());
         return  jsonObjectToObjectConverter.convert(jsonPayload, HearingResultsAdded.class);
     }
+
+
 }
 

@@ -26,9 +26,9 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildAllocationDecision;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsWithMagistratesTemplate;
 
 import uk.gov.justice.core.courts.BailStatus;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -214,7 +214,7 @@ public class ResultsEventProcessorTest {
     @Test
     public void shouldIssueCreateResultCommandWhenHearingResulted() {
 
-        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
 
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
@@ -237,6 +237,32 @@ public class ResultsEventProcessorTest {
 
                         )));
 
+    }
+
+    @Test
+    public void shouldIssueCreateResultCommandWhenHearingResultedForDay() {
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.events.hearing-results-added-for-day"),
+                objectToJsonObjectConverter.convert(shareResultsMessage));
+
+        resultsEventProcessor.hearingResultAddedForDay(envelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
+
+        final JsonEnvelope requestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
+
+        assertThat(requestPayload,
+                jsonEnvelope(
+                        metadata().withName("results.command.create-results-for-day"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.session.id", is(shareResultsMessage.getHearing().getId().toString())),
+                                withJsonPath("$.session.sourceType", is("CC")),
+                                withJsonPath("$.session.sessionDays.[0].sittingDay", is("2018-05-02T12:01:01.000Z")),
+                                withJsonPath("$.hearingDay", is("2018-05-02")))
+                        )));
     }
 
     @Test
@@ -350,13 +376,11 @@ public class ResultsEventProcessorTest {
                         metadata().withName("results.case-or-application-ejected"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.applicationId", is(applicationId.toString()))))));
-
-
     }
 
     @Test
     public void shouldContinueIfEventGridFailsWhenHearingResulted() {
-        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
         final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -370,12 +394,11 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.hearingResulted(envelope);
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-
     }
 
     @Test
     public void shouldUseLAAEventTypeWhenHearingResulted() {
-        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate(false, false);
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
         final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
@@ -414,8 +437,8 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void shouldUseSJPEventTypeWhenHearingResulted() {
-        final PublicHearingResulted shareResultsMessage = basicShareResultsWithMagistratesTemplate(false, true);
+    public void shouldUseSJPEventTypeWhenSJPHearingResulted() {
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES, true);
         final String hearingId = shareResultsMessage.getHearing().getId().toString();
         final UUID userId = randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),

@@ -216,7 +216,7 @@ public class ResultsAggregateTest {
     }
 
     @Test
-    public void shouldNotRaiseSessionAddedEventForDuplicateSession() {
+    public void shouldNotRaiseSessionAddedEventWhenSessionDaysUnchanged() {
         final UUID id = randomUUID();
         final CourtCentreWithLJA courtCentre = courtCentreWithLJA().build();
         final ZonedDateTime sittingDay = now();
@@ -237,6 +237,33 @@ public class ResultsAggregateTest {
         assertEquals(sessionDay.getSittingDay(), sessionDayResult.getSittingDay());
 
         assertThat(resultsAggregate.handleSession(id, courtCentre, sessionDays).count(), is(0L));
+    }
+
+    @Test
+    public void shouldRaiseSessionAddedEventWhenSessionDaysUpdatedForHearing() {
+        final UUID id = randomUUID();
+        final CourtCentreWithLJA courtCentre = courtCentreWithLJA().build();
+        final ZonedDateTime sittingDay = now();
+        final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
+        final List<SessionDay> sessionDays = of(sessionDay);
+        final SessionAddedEvent update = resultsAggregate.handleSession(id, courtCentre, sessionDays)
+                .map(o -> (SessionAddedEvent) o)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(update);
+        assertEquals(id, update.getId());
+        assertEquals(courtCentre, update.getCourtCentreWithLJA());
+        final List<SessionDay> sessionDaysResult = update.getSessionDays();
+        final SessionDay sessionDayResult = sessionDaysResult.get(0);
+        assertEquals(sessionDays, sessionDaysResult);
+        assertEquals(sessionDay.getListedDurationMinutes(), sessionDayResult.getListedDurationMinutes());
+        assertEquals(sessionDay.getListingSequence(), sessionDayResult.getListingSequence());
+        assertEquals(sessionDay.getSittingDay(), sessionDayResult.getSittingDay());
+
+        final SessionDay updatedSessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay.plusDays(1l)).build();
+        final List<SessionDay> updatedSessionDays = of(updatedSessionDay);
+
+        assertThat(resultsAggregate.handleSession(id, courtCentre, updatedSessionDays).count(), is(1L));
     }
 
     @Test
@@ -287,7 +314,7 @@ public class ResultsAggregateTest {
     public void testHandleDefendantsRejectEvent() {
         final CaseDetails caseDetails = createCaseDetails(of(), of());
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty()).collect(toList());
         final DefendantRejectedEvent defendantRejectedEvent = objectList.stream().filter(e -> e instanceof DefendantRejectedEvent)
                 .map(o -> (DefendantRejectedEvent) o)
                 .findFirst()
@@ -489,7 +516,7 @@ public class ResultsAggregateTest {
         resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
 
         final UUID defendantId = caseDetails.getDefendants().get(0).getDefendantId();
-        final List<Object> objectList = resultsAggregate.generatePoliceResults(caseDetails.getCaseId().toString(), defendantId.toString()).collect(toList());
+        final List<Object> objectList = resultsAggregate.generatePoliceResults(caseDetails.getCaseId().toString(), defendantId.toString(), Optional.empty()).collect(toList());
         final PoliceResultGenerated policeResultGenerated = objectList.stream().filter(e -> e instanceof PoliceResultGenerated)
                 .map(o -> (PoliceResultGenerated) o)
                 .findFirst()

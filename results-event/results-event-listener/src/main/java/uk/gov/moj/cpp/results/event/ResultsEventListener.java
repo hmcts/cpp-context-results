@@ -1,11 +1,13 @@
 package uk.gov.moj.cpp.results.event;
 
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static javax.json.Json.createReader;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.HearingResultsAddedForDay;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -13,6 +15,7 @@ import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -62,10 +65,18 @@ public class ResultsEventListener {
 
         final UUID hearingId = hearingResultsAdded.getHearing().getId();
         final List<HearingDay> days = hearingResultsAdded.getHearing().getHearingDays();
-        final LocalDate startDate = days.stream().map(day -> day.getSittingDay().toLocalDate()).min((d1, d2) -> d1.compareTo(d2)).orElse(null);
-        final LocalDate endDate = days.stream().map(day -> day.getSittingDay().toLocalDate()).max((d1, d2) -> d1.compareTo(d2)).orElse(null);
-        hearingResultedDocumentRepository.save(createHearingResultedDocument(event, hearingId, startDate, endDate));
-        LOGGER.info("Hearing Event Document successfully stored for hearing id: {}", hearingId);
+        saveHearingResultedDocument(event, hearingId, null, days);
+    }
+
+    @Handles("results.events.hearing-results-added-for-day")
+    public void hearingResultsAddedForDay(final JsonEnvelope event) {
+        final HearingResultsAddedForDay hearingResultsAddedForDay = jsonObjectToObjectConverter.convert(event.payloadAsJsonObject(), HearingResultsAddedForDay.class);
+        LOGGER.info("Hearing Event Document successfully stored for hearing id: {}, hearing day: {}", hearingResultsAddedForDay.getHearing().getId(), hearingResultsAddedForDay.getHearingDay());
+
+        final UUID hearingId = hearingResultsAddedForDay.getHearing().getId();
+        final List<HearingDay> days = hearingResultsAddedForDay.getHearing().getHearingDays();
+        final LocalDate hearingDay = hearingResultsAddedForDay.getHearingDay();
+        saveHearingResultedDocument(event, hearingId, hearingDay, days);
     }
 
     @Transactional
@@ -74,9 +85,11 @@ public class ResultsEventListener {
         final JsonObject payload = event.payloadAsJsonObject();
         final String hearingId = payload.getString("hearingId");
         final String caseId = payload.getString("caseId");
-        final HearingResultedDocument document = hearingResultedDocumentRepository.findBy(fromString(hearingId));
-        updateHearingResultPayload(document, caseId, PROSECUTION_CASES);
-        updateHearingResultPayload(document, caseId, COURT_APPLICATIONS);
+        final List<HearingResultedDocument> documents = hearingResultedDocumentRepository.findByHearingId(fromString(hearingId));
+        documents.forEach(document -> {
+            updateHearingResultPayload(document, caseId, PROSECUTION_CASES);
+            updateHearingResultPayload(document, caseId, COURT_APPLICATIONS);
+        });
     }
 
     @Transactional
@@ -85,13 +98,23 @@ public class ResultsEventListener {
         final JsonObject payload = event.payloadAsJsonObject();
         final String hearingId = payload.getString("hearingId");
         final String applicationId = payload.getString("applicationId");
-        final HearingResultedDocument document = hearingResultedDocumentRepository.findBy(fromString(hearingId));
-        updateHearingResultPayload(document, applicationId, COURT_APPLICATIONS);
+        final List<HearingResultedDocument> documents = hearingResultedDocumentRepository.findByHearingId(fromString(hearingId));
+        documents.forEach(document -> updateHearingResultPayload(document, applicationId, COURT_APPLICATIONS));
+
     }
 
-    private HearingResultedDocument createHearingResultedDocument(JsonEnvelope event, UUID hearingId, LocalDate startDate, LocalDate endDate) {
+    private void saveHearingResultedDocument(final JsonEnvelope event, final UUID hearingId, final LocalDate hearingDay, final List<HearingDay> days){
+        final LocalDate startDate = days.stream().map(day -> day.getSittingDay().toLocalDate()).min((d1, d2) -> d1.compareTo(d2)).orElse(null);
+        final LocalDate endDate = days.stream().map(day -> day.getSittingDay().toLocalDate()).max((d1, d2) -> d1.compareTo(d2)).orElse(null);
+        final LocalDate calculatedHearingDay = nonNull(hearingDay) ? hearingDay : startDate;
+        hearingResultedDocumentRepository.save(createHearingResultedDocument(event, hearingId, calculatedHearingDay, startDate, endDate));
+        LOGGER.info("Hearing Event Document successfully stored for hearing id: {}, hearing day: {}", hearingId, calculatedHearingDay);
+    }
+
+
+    private HearingResultedDocument createHearingResultedDocument(JsonEnvelope event, UUID hearingId, LocalDate hearingDay, LocalDate startDate, LocalDate endDate) {
         final HearingResultedDocument document = new HearingResultedDocument();
-        document.setHearingId(hearingId);
+        document.setId(new HearingResultedDocumentKey(hearingId, hearingDay));
         document.setStartDate(startDate);
         document.setEndDate(endDate);
         document.setPayload(event.payloadAsJsonObject().toString());

@@ -13,6 +13,8 @@ subscriptions_descriptor:
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-notification-requested.json
         - name: results.hearing-results-added
           schema_uri: http://justice.gov.uk/core/courts/hearing-results-added.json
+        - name: results.events.hearing-results-added-for-day
+          schema_uri: http://justice.gov.uk/core/courts/results.events.hearing-results-added-for-day.json
 
       event_source_name: results
 
@@ -20,6 +22,9 @@ subscriptions_descriptor:
       events:
         - name: public.hearing.resulted
           schema_uri: http://justice.gov.uk/hearing/courts/public.hearing-resulted.json
+
+        - name: public.events.hearing.hearing-resulted
+          schema_uri: http://justice.gov.uk/hearing/courts/public.events.hearing.hearing-resulted.json
 
         - name: public.progression.events.case-or-application-ejected
           schema_uri: http://justice.gov.uk/progression/courts/case-or-application-ejected

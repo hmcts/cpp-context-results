@@ -11,8 +11,11 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
 
+import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -20,7 +23,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
-import uk.gov.moj.cpp.results.test.TestTemplates;
+import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,7 +83,7 @@ public class ResultsEventListenerTest {
     @Test
     public void saveHearingResultWithOneHearingDate_ShouldHaveBothStartDateAndEndDateSame() {
 
-        PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        PublicHearingResulted shareResultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         shareResultsMessage.getHearing().setHearingDays(Arrays.asList(HearingDay.hearingDay()
                 .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 06, 04), LocalTime.of(12, 00), ZoneId.of("UTC")))
                 .withListedDurationMinutes(100)
@@ -94,7 +97,8 @@ public class ResultsEventListenerTest {
 
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(1));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getHearingId(), is(shareResultsMessage.getHearing().getId()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingId(), is(shareResultsMessage.getHearing().getId()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(LocalDate.of(2018, 06, 04)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.of(2018, 06, 04)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.of(2018, 06, 04)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getPayload(), is(objectToJsonObjectConverter.convert(shareResultsMessage).toString()));
@@ -103,7 +107,7 @@ public class ResultsEventListenerTest {
     @Test
     public void saveHearingResultWithMultipleHearingDates_ShouldHaveRightStartDateAndEndDate() {
 
-        PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        PublicHearingResulted shareResultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
 
@@ -113,10 +117,45 @@ public class ResultsEventListenerTest {
 
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(1));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getHearingId(), is(shareResultsMessage.getHearing().getId()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingId(), is(shareResultsMessage.getHearing().getId()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(LocalDate.of(2018, 02, 02)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.of(2018, 02, 02)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.of(2018, 05, 02)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getPayload(), is(objectToJsonObjectConverter.convert(shareResultsMessage).toString()));
+    }
+
+    @Test
+    public void shouldHearingResultsAddedForDay() {
+
+        final UUID hearingId = randomUUID();
+        final JsonObject payload = Json.createObjectBuilder()
+                .add("hearing", objectToJsonObjectConverter.convert(Hearing.hearing()
+                        .withId(hearingId)
+                        .withHearingDays(Arrays.asList(HearingDay.hearingDay()
+                                        .withSittingDay(ZonedDateTime.now())
+                                        .build(),
+                                HearingDay.hearingDay()
+                                        .withSittingDay(ZonedDateTime.now().plusDays(2))
+                                        .build(),
+                                HearingDay.hearingDay()
+                                        .withSittingDay(ZonedDateTime.now().plusDays(3))
+                                        .build()))
+                        .build()))
+                .add("hearingDay", LocalDate.now().plusDays(2).toString())
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.events.hearing-results-added-for-day"),
+                objectToJsonObjectConverter.convert(payload));
+
+        resultsEventListener.hearingResultsAddedForDay(envelope);
+
+        verify(this.hearingResultedDocumentRepository, times(1)).save(this.hearingResultedDocumentArgumentCaptor.capture());
+
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(1));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingId(), is(hearingId));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(LocalDate.now().plusDays(2)));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.now()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.now().plusDays(3)));
     }
 
     @Test
@@ -131,8 +170,8 @@ public class ResultsEventListenerTest {
                 .add("caseId", caseId)
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-case-ejected"), payload);
-        final HearingResultedDocument document = getHearingResultDocument(hearingId ,"/json/hearingResultDocument.json");
-        when(this.hearingResultedDocumentRepository.findBy(hearingId)).thenReturn(document);
+        final HearingResultedDocument document = getHearingResultDocument(hearingId, LocalDate.now(), "/json/hearingResultDocument.json");
+        when(this.hearingResultedDocumentRepository.findByHearingId(hearingId)).thenReturn(Arrays.asList(document));
         resultsEventListener.hearingCaseEjected(envelope);
         verify(this.hearingResultedDocumentRepository, times(2)).save(this.hearingResultedDocumentArgumentCaptor.capture());
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
@@ -149,6 +188,25 @@ public class ResultsEventListenerTest {
     }
 
     @Test
+    public void shouldHearingCaseEjectedWhenMultiDayHearing() throws IOException {
+        final UUID hearingId = randomUUID();
+        final String caseId = "cccc1111-1e20-4c21-916a-81a6c90239e5";
+        final JsonObject payload = Json.createObjectBuilder()
+                .add("hearingId", hearingId.toString())
+                .add("hearingDay", hearingId.toString())
+                .add("caseId", caseId)
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-case-ejected"), payload);
+        final HearingResultedDocument document1 = getHearingResultDocument(hearingId, LocalDate.now(), "/json/hearingResultDocument.json");
+        final HearingResultedDocument document2 = getHearingResultDocument(hearingId, LocalDate.now().plusDays(2), "/json/hearingResultDocument.json");
+        when(this.hearingResultedDocumentRepository.findByHearingId(hearingId)).thenReturn(Arrays.asList(document1, document2));
+        resultsEventListener.hearingCaseEjected(envelope);
+        verify(this.hearingResultedDocumentRepository, times(4)).save(this.hearingResultedDocumentArgumentCaptor.capture());
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(4));
+    }
+
+    @Test
     public void hearingCaseEjected_whenCaseIdAndLinkedCasedIdMatchesInPayload_expectIsEjectedFlagAddedInPayloadForCaseAndLinkedApplication() throws IOException {
         final ObjectMapper mapper = new ObjectMapperProducer().objectMapper();
         final String PROSECUTION_CASES = "prosecutionCases";
@@ -161,8 +219,8 @@ public class ResultsEventListenerTest {
                 .add("caseId", caseId)
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-case-ejected"), payload);
-        final HearingResultedDocument document = getHearingResultDocument(hearingId ,"/json/hearingResultDocumentWithLinkedCaseId.json");
-        when(this.hearingResultedDocumentRepository.findBy(hearingId)).thenReturn(document);
+        final HearingResultedDocument document = getHearingResultDocument(hearingId, LocalDate.now(), "/json/hearingResultDocumentWithLinkedCaseId.json");
+        when(this.hearingResultedDocumentRepository.findByHearingId(hearingId)).thenReturn(Arrays.asList(document));
         resultsEventListener.hearingCaseEjected(envelope);
         verify(this.hearingResultedDocumentRepository, times(2)).save(this.hearingResultedDocumentArgumentCaptor.capture());
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
@@ -198,8 +256,8 @@ public class ResultsEventListenerTest {
                 .add("applicationId", applicationId)
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-case-ejected"), payload);
-        final HearingResultedDocument document = getHearingResultDocument(hearingId, "/json/hearingResultDocument.json");
-        when(this.hearingResultedDocumentRepository.findBy(hearingId)).thenReturn(document);
+        final HearingResultedDocument document = getHearingResultDocument(hearingId, LocalDate.now(), "/json/hearingResultDocument.json");
+        when(this.hearingResultedDocumentRepository.findByHearingId(hearingId)).thenReturn(Arrays.asList(document));
         resultsEventListener.hearingApplicationEjected(envelope);
         verify(this.hearingResultedDocumentRepository, times(1)).save(this.hearingResultedDocumentArgumentCaptor.capture());
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
@@ -227,8 +285,8 @@ public class ResultsEventListenerTest {
                 .add("applicationId", applicationId)
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-case-ejected"), payload);
-        final HearingResultedDocument document = getHearingResultDocument(hearingId, "/json/hearingResultDocumentWithoutParentApplication.json");
-        when(this.hearingResultedDocumentRepository.findBy(hearingId)).thenReturn(document);
+        final HearingResultedDocument document = getHearingResultDocument(hearingId, LocalDate.now(), "/json/hearingResultDocumentWithoutParentApplication.json");
+        when(this.hearingResultedDocumentRepository.findByHearingId(hearingId)).thenReturn(Arrays.asList(document));
         resultsEventListener.hearingApplicationEjected(envelope);
         verify(this.hearingResultedDocumentRepository, times(1)).save(this.hearingResultedDocumentArgumentCaptor.capture());
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
@@ -244,9 +302,30 @@ public class ResultsEventListenerTest {
         });
     }
 
-    private HearingResultedDocument getHearingResultDocument(final UUID hearingId, final String payloadPath) throws IOException {
+    @Test
+    public void shouldHearingApplicationEjectedWhenMultiDayHearing() throws IOException {
+        final UUID hearingId = randomUUID();
+        final String applicationId = "79dbbf11-8108-4834-aff1-f24c3612fb69";
+        final JsonObject payload = Json.createObjectBuilder()
+                .add("hearingId", hearingId.toString())
+                .add("applicationId", applicationId)
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-case-ejected"), payload);
+        final LocalDate hearingDay = LocalDate.now();
+        final HearingResultedDocument document1 = getHearingResultDocument(hearingId, hearingDay, "/json/hearingResultDocumentWithoutParentApplication.json");
+        final LocalDate hearingDay2 = LocalDate.now().plusDays(2);
+        final HearingResultedDocument document2 = getHearingResultDocument(hearingId, hearingDay2, "/json/hearingResultDocumentWithoutParentApplication.json");
+        when(this.hearingResultedDocumentRepository.findByHearingId(hearingId)).thenReturn(Arrays.asList(document1, document2));
+        resultsEventListener.hearingApplicationEjected(envelope);
+        verify(this.hearingResultedDocumentRepository, times(2)).save(this.hearingResultedDocumentArgumentCaptor.capture());
+
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(hearingDay));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(1).getId().getHearingDay(), is(hearingDay2));
+    }
+
+    private HearingResultedDocument getHearingResultDocument(final UUID hearingId, final LocalDate hearingDay, final String payloadPath) throws IOException {
         HearingResultedDocument hearingResultedDocument = new HearingResultedDocument();
-        hearingResultedDocument.setHearingId(hearingId);
+        hearingResultedDocument.setId(new HearingResultedDocumentKey(hearingId, hearingDay));
         hearingResultedDocument.setPayload(createPayload(payloadPath));
         return hearingResultedDocument;
     }

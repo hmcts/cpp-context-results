@@ -37,6 +37,8 @@ import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +105,14 @@ public class ResultsEventProcessor {
     @Inject
     private NotificationNotifyService notificationNotifyService;
 
+    /**
+     * Replaced by {@link HearingResultedEventProcessor#handleHearingResultedPublicEvent(JsonEnvelope)}
+     * for new cases/hearings.
+     *
+     * @param envelope
+     */
     @Handles("public.hearing.resulted")
+    @SuppressWarnings({"squid:S2221"})
     public void hearingResulted(final JsonEnvelope envelope) {
 
         LOGGER.info("Hearing Resulted Event Received");
@@ -152,44 +161,20 @@ public class ResultsEventProcessor {
         sender.sendAsAdmin(jsonObjectEnvelope);
     }
 
-    private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, String eventType) {
-        final Optional<String> userId = envelope.metadata().userId();
-        try {
-            LOGGER.info("Adding Hearing Resulted for hearing {} and eventType {} to EventGrid", hearingId, eventType);
-            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId, eventType));
-        }
-        catch (Exception e) {
-            LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
-        }
+    /**
+     * Replaced by {@link #hearingResultAddedForDay(JsonEnvelope)} for new cases/hearings.
+     *
+     * @param resultsAddedEvent
+     */
+    @Handles("results.hearing-results-added")
+    public void hearingResultAdded(final JsonEnvelope resultsAddedEvent) {
+        processResultsAdded(resultsAddedEvent, "results.create-results", Optional.empty());
     }
 
-    @Handles("results.hearing-results-added")
-    public void hearingResultAdded(final JsonEnvelope envelope) {
-
-        final JsonObject hearingResultPayload = envelope.payloadAsJsonObject();
-
-        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
-
-        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
-
-        if(isNotEmpty(caseDetails)) {
-
-            publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
-
-            final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
-            caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
-
-            final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
-            resultJsonPayload.add("session", objectToJsonObjectConverter.convert(new BaseStructureConverter(referenceDataService).convert(publicHearingResulted)));
-            resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
-            resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
-
-            final Metadata metadata = metadataFrom(envelope.metadata())
-                    .withName("results.create-results")
-                    .build();
-            final JsonObject payload = resultJsonPayload.build();
-            sender.sendAsAdmin(envelopeFrom(metadata, payload));
-        }
+    @Handles("results.events.hearing-results-added-for-day")
+    public void hearingResultAddedForDay(final JsonEnvelope resultsAddedForDayEvent) {
+        final LocalDate hearingDay = LocalDate.parse(resultsAddedForDayEvent.payloadAsJsonObject().getString("hearingDay"), DateTimeFormatter.ISO_LOCAL_DATE);
+        processResultsAdded(resultsAddedForDayEvent, "results.command.create-results-for-day", Optional.of(hearingDay));
     }
 
     @Handles("results.event.police-result-generated")
@@ -200,9 +185,7 @@ public class ResultsEventProcessor {
                 .withName("public.results.police-result-generated")
                 .build();
 
-
         sender.sendAsAdmin(envelopeFrom(metadata, envelope.payloadAsJsonObject()));
-
     }
 
     @Handles("public.sjp.case-resulted")
@@ -262,6 +245,54 @@ public class ResultsEventProcessor {
         final PoliceNotificationRequested policeNotificationRequested = this.jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), PoliceNotificationRequested.class);
         final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(buildNotification(policeNotificationRequested));
         notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
+    }
+
+    private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, final String eventType) {
+        final Optional<String> userId = envelope.metadata().userId();
+        try {
+            LOGGER.info("Adding Hearing Resulted for hearing {} and eventType {} to EventGrid", hearingId, eventType);
+            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId, eventType));
+        }
+        catch (Exception e) {
+            LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
+        }
+    }
+
+    /**
+     * Processes Results Added, original command without hearingDay or the new command (multi-day).
+     *
+     * @param envelope    - the event being processed.
+     * @param commandName - the name of the command to hit (v1 or v2, where v2 supports multi-day)
+     * @param hearingDay  - optional hearingDay, used in the latest command that supports multi day
+     *                    hearings
+     */
+    private void processResultsAdded(final JsonEnvelope envelope, final String commandName, final Optional<LocalDate> hearingDay) {
+        final JsonObject hearingResultPayload = envelope.payloadAsJsonObject();
+
+        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
+
+        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache).convert(publicHearingResulted);
+
+        if (isNotEmpty(caseDetails)) {
+            publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
+            final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
+            caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
+
+            final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
+            resultJsonPayload.add("session", objectToJsonObjectConverter.convert(new BaseStructureConverter(referenceDataService).convert(publicHearingResulted)));
+            resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
+            resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
+
+            if (hearingDay.isPresent()) {
+                resultJsonPayload.add("hearingDay", hearingDay.get().toString());
+            }
+
+            final Metadata metadata = metadataFrom(envelope.metadata())
+                    .withName(commandName)
+                    .build();
+            final JsonObject payload = resultJsonPayload.build();
+            sender.sendAsAdmin(envelopeFrom(metadata, payload));
+        }
     }
 
     private Notification buildNotification(final PoliceNotificationRequested policeNotificationRequested) {

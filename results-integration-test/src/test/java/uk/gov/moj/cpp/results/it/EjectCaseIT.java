@@ -14,6 +14,7 @@ import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.utils.QueueUtil;
@@ -54,7 +55,7 @@ public class EjectCaseIT {
 
     @Test
     public void shouldEjectCaseWithCaseIdInPayload() {
-        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -95,7 +96,7 @@ public class EjectCaseIT {
     @Test
     public void shouldEjectApplicationWithApplicationIdInPayload() {
 
-        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
 

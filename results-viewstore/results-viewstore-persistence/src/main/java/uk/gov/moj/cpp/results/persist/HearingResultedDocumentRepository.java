@@ -16,4 +16,11 @@ public abstract class HearingResultedDocumentRepository extends AbstractEntityRe
     @Query(value = "from HearingResultedDocument h where h.endDate >= :fromDate")
     public abstract List<HearingResultedDocument> findByFromDate(@QueryParam("fromDate") final LocalDate fromDate);
 
+    @Query(value = "from HearingResultedDocument h where h.id.hearingId = :hearingId")
+    public abstract List<HearingResultedDocument> findByHearingId(@QueryParam("hearingId") final UUID hearingId);
+
+    @Query(value = "from HearingResultedDocument h where h.id.hearingId = :hearingId and " +
+            "h.id.hearingDay = (select max(hh.id.hearingDay) from HearingResultedDocument hh where hh.id.hearingId = :hearingId)")
+    public abstract HearingResultedDocument findByHearingIdAndLatestHearingDay(@QueryParam("hearingId") final UUID hearingId);
+
 }

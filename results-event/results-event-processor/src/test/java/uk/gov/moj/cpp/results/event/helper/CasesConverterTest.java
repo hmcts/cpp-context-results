@@ -23,16 +23,6 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.courtApplicationPartyTem
 import static uk.gov.moj.cpp.results.test.TestTemplates.courtApplicationTypeTemplates;
 import static uk.gov.moj.cpp.results.test.TestTemplates.createCourtApplicationCaseWithoutOffences;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.core.IsNull;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceDay;
@@ -61,8 +51,6 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.time.ZoneId;
@@ -70,6 +58,21 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.core.IsNull;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -187,7 +190,7 @@ public class CasesConverterTest {
     public void testConverter() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
@@ -218,7 +221,7 @@ public class CasesConverterTest {
     public void testConverter_MissingProsecutionCases() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
-        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsWithMagistratesTemplate();
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
         hearing.setProsecutionCases(null);
         when(referenceDataService.getSpiOutFlagForProsecutorOucode(any())).thenReturn(true);
@@ -300,7 +303,7 @@ public class CasesConverterTest {
                 .withAllegationOrComplaintStartDate(now())
                 .withJudicialResults(TestTemplates.buildJudicialResultList())
                 .build());
-        final PublicHearingResulted shareResultsMessage = PublicHearingResulted.publicHearingResulted()
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES)
                 .setHearing(basicShareHearingTemplateWithCustomApplication(hearingId, JurisdictionType.MAGISTRATES, courtApplications))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
         final Hearing hearing = shareResultsMessage.getHearing();
