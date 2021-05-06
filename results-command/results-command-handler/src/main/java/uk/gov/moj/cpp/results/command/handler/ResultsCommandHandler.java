@@ -9,7 +9,9 @@ import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.SessionDay;
+import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.aggregate.AggregateService;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -19,6 +21,7 @@ import uk.gov.justice.services.eventsourcing.source.core.EventStream;
 import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 
 import java.time.LocalDate;
@@ -34,10 +37,15 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ServiceComponent(COMMAND_HANDLER)
 public class ResultsCommandHandler extends AbstractCommandHandler {
-
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(ResultsCommandHandler.class);
     private static final String HEARING_IDS = "hearingIds";
     private static final String POLICE_FLAG = "policeFlag";
     private static final String SPI_OUT_FLAG = "spiOutFlag";
@@ -46,13 +54,16 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private final ReferenceDataService referenceDataService;
 
+    @Inject
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
     @Inject
     public ResultsCommandHandler(final EventSource eventSource, final Enveloper enveloper,
-                                 final AggregateService aggregateService, final JsonObjectToObjectConverter jsonObjectToObjectConverter, final ReferenceDataService referenceDataService) {
+                                 final AggregateService aggregateService, final JsonObjectToObjectConverter jsonObjectToObjectConverter, final ReferenceDataService referenceDataService, final ObjectToJsonObjectConverter objectToJsonObjectConverter) {
         super(eventSource, enveloper, aggregateService);
         this.jsonObjectToObjectConverter = jsonObjectToObjectConverter;
         this.referenceDataService = referenceDataService;
+        this.objectToJsonObjectConverter = objectToJsonObjectConverter;
     }
 
     @Handles("results.command.add-hearing-result")
@@ -169,6 +180,21 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             }
 
         }
+    }
+
+    @Handles("results.command.track-results")
+    public void trackResult(final JsonEnvelope envelope) throws EventStreamException {
+        final HearingFinancialResultRequest hearingFinancialResultRequest = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), HearingFinancialResultRequest.class);
+        LOGGER.info("masterDefandantId : {} HearingFinancialResultRequest:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(hearingFinancialResultRequest));
+
+        final EventStream eventStream = eventSource.getStreamById(hearingFinancialResultRequest.getMasterDefendantId());
+        final HearingFinancialResultsAggregate aggregate = aggregateService.get(eventStream, HearingFinancialResultsAggregate.class);
+
+        final Stream<Object> updateEvents = aggregate.updateFinancialResults(hearingFinancialResultRequest);
+
+        eventStream.append(updateEvents.map(enveloper.withMetadataFrom(envelope)));
+
+        LOGGER.info("masterDefandantId : {} HearingFinancialResultsAggregate:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(aggregate));
     }
 
     private boolean getFlagValue(String key, JsonObject prosecutorJson) {

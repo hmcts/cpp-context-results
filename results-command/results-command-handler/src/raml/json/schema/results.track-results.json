@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/hearing/courts/hearing-financial-result-request.json",
+  "type": "object",
+  "properties": {
+    "hearingId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "prosecutionCaseReferences": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "masterDefendantId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "defendantName": {
+      "type": "string"
+    },
+    "ncesEmail": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/email"
+    },
+    "accountCorrelationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "accountDivisionCode": {
+      "type": "string"
+    },
+    "accountNumber": {
+      "type": "string"
+    },
+    "offenceResults": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/offenceResult"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "offenceResult": {
+      "type": "object",
+      "properties": {
+        "resultId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "offenceId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "amendmentReason": {
+          "type": "string"
+        },
+        "amendmentDate": {
+          "type": "string"
+        },
+        "isDeemedServed": {
+          "type": "boolean"
+        },
+        "isFinancial": {
+          "type": "boolean"
+        },
+        "resultCode": {
+          "type": "string"
+        },
+        "impositionOffenceDetails": {
+          "type": "string"
+        },
+        "offenceTitle": {
+          "type": "string"
+        },
+        "dateOfResult": {
+          "type": "string"
+        },
+        "applicationType": {
+          "type": "string"
+        },
+        "applicationResultType": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "hearingId",
+    "masterDefendantId",
+    "defendantName",
+    "offenceResults"
+  ]
+}

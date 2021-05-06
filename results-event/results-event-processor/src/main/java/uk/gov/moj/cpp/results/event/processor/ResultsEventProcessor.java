@@ -10,9 +10,11 @@ import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import uk.gov.justice.core.courts.BaseStructure;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -25,6 +27,8 @@ import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.event.helper.BaseSessionStructureConverterForSjp;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
@@ -33,6 +37,8 @@ import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
+import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
+import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
@@ -58,7 +64,6 @@ import org.slf4j.LoggerFactory;
 @ServiceComponent(EVENT_PROCESSOR)
 @SuppressWarnings({"squid:S2221"})
 public class ResultsEventProcessor {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsEventProcessor.class);
     private static final String PROSECUTION_CASE_ID = "prosecutionCaseId";
     private static final String HEARING_IDS = "hearingIds";
@@ -74,6 +79,10 @@ public class ResultsEventProcessor {
     private static final String SHARED_TIME = "sharedTime";
     private static final String URN = "URN";
     private static final String COMMON_PLATFORM_URL = "common_platform_url";
+
+    @Inject
+    @Value(key = "ncesEmailNotificationTemplateId")
+    private String ncesEmailNotificationTemplateId;
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -105,14 +114,15 @@ public class ResultsEventProcessor {
     @Inject
     private NotificationNotifyService notificationNotifyService;
 
-    /**
-     * Replaced by {@link HearingResultedEventProcessor#handleHearingResultedPublicEvent(JsonEnvelope)}
-     * for new cases/hearings.
-     *
-     * @param envelope
-     */
+    @Inject
+    private DocumentGeneratorService documentGeneratorService;
+
+    @Inject
+    private MaterialUrlGenerator materialUrlGenerator;
+
+    private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
+
     @Handles("public.hearing.resulted")
-    @SuppressWarnings({"squid:S2221"})
     public void hearingResulted(final JsonEnvelope envelope) {
 
         LOGGER.info("Hearing Resulted Event Received");
@@ -161,11 +171,6 @@ public class ResultsEventProcessor {
         sender.sendAsAdmin(jsonObjectEnvelope);
     }
 
-    /**
-     * Replaced by {@link #hearingResultAddedForDay(JsonEnvelope)} for new cases/hearings.
-     *
-     * @param resultsAddedEvent
-     */
     @Handles("results.hearing-results-added")
     public void hearingResultAdded(final JsonEnvelope resultsAddedEvent) {
         processResultsAdded(resultsAddedEvent, "results.create-results", Optional.empty());
@@ -186,6 +191,42 @@ public class ResultsEventProcessor {
                 .build();
 
         sender.sendAsAdmin(envelopeFrom(metadata, envelope.payloadAsJsonObject()));
+    }
+
+    @Handles("results.event.nces-email-notification-requested")
+    public void handleEmailToNcesNotificationRequested(final JsonEnvelope envelope) {
+        final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
+        final UUID materialId = UUID.randomUUID();
+
+        final JsonObject requestJson = envelope.payloadAsJsonObject();
+        final NcesEmailNotificationRequested ncesEmailNotificationRequested = jsonObjectToObjectConverter.convert(requestJson, NcesEmailNotificationRequested.class);
+        final String sendToAddress = ncesEmailNotificationRequested.getSendTo();
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("Nces notification requested payload - {}", requestJson);
+        }
+
+        //generate and upload pdf
+        documentGeneratorService.generateNcesDocument(sender, envelope, userId , materialId);
+
+        final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
+
+        final EmailNotification emailNotification = EmailNotification.emailNotification()
+                .withNotificationId(ncesEmailNotificationRequested.getNotificationId())
+                .withTemplateId(fromString(ncesEmailNotificationTemplateId))
+                .withSendToAddress(ncesEmailNotificationRequested.getSendTo())
+                .withSubject(ncesEmailNotificationRequested.getSubject())
+                .withMaterialUrl(materialUrl)
+                .build();
+
+        //Send Email
+        if (isEmpty(sendToAddress)) {
+            final Envelope<JsonObject> jsonObjectEnvelope = envelop(envelope.payloadAsJsonObject())
+                    .withName(RESULTS_NCES_SEND_EMAIL_NOT_FOUND)
+                    .withMetadataFrom(envelope);
+            sender.sendAsAdmin(jsonObjectEnvelope);
+        } else {
+            notificationNotifyService.sendNcesEmail(emailNotification, envelope);
+        }
     }
 
     @Handles("public.sjp.case-resulted")

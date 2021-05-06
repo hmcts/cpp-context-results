@@ -10,8 +10,12 @@ import javax.inject.Inject;
 public class ApplicationParameters {
 
     @Inject
-    @Value(key = "police.email.template.id" ,defaultValue = "781b970d-a13e-4440-97c3-ecf22a4540d5")
+    @Value(key = "police.email.template.id", defaultValue = "781b970d-a13e-4440-97c3-ecf22a4540d5")
     private String emailTemplateId;
+
+    @Inject
+    @Value(key = "ncesEmailNotificationTemplateId", defaultValue = "d3ce1ce3-5233-4b9d-b881-3857351fbfb0")
+    private String ncesEmailNotificationTemplateId;
 
     @Inject
     @Value(key = "common.platform.url", defaultValue = "http://steccm12wrpxy01.cpp.nonlive/")

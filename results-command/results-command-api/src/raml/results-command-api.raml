@@ -48,6 +48,24 @@ baseUri: http://localhost:8080/results-command-api/command/api/rest/results
       202:
         description: Accepted
 
+/track-results:
+  post:
+    description: |
+      ...
+      (mapping):
+          requestType: application/vnd.results.api.track-results+json
+          name: results.api.track-results
+      ...
+    body:
+      application/vnd.results.api.track-results+json:
+        example:
+          !include json/results.api.track-results.json
+        schema:
+          !include json/schema/results.api.track-results.json
+    responses:
+      202:
+        description: Accepted
+
 /informant-register:
   post:
     description: |

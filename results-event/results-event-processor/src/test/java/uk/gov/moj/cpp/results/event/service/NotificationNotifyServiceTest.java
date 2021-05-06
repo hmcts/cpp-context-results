@@ -1,30 +1,44 @@
 package uk.gov.moj.cpp.results.event.service;
 
 import static com.jayway.jsonassert.JsonAssert.with;
+import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
+import static uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested.ncesEmailNotificationRequested;
 
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.sender.Sender;
+import uk.gov.justice.services.fileservice.api.FileServiceException;
+import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 
 import javax.json.JsonObject;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+
 @RunWith(MockitoJUnitRunner.class)
 public class NotificationNotifyServiceTest {
 
@@ -39,8 +53,16 @@ public class NotificationNotifyServiceTest {
     private final Enveloper enveloper = EnveloperFactory.createEnveloper();
     @Mock
     private Sender sender;
+    @Mock
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
+    @Mock
+    private FileStorer fileStorer;
+    @Mock
+    private SystemDocGenerator systemDocGenerator;
     @InjectMocks
     private NotificationNotifyService notificationNotifyService;
+    @Captor
+    private ArgumentCaptor<JsonEnvelope> envelopeCaptor;
 
     @Test
     public void shouldSendEmailNotification() {
@@ -59,7 +81,7 @@ public class NotificationNotifyServiceTest {
 
         notificationNotifyService.sendEmailNotification(event, jsonObject);
 
-        final ArgumentCaptor<Envelope<JsonObject>> envelopeCaptor = forClass((Class)Envelope.class);
+        final ArgumentCaptor<Envelope<JsonObject>> envelopeCaptor = forClass((Class) Envelope.class);
 
         verify(sender).sendAsAdmin(envelopeCaptor.capture());
 
@@ -71,7 +93,61 @@ public class NotificationNotifyServiceTest {
 
         with(payload.toString())
                 .assertThat(FIELD_TEMPLATE_ID, is(POLICE_TEMPLATE_ID))
-                .assertThat(FIELD_SEND_TO_ADDRESS, is(EMAIL_ADDRESS))
-        ;
+                .assertThat(FIELD_SEND_TO_ADDRESS, is(EMAIL_ADDRESS));
+    }
+
+    @Test
+    public void shouldSendData() {
+        final EmailNotification emailNotification = EmailNotification.emailNotification()
+                .withNotificationId(randomUUID())
+                .withTemplateId(randomUUID())
+                .withSendToAddress("sendToAddress")
+                .withSubject("my subject")
+                .withFileId(randomUUID())
+                .withMaterialUrl(randomUUID().toString())
+                .build();
+
+        notificationNotifyService.sendNcesEmail(emailNotification, envelope());
+
+        verify(sender).send(envelopeCaptor.capture());
+        final JsonEnvelope emailCommand = envelopeCaptor.getValue();
+        assertThat(emailCommand.metadata().name(), Matchers.is("notificationnotify.send-email-notification"));
+        final JsonObject payload = emailCommand.payloadAsJsonObject();
+        assertThat(payload.size(), Matchers.is(5));
+        assertThat(payload.getString("notificationId"), equalTo(emailNotification.getNotificationId().toString()));
+        assertThat(payload.getString("templateId"), equalTo(emailNotification.getTemplateId().toString()));
+        assertThat(payload.getString("sendToAddress"), equalTo(emailNotification.getSendToAddress()));
+        assertThat(payload.getJsonObject("personalisation").getString("subject"), equalTo("my subject"));
+    }
+
+    private JsonEnvelope envelope() {
+        return JsonEnvelope.envelopeFrom(
+                JsonEnvelope.metadataBuilder().withId(randomUUID()).withName("origin envelope"),
+                createObjectBuilder()
+        );
+    }
+
+    @Test
+    public void shouldGenerateNotification() throws FileServiceException {
+        final NcesEmailNotificationRequested ncesEmailNotificationRequested = ncesEmailNotificationRequested()
+                .withCaseReferences("ref")
+                .withDefendantName("name")
+                .withGobAccountNumber("accNo")
+                .withListedDate("15032021")
+                .withDivisionCode("divCode")
+                .withMasterDefendantId(randomUUID())
+                .build();
+
+        final JsonObject obj = createObjectBuilder()
+                .add("caseReferenceNumber", "ref")
+                .add("defendantName", "name")
+                .build();
+        when(objectToJsonObjectConverter.convert(anyObject())).thenReturn(obj);
+        when(fileStorer.store(anyObject(), anyObject())).thenReturn(randomUUID());
+        doNothing().when(systemDocGenerator).generateDocument(anyObject(), anyObject());
+        assertNotNull(notificationNotifyService.generateNotification(ncesEmailNotificationRequested, envelope()));
+        verify(objectToJsonObjectConverter).convert(anyObject());
+        verify(fileStorer).store(anyObject(), anyObject());
+        verify(systemDocGenerator).generateDocument(anyObject(), anyObject());
     }
 }

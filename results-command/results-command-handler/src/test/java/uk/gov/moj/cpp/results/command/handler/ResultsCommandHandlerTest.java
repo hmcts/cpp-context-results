@@ -44,6 +44,8 @@ import uk.gov.justice.core.courts.PoliceResultGenerated;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.SjpCaseRejectedEvent;
+import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -55,7 +57,10 @@ import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamEx
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
+import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
@@ -97,6 +102,7 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_6 = "json/results.update-results-crown-example.json";
     private static final String TEMPLATE_PAYLOAD_7 = "json/results.create-results-crown-example.json";
     private static final String TEMPLATE_PAYLOAD_8 = "json/results.update-results-crown-example-wo-origorganisation.json";
+    private static final String TEMPLATE_PAYLOAD_9 = "json/results.track-results-example.json";
     private static final String EMAIL = "mail@mail.com";
     private static UUID metadataId;
 
@@ -114,7 +120,10 @@ public class ResultsCommandHandlerTest {
             PoliceResultGenerated.class,
             SjpCaseRejectedEvent.class,
             PoliceNotificationRequested.class,
-            HearingResultsAddedForDay.class
+            HearingResultsAddedForDay.class,
+            HearingFinancialResultsTracked.class,
+            MarkedAggregateSendEmailWhenAccountReceived.class,
+            NcesEmailNotificationRequested.class
     );
 
     @Captor
@@ -122,6 +131,9 @@ public class ResultsCommandHandlerTest {
 
     @Spy
     private ResultsAggregate resultsAggregateSpy;
+
+    @InjectMocks
+    private HearingFinancialResultsAggregate hearingFinancialResultsAggregateSpy;
 
     @Mock
     private EventStream eventStream;
@@ -435,6 +447,20 @@ public class ResultsCommandHandlerTest {
         verify(resultsAggregateSpy, Mockito.times(1)).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
         verify(resultsAggregateSpy, Mockito.times(1)).handleCase(eq(caseDetails));
         verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(Optional.empty()));
+    }
+
+    @Test
+    public void shouldTrackResult() throws EventStreamException {
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_9);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.track-results"), payload);
+
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
+
+        resultsCommandHandler.trackResult(envelope);
+        verify(eventStream, times(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+        assertThat(jsonEnvelopeList.size(), is(1));
+        assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
     }
 
     @Test

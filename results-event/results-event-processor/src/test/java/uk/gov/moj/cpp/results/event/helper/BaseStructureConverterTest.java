@@ -15,6 +15,8 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Templ
 
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
+
 import uk.gov.justice.core.courts.BaseStructure;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;

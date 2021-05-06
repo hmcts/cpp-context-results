@@ -5,6 +5,9 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
@@ -74,6 +77,15 @@ public class QueueUtil {
         return retrieveMessage(consumer, RETRIEVE_TIMEOUT);
     }
 
+    public static List<JsonPath> retrieveMessages(final MessageConsumer consumer, final int expectedNumberOfMessages) {
+        final List<JsonPath> messages = new ArrayList<>(expectedNumberOfMessages);
+
+        for (int i = 0; i < expectedNumberOfMessages; i++) {
+            messages.add(retrieveMessage(consumer));
+        }
+        return messages;
+    }
+
     public static void sendMessage(final MessageProducer messageProducer, final String commandName, final JsonObject payload, final Metadata metadata) {
 
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
@@ -102,5 +114,13 @@ public class QueueUtil {
         } catch (final JMSException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void removeMessagesFromQueue(final MessageConsumer consumer){
+        JsonPath message = null;
+        do{
+            retrieveMessage(consumer, 10);
+        }while(message != null);
+
     }
 }

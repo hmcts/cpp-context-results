@@ -21,6 +21,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMat
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.createResultsCommand;
+import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.trackResultsCommand;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.RETRIEVE_TIMEOUT;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupAsSystemUser;
@@ -408,5 +409,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     public static void whenResultsAreCreatedBySystemAdmin() {
         setupAsSystemUser(getUserId());
         createResultsCommand(getPayload(CREATE_RESULTS_TEMPLATE_PAYLOAD).replace("SESSION_ID", randomUUID().toString()));
+    }
+
+    public static void whenResultsAreTraced(String payload){
+        setupAsSystemUser(getUserId());
+        trackResultsCommand(payload);
     }
 }

@@ -1,0 +1,21 @@
+{
+  "hearingId" : "a02df768-a722-4b0e-b851-7496e13b82d4",
+  "masterDefendantId" : "MASTER_DEFENDANT_ID",
+  "defendantName" : "John Doe",
+  "accountDivisionCode" : "DIV01",
+  "prosecutionCaseReferences" : ["caseUrn1"],
+  "ncesEmail" : "John.Doe@xxx.com",
+  "offenceResults" : [{
+    "applicationType": "APPEAL",
+    "applicationResultType": "Granted",
+    "resultId" : "a02df768-a722-4b0e-b851-7496e13b82d7",
+    "offenceId" : "a02df768-a722-4b0e-b851-7496e13b82d8",
+    "resultCode" : "AACA",
+    "dateOfResult" : "01/01/2021",
+    "amendmentDate" : "01-01-2021",
+    "impositionOffenceDetails": "Amount of fine: £155",
+    "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+    "isFinancial" : true,
+    "isDeemedServed" : false
+  }]
+}

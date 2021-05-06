@@ -15,6 +15,10 @@ subscriptions_descriptor:
           schema_uri: http://justice.gov.uk/core/courts/hearing-results-added.json
         - name: results.events.hearing-results-added-for-day
           schema_uri: http://justice.gov.uk/core/courts/results.events.hearing-results-added-for-day.json
+        - name: results.event.hearing-financial-results-tracked
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/hearing-financial-results-tracked.json
+        - name: results.event.nces-email-notification-requested
+          schema_uri: http://justice.gov.uk/core/courts/results.event.nces-email-notification-requested.json
         - name: results.event.informant-register-generated
           schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
         - name: results.event.informant-register-notified
@@ -35,5 +39,11 @@ subscriptions_descriptor:
 
         - name: public.sjp.case-resulted
           schema_uri: http://justice.gov.uk/sjp/results/publicSjpResulted.json
+
+        - name: public.stagingenforcement.enforce-financial-imposition-acknowledgement
+          schema_uri: http://cpp.moj.gov.uk/stagingenforcement/json/schema/event/public-enforce-financial-imposition-acknowledgement.json
+
+        - name: public.hearing.nces-email-notification-for-application
+          schema_uri: http://cpp.moj.gov.uk/hearing/json/schema/event/public.hearing.nces-email-notification-for-application.json
 
       event_source_name: public.event.source

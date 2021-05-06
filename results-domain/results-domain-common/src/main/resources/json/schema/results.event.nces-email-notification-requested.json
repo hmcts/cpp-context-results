@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/nces-email-notification-requested.json",
+  "type": "object",
+  "properties": {
+    "gobAccountNumber": {
+      "type": "string"
+    },
+    "divisionCode": {
+      "type": "string"
+    },
+    "oldGobAccountNumber": {
+      "type": "string"
+    },
+    "oldDivisionCode": {
+      "type": "string"
+    },
+    "caseReferences": {
+      "type": "string"
+    },
+    "masterDefendantId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "notificationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "listedDate": {
+      "type": "string",
+      "description": "This will passed only for statutory declaration, reopen or appeal"
+    },
+    "dateDecisionMade": {
+      "type": "string",
+      "description": "The date when hearing was resulted"
+    },
+    "amendmentReason": {
+      "type": "string",
+      "description": "This will passed only for when there is amend and re-share"
+    },
+    "amendmentDate": {
+      "type": "string",
+      "description": "This will passed only for when there is amend and re-share"
+    },
+    "defendantName": {
+      "type": "string"
+    },
+    "impositionOffenceDetails": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "subject": {
+      "type": "string"
+    },
+    "sendTo": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/email"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "sendTo",
+    "subject",
+    "defendantName",
+    "caseReferences",
+    "masterDefendantId",
+    "notificationId"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/hearing/courts/hearing-financial-results-tracked",
+  "type": "object",
+  "properties": {
+    "hearingFinancialResultRequest": {
+      "$ref": "http://justice.gov.uk/hearing/courts/hearing-financial-result-request"
+    },
+    "createdTime": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "hearingFinancialResultRequest",
+    "createdTime"
+  ]
+}

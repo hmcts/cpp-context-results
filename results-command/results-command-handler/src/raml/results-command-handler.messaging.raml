@@ -20,9 +20,21 @@ baseUri: message://command/handler/message/results
       application/vnd.results.command.create-results-for-day+json:
         schema: !include json/schema/results.command.create-results-for-day.json
         example: !include json/results.command.create-results-for-day.json
+      application/vnd.results.command.track-results+json:
+        schema: !include json/schema/results.track-results.json
+        example: !include json/results.track-results.json
       application/vnd.results.command.generate-police-results-for-a-defendant+json:
         schema: !include json/schema/results.command.generate-police-results-for-a-defendant.json
         example: !include json/results.command.generate-police-results-for-a-defendant.json
+      application/vnd.result.command.update-gob-account+json:
+        example:  !include json/results.command.update-gob-account.json
+        schema: !include json/schema/results.command.update-gob-account.json
+      application/vnd.result.command.add-correlation-id+json:
+        example:  !include json/results.command.add-correlation-id.json
+        schema: !include json/schema/results.command.add-correlation-id.json
+      application/vnd.result.command.send-nces-email-for-application+json:
+        example:  !include json/result.command.send-nces-email-for-application.json
+        schema: !include json/schema/result.command.send-nces-email-for-application.json
       application/vnd.results.command.add-informant-register+json:
         schema: !include json/schema/results.command.add-informant-register.json
         example: !include json/results.command.add-informant-register.json

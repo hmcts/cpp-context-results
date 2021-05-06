@@ -29,5 +29,9 @@ public final class RuleConstants {
     public static List<String> getCreateResultsActionGroups() {
         return ImmutableList.of(GROUP_SYSTEM_USERS);
     }
+
+    public static List<String> getTrackResultsActionGroups() {
+        return ImmutableList.of(GROUP_SYSTEM_USERS);
+    }
 }
 

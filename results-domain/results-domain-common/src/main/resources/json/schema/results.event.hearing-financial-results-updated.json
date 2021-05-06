@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/hearing-financial-results-updated.json",
+  "type": "object",
+  "properties": {
+    "masterDefendantId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "correlationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "accountNumber": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "masterDefendantId",
+    "correlationId",
+    "accountNumber"
+  ],
+  "additionalProperties": false
+}
