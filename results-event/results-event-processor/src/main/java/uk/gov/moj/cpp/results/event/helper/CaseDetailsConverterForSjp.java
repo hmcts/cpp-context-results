@@ -31,7 +31,6 @@ public class CaseDetailsConverterForSjp implements Converter<PublicSjpResulted, 
                     .withUrn(caseSjpDetail.getUrn())
                     .withDefendants(new CaseDefendantListBuilderSjp(referenceCache).buildDefendantList(caseSjpDetail, source.getSession().getDateAndTimeOfSession(), source.getSession().getSessionId()))
                     .withProsecutionAuthorityCode(caseSjpDetail.getProsecutionAuthorityCode())
-                    .withOriginatingOrganisation(caseSjpDetail.getOriginatingOrganisation())
                     .build());
         }
         return caseDetailsList;

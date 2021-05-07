@@ -230,7 +230,6 @@ public class ResultsEventProcessorTest {
                         metadata().withName("results.command.add-hearing-result"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.hearing.id", is(shareResultsMessage.getHearing().getId().toString())),
-                                withJsonPath("$.hearing.prosecutionCases[0].originatingOrganisation", is(shareResultsMessage.getHearing().getProsecutionCases().get(0).getOriginatingOrganisation())),
                                 withJsonPath("$.shadowListedOffences[0]", is(shareResultsMessage.getShadowListedOffences().get(0).toString())))
                         )));
 

@@ -608,9 +608,9 @@ public class HearingResultedIT {
         resultsMessage.setIsReshare(Optional.of(false));
         resultsMessage.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
 
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
-        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
 
@@ -662,9 +662,9 @@ public class HearingResultedIT {
                                         .build())
                                 .build())))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
-        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
         resultsMessage.setIsReshare(Optional.of(false));
         resultsMessage.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
 

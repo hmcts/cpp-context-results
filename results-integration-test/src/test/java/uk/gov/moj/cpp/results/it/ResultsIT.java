@@ -157,16 +157,6 @@ public class ResultsIT {
         verifyInPublicTopic();
     }
 
-    @Test
-    public void shouldProcessPublicSjpResultedWhenOriginatingOrganisationIsNull() throws JMSException {
-        stubSpiOutFlag(false, false, null);
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        sjpResulted.getCases().get(0).setOriginatingOrganisation(null);
-        sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        publicSjpResultedShared(sjpResulted);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated(true);
-    }
 
     @Test
     public void testCCForSpiOut() throws JMSException {
@@ -621,7 +611,7 @@ public class ResultsIT {
         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), MAGISTRATES))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
         resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenShared(resultsMessage);
@@ -673,7 +663,7 @@ public class ResultsIT {
                                         .build())
                                 .build())))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
         resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
 

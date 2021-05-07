@@ -694,7 +694,6 @@ public class TestTemplates {
                         buildSjpDefendant(DEFAULT_DEFENDANT_ID2.toString())
                 ))
                 .withProsecutionAuthorityCode("someProsecutingAuthority")
-                .withOriginatingOrganisation("someOriginatingOrganisation")
                 .build());
         return caseDetails;
     }

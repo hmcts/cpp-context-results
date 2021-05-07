@@ -90,7 +90,6 @@ public class ResultsAggregate implements Aggregate {
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
     private boolean isEligibleForNotification = false;
-    private String originatingOrganisation;
 
     private YouthCourt youthCourt;
     private List<UUID> youthCourtDefendantIds;
@@ -327,7 +326,6 @@ public class ResultsAggregate implements Aggregate {
 
     private void storeCaseAddedEvent(final CaseAddedEvent caseAddedEvent) {
         this.cases.add(new Case(caseAddedEvent.getCaseId(), caseAddedEvent.getUrn(), caseAddedEvent.getProsecutionAuthorityCode()));
-        this.originatingOrganisation = caseAddedEvent.getOriginatingOrganisation();
     }
 
     private void storeSessionAddedEvent(final SessionAddedEvent sessionAddedEvent) {
@@ -351,7 +349,7 @@ public class ResultsAggregate implements Aggregate {
                     .withCaseId(caseFromRequest.getCaseId())
                     .withUrn(caseFromRequest.getUrn())
                     .withProsecutionAuthorityCode(caseFromRequest.getProsecutionAuthorityCode())
-                    .withOriginatingOrganisation(caseFromRequest.getOriginatingOrganisation()).build());
+                    .build());
         }
         return apply(builder.build());
     }
@@ -574,7 +572,5 @@ public class ResultsAggregate implements Aggregate {
                 .map(Case::getProsecutionAuthorityCode);
     }
 
-    public String getOriginatingOrganisation() {
-        return this.originatingOrganisation;
-    }
+
 }
