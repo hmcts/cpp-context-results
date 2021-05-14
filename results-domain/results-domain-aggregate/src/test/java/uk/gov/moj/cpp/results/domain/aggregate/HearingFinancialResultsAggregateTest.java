@@ -588,6 +588,15 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailWithoutOlds(STATUTORY_DECLARATION_GRANTED, accountCorrelationId, singletonList(offenceIdA), event, "caseUrn1"));
 
     }
+
+    @Test
+    public void shouldNotRaiseEmailWhenApplicationResultedWithoutTracked(){
+        final UUID offenceIdA = randomUUID();
+        final String applicationType = STAT_DEC;
+        final List<Object> eventsApp1 = raiseEventsForApplicationResult(singletonList(null), singletonList(offenceIdA),singletonList(false), singletonList("caseUrn1"), applicationType, singletonList(G));
+        assertThat(eventsApp1.size(), is(0));
+
+    }
     @Test
     public void shouldSendAccountConsolidationEmailToNCESWithMultipleOffencesAndAconResults() {
         final UUID accountCorrelationId = randomUUID();

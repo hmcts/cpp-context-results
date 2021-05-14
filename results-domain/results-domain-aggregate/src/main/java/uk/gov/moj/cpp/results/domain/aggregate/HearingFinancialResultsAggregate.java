@@ -383,9 +383,13 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .map(this::buildImpositionOffenceDetailsFromAggregate)
                     .collect(Collectors.toList());
 
-            return Optional.of(buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
-                    APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
-                    correlationIdHistoryItemList.peekLast(), impositionOffenceDetailsForApplication, ncesEmail));
+            if(! impositionOffenceDetailsForApplication.isEmpty()) {
+                return Optional.of(buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
+                        APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
+                        correlationIdHistoryItemList.peekLast(), impositionOffenceDetailsForApplication, ncesEmail));
+            }else{
+                return null;
+            }
         }).orElse(Optional.empty());
 
     }
