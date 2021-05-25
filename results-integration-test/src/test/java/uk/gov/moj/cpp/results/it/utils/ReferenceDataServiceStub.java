@@ -22,6 +22,8 @@ import javax.json.JsonObjectBuilder;
 
 public class ReferenceDataServiceStub {
 
+    public static final String PROSECUTOR_WITH_SPI_OUT_FALSE = "prosecutorWithSpiOutFalse";
+
     public static void stubCountryNationalities() {
         stubPingFor("referencedata-service");
 
@@ -106,7 +108,7 @@ public class ReferenceDataServiceStub {
                 .build();
 
         stubFor(get(urlPathEqualTo(urlPath))
-                .withQueryParam("prosecutorCode", equalTo("prosecutorWithSpiOutFalse"))
+                .withQueryParam("prosecutorCode", equalTo(PROSECUTOR_WITH_SPI_OUT_FALSE))
                 .willReturn(aResponse().withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)

@@ -30,13 +30,13 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,8 +107,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     @Handles("results.command.generate-police-results-for-a-defendant")
-    public void generatePoliceResultsForDefendant(final JsonEnvelope envelope) throws
-            EventStreamException {
+    public void generatePoliceResultsForDefendant(final JsonEnvelope envelope) throws EventStreamException {
         final JsonObject payload = envelope.payloadAsJsonObject();
         final String sessionId = payload.getString("sessionId");
         final String caseId = payload.getString("caseId");
@@ -164,6 +163,8 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                     isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
                     prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
                 });
+
+                LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
 
                 aggregate(ResultsAggregate.class, fromString(id),
                         commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay));

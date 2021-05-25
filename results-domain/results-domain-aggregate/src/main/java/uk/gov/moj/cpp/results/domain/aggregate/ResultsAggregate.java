@@ -373,6 +373,8 @@ public class ResultsAggregate implements Aggregate {
                                          final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
 
+        isEligibleForNotification = false;
+
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
             if (!defendantOptional.isPresent()) {
@@ -403,12 +405,15 @@ public class ResultsAggregate implements Aggregate {
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
-            isEligibleForNotification = sendSpiOut;
+            if (sendSpiOut) {
 
-            if (!isCrownCourt(jurisdictionType)) {
-                builder.add(
-                        buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
-                );
+                isEligibleForNotification = true;
+
+                if (!isCrownCourt(jurisdictionType)) {
+                    builder.add(
+                            buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
+                    );
+                }
             }
         } else {
             builder.add(defendantRejectedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendantId(defendantFromRequest.getDefendantId()).build());
@@ -419,12 +424,15 @@ public class ResultsAggregate implements Aggregate {
         if (defendantFromRequest.getOffences().size() > defendantFromAggregate.getOffences().size() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
-            isEligibleForNotification = sendSpiOut;
+            if (sendSpiOut) {
 
-            if (!isCrownCourt(jurisdictionType)) {
-                builder.add(
-                        buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
-                );
+                isEligibleForNotification = true;
+
+                if (!isCrownCourt(jurisdictionType)) {
+                    builder.add(
+                            buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
+                    );
+                }
             } else {
                 LOGGER.info("spiOutFlag false, police results will not be sent");
             }

@@ -39,6 +39,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResults
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.PROSECUTOR_WITH_SPI_OUT_FALSE;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
@@ -91,7 +92,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.jms.JMSException;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -110,7 +110,6 @@ import org.junit.Test;
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607"})
 public class HearingResultedIT {
 
-    private static final String PROSECUTOR_WITH_SPI_OUT_FALSE = "prosecutorWithSpiOutFalse";
     private static final String TEMPLATE_PAYLOAD = "json/public.events.hearing.hearing-resulted.json";
     private static final String TEMPLATE_PAYLOAD_1 = "json/public.events.hearing.hearing-results-reshared.json";
     private static final String SESSION_ID = "sessionId";
@@ -276,8 +275,8 @@ public class HearingResultedIT {
     @Test
     public void testCCForSpiOutFalse() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
-        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(1).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -285,8 +284,8 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceResultGenerated(true);
-        verifyInPublicTopic();
+        verifyPrivateEventsWithPoliceResultGenerated(false);
+        verifyNotInPublicTopic();
     }
 
     @Test
@@ -352,12 +351,12 @@ public class HearingResultedIT {
     @Test
     public void testGeneratePoliceResultsForDefendantCCWhenSpiOutFalse() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
-        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(1).setOriginatingOrganisation(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        verifyPrivateEventsWithPoliceResultGenerated(true);
-        verifyInPublicTopic();
+        verifyPrivateEventsWithPoliceResultGenerated(false);
+        verifyNotInPublicTopic();
 
         final JsonObject payload = createObjectBuilder()
                 .add(SESSION_ID, resultsMessage.getHearing().getId().toString())
@@ -689,7 +688,6 @@ public class HearingResultedIT {
     public void shouldSentSpiOutForApplicationWithCourtOrderOnlyV2() throws JMSException {
         final JsonObject payload = getPayload("json/public.events.hearing.hearing-resulted-court-order.json", randomUUID());
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
-
 
         hearingResultsHaveBeenSharedV2(publicHearingResulted);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());

@@ -442,8 +442,8 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject caseDetailsJson = payload.getJsonArray("cases").getJsonObject(0);
         final CaseDetails caseDetails = jsonObjectToObjectConverter.convert(caseDetailsJson, CaseDetails.class);
-        verify(resultsAggregateSpy, Mockito.times(1)).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
-        verify(resultsAggregateSpy, Mockito.times(1)).handleCase(eq(caseDetails));
+        verify(resultsAggregateSpy).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
+        verify(resultsAggregateSpy).handleCase(eq(caseDetails));
         verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(Optional.empty()));
     }
 
@@ -455,7 +455,7 @@ public class ResultsCommandHandlerTest {
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
-        verify(eventStream, times(1)).append(streamArgumentCaptor.capture());
+        verify(eventStream).append(streamArgumentCaptor.capture());
         final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
         assertThat(jsonEnvelopeList.size(), is(1));
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
@@ -522,7 +522,6 @@ public class ResultsCommandHandlerTest {
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
         when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
-
 
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_7);
