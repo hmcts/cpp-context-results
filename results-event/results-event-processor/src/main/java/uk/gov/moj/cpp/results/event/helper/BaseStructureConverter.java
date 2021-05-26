@@ -39,7 +39,7 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
     private static final String FIELD_OU_CODE = "oucode";
 
 
-    ReferenceDataService referenceDataService;
+    private ReferenceDataService referenceDataService;
 
     @Inject
     public BaseStructureConverter(ReferenceDataService referenceDataService) {

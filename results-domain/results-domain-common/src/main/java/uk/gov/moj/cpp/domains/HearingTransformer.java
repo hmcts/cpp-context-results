@@ -160,7 +160,10 @@ import uk.gov.justice.core.courts.external.Source;
 import uk.gov.justice.core.courts.external.SummonsTemplateType;
 import uk.gov.justice.core.courts.external.VehicleCode;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S3776", "squid:S1067"})
@@ -282,9 +285,12 @@ public class HearingTransformer {
     }
 
     private ApiProsecutionCaseIdentifier.Builder prosecutionCaseIdentifier(final ProsecutionCaseIdentifier prosecutionCaseIdentifier) {
-        return ApiProsecutionCaseIdentifier.apiProsecutionCaseIdentifier().withCaseURN(prosecutionCaseIdentifier.getCaseURN())
+        return ApiProsecutionCaseIdentifier.apiProsecutionCaseIdentifier()
+                .withCaseURN(prosecutionCaseIdentifier.getCaseURN())
                 .withProsecutionAuthorityCode(prosecutionCaseIdentifier.getProsecutionAuthorityCode())
                 .withProsecutionAuthorityId(prosecutionCaseIdentifier.getProsecutionAuthorityId())
+                .withProsecutionAuthorityName(prosecutionCaseIdentifier.getProsecutionAuthorityName())
+                .withProsecutorCategory(prosecutionCaseIdentifier.getProsecutorCategory())
                 .withProsecutionAuthorityReference(prosecutionCaseIdentifier.getProsecutionAuthorityReference());
     }
 
@@ -593,6 +599,10 @@ public class HearingTransformer {
         }
         return apiProsecutingAuthority.withAccountCode(prosecutingAuthority.getAccountCode())
                 .withName(prosecutingAuthority.getName())
+                .withFirstName(prosecutingAuthority.getFirstName())
+                .withMiddleName(prosecutingAuthority.getMiddleName())
+                .withLastName(prosecutingAuthority.getLastName())
+                .withProsecutorCategory(prosecutingAuthority.getProsecutorCategory())
                 .withProsecutionAuthorityCode(prosecutingAuthority.getProsecutionAuthorityCode())
                 .withProsecutionAuthorityId(prosecutingAuthority.getProsecutionAuthorityId());
     }

@@ -31,6 +31,9 @@ public class ReferenceDataService {
 
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
         final JsonObject response  = requester.requestAsAdmin(jsonEnvelope, JsonObject.class).payload();
+        if(response.getJsonArray("prosecutors").isEmpty()) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(response.getJsonArray("prosecutors").getJsonObject(0));
     }
 }

@@ -155,7 +155,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
                 final AtomicBoolean sendSpiOut = new AtomicBoolean(FALSE);
                 final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
-                final AtomicReference<String> prosecutorEmailAddress = new AtomicReference("");
+                final AtomicReference<String> prosecutorEmailAddress = new AtomicReference<>("");
 
                 final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
                 refDataProsecutorJson.ifPresent(prosecutorJson -> {
@@ -169,7 +169,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 aggregate(ResultsAggregate.class, fromString(id),
                         commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay));
             }
-
         }
     }
 

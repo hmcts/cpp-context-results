@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.domain.common;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
@@ -43,7 +44,7 @@ public class HearingTransformerTest {
     @Spy
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
-    private HearingTransformer hearingTransformer = new HearingTransformer();
+    private final HearingTransformer hearingTransformer = new HearingTransformer();
 
     @Before
     public void setup() {
@@ -131,6 +132,23 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getJurisdictionType(), nullValue());
     }
 
+    @Test
+    public void shouldTransformHearingWithNSP() {
+        final JsonObject hearingJson = getHearingJson("hearingWithNSP.json");
+        final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
+        final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
+
+        assertThat(apiHearing.getDefendantJudicialResults().size(), is(1));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getFirstName(),is("FN"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getMiddleName(),is("MN"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getLastName(),is("LN"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getName(),isEmptyOrNullString());
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getProsecutorCategory(),is("PC"));
+        assertThat(apiHearing.getProsecutionCases().get(0).getProsecutionCaseIdentifier().getProsecutorCategory(),is("PCIPC"));
+
+        assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
+        assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));
+    }
     @Test
     public void shouldTransformYouthCourtDetails() {
         final JsonObject hearingJson = getHearingJson("hearing.json");

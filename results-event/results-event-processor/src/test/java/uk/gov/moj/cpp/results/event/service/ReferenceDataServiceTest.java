@@ -434,20 +434,33 @@ public class ReferenceDataServiceTest {
         when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(invocationOnMock -> {
             final JsonEnvelope envelope = (JsonEnvelope) invocationOnMock.getArguments()[0];
             JsonObject responsePayload = createObjectBuilder()
-                    .add("prosecutors", prosecutors)
+                    .add("prosecutors", createArrayBuilder().add(jsonProsecutorBuilder).build())
                     .build();
 
             return envelopeFrom(envelope.metadata(), responsePayload);
 
         });
 
-        when(prosecutors.getJsonObject(0)).thenReturn(jsonProsecutorBuilder.build());
-
         Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByProsecutionAuthority("someCode");
         assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(true));
         assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(true));
     }
 
+    @Test
+    public void shouldGetSpiOutFlagForProsecutionAuthorityCodeAsEmpty () {
+        when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(invocationOnMock -> {
+            final JsonEnvelope envelope = (JsonEnvelope) invocationOnMock.getArguments()[0];
+            JsonObject responsePayload = createObjectBuilder()
+                    .add("prosecutors", createArrayBuilder().build())
+                    .build();
+
+            return envelopeFrom(envelope.metadata(), responsePayload);
+
+        });
+
+        Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByProsecutionAuthority("someCode");
+        assertThat(refDataProsecutorJson.isPresent(), is(false));
+    }
 
     @Test
     public void shouldGetSpiOutFlagForProsecutionAuthorityCodeAsFalse() {
@@ -458,14 +471,12 @@ public class ReferenceDataServiceTest {
         when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(invocationOnMock -> {
             final JsonEnvelope envelope = (JsonEnvelope) invocationOnMock.getArguments()[0];
             JsonObject responsePayload = createObjectBuilder()
-                    .add("prosecutors", prosecutors)
+                    .add("prosecutors", createArrayBuilder().add(jsonProsecutorBuilder).build())
                     .build();
 
             return envelopeFrom(envelope.metadata(), responsePayload);
 
         });
-
-        when(prosecutors.getJsonObject(0)).thenReturn(jsonProsecutorBuilder.build());
 
         Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByProsecutionAuthority("someCode");
         assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(false));

@@ -150,6 +150,9 @@ public class ReferenceDataService {
                 .build();
 
         final Envelope<JsonObject> response = requester.requestAsAdmin(envelopeFrom(metadata, payload), JsonObject.class);
+        if(response.payload().getJsonArray("prosecutors").isEmpty()) {
+            return Optional.empty();
+        }
         return ofNullable(response.payload().getJsonArray("prosecutors").getJsonObject(0));
     }
 
