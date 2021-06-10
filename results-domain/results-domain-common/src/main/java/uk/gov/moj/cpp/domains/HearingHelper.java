@@ -61,8 +61,11 @@ public class HearingHelper {
         final JsonObjectBuilder transformedPayloadObjectBuilder = createObjectBuilder()
                 .add(ID, hearing.getString(ID))
                 .add(JURISDICTION_TYPE, hearing.getString(JURISDICTION_TYPE))
-                .add(COURT_CENTRE, hearing.getJsonObject(COURT_CENTRE))
-                .add(TYPE, hearing.getJsonObject(TYPE));
+                .add(COURT_CENTRE, hearing.getJsonObject(COURT_CENTRE));
+
+        if (hearing.containsKey(TYPE)) {
+            transformedPayloadObjectBuilder.add(TYPE, hearing.getJsonObject(TYPE));
+        }
 
         if (hearing.containsKey(HEARING_DAYS)) {
             transformedPayloadObjectBuilder.add(HEARING_DAYS, hearing.getJsonArray(HEARING_DAYS));

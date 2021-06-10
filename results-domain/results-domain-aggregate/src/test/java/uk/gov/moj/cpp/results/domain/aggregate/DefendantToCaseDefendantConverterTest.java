@@ -19,7 +19,7 @@ import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.CaseDefendant;
-import uk.gov.justice.core.courts.Category;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.ContactNumber;
 import uk.gov.justice.core.courts.DelegatedPowers;
 import uk.gov.justice.core.courts.Gender;
@@ -280,7 +280,7 @@ public class DefendantToCaseDefendantConverterTest {
                 .withAmendmentDate(LocalDate.of(2018, 6, 2))
                 .withAmendmentReason("reason")
                 .withApprovedDate(LocalDate.of(2018, 7, 2))
-                .withCategory(Category.ANCILLARY)
+                .withCategory(JudicialResultCategory.ANCILLARY)
                 .withCjsCode("0007")
                 .withCourtClerk(buildDelegatPowers())
                 .withDelegatedPowers(buildDelegatPowers())

@@ -238,7 +238,7 @@ public class TestTemplate {
                 .withEmailAddress1("parentguardianmemail1@random.random")
                 .withEmailAddress2("parentguardianemail2@random.random")
                 .withFirstName("ParentGuardianFirstName")
-                .withGender(uk.gov.justice.sjp.results.Gender.MALE)
+                .withGender(Gender.MALE)
                 .withLastName("ParentGuardianLastName")
                 .withPersonTitle("Ms")
                 .withTelephoneNumberBusiness("6666666666")

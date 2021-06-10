@@ -26,13 +26,11 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingD
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getInternalHearingDetailsForHearingId;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummariesByDate;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.publicSjpResultedShared;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.thenReturnsBadRequestForResultsSummaryWithoutFromDate;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPublicPoliceResultGeneratedMessage;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPublicTopic;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyNotInPublicTopic;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForAmendment;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForCaseRejectedSjp;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForPoliceGenerateResultsForDefendant;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForRejected;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequested;
@@ -50,7 +48,6 @@ import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudic
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeOfTrialReasons;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicSJPCaseResulted;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithCustomApplication;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
@@ -72,7 +69,6 @@ import uk.gov.justice.core.courts.external.ApiAddress;
 import uk.gov.justice.core.courts.external.ApiCourtCentre;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 import uk.gov.moj.cpp.results.it.utils.Queries;
@@ -149,24 +145,6 @@ public class ResultsIT {
         setField(this.jsonToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
     }
 
-    @Test
-    public void shouldProcessPublicSjpResulted() throws JMSException {
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        publicSjpResultedShared(sjpResulted);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        verifyPrivateEventsWithPoliceResultGenerated();
-        verifyInPublicTopic();
-    }
-
-    @Test
-    public void shouldProcessPublicSjpResultedSpiOutFalse() throws JMSException {
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        publicSjpResultedShared(sjpResulted);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        verifyPrivateEventsWithPoliceResultGenerated(false);
-        verifyNotInPublicTopic();
-    }
 
     @Test
     public void testCCForSpiOut() throws JMSException {
@@ -325,37 +303,7 @@ public class ResultsIT {
 
     }
 
-    @Test
-    public void testSjpForRejectedCaseEvent() throws JMSException {
 
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        publicSjpResultedShared(sjpResulted);
-
-        verifyPrivateEventsWithPoliceResultGenerated();
-        verifyInPublicTopic();
-
-        publicSjpResultedShared(sjpResulted);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-
-        verifyPrivateEventsForCaseRejectedSjp();
-    }
-
-    @Test
-    public void testSjpForNullDateOfBirth() throws JMSException {
-
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        sjpResulted.getCases().forEach(caseDetails -> {
-            caseDetails.getDefendants().forEach(caseDefendant -> {
-                caseDefendant.getParentGuardianDetails().setBirthDate(null);
-                caseDefendant.getIndividualDefendant().getBasePersonDetails().setBirthDate(null);
-            });
-        });
-
-        publicSjpResultedShared(sjpResulted);
-
-        verifyPrivateEventsWithPoliceResultGenerated();
-        verifyInPublicTopic();
-    }
 
     @Test
     public void testGeneratePoliceResultsForDefendantCC() throws JMSException {
@@ -400,49 +348,9 @@ public class ResultsIT {
         verifyInPublicTopic();
     }
 
-    @Test
-    public void testGeneratePoliceResultsForDefendantSJP() throws JMSException {
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
 
-        publicSjpResultedShared(sjpResulted);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        verifyPrivateEventsWithPoliceResultGenerated();
-        verifyInPublicTopic();
 
-        final JsonObject payload = Json.createObjectBuilder()
-                .add(SESSION_ID, sjpResulted.getSession().getSessionId().toString())
-                .add(CASE_ID, CASE_ID_VALUE)
-                .add(DEFENDANT_ID, DEFENDANT_ID_VALUE)
-                .build();
 
-        sendGeneratePoliceResultsForADefendantCommand(payload);
-
-        verifyPrivateEventsForPoliceGenerateResultsForDefendant();
-        Optional<String> response = verifyInPublicTopic();
-        assertThat(sjpResulted.getCases().get(0).getDefendants().get(0).getOffences().get(0).getBaseOffenceDetails().getOffenceSequenceNumber(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
-
-    }
-
-    @Test
-    public void testGeneratePoliceResultsForDefendantSJPWhenSpiOutFalse() throws JMSException {
-        final PublicSjpResulted sjpResulted = basicSJPCaseResulted();
-        sjpResulted.getCases().get(0).setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        publicSjpResultedShared(sjpResulted);
-        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        verifyPrivateEventsWithPoliceResultGenerated(false);
-        verifyNotInPublicTopic();
-
-        final JsonObject payload = Json.createObjectBuilder()
-                .add(SESSION_ID, sjpResulted.getSession().getSessionId().toString())
-                .add(CASE_ID, CASE_ID_VALUE)
-                .add(DEFENDANT_ID, DEFENDANT_ID_VALUE)
-                .build();
-
-        sendGeneratePoliceResultsForADefendantCommand(payload);
-
-        verifyPrivateEventsForPoliceGenerateResultsForDefendant(false);
-        verifyNotInPublicTopic();
-    }
 
     @Test
     public void journeyHearingToResults() throws JMSException {

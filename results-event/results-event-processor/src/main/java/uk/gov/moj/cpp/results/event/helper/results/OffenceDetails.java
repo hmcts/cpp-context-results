@@ -6,14 +6,12 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static uk.gov.justice.core.courts.OffenceDetails.offenceDetails;
 
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantJudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.Offence;
 
 import java.time.LocalDate;
@@ -23,6 +21,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
 public class OffenceDetails {
 
@@ -124,7 +125,7 @@ public class OffenceDetails {
     }
 
     private String getFinalDisposal(final CourtApplication courtApplication) {
-        return courtApplication.getJudicialResults().stream().anyMatch(judicialResult -> Category.FINAL.equals(judicialResult.getCategory())) ? "Y": "N";
+        return courtApplication.getJudicialResults().stream().anyMatch(judicialResult -> JudicialResultCategory.FINAL.equals(judicialResult.getCategory())) ? "Y": "N";
     }
 
     private String getVerdictCode(final String cjsVerdictCode, final LocalDate convictedDate) {

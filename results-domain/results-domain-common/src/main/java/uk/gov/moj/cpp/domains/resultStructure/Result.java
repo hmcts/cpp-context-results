@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.domains.resultStructure;
 
-import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.DelegatedPowers;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ public class Result implements Serializable {
     private LocalDate amendmentDate;
     private String amendmentReason;
     private LocalDate approvedDate;
-    private Category category;
+    private JudicialResultCategory category;
     private String cjsCode;
     private DelegatedPowers courtClerk;
     private DelegatedPowers delegatedPowers;
@@ -49,7 +49,7 @@ public class Result implements Serializable {
     private Boolean rollUpPrompts;
 
     @SuppressWarnings("squid:S00107")
-    public Result(final UUID resultId, final LocalDate amendmentDate, final String amendmentReason, final LocalDate approvedDate, final Category category, final String cjsCode,
+    public Result(final UUID resultId, final LocalDate amendmentDate, final String amendmentReason, final LocalDate approvedDate, final JudicialResultCategory category, final String cjsCode,
                   final DelegatedPowers courtClerk, final DelegatedPowers delegatedPowers, final DelegatedPowers fourEyesApproval, final Boolean isAdjournmentResult,
                   final Boolean isAvailableForCourtExtract, final Boolean isConvictedResult, final Boolean isFinancialResult, final List<JudicialResultPrompt> judicialResultPrompts,
                   final String label, final String lastSharedDateTime, final LocalDate orderedDate, final UUID orderedHearingId, final BigDecimal rank, final List<String> usergroups,
@@ -120,11 +120,11 @@ public class Result implements Serializable {
         return this;
     }
 
-    public Category getCategory() {
+    public JudicialResultCategory getCategory() {
         return category;
     }
 
-    public Result setCategory(final Category category) {
+    public Result setCategory(final JudicialResultCategory category) {
         this.category = category;
         return this;
     }
@@ -493,7 +493,7 @@ public class Result implements Serializable {
 
         private LocalDate approvedDate;
 
-        private Category category;
+        private JudicialResultCategory category;
 
         private String cjsCode;
 
@@ -571,7 +571,7 @@ public class Result implements Serializable {
             return this;
         }
 
-        public Builder withCategory(final Category category) {
+        public Builder withCategory(final JudicialResultCategory category) {
             this.category = category;
             return this;
         }

@@ -13,11 +13,11 @@ import static uk.gov.justice.core.courts.JudicialResultPrompt.judicialResultProm
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 
-import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
@@ -43,7 +43,7 @@ public class OffenceDetailsTest {
     private static ImmutableList<JudicialResult> buildJudicialResultList() {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
-                .withCategory(Category.INTERMEDIARY)
+                .withCategory(JudicialResultCategory.INTERMEDIARY)
                 .withCjsCode("cjsCode")
                 .withIsAdjournmentResult(false)
                 .withIsAvailableForCourtExtract(false)
@@ -72,7 +72,7 @@ public class OffenceDetailsTest {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withTerminatesOffenceProceedings(Boolean.TRUE)
-                .withCategory(Category.INTERMEDIARY)
+                .withCategory(JudicialResultCategory.INTERMEDIARY)
                 .withCjsCode("cjsCode")
                 .withIsAdjournmentResult(false)
                 .withIsAvailableForCourtExtract(false)
@@ -92,7 +92,7 @@ public class OffenceDetailsTest {
 
         final Hearing hearing = TestTemplates.basicShareResultsTemplate(JurisdictionType.CROWN).getHearing();
         hearing.getDefendantJudicialResults().get(0).getJudicialResult().setLabel("label");
-        hearing.getDefendantJudicialResults().get(0).getJudicialResult().setCategory(Category.INTERMEDIARY);
+        hearing.getDefendantJudicialResults().get(0).getJudicialResult().setCategory(JudicialResultCategory.INTERMEDIARY);
         List<Offence> offenceDetails = getOffences();
         Defendant defendant = getDefendant(offenceDetails);
 
@@ -151,7 +151,7 @@ public class OffenceDetailsTest {
             assertThat(baseResultOptional.isPresent(), is(true));
             assertThat(judicialResult.getCjsCode(), is("cjsCode"));
             assertThat(judicialResult.getLabel(), is("label"));
-            assertThat(judicialResult.getCategory(), is(Category.INTERMEDIARY));
+            assertThat(judicialResult.getCategory(), is(JudicialResultCategory.INTERMEDIARY));
             assertThat(judicialResult.getIsAvailableForCourtExtract(), is(false));
             assertThat(judicialResult.getIsAdjournmentResult(), is(false));
             assertThat(judicialResult.getIsConvictedResult(), is(false));

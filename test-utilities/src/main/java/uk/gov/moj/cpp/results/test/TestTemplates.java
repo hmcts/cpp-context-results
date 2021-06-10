@@ -22,23 +22,12 @@ import static uk.gov.justice.core.courts.ProsecutionCaseIdentifier.prosecutionCa
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
-import static uk.gov.justice.sjp.results.BaseOffense.baseOffense;
-import static uk.gov.justice.sjp.results.BasePersonDetail.basePersonDetail;
-import static uk.gov.justice.sjp.results.BaseResult.baseResult;
-import static uk.gov.justice.sjp.results.BaseSessionStructure.baseSessionStructure;
-import static uk.gov.justice.sjp.results.CaseDefendant.caseDefendant;
-import static uk.gov.justice.sjp.results.CaseDetails.caseDetails;
-import static uk.gov.justice.sjp.results.CaseOffence.caseOffence;
-import static uk.gov.justice.sjp.results.IndividualDefendant.individualDefendant;
-import static uk.gov.justice.sjp.results.Prompts.prompts;
-import static uk.gov.justice.sjp.results.SessionLocation.sessionLocation;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.BreachType;
-import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtApplicationParty;
@@ -52,6 +41,7 @@ import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingType;
 import uk.gov.justice.core.courts.InitiationCode;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JudicialRole;
 import uk.gov.justice.core.courts.JudicialRoleType;
@@ -66,13 +56,6 @@ import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SummonsTemplateType;
 import uk.gov.justice.core.courts.Verdict;
 import uk.gov.justice.core.courts.VerdictType;
-import uk.gov.justice.sjp.results.BaseResult;
-import uk.gov.justice.sjp.results.BaseSessionStructure;
-import uk.gov.justice.sjp.results.CaseDefendant;
-import uk.gov.justice.sjp.results.Plea;
-import uk.gov.justice.sjp.results.PleaMethod;
-import uk.gov.justice.sjp.results.PleaType;
-import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.JudicialRoleTypeEnum;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
@@ -82,7 +65,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -97,9 +79,6 @@ public class TestTemplates {
     private static final UUID DEFAULT_DEFENDANT_ID4 = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
     private static final UUID ID = randomUUID();
     private static final UUID NATIONALITY_ID = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
-    private static final UUID PROMPT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d");
-    private static final UUID PROMPT_ID_1 = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6742d");
-    private static final UUID RESULT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6743d");
     public static final String DEFAULT_VALUE = "DEFAULT_VALUE";
     public static final String REASON = "reason";
     public static final String FIELD_NAME_SMITH = "Smith";
@@ -233,7 +212,7 @@ public class TestTemplates {
                         .withMasterDefendantId(randomUUID())
                         .withJudicialResult(judicialResult()
                                 .withJudicialResultId(randomUUID())
-                                .withCategory(Category.FINAL)
+                                .withCategory(JudicialResultCategory.FINAL)
                                 .withCjsCode(CJS_CODE)
                                 .withIsAdjournmentResult(false)
                                 .withIsAvailableForCourtExtract(false)
@@ -608,7 +587,7 @@ public class TestTemplates {
     public static ImmutableList<JudicialResult> buildJudicialResultList() {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
-                .withCategory(Category.FINAL)
+                .withCategory(JudicialResultCategory.FINAL)
                 .withCjsCode(CJS_CODE)
                 .withIsAdjournmentResult(false)
                 .withIsAvailableForCourtExtract(false)
@@ -678,137 +657,6 @@ public class TestTemplates {
                 .build();
     }
 
-    public static PublicSjpResulted basicSJPCaseResulted() {
-
-        return PublicSjpResulted.publicSjpResulted()
-                .withSession(createbaseSessionStructure())
-                .withCases(createCaseDetails()).build();
-    }
-
-    private static List<uk.gov.justice.sjp.results.CaseDetails> createCaseDetails() {
-        final List<uk.gov.justice.sjp.results.CaseDetails> caseDetails = new ArrayList<>();
-        caseDetails.add(caseDetails().
-                withCaseId(randomUUID())
-                .withUrn("123456789")
-                .withDefendants(asList(buildSjpDefendant(DEFAULT_DEFENDANT_ID1.toString()),
-                        buildSjpDefendant(DEFAULT_DEFENDANT_ID2.toString())
-                ))
-                .withProsecutionAuthorityCode("someProsecutingAuthority")
-                .build());
-        return caseDetails;
-    }
-
-    private static CaseDefendant buildSjpDefendant(final String defendantId) {
-        return caseDefendant().withDefendantId(fromString(defendantId))
-                .withIndividualDefendant(individualDefendant()
-                        .withBailConditions("22222222222")
-                        .withBailStatus("33333333333")
-                        .withBasePersonDetails(basePersonDetail()
-                                .withAddress(buildAddress())
-                                .withBirthDate(ZonedDateTime.of(LocalDate.of(2019, 2, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
-                                .withEmailAddress1("somerandomemail1@random.random")
-                                .withEmailAddress2("somerandomemail2@random.random")
-                                .withFirstName("ParentGuardianFirstName")
-                                .withGender(uk.gov.justice.sjp.results.Gender.MALE)
-                                .withLastName("ParentGuardianLastName")
-                                .withTelephoneNumberBusiness("99999999999")
-                                .withTelephoneNumberHome("88888888888")
-                                .withTelephoneNumberMobile("77777777777")
-                                .build())
-                        .withPersonStatedNationality("UK")
-                        .withPncIdentifier("")
-                        .withPresentAtHearing(Boolean.valueOf("hearing"))
-                        .withReasonForBailConditionsOrCustody(REASON)
-                        .build())
-                .withParentGuardianDetails(basePersonDetail()
-                        .withAddress(buildAddress())
-                        .withBirthDate(ZonedDateTime.of(LocalDate.of(2019, 2, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
-                        .withEmailAddress1("parentguardianmemail1@random.random")
-                        .withEmailAddress2("parentguardianemail2@random.random")
-                        .withFirstName("ParentGuardianFirstName")
-                        .withGender(uk.gov.justice.sjp.results.Gender.MALE)
-                        .withLastName("ParentGuardianLastName")
-                        .withPersonTitle("Ms")
-                        .withTelephoneNumberBusiness("6666666666")
-                        .withTelephoneNumberHome("77777777777")
-                        .withTelephoneNumberMobile("8888888888")
-                        .build())
-                .withProsecutorReference("")
-                .withOffences(singletonList(caseOffence()
-                        .withResults(Collections.emptyList())
-                        .withPlea(Plea.plea()
-                                .withPleaDate(ZonedDateTime.of(LocalDate.of(2019, 3, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
-                                .withPleaMethod(PleaMethod.POSTAL)
-                                .withPleaType(PleaType.GUILTY)
-                                .build())
-                        .withModeOfTrial(1)
-                        .withFinding("finding")
-                        .withBaseOffenceDetails(baseOffense()
-                                .withAlcoholLevelAmount(300)
-                                .withAlcoholLevelMethod("Breath Test")
-                                .withArrestDate(LocalDate.of(2019, 1, 2))
-                                .withChargeDate(LocalDate.of(2019, 2, 2))
-                                .withLocationOfOffence("Gypsy Corner")
-                                .withOffenceCode("61131")
-                                .withOffenceDateCode(2018 - 10 - 10)
-                                .withOffenceEndDate(LocalDate.of(2019, 4, 2))
-                                .withOffenceId(fromString("aa746921-d839-4867-bcf9-b41db8ebc852"))
-                                .withOffenceSequenceNumber(1)
-                                .withOffenceStartDate(LocalDate.of(2018, 1, 2))
-                                .withOffenceWording("wording")
-                                .withVehicleCode("12345")
-                                .withVehicleRegistrationMark("OF01ENC")
-                                .build()) //baseOffence
-                        .withConvictingCourt(2)
-                        .withConvictionDate(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
-                        .withInitiatedDate(ZonedDateTime.of(LocalDate.of(2018, 2, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
-                        .withResults(buildResults())
-                        .build()))  //offence
-                .build();
-    }
-
-    private static List<BaseResult> buildResults() {
-        final List<BaseResult> baseResults = new ArrayList<>();
-        baseResults.add(buildBaseResult());
-        baseResults.add(buildBaseResult());
-        baseResults.add(buildBaseResult());
-        return baseResults;
-    }
-
-    private static BaseResult buildBaseResult() {
-        return baseResult()
-                .withId(RESULT_ID)
-                .withPrompts(of(prompts().withId(PROMPT_ID_1).withValue("10.00").build(), prompts().withId(PROMPT_ID).withValue("10.00").build()))
-                .build();
-    }
-
-    private static BaseSessionStructure createbaseSessionStructure() {
-        return baseSessionStructure()
-                .withSessionId(randomUUID())
-                .withDateAndTimeOfSession(ZonedDateTime.of(LocalDate.of(2019, 5, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
-                .withOuCode("B22HM00")
-                .withSessionLocation(sessionLocation()
-                        .withAddress(buildAddress())
-                        .withCourtHouseCode("DC")
-                        .withCourtId(randomUUID())
-                        .withName("Cardiff Magistrates' Court")
-                        .withRoomId(randomUUID().toString())
-                        .withRoomName("HorseFerry")
-                        .withLja("8505")
-                        .build())
-                .build();
-    }
-
-    private static Address buildAddress() {
-        return uk.gov.justice.core.courts.Address.address()
-                .withAddress1("Fitzalan Place")
-                .withAddress2("Cardiff")
-                .withAddress3("addressline3")
-                .withAddress4("address4")
-                .withAddress5("address5")
-                .withPostcode("CF24 0RZ")
-                .build();
-    }
 
     private static AllocationDecision buildAllocationDecision(final UUID offenceId) {
         return allocationDecision()
@@ -925,7 +773,7 @@ public class TestTemplates {
     private static ImmutableList<JudicialResult> offenceLevelJudicialResults() {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
-                .withCategory(Category.INTERMEDIARY)
+                .withCategory(JudicialResultCategory.INTERMEDIARY)
                 .withCjsCode(CJS_CODE)
                 .withIsAdjournmentResult(false)
                 .withIsAvailableForCourtExtract(false)

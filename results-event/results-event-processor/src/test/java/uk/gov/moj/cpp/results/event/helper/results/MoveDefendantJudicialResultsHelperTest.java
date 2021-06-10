@@ -7,15 +7,19 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
+import static uk.gov.justice.core.courts.JudicialResultCategory.ANCILLARY;
+import static uk.gov.justice.core.courts.JudicialResultCategory.FINAL;
+import static uk.gov.justice.core.courts.JudicialResultCategory.INTERMEDIARY;
 import static uk.gov.justice.core.courts.JudicialResultPrompt.judicialResultPrompt;
 
-import uk.gov.justice.core.courts.Category;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -23,7 +27,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
-import uk.gov.moj.cpp.results.test.TestTemplates;
 
 public class MoveDefendantJudicialResultsHelperTest {
 
@@ -49,16 +52,16 @@ public class MoveDefendantJudicialResultsHelperTest {
 
         assertThat(updatedOffenceList.get(1).getJudicialResults().size(), is(1));
         assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getCategory(), is(Category.INTERMEDIARY));
+        assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getCategory(), is(INTERMEDIARY));
         assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getTerminatesOffenceProceedings(), is(true));
 
         assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(3));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(0).getLabel(), is("defendantLabel"));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(Category.FINAL));
+        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(FINAL));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getLabel(), is("hearingLabel"));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getCategory(), is(Category.FINAL));
+        assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getCategory(), is(FINAL));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getTerminatesOffenceProceedings(), is(false));
     }
 
@@ -74,7 +77,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         assertThat(updatedOffenceList.get(3).getJudicialResults().size(), is(3));
         assertThat(updatedOffenceList.get(3).getJudicialResults().get(0).getLabel(), is("defendantLabel"));
         assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getCategory(), is(Category.FINAL));
+        assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getCategory(), is(FINAL));
         assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
     }
 
@@ -91,7 +94,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(3));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(0).getLabel(), is("defendantLabel"));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(Category.FINAL));
+        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(FINAL));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
     }
 
@@ -108,7 +111,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(3));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(0).getLabel(), is("defendantLabel"));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(Category.FINAL));
+        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(FINAL));
         assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
     }
 
@@ -116,7 +119,7 @@ public class MoveDefendantJudicialResultsHelperTest {
     public void testAllMatchBuildOffenceAndDefendantJudicialResults() {
 
         final Hearing hearing = TestTemplates.basicShareResultsTemplate(JurisdictionType.CROWN).getHearing();
-        final List<Offence> offenceDetailsList = getOffences(true, Category.INTERMEDIARY);
+        final List<Offence> offenceDetailsList = getOffences(true, INTERMEDIARY);
         final Defendant defendant = getDefendant(offenceDetailsList);
         final List<Defendant> defendantsFromRequest = Arrays.asList(defendant, defendant);
         final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.allMatchBuildOffenceAndDefendantJudicialResults(offenceDetailsList, defendant.getDefendantCaseJudicialResults(), hearing.getDefendantJudicialResults());
@@ -125,7 +128,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(3));
         assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is("defendantLabel"));
         assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(Category.INTERMEDIARY));
+        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(INTERMEDIARY));
         assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(true));
 
     }
@@ -143,7 +146,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(3));
         assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is("defendantLabel"));
         assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getLabel(), is("offenceLabel"));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(Category.INTERMEDIARY));
+        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(INTERMEDIARY));
         assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(true));
 
     }
@@ -185,7 +188,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         return Defendant.defendant().withOffences(offenceDetails).withDefendantCaseJudicialResults(buildDefendantJudicialResultList()).build();
     }
 
-    private List<Offence> getOffences(Boolean terminatesOffenceProceedings, Category category) {
+    private List<Offence> getOffences(Boolean terminatesOffenceProceedings, JudicialResultCategory category) {
         return Arrays.asList(buildOffence(terminatesOffenceProceedings, category));
     }
 
@@ -195,26 +198,26 @@ public class MoveDefendantJudicialResultsHelperTest {
     }
 
     private List<Offence> getOffencesWithAllInterimOrWithdrawn() {
-        return Arrays.asList(buildOffence(true,Category.INTERMEDIARY),buildOffence(true,Category.INTERMEDIARY),buildOffence(true,Category.INTERMEDIARY));
+        return Arrays.asList(buildOffence(true,INTERMEDIARY),buildOffence(true,INTERMEDIARY),buildOffence(true,INTERMEDIARY));
     }
 
     private List<Offence> getOffencesForNoneMatch() {
-        return Arrays.asList(buildOffence(true,Category.INTERMEDIARY ),
-                buildOffence(false,Category.INTERMEDIARY),
-                buildOffence(true,Category.FINAL),
-                buildOffence(false,Category.FINAL ) );
+        return Arrays.asList(buildOffence(true,INTERMEDIARY ),
+                buildOffence(false,INTERMEDIARY),
+                buildOffence(true,FINAL),
+                buildOffence(false,FINAL ) );
     }
 
     private List<Offence> getOffencesForNoneMatchWithNotInterimAndNotWithdrawn() {
         return Arrays.asList(buildOffence(true,null ),
-                buildOffence(true,Category.INTERMEDIARY),
-                buildOffence(false,Category.FINAL ));
+                buildOffence(true,INTERMEDIARY),
+                buildOffence(false,FINAL ));
     }
 
     private List<Offence> getOffencesToChooseFirstNoneMatchWithNotInterimAndNotWithdrawn() {
-        return Arrays.asList(buildOffence(true,Category.ANCILLARY ),
-                buildOffence(true,Category.INTERMEDIARY),
-                buildOffence(false,Category.FINAL ));
+        return Arrays.asList(buildOffence(true,ANCILLARY ),
+                buildOffence(true,INTERMEDIARY),
+                buildOffence(false,FINAL ));
     }
 
     private static List<JudicialResult> buildDefendantJudicialResultList() {
@@ -234,7 +237,7 @@ public class MoveDefendantJudicialResultsHelperTest {
                 .build());
     }
 
-    private Offence buildOffence(final Boolean terminatesOffenceProceedings, final Category category) {
+    private Offence buildOffence(final Boolean terminatesOffenceProceedings, final JudicialResultCategory category) {
         return Offence.offence()
                 .withId(randomUUID())
                 .withOffenceDefinitionId(randomUUID())
@@ -243,7 +246,7 @@ public class MoveDefendantJudicialResultsHelperTest {
                 .build();
     }
 
-    private static List<JudicialResult> buildOffenceJudicialResultList(Boolean ternminatesOffenceProceedings, Category category) {
+    private static List<JudicialResult> buildOffenceJudicialResultList(Boolean ternminatesOffenceProceedings, JudicialResultCategory category) {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(category)

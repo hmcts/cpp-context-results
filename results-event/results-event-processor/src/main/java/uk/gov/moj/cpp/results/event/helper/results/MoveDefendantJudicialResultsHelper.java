@@ -6,7 +6,7 @@ import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
-import uk.gov.justice.core.courts.Category;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.Offence;
@@ -23,9 +23,9 @@ import java.util.stream.Stream;
 
 public class MoveDefendantJudicialResultsHelper {
 
-    private final Predicate<JudicialResult> interimOrWithdrawnResultPredicate = judicialResult -> (nonNull(judicialResult.getCategory()) && judicialResult.getCategory().equals(Category.INTERMEDIARY) || nonNull(judicialResult.getTerminatesOffenceProceedings()) && judicialResult.getTerminatesOffenceProceedings().equals(Boolean.TRUE));
-    private final Predicate<JudicialResult> notInterimOrNotWithdrawnResultPredicate = judicialResult -> (nonNull(judicialResult.getCategory()) && !judicialResult.getCategory().equals(Category.INTERMEDIARY) || nonNull(judicialResult.getTerminatesOffenceProceedings()) && judicialResult.getTerminatesOffenceProceedings().equals(Boolean.FALSE));
-    private final Predicate<JudicialResult> notInterimAndNotWithdrawnResultPredicate = judicialResult -> (nonNull(judicialResult.getCategory()) && !judicialResult.getCategory().equals(Category.INTERMEDIARY) && nonNull(judicialResult.getTerminatesOffenceProceedings()) && judicialResult.getTerminatesOffenceProceedings().equals(Boolean.FALSE));
+    private final Predicate<JudicialResult> interimOrWithdrawnResultPredicate = judicialResult -> (nonNull(judicialResult.getCategory()) && judicialResult.getCategory().equals(JudicialResultCategory.INTERMEDIARY) || nonNull(judicialResult.getTerminatesOffenceProceedings()) && judicialResult.getTerminatesOffenceProceedings().equals(Boolean.TRUE));
+    private final Predicate<JudicialResult> notInterimOrNotWithdrawnResultPredicate = judicialResult -> (nonNull(judicialResult.getCategory()) && !judicialResult.getCategory().equals(JudicialResultCategory.INTERMEDIARY) || nonNull(judicialResult.getTerminatesOffenceProceedings()) && judicialResult.getTerminatesOffenceProceedings().equals(Boolean.FALSE));
+    private final Predicate<JudicialResult> notInterimAndNotWithdrawnResultPredicate = judicialResult -> (nonNull(judicialResult.getCategory()) && !judicialResult.getCategory().equals(JudicialResultCategory.INTERMEDIARY) && nonNull(judicialResult.getTerminatesOffenceProceedings()) && judicialResult.getTerminatesOffenceProceedings().equals(Boolean.FALSE));
 
     public List<Offence> buildOffenceAndDefendantJudicialResults(final List<Offence> originalOffences, final List<JudicialResult> defendantCaseJudicialResults, final List<DefendantJudicialResult> defendantJudicialResults) {
         final List<Offence> noneMatchUpdatedOffences = noneMatchBuildOffenceAndDefendantJudicialResults(originalOffences, defendantCaseJudicialResults, defendantJudicialResults);

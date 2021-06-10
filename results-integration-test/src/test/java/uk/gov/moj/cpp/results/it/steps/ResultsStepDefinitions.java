@@ -35,7 +35,6 @@ import uk.gov.justice.services.test.utils.core.http.ResponseData;
 import uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
-import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.test.matchers.MapJsonObjectToTypeMatcher;
@@ -83,7 +82,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     private static final String PUBLIC_EVENT_HEARING_RESULTED = "public.hearing.resulted";
     private static final String PUBLIC_EVENT_HEARING_RESULTED_V2 = "public.events.hearing.hearing-resulted";
-    private static final String PUBLIC_EVENT_SJP_RESULTED = "public.sjp.case-resulted";
+
     private static final String GET_RESULTS_SUMMARY = "results.get-results-summary";
 
     private static MessageConsumer privateSessionAddedEventConsumer;
@@ -255,16 +254,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         }
     }
 
-    public static void publicSjpResultedShared(final PublicSjpResulted sjpResultedMessage) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "public.event");
-        try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
-            messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 
-            final JsonObject payload = convertToJsonObject(sjpResultedMessage);
-
-            messageProducer.sendMessage(PUBLIC_EVENT_SJP_RESULTED, payload);
-        }
-    }
 
     public static void verifyPrivateEventsForPoliceGenerateResultsForDefendant() throws JMSException {
         verifyPrivateEventsForPoliceGenerateResultsForDefendant(true);

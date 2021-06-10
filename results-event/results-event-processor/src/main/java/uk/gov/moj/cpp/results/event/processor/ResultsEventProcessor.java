@@ -5,13 +5,12 @@ import static java.util.UUID.fromString;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import uk.gov.justice.core.courts.BaseStructure;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.services.common.configuration.Value;
@@ -23,16 +22,13 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
-import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
-import uk.gov.moj.cpp.results.event.helper.BaseSessionStructureConverterForSjp;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
-import uk.gov.moj.cpp.results.event.helper.CaseDetailsConverterForSjp;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
@@ -229,28 +225,6 @@ public class ResultsEventProcessor {
         }
     }
 
-    @Handles("public.sjp.case-resulted")
-    public void sjpCaseResulted(final JsonEnvelope envelope) {
-
-        final JsonObject sjpResultedPayload = envelope.payloadAsJsonObject();
-
-        LOGGER.debug("public.sjp.case-resulted event received {}", sjpResultedPayload);
-        final PublicSjpResulted publicSjpCaseResulted = jsonObjectToObjectConverter.convert(sjpResultedPayload, PublicSjpResulted.class);
-
-        final BaseStructure baseStructure = new BaseSessionStructureConverterForSjp().convert(publicSjpCaseResulted);
-        final List<CaseDetails> caseDetails = new CaseDetailsConverterForSjp(referenceCache).convert(publicSjpCaseResulted);
-        final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
-        caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
-        final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
-        baseStructure.setSourceType("SJP");
-        resultJsonPayload.add("session", objectToJsonObjectConverter.convert(baseStructure));
-        resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
-
-        final Metadata metadata = metadataFrom(envelope.metadata())
-                .withName("results.create-results")
-                .build();
-        sender.sendAsAdmin(envelopeFrom(metadata, resultJsonPayload.build()));
-    }
 
     @Handles("public.progression.events.case-or-application-ejected")
     public void handleCaseOrApplicationEjected(final JsonEnvelope envelope) {

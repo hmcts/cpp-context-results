@@ -11,7 +11,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,9 +26,7 @@ import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuil
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
-import static uk.gov.moj.cpp.results.event.helper.TestTemplate.buildAllocationDecision;
 
-import uk.gov.justice.core.courts.BailStatus;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -40,13 +37,12 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.sjp.results.PublicSjpResulted;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
-import uk.gov.moj.cpp.results.event.helper.BaseSessionStructureConverterForSjp;
+
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
-import uk.gov.moj.cpp.results.event.helper.CaseDetailsConverterForSjp;
+
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
@@ -132,11 +128,7 @@ public class ResultsEventProcessorTest {
     @Mock
     private BaseStructureConverter baseStructureConverter;
 
-    @Mock
-    private BaseSessionStructureConverterForSjp baseSessionStructureConverterForSjp;
 
-    @Mock
-    private CaseDetailsConverterForSjp caseDetailsConverterForSjp;
 
     @Mock
     private ApplicationParameters applicationParameters;
@@ -558,34 +550,6 @@ public class ResultsEventProcessorTest {
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
     }
 
-    @Test
-    public void shouldForwardAsEventWhenSjpCaseResulted() {
-        final BailStatus bailStatus = BailStatus.bailStatus().build();
-        when(referenceCache.getBailStatusObjectByCode(any(), any())).thenReturn(Optional.of(bailStatus));
-        when(referenceCache.getAllocationDecision(any(), anyString())).thenReturn(Optional.of(buildAllocationDecision()));
-
-        final PublicSjpResulted sjpCaseResultedMessage = TestTemplates.basicSJPCaseResulted();
-
-        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.sjp.case-resulted"),
-                objectToJsonObjectConverter.convert(sjpCaseResultedMessage));
-
-        resultsEventProcessor.sjpCaseResulted(envelope);
-
-        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-        final String id = sjpCaseResultedMessage.getSession().getSessionId().toString();
-        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
-
-        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
-
-        assertThat(
-                allValues, jsonEnvelope(
-                        metadata().withName("results.create-results"),
-                        payloadIsJson(allOf(
-                                withJsonPath("$.session.id", is(id)),
-                                withJsonPath("$.session.sourceType", is("SJP"))
-                        ))
-                ));
-    }
 
     private JsonObjectBuilder jsonObjectToBuilder(JsonObject jo) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
