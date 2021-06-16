@@ -143,7 +143,7 @@
                   "postcode": "BS20 1DR"
                 },
                 "majorCreditorCode": "PF52",
-                "prosecutionAuthorityCode": "C05LV00",
+                "prosecutionAuthorityCode": "prosecutorWithSpiOutFalse",
                 "prosecutionAuthorityId": "bccf3481-a538-34a7-b351-e9649b82f2b6",
                 "prosecutionAuthorityName": "Avon and Somerset Police",
                 "prosecutionAuthorityOUCode": "0520000",

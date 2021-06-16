@@ -59,6 +59,7 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                     .withUrn(getUrn(prosecutionCase.getProsecutionCaseIdentifier(), isPoliceProsecutor))
                     .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(prosecutionCase.getDefendants(), source.getHearing(), isPoliceProsecutor))
                     .withProsecutionAuthorityCode(prosecutionAuthorityCode)
+                    .withOriginatingOrganisation(originatingOrganisation)
                     .build();
         }).collect(toList());
 

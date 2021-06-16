@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
 import static java.util.UUID.fromString;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 
 import uk.gov.justice.core.courts.CaseDetails;
@@ -157,12 +158,21 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
                 final AtomicReference<String> prosecutorEmailAddress = new AtomicReference<>("");
 
-                final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
-                refDataProsecutorJson.ifPresent(prosecutorJson -> {
-                    sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
-                    isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
-                    prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
-                });
+                if (isNotEmpty(caseDetails.getOriginatingOrganisation())) {
+                    final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(caseDetails.getOriginatingOrganisation());
+                    refDataProsecutorJson.ifPresent(prosecutorJson -> {
+                        sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
+                        isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
+                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
+                    });
+                } else {
+                    final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
+                    refDataProsecutorJson.ifPresent(prosecutorJson -> {
+                        sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
+                        isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
+                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
+                    });
+                }
 
                 LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
 

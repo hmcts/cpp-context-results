@@ -252,6 +252,7 @@ public class ResultsIT {
     @Test
     public void testCCForSpiOutFalse() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
+        stubSpiOutFlag(false, true);
         resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenShared(resultsMessage);
@@ -328,6 +329,7 @@ public class ResultsIT {
 
     @Test
     public void testGeneratePoliceResultsForDefendantCCWhenSpiOutFalse() throws JMSException {
+        stubSpiOutFlag(false, true);
         final PublicHearingResulted resultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
@@ -588,7 +590,7 @@ public class ResultsIT {
         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), MAGISTRATES))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
         resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenShared(resultsMessage);
@@ -640,7 +642,7 @@ public class ResultsIT {
                                         .build())
                                 .build())))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode("someCode");
+        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
         resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
 

@@ -8,6 +8,7 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.requester.Requester;
+import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 
@@ -35,5 +36,19 @@ public class ReferenceDataService {
             return Optional.empty();
         }
         return Optional.ofNullable(response.getJsonArray("prosecutors").getJsonObject(0));
+    }
+
+    @SuppressWarnings("squid:S1696")
+    Optional<JsonObject> getSpiOutFlagForOriginatingOrganisation(final String prosecutingAuthority) {
+        final JsonObject payload = createObjectBuilder().add("oucode", prosecutingAuthority).build();
+        final Metadata metadata = metadataBuilder()
+                .withId(randomUUID())
+                .withName("referencedata.query.get.prosecutor.by.oucode")
+                .build();
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
+        final Envelope<JsonObject> response = requester.requestAsAdmin(jsonEnvelope, JsonObject.class);
+        return Optional.ofNullable(null != response ? response.payload() : null);
+
     }
 }

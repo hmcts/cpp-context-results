@@ -345,7 +345,7 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", true)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any())).thenReturn(of(jsonProsecutorBuilder.build()));
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
 
         this.resultsCommandHandler.createResult(envelope);
         verify(enveloper, Mockito.times(3)).withMetadataFrom(envelope);
@@ -415,6 +415,7 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("OUCODE")).thenReturn(of(jsonProsecutorBuilder.build()));
         createResults(payload, envelope, jsonProsecutorBuilder);
     }
 
@@ -433,7 +434,7 @@ public class ResultsCommandHandlerTest {
     }
 
     private void createResults(final JsonObject payload, final JsonEnvelope envelope, final JsonObjectBuilder jsonProsecutorBuilder) throws EventStreamException {
-        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
         resultsCommandHandler.createResult(envelope);
         final JsonObject session = payload.getJsonObject("session");
         final UUID sessionId = fromString(session.getString("id"));
@@ -471,7 +472,7 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", true)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("OUCODE")).thenReturn(of(jsonProsecutorBuilder.build()));
 
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD);
@@ -521,8 +522,7 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", true)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
-
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("OUCODE")).thenReturn(of(jsonProsecutorBuilder.build()));
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_7);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
@@ -570,7 +570,7 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", true)
                 .add("policeFlag", false)
                 .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("OUCODE")).thenReturn(of(jsonProsecutorBuilder.build()));
 
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_7);
@@ -611,7 +611,7 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", false)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
 
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
@@ -619,6 +619,57 @@ public class ResultsCommandHandlerTest {
         verify(resultsAggregateSpy).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
     }
 
+    @Test
+    public void shouldUpdateResultCommandWithProsecutionAuthorityCodeAndWithoutOriginatingOrganisation() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
+        jsonProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL);
+
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any())).thenReturn(of(jsonProsecutorBuilder.build()));
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_7);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
+        final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
+        convertedCaseDetails.setOriginatingOrganisation(null);
+        final JsonObject session = payload.getJsonObject("session");
+        final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
+        resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
+        resultsAggregate.handleCase(convertedCaseDetails);
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
+
+        final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_8);
+
+        final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
+
+        this.resultsCommandHandler.createResult(updateEnvelope);
+        verify(enveloper, Mockito.times(3)).withMetadataFrom(updateEnvelope);
+        verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.defendant-updated-event"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                )
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.police-notification-requested"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.urn", is("123445")),
+                                withJsonPath("$.policeEmailAddress", is(EMAIL))
+                                )
+                        ))
+        ));
+
+    }
 
     private List<JsonEnvelope> convertStreamToEventList(final List<Stream<JsonEnvelope>> listOfStreams) {
         return listOfStreams.stream()
