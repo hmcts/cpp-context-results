@@ -19,6 +19,7 @@ import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -55,13 +56,15 @@ public class HearingService {
 
         final String urn = prosecutionCase.getProsecutionCaseIdentifier().getCaseURN();
 
+        final String hearingTypeDescription = Objects.nonNull(hearing.getType()) ? hearing.getType().getDescription() : null;
+
         if (isNull(urn)) {
             final String prosecutionAuthorityReference = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityReference();
-            return new HearingResultSummaryView(hearing.getId(), hearing.getType().getDescription(),
+            return new HearingResultSummaryView(hearing.getId(), hearingTypeDescription,
                     hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(prosecutionAuthorityReference), defendantView, hearing.getCourtCentre().getId());
         }
 
-        return new HearingResultSummaryView(hearing.getId(), hearing.getType().getDescription(),
+        return new HearingResultSummaryView(hearing.getId(), hearingTypeDescription,
                 hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(urn), defendantView, hearing.getCourtCentre().getId());
     }
 
