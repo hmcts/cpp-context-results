@@ -1,11 +1,13 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createObjectBuilder;
+import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -62,6 +64,7 @@ import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
@@ -76,6 +79,8 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import com.google.common.io.Resources;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.core.IsNull;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -101,9 +106,13 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_7 = "json/results.create-results-crown-example.json";
     private static final String TEMPLATE_PAYLOAD_8 = "json/results.update-results-crown-example-wo-origorganisation.json";
     private static final String TEMPLATE_PAYLOAD_9 = "json/results.track-results-example.json";
+    private static final String PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION = "json/results.create-results-magistrates-example_with_originating_organisation.json";
     private static final String EMAIL = "mail@mail.com";
     private static UUID metadataId;
-
+    public static final String SURREY_POLICE_CPS_ORGANISATION = "A45AA00";
+    public static final String SURREY_POLICE_ORIG_ORGANISATION = "045AA00";
+    public static final String SUSSEX_POLICE_CPS_ORGANISATION = "A47AA00";
+    public static final String SUSSEX_POLICE_ORIG_ORGANISATION = "047AA00";
     @Spy
     private final Enveloper enveloper = createEnveloperWithEvents(
             HearingResultsAdded.class,
@@ -179,6 +188,18 @@ public class ResultsCommandHandlerTest {
         return reader.readObject();
     }
 
+    private static JsonObject getPayload(final String path, final String oucode) {
+        String request = null;
+        try {
+            final InputStream inputStream = ResultsCommandHandlerTest.class.getClassLoader().getResourceAsStream(path);
+            assertThat(inputStream, IsNull.notNullValue());
+            request = IOUtils.toString(inputStream, defaultCharset()).replace("OUCODE", oucode);
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = createReader(new StringReader(request));
+        return reader.readObject();
+    }
 
     @Before
     public void setup() {
@@ -377,6 +398,64 @@ public class ResultsCommandHandlerTest {
     }
 
     @Test
+    public void shouldCreateResultCommandWhenOriginatingOrganisationStartsWithAIsProvidedForSurreyPolice() throws EventStreamException {
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL);
+
+        final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SURREY_POLICE_CPS_ORGANISATION);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
+        createResults(payload, envelope, jsonProsecutorBuilder);
+        verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION);
+    }
+
+
+    @Test
+    public void shouldCreateResultCommandWhenOriginatingOrganisationStartsWithAIsProvidedForSussexPolice() throws EventStreamException {
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL);
+
+        final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SUSSEX_POLICE_CPS_ORGANISATION);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
+        createResults(payload, envelope, jsonProsecutorBuilder);
+        verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION);
+    }
+
+  @Test
+    public void shouldCreateResultCommandWhenOriginatingOrganisationStartsWithZeroForSurreyPolice() throws EventStreamException {
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL);
+
+        final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SURREY_POLICE_ORIG_ORGANISATION);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
+        createResults(payload, envelope, jsonProsecutorBuilder);
+        verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION);
+    }
+
+    @Test
+    public void shouldCreateResultCommandWhenOriginatingOrganisationStartsWithZeroForSussexPolice() throws EventStreamException {
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL);
+
+        final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SUSSEX_POLICE_ORIG_ORGANISATION);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
+        createResults(payload, envelope, jsonProsecutorBuilder);
+        verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION);
+    }
+
+
+    @Test
     public void shouldCreateResultCommandForSjpCaseRejected() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
@@ -430,11 +509,11 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_5);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
         createResults(payload, envelope, jsonProsecutorBuilder);
     }
 
     private void createResults(final JsonObject payload, final JsonEnvelope envelope, final JsonObjectBuilder jsonProsecutorBuilder) throws EventStreamException {
-        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
         resultsCommandHandler.createResult(envelope);
         final JsonObject session = payload.getJsonObject("session");
         final UUID sessionId = fromString(session.getString("id"));

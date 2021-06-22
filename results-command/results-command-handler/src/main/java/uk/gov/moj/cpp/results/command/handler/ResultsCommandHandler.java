@@ -53,6 +53,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     private static final String HEARING_DAY = "hearingDay";
     final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private final ReferenceDataService referenceDataService;
+    public static final String SURREY_POLICE_CPS_ORGANISATION = "A45AA00";
+    public static final String SUSSEX_POLICE_CPS_ORGANISATION = "A47AA00";
+    private static final String A_4 = "A4";
+    private static final String ZERO_FOUR = "04";
 
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -158,8 +162,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
                 final AtomicReference<String> prosecutorEmailAddress = new AtomicReference<>("");
 
-                if (isNotEmpty(caseDetails.getOriginatingOrganisation())) {
-                    final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(caseDetails.getOriginatingOrganisation());
+                final String originatingOrganisation = getOriginatingOrganisation(caseDetails.getOriginatingOrganisation());
+                if (isNotEmpty(originatingOrganisation)) {
+                    final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
+
+
                     refDataProsecutorJson.ifPresent(prosecutorJson -> {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
@@ -180,6 +187,13 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                         commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay));
             }
         }
+    }
+
+    private String getOriginatingOrganisation(final String originatingOrganisation) {
+        if (SURREY_POLICE_CPS_ORGANISATION.equalsIgnoreCase(originatingOrganisation) || SUSSEX_POLICE_CPS_ORGANISATION.equalsIgnoreCase(originatingOrganisation)) {
+            return originatingOrganisation.replace(A_4, ZERO_FOUR);
+        }
+        return originatingOrganisation;
     }
 
     @Handles("results.command.track-results")
