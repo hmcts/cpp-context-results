@@ -1,6 +1,11 @@
 {
   "globalAttributes": [
-    "judicialResults[*].category",
+    "courtApplications[*].type.breachType",
+    "courtApplications[*].type.jurisdiction",
+    "courtApplications[*].type.offenceActiveOrder",
+    "courtApplications[*].type.summonsTemplateType",
+    "courtHouseType",
+    "category",
     "judicialResults[*].label",
     "judicialResults[*].judicialResultPrompts[*].label",
     "notifiedPlea.notifiedPleaValue",
@@ -26,7 +31,8 @@
     "title",
     "noteType",
     "fundingType",
-    "courtApplicationPartyType"
+    "courtApplicationPartyType",
+    "attendanceType"
   ],
   "events": [
     {
