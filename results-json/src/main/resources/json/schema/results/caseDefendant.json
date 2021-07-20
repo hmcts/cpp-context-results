@@ -36,6 +36,12 @@
       "items": {
         "$ref": "http://justice.gov.uk/core/courts/attendanceDay.json"
       }
+    },
+    "individualDefendant": {
+      "$ref": "http://justice.gov.uk/core/courts/individualDefendant.json"
+    },
+    "corporateDefendant": {
+      "$ref": "http://justice.gov.uk/core/courts/organisationDetails.json"
     }
   },
   "additionalProperties": true,
@@ -46,21 +52,11 @@
   ],
   "oneOf": [
     {
-      "properties": {
-        "individualDefendant": {
-          "$ref": "http://justice.gov.uk/core/courts/individualDefendant.json"
-        }
-      },
       "required": [
         "individualDefendant"
       ]
     },
     {
-      "properties": {
-        "corporateDefendant": {
-          "$ref": "http://justice.gov.uk/core/courts/organisationDetails.json"
-        }
-      },
       "required": [
         "corporateDefendant"
       ]
