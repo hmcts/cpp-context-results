@@ -1,11 +1,13 @@
 package uk.gov.moj.cpp.results.query.view;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
@@ -150,9 +152,9 @@ public class ResultsQueryViewTest {
         when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(hearingResultsAdded);
 
         final ApiHearing.Builder apiHearingBuilder = ApiHearing.apiHearing()
-                .withProsecutionCases(asList(templateApiProsecutionCase(templateProsecutionCase())))
+                .withProsecutionCases(singletonList(templateApiProsecutionCase(templateProsecutionCase())))
                 .withType(ApiHearingType.apiHearingType().withDescription(hearingResultsAdded.getHearing().getType().getDescription()).build())
-                .withHearingDays(asList(ApiHearingDay.apiHearingDay().withSittingDay(hearingResultsAdded.getHearing().getHearingDays().get(0).getSittingDay()).build()))
+                .withHearingDays(singletonList(ApiHearingDay.apiHearingDay().withSittingDay(hearingResultsAdded.getHearing().getHearingDays().get(0).getSittingDay()).build()))
                 .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
 
         String dummyVal = randomUUID().toString();
@@ -164,6 +166,40 @@ public class ResultsQueryViewTest {
 
         final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsForHearingId(query);
 
+        verify(hearingService).findHearingForHearingId(HEARING_ID);
+        assertThat(actualHearingResults.payloadAsJsonObject().getJsonObject("hearing").getString("val"), is(dummyVal));
+        assertThat(actualHearingResults.payloadAsJsonObject().getString("sharedTime"), notNullValue());
+    }
+
+    @Test
+    public void shouldGetHearingDetailsForHearingIdAndHearingDate() {
+        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
+                .add(FIELD_HEARING_ID, HEARING_ID.toString())
+                .add(FIELD_HEARING_DATE, LocalDate.now().toString())
+                .build());
+
+        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
+                asList("Court Clerk", "Listing Officer")
+        );
+
+        HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
+        when(hearingService.findHearingForHearingIdAndHearingDate(HEARING_ID, LocalDate.now())).thenReturn(hearingResultsAdded);
+
+        final ApiHearing.Builder apiHearingBuilder = ApiHearing.apiHearing()
+                .withProsecutionCases(singletonList(templateApiProsecutionCase(templateProsecutionCase())))
+                .withType(ApiHearingType.apiHearingType().withDescription(hearingResultsAdded.getHearing().getType().getDescription()).build())
+                .withHearingDays(singletonList(ApiHearingDay.apiHearingDay().withSittingDay(hearingResultsAdded.getHearing().getHearingDays().get(0).getSittingDay()).build()))
+                .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
+
+        String dummyVal = randomUUID().toString();
+        final JsonObject jsonObject = Json.createObjectBuilder().add("val", dummyVal).build();
+
+        when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
+        when(objectToJsonObjectConverter.convert(apiHearingBuilder.build())).thenReturn(jsonObject);
+
+        final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsForHearingId(query);
+
+        verify(hearingService).findHearingForHearingIdAndHearingDate(HEARING_ID, LocalDate.now());
         assertThat(actualHearingResults.payloadAsJsonObject().getJsonObject("hearing").getString("val"), is(dummyVal));
         assertThat(actualHearingResults.payloadAsJsonObject().getString("sharedTime"), notNullValue());
     }
@@ -183,6 +219,7 @@ public class ResultsQueryViewTest {
 
         final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsForHearingId(query);
 
+        verify(hearingService).findHearingForHearingId(HEARING_ID);
         assertThat(actualHearingResults.payloadAsJsonObject(), is(notNullValue()));
     }
 
@@ -201,6 +238,7 @@ public class ResultsQueryViewTest {
 
         final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsInternal(query);
 
+        verify(hearingService).findHearingForHearingId(HEARING_ID);
         assertThat(actualHearingResults.payloadAsJsonObject(), is(notNullValue()));
     }
 

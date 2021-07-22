@@ -187,6 +187,18 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     }
 
+    public static void getHearingDetailsForHearingIdAndHearingDate(final UUID hearingId, final LocalDate hearingDate, final Matcher... matchers) {
+        final String hearingResultDetailsUrl = format("%s%s", BASE_URI,
+                getProperty("results.get-hearing-information-details-for-hearing-and-hearingdate",
+                        hearingId, hearingDate.toString()));
+
+        poll(requestParams(hearingResultDetailsUrl, CONTENT_TYPE_HEARING_INFORMATION_DETAILS).withHeader(USER_ID, getLoggedInUser()))
+                .until(status().is(OK),
+                        payload().isJson(allOf(matchers)
+                        ));
+
+    }
+
     public static void thenReturnsBadRequestForResultsSummaryWithoutFromDate() {
         final String resultSummaryUrlWithoutFromDateParameter = format("%s%s", BASE_URI, getProperty(GET_RESULTS_SUMMARY));
         final Response resultsSummaryResponse = new RestClient()

@@ -57,6 +57,21 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
         assertThat(hearingResultedDocument.getId().getHearingDay(), is(hearingDay3));
     }
 
+    @Test
+    public void shouldFindByHearingIdAndHearingDay(){
+        final UUID hearingId = UUID.randomUUID();
+        final LocalDate hearingDay1 = LocalDate.of(2018, 12, 04);
+        final LocalDate hearingDay2 = LocalDate.of(2018, 12, 05);
+        final LocalDate hearingDay3 = LocalDate.of(2018, 12, 10);
+        persistDocument(hearingId, hearingDay1);
+        persistDocument(hearingId, hearingDay2);
+        persistDocument(hearingId, hearingDay3);
+
+        final HearingResultedDocument hearingResultedDocument = hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDay2);
+
+        assertThat(hearingResultedDocument.getId().getHearingDay(), is(hearingDay2));
+    }
+
 
 
     private void persistDocument(final UUID hearingId, final LocalDate hearingDay) {

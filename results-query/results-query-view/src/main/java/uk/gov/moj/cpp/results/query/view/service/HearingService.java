@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.query.view.service;
 import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 
+import java.util.function.Supplier;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
@@ -120,18 +121,26 @@ public class HearingService {
     }
 
     public HearingResultsAdded findHearingForHearingId(final UUID hearingId ){
-        final HearingResultedDocument document = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId);
+        return findHearing(() -> hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId),
+                () -> String.format("findHearingForHearingId cant find hearing %s ", hearingId));
+    }
 
+    public HearingResultsAdded findHearingForHearingIdAndHearingDate(final UUID hearingId, final LocalDate hearingDate ){
+        return findHearing(() -> hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate),
+                () -> String.format("findHearingForHearingIdAndHearingDate cant find hearing %s and date %s ", hearingId, hearingDate));
+    }
+
+    private HearingResultsAdded findHearing(Supplier<HearingResultedDocument> documentFinder, Supplier<String> getLogString){
+        final HearingResultedDocument document = documentFinder.get();
         if (document == null) {
             if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(String.format("findHearingDetailsByHearingIdDefendantId cant find hearing %s ", hearingId));
+                LOGGER.error(getLogString.get());
             }
             return null;
         }
         final JsonObject jsonPayload = stringToJsonObjectConverter.convert(document.getPayload());
         return  jsonObjectToObjectConverter.convert(jsonPayload, HearingResultsAdded.class);
     }
-
 
 }
 
