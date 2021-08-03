@@ -97,45 +97,6 @@ public class HearingServiceTest {
     }
 
     @Test
-    public void shouldSearchAndFilterHearingByHearingIdAndHearingDate() {
-        final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
-        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
-        HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
-
-        final UUID hearingId = publicHearingResulted.getHearing().getId();
-        final LocalDate hearingDate = publicHearingResulted.getHearingDay().get();
-
-        JsonObject payloadJson = Mockito.mock(JsonObject.class);
-
-        when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
-        when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
-        when (hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate)).thenReturn(hearingResultedDocument);
-
-        HearingResultsAdded result = hearingService.findHearingForHearingIdAndHearingDate(hearingId, hearingDate);
-
-        assertThat(result.getHearing().getId(), is(hearingId));
-    }
-
-    @Test
-    public void shouldSearchAndFilterHearingByHearingId() {
-        final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
-        PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
-        HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
-
-        final UUID hearingId = publicHearingResulted.getHearing().getId();
-
-        JsonObject payloadJson = Mockito.mock(JsonObject.class);
-
-        when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
-        when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
-        when (hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId)).thenReturn(hearingResultedDocument);
-
-        HearingResultsAdded result = hearingService.findHearingForHearingId(hearingId);
-
-        assertThat(result.getHearing().getId(), is(hearingId));
-    }
-
-    @Test
     public void shouldFindHearingResultSummariesFromDate() throws Exception {
         final List<HearingResultedDocument> hearingResultedDocuments = templateHearingResultDocuments(2);
         final List<HearingResultsAdded> payloadObjects = new ArrayList<>();

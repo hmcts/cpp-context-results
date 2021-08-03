@@ -4,17 +4,14 @@ import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 
-
-import java.util.Optional;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.services.common.converter.LocalDates;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
+import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.HearingTransformer;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
@@ -41,8 +38,11 @@ public class ResultsQueryView {
     private static final String RESPONSE_NAME_HEARING_INFORMATION_DETAILS = "results.hearing-information-details";
     private static final String FIELD_DEFENDANT_ID = "defendantId";
     private static final String FIELD_HEARING_ID = "hearingId";
-    private static final String FIELD_HEARING_DATE = "hearingDate";
     private static final String FIELD_FROM_DATE = "fromDate";
+
+
+    @Inject
+    private Enveloper enveloper;
 
     @Inject
     private HearingService hearingService;
@@ -62,7 +62,8 @@ public class ResultsQueryView {
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingDetailsByHearingIdDefendantId(hearingId, defendantId);
         final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
 
-        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_DETAILS).build(), jsonResult);
+        return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_DETAILS)
+                .apply(jsonResult);
 
     }
 
@@ -71,8 +72,7 @@ public class ResultsQueryView {
         final JsonObject payload = query.payloadAsJsonObject();
         final LocalDate fromDate = LocalDates.from(payload.getString(FIELD_FROM_DATE));
         final HearingResultSummariesView view = hearingService.findHearingResultSummariesFromDate(fromDate);
-        final JsonObject jsonResult = objectToJsonObjectConverter.convert(view);
-        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_RESULTS_SUMMARY).build(), jsonResult);
+        return enveloper.withMetadataFrom(query, RESPONSE_NAME_RESULTS_SUMMARY).apply(view);
     }
 
 
@@ -80,13 +80,7 @@ public class ResultsQueryView {
     public JsonEnvelope getHearingDetailsForHearingId(final JsonEnvelope query) {
         final JsonObject payload = query.payloadAsJsonObject();
         final UUID hearingId = fromString(payload.getString(FIELD_HEARING_ID));
-        final String hearingDate = payload.getString(FIELD_HEARING_DATE, null);
-
-        final HearingResultsAdded hearingResultAdded = Optional.ofNullable(hearingDate)
-                .map(LocalDates::from)
-                .map(hDate -> hearingService.findHearingForHearingIdAndHearingDate(hearingId, hDate))
-                .orElseGet(() -> hearingService.findHearingForHearingId(hearingId));
-
+        final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
         if(hearingResultAdded != null){
             final ApiHearing hearing = hearingTransformer.hearing(hearingResultAdded.getHearing()).build();
             final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
@@ -94,10 +88,12 @@ public class ResultsQueryView {
                     .add("hearing", jsonValue)
                     .add("sharedTime", hearingResultAdded.getSharedTime().toString())
                     .build();
-            return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), jsonResult);
+            return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                    .apply(jsonResult);
         }
         LOGGER.warn("No records exists for Hearing id {}", hearingId);
-        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), createObjectBuilder().build());
+        return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                .apply(createObjectBuilder().build());
     }
 
     @Handles("results.get-hearing-details-internal")
@@ -107,9 +103,11 @@ public class ResultsQueryView {
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
         if (nonNull(hearingResultAdded)) {
             final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
-            return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), jsonResult);
+            return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                    .apply(jsonResult);
         }
         LOGGER.warn("No record exists for Hearing id {}", hearingId);
-        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), createObjectBuilder().build());
+        return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
+                .apply(createObjectBuilder().build());
     }
 }
