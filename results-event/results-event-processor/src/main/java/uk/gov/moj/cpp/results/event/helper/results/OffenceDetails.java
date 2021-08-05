@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,19 +36,19 @@ public class OffenceDetails {
 
     public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(CourtApplicationCase courtApplicationCase, final CourtApplication courtApplication) {
         final List<Offence> offences = getOffences(courtApplicationCase);
-        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences, new ArrayList<>(), new ArrayList<>());
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences);
         return buildOffenceForApplication(updatedOffences, courtApplication);
     }
 
 
     public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(CourtOrderOffence courtOrderOffence, CourtApplication courtApplication) {
-        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(Lists.newArrayList(courtOrderOffence.getOffence()), new ArrayList<>(), new ArrayList<>());
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(Lists.newArrayList(courtOrderOffence.getOffence()));
         return buildOffenceForApplication(updatedOffences, courtApplication);
     }
 
     public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant, final List<DefendantJudicialResult> hearingLevelResults) {
         final List<Offence> offences = defendant.getOffences();
-        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(offences, defendant.getDefendantCaseJudicialResults(), hearingLevelResults);
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(Optional.ofNullable(defendant.getMasterDefendantId()), offences, defendant.getDefendantCaseJudicialResults(), hearingLevelResults);
         return buildOffenceDetails(updatedOffences);
     }
 
