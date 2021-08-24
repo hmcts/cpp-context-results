@@ -26,6 +26,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(StagingEnforcementAcknowledgmentEventProcessor.class);
     private static final String ORIGINATOR = "originator";
     private static final String COURTS = "Courts";
+    private static final String ATCM = "ATCM";
     private static final String ACKNOWLEDGEMENT = "acknowledgement";
     private static final String REQUEST_ID = "requestId";
     private static final String ERROR_CODE = "errorCode";
@@ -44,12 +45,13 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         final JsonObject enforcementResponsePayload = event.payloadAsJsonObject();
         final Optional<String> originator = JsonObjects.getString(enforcementResponsePayload, ORIGINATOR);
 
-        if (originator.isPresent() && COURTS.equalsIgnoreCase(originator.get())) {
+        if (originator.isPresent()
+                && (COURTS.equalsIgnoreCase(originator.get()) || ATCM.equalsIgnoreCase(originator.get()))) {
             final Optional<JsonObject> acknowledgement = getJsonObject(enforcementResponsePayload, ACKNOWLEDGEMENT);
             final Optional<String> optionalRequestId = JsonObjects.getString(enforcementResponsePayload, REQUEST_ID);
             final String requestId = optionalRequestId.orElseThrow(() -> new IllegalArgumentException("RequestId is mandatory from enforcement"));
 
-            acknowledgement.map( ack -> JsonObjects.getString(ack, ERROR_CODE))
+            acknowledgement.map(ack -> JsonObjects.getString(ack, ERROR_CODE))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .ifPresent(error -> LOGGER.error("Acknowledgement has an error {} ", acknowledgement.get()));
@@ -57,7 +59,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
             acknowledgement.map(ack -> JsonObjects.getString(ack, ACCOUNT_NUMBER))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .ifPresent(accountNumber ->  updateGobAccount(event, accountNumber, requestId));
+                    .ifPresent(accountNumber -> updateGobAccount(event, accountNumber, requestId));
 
         }
     }

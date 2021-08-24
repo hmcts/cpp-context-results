@@ -68,6 +68,34 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
     }
 
     @Test
+    public void shouldUpdateGobAccountForATCM() {
+        final String requestId = randomUUID().toString();
+        final JsonObject enforcementResponsePayload = createObjectBuilder()
+                .add("originator", "ATCM")
+                .add("requestId", requestId)
+                .add("exportStatus", "ENFORCEMENT_ACKNOWLEDGED")
+                .add("acknowledgement", createObjectBuilder().add("accountNumber", "201366829").build())
+                .build();
+
+        final JsonEnvelope event = JsonEnvelope.envelopeFrom(
+                metadataWithRandomUUID("public.stagingenforcement.enforce-financial-imposition-acknowledgement"), enforcementResponsePayload);
+
+
+        stagingEnforcementAcknowledgmentEventProcessor.processAcknowledgement(event);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+        assertThat(allValues,
+                jsonEnvelope(
+                        metadata().withName("result.command.update-gob-account"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.accountNumber", is("201366829")),
+                                withJsonPath("$.correlationId", is(requestId))
+                        ))));
+    }
+
+    @Test
     public void shouldNotCallCommandWhenOriginatorIsNotCourts() {
         final String requestId = randomUUID().toString();
         final JsonObject enforcementResponsePayload = createObjectBuilder()
