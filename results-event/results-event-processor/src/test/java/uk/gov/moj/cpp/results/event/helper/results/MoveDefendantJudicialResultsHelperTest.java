@@ -1,39 +1,32 @@
 package uk.gov.moj.cpp.results.event.helper.results;
 
-import static com.google.common.collect.ImmutableList.of;
-import static com.google.common.collect.Lists.newArrayList;
-import static java.time.LocalDate.now;
-import static java.util.Collections.singletonList;
-import static java.util.UUID.randomUUID;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static uk.gov.justice.core.courts.Defendant.defendant;
-import static uk.gov.justice.core.courts.DefendantJudicialResult.defendantJudicialResult;
-import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
-import static uk.gov.justice.core.courts.JudicialResultCategory.ANCILLARY;
-import static uk.gov.justice.core.courts.JudicialResultCategory.FINAL;
-import static uk.gov.justice.core.courts.JudicialResultCategory.INTERMEDIARY;
-import static uk.gov.justice.core.courts.JudicialResultPrompt.judicialResultPrompt;
-import static uk.gov.justice.core.courts.Offence.offence;
-
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Test;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultCategory;
-import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.Offence;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
+import static com.google.common.collect.ImmutableList.of;
+import static java.time.LocalDate.now;
+import static java.util.Collections.emptyList;
+import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.hamcrest.core.IsNot.not;
+import static uk.gov.justice.core.courts.Defendant.defendant;
+import static uk.gov.justice.core.courts.DefendantJudicialResult.defendantJudicialResult;
+import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
+import static uk.gov.justice.core.courts.Offence.offence;
 
 public class MoveDefendantJudicialResultsHelperTest {
 
@@ -42,321 +35,380 @@ public class MoveDefendantJudicialResultsHelperTest {
     private static final String CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL = "case defendant " + randomAlphabetic(10);
     private static final String OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL = "offence " + randomAlphabetic(10);
 
-    MoveDefendantJudicialResultsHelper moveDefendantJudicialResultsHelper = new MoveDefendantJudicialResultsHelper();
+    private MoveDefendantJudicialResultsHelper moveDefendantJudicialResultsHelper = new MoveDefendantJudicialResultsHelper();
 
     @Test
-    public void testBuildOffenceAndDefendantJudicialResults() {
+    public void shouldReturnSameOffencesAndJRsWhenNoOtherJRsToMatch() {
 
-        final List<Offence> offenceDetailsList = getOffencesForNoneMatchWithNotInterimAndNotWithdrawn();
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+        UUID offenceId = randomUUID();
+        UUID offenceId2 = randomUUID();
+        final List<Offence> expectedOffenceList = of(buildOffence(offenceId), buildOffence(offenceId2));
+        List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(offenceId, randomUUID()));
+        final Defendant defendant = getDefendant(expectedOffenceList, caseDefendantJudicialResultList);
 
-        assertThat(updatedOffenceList.size(), is(3));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(1));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getCategory(), is(nullValue()));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getTerminatesOffenceProceedings(), is(true));
+        List<Offence> actualOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(defendant.getOffences());
 
-        assertThat(updatedOffenceList.get(1).getJudicialResults().size(), is(1));
-        assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getCategory(), is(INTERMEDIARY));
-        assertThat(updatedOffenceList.get(1).getJudicialResults().get(0).getTerminatesOffenceProceedings(), is(false));
+        assertThat(actualOffenceList, is(expectedOffenceList));
 
-        final DefendantJudicialResult relevantDefendantJudicialResult = defendantJudicialResults.stream().filter(djr -> djr.getMasterDefendantId() == masterDefendantId).findFirst().orElse(null);
-        assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(FINAL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getLabel(), is(relevantDefendantJudicialResult.getJudicialResult().getLabel()));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getCategory(), is(FINAL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(2).getTerminatesOffenceProceedings(), is(false));
+        assertActualContainsMatchingJudicialResults(actualOffenceList.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList()),
+                expectedOffenceList.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList()));
     }
 
     @Test
-    public void testBuildOffenceAndDefendantJudicialResults_NoOffenceLevelResultsPresent() {
+    public void shouldAddMatchingCaseDefendantLevelJRsToDefendantOffencesWhenOffenceIdMatch() {
+        UUID offenceId = randomUUID();
+        UUID offenceId2 = randomUUID();
+        UUID caseDefendantJudicialResultId = randomUUID();
 
-        final List<Offence> offenceDetailsList = singletonList(buildOffenceWithNoJudicialResult());
-        final Defendant defendant = getDefendant(offenceDetailsList);
+        final List<Offence> originalOffenceList = of(buildOffence(offenceId), buildOffence(offenceId2));
+        List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(offenceId, caseDefendantJudicialResultId));
+
+        final Defendant defendant = getDefendant(originalOffenceList, caseDefendantJudicialResultList);
         final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
 
-        assertThat(updatedOffenceList.size(), is(1));
-        final DefendantJudicialResult relevantDefendantJudicialResult = defendantJudicialResults.stream().filter(djr -> djr.getMasterDefendantId() == masterDefendantId).findFirst().orElse(null);
-        assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(2));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getLabel(), is(relevantDefendantJudicialResult.getJudicialResult().getLabel()));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(FINAL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantId), originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), emptyList());
+
+        assertThat(updatedOffences.size(), is(2));
+
+        Optional<List<JudicialResult>> actualOffenceJudicialResults = updatedOffences.stream().filter(o -> o.getId().equals(offenceId))
+                .map(Offence::getJudicialResults)
+                .findFirst();
+
+        assertThat(updatedOffences.size(), is(2));
+        assertThat(actualOffenceJudicialResults.get().stream()
+                .filter(jr -> jr.getJudicialResultId().equals(caseDefendantJudicialResultId))
+                .anyMatch(jr -> jr.equals(caseDefendantJudicialResultList.stream().filter(cdjr -> cdjr.getJudicialResultId().equals(jr.getJudicialResultId())).findFirst().get())), is(true));
     }
 
     @Test
-    public void testNoneMatchBuildOffenceAndDefendantJudicialResults() {
-        final List<Offence> offenceDetailsList = getOffencesForNoneMatch();
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+    public void shouldAddMultipleMatchingCaseDefendantLevelJRsToDefendantOffencesWhenOffenceIdsMatch() {
+        UUID offenceId = randomUUID();
 
-        assertThat(updatedOffenceList.size(), is(4));
-        assertThat(updatedOffenceList.get(3).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(3).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getCategory(), is(FINAL));
-        assertThat(updatedOffenceList.get(3).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
+        UUID offenceId1 = randomUUID();
+        UUID caseDefendantJudicialResultId1 = randomUUID();
+        UUID offenceId2 = randomUUID();
+        UUID caseDefendantJudicialResultId2 = randomUUID();
+
+        final List<Offence> originalOffenceList = of(buildOffence(offenceId), buildOffence(offenceId1), buildOffence(offenceId2));
+        List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(offenceId1, caseDefendantJudicialResultId1),
+                buildCaseDefendantJudicialResultList(offenceId2, caseDefendantJudicialResultId2));
+
+        final Defendant defendant = getDefendant(originalOffenceList, caseDefendantJudicialResultList);
+        final UUID masterDefendantId = defendant.getMasterDefendantId();
+
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantId), originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), emptyList());
+
+        assertThat(updatedOffences.size(), is(3));
+
+        List<JudicialResult> matchingJRs = updatedOffences.stream()
+                .filter(o -> o.getId().equals(offenceId1) || o.getId().equals(offenceId2))
+                .flatMap(o -> o.getJudicialResults().stream())
+                .collect(Collectors.toList());
+        assertThat(matchingJRs.size(), is(4));
+
+        assertThat(matchingJRs.stream()
+                .map(JudicialResult::getJudicialResultId)
+                .collect(Collectors.toList()), hasItems(caseDefendantJudicialResultId1, caseDefendantJudicialResultId2));
+        assertActualContainsMatchingJudicialResults(matchingJRs, caseDefendantJudicialResultList);
     }
 
     @Test
-    public void testNoneMatchBuildOffenceOrDefendantJudicialResults() {
+    public void shouldAddMatchingDefendantLevelJRsToDefendantOffencesWhenMasterDefendantIdAndOffenceIdMatch() {
 
-        final List<Offence> offenceDetailsList = getOffencesForNoneMatchWithNotInterimAndNotWithdrawn();
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+        UUID masterDefendantId = randomUUID();
+        UUID offenceId = randomUUID();
+        UUID offenceIdMatch = randomUUID();
+        final List<Offence> originalOffenceList = of(buildOffence(offenceId), buildOffence(offenceIdMatch));
+        final Defendant defendant = getDefendant(masterDefendantId, originalOffenceList, emptyList());
+        final List<DefendantJudicialResult> defendantJudicialResults = of(getDefendantLevelJudicialResult(masterDefendantId, offenceIdMatch));
 
-        assertThat(updatedOffenceList.size(), is(3));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(FINAL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantId),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+
+        assertThat(updatedOffences.size(), is(2));
+
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(3));
+        assertActualContainsMatchingJudicialResults(actualOffenceJudicialResults,
+                defendantJudicialResults.stream().map(DefendantJudicialResult::getJudicialResult).collect(Collectors.toList()));
     }
 
     @Test
-    public void when_NoneMatch_Success_shouldPreferOffence_With_NotInterim_And_NotWithrdawn() {
-        final List<Offence> offenceDetailsList = getOffencesToChooseFirstNoneMatchWithNotInterimAndNotWithdrawn();
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.noneMatchBuildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+    public void shouldAddMatchingMultipleDefendantLevelJRsToDefendantOffencesWhenMasterDefendantIdAndOffenceIdMatch() {
 
-        assertThat(updatedOffenceList.size(), is(3));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getCategory(), is(FINAL));
-        assertThat(updatedOffenceList.get(2).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(false));
+        UUID offenceIdMatch = randomUUID();
+        UUID masterDefendantIdMatch = randomUUID();
+
+        UUID offenceId1 = randomUUID();
+        UUID masterDefendantId1 = randomUUID();
+        UUID offenceId2 = randomUUID();
+        UUID masterDefendantId2 = randomUUID();
+
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch), buildOffence(offenceId1), buildOffence(offenceId2));
+        final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, emptyList());
+        final List<DefendantJudicialResult> defendantJudicialResults = of(getDefendantLevelJudicialResult(masterDefendantIdMatch, offenceIdMatch),
+                getDefendantLevelJudicialResult(masterDefendantId1, offenceId1),
+                getDefendantLevelJudicialResult(masterDefendantId2, offenceId2));
+
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantIdMatch),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+
+        assertThat(updatedOffences.size(), is(3));
+
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(4));
+        assertActualContainsMatchingJudicialResults(actualOffenceJudicialResults,
+                defendantJudicialResults.stream().filter(djr -> djr.getMasterDefendantId().equals(masterDefendantIdMatch))
+                        .map(DefendantJudicialResult::getJudicialResult).collect(Collectors.toList()));
     }
 
     @Test
-    public void testAllMatchBuildOffenceAndDefendantJudicialResults() {
-        final List<Offence> offenceDetailsList = getOffences(true, INTERMEDIARY);
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.allMatchBuildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+    public void shouldNotAddDefendantLevelJRsToDefendantOffencesWhenMasterDefendantIdDoNotMatchButOffenceIdMatch() {
 
-        assertThat(updatedOffenceList.size(), is(1));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(INTERMEDIARY));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(true));
+        UUID offenceIdMatch = randomUUID();
+        UUID masterDefendantIdMatch = randomUUID();
 
-    }
+        UUID masterDefendantId1 = randomUUID();
+        UUID masterDefendantId2 = randomUUID();
 
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch));
+        final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, emptyList());
+        final List<DefendantJudicialResult> defendantJudicialResults = of(getDefendantLevelJudicialResult(masterDefendantId1, offenceIdMatch),
+                getDefendantLevelJudicialResult(masterDefendantId2, offenceIdMatch));
 
-    @Test
-    public void testAllMatchBuildOffenceAndDefendantJudicialResultsWithAllINterimOrWithdrawn() {
-        final List<Offence> offenceDetailsList = getOffencesWithAllInterimOrWithdrawn();
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantIdMatch),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
 
-        assertThat(updatedOffenceList.size(), is(3));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(INTERMEDIARY));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(true));
+        assertThat(updatedOffences.size(), is(1));
 
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(1));
+        assertActualDoesNotContainMatchingJudicialResults(actualOffenceJudicialResults,
+                defendantJudicialResults.stream().map(DefendantJudicialResult::getJudicialResult).collect(Collectors.toList()));
     }
 
     @Test
-    public void testAllMatchBuildOffenceAndDefendantJudicialResultsWithAllWithdrawn() {
-        final List<Offence> offenceDetailsList = getOffencesWithAllWithdrawn();
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+    public void shouldNotAddDefendantLevelJRsToDefendantOffencesWhenMasterDefendantIdMatchButOffenceIdDoNotMatch() {
 
-        assertThat(updatedOffenceList.size(), is(3));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(3));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getCategory(), is(nullValue()));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(1).getTerminatesOffenceProceedings(), is(true));
+        UUID offenceIdMatch = randomUUID();
+        UUID masterDefendantIdMatch = randomUUID();
 
+        UUID offenceId1 = randomUUID();
+        UUID offenceId2 = randomUUID();
+
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch), buildOffence(randomUUID()));
+        final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, emptyList());
+        final List<DefendantJudicialResult> defendantJudicialResults = of(getDefendantLevelJudicialResult(masterDefendantIdMatch, offenceId1),
+                getDefendantLevelJudicialResult(masterDefendantIdMatch, offenceId2));
+
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantIdMatch),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+
+        assertThat(updatedOffences.size(), is(2));
+
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(2));
+        assertActualDoesNotContainMatchingJudicialResults(actualOffenceJudicialResults,
+                defendantJudicialResults.stream().map(DefendantJudicialResult::getJudicialResult).collect(Collectors.toList()));
     }
 
     @Test
-    public void testIfNoneMatchAndAllMatchConditionsBothAreNotExecutedThenReturnOriginalOffences() {
-        final List<Offence> offenceDetailsList = getOffences(null, null);
-        final Defendant defendant = getDefendant(offenceDetailsList);
-        final UUID masterDefendantId = defendant.getMasterDefendantId();
-        final List<DefendantJudicialResult> defendantJudicialResults = getDefendantLevelJudicialResults(masterDefendantId, randomUUID());
-        final List<Offence> updatedOffenceList = moveDefendantJudicialResultsHelper.buildOffenceAndDefendantJudicialResults(Optional.of(masterDefendantId), offenceDetailsList, defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+    public void shouldAddCaseDefendantAndDefendantLevelJRsToDefendantOffencesWhenMatch() {
 
-        assertThat(updatedOffenceList.size(), is(1));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().size(), is(1));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getLabel(), is(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getCategory(), is(nullValue()));
-        assertThat(updatedOffenceList.get(0).getJudicialResults().get(0).getTerminatesOffenceProceedings(), is(nullValue()));
+        UUID offenceIdCaseDefMatch = randomUUID();
+        UUID offenceIdDefMatch = randomUUID();
+        UUID masterDefendantIdMatch = randomUUID();
+        UUID caseDefendantJudicialResultId = randomUUID();
 
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdDefMatch), buildOffence(offenceIdCaseDefMatch));
+        List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(offenceIdCaseDefMatch, caseDefendantJudicialResultId));
+        final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, caseDefendantJudicialResultList);
+
+        final List<DefendantJudicialResult> defendantJudicialResults = of(getDefendantLevelJudicialResult(masterDefendantIdMatch, offenceIdDefMatch));
+
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantIdMatch),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), defendantJudicialResults);
+
+        assertThat(updatedOffences.size(), is(2));
+
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(4));
+
+        assertActualContainsMatchingJudicialResults(actualOffenceJudicialResults,
+                defendantJudicialResults.stream().map(DefendantJudicialResult::getJudicialResult).collect(Collectors.toList()));
+        assertActualContainsMatchingJudicialResults(actualOffenceJudicialResults, caseDefendantJudicialResultList);
     }
 
-    private Defendant getDefendant(final List<Offence> offenceDetails) {
-        return defendant().withMasterDefendantId(randomUUID())
-                .withOffences(offenceDetails)
-                .withDefendantCaseJudicialResults(buildCaseDefendantJudicialResultList())
+    @Test
+    public void shouldAddCaseDefendantLevelJRsWithNoOffenceToDefendantOffencesWhenMasterDefendantIdAndResultCategoryInterim() {
+
+        UUID offenceIdMatch = randomUUID();
+        UUID masterDefendantIdMatch = randomUUID();
+
+        UUID offenceId1 = randomUUID();
+        UUID offenceId2 = randomUUID();
+
+        List<JudicialResult> interimJR = buildOffenceJudicialResultList(offenceId2, JudicialResultCategory.INTERMEDIARY);
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch),
+                buildOffence(offenceId1),
+                buildOffenceWithJudicialResults(offenceId2, interimJR));
+
+        UUID ddchCaseDefendantJudicialResultId = randomUUID();
+        List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(null, ddchCaseDefendantJudicialResultId));
+
+        final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, caseDefendantJudicialResultList);
+
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantIdMatch),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), emptyList());
+
+        assertThat(updatedOffences.size(), is(3));
+
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(4));
+
+        List<JudicialResult> expectedOffenceJrs = updatedOffences.stream().filter(o -> o.getId().equals(offenceId2))
+                .map(Offence::getJudicialResults).findFirst().get();
+        assertThat(expectedOffenceJrs.size(), is(2));
+        assertThat(expectedOffenceJrs.stream().anyMatch(jrm -> jrm.equals(caseDefendantJudicialResultList.get(0))), is(true));
+    }
+
+    @Test
+    public void shouldAddCaseDefendantLevelJRsWithNoOffenceHavingInterimJrsToTheFirstDefendantOffences() {
+
+        UUID offenceIdMatch = randomUUID();
+        UUID masterDefendantIdMatch = randomUUID();
+
+        UUID offenceId1 = randomUUID();
+        UUID offenceId2 = randomUUID();
+
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch), buildOffence(offenceId1), buildOffence(offenceId2));
+        UUID ddchCaseDefendantJudicialResultId = randomUUID();
+        List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(null, ddchCaseDefendantJudicialResultId));
+        final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, caseDefendantJudicialResultList);
+
+        List<Offence> updatedOffences = moveDefendantJudicialResultsHelper.buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.of(masterDefendantIdMatch),
+                originalOffenceList,
+                defendant.getDefendantCaseJudicialResults(), emptyList());
+
+        assertThat(updatedOffences.size(), is(3));
+
+        List<JudicialResult> actualOffenceJudicialResults = updatedOffences.stream().flatMap(o -> o.getJudicialResults().stream()).collect(Collectors.toList());
+        assertThat(actualOffenceJudicialResults.size(), is(4));
+
+        List<JudicialResult> expectedOffenceJrs = updatedOffences.stream().findFirst().get().getJudicialResults();
+        assertThat(expectedOffenceJrs.size(), is(2));
+        assertThat(expectedOffenceJrs.stream().anyMatch(jrm -> jrm.equals(caseDefendantJudicialResultList.get(0))), is(true));
+    }
+
+    private void assertActualContainsMatchingJudicialResults(List<JudicialResult> actualJRs, List<JudicialResult> expectedJRs) {
+        assertThat(actualJRs.isEmpty(), is(false));
+        assertThat(expectedJRs.isEmpty(), is(false));
+        assertThat(actualJRs.stream().map(JudicialResult::getJudicialResultId).collect(Collectors.toList()),
+                hasItems(expectedJRs.stream().map(JudicialResult::getJudicialResultId).toArray()));
+    }
+
+    private void assertActualDoesNotContainMatchingJudicialResults(List<JudicialResult> actualJRs, List<JudicialResult> expectedJRs) {
+        assertThat(actualJRs.isEmpty(), is(false));
+        assertThat(expectedJRs.isEmpty(), is(false));
+        assertThat(actualJRs.stream().map(JudicialResult::getJudicialResultId).collect(Collectors.toList()),
+                not(hasItems(expectedJRs.stream().map(JudicialResult::getJudicialResultId).toArray())));
+    }
+
+    private Defendant getDefendant(List<Offence> originalOffenceList, List<JudicialResult> caseDefendantJudicialResultList) {
+        return defendant()
+                .withMasterDefendantId(randomUUID())
+                .withOffences(originalOffenceList)
+                .withDefendantCaseJudicialResults(caseDefendantJudicialResultList)
                 .build();
     }
 
-    private List<Offence> getOffences(Boolean terminatesOffenceProceedings, JudicialResultCategory category) {
-        return singletonList(buildOffence(terminatesOffenceProceedings, category));
+    private Defendant getDefendant(UUID masterDefendantId, List<Offence> originalOffenceList, List<JudicialResult> caseDefendantJudicialResultList) {
+        return defendant()
+                .withMasterDefendantId(masterDefendantId)
+                .withOffences(originalOffenceList)
+                .withDefendantCaseJudicialResults(caseDefendantJudicialResultList)
+                .build();
     }
 
-
-    private List<Offence> getOffencesWithAllWithdrawn() {
-        return newArrayList(buildOffence(true, null),
-                buildOffence(true, null),
-                buildOffence(true, null));
-    }
-
-    private List<Offence> getOffencesWithAllInterimOrWithdrawn() {
-        return newArrayList(buildOffence(true, INTERMEDIARY),
-                buildOffence(true, INTERMEDIARY),
-                buildOffence(true, INTERMEDIARY));
-    }
-
-    private List<Offence> getOffencesForNoneMatch() {
-        return newArrayList(buildOffence(true, INTERMEDIARY),
-                buildOffence(false, INTERMEDIARY),
-                buildOffence(true, FINAL),
-                buildOffence(false, FINAL));
-    }
-
-    private List<Offence> getOffencesForNoneMatchWithNotInterimAndNotWithdrawn() {
-        return newArrayList(buildOffence(true, null),
-                buildOffence(false, INTERMEDIARY),
-                buildOffence(false, FINAL));
-    }
-
-    private List<Offence> getOffencesToChooseFirstNoneMatchWithNotInterimAndNotWithdrawn() {
-        return newArrayList(buildOffence(true, ANCILLARY),
-                buildOffence(true, INTERMEDIARY),
-                buildOffence(false, FINAL));
-    }
-
-    private static List<JudicialResult> buildCaseDefendantJudicialResultList() {
-        return of(judicialResult()
-                .withJudicialResultId(randomUUID())
+    private static JudicialResult buildCaseDefendantJudicialResultList(UUID offenceId, UUID judicialResultId) {
+        return judicialResult()
+                .withJudicialResultId(judicialResultId)
                 .withCjsCode("cjsCode")
-                .withIsAdjournmentResult(false)
-                .withIsAvailableForCourtExtract(false)
-                .withIsConvictedResult(false)
-                .withIsFinancialResult(false)
+                .withOffenceId(offenceId)
                 .withLabel(CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL)
                 .withOrderedHearingId(ID)
                 .withOrderedDate(now())
                 .withRank(BigDecimal.ZERO)
                 .withWelshLabel("welshLabel")
-                .withJudicialResultPrompts(buildJudicialResultPrompt())
-                .build());
-    }
-
-    private Offence buildOffence(final Boolean terminatesOffenceProceedings, final JudicialResultCategory category) {
-        return offence()
-                .withId(randomUUID())
-                .withOffenceDefinitionId(randomUUID())
-                .withOffenceCode(OFFENCE_CODE)
-                .withJudicialResults(buildOffenceJudicialResultList(terminatesOffenceProceedings, category))
                 .build();
     }
 
-    private Offence buildOffenceWithNoJudicialResult() {
+    private Offence buildOffence(final UUID offenceId) {
         return offence()
-                .withId(randomUUID())
+                .withId(offenceId)
                 .withOffenceDefinitionId(randomUUID())
                 .withOffenceCode(OFFENCE_CODE)
+                .withJudicialResults(buildOffenceJudicialResultList(offenceId))
                 .build();
     }
 
-    private static List<JudicialResult> buildOffenceJudicialResultList(final Boolean terminatesOffenceProceedings, final JudicialResultCategory category) {
+    private Offence buildOffenceWithJudicialResults(final UUID offenceId, List<JudicialResult> judicialResults) {
+        return offence()
+                .withId(offenceId)
+                .withOffenceDefinitionId(randomUUID())
+                .withOffenceCode(OFFENCE_CODE)
+                .withJudicialResults(judicialResults)
+                .build();
+    }
+
+    private static List<JudicialResult> buildOffenceJudicialResultList(UUID offenceId) {
         return of(judicialResult()
+                .withOffenceId(offenceId)
                 .withJudicialResultId(randomUUID())
-                .withCategory(category)
                 .withCjsCode("cjsCode")
-                .withIsAdjournmentResult(false)
-                .withIsAvailableForCourtExtract(false)
-                .withIsConvictedResult(false)
-                .withIsFinancialResult(false)
                 .withLabel(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL)
                 .withOrderedHearingId(ID)
                 .withOrderedDate(now())
                 .withRank(BigDecimal.ZERO)
-                .withTerminatesOffenceProceedings(terminatesOffenceProceedings)
                 .withWelshLabel("welshLabel")
-                .withJudicialResultPrompts(buildJudicialResultPrompt())
                 .build());
     }
 
-    private static List<JudicialResultPrompt> buildJudicialResultPrompt() {
-        return of(judicialResultPrompt()
-                .withTotalPenaltyPoints(new BigDecimal(10))
-                .withIsFinancialImposition(true)
-                .withValue("value")
-                .withLabel("label")
+    private static List<JudicialResult> buildOffenceJudicialResultList(UUID offenceId, JudicialResultCategory judicialResultCategory) {
+        return of(judicialResult()
+                .withOffenceId(offenceId)
+                .withJudicialResultId(randomUUID())
+                .withCjsCode("cjsCode")
+                .withCategory(judicialResultCategory)
+                .withLabel(OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL)
+                .withOrderedHearingId(ID)
+                .withOrderedDate(now())
+                .withRank(BigDecimal.ZERO)
+                .withWelshLabel("welshLabel")
                 .build());
     }
 
-    private List<DefendantJudicialResult> getDefendantLevelJudicialResults(final UUID... masterDefendantIds) {
-        return Arrays.stream(masterDefendantIds).map(MoveDefendantJudicialResultsHelperTest::getDefendantLevelJudicialResult).collect(Collectors.toList());
-    }
-
-    private static DefendantJudicialResult getDefendantLevelJudicialResult(final UUID masterDefendantId) {
-        final String randomStringSuffix = randomAlphabetic(10);
+    private static DefendantJudicialResult getDefendantLevelJudicialResult(final UUID masterDefendantId, final UUID offenceId) {
 
         return defendantJudicialResult()
                 .withMasterDefendantId(masterDefendantId)
                 .withJudicialResult(judicialResult()
+                        .withOffenceId(offenceId)
                         .withJudicialResultId(randomUUID())
                         .withCategory(JudicialResultCategory.FINAL)
                         .withCjsCode(RandomStringUtils.randomNumeric(4))
-                        .withIsAdjournmentResult(false)
-                        .withIsAvailableForCourtExtract(false)
-                        .withIsConvictedResult(false)
-                        .withIsFinancialResult(false)
-                        .withLabel("defendant level label " + randomStringSuffix)
                         .withOrderedHearingId(ID)
                         .withOrderedDate(now())
                         .withRank(BigDecimal.ZERO)
-                        .withWelshLabel("result definition welsh label " + randomStringSuffix)
-                        .withResultText("result text " + randomStringSuffix)
-                        .withLifeDuration(false)
-                        .withTerminatesOffenceProceedings(Boolean.FALSE)
-                        .withLifeDuration(false)
-                        .withPublishedAsAPrompt(false)
-                        .withExcludedFromResults(false)
-                        .withAlwaysPublished(false)
-                        .withUrgent(false)
-                        .withD20(false)
-                        .withPublishedForNows(false)
-                        .withRollUpPrompts(false)
                         .withJudicialResultTypeId(randomUUID())
-                        .withJudicialResultPrompts(singletonList(judicialResultPrompt()
-                                .withIsFinancialImposition(true)
-                                .withJudicialResultPromptTypeId(randomUUID())
-                                .withCourtExtract("Y")
-                                .withLabel("prompt label " + randomStringSuffix)
-                                .withValue("value " + randomStringSuffix)
-                                .withTotalPenaltyPoints(BigDecimal.TEN)
-                                .build()))
                         .build())
                 .build();
     }

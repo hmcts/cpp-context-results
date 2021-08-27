@@ -46,9 +46,13 @@ public class OffenceDetails {
         return buildOffenceForApplication(updatedOffences, courtApplication);
     }
 
-    public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant, final List<DefendantJudicialResult> hearingLevelResults) {
-        final List<Offence> offences = defendant.getOffences();
-        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper().buildOffenceAndDefendantJudicialResults(Optional.ofNullable(defendant.getMasterDefendantId()), offences, defendant.getDefendantCaseJudicialResults(), hearingLevelResults);
+    public List<uk.gov.justice.core.courts.OffenceDetails> buildOffences(final Defendant defendant, final List<DefendantJudicialResult> defendantJudicialResults) {
+        final List<Offence> updatedOffences = new MoveDefendantJudicialResultsHelper()
+                .buildOffenceWithCaseDefendantAndDefendantLevelJudicialResults(Optional.ofNullable(defendant.getMasterDefendantId()),
+                        defendant.getOffences(),
+                        defendant.getDefendantCaseJudicialResults(),
+                        defendantJudicialResults);
+
         return buildOffenceDetails(updatedOffences);
     }
 
