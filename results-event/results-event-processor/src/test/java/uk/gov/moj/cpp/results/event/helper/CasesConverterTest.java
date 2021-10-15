@@ -52,6 +52,7 @@ import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.event.helper.results.CommonMethods;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
@@ -87,6 +88,7 @@ public class CasesConverterTest {
     private static final UUID NATIONALITY_ID = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
 
     private static final String NON_POLICE_URN_DEFAULT_VALUE = "00NP0000008";
+    private static final String POLICE_URN_DEFAULT_VALUE = "00PP0000008";
     private static final String NON_POLICE_ASN_DEFAULT_VALUE = "0800NP0100000000001H";
 
 
@@ -140,7 +142,7 @@ public class CasesConverterTest {
         if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
             assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
         } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-            assertThat(caseDetails.getUrn(), is("authorityReference"));
+            assertThat(caseDetails.getUrn(), is(NON_POLICE_URN_DEFAULT_VALUE));
         } else {
             assertThat(caseDetails.getUrn(), is("00PP0000008"));
         }
@@ -185,7 +187,7 @@ public class CasesConverterTest {
             if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
                 assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
             } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-                assertThat(caseDetails.getUrn(), is("authorityReference"));
+                assertThat(caseDetails.getUrn(), is(NON_POLICE_URN_DEFAULT_VALUE));
             } else {
                 assertThat(caseDetails.getUrn(), is("00PP0000008"));
             }
@@ -197,7 +199,6 @@ public class CasesConverterTest {
     @Test
     public void testConverter() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
-
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
@@ -210,18 +211,51 @@ public class CasesConverterTest {
             assertThat(prosecutionCaseOptional.isPresent(), is(true));
             final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
             final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
-            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
+            final boolean isUrnValid = CommonMethods.checkURNValidity(prosecutionCaseIdentifier.getCaseURN());
+            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) &&  isUrnValid) {
                 assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
             } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-                assertThat(caseDetails.getUrn(), is("authorityReference"));
+                assertThat(caseDetails.getUrn(), is(NON_POLICE_URN_DEFAULT_VALUE));
             } else {
-                assertThat(caseDetails.getUrn(), is("00PP0000008"));
+                assertThat(caseDetails.getUrn(), is("00NP0000008"));
             }
             final List<Defendant> defendantsFromRequest = prosecutionCase.getDefendants();
             final List<CaseDefendant> caseDetailsDefendants = caseDetails.getDefendants();
             assertThat(caseDetailsDefendants, hasSize(2));
             assertThat(caseDetailsDefendants, hasSize(defendantsFromRequest.size()));
             assertDefendants(defendantsFromRequest, caseDetailsDefendants, hearing);
+        }
+    }
+
+    @Test
+    public void testConverterWhenPoliceProsecutor() {
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+        when(referenceDataService.getPoliceFlag(anyString(), anyString())).thenReturn(true);
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+        final Hearing hearing = shareResultsMessage.getHearing();
+        final List<ProsecutionCase> prosecutionCases = hearing.getProsecutionCases();
+        when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
+        final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
+        assertThat(caseDetailsList, hasSize(2));
+        assertThat(caseDetailsList, hasSize(prosecutionCases.size()));
+        for (final CaseDetails caseDetails : caseDetailsList) {
+            final Optional<ProsecutionCase> prosecutionCaseOptional = prosecutionCases.stream().filter(p -> p.getId().equals(caseDetails.getCaseId())).findFirst();
+            assertThat(prosecutionCaseOptional.isPresent(), is(true));
+            final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
+            final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
+            final boolean isUrnValid = CommonMethods.checkURNValidity(prosecutionCaseIdentifier.getCaseURN());
+            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) ) {
+                assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
+            } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
+                assertThat(caseDetails.getUrn(), is(POLICE_URN_DEFAULT_VALUE));
+            } else {
+                assertThat(caseDetails.getUrn(), is(POLICE_URN_DEFAULT_VALUE));
+            }
+            final List<Defendant> defendantsFromRequest = prosecutionCase.getDefendants();
+            final List<CaseDefendant> caseDetailsDefendants = caseDetails.getDefendants();
+            assertThat(caseDetailsDefendants, hasSize(2));
+            assertThat(caseDetailsDefendants, hasSize(defendantsFromRequest.size()));
+
         }
     }
 
@@ -298,7 +332,7 @@ public class CasesConverterTest {
         if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
             assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
         } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-            assertThat(caseDetails.getUrn(), is("authorityReference"));
+            assertThat(caseDetails.getUrn(), is(NON_POLICE_URN_DEFAULT_VALUE));
         } else {
             assertThat(caseDetails.getUrn(), is(NON_POLICE_URN_DEFAULT_VALUE));
         }

@@ -6,6 +6,8 @@ import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static uk.gov.justice.core.courts.DefenceCounsel.defenceCounsel;
 import static uk.gov.justice.core.courts.Defendant.defendant;
 import static uk.gov.justice.core.courts.Hearing.hearing;
@@ -13,6 +15,7 @@ import static uk.gov.justice.core.courts.HearingDay.hearingDay;
 import static uk.gov.justice.core.courts.ProsecutionCaseIdentifier.prosecutionCaseIdentifier;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getPresentAtHearing;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getUrn;
+import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.isUrnFormatValid;
 
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.AttendanceType;
@@ -82,7 +85,7 @@ public class CommonMethodsTest {
                 .withProsecutionAuthorityReference("reference")
                 .withCaseURN("URN-12345678")
                 .build();
-        String result = getUrn(prosecutionCaseIdentifier, true);
+        String result = getUrn(prosecutionCaseIdentifier, true, false);
         assertThat(result, is("URN-12345678"));
     }
 
@@ -92,7 +95,7 @@ public class CommonMethodsTest {
                 .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
                 .build();
 
-        String result = getUrn(prosecutionCaseIdentifier, true);
+        final String result = getUrn(prosecutionCaseIdentifier, true, false);
         assertThat(result, is(POLICE_URN_DEFAULT_VALUE));
     }
 
@@ -102,9 +105,58 @@ public class CommonMethodsTest {
                 .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
                 .build();
 
-        String result = getUrn(prosecutionCaseIdentifier, false);
+        final String result = getUrn(prosecutionCaseIdentifier, false, false);
         assertThat(result, is(NON_POLICE_URN_DEFAULT_VALUE));
     }
+
+    @Test
+    public void testGetUrnWhenURNIsInValidForNonPoliceProsecutor() {
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCaseIdentifier()
+                .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
+                .withCaseURN("20PP12345212")
+                .build();
+
+        final String result = getUrn(prosecutionCaseIdentifier, false, false);
+        assertThat(result, is(NON_POLICE_URN_DEFAULT_VALUE));
+    }
+
+    @Test
+    public void testGetUrnWhenURNIsValidForNonPoliceProsecutor() {
+        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCaseIdentifier()
+                .withProsecutionAuthorityId(DEFAULT_DEFENDANT_ID1)
+                .withCaseURN("20PP1234521")
+                .build();
+
+        final String result = getUrn(prosecutionCaseIdentifier, false, true);
+        assertThat(result, is("20PP1234521"));
+    }
+
+    @Test
+    public void testValidUrn() {
+        final String urn = "20PP1234521";
+        assertTrue(isUrnFormatValid(urn));
+    }
+
+    @Test
+    public void testInValidUrnWrongLength() {
+        final String urn = "20PP12345212";
+        assertFalse(isUrnFormatValid(urn));
+        final String anotherURN = "sdfjshkfsdkfhksdhhsdkhfk";
+        assertFalse(isUrnFormatValid(anotherURN));
+    }
+
+    @Test
+    public void testInValidUrnWrongForceCode() {
+        final String urn = "201PP123452";
+        assertFalse(isUrnFormatValid(urn));
+    }
+
+    @Test
+    public void testInValidUrnWrongSubDivisionCode() {
+        final String urn = "20PPA123452";
+        assertFalse(isUrnFormatValid(urn));
+    }
+
 
     private Defendant buildDefendant() {
         return defendant().withId(DEFAULT_DEFENDANT_ID1).build();

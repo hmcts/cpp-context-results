@@ -5,6 +5,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.core.courts.CaseDetails.caseDetails;
+import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.checkURNValidity;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getUrn;
 
 import uk.gov.justice.core.courts.CaseDefendant;
@@ -53,10 +54,11 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
             final String originatingOrganisation = prosecutionCase.getOriginatingOrganisation();
             final String prosecutionAuthorityCode = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
             final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(originatingOrganisation, prosecutionAuthorityCode);
+            final boolean isURNValid = checkURNValidity(prosecutionCase.getProsecutionCaseIdentifier().getCaseURN());
 
             return caseDetails()
                     .withCaseId(prosecutionCase.getId())
-                    .withUrn(getUrn(prosecutionCase.getProsecutionCaseIdentifier(), isPoliceProsecutor))
+                    .withUrn(getUrn(prosecutionCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
                     .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(prosecutionCase.getDefendants(), source.getHearing(), isPoliceProsecutor))
                     .withProsecutionAuthorityCode(prosecutionAuthorityCode)
                     .withOriginatingOrganisation(originatingOrganisation)
@@ -73,7 +75,8 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                                 .map(courtApplicationCase -> {
                                             final String prosecutionAuthorityCode = courtApplicationCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
                                             final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(null, prosecutionAuthorityCode);
-                                            return buildCaseDetails(source, courtApplication, isPoliceProsecutor).apply(courtApplicationCase);
+                                            final boolean isURNValid = checkURNValidity(courtApplicationCase.getProsecutionCaseIdentifier().getCaseURN());
+                                            return buildCaseDetails(source, courtApplication, isPoliceProsecutor, isURNValid).apply(courtApplicationCase);
                                         }
                                 ).collect(toList())
                 ).flatMap(List::stream).collect(toList());
@@ -86,7 +89,8 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                     .map(courtOrderOffence -> {
                                 final String prosecutionAuthorityCode = courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
                                 final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(null, prosecutionAuthorityCode);
-                                return buildCaseDetailsFromCourtOrder(source, courtApplication, isPoliceProsecutor).apply(courtOrderOffence);
+                                final boolean isURNValid = checkURNValidity(courtOrderOffence.getProsecutionCaseIdentifier().getCaseURN());
+                                return buildCaseDetailsFromCourtOrder(source, courtApplication, isPoliceProsecutor, isURNValid).apply(courtOrderOffence);
                             }
                     ).collect(toList());
         }).flatMap(List::stream).collect(toList());
@@ -118,21 +122,21 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
         return mergedCaseDetails;
     }
 
-    private Function<CourtApplicationCase, CaseDetails> buildCaseDetails(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor) {
+    private Function<CourtApplicationCase, CaseDetails> buildCaseDetails(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
         return courtApplicationCase ->
                 caseDetails()
                         .withCaseId(courtApplicationCase.getProsecutionCaseId())
-                        .withUrn(getUrn(courtApplicationCase.getProsecutionCaseIdentifier(), isPoliceProsecutor))
+                        .withUrn(getUrn(courtApplicationCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
                         .withProsecutionAuthorityCode(courtApplicationCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode())
                         .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(courtApplicationCase, courtApplication, source.getHearing(), isPoliceProsecutor))
                         .build();
     }
 
-    private Function<CourtOrderOffence, CaseDetails> buildCaseDetailsFromCourtOrder(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor) {
+    private Function<CourtOrderOffence, CaseDetails> buildCaseDetailsFromCourtOrder(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
         return courtOrderOffence ->
                 caseDetails()
                         .withCaseId(courtOrderOffence.getProsecutionCaseId())
-                        .withUrn(getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor))
+                        .withUrn(getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
                         .withProsecutionAuthorityCode(courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode())
                         .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(courtOrderOffence, courtApplication, source.getHearing(), isPoliceProsecutor))
                         .build();
