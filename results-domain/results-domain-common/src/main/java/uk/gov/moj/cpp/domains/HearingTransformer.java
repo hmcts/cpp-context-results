@@ -757,6 +757,10 @@ public class HearingTransformer {
           apiOffence.withPlea(applicationPlea(offence.getPlea()).build());
         }
 
+        if(offence.getListingNumber() != null){
+            apiOffence.withListingNumber(offence.getListingNumber());
+        }
+
         return apiOffence
                 .withAquittalDate(offence.getAquittalDate())
                 .withArrestDate(offence.getArrestDate())

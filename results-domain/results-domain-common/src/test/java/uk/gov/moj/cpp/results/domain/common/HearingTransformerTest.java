@@ -65,6 +65,7 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
         final ApiOffence apiOffence = apiDefendant.getOffences().get(0);
         assertThat(apiOffence.getOffenceFacts().getVehicleCode(), nullValue());
+        assertThat(apiOffence.getListingNumber(), is(2));
         final ApiJudicialResult apiJudicialResult = apiOffence.getJudicialResults().get(0);
         assertThat(apiJudicialResult.getNextHearing().getHearingLanguage().name(), is(HearingLanguage.ENGLISH.name()));
         assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));

@@ -6,6 +6,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_APPLICATIONS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LISTING_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASES;
 
@@ -43,6 +44,8 @@ public class HearingHelperTest {
         assertThat(defendantJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(offenceJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(applicationJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
+        assertThat(offenceJson.getJsonNumber(LISTING_NUMBER).intValue(), is(2));
+
     }
 
     private static JsonObject getPayload() {

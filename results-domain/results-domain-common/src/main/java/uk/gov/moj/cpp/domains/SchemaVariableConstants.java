@@ -99,6 +99,7 @@ public final class SchemaVariableConstants {
     public static final String LAA_APPLN_REFERENCE = "laaApplnReference";
     public static final String CUSTODY_TIME_LIMIT = "custodyTimeLimit";
     public static final String PROCEEDINGS_CONCLUDED = "proceedingsConcluded" ;
+    public static final String LISTING_NUMBER = "listingNumber" ;
     public static final String PUBLISHED_FOR_NOWS = "publishedForNows";
     public static final String DEFENDANT_CASE_JUDICIAL_RESULTS = "defendantCaseJudicialResults";
     public static final String DEFENDANT_JUDICIAL_RESULTS = "defendantJudicialResults";

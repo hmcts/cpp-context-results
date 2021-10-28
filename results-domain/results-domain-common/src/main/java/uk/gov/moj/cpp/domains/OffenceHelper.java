@@ -25,6 +25,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_INTRODUCEAFTERIN
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAA_APPLN_REFERENCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAID_DATE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LISTING_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MODE_OF_TRIAL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MOT_REASON_CODE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MOT_REASON_DESCRIPTION;
@@ -185,6 +186,9 @@ public class OffenceHelper {
         }
         if (offence.containsKey(PROCEEDINGS_CONCLUDED)) {
             offenceBuilder.add(PROCEEDINGS_CONCLUDED, offence.getBoolean(PROCEEDINGS_CONCLUDED));
+        }
+        if (offence.containsKey(LISTING_NUMBER)) {
+            offenceBuilder.add(LISTING_NUMBER, offence.getInt(LISTING_NUMBER));
         }
         return offenceBuilder;
 

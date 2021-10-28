@@ -169,7 +169,8 @@
               "offenceFacts": {
                 "alcoholReadingAmount": 1,
                 "alcoholReadingMethodDescription": "desc"
-              }
+              },
+              "listingNumber": 2
             }
           ],
           "personDefendant": {
