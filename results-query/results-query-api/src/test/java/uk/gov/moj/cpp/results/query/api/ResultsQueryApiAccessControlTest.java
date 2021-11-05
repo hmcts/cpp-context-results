@@ -59,7 +59,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.CJSE.getName(), UserGroupType.LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName(), UserGroupType.SYSTEM_USERS.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName(), UserGroupType.SYSTEM_USERS.getName(), UserGroupType.MAGISTRATES.getName())))
                 .willReturn(true);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -111,7 +111,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.CJSE.getName(), UserGroupType.LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName(), UserGroupType.SYSTEM_USERS.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName(), UserGroupType.SYSTEM_USERS.getName(), UserGroupType.MAGISTRATES.getName())))
                 .willReturn(true);
 
         final ExecutionResults results = executeRulesWith(action);

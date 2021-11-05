@@ -29,6 +29,7 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     private static final String GROUP_LEGAL_ADVISERS = "Legal Advisers";
     private static final String GROUP_SYSTEM_USERS = "System Users";
     private static final String GROUP_COURT_ASSOCIATE = "Court Associate";
+    private static final String GROUP_MAGISTRATES = "Magistrates";
 
     protected Action action;
 
@@ -70,7 +71,7 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     }
 
     public enum ResultsRules {
-        ADD_HEARING_RESULT_RULE("results.add-hearing-result", asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE)),
+        ADD_HEARING_RESULT_RULE("results.add-hearing-result", asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE, GROUP_MAGISTRATES)),
         CREATE_RESULTS_RULE("results.api.create-results", ImmutableList.of(GROUP_SYSTEM_USERS));
 
         private final String actionName;

@@ -13,13 +13,14 @@ public final class RuleConstants {
     private static final String GROUP_LEGAL_ADVISERS = "Legal Advisers";
     private static final String GROUP_SYSTEM_USERS = "System Users";
     private static final String GROUP_COURT_ASSOCIATE = "Court Associate";
+    private static final String GROUP_MAGISTRATES = "Magistrates";
 
     private RuleConstants() {
         throw new IllegalAccessError("Utility class");
     }
 
     public static List<String> getUpdateNowsStatusActionGroups() {
-        return asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE);
+        return asList(GROUP_LISTING_OFFICERS, GROUP_COURT_CLERKS, GROUP_LEGAL_ADVISERS, GROUP_SYSTEM_USERS, GROUP_COURT_ASSOCIATE, GROUP_MAGISTRATES);
     }
 
     public static List<String> getPoliceResultsForDefendantGroups() {
@@ -31,7 +32,7 @@ public final class RuleConstants {
     }
 
     public static List<String> getTrackResultsActionGroups() {
-        return ImmutableList.of(GROUP_SYSTEM_USERS);
+        return ImmutableList.of(GROUP_SYSTEM_USERS, GROUP_MAGISTRATES);
     }
 }
 
