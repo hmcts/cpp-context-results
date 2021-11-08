@@ -4,7 +4,7 @@
     <parent>
         <artifactId>results-event</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>7.0.75-SNAPSHOT</version>
+        <version>7.0.74</version>
     </parent>
 
     <artifactId>results-event-listener</artifactId>
