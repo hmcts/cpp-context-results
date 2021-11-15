@@ -2,6 +2,13 @@ package uk.gov.moj.cpp.results.query.api;
 
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.given;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_ADMINISTRATORS;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_ASSOCIATE;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_CLERKS;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.CROWN_COURT_ADMINS;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.JUDICIARY;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.LEGAL_ADVISERS;
+import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.LISTING_OFFICERS;
 
 import uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
@@ -23,6 +30,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     private static final String ACTION_NAME_GET_RESULTS_SUMMARY = "results.get-results-summary";
     private static final String ACTION_NAME_GET_HEARING_DETAILS_FOR_HEARING_ID = "results.get-hearing-information-details-for-hearing";
     private static final String ACTION_NAME_GET_PROSECUTOR_RESULTS = "results.prosecutor-results";
+    private static final String ACTION_NAME_GET_DEFENDANTS_TRACKING_RESULTS = "results.get-defendants-tracking-status";
 
     @Mock
     private UserAndGroupProvider mockUserAndGroupProvider;
@@ -33,7 +41,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), COURT_CLERKS.getName(), COURT_ASSOCIATE.getName())))
                 .willReturn(true);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -46,7 +54,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), COURT_CLERKS.getName())))
                 .willReturn(false);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -57,7 +65,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     public void shouldAllowAuthorisedUserToGetHearingInformationDetails() {
         final Action action = createActionFor(ACTION_NAME_GET_HEARING_DETAILS_FOR_HEARING_ID);
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
-                asList(UserGroupType.CJSE.getName(), UserGroupType.LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
+                asList(UserGroupType.CJSE.getName(), LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
                         UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName(), UserGroupType.SYSTEM_USERS.getName(), UserGroupType.MAGISTRATES.getName())))
                 .willReturn(true);
@@ -70,9 +78,9 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     public void shouldNotAllowUnauthorisedUserToGetHearingInformationDetails() {
         final Action action = createActionFor(ACTION_NAME_GET_HEARING_DETAILS_FOR_HEARING_ID);
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
-                asList(UserGroupType.CJSE.getName(), UserGroupType.LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
+                asList(UserGroupType.CJSE.getName(), LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), COURT_CLERKS.getName())))
                 .willReturn(false);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -85,7 +93,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), COURT_CLERKS.getName(), COURT_ASSOCIATE.getName())))
                 .willReturn(true);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -98,7 +106,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), COURT_CLERKS.getName())))
                 .willReturn(false);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -109,7 +117,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     public void shouldAllowAuthorisedUserToGetResultDetails() {
         final Action action = createActionFor(ACTION_NAME_GET_RESULTS_DETAILS);
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
-                asList(UserGroupType.CJSE.getName(), UserGroupType.LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
+                asList(UserGroupType.CJSE.getName(), LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
                         UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName(), UserGroupType.SYSTEM_USERS.getName(), UserGroupType.MAGISTRATES.getName())))
                 .willReturn(true);
@@ -122,7 +130,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     public void shouldNotAllowUnauthorisedUserToGetResultDetails() {
         final Action action = createActionFor(ACTION_NAME_GET_RESULTS_DETAILS);
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
-                asList(UserGroupType.CJSE.getName(), UserGroupType.LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
+                asList(UserGroupType.CJSE.getName(), LEGAL_ADVISERS.getName(), UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
                         UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName())))
                 .willReturn(false);
@@ -137,7 +145,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
                 asList(UserGroupType.PRISON_ADMIN.getName(), UserGroupType.PROBATION_ADMIN.getName(), UserGroupType.POLICE_ADMIN.getName(),
                         UserGroupType.VICTIMS_AND_WITNESS_CARE_ADMIN.getName(), UserGroupType.YOUTH_OFFENDING_SERVICE_ADMIN.getName(),
-                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), UserGroupType.COURT_CLERKS.getName(), UserGroupType.COURT_ASSOCIATE.getName())))
+                        UserGroupType.LEGAL_AID_AGENCY_ADMIN.getName(), COURT_CLERKS.getName(), COURT_ASSOCIATE.getName())))
                 .willReturn(true);
 
         final ExecutionResults results = executeRulesWith(action);
@@ -173,6 +181,29 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action, UserGroupType.SYSTEM_USERS.getName()))
                 .willReturn(false);
 
+        final ExecutionResults results = executeRulesWith(action);
+        assertFailureOutcome(results);
+    }
+
+    @Test
+    public void shouldAllowAuthorisedUserToGetDefendantsTrackingStatusResults() {
+        final Action action = createActionFor(ACTION_NAME_GET_DEFENDANTS_TRACKING_RESULTS);
+        given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
+                asList(COURT_ADMINISTRATORS.getName(), CROWN_COURT_ADMINS.getName(), LISTING_OFFICERS.getName(),
+                        JUDICIARY.getName(), LEGAL_ADVISERS.getName(), COURT_ASSOCIATE.getName(), COURT_CLERKS.getName())))
+                .willReturn(true);
+
+        final ExecutionResults results = executeRulesWith(action);
+        assertFailureOutcome(results);
+    }
+
+    @Test
+    public void shouldNotAllowUnAuthorisedUserToGetDefendantsTrackingStatusResults() {
+        final Action action = createActionFor(ACTION_NAME_GET_DEFENDANTS_TRACKING_RESULTS);
+        given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action,
+                asList(COURT_ADMINISTRATORS.getName(), CROWN_COURT_ADMINS.getName(), LISTING_OFFICERS.getName(),
+                        JUDICIARY.getName(), LEGAL_ADVISERS.getName(), COURT_ASSOCIATE.getName(), COURT_CLERKS.getName())))
+                .willReturn(false);
         final ExecutionResults results = executeRulesWith(action);
         assertFailureOutcome(results);
     }

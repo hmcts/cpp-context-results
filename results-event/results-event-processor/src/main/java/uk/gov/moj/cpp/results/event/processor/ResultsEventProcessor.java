@@ -1,7 +1,9 @@
 package uk.gov.moj.cpp.results.event.processor;
 
 import static java.util.Comparator.comparing;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
+import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
@@ -12,6 +14,7 @@ import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 
 import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -41,11 +44,13 @@ import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.json.JsonArray;
@@ -67,6 +72,7 @@ public class ResultsEventProcessor {
     private static final String APPLICATION_ID = "applicationId";
     private static final String HEARING_ID = "id";
     private static final String HEARING = "hearing";
+    private static final String RESULTS_COMMAND_UPDATE_DEFENDANT_TRACKING_STATUS = "results.command.update-defendant-tracking-status";
     private static final String RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED = "results.case-or-application-ejected";
     private static final String CACHE_KEY_SUFFIX = "_result_";
     private static final String CACHE_KEY_SJP_PREFIX = "SJP_";
@@ -170,12 +176,16 @@ public class ResultsEventProcessor {
     @Handles("results.hearing-results-added")
     public void hearingResultAdded(final JsonEnvelope resultsAddedEvent) {
         processResultsAdded(resultsAddedEvent, "results.create-results", Optional.empty());
+
+        processDefendantTrackingStatus(resultsAddedEvent);
     }
 
     @Handles("results.events.hearing-results-added-for-day")
     public void hearingResultAddedForDay(final JsonEnvelope resultsAddedForDayEvent) {
         final LocalDate hearingDay = LocalDate.parse(resultsAddedForDayEvent.payloadAsJsonObject().getString("hearingDay"), DateTimeFormatter.ISO_LOCAL_DATE);
         processResultsAdded(resultsAddedForDayEvent, "results.command.create-results-for-day", Optional.of(hearingDay));
+
+        processDefendantTrackingStatus(resultsAddedForDayEvent);
     }
 
     @Handles("results.event.police-result-generated")
@@ -202,7 +212,7 @@ public class ResultsEventProcessor {
         }
 
         //generate and upload pdf
-        documentGeneratorService.generateNcesDocument(sender, envelope, userId , materialId);
+        documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
 
         final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
 
@@ -267,8 +277,7 @@ public class ResultsEventProcessor {
         try {
             LOGGER.info("Adding Hearing Resulted for hearing {} and eventType {} to EventGrid", hearingId, eventType);
             userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId, eventType));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
         }
     }
@@ -308,6 +317,39 @@ public class ResultsEventProcessor {
             final JsonObject payload = resultJsonPayload.build();
             sender.sendAsAdmin(envelopeFrom(metadata, payload));
         }
+    }
+
+    /**
+     * Processes Defendant Tracking Status, to track the Electronic Monitoring or Warrant of Arrest for the defendant.
+     * Calls "results.command.update-defendant-tracking-status" per defendant
+     *
+     * @param envelope - the event being processed.
+     */
+    @SuppressWarnings("squid:S1481")
+    private void processDefendantTrackingStatus(final JsonEnvelope envelope) {
+
+        final Hearing resultedHearing = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject().getJsonObject(HEARING),
+                Hearing.class);
+
+
+        ofNullable(resultedHearing.getProsecutionCases()).map(Collection::stream).orElseGet(Stream::empty).collect(toList()).forEach(prosecutionCase ->
+
+                prosecutionCase.getDefendants().forEach(defendant -> {
+                    final JsonObjectBuilder defendantBuilder = createObjectBuilder().add("defendantId", defendant.getId().toString());
+                    final JsonArrayBuilder offencesBuilder = createArrayBuilder();
+                    defendant.getOffences().forEach(offence ->
+                            offencesBuilder.add(objectToJsonObjectConverter.convert(offence)));
+                    defendantBuilder.add("offences", offencesBuilder);
+
+                    final Metadata metadata = metadataFrom(envelope.metadata())
+                            .withName(RESULTS_COMMAND_UPDATE_DEFENDANT_TRACKING_STATUS)
+                            .build();
+                    final JsonObject payload = defendantBuilder.build();
+                    sender.sendAsAdmin(envelopeFrom(metadata, payload));
+
+                })
+        );
+
     }
 
     private Notification buildNotification(final PoliceNotificationRequested policeNotificationRequested) {

@@ -100,3 +100,13 @@ rule "results - Query - API - results.prosecutor-results"
   then
     $outcome.setSuccess(true);
 end
+
+rule "results - Query - API - results.get-defendants-tracking-status"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.get-defendants-tracking-status");
+       eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, defendantsTrackingStatusGroups()));
+
+  then
+    $outcome.setSuccess(true);
+end

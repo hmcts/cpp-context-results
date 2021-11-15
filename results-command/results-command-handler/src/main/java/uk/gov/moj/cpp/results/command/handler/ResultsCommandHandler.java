@@ -2,12 +2,16 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
 import static java.util.UUID.fromString;
+import static javax.json.JsonValue.NULL;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
+import static uk.gov.justice.services.core.enveloper.Enveloper.toEnvelopeWithMetadataFrom;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -19,8 +23,11 @@ import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.eventsourcing.source.core.EventSource;
 import uk.gov.justice.services.eventsourcing.source.core.EventStream;
 import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
+import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.results.defendanttracking.UpdateDefendantTracking;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 
@@ -196,6 +203,27 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         return originatingOrganisation;
     }
 
+    @Handles("results.command.update-defendant-tracking-status")
+    public void updateDefendantTrackingStatus(final JsonEnvelope envelope) throws EventStreamException {
+
+        final JsonObject defendantTrackingPayload = envelope.payloadAsJsonObject();
+        final UpdateDefendantTracking updateDefendantTracking = jsonObjectToObjectConverter.convert(defendantTrackingPayload, UpdateDefendantTracking.class);
+        final UUID defendantId = updateDefendantTracking.getDefendantId();
+
+        LOGGER.info("results.command.update-defendant-tracking-status received for defendant: {}", defendantId);
+
+        final List<Offence> offenceList = updateDefendantTracking.getOffences();
+
+        final EventStream eventStream = eventSource.getStreamById(defendantId);
+        final DefendantAggregate aggregate = aggregateService.get(eventStream, DefendantAggregate.class);
+
+        final Stream<Object> event = aggregate.updateDefendantTrackingStatus(defendantId, offenceList);
+
+        appendEventsToStream(envelope, eventStream, event);
+
+
+    }
+
     @Handles("results.command.track-results")
     public void trackResult(final JsonEnvelope envelope) throws EventStreamException {
         final HearingFinancialResultRequest hearingFinancialResultRequest = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), HearingFinancialResultRequest.class);
@@ -217,6 +245,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     private String getEmailAddress(JsonObject prosecutorJson) {
         return prosecutorJson.containsKey("contactEmailAddress") ? prosecutorJson.getString("contactEmailAddress") : "";
+    }
+
+    private void appendEventsToStream(final Envelope<?> envelope, final EventStream eventStream, final Stream<Object> events) throws EventStreamException {
+        final JsonEnvelope jsonEnvelope = envelopeFrom(envelope.metadata(), NULL);
+        eventStream.append(events.map(toEnvelopeWithMetadataFrom(jsonEnvelope)));
     }
 
 }

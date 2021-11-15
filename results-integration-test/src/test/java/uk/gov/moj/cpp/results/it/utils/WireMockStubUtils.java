@@ -80,6 +80,10 @@ public class WireMockStubUtils {
         setupUserWithGroup(userId, "stub-data/get-groups-prison-admin.json");
     }
 
+    public static void setupUserAsCourtAdminGroup(final UUID userId) {
+        setupUserWithGroup(userId, "stub-data/get-groups-court-admin.json");
+    }
+
     private static void setupUserWithGroup(final UUID userId, final String userGroupFile) {
         stubPingFor("usersgroups-service");
 

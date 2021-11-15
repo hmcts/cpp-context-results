@@ -46,6 +46,7 @@ import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.SjpCaseRejectedEvent;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
+import uk.gov.justice.results.courts.DefendantTrackingStatusUpdated;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -57,6 +58,7 @@ import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamEx
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -64,6 +66,7 @@ import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
@@ -106,6 +109,7 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_7 = "json/results.create-results-crown-example.json";
     private static final String TEMPLATE_PAYLOAD_8 = "json/results.update-results-crown-example-wo-origorganisation.json";
     private static final String TEMPLATE_PAYLOAD_9 = "json/results.track-results-example.json";
+    private static final String TEMPLATE_PAYLOAD_10 = "json/results.command.update-defendant-tracking-status.json";
     private static final String PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION = "json/results.create-results-magistrates-example_with_originating_organisation.json";
     private static final String EMAIL = "mail@mail.com";
     private static UUID metadataId;
@@ -130,7 +134,8 @@ public class ResultsCommandHandlerTest {
             HearingResultsAddedForDay.class,
             HearingFinancialResultsTracked.class,
             MarkedAggregateSendEmailWhenAccountReceived.class,
-            NcesEmailNotificationRequested.class
+            NcesEmailNotificationRequested.class,
+            DefendantTrackingStatusUpdated.class
     );
 
     @Captor
@@ -141,6 +146,9 @@ public class ResultsCommandHandlerTest {
 
     @InjectMocks
     private HearingFinancialResultsAggregate hearingFinancialResultsAggregateSpy;
+
+    @InjectMocks
+    private DefendantAggregate defendantAggregate;
 
     @Mock
     private EventStream eventStream;
@@ -226,7 +234,7 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.hearing-results-added"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.hearing.id", is(shareResultsWithMagistratesMessage.getHearing().getId().toString()))
+                                        withJsonPath("$.hearing.id", is(shareResultsWithMagistratesMessage.getHearing().getId().toString()))
                                 )
                         ))));
     }
@@ -251,8 +259,8 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.events.hearing-results-added-for-day"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.hearing.id", is(hearingId.toString())),
-                                withJsonPath("$.hearingDay", is(hearingDay.toString()))
+                                        withJsonPath("$.hearing.id", is(hearingId.toString())),
+                                        withJsonPath("$.hearingDay", is(hearingDay.toString()))
                                 )
                         ))));
 
@@ -377,20 +385,20 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.id", is(payload.getJsonObject("session").getString("id")))
+                                        withJsonPath("$.id", is(payload.getJsonObject("session").getString("id")))
                                 )
                         )),
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.case-added-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd"))
                                 )
                         )),
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.defendant-rejected-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
-                                withJsonPath("$.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                        withJsonPath("$.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
                                 )
                         ))
         ));
@@ -426,7 +434,7 @@ public class ResultsCommandHandlerTest {
         verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION);
     }
 
-  @Test
+    @Test
     public void shouldCreateResultCommandWhenOriginatingOrganisationStartsWithZeroForSurreyPolice() throws EventStreamException {
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder()
                 .add("spiOutFlag", true)
@@ -478,7 +486,7 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.sjp-case-rejected-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.id", is(envelope.payloadAsJsonObject().getJsonArray("cases").getJsonObject(0).getString("caseId")))
+                                        withJsonPath("$.id", is(envelope.payloadAsJsonObject().getJsonArray("cases").getJsonObject(0).getString("caseId")))
                                 )
                         ))
         ));
@@ -525,6 +533,21 @@ public class ResultsCommandHandlerTest {
         verify(resultsAggregateSpy).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
         verify(resultsAggregateSpy).handleCase(eq(caseDetails));
         verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(Optional.empty()));
+    }
+
+    @Test
+    public void shouldUpdateDefendantTrackingStatus() throws EventStreamException, IOException {
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_10);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.update-defendant-tracking-status.json"), payload);
+
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(defendantAggregate);
+
+        resultsCommandHandler.updateDefendantTrackingStatus(envelope);
+        verify(eventStream).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+        assertThat(jsonEnvelopeList.size(), is(1));
+        assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.events.defendant-tracking-status-updated"));
+
     }
 
     @Test
@@ -576,15 +599,15 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.defendant-updated-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
-                                withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                        withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
                                 )
                         )),
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.police-result-generated"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
-                                withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                        withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
                                 )
                         ))
         ));
@@ -625,15 +648,15 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.defendant-updated-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
-                                withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                        withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
                                 )
                         )),
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.police-notification-requested"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.urn", is("123445")),
-                                withJsonPath("$.policeEmailAddress", is(EMAIL))
+                                        withJsonPath("$.urn", is("123445")),
+                                        withJsonPath("$.policeEmailAddress", is(EMAIL))
                                 )
                         ))
         ));
@@ -674,8 +697,8 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.defendant-updated-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
-                                withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                        withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
                                 )
                         ))
         ));
@@ -735,15 +758,15 @@ public class ResultsCommandHandlerTest {
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.defendant-updated-event"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
-                                withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
+                                        withJsonPath("$.caseId", is("bfd697f8-31ae-4e25-8654-4a10b812f5dd")),
+                                        withJsonPath("$.defendant.defendantId", is("1db6bdbb-a9ac-435f-acda-b735971daa74"))
                                 )
                         )),
                 jsonEnvelope(
                         withMetadataEnvelopedFrom(envelope).withName("results.event.police-notification-requested"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.urn", is("123445")),
-                                withJsonPath("$.policeEmailAddress", is(EMAIL))
+                                        withJsonPath("$.urn", is("123445")),
+                                        withJsonPath("$.policeEmailAddress", is(EMAIL))
                                 )
                         ))
         ));

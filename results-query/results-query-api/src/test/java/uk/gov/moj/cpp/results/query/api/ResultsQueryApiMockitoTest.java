@@ -66,4 +66,15 @@ public class ResultsQueryApiMockitoTest {
 
         assertThat(resultsQueryApi.handleGetResultsSummary(query), is(result));
     }
+
+    @Test
+    public void shouldGetResultsForDefendantsTrackingStatusFromQueryView() throws Exception {
+
+        final JsonEnvelope query = mock(JsonEnvelope.class);
+        final JsonEnvelope result = mock(JsonEnvelope.class);
+
+        when(resultsQueryView.getDefendantsTrackingStatus(query)).thenReturn(result);
+
+        assertThat(resultsQueryApi.handleDefendantsTrackingStatus(query), is(result));
+    }
 }

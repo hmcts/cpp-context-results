@@ -1,0 +1,40 @@
+{
+  "defendants": [
+    {
+      "defendantId": "6ac98e9c-66b2-4363-8a78-641dbec8bbd5",
+      "trackingStatus": [
+        {
+          "offenceId": "6ac98e9c-66b2-4363-8a78-641dbec8bbd5",
+          "emStatus": true,
+          "emLastModifiedTime": "2015-01-12T05:27:17.210Z",
+          "woaStatus": false,
+        },
+        {
+          "offenceId": "6ac98e9c-66b2-4363-8a78-641dbec8bbd6",
+          "emStatus": true,
+          "emLastModifiedTime": "2015-01-12T05:27:17.210Z",
+          "woaStatus": true,
+          "woaLastModifiedTime": "2015-01-12T05:27:19.210Z"
+        }
+      ]
+    },
+    {
+      "defendantId": "2ac98e9c-66b2-4363-8a78-641dbec8bbd5",
+      "trackingStatus": [
+        {
+          "offenceId": "2ac98e9c-66b2-4363-8a78-641dbec8bbd5",
+          "emStatus": true,
+          "emLastModifiedTime": "2015-01-12T05:27:17.210Z",
+          "woaStatus": true,
+          "woaLastModifiedTime": "2015-01-12T05:27:19.210Z"
+        },
+        {
+          "offenceId": "6ac98e9c-66b2-4363-8a78-641dbec8bbd6",
+          "emStatus": "true",
+          "emLastModifiedTime": "2015-01-12T05:27:19.210Z",
+          "woaStatus": false
+        }
+      ]
+    }
+  ]
+}

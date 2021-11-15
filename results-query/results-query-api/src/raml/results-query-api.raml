@@ -185,3 +185,25 @@ protocols: [ HTTP, HTTPS ]
                   application/vnd.results.prosecutor-results+json:
                     example:  !include json/results.prosecutor-results.json
                     schema:  !include json/schema/results.prosecutor-results.json
+
+/defendants:
+  get:
+      description: |
+        Return all results for active defendants tracking status like under warrant or under electronic monitoring
+        ...
+        (mapping):
+            responseType: application/vnd.results.get-defendants-tracking-status+json
+            name: results.get-defendants-tracking-status
+        ...
+      queryParameters:
+          defendantIds:
+            description: comma separated list of defendant ids
+            type: string
+            required: true
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.get-defendants-tracking-status+json:
+                    example:  !include json/results.get-defendants-tracking-status.json
+                    schema:  !include json/schema/results.get-defendants-tracking-status.json

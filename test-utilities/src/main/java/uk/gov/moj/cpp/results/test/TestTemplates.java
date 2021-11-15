@@ -87,6 +87,10 @@ public class TestTemplates {
     public static final String HEARING_LABEL = "hearingLabel";
     public static final String WELSH_LABEL = "welshLabel";
     private static final String TITLE = "Baroness";
+    public static final String RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE = "some result definition,ELMON ,some other result definition";
+    public static final String RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE = "some result definition,ELmonEND,some other result definition";
+    public static final String RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON = "some result definition,Warrants of arrest ,some other result definition";
+    public static final String RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF = "some result definition,WOAEXTEND,some other result definition";
     private static final String RESULT_TEXT = "resultText";
     private static final String CJS_CODE = "cjsCode";
     private static final String LINKED_CASE_ID = "cccc1111-1e20-4c21-916a-81a6c90239e5";
@@ -522,7 +526,7 @@ public class TestTemplates {
     private static List<Offence> getOffenceList(final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode) {
 
         final Offence.Builder builder = Offence.offence();
-        builder.withId(ID)
+        builder.withId(randomUUID())
                 .withOffenceDefinitionId(randomUUID())
                 .withOffenceCode("offenceCode")
                 .withOffenceTitle(STRING.next())

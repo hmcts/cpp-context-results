@@ -34,4 +34,9 @@ public class ResultsQueryApi {
     public JsonEnvelope handleGetResultsDetailsInternal(final JsonEnvelope query) {
         return resultsQueryView.getHearingDetailsInternal(query);
     }
+
+    @Handles("results.get-defendants-tracking-status")
+    public JsonEnvelope handleDefendantsTrackingStatus(final JsonEnvelope query) {
+        return resultsQueryView.getDefendantsTrackingStatus(query);
+    }
 }

@@ -25,6 +25,7 @@ import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.trackResultsCommand
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.RETRIEVE_TIMEOUT;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupAsSystemUser;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsCourtAdminGroup;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
@@ -70,6 +71,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String CONTENT_TYPE_HEARING_INFORMATION_DETAILS = "application/vnd.results.hearing-information-details+json";
     private static final String CONTENT_TYPE_HEARING_DETAILS_INTERNAL = "application/vnd.results.hearing-details-internal+json";
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
+    private static final String CONTENT_TYPE_DEFENDANT_TRACKING_STATUS = "application/vnd.results.get-defendants-tracking-status+json";
     private static final String RESULTS_EVENT_SESSION_ADDED_EVENT = "results.event.session-added-event";
     private static final String RESULTS_EVENT_CASE_REJECTED_EVENT = "results.event.sjp-case-rejected-event";
     private static final String RESULTS_EVENT_CASE_ADDED_EVENT = "results.event.case-added-event";
@@ -112,6 +114,11 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     public static void whenPrisonAdminTriesToViewResultsForThePerson(final UUID userId) {
         setupUserAsPrisonAdminGroup(userId);
+        setLoggedInUser(userId);
+    }
+
+    public static void setLoggedInUserAsCourtAdmin(final UUID userId) {
+        setupUserAsCourtAdminGroup(userId);
         setLoggedInUser(userId);
     }
 
@@ -187,6 +194,16 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     }
 
+    public static void getDefendantTrackingStatus(final String defendantIds, final Matcher... matcher) {
+        final String trackingStatusResultUrl = format("%s%s", BASE_URI,
+                getProperty("results.get-defendants-tracking-status", defendantIds));
+
+        poll(requestParams(trackingStatusResultUrl, CONTENT_TYPE_DEFENDANT_TRACKING_STATUS).withHeader(USER_ID, getLoggedInUser()))
+                .until(print(), status().is(OK), payload().isJson(allOf(matcher))
+                );
+
+    }
+
     public static void thenReturnsBadRequestForResultsSummaryWithoutFromDate() {
         final String resultSummaryUrlWithoutFromDateParameter = format("%s%s", BASE_URI, getProperty(GET_RESULTS_SUMMARY));
         final Response resultsSummaryResponse = new RestClient()
@@ -253,7 +270,6 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             messageProducer.sendMessage(PUBLIC_EVENT_HEARING_RESULTED_V2, payload);
         }
     }
-
 
 
     public static void verifyPrivateEventsForPoliceGenerateResultsForDefendant() throws JMSException {
@@ -401,7 +417,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         createResultsCommand(getPayload(CREATE_RESULTS_TEMPLATE_PAYLOAD).replace("SESSION_ID", randomUUID().toString()));
     }
 
-    public static void whenResultsAreTraced(String payload){
+    public static void whenResultsAreTraced(final String payload) {
         setupAsSystemUser(getUserId());
         trackResultsCommand(payload);
     }

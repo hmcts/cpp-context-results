@@ -86,6 +86,8 @@ public class ResultsEventProcessorTest {
     private static final UUID PROMPT_ID_1 = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6742d");
     private static final UUID RESULT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6743d");
     private static final UUID NATIONALITY_ID = fromString("dddd4444-1e20-4c21-916a-81a6c90239e5");
+    private static final UUID DEFAULT_DEFENDANT_ID = fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");
+    private static final UUID DEFAULT_DEFENDANT_ID2 = fromString("dddd2222-1e20-4c21-916a-81a6c90239e5");
     private static final String OU_CODE = "GFL123";
     private static final String URN = "urn123";
     private static final String EMAIL_ADDRESS = "test@hmcts.net";
@@ -127,7 +129,6 @@ public class ResultsEventProcessorTest {
 
     @Mock
     private BaseStructureConverter baseStructureConverter;
-
 
 
     @Mock
@@ -173,9 +174,9 @@ public class ResultsEventProcessorTest {
                 .add("id", NATIONALITY_ID.toString())
                 .build();
         final JsonObject resultPayload = createObjectBuilder().add("countryNationality", createArrayBuilder()
-                .add(
-                        result)
-                .build())
+                        .add(
+                                result)
+                        .build())
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataOf(randomUUID(), "results.hearing-results-added").build(), resultPayload);
 
@@ -233,18 +234,21 @@ public class ResultsEventProcessorTest {
 
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
 
+        final UUID offence1Id = shareResultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getId();
+        final UUID offence2Id = shareResultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(1).getOffences().get(0).getId();
+
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
 
         resultsEventProcessor.hearingResultAdded(envelope);
 
-        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        verify(sender, times(5)).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
 
-        final JsonEnvelope requestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
+        final JsonEnvelope createResultsRequestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
 
-        assertThat(requestPayload,
+        assertThat(createResultsRequestPayload,
                 jsonEnvelope(
                         metadata().withName("results.create-results"),
                         payloadIsJson(allOf(
@@ -253,6 +257,27 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.session.sessionDays.[0].sittingDay", is("2018-05-02T12:01:01.000Z")))
 
                         )));
+
+        final JsonEnvelope defendant1TrackingResultsRequestPayload = envelopeFrom(argumentCaptor.get(1).metadata(), argumentCaptor.get(1).payload());
+
+        assertThat(defendant1TrackingResultsRequestPayload,
+                jsonEnvelope(
+                        metadata().withName("results.command.update-defendant-tracking-status"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.defendantId", is(DEFAULT_DEFENDANT_ID.toString())),
+                                withJsonPath("$.offences[0].id", is(offence1Id.toString()))
+                        ))));
+
+        final JsonEnvelope defendant2TrackingResultsRequestPayload = envelopeFrom(argumentCaptor.get(2).metadata(), argumentCaptor.get(2).payload());
+
+        assertThat(defendant2TrackingResultsRequestPayload,
+                jsonEnvelope(
+                        metadata().withName("results.command.update-defendant-tracking-status"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.defendantId", is(DEFAULT_DEFENDANT_ID2.toString())),
+                                withJsonPath("$.offences[0].id", is(offence2Id.toString()))
+
+                        ))));
     }
 
     @Test
@@ -264,13 +289,13 @@ public class ResultsEventProcessorTest {
 
         resultsEventProcessor.hearingResultAddedForDay(envelope);
 
-        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        verify(sender, times(5)).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
 
-        final JsonEnvelope requestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
+        final JsonEnvelope createResultsForDayRequestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
 
-        assertThat(requestPayload,
+        assertThat(createResultsForDayRequestPayload,
                 jsonEnvelope(
                         metadata().withName("results.command.create-results-for-day"),
                         payloadIsJson(allOf(
@@ -279,6 +304,16 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.session.sessionDays.[0].sittingDay", is("2018-05-02T12:01:01.000Z")),
                                 withJsonPath("$.hearingDay", is("2018-05-02")))
                         )));
+
+        final JsonEnvelope defendantTrackingResultsRequestPayload = envelopeFrom(argumentCaptor.get(1).metadata(), argumentCaptor.get(1).payload());
+
+        assertThat(defendantTrackingResultsRequestPayload,
+                jsonEnvelope(
+                        metadata().withName("results.command.update-defendant-tracking-status"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.defendantId", is(DEFAULT_DEFENDANT_ID.toString()))
+
+                        ))));
     }
 
     @Test
@@ -392,7 +427,7 @@ public class ResultsEventProcessorTest {
 
         verify(notificationNotifyService, times(1)).sendNcesEmail(
                 anyObject(), jsonEnvelopeArgumentCaptor.capture());
-        verify(notificationNotifyService, times(1)).sendNcesEmail(emailNotificationArgumentCaptor.capture(),any(JsonEnvelope.class));
+        verify(notificationNotifyService, times(1)).sendNcesEmail(emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("sendTo"), is(EMAIL_ADDRESS));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("subject"), is(subject));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantName"), is(defendantName));

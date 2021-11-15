@@ -105,7 +105,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607"})
+@SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607", "java:S2699"})
 public class ResultsIT {
 
     private static final String TEMPLATE_PAYLOAD = "json/public.hearing-resulted.json";

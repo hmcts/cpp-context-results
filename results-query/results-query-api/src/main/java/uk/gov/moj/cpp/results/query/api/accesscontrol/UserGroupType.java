@@ -19,6 +19,10 @@ public enum UserGroupType {
     COURT_ASSOCIATE("Court Associate"),
     SYSTEM_USERS("System Users"),
     CPPI_CONSUMERS("CPPI Consumers"),
+    CROWN_COURT_ADMINS("Crown Court Admin"),
+    COURT_ADMINISTRATORS("Court Administrators"),
+    LISTING_OFFICERS("Listing Officers"),
+    JUDICIARY("Judiciary"),
     MAGISTRATES("Magistrates");
 
     private final String name;
@@ -53,6 +57,11 @@ public enum UserGroupType {
 
     public static List<String> resultsSummaryGroups() {
         return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
+                .map(UserGroupType::getName).collect(toList());
+    }
+
+    public static List<String> defendantsTrackingStatusGroups() {
+        return Stream.of(COURT_ADMINISTRATORS, CROWN_COURT_ADMINS, LISTING_OFFICERS, JUDICIARY, LEGAL_ADVISERS, COURT_CLERKS, COURT_ASSOCIATE)
                 .map(UserGroupType::getName).collect(toList());
     }
 }
