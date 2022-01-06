@@ -4,7 +4,7 @@
     <parent>
         <artifactId>results-domain</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>7.0.78</version>
+        <version>7.0.79-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-domain-event</artifactId>
