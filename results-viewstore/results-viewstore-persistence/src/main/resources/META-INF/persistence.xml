@@ -11,6 +11,10 @@
         <class>uk.gov.moj.cpp.results.persist.entity.ResultPrompt</class>
         <class>uk.gov.moj.cpp.results.persist.entity.HearingDefendant</class>
         <class>uk.gov.moj.cpp.results.persist.entity.Hearing</class>
+
+        <properties>
+            <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.2"/>
+        </properties>
     </persistence-unit>
 
 </persistence>

@@ -66,7 +66,7 @@ function healthCheck {
 
       for i in ${CONTEXT[@]}
       do
-        CHECK_STRING="curl --connect-timeout 1 -s http://localhost:8080/$i/internal/metrics/ping"
+        CHECK_STRING="curl --connect-timeout 5 -s http://localhost:8080/$i/internal/metrics/ping"
         echo -n $CHECK_STRING
         CHECK=$( $CHECK_STRING )  >/dev/null 2>&1
         echo $CHECK | grep pong >/dev/null 2>&1 && DEPLOYED=$((DEPLOYED + 1))
