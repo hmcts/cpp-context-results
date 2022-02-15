@@ -930,10 +930,10 @@ public class HearingFinancialResultsAggregateTest {
         final List<Object> eventsApp1 =
                 raiseEventsForApplicationResult(singletonList(accountCorrelationId2),
                         asList(offenceIdA, offenceIdA),
-                        asList(false, true),
+                        asList(true, false),
                         asList("caseUrn1"),
                         STAT_DEC,
-                        asList(G, EMPTY),
+                        asList(EMPTY, G),
                         asList(Boolean.FALSE, Boolean.FALSE),
                         null);
 

@@ -228,8 +228,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private void appendFinancialResultEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                              final boolean hasApplicationResult,
                                              final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
-        hearingFinancialResultRequest.getOffenceResults().removeIf(result -> nonNull(result.getApplicationType()));
-
         if (isAmendmentProcess(hearingFinancialResultRequest, hasApplicationResult)) {
             appendAmendmentEvents(hearingFinancialResultRequest, markedEvents);
         } else {
@@ -241,12 +239,14 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private void appendAmendmentEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                        final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForFinancial = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offenceFromRequest -> ofNullable(offenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
                 .map(this::buildImpositionOffenceDetailsFromRequest)
                 .collect(toList());
 
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForNonFinancial = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()))
                 .filter(o -> Objects.nonNull(o.getAmendmentDate()))
                 .filter(o -> !o.getIsFinancial())
                 .filter(offenceFromRequest -> ofNullable(offenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
@@ -265,6 +265,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
 
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsDeemedServed)
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
                 .map(this::buildImpositionOffenceDetailsFromRequest)
@@ -274,6 +275,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
 
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForACON = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offence -> ACON.equals(offence.getResultCode()))
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
@@ -287,6 +289,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private void appendDeemedServedEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                           final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsDeemedServed)
                 .map(this::buildImpositionOffenceDetailsFromRequest)
                 .collect(toList());
@@ -298,6 +301,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private void appendACONEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                   final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForAcon = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offence -> ACON.equals(offence.getResultCode()))
                 .map(this::buildImpositionOffenceDetailsFromRequest)
@@ -322,8 +326,10 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     private void updateOffenceResults(HearingFinancialResultRequest request, final ZonedDateTime createdTime) {
-        request.getOffenceResults().forEach(resultFromRequest ->
-                this.offenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
+        request.getOffenceResults().stream()
+                .filter(result -> isNull(result.getApplicationType()))
+                .forEach(resultFromRequest ->
+                        this.offenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
 
         if (request.getAccountCorrelationId() != null) {
             correlationIdHistoryItemList.add(CorrelationIdHistoryItem.correlationIdHistoryItem()
