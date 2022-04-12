@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.persistence.NoResultException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -119,8 +120,14 @@ public class HearingService {
         return new HearingResultsAdded(hearing, hearingResultsAdded.getSharedTime());
     }
 
-    public HearingResultsAdded findHearingForHearingId(final UUID hearingId ){
-        final HearingResultedDocument document = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId);
+    @SuppressWarnings("squid:S1166")
+    public HearingResultsAdded findHearingForHearingId(final UUID hearingId) {
+        HearingResultedDocument document = null;
+        try {
+            document = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId);
+        } catch (NoResultException ex) {
+            LOGGER.error(String.format("findByHearingIdAndLatestHearingDay cant find hearing %s ", hearingId));
+        }
 
         if (document == null) {
             if (LOGGER.isErrorEnabled()) {
@@ -129,7 +136,7 @@ public class HearingService {
             return null;
         }
         final JsonObject jsonPayload = stringToJsonObjectConverter.convert(document.getPayload());
-        return  jsonObjectToObjectConverter.convert(jsonPayload, HearingResultsAdded.class);
+        return jsonObjectToObjectConverter.convert(jsonPayload, HearingResultsAdded.class);
     }
 
 

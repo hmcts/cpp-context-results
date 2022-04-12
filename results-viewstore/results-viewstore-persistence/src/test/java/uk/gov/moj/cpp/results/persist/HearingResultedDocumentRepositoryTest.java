@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.persist;
 
+import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
@@ -12,6 +13,8 @@ import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -25,14 +28,14 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
 
     @Test
     public void shouldPersistDocument() {
-        final UUID hearingId = UUID.randomUUID();
+        final UUID hearingId = randomUUID();
         persistDocument(hearingId, LocalDate.now());
     }
 
 
     @Test
     public void shouldFindByHearingId() {
-        final UUID hearingId = UUID.randomUUID();
+        final UUID hearingId = randomUUID();
         final LocalDate hearingDay = LocalDate.of(2018, 12, 05);
         persistDocument(hearingId, hearingDay);
         final List<HearingResultedDocument> hearingResultedDocumentList = hearingResultedDocumentRepository.findByHearingId(hearingId);
@@ -44,7 +47,7 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
 
     @Test
     public void shouldFindByHearingIdAndLatestHearingDay(){
-        final UUID hearingId = UUID.randomUUID();
+        final UUID hearingId = randomUUID();
         final LocalDate hearingDay1 = LocalDate.of(2018, 12, 04);
         final LocalDate hearingDay2 = LocalDate.of(2018, 12, 05);
         final LocalDate hearingDay3 = LocalDate.of(2018, 12, 10);
@@ -55,6 +58,20 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
         final HearingResultedDocument hearingResultedDocument = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId);
 
         assertThat(hearingResultedDocument.getId().getHearingDay(), is(hearingDay3));
+    }
+
+
+    @Test(expected = NoResultException.class)
+    public void shouldThrowNoResultExceptionWhenFindByHearingIdAndLatestHearingDayNoHearingPresent(){
+        final UUID hearingId = randomUUID();
+        final LocalDate hearingDay1 = LocalDate.of(2018, 12, 04);
+        final LocalDate hearingDay2 = LocalDate.of(2018, 12, 05);
+        final LocalDate hearingDay3 = LocalDate.of(2018, 12, 10);
+        persistDocument(hearingId, hearingDay1);
+        persistDocument(hearingId, hearingDay2);
+        persistDocument(hearingId, hearingDay3);
+
+        final HearingResultedDocument hearingResultedDocument = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(randomUUID());
     }
 
 
