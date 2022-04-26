@@ -515,13 +515,13 @@ public class ResultsAggregate implements Aggregate {
                 || offenceFromRequest.getJudicialResults().stream().anyMatch(r ->
                 resultDetails.stream().anyMatch(s -> s.getResultId().equals(r.getJudicialResultId())
                         && ((null == s.getAmendmentDate() && null != r.getAmendmentDate())
-                        || (null != s.getAmendmentDate() && null != r.getAmendmentDate() && r.getAmendmentDate().isAfter(s.getAmendmentDate())))))
+                        || (null != s.getAmendmentDate() && null != r.getAmendmentDate() && r.getAmendmentDate().isAfter(s.getAmendmentDate())) || (r.getIsNewAmendment() != null && r.getIsNewAmendment()))))
                 || !resultDetails
                 .stream()
                 .map(Result::getResultId)
                 .collect(toList())
                 .containsAll(offenceFromRequest.getJudicialResults().stream().map(JudicialResult::getJudicialResultId).collect(toList()))
-                || (offenceFromRequest.getJudicialResults().size() < resultDetails.size());
+                || (offenceFromRequest.getJudicialResults().size() < resultDetails.size() );
     }
 
     private boolean isResultPresent(final CaseDefendant defendantFromRequest) {

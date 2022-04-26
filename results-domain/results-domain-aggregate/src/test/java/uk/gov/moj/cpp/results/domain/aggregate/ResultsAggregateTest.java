@@ -406,6 +406,25 @@ public class ResultsAggregateTest {
     }
 
     @Test
+    public void testHandleDefendantsWhenAJudicialResultHasBeenAmendedForTextOrDeleted() {
+        final List<OffenceDetails> offences = new ArrayList<>();
+        final JudicialResult judicialResultOne = judicialResult().withJudicialResultId(randomUUID()).build();
+        final JudicialResult judicialResultTwo = judicialResult().withJudicialResultId(randomUUID()).build();
+        List<JudicialResult> resultList = new ArrayList<>();
+        resultList.add(judicialResultOne);
+        resultList.add(judicialResultTwo);
+        offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(resultList).build());
+        final CaseDetails caseDetails = createCaseDetails(null, offences);
+        final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
+        resultsAggregate.handleCase(caseDetails);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        judicialResultTwo.setIsNewAmendment(true);
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        assertDefendantUpdatedEvent(caseDefendant, objectList);
+        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+    }
+
+    @Test
     public void testHandleDefendantsWhenAJudicialResultHasBeenAddedDuringSubsequentRequest() {
         final List<OffenceDetails> offences = new ArrayList<>();
         final JudicialResult judicialResult = judicialResult().withJudicialResultId(randomUUID()).build();
