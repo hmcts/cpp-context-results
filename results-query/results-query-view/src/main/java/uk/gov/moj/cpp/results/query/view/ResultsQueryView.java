@@ -94,8 +94,7 @@ public class ResultsQueryView {
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingDetailsByHearingIdDefendantId(hearingId, defendantId);
         final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
 
-        return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_DETAILS)
-                .apply(jsonResult);
+        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_DETAILS).build(), jsonResult);
 
     }
 
@@ -104,7 +103,8 @@ public class ResultsQueryView {
         final JsonObject payload = query.payloadAsJsonObject();
         final LocalDate fromDate = LocalDates.from(payload.getString(FIELD_FROM_DATE));
         final HearingResultSummariesView view = hearingService.findHearingResultSummariesFromDate(fromDate);
-        return enveloper.withMetadataFrom(query, RESPONSE_NAME_RESULTS_SUMMARY).apply(view);
+        final JsonObject jsonResult = objectToJsonObjectConverter.convert(view);
+        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_RESULTS_SUMMARY).build(), jsonResult);
     }
 
 
@@ -120,12 +120,10 @@ public class ResultsQueryView {
                     .add("hearing", jsonValue)
                     .add("sharedTime", hearingResultAdded.getSharedTime().toString())
                     .build();
-            return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
-                    .apply(jsonResult);
+            return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), jsonResult);
         }
         LOGGER.warn("No records exists for Hearing id {}", hearingId);
-        return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
-                .apply(createObjectBuilder().build());
+        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), createObjectBuilder().build());
     }
 
     @Handles("results.get-hearing-details-internal")
@@ -135,8 +133,7 @@ public class ResultsQueryView {
         final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
         if (nonNull(hearingResultAdded)) {
             final JsonObject jsonResult = objectToJsonObjectConverter.convert(hearingResultAdded);
-            return enveloper.withMetadataFrom(query, RESPONSE_NAME_HEARING_INFORMATION_DETAILS)
-                    .apply(jsonResult);
+            return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), jsonResult);
         }
         LOGGER.warn("No record exists for Hearing id {}", hearingId);
 

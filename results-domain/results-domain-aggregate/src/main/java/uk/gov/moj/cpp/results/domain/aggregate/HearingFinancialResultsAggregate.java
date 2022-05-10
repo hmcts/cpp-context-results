@@ -228,6 +228,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private void appendFinancialResultEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                              final boolean hasApplicationResult,
                                              final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
+        hearingFinancialResultRequest.getOffenceResults().removeIf(result -> nonNull(result.getApplicationType()));
+
         if (isAmendmentProcess(hearingFinancialResultRequest, hasApplicationResult)) {
             appendAmendmentEvents(hearingFinancialResultRequest, markedEvents);
         } else {

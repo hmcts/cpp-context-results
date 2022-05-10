@@ -19,11 +19,11 @@ import com.github.tomakehurst.wiremock.client.RequestPatternBuilder;
 
 public class DocumentGeneratorStub {
 
-    public static final String PATH = "/system-documentgenerator-api/rest/documentgenerator/render";
+    public static final String PATH = "/systemdocgenerator-service/command/api/rest/systemdocgenerator";
 
     public static void stubDocumentCreate(String documentText) {
         stubFor(post(urlPathMatching(PATH))
-                .withHeader(CONTENT_TYPE, equalTo("application/vnd.system.documentgenerator.render+json"))
+                .withHeader(CONTENT_TYPE, equalTo("application/vnd.systemdocgenerator.render+json"))
                 .willReturn(aResponse().withStatus(OK.getStatusCode())
                         .withBody(documentText.getBytes())));
     }

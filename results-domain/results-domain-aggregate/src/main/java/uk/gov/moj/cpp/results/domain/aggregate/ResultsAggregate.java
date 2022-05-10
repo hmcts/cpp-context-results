@@ -521,7 +521,7 @@ public class ResultsAggregate implements Aggregate {
                 .map(Result::getResultId)
                 .collect(toList())
                 .containsAll(offenceFromRequest.getJudicialResults().stream().map(JudicialResult::getJudicialResultId).collect(toList()))
-                || (offenceFromRequest.getJudicialResults().size() < resultDetails.size() );
+                || (offenceFromRequest.getJudicialResults().size() < resultDetails.size());
     }
 
     private boolean isResultPresent(final CaseDefendant defendantFromRequest) {
