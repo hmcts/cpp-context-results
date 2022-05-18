@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.common;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COURT_APPLICATIONS;
@@ -9,6 +10,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LISTING_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASES;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANTS_WITH_WELSH_TRANSLATION_LIST;
 
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.moj.cpp.domains.HearingHelper;
@@ -39,12 +41,14 @@ public class HearingHelperTest {
         final JsonObject defendantJson = prosecutionCaseJson.getJsonArray(DEFENDANTS).getValuesAs(JsonObject.class).get(0);
         final JsonObject offenceJson = defendantJson.getJsonArray(OFFENCES).getValuesAs(JsonObject.class).get(0);
         final JsonObject applicationJson = transformedObject.getJsonArray(COURT_APPLICATIONS).getValuesAs(JsonObject.class).get(0);
+        final JsonObject defendantWithWelshTranslationJson = transformedObject.getJsonArray(DEFENDANTS_WITH_WELSH_TRANSLATION_LIST).getValuesAs(JsonObject.class).get(0);
 
         assertThat(transformedObject.getJsonArray(DEFENDANT_JUDICIAL_RESULTS).size(), is(1));
         assertThat(defendantJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(offenceJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(applicationJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(offenceJson.getJsonNumber(LISTING_NUMBER).intValue(), is(2));
+        assertThat(defendantWithWelshTranslationJson, is(notNullValue()));
 
     }
 

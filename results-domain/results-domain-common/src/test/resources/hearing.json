@@ -492,6 +492,10 @@
       "welshLjaName": "East Hampshire Magistrates' Court"
     }
   },
+  "defendantsWithWelshTranslationList" : [{
+    "defendantId" : "c6d76309-c912-436b-a21b-a4c4450bc052",
+    "welshTranslation": true
+  }],
   "youthCourt": {
       "yourtCourtId": 192883,
       "name": "Cheshire Youth Court"
