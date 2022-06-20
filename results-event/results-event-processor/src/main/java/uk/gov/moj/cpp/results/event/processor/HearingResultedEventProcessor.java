@@ -1,9 +1,7 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static javax.json.Json.createObjectBuilder;
-import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
-import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.justice.services.core.annotation.FeatureControl;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -13,17 +11,18 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
+import javax.inject.Inject;
+import javax.json.*;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
+import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ServiceComponent(EVENT_PROCESSOR)
 public class HearingResultedEventProcessor {
@@ -39,6 +38,13 @@ public class HearingResultedEventProcessor {
     private static final String SHARED_TIME = "sharedTime";
     private static final String HEARING_DAY = "hearingDay";
     private static final String SHADOW_LISTED_OFFENCES = "shadowListedOffences";
+    private static final String HEARING_POLICE_CASE_PROSECUTORS = "policeCases";
+    private static final String OU_CODE = "prosecutionAuthorityOUCode";
+    private static final String PROSECUTOR_CODE = "prosecutionAuthorityId";
+
+
+    @Inject
+    ReferenceDataService referenceDataService;
 
     @Inject
     private Sender sender;
@@ -67,8 +73,10 @@ public class HearingResultedEventProcessor {
         final JsonObject incomingHearing = hearingPayload.getJsonObject(HEARING);
         final JsonObject transformedHearing = hearingHelper.transformedHearing(incomingHearing);
 
+
         final JsonObject externalPayload = createObjectBuilder()
                 .add(HEARING, transformedHearing)
+                .add(HEARING_POLICE_CASE_PROSECUTORS, extractPoliceCases(transformedHearing))
                 .add(SHARED_TIME, sharedTime)
                 .build();
 
@@ -126,5 +134,31 @@ public class HearingResultedEventProcessor {
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
         }
+    }
+
+    /**
+     * Method to check hearing contains police case prosecutors, to send it to VEP
+     *
+     * @param hearing transformedHearing is passed to this method
+     * @return JSonArray return policeCases caseids
+     */
+    public JsonArray extractPoliceCases(JsonObject hearing) {
+        LOGGER.info("Results extractPoliceCases hearing {}", hearing);
+        final JsonArray prosecutionCases = (JsonArray) hearing.get(PROSECUTION_CASES);
+        final JsonArrayBuilder policeCases = Json.createArrayBuilder();
+        if (null != prosecutionCases && !prosecutionCases.isEmpty()) {
+            for (int i = 0; i < prosecutionCases.size(); i++) {
+                final JsonObject prosecutionCase = prosecutionCases.getJsonObject(i);
+                final JsonObject prosecutionCaseIdentifier = prosecutionCase.getJsonObject(PROSECUTION_CASE_IDENTIFIER);
+                final boolean policeFlag = referenceDataService.getPoliceFlag(prosecutionCaseIdentifier.getString(OU_CODE, null), prosecutionCaseIdentifier.getString(PROSECUTOR_CODE, null));
+                LOGGER.info("Results prosecutionCase policeFlag {}", policeFlag);
+                if (policeFlag) {
+                    LOGGER.info("Results prosecutionCase id {}", prosecutionCase.get(ID));
+                    policeCases.add(prosecutionCase.get(ID));
+
+                }
+            }
+        }
+        return policeCases.build();
     }
 }

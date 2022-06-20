@@ -1,14 +1,13 @@
 package uk.gov.moj.cpp.results.it.utils;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createArrayBuilder;
+import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -16,9 +15,6 @@ import static uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.getJsonResponse;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.waitForStubToBeReady;
-
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 
 public class ReferenceDataServiceStub {
 
@@ -77,7 +73,7 @@ public class ReferenceDataServiceStub {
         prosecutorBodyBuilder
                 .add("spiOutFlag", spiOutFlag)
                 .add("policeFlag", policeFlag);
-        if(nonNull(email)){
+        if (nonNull(email)) {
             prosecutorBodyBuilder.add("contactEmailAddress", email);
         }
 
@@ -93,7 +89,7 @@ public class ReferenceDataServiceStub {
         prosecutorBodyBuilder
                 .add("spiOutFlag", false)
                 .add("policeFlag", false);
-        if(nonNull(email)){
+        if (nonNull(email)) {
             prosecutorBodyBuilder.add("contactEmailAddress", email);
         }
 
@@ -126,6 +122,27 @@ public class ReferenceDataServiceStub {
         waitForStubToBeReady(urlPath + "?prosecutorCode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
     }
 
+    public static void stubPoliceFlag(final String originatingOrganisation, final String prosecutionAuthority) {
+        stubPingFor("referencedata-service");
+        final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("oucode", equalTo(originatingOrganisation))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(getJsonResponse("stub-data/referencedata.query.organisation-unit-prosecution-authority.json"))));
+        waitForStubToBeReady(urlPath + "?oucode=" + originatingOrganisation, "application/vnd.referencedata.query.get.prosecutor.by.oucode+json");
+
+        stubFor(get(urlPathEqualTo(urlPath + "?prosecutorCode=" + prosecutionAuthority))
+
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(getJsonResponse("stub-data/referencedata.query.organisation-unit-prosecution-authority.json"))));
+        waitForStubToBeReady(urlPath + "?prosecutorCode=" + prosecutionAuthority, "application/vnd.referencedata.query.get.prosecutor+json");
+    }
+
     public static void stubBailStatuses() {
         stubPingFor("referencedata-service");
 
@@ -151,8 +168,4 @@ public class ReferenceDataServiceStub {
                         .withBody(getJsonResponse("stub-data/referencedata.mode-of-trial-reasons.json"))));
         waitForStubToBeReady(urlPath, "application/vnd.referencedata.mode-of-trial-reasons+json");
     }
-
-
-
-
 }
