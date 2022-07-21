@@ -1,0 +1,17 @@
+{
+  "gobAccountNumber": "gobAccountNumber",
+  "divisionCode": "10",
+  "oldGobAccountNumber": "oldGobAccountNumbber",
+  "oldDivisionCode": "11",
+  "caseReferences": "caseReferences",
+  "masterDefendantId": "c4ec3a35-76bf-4649-b43a-761e71c3765e",
+  "notificationId": "d4ec3a35-76bf-4649-b43a-761e71c3765e",
+  "materialId": "ce4ec3a35-76bf-4649-b43a-761e71c3765e",
+  "listedDate": "",
+  "dateDecisionMade": "2018-06-01",
+  "amendmentReason": "amendmentReason",
+  "amendmentDate": "2018-06-01",
+  "defendantName": "defendantName",
+  "subject": "subject",
+  "sendTo": "mail@email.com"
+}

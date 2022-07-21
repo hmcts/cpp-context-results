@@ -31,6 +31,7 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
     private static final String ACTION_NAME_GET_HEARING_DETAILS_FOR_HEARING_ID = "results.get-hearing-information-details-for-hearing";
     private static final String ACTION_NAME_GET_PROSECUTOR_RESULTS = "results.prosecutor-results";
     private static final String ACTION_NAME_GET_DEFENDANTS_TRACKING_RESULTS = "results.get-defendants-tracking-status";
+    private static final String ACTION_NAME_GET_NCES_EMAIL_NOTIFICATION_DETAILS = "results.query.nces-email-notification-details";
 
     @Mock
     private UserAndGroupProvider mockUserAndGroupProvider;
@@ -206,6 +207,16 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
                 .willReturn(false);
         final ExecutionResults results = executeRulesWith(action);
         assertFailureOutcome(results);
+    }
+
+    @Test
+    public void shouldAllowAuthorisedUserToGetNcesEmailNotificationDetails() {
+        final Action action = createActionFor(ACTION_NAME_GET_NCES_EMAIL_NOTIFICATION_DETAILS);
+        given(mockUserAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups(action, UserGroupType.SYSTEM_USERS.getName()))
+                .willReturn(true);
+
+        final ExecutionResults results = executeRulesWith(action);
+        assertSuccessfulOutcome(results);
     }
 
     @Override

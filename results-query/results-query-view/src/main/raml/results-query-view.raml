@@ -70,3 +70,24 @@ protocols: [ HTTP, HTTPS ]
                   application/vnd.results.query.informant-register-document-by-request-date+json:
                     example:  !include json/results.query.informant-register-document-by-request-date.json
                     schema:  !include json/schema/results.query.informant-register-document-by-request-date.json
+
+/nces-email-notification/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular notification details
+          type: string
+  get:
+      description: |
+        Return the nces email notification details by material Id
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.nces-email-notification-details+json
+            name: results.query.nces-email-notification-details
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.nces-email-notification-details+json:
+                    example:  !include json/results.query.nces-email-notification-details.json
+                    schema:  !include json/schema/results.query.nces-email-notification-details.json

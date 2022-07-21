@@ -212,3 +212,24 @@ protocols: [ HTTP, HTTPS ]
                   application/vnd.results.get-defendants-tracking-status+json:
                     example:  !include json/results.get-defendants-tracking-status.json
                     schema:  !include json/schema/results.get-defendants-tracking-status.json
+
+/nces-email-notification/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular notification details
+          type: string
+  get:
+      description: |
+        Return the nces email notification details by material Id
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.nces-email-notification-details+json
+            name: results.query.nces-email-notification-details
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.nces-email-notification-details+json:
+                    example:  !include json/results.query.nces-email-notification-details.json
+                    schema:  !include json/schema/results.query.nces-email-notification-details.json

@@ -27,6 +27,7 @@ import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 
 import java.time.LocalDate;
@@ -378,6 +379,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final String subject = APPLICATION_TYPES.get(applicationType);
         final NcesEmailNotificationRequested.Builder ncesEmailNotificationRequested = ncesEmailNotificationRequested()
                 .withNotificationId(randomUUID())
+                .withMaterialId(randomUUID())
                 .withSendTo(ncesEmail)
                 .withSubject(subject)
                 .withDefendantName(defendantName)
@@ -518,6 +520,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private Object buildNcesApplicationMail(final MarkedAggregateSendEmailWhenAccountReceived marked) {
         return ncesEmailNotificationRequested()
                 .withNotificationId(randomUUID())
+                .withMaterialId(randomUUID())
                 .withDivisionCode(marked.getDivisionCode())
                 .withSendTo(marked.getSendTo())
                 .withSubject(marked.getSubject())
@@ -625,5 +628,9 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withDetails(offencesFromAggregate.getImpositionOffenceDetails())
                 .withTitle(offencesFromAggregate.getOffenceTitle())
                 .build();
+    }
+
+    public Stream<Object> saveNcesEmailNotificationDetails(final NcesEmailNotification payload) {
+        return apply(Stream.of(payload));
     }
 }

@@ -105,8 +105,17 @@ rule "results - Query - API - results.get-defendants-tracking-status"
   when
     $outcome: Outcome();
     $action: Action(name == "results.get-defendants-tracking-status");
-       eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, defendantsTrackingStatusGroups()));
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, defendantsTrackingStatusGroups()));
 
+  then
+    $outcome.setSuccess(true);
+end
+
+rule "Query - API - results.query.nces-email-notification-details"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.query.nces-email-notification-details");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "System Users"));
   then
     $outcome.setSuccess(true);
 end

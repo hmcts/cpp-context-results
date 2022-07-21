@@ -72,6 +72,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String CONTENT_TYPE_HEARING_DETAILS_INTERNAL = "application/vnd.results.hearing-details-internal+json";
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
     private static final String CONTENT_TYPE_DEFENDANT_TRACKING_STATUS = "application/vnd.results.get-defendants-tracking-status+json";
+    private static final String CONTENT_TYPE_NCES_EMAIL_NOTIFICATION_DETAILS = "application/vnd.results.query.nces-email-notification-details+json";
     private static final String RESULTS_EVENT_SESSION_ADDED_EVENT = "results.event.session-added-event";
     private static final String RESULTS_EVENT_CASE_REJECTED_EVENT = "results.event.sjp-case-rejected-event";
     private static final String RESULTS_EVENT_CASE_ADDED_EVENT = "results.event.case-added-event";
@@ -433,5 +434,18 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     public static void whenResultsAreTraced(final String payload) {
         setupAsSystemUser(getUserId());
         trackResultsCommand(payload);
+    }
+
+    public static void getEmailNotificationDetails(final UUID userId, final UUID materialId, final Matcher... matchers) {
+
+        final String url = format("%s%s", BASE_URI,
+                getProperty("results.get-email-notification-details", materialId));
+
+        poll(requestParams(url, CONTENT_TYPE_NCES_EMAIL_NOTIFICATION_DETAILS).withHeader(USER_ID, userId)).until(
+                print(),
+                status().is(OK),
+                payload().isJson(allOf(matchers))
+        );
+
     }
 }

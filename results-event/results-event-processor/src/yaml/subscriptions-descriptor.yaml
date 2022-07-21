@@ -19,6 +19,8 @@ subscriptions_descriptor:
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/hearing-financial-results-tracked.json
         - name: results.event.nces-email-notification-requested
           schema_uri: http://justice.gov.uk/core/courts/results.event.nces-email-notification-requested.json
+        - name: results.event.nces-email-notification
+          schema_uri: http://justice.gov.uk/core/courts/results.event.nces-email-notification.json
         - name: results.event.informant-register-generated
           schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
         - name: results.event.informant-register-notified
@@ -43,5 +45,8 @@ subscriptions_descriptor:
 
         - name: public.hearing.nces-email-notification-for-application
           schema_uri: http://cpp.moj.gov.uk/hearing/json/schema/event/public.hearing.nces-email-notification-for-application.json
+
+        - name: material.material-added
+          schema_uri: http://justice.gov.uk/json/schemas/domains/public/material/material-added.json
 
       event_source_name: public.event.source

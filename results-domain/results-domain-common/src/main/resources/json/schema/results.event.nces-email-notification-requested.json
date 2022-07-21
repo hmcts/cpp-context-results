@@ -24,6 +24,9 @@
     "notificationId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
+    "materialId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
     "listedDate": {
       "type": "string",
       "description": "This will passed only for statutory declaration, reopen or appeal"
@@ -71,6 +74,7 @@
     "defendantName",
     "caseReferences",
     "masterDefendantId",
-    "notificationId"
+    "notificationId",
+    "materialId"
   ]
 }

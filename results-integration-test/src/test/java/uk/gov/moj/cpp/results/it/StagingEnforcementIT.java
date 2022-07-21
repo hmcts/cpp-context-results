@@ -7,6 +7,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResultsAreTraced;
@@ -52,6 +53,7 @@ public class StagingEnforcementIT {
     public static final String LISTED_DATE = "listedDate";
     public static final String APPEAL_APPLICATION_RECEIVED = "APPEAL APPLICATION RECEIVED";
     public static final String IMPOSITION_OFFENCE_DETAILS = "impositionOffenceDetails";
+    private static final String MATERIAL_ID = "materialId";
     private static final String PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT = "public.stagingenforcement.enforce-financial-imposition-acknowledgement";
     private static final String PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION = "public.hearing.nces-email-notification-for-application";
     private static final String HEARING_FINANCIAL_RESULT_UPDATED = "results.event.hearing-financial-results-updated";
@@ -146,6 +148,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(LISTED_DATE), is("2019-12-01"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
         final String rejectPayload = FileUtil.getPayload(REJECTED_APPLICATION).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId);
         whenResultsAreTraced(rejectPayload);
@@ -159,6 +162,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(DATE_DECISION_MADE), is("01/01/2021"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
         Map impositionOffenceDetails =  (Map)jsonResponse.getList(IMPOSITION_OFFENCE_DETAILS).get(0);
         assertThat(impositionOffenceDetails.get("details"), is(nullValue()));
         assertThat(impositionOffenceDetails.get("title"), is("Title 1"));
@@ -219,6 +223,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(LISTED_DATE), is("2019-12-01"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("APPEAL WITHDRAWN")).findFirst().orElseGet(()->JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("APPEAL WITHDRAWN"));
@@ -229,6 +234,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(DATE_DECISION_MADE), is("01/01/2021"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
         Map impositionOffenceDetails =  (Map)jsonResponse.getList(IMPOSITION_OFFENCE_DETAILS).get(0);
         assertThat(impositionOffenceDetails.get("details"), is(nullValue()));
         assertThat(impositionOffenceDetails.get("title"), is("Title 1"));
@@ -375,6 +381,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode2));
         assertThat(jsonResponse.getString(OLD_DIVISION_CODE), is(divisionCode1));
         assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber1));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
         //Financial Result amended to Financial + Deemed Served -> Two Nces Email
         whenResultAmended(masterDefendantId, accountCorrelationId3, divisionCode3, true, true);
@@ -448,6 +455,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("REF1,REF2"));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode3));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
         jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
         assertThat(jsonResponse.getString(SUBJECT), is(AMEND_RESULT_INPUT_ERROR));
@@ -455,12 +463,14 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("REF1,REF2"));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
         jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
         assertThat(jsonResponse.getString(SUBJECT), is(AMEND_RESULT_INPUT_ERROR));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("REF1,REF2"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
     }
 
@@ -564,6 +574,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(DATE_DECISION_MADE), is("01/01/2021"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
        payload = FileUtil.getPayload(TRACE_RESULT_AMENDMENT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId)
@@ -587,6 +598,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString("amendmentReason"), is("Amendment1"));
         assertThat(jsonResponse.getString("amendmentDate"), is("01/01/2021"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
         payload = FileUtil.getPayload(TRACE_RESULT_AMENDMENT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId2)
@@ -624,6 +636,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString("amendmentReason"), is(nullValue()));
         assertThat(jsonResponse.getString(DATE_DECISION_MADE), is("01/01/2021"));
+        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
     }
 
     private void raisePublicEventForAcknowledgement(final JsonObject payload, final String eventName) {

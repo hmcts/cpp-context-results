@@ -29,4 +29,7 @@ subscriptions_descriptor:
         - name: results.events.defendant-tracking-status-updated
           schema_uri: http://justice.gov.uk/results/courts/results.events.defendant-tracking-status-updated.json
 
+        - name: results.event.nces-email-notification-requested
+          schema_uri: http://justice.gov.uk/core/courts/results.event.nces-email-notification-requested.json
+
       event_source_name: results

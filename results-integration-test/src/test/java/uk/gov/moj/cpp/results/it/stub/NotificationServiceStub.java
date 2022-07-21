@@ -23,18 +23,11 @@ import com.github.tomakehurst.wiremock.client.RequestPatternBuilder;
 
 public class NotificationServiceStub {
     public static final String NOTIFICATION_NOTIFY_ENDPOINT = "/notificationnotify-service/command/api/rest/notificationnotify/notifications/*";
-    public static final String NOTIFICATION_NOTIFY_CONTENT_TYPE = "application/vnd.notificationnotify.letter+json";
     public static final String NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON = "application/vnd.notificationnotify.email+json";
 
 
     public static void setUp() {
         stubPingFor("notificationnotify-service");
-        stubFor(post(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
-                .withHeader(CONTENT_TYPE, equalTo(NOTIFICATION_NOTIFY_CONTENT_TYPE))
-                .willReturn(aResponse()
-                        .withStatus(ACCEPTED.getStatusCode())
-                        .withHeader(ID, UUID.randomUUID().toString()))
-        );
         stubFor(post(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
                 .withHeader(CONTENT_TYPE, equalTo(NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON))
                 .willReturn(aResponse()

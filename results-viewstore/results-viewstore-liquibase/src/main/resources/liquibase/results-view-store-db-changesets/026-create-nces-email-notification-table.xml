@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="026-create-nces-email-notification-table.xml">
+        <createTable tableName="nces_email_notification">
+            <column name="id" type="uuid"/>
+            <column name="material_id" type="uuid"/>
+            <column name="notification_id" type="uuid"/>
+            <column name="master_defendant_id" type="uuid"/>
+            <column name="send_to" type="text"/>
+            <column name="subject" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="026-create-nces-email-notification-table.xml">
+        <addPrimaryKey tableName="nces_email_notification" columnNames="id"
+                       constraintName="nces_email_notification_pk"/>
+    </changeSet>
+
+    <changeSet id="3" author="CCR" logicalFilePath="026-create-nces-email-notification-table.xml">
+        <sql>
+            CREATE INDEX IF NOT EXISTS nces_email_notification_material_id_idx ON nces_email_notification (material_id);
+        </sql>
+    </changeSet>
+</databaseChangeLog>

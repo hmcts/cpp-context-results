@@ -28,7 +28,7 @@ public class ResultsCommandHandlerRamlConfigTest {
 
     @Before
     public void setup() {
-        handlerMethodsToHandlerNames = handlerMethodsToHandlerNames(ResultsCommandHandler.class, InformantRegisterHandler.class);
+        handlerMethodsToHandlerNames = handlerMethodsToHandlerNames(ResultsCommandHandler.class, InformantRegisterHandler.class, NcesDocumentNotificationCommandHandler.class);
     }
 
     @Test

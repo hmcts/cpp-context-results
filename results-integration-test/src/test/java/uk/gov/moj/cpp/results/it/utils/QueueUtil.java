@@ -35,19 +35,28 @@ public class QueueUtil {
 
     private static final long RETRIEVE_TIMEOUT = 20000;
 
-    private final Session session;
+    private Session session;
 
-    private final Topic topic;
+    private Topic topic;
+
+    private final String topicName;
+
+    private  Connection connection;
 
     public static final QueueUtil publicEvents = new QueueUtil("public.event");
 
     public static final QueueUtil privateEvents = new QueueUtil("results.event");
 
     private QueueUtil(final String topicName) {
+        this.topicName = topicName;
+        initialize(topicName);
+    }
+
+    private void initialize(final String topicName) {
         try {
             LOGGER.info("Artemis URI: {}", QUEUE_URI);
             final ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(QUEUE_URI);
-            final Connection connection = factory.createConnection();
+            connection = factory.createConnection();
             connection.start();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             topic = new ActiveMQTopic(topicName);
@@ -123,4 +132,36 @@ public class QueueUtil {
         }while(message != null);
 
     }
+
+    public MessageProducer createPublicProducer() {
+        try {
+            if(!isAlive(this.connection)){
+                initialize("public.event");
+            }
+            return session.createProducer(topic);
+        } catch (final JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public MessageConsumer createPublicConsumer(final String eventSelector) {
+        try {
+            if(!isAlive(connection)){
+                initialize("public.event");
+            }
+            return session.createConsumer(topic, String.format(EVENT_SELECTOR_TEMPLATE, eventSelector));
+        } catch (final JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean isAlive(Connection connection) {
+        try {
+            return (connection != null && connection.getMetaData() != null);
+        } catch (JMSException ex) {
+            LOGGER.error("Failed on isAlive",ex);
+            return false;
+        }
+    }
+
 }

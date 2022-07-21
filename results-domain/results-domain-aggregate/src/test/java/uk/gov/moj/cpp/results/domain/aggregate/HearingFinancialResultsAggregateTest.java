@@ -10,6 +10,7 @@ import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
@@ -1610,6 +1611,7 @@ public class HearingFinancialResultsAggregateTest {
 
     private void verifyEmailForNewApplication(final String createAppSubject, final UUID accountCorrelationId, final NcesEmailNotificationRequested event, final String caseUrn) {
         assertThat(event.getGobAccountNumber(), is(accountCorrelationId.toString() + "ACCOUNT"));
+        assertThat(event.getMaterialId(), is(notNullValue()));
         verifyEmailForNewApplicationWithoutAccountNumber(createAppSubject, accountCorrelationId, event, caseUrn);
     }
 
@@ -1627,6 +1629,7 @@ public class HearingFinancialResultsAggregateTest {
     }
 
     private void verifyEmailWithoutOlds(final String subject, final UUID accountCorrelationId, final List<UUID> offenceIds, final NcesEmailNotificationRequested ncesEmailNotificationRequestedApp1, final String caseUrn, final List<String> suffixes) {
+        assertThat(ncesEmailNotificationRequestedApp1.getMaterialId(), is(notNullValue()));
         assertThat(ncesEmailNotificationRequestedApp1.getGobAccountNumber(), is(accountCorrelationId.toString() + "ACCOUNT"));
         assertThat(ncesEmailNotificationRequestedApp1.getSubject(), is(subject));
         assertThat(ncesEmailNotificationRequestedApp1.getDivisionCode(), is(accountCorrelationId.toString() + "DIVCODE"));

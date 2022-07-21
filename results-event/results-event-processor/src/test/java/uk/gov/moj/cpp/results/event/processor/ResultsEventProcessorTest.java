@@ -11,7 +11,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,15 +33,12 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
-import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
-
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
-
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
@@ -68,7 +64,6 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -99,7 +94,7 @@ public class ResultsEventProcessorTest {
     private static final String FIELD_COMMON_PLATFORM_URL = "common_platform_url";
     private static final String FIELD_TEMPLATE_ID = "templateId";
     private static final String FIELD_NOTIFICATION_ID = "notificationId";
-    private UUID ncesEmailNotificationTemplateId = randomUUID();
+
     @Spy
     private final Enveloper enveloper = createEnveloper();
 
@@ -187,12 +182,6 @@ public class ResultsEventProcessorTest {
         when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
         when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
         when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
-        try {
-            FieldUtils.writeField(resultsEventProcessor, "ncesEmailNotificationTemplateId", ncesEmailNotificationTemplateId.toString(), true);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Test
@@ -317,38 +306,6 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void shouldHandleTheNcesEmailNotificationRequestedWhenEmailNotAvailable() throws FileServiceException {
-        final UUID masterDefendantId = randomUUID();
-        final String subject = "my subject";
-        final String defendantName = "my defendant name";
-        final UUID notificationId = UUID.randomUUID();
-
-        final JsonEnvelope envelope = envelope()
-                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("results.event.nces-email-notification-requested"))
-                .withPayloadOf(masterDefendantId, "masterDefendantId")
-                .withPayloadOf(subject, "subject")
-                .withPayloadOf(defendantName, "defendantName")
-                .withPayloadOf(notificationId, "notificationId")
-                .build();
-
-        when(notificationNotifyService.generateNotification(anyObject(), anyObject())).thenReturn(randomUUID());
-
-        resultsEventProcessor.handleEmailToNcesNotificationRequested(envelope);
-        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
-        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
-        assertThat(
-                allValues, jsonEnvelope(
-                        metadata().withName("results.event.send-nces-email-not-found"),
-                        payloadIsJson(allOf(
-                                withJsonPath("$.masterDefendantId", is(masterDefendantId.toString())),
-                                withJsonPath("$.subject", is(subject)),
-                                withJsonPath("$.defendantName", is(defendantName))
-                        ))));
-
-    }
-
-    @Test
     public void shouldRaiseAPublicEventPoliceResultGenerated() {
         final String id = "d4a8d314-9cf0-411f-84fc-af603b46a388";
         final JsonEnvelope jsonEnvelope = envelope()
@@ -405,35 +362,84 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void shouldHandleTheNcesEmailNotificationRequested() throws FileServiceException {
-        final UUID masterDefendantId = randomUUID();
-        final String subject = "my subject";
-        final String defendantName = "my defendant name";
-        final String notificationId = randomUUID().toString();
+    public void shouldHandleTheNcesEmailNotificationRequested() {
+        final String materialId = randomUUID().toString();
         final JsonEnvelope jsonEnvelope = envelope()
                 .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
-                .withPayloadOf(masterDefendantId, "masterDefendantId")
-                .withPayloadOf(EMAIL_ADDRESS, "sendTo")
-                .withPayloadOf(subject, "subject")
-                .withPayloadOf(defendantName, "defendantName")
-                .withPayloadOf(notificationId, "notificationId")
+                .withPayloadOf(materialId, "materialId")
                 .build();
-        final String materialUrl = "https//localhost:8080/";
-        when(materialUrlGenerator.pdfFileStreamUrlFor(any(UUID.class))).thenReturn(materialUrl);
-        when(notificationNotifyService.generateNotification(anyObject(), anyObject())).thenReturn(randomUUID());
-        doNothing().when(notificationNotifyService).sendNcesEmail(anyObject(), anyObject());
 
-        resultsEventProcessor.handleEmailToNcesNotificationRequested(jsonEnvelope);
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                anyObject(), jsonEnvelopeArgumentCaptor.capture(), anyObject(), anyObject());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+    }
+
+    @Test
+    public void shouldHandleTheSendNcesEmail() {
+        final String sendToAddress = "mail@email.com";
+        final String subject = "my subject";
+        final String materialUrl = "http://localhost:1234/";
+        final String notificationId = randomUUID().toString();
+        final String materialId = randomUUID().toString();
+        final String templateId = randomUUID().toString();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(sendToAddress, "sendToAddress")
+                .withPayloadOf(subject, "subject")
+                .withPayloadOf(materialUrl, "materialUrl")
+                .withPayloadOf(notificationId, "notificationId")
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(templateId, "templateId")
+                .build();
+
+        resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
 
         verify(notificationNotifyService, times(1)).sendNcesEmail(
                 anyObject(), jsonEnvelopeArgumentCaptor.capture());
-        verify(notificationNotifyService, times(1)).sendNcesEmail(emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("sendTo"), is(EMAIL_ADDRESS));
+        verify(notificationNotifyService, times(1)).sendNcesEmail(
+                emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("sendToAddress"), is(sendToAddress));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("subject"), is(subject));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantName"), is(defendantName));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("masterDefendantId"), is(masterDefendantId.toString()));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialUrl"), is(materialUrl));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("notificationId"), is(notificationId));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("templateId"), is(templateId));
         assertThat(emailNotificationArgumentCaptor.getValue().getMaterialUrl(), is(materialUrl));
+    }
+
+    @Test
+    public void shouldHandleTheSendNcesEmailWhenEmailNotAvailable() {
+        final String subject = "my subject";
+        final String materialUrl = "http://localhost:1234/";
+        final String notificationId = randomUUID().toString();
+        final String materialId = randomUUID().toString();
+        final String templateId = randomUUID().toString();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(subject, "subject")
+                .withPayloadOf(materialUrl, "materialUrl")
+                .withPayloadOf(notificationId, "notificationId")
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(templateId, "templateId")
+                .build();
+
+        resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+        assertThat(
+                allValues, jsonEnvelope(
+                        metadata().withName("results.event.send-nces-email-not-found"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.subject", is(subject)),
+                                withJsonPath("$.materialUrl", is(materialUrl)),
+                                withJsonPath("$.notificationId", is(notificationId)),
+                                withJsonPath("$.materialId", is(materialId)),
+                                withJsonPath("$.templateId", is(templateId)))
+                        )));
     }
 
     @Test

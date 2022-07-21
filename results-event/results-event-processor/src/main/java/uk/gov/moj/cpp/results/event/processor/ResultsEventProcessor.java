@@ -16,7 +16,6 @@ import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
-import uk.gov.justice.services.common.configuration.Value;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -28,8 +27,7 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
-import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
@@ -83,10 +81,6 @@ public class ResultsEventProcessor {
     private static final String COMMON_PLATFORM_URL = "common_platform_url";
 
     @Inject
-    @Value(key = "ncesEmailNotificationTemplateId")
-    private String ncesEmailNotificationTemplateId;
-
-    @Inject
     ReferenceDataService referenceDataService;
 
     @Inject
@@ -119,8 +113,6 @@ public class ResultsEventProcessor {
     @Inject
     private DocumentGeneratorService documentGeneratorService;
 
-    @Inject
-    private MaterialUrlGenerator materialUrlGenerator;
 
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
 
@@ -200,32 +192,36 @@ public class ResultsEventProcessor {
     }
 
     @Handles("results.event.nces-email-notification-requested")
-    public void handleEmailToNcesNotificationRequested(final JsonEnvelope envelope) {
+    public void handleNcesEmailNotificationRequested(final JsonEnvelope envelope) {
         final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
-        final UUID materialId = UUID.randomUUID();
 
         final JsonObject requestJson = envelope.payloadAsJsonObject();
-        final NcesEmailNotificationRequested ncesEmailNotificationRequested = jsonObjectToObjectConverter.convert(requestJson, NcesEmailNotificationRequested.class);
-        final String sendToAddress = ncesEmailNotificationRequested.getSendTo();
+        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("materialId"));
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info("Nces notification requested payload - {}", requestJson);
         }
 
         //generate and upload pdf
         documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
+    }
 
-        final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
+    @Handles("results.event.nces-email-notification")
+    public void handleSendNcesEmailNotification(final JsonEnvelope envelope) {
+        final JsonObject requestJson = envelope.payloadAsJsonObject();
+        final NcesEmailNotification ncesEmailNotification = jsonObjectToObjectConverter.convert(requestJson, NcesEmailNotification.class);
+        LOGGER.info("Nces email notification payload - {}", requestJson);
 
         final EmailNotification emailNotification = EmailNotification.emailNotification()
-                .withNotificationId(ncesEmailNotificationRequested.getNotificationId())
-                .withTemplateId(fromString(ncesEmailNotificationTemplateId))
-                .withSendToAddress(ncesEmailNotificationRequested.getSendTo())
-                .withSubject(ncesEmailNotificationRequested.getSubject())
-                .withMaterialUrl(materialUrl)
+                .withNotificationId(ncesEmailNotification.getNotificationId())
+                .withTemplateId(ncesEmailNotification.getTemplateId())
+                .withSendToAddress(ncesEmailNotification.getSendToAddress())
+                .withSubject(ncesEmailNotification.getSubject())
+                .withMaterialUrl(ncesEmailNotification.getMaterialUrl())
                 .build();
 
         //Send Email
-        if (isEmpty(sendToAddress)) {
+        LOGGER.info("send email notification - {}", emailNotification);
+        if (isEmpty(emailNotification.getSendToAddress())) {
             final Envelope<JsonObject> jsonObjectEnvelope = envelop(envelope.payloadAsJsonObject())
                     .withName(RESULTS_NCES_SEND_EMAIL_NOT_FOUND)
                     .withMetadataFrom(envelope);
