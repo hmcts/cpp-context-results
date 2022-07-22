@@ -34,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -58,6 +59,7 @@ public class ResultsQueryView {
     private static final String FIELD_DEFENDANT_ID = "defendantId";
     private static final String FIELD_DEFENDANT_IDS = "defendantIds";
     private static final String FIELD_HEARING_ID = "hearingId";
+    private static final String FIELD_HEARING_DATE = "hearingDate";
     private static final String FIELD_FROM_DATE = "fromDate";
     private static final String DEFENDANTS_FIELD = "defendants";
 
@@ -112,7 +114,13 @@ public class ResultsQueryView {
     public JsonEnvelope getHearingDetailsForHearingId(final JsonEnvelope query) {
         final JsonObject payload = query.payloadAsJsonObject();
         final UUID hearingId = fromString(payload.getString(FIELD_HEARING_ID));
-        final HearingResultsAdded hearingResultAdded = hearingService.findHearingForHearingId(hearingId);
+        final String hearingDate = payload.getString(FIELD_HEARING_DATE, null);
+
+        final HearingResultsAdded hearingResultAdded = Optional.ofNullable(hearingDate)
+                .map(LocalDates::from)
+                .map(hDate -> hearingService.findHearingForHearingIdAndHearingDate(hearingId, hDate))
+                .orElseGet(() -> hearingService.findHearingForHearingId(hearingId));
+
         if (hearingResultAdded != null) {
             final ApiHearing hearing = hearingTransformer.hearing(hearingResultAdded.getHearing()).build();
             final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
@@ -136,9 +144,8 @@ public class ResultsQueryView {
             return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), jsonResult);
         }
         LOGGER.warn("No record exists for Hearing id {}", hearingId);
+        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), createObjectBuilder().build());
 
-        return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(),
-                createObjectBuilder().build());
     }
 
     public JsonEnvelope getDefendantsTrackingStatus(final JsonEnvelope envelope) {
@@ -235,4 +242,5 @@ public class ResultsQueryView {
             trackingStatusObjectBuilder.add(fieldLastModifiedTime, ZonedDateTimes.fromString(lastModifiedTime.toString()).toString());
         }
     }
+
 }

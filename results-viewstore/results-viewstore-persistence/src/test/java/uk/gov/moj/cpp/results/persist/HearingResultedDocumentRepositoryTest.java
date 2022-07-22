@@ -19,6 +19,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 @SuppressWarnings("CdiInjectionPointsInspection")
 @RunWith(CdiTestRunner.class)
 public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest {

@@ -284,6 +284,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
 
+
     public static void verifyPrivateEventsForPoliceGenerateResultsForDefendant() throws JMSException {
         verifyPrivateEventsForPoliceGenerateResultsForDefendant(true);
     }

@@ -524,6 +524,54 @@ public class HearingResultedIT {
     }
 
     @Test
+    public void testJourneyHearingToDisplayAllDetailsInResultsWithHearingDate() {
+        PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithHearingDay(MAGISTRATES, LocalDate.of(2018, 5, 2));
+
+        final Hearing hearingIn = resultsMessage.getHearing();
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+
+        resultsMessage = basicShareResultsV2TemplateWithHearingDay(MAGISTRATES, LocalDate.of(2018, 5, 3));
+        resultsMessage.getHearing().setId(hearingIn.getId());
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        ApiCourtCentre expectedCourtCentre =
+                ApiCourtCentre.apiCourtCentre()
+                        .withAddress(ApiAddress.apiAddress()
+                                .withAddress1(hearingIn.getCourtCentre().getAddress().getAddress1())
+                                .withAddress2(hearingIn.getCourtCentre().getAddress().getAddress2())
+                                .withAddress3(hearingIn.getCourtCentre().getAddress().getAddress3())
+                                .withAddress4(hearingIn.getCourtCentre().getAddress().getAddress4())
+                                .withAddress5(hearingIn.getCourtCentre().getAddress().getAddress5())
+                                .withPostcode(hearingIn.getCourtCentre().getAddress().getPostcode()).build())
+                        .withId(hearingIn.getCourtCentre().getId())
+                        .withName(hearingIn.getCourtCentre().getName())
+                        .withRoomId(hearingIn.getCourtCentre().getRoomId())
+                        .withRoomName(hearingIn.getCourtCentre().getRoomName())
+                        .withWelshName(hearingIn.getCourtCentre().getWelshName())
+                        .withWelshRoomName(hearingIn.getCourtCentre().getWelshRoomName()).build();
+
+        final Matcher[] matcher1 = {
+                withJsonPath("$.hearing.id", equalTo(hearingIn.getId().toString())),
+                withJsonPath("$.hearing", Matchers.notNullValue()),
+                withJsonPath("$.hearing.courtCentre.name", equalTo(expectedCourtCentre.getName())),
+                withJsonPath("$.hearing.courtCentre.id", equalTo(expectedCourtCentre.getId().toString())),
+                withJsonPath("$.hearing.courtCentre.roomId", equalTo(expectedCourtCentre.getRoomId().toString())),
+                withJsonPath("$.hearing.courtCentre.roomName", equalTo(expectedCourtCentre.getRoomName())),
+                withJsonPath("$.hearing.courtCentre.welshName", equalTo(expectedCourtCentre.getWelshName())),
+                withJsonPath("$.hearing.courtCentre.welshRoomName", equalTo(expectedCourtCentre.getWelshRoomName())),
+                withJsonPath("$.hearing.courtCentre.address.address1", equalTo(expectedCourtCentre.getAddress().getAddress1())),
+                withJsonPath("$.hearing.courtCentre.address.address2", equalTo(expectedCourtCentre.getAddress().getAddress2())),
+                withJsonPath("$.hearing.courtCentre.address.postcode", equalTo(expectedCourtCentre.getAddress().getPostcode())),
+                withJsonPath("$.sharedTime", notNullValue()),
+                withJsonPath("$.hearing.hearingDays[3].sittingDay", is("2018-05-02T00:00:00.000Z"))
+        };
+        ResultsStepDefinitions.getHearingDetailsForHearingIdAndHearingDate(resultsMessage.getHearing().getId(), LocalDate.of(2018, 5, 2), matcher1);
+    }
+
+    @Test
     public void shouldDisplayAllInternalDetailsInHearingResults() {
         PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
         setOuCodeAndProsecutorAuthority(resultsMessage);
