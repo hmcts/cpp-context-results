@@ -30,6 +30,7 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +38,8 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+
+import org.apache.commons.collections.CollectionUtils;
 
 public class ReferenceDataService {
 
@@ -150,7 +153,7 @@ public class ReferenceDataService {
                 .build();
 
         final Envelope<JsonObject> response = requester.requestAsAdmin(envelopeFrom(metadata, payload), JsonObject.class);
-        if(response.payload().getJsonArray("prosecutors").isEmpty()) {
+        if(CollectionUtils.isEmpty(response.payload().getJsonArray("prosecutors"))) {
             return Optional.empty();
         }
         return ofNullable(response.payload().getJsonArray("prosecutors").getJsonObject(0));
