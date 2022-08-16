@@ -1,7 +1,12 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASES;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASE_IDENTIFIER;
+
 import uk.gov.justice.services.core.annotation.FeatureControl;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -13,16 +18,19 @@ import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
-import javax.inject.Inject;
-import javax.json.*;
 import java.util.Optional;
 import java.util.UUID;
 
-import static javax.json.Json.createObjectBuilder;
-import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
-import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
-import static uk.gov.moj.cpp.domains.SchemaVariableConstants.*;
+import javax.inject.Inject;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ServiceComponent(EVENT_PROCESSOR)
 public class HearingResultedEventProcessor {
@@ -42,9 +50,7 @@ public class HearingResultedEventProcessor {
     private static final String OU_CODE = "prosecutionAuthorityOUCode";
     private static final String PROSECUTOR_CODE = "prosecutionAuthorityId";
 
-
-    @Inject
-    ReferenceDataService referenceDataService;
+    private static final String CPS_PROSECUTOR_IDS = "cpsProsecutorIds";
 
     @Inject
     private Sender sender;
@@ -57,6 +63,9 @@ public class HearingResultedEventProcessor {
 
     @Inject
     private EventGridService eventGridService;
+
+    @Inject
+    private ReferenceDataService referenceDataService;
 
     @Handles("public.events.hearing.hearing-resulted")
     @SuppressWarnings({"squid:S2221"})
@@ -76,6 +85,7 @@ public class HearingResultedEventProcessor {
 
         final JsonObject externalPayload = createObjectBuilder()
                 .add(HEARING, transformedHearing)
+                .add(CPS_PROSECUTOR_IDS, extractCPSProsecutorIds())
                 .add(HEARING_POLICE_CASE_PROSECUTORS, extractPoliceCases(transformedHearing))
                 .add(SHARED_TIME, sharedTime)
                 .build();
@@ -134,6 +144,13 @@ public class HearingResultedEventProcessor {
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
         }
+    }
+
+    public JsonArray extractCPSProsecutorIds() {
+        final JsonArrayBuilder cpsFlagTrueProscutionIds = Json.createArrayBuilder();
+
+        referenceDataService.getProsecutorIdForCPSFlagTrue().forEach(cpsFlagTrueProscutionIds::add);
+        return cpsFlagTrueProscutionIds.build();
     }
 
     /**

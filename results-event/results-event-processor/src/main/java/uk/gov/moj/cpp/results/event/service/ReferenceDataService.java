@@ -32,6 +32,7 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -51,6 +52,8 @@ public class ReferenceDataService {
     private static final String REFERENCE_DATA_QUERY_GET_POLICE_COURT_ROOM_CODE = "referencedata.query.get.police-opt-courtroom-ou-courtroom-code";
     private static final String POLICE_FLAG = "policeFlag";
     private static final String SPI_OUT_FLAG = "spiOutFlag";
+    private static final String REFERENCE_DATA_QUERY_CPS_PROSECUTORS = "referencedata.query.get.prosecutor.by.cpsflag";
+    public static final String PROSECUTORS = "prosecutors";
 
     @Inject
     private Enveloper enveloper;
@@ -153,10 +156,10 @@ public class ReferenceDataService {
                 .build();
 
         final Envelope<JsonObject> response = requester.requestAsAdmin(envelopeFrom(metadata, payload), JsonObject.class);
-        if(CollectionUtils.isEmpty(response.payload().getJsonArray("prosecutors"))) {
+        if(CollectionUtils.isEmpty(response.payload().getJsonArray(PROSECUTORS))) {
             return Optional.empty();
         }
-        return ofNullable(response.payload().getJsonArray("prosecutors").getJsonObject(0));
+        return ofNullable(response.payload().getJsonArray(PROSECUTORS).getJsonObject(0));
     }
 
     private void trimUserGroups(final ResultDefinition resultDefinition) {
@@ -230,5 +233,27 @@ public class ReferenceDataService {
                 .withMotReasonCode(jsonObject.getString("code"))
                 .withMotReasonDescription(jsonObject.getString("description"))
                 .build();
+    }
+
+    public List<String> getProsecutorIdForCPSFlagTrue() {
+        final JsonObject payload = createObjectBuilder().add("cpsFlag", true).build();
+        final Metadata metadata = JsonEnvelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName(REFERENCE_DATA_QUERY_CPS_PROSECUTORS)
+                .build();
+
+        final JsonObject response = requester.requestAsAdmin(envelopeFrom(metadata, payload), JsonObject.class).payload();
+        return ofNullable(response)
+                .map(o -> o.getJsonArray(PROSECUTORS))
+                .map(a -> a.getValuesAs(JsonObject.class))
+                .map(l -> l.stream()
+                        .map(this::convertProsecutor))
+                .orElseGet(Stream::empty)
+                .filter(Objects::nonNull)
+                .collect(toList());
+    }
+
+    private String convertProsecutor(final JsonObject source) {
+        return source.getBoolean("cpsFlag") ? source.getString("id") : null;
     }
 }

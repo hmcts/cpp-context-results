@@ -13,7 +13,11 @@ import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RedisCacheService implements CacheService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisCacheService.class);
 
     @Inject
     @Value(key = "redisCacheHost", defaultValue = "localhost")
@@ -43,19 +47,23 @@ public class RedisCacheService implements CacheService {
 
     private RedisClient redisClient;
 
+    private static final String DB_NAME = "0";
+
     @Override
     public String add(final String key, final String value) {
         if ("localhost".equals(host)) {
             return null;
         }
         setRedisClient();
+        LOGGER.info("Addding hearing id to Redis key {} value {}", key, value);
         return executeAddCommand(key, value);
     }
 
     private void setRedisClient() {
         final String keyPart = ("none".equals(this.key) ? "" : this.key + "@");
-        final RedisURI redisURI = RedisURI.create("redis://" + keyPart + host + ":" + port);
+        final RedisURI redisURI = RedisURI.create("redis://" + keyPart + host + ":" + port + "/" + DB_NAME);
         redisURI.setSsl(parseBoolean(useSsl));
+        LOGGER.info("setting redisclient with Key {} host {} port {} and connected to database {}", keyPart, host, port, DB_NAME);
         if (redisClient == null) {
             redisClient = RedisClient.create(redisURI);
         }

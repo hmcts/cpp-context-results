@@ -48,6 +48,7 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,6 +56,7 @@ import java.util.UUID;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
@@ -422,6 +424,30 @@ public class ReferenceDataServiceTest {
         Optional<JsonObject> refDataProsecutorJson = referenceDataService.getProsecutorByOriginatingOrganisation("someCode");
         assertThat(refDataProsecutorJson.get().getBoolean("spiOutFlag"), is(true));
         assertThat(refDataProsecutorJson.get().getBoolean("policeFlag"), is(true));
+    }
+
+    @Test
+    public void shouldGetProsecutorsWithCPSFlagTrue() {
+
+        final JsonObject prosecutor = createObjectBuilder()
+                .add("id", "test")
+                .add("cpsFlag", JsonValue.TRUE).build();
+        final JsonObject prosecutorCPSFalse = createObjectBuilder()
+                .add("id", "test")
+                .add("cpsFlag", JsonValue.FALSE).build();
+        final JsonArray prosecutors = createArrayBuilder()
+                .add(prosecutor).build();
+
+        final JsonObject responsePayload = createObjectBuilder().add("prosecutors", prosecutors).build();
+
+        final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
+        when(requester.requestAsAdmin(any(), any())).then(mock -> queryResponse);
+
+        final List<String> prosecutorIds = referenceDataService.getProsecutorIdForCPSFlagTrue();
+
+        when(requester.requestAsAdmin(any(), any())).thenReturn(Envelope.envelopeFrom(DefaultJsonMetadata.metadataBuilder().withId(randomUUID()).withName("referencedata.query.get.prosecutor.by.cpsflag"), prosecutorIds));
+
+        assertThat(prosecutorIds.size(), is(1));
     }
 
     @Test
