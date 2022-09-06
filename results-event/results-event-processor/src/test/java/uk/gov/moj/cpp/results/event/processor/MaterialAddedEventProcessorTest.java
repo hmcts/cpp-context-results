@@ -76,7 +76,7 @@ public class MaterialAddedEventProcessorTest {
         final String materialId = randomUUID().toString();
         final String materialUrl = "http://localhost:8080/";
         final JsonObject metaDataJson = Json.createObjectBuilder()
-                .add(Originator.SOURCE, Originator.ORIGINATOR_VALUE)
+                .add(Originator.SOURCE_NCES, Originator.ORIGINATOR_VALUE_NCES)
                 .add("id", UUID.randomUUID().toString())
                 .add("userId", UUID.randomUUID().toString())
                 .add("name", "dummy")

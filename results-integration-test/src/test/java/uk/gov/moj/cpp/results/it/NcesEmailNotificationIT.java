@@ -56,8 +56,8 @@ public class NcesEmailNotificationIT {
     private static final String MATERIAL_MATERIAL_ADDED = "material.material-added";
     private static final String DOCUMENT_TEXT = STRING.next();
     private static final String RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED = "results.event.nces-email-notification-requested";
-    private static final String SOURCE = "originator";
-    private static final String ORIGINATOR_VALUE = "court";
+    private static final String SOURCE = "originator-nces";
+    private static final String ORIGINATOR_VALUE = "nces";
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter(objectMapper);

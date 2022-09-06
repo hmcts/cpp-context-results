@@ -23,8 +23,8 @@ public class MaterialAddedEventProcessor {
 
     private static final Logger LOGGER =
             LoggerFactory.getLogger(MaterialAddedEventProcessor.class.getName());
-    public static final String ORIGINATOR = Originator.SOURCE;
-    public static final String ORIGINATOR_VALUE = Originator.ORIGINATOR_VALUE;
+    public static final String ORIGINATOR = Originator.SOURCE_NCES;
+    public static final String ORIGINATOR_VALUE = Originator.ORIGINATOR_VALUE_NCES;
 
     @Inject
     private MaterialUrlGenerator materialUrlGenerator;

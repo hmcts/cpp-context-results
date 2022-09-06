@@ -20,6 +20,8 @@ public class Originator {
     public static final String CONTEXT = "context";
     public static final String SOURCE = "originator";
     public static final String ORIGINATOR_VALUE = "court";
+    public static final String SOURCE_NCES = "originator-nces";
+    public static final String ORIGINATOR_VALUE_NCES = "nces";
 
     private Originator() {
     }
@@ -29,6 +31,7 @@ public class Originator {
                 .add(ID, id)
                 .add(NAME, name)
                 .add(SOURCE, ORIGINATOR_VALUE)
+                .add(SOURCE_NCES, ORIGINATOR_VALUE_NCES)
                 .add(CONTEXT, Json.createObjectBuilder()
                         .add(USER_ID, userId))
                 .build()).build();

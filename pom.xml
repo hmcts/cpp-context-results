@@ -38,7 +38,7 @@
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>1.0.186</coredomain.version>
         <criminal-court-public-model.version>${coredomain.version}</criminal-court-public-model.version>
-        <referencedata.version>8.0.11</referencedata.version>
+        <referencedata.version>8.0.14</referencedata.version>
         <lettuce.core.version>5.2.1.RELEASE</lettuce.core.version>
         <azure-client-authentication.version>1.5.2</azure-client-authentication.version>
         <azure-eventgrid.version>1.0.0</azure-eventgrid.version>
@@ -47,7 +47,7 @@
         <notification.notify.version>7.0.14</notification.notify.version>
         <jackson-data-format.version>2.8.8</jackson-data-format.version>
         <systemdocgenerator.version>8.0.0</systemdocgenerator.version>
-        <material.version>8.0.2</material.version>
+        <material.version>8.0.9</material.version>
     </properties>
     <build>
         <plugins>
