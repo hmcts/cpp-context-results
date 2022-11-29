@@ -74,6 +74,7 @@ public class OffenceDetails {
                     .withOffenceFacts(offence.getOffenceFacts())
                     .withOffenceSequenceNumber(offence.getOrderIndex())
                     .withPlea(offence.getPlea())
+                    .withIndicatedPlea(offence.getIndicatedPlea())
                     .withStartDate(offence.getStartDate())
                     .withJudicialResults(offence.getJudicialResults())
                     .withFinding(getVerdictCode(nonNull(offence.getVerdict()) && nonNull(offence.getVerdict().getVerdictType()) ? offence.getVerdict().getVerdictType().getCjsVerdictCode() : null, offence.getConvictionDate()))

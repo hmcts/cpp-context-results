@@ -39,6 +39,8 @@ import uk.gov.justice.core.courts.DefendantJudicialResult;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingType;
+import uk.gov.justice.core.courts.IndicatedPlea;
+import uk.gov.justice.core.courts.IndicatedPleaValue;
 import uk.gov.justice.core.courts.InitiationCode;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultCategory;
@@ -53,6 +55,7 @@ import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceActiveOrder;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.Source;
 import uk.gov.justice.core.courts.SummonsTemplateType;
 import uk.gov.justice.core.courts.Verdict;
 import uk.gov.justice.core.courts.VerdictType;
@@ -296,6 +299,13 @@ public class TestTemplates {
         return publicHearingResulted;
     }
 
+    public static PublicHearingResulted basicShareResultsV2TemplateForIndicatedPlea(final JurisdictionType jurisdictionType) {
+        final PublicHearingResulted publicHearingResulted = basicShareResultsTemplateForIndicatedPlea(jurisdictionType, false, false);
+        publicHearingResulted.setIsReshare(Optional.of(false));
+        publicHearingResulted.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
+        return publicHearingResulted;
+    }
+
     public static PublicHearingResulted basicShareResultsV2TemplateWithHearingDay(final JurisdictionType jurisdictionType, final LocalDate hearingDay) {
         final PublicHearingResulted publicHearingResulted = basicShareResultsTemplate(jurisdictionType, false);
         publicHearingResulted.getHearing().getHearingDays().add(HearingDay.hearingDay()
@@ -340,6 +350,15 @@ public class TestTemplates {
 
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), isWithVerdict), createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType, isSJPHearing))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+    }
+
+    public static PublicHearingResulted basicShareResultsTemplateForIndicatedPlea(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing) {
+
+        final UUID hearingId = randomUUID();
+
+        return PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCaseForIndicatesPlea(buildJudicialResultList(), isWithVerdict)), jurisdictionType, isSJPHearing))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
     }
 
@@ -398,8 +417,25 @@ public class TestTemplates {
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
                         .build())
                 .withDefendants(
-                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict, null),
-                                createDefendant(DEFAULT_DEFENDANT_ID2.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict, null)
+                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict, null, true),
+                                createDefendant(DEFAULT_DEFENDANT_ID2.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict, null, false)
+                        ))
+                .withCaseStatus(ACTIVE)
+                .build();
+    }
+
+    private static ProsecutionCase createProsecutionCaseForIndicatesPlea(final List<JudicialResult> judicialResults, final boolean isWithVerdict) {
+        return ProsecutionCase.prosecutionCase()
+                .withId(fromString(LINKED_CASE_ID))
+                .withInitiationCode(InitiationCode.C)
+                .withOriginatingOrganisation(STRING.next())
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
+                        .withProsecutionAuthorityId(randomUUID())
+                        .withProsecutionAuthorityCode(STRING.next())
+                        .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
+                        .build())
+                .withDefendants(
+                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict, null, true)
                         ))
                 .withCaseStatus(ACTIVE)
                 .build();
@@ -415,7 +451,7 @@ public class TestTemplates {
                         .withProsecutionAuthorityCode(STRING.next())
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
                         .build())
-                .withOffences(getOffenceList(buildJudicialResultList(), true, null))
+                .withOffences(getOffenceList(buildJudicialResultList(), true, null, false))
                 .build();
     }
 
@@ -443,8 +479,8 @@ public class TestTemplates {
                         .withCaseURN(STRING.next())
                         .build())
                 .withDefendants(
-                        asList(createDefendant(DEFAULT_DEFENDANT_ID3.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict, null),
-                                createDefendant(DEFAULT_DEFENDANT_ID4.toString(), null, judicialResults, isWithVerdict, null)
+                        asList(createDefendant(DEFAULT_DEFENDANT_ID3.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict, null, false),
+                                createDefendant(DEFAULT_DEFENDANT_ID4.toString(), null, judicialResults, isWithVerdict, null, false)
                         ))
                 .withCaseStatus(ACTIVE)
                 .build();
@@ -461,14 +497,14 @@ public class TestTemplates {
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
                         .build())
                 .withDefendants(
-                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict, offenceDateCode),
-                                createDefendant(DEFAULT_DEFENDANT_ID2.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict, offenceDateCode)
+                        asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict, offenceDateCode, false),
+                                createDefendant(DEFAULT_DEFENDANT_ID2.toString(), DEFAULT_VALUE, judicialResults, isWithVerdict, offenceDateCode, false)
                         ))
                 .withCaseStatus(ACTIVE)
                 .build();
     }
 
-    private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode) {
+    private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode, final Boolean isIndicatedPlea) {
         return Defendant.defendant()
                 .withCourtProceedingsInitiated(ZonedDateTime.now())
                 .withMasterDefendantId(UUID.fromString(defendantId))
@@ -498,7 +534,7 @@ public class TestTemplates {
                         .withRole("parentGuardian")
                         .build()))
                 .withOffences(
-                        getOffenceList(judicialResults, isWithVerdict, offenceDateCode)
+                        getOffenceList(judicialResults, isWithVerdict, offenceDateCode, isIndicatedPlea)
                 )
                 .build();
     }
@@ -523,7 +559,7 @@ public class TestTemplates {
         return hearingDays;
     }
 
-    private static List<Offence> getOffenceList(final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode) {
+    private static List<Offence> getOffenceList(final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode, final boolean isIndicatedPlea) {
 
         final Offence.Builder builder = Offence.offence();
         builder.withId(randomUUID())
@@ -562,6 +598,14 @@ public class TestTemplates {
                     .build());
         }
 
+        if(isIndicatedPlea){
+            builder.withIndicatedPlea(IndicatedPlea.indicatedPlea()
+                    .withOffenceId(ID)
+                    .withIndicatedPleaDate(LocalDate.now())
+                    .withIndicatedPleaValue(IndicatedPleaValue.INDICATED_GUILTY)
+                    .withSource(Source.IN_COURT)
+                    .build());
+        }
 
         return singletonList(
                 builder.build()

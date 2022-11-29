@@ -16,6 +16,8 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplat
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.IndicatedPlea;
+import uk.gov.justice.core.courts.IndicatedPleaValue;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
@@ -140,6 +142,7 @@ public class OffenceDetailsTest {
         assertThat(offenceDetailsFromRequest.getModeOfTrial(), is(MODE_OF_TRIAL));
         assertThat(offenceDetailsFromRequest.getFinalDisposal(), is("N"));
         assertThat(offenceDetailsFromRequest.getOffenceSequenceNumber(), is(orderIndex));
+        assertThat(offenceDetailsFromRequest.getIndicatedPlea().getIndicatedPleaValue(), is(IndicatedPleaValue.INDICATED_GUILTY));
         assertResult(offenceDetailsFromRequest.getJudicialResults(), offenceDetailsList.get(0).getJudicialResults());
     }
 
@@ -195,6 +198,7 @@ public class OffenceDetailsTest {
                 .withCount(434)
                 .withIsDisposed(false)
                 .withJudicialResults(buildJudicialResultList())
+                .withIndicatedPlea(IndicatedPlea.indicatedPlea().withIndicatedPleaValue(IndicatedPleaValue.INDICATED_GUILTY).build())
                 .build());
     }
 

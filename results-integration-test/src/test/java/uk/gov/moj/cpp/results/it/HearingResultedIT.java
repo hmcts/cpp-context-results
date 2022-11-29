@@ -128,6 +128,26 @@ public class HearingResultedIT {
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
     }
 
+    @Test
+    public void testCCForSpiOutWithIndicatedPlea() throws JMSException {
+        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateForIndicatedPlea(MAGISTRATES);
+        setOuCodeAndProsecutorAuthority(resultsMessage);
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getIndicatedPlea(), is(notNullValue()));
+        assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getIndicatedPlea().getIndicatedPleaValue(), is(IndicatedPleaValue.INDICATED_GUILTY));
+    }
+
     private void setOuCodeAndProsecutorAuthority(final PublicHearingResulted resultsMessage) {
         final ImmutableMap<String, Boolean> features = ImmutableMap.of("amendReshare", true);
         FeatureStubber.stubFeaturesFor("results", features);

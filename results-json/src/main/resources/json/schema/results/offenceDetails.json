@@ -41,6 +41,9 @@
     "plea": {
       "$ref": "http://justice.gov.uk/core/courts/plea.json"
     },
+    "indicatedPlea": {
+      "$ref": "http://justice.gov.uk/core/courts/indicatedPlea.json"
+    },
     "modeOfTrial": {
       "type": "string"
     },
