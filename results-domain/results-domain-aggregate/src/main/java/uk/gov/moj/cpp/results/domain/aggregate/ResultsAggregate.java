@@ -428,7 +428,7 @@ public class ResultsAggregate implements Aggregate {
 
                 isEligibleForNotification = true;
 
-                if (!isCrownCourt(jurisdictionType)) {
+                if (!isCrownCourt(jurisdictionType) && isResultPresent(defendantFromRequest)) {
                     builder.add(
                             buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
                     );

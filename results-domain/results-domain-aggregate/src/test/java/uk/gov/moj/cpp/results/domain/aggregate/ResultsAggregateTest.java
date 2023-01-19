@@ -14,6 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -486,7 +487,12 @@ public class ResultsAggregateTest {
         final List<Object> objectListAfterRemove = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
 
         assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectListAfterRemove);
-        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectListAfterRemove);
+        final PoliceResultGenerated policeResultGenerated = objectListAfterRemove.stream().filter(e -> e instanceof PoliceResultGenerated)
+                .map(o -> (PoliceResultGenerated) o)
+                .findFirst()
+                .orElse(null);
+        assertThat(policeResultGenerated, nullValue());
+
     }
 
     @Test
