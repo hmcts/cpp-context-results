@@ -53,6 +53,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
+import static uk.gov.justice.core.courts.CourtApplicationCase.courtApplicationCase;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
@@ -155,9 +156,15 @@ public class HearingResultedIT {
         if (null != resultsMessage.getHearing().getProsecutionCases() && !resultsMessage.getHearing().getProsecutionCases().isEmpty()) {
             int size = resultsMessage.getHearing().getProsecutionCases().size();
             for (int i = 0; i < size; i++) {
-                resultsMessage.getHearing().getProsecutionCases().get(i).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTION_AUTHORITY);
-                resultsMessage.getHearing().getProsecutionCases().get(i).getProsecutionCaseIdentifier().setProsecutionAuthorityOUCode(OU_CODE);
-                resultsMessage.getHearing().getProsecutionCases().get(i).setOriginatingOrganisation(OU_CODE);
+                final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(i))
+                        .withOriginatingOrganisation(OU_CODE)
+                        .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(i).getProsecutionCaseIdentifier())
+                                .withProsecutionAuthorityCode(PROSECUTION_AUTHORITY)
+                                .withProsecutionAuthorityOUCode(OU_CODE).build())
+                        .build();
+
+                resultsMessage.getHearing().getProsecutionCases().set(i, prosecutionCase);
+
             }
         }
     }
@@ -552,7 +559,8 @@ public class HearingResultedIT {
         hearingResultsHaveBeenSharedV2(resultsMessage);
 
         resultsMessage = basicShareResultsV2TemplateWithHearingDay(MAGISTRATES, LocalDate.of(2018, 5, 3));
-        resultsMessage.getHearing().setId(hearingIn.getId());
+        resultsMessage.setHearing(Hearing.hearing().withValuesFrom(resultsMessage.getHearing())
+                .withId(hearingIn.getId()).build());
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
 
@@ -661,9 +669,20 @@ public class HearingResultedIT {
         resultsMessage.setIsReshare(Optional.of(false));
         resultsMessage.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
 
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
-        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+        final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0))
+                .withOriginatingOrganisation(null)
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .withOriginatingOrganisation(null)
+                .build();
+        final CourtApplicationCase courtApplicationCase = courtApplicationCase().
+                withValuesFrom(resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build()).build();
+
+        resultsMessage.getHearing().getProsecutionCases().set(0, prosecutionCase);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().set(0, courtApplicationCase);
+
         setOuCodeAndProsecutorAuthority(resultsMessage);
 
         hearingResultsHaveBeenSharedV2(resultsMessage);
@@ -716,9 +735,22 @@ public class HearingResultedIT {
                                         .build())
                                 .build())))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
-        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+
+        final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0))
+                .withOriginatingOrganisation(null)
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .withOriginatingOrganisation(null)
+                .build();
+        final CourtApplicationCase courtApplicationCase = courtApplicationCase().
+                withValuesFrom(resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build()).build();
+
+        resultsMessage.getHearing().getProsecutionCases().set(0, prosecutionCase);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().set(0, courtApplicationCase);
+
+
         resultsMessage.setIsReshare(Optional.of(false));
         resultsMessage.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
         setOuCodeAndProsecutorAuthority(resultsMessage);

@@ -36,6 +36,7 @@ import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
 import uk.gov.justice.core.courts.DefendantRejectedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
+import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
 import uk.gov.justice.core.courts.HearingCaseEjected;
 import uk.gov.justice.core.courts.HearingResultsAdded;
@@ -274,7 +275,7 @@ public class ResultsCommandHandlerTest {
         final UUID hearingId2 = randomUUID();
         final UUID caseId = randomUUID();
 
-        shareResultsWithMagistratesMessage.getHearing().setId(hearingId1);
+        shareResultsWithMagistratesMessage.setHearing(Hearing.hearing().withValuesFrom(shareResultsWithMagistratesMessage.getHearing()).withId(hearingId1).build());
 
         final JsonEnvelope envelop1 = envelopeFrom(metadataOf(metadataId, "results.add-hearing-result"),
                 objectToJsonObjectConverter.convert(shareResultsWithMagistratesMessage));
@@ -282,7 +283,8 @@ public class ResultsCommandHandlerTest {
 
         this.resultsCommandHandler.addHearingResult(envelop1);
 
-        shareResultsWithMagistratesMessage.getHearing().setId(hearingId2);
+        shareResultsWithMagistratesMessage.setHearing(Hearing.hearing().withValuesFrom(shareResultsWithMagistratesMessage.getHearing()).withId(hearingId2).build());
+
 
         final JsonEnvelope envelop2 = envelopeFrom(metadataOf(metadataId, "results.add-hearing-result"),
                 objectToJsonObjectConverter.convert(shareResultsWithMagistratesMessage));
@@ -323,7 +325,8 @@ public class ResultsCommandHandlerTest {
         final UUID hearingId2 = randomUUID();
         final UUID applicationId = randomUUID();
 
-        shareResultsWithMagistratesMessage.getHearing().setId(hearingId1);
+        shareResultsWithMagistratesMessage.setHearing(Hearing.hearing().withValuesFrom(shareResultsWithMagistratesMessage.getHearing()).withId(hearingId1).build());
+
 
         final JsonEnvelope envelop1 = envelopeFrom(metadataOf(metadataId, "results.add-hearing-result"),
                 objectToJsonObjectConverter.convert(shareResultsWithMagistratesMessage));
@@ -331,7 +334,8 @@ public class ResultsCommandHandlerTest {
 
         this.resultsCommandHandler.addHearingResult(envelop1);
 
-        shareResultsWithMagistratesMessage.getHearing().setId(hearingId2);
+        shareResultsWithMagistratesMessage.setHearing(Hearing.hearing().withValuesFrom(shareResultsWithMagistratesMessage.getHearing()).withId(hearingId2).build());
+
 
         final JsonEnvelope envelop2 = envelopeFrom(metadataOf(metadataId, "results.add-hearing-result"),
                 objectToJsonObjectConverter.convert(shareResultsWithMagistratesMessage));
@@ -738,7 +742,6 @@ public class ResultsCommandHandlerTest {
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
         final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
         final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
-        convertedCaseDetails.setOriginatingOrganisation(null);
         final JsonObject session = payload.getJsonObject("session");
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));

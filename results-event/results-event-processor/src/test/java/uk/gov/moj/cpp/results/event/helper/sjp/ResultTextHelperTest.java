@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.helper.sjp;
 
-import static com.google.common.collect.ImmutableList.of;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.JudicialResultPrompt.judicialResultPrompt;
@@ -10,9 +9,9 @@ import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 public class ResultTextHelperTest {
@@ -35,8 +34,12 @@ public class ResultTextHelperTest {
     public void testResultText_whenJudicialResultPromptSequenceIsnNull() {
         final ResultDefinition resultDefinition = buildResultDefinition();
         final List<JudicialResultPrompt> judicialResultPromptList = buildJudicialResultPromptList();
-        judicialResultPromptList.get(3).setPromptSequence(null);
-        judicialResultPromptList.get(4).setPromptSequence(null);
+        final JudicialResultPrompt judicialResultPrompt3 = JudicialResultPrompt.judicialResultPrompt().withValuesFrom(judicialResultPromptList.get(3))
+                .withPromptSequence(null).build();
+        judicialResultPromptList.set(3, judicialResultPrompt3);
+        final JudicialResultPrompt judicialResultPrompt4 = JudicialResultPrompt.judicialResultPrompt().withValuesFrom(judicialResultPromptList.get(4))
+                .withPromptSequence(null).build();
+        judicialResultPromptList.set(4, judicialResultPrompt4);
 
         final String resultText = new ResultTextHelper().getResultText(resultDefinition, judicialResultPromptList);
 
@@ -44,8 +47,8 @@ public class ResultTextHelperTest {
         assertThat(resultText, is("label"+EOL+"label3 33333"+EOL+"label4 44444"+EOL+"label5 55555"+EOL+"label2 22222"+EOL+"label1 11111"+EOL));
     }
 
-    private ImmutableList<JudicialResultPrompt> buildJudicialResultPromptList() {
-        return of(buildJudicialResultPrompt(new BigDecimal(5), "label5", "55555")
+    private List<JudicialResultPrompt> buildJudicialResultPromptList() {
+        return Arrays.asList(buildJudicialResultPrompt(new BigDecimal(5), "label5", "55555")
                 , buildJudicialResultPrompt(new BigDecimal(4), "label4", "44444")
                 , buildJudicialResultPrompt(new BigDecimal(3), "label3", "33333")
                 , buildJudicialResultPrompt(new BigDecimal(2), "label2", "22222")

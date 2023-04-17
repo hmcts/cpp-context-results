@@ -68,7 +68,6 @@
                                     <plugin>uk.gov.justice.generation.pojo.plugin.classmodifying.AddToStringMethodToClassPlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.FormatCustomReturnTypePlugin</plugin>
-                                    <plugin>uk.gov.moj.cpp.pojoplugin.MutablePojoPlugin</plugin>
                                 </plugins>
                                 <typeMappings>
                                     <typeMapping>
@@ -131,7 +130,6 @@
                                     <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.ReferenceCustomReturnTypePlugin</plugin>
                                     <plugin>uk.gov.justice.generation.pojo.plugin.typemodifying.FormatCustomReturnTypePlugin</plugin>
 
-                                    <plugin>uk.gov.moj.cpp.pojoplugin.MutablePojoPlugin</plugin>
                                 </plugins>
                                 <typeMappings>
                                     <typeMapping>

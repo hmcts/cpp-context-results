@@ -105,8 +105,8 @@ public class ResultAmountSterlingTest {
 
     @Test
     public void getValueForFinancialPromptWithNegativeValueShouldRetuenNegativeSterlingAmount(){
-        prompt0.setValue("-10");
-        final ResultAmountSterling resultAmountSterling = new ResultAmountSterling(resultDefinition, promptReferenceData0, prompt0);
+        final Prompts finalPrompt0 = Prompts.prompts().withValuesFrom(prompt0).withValue("-10").build();
+        final ResultAmountSterling resultAmountSterling = new ResultAmountSterling(resultDefinition, promptReferenceData0, finalPrompt0);
         boolean result = resultAmountSterling.isPresent();
         assertThat(result, is(true));
         assertThat(resultAmountSterling.getAmount(), is("-10.00"));
@@ -114,8 +114,8 @@ public class ResultAmountSterlingTest {
 
     @Test
     public void getValueForFinancialPromptWithZeroValueShouldRetuenZeroSterlingAmount(){
-        prompt0.setValue("0");
-        final ResultAmountSterling resultAmountSterling = new ResultAmountSterling(resultDefinition, promptReferenceData0, prompt0);
+        final Prompts finalPrompt0 = Prompts.prompts().withValuesFrom(prompt0).withValue("0").build();
+        final ResultAmountSterling resultAmountSterling = new ResultAmountSterling(resultDefinition, promptReferenceData0, finalPrompt0);
         boolean result = resultAmountSterling.isPresent();
         assertThat(result, is(true));
         assertThat(resultAmountSterling.getAmount(), is("0.00"));

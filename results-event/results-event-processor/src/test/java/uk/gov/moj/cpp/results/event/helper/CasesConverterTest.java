@@ -18,6 +18,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.core.courts.Hearing.hearing;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted.publicHearingResulted;
@@ -265,7 +266,8 @@ public class CasesConverterTest {
 
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
-        hearing.setProsecutionCases(null);
+        shareResultsMessage.setHearing(hearing().withValuesFrom(hearing).withProsecutionCases(null).build());
+
         when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
         final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
         assertThat(caseDetailsList, hasSize(0));

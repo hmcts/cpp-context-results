@@ -87,11 +87,11 @@ public class MoveDefendantJudicialResultsHelper {
                 offencesWithCaseOrDefendantLevelResults.stream()
                         .filter(Objects::nonNull)
                         .filter(o -> o.getId().equals(firstOffenceWithInterimResults.get().getId()))
-                        .forEach(o -> addJudicialResultsToOffence(o, caseDefendantJudicialResultsNotAssociatedWithOffence));
+                        .forEach(o -> offencesWithCaseOrDefendantLevelResults.set(offencesWithCaseOrDefendantLevelResults.indexOf(o), addJudicialResultsToOffence(o, caseDefendantJudicialResultsNotAssociatedWithOffence)));
             } else {
                 offencesWithCaseOrDefendantLevelResults.stream().filter(Objects::nonNull)
                         .findFirst()
-                        .ifPresent(o -> addJudicialResultsToOffence(o, caseDefendantJudicialResultsNotAssociatedWithOffence));
+                        .ifPresent(o -> offencesWithCaseOrDefendantLevelResults.set(offencesWithCaseOrDefendantLevelResults.indexOf(o), addJudicialResultsToOffence(o, caseDefendantJudicialResultsNotAssociatedWithOffence)));
             }
         }
 
@@ -109,7 +109,7 @@ public class MoveDefendantJudicialResultsHelper {
                 updatedJudicialResultList.addAll(matchingCaseOrDefendantLevelJudicialResults);
             }
 
-            offence.setJudicialResults(updatedJudicialResultList);
+            return Offence.offence().withValuesFrom(offence).withJudicialResults(updatedJudicialResultList).build();
         }
         return offence;
     }

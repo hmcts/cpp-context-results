@@ -60,7 +60,6 @@ public class TestTemplate {
 
     public static List<BaseResult> getBaseResultsWithNoPrompts() {
         final BaseResult baseResult = getBaseResult();
-        baseResult.setPrompts(null);
         final List<BaseResult> baseResultList = new ArrayList<>();
         baseResultList.add(baseResult);
         return baseResultList;

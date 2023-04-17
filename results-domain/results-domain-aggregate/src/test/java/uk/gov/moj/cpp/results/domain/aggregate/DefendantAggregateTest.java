@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
@@ -99,7 +100,9 @@ public class DefendantAggregateTest {
         assertThat(((DefendantTrackingStatusUpdated) eventStream.get(0)).getTrackingStatus().get(0).getEmLastModifiedTime().format(TIMESTAMP_FORMATTER), is(LAST_MODIFIED_TIME_LAST_WEEK.format(TIMESTAMP_FORMATTER)));
 
         // a newer result shared to deactivate
-        offenceList.get(0).getJudicialResults().get(0).setOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate()).setResultDefinitionGroup(ELECTRONIC_MONITORING_DEACTIVATE_RESULT_GROUP);
+
+        offenceList.get(0).getJudicialResults().set(0, judicialResult().withValuesFrom(offenceList.get(0).getJudicialResults().get(0)).withOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate())
+                .withResultDefinitionGroup(ELECTRONIC_MONITORING_DEACTIVATE_RESULT_GROUP).build());
 
         final List<Object> newEventStream = defendantAggregate.updateDefendantTrackingStatus(DEFENDANT_ID, offenceList).collect(Collectors.toList());
         assertThat(newEventStream.size(), is(1));
@@ -123,7 +126,8 @@ public class DefendantAggregateTest {
         assertThat(((DefendantTrackingStatusUpdated) eventStream.get(0)).getTrackingStatus().get(0).getEmLastModifiedTime().format(TIMESTAMP_FORMATTER), is(LAST_MODIFIED_TIME_LAST_WEEK.format(TIMESTAMP_FORMATTER)));
 
         // a newer result shared to deactivate
-        offenceList.get(0).getJudicialResults().get(0).setOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate()).setResultDefinitionGroup(ELECTRONIC_MONITORING_DEACTIVATE_RESULT_GROUP);
+        offenceList.get(0).getJudicialResults().set(0, judicialResult().withValuesFrom(offenceList.get(0).getJudicialResults().get(0)).withOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate())
+                .withResultDefinitionGroup(ELECTRONIC_MONITORING_DEACTIVATE_RESULT_GROUP).build());
 
         final List<Object> newEventStream = defendantAggregate.updateDefendantTrackingStatus(DEFENDANT_ID, offenceList).collect(Collectors.toList());
         assertThat(newEventStream.size(), is(1));
@@ -131,7 +135,8 @@ public class DefendantAggregateTest {
         assertThat(((DefendantTrackingStatusUpdated) newEventStream.get(0)).getTrackingStatus().get(0).getEmLastModifiedTime().format(TIMESTAMP_FORMATTER), is(LAST_MODIFIED_TIME_TODAY.format(TIMESTAMP_FORMATTER)));
 
         // previous hearing reshared (extend) but has no affect
-        offenceList.get(0).getJudicialResults().get(0).setOrderedDate(LAST_MODIFIED_TIME_LAST_WEEK.toLocalDate()).setResultDefinitionGroup(resultDefinitionGroups);
+        offenceList.get(0).getJudicialResults().set(0, judicialResult().withValuesFrom(offenceList.get(0).getJudicialResults().get(0)).withOrderedDate(LAST_MODIFIED_TIME_LAST_WEEK.toLocalDate())
+                .withResultDefinitionGroup(resultDefinitionGroups).build());
         final List<Object> resharedEventStream = defendantAggregate.updateDefendantTrackingStatus(DEFENDANT_ID, offenceList).collect(Collectors.toList());
         assertThat(resharedEventStream.size(), is(0));
 
@@ -161,7 +166,8 @@ public class DefendantAggregateTest {
         assertThat(((DefendantTrackingStatusUpdated) eventStream.get(0)).getTrackingStatus().get(0).getWoaLastModifiedTime().format(TIMESTAMP_FORMATTER), is(LAST_MODIFIED_TIME_LAST_WEEK.format(TIMESTAMP_FORMATTER)));
 
         // a newer result shared to extend
-        offenceList.get(0).getJudicialResults().get(0).setOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate()).setResultDefinitionGroup(WARRANTS_OF_ARREST_ON_RESULT_GROUP);
+        offenceList.get(0).getJudicialResults().set(0, judicialResult().withValuesFrom(offenceList.get(0).getJudicialResults().get(0)).withOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate())
+                .withResultDefinitionGroup(WARRANTS_OF_ARREST_ON_RESULT_GROUP).build());
 
         final List<Object> newEventStream = defendantAggregate.updateDefendantTrackingStatus(DEFENDANT_ID, offenceList).collect(Collectors.toList());
         assertThat(newEventStream.size(), is(1));
@@ -184,7 +190,9 @@ public class DefendantAggregateTest {
         assertThat(((DefendantTrackingStatusUpdated) eventStream.get(0)).getTrackingStatus().get(0).getWoaLastModifiedTime().format(TIMESTAMP_FORMATTER), is(LAST_MODIFIED_TIME_LAST_WEEK.format(TIMESTAMP_FORMATTER)));
 
         // a newer result shared to deactivate
-        offenceList.get(0).getJudicialResults().get(0).setOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate()).setResultDefinitionGroup(WARRANTS_OF_ARREST_OFF_RESULT_GROUP);
+        final JudicialResult.Builder judicialResultBuilder = judicialResult().withValuesFrom(offenceList.get(0).getJudicialResults().get(0));
+        offenceList.get(0).getJudicialResults().set(0, judicialResultBuilder.withOrderedDate(LAST_MODIFIED_TIME_TODAY.toLocalDate())
+                .withResultDefinitionGroup(WARRANTS_OF_ARREST_OFF_RESULT_GROUP).build());
 
         final List<Object> newEventStream = defendantAggregate.updateDefendantTrackingStatus(DEFENDANT_ID, offenceList).collect(Collectors.toList());
         assertThat(newEventStream.size(), is(1));
@@ -276,7 +284,7 @@ public class DefendantAggregateTest {
     }
 
     private List<JudicialResult> buildJudicialResultList(final String resultDefinitionGroup, final LocalDate orderDate) {
-        return singletonList(judicialResult()
+        return Arrays.asList(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(JudicialResultCategory.FINAL)
                 .withCjsCode(CJS_CODE)

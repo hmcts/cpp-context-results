@@ -70,16 +70,28 @@ public class HearingServiceTest {
         final HearingResultedDocument hearingResultedDocument = templateHearingResultDocument();
         PublicHearingResulted publicHearingResulted = uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final UUID defendantId = publicHearingResulted.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getId();
-                HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
+        HearingResultsAdded payload = new HearingResultsAdded(publicHearingResulted.getHearing(), publicHearingResulted.getSharedTime());
         List<ProsecutionCase> prosecutionCases = asList(templateProsecutionCase(), templateProsecutionCase(), templateProsecutionCase());
-        payload.getHearing().setProsecutionCases(prosecutionCases);
+        payload = HearingResultsAdded.hearingResultsAdded().withValuesFrom(payload)
+                .withHearing(Hearing.hearing().withValuesFrom(payload.getHearing())
+                .withProsecutionCases(prosecutionCases)
+                .build()).build();
+
+        List<ProsecutionCase> finalProsecutionCases = new ArrayList<>();
         for (ProsecutionCase prosecutionCase : prosecutionCases) {
-            prosecutionCase.setDefendants(asList(templateDefendant(), templateDefendant(), templateDefendant()));
+            finalProsecutionCases.add(ProsecutionCase.prosecutionCase().withValuesFrom(prosecutionCase)
+                    .withDefendants(asList(templateDefendant(), templateDefendant(), templateDefendant()))
+                    .build());
+
         }
 
-        ProsecutionCase targetCase = prosecutionCases.get(1);
+        ProsecutionCase targetCase = finalProsecutionCases.get(1);
         Defendant targetDefendant = targetCase.getDefendants().get(1);
-        targetDefendant.setId(defendantId);
+        targetDefendant = Defendant.defendant().withValuesFrom(targetDefendant)
+                .withId(defendantId).build();
+        targetCase.getDefendants().set(1, targetDefendant);
+        payload.getHearing().getProsecutionCases().set(1, targetCase);
+
         JsonObject payloadJson = Mockito.mock(JsonObject.class);
         when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
         when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);

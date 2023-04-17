@@ -130,7 +130,10 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private void handleHearingFinancialResultsUpdated(final HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
         correlationIdHistoryItemList.stream()
                 .filter(correlationIdHistoryItem -> hearingFinancialResultsUpdated.getCorrelationId().equals(correlationIdHistoryItem.getAccountCorrelationId()))
-                .forEach(correlationIdHistoryItem -> correlationIdHistoryItem.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber()));
+                .forEach(correlationIdHistoryItem -> {
+                    final CorrelationIdHistoryItem.Builder correlationIdHistoryItemBuilder = CorrelationIdHistoryItem.correlationIdHistoryItem().withValuesFrom(correlationIdHistoryItem);
+                    correlationIdHistoryItemList.set(correlationIdHistoryItemList.indexOf(correlationIdHistoryItem), correlationIdHistoryItemBuilder.withAccountNumber(hearingFinancialResultsUpdated.getAccountNumber()).build());
+                });
     }
 
     public Stream<Object> updateFinancialResults(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -409,25 +412,30 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
         final Set<UUID> idsToBeUnmarked = new HashSet<>();
         final Stream.Builder<Object> builder = Stream.builder();
+        final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived();
 
         markedAggregateSendEmailWhenAccountReceivedList.stream()
                 .filter(marked -> correlationIdHistoryItemList.stream().anyMatch(item -> marked.getAccountCorrelationId().equals(item.getAccountCorrelationId())
                         || Objects.equals(marked.getOldAccountCorrelationId(), item.getAccountCorrelationId())))
                 .forEach(marked -> {
+                    markedBuilder.withValuesFrom(marked);
+
                     final String accountNumber = correlationIdHistoryItemList.stream().filter(item -> marked.getAccountCorrelationId().equals(item.getAccountCorrelationId()))
                             .findFirst().map(CorrelationIdHistoryItem::getAccountNumber).orElse(null);
 
-                    marked.setGobAccountNumber(accountNumber);
+                    markedBuilder.withGobAccountNumber(accountNumber);
 
                     if (nonNull(marked.getOldAccountCorrelationId())) {
                         final String oldAccountNumber = correlationIdHistoryItemList.stream().filter(item -> marked.getOldAccountCorrelationId().equals(item.getAccountCorrelationId()))
                                 .findFirst().map(CorrelationIdHistoryItem::getAccountNumber).orElse(null);
-                        marked.setOldGobAccountNumber(oldAccountNumber);
+                        markedBuilder.withOldGobAccountNumber(oldAccountNumber);
                     }
 
-                    if (nonNull(marked.getGobAccountNumber()) && (isNull(marked.getOldAccountCorrelationId()) || nonNull(marked.getOldGobAccountNumber()))) {
-                        builder.add(buildNcesApplicationMail(marked));
-                        idsToBeUnmarked.add(marked.getId());
+                    final MarkedAggregateSendEmailWhenAccountReceived finalMarked = markedBuilder.build();
+
+                    if (nonNull(finalMarked.getGobAccountNumber()) && (isNull(finalMarked.getOldAccountCorrelationId()) || nonNull(finalMarked.getOldGobAccountNumber()))) {
+                        builder.add(buildNcesApplicationMail(finalMarked));
+                        idsToBeUnmarked.add(finalMarked.getId());
                     }
 
                 });

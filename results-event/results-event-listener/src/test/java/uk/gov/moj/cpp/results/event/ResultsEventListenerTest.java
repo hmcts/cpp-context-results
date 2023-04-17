@@ -84,10 +84,11 @@ public class ResultsEventListenerTest {
     public void saveHearingResultWithOneHearingDate_ShouldHaveBothStartDateAndEndDateSame() {
 
         PublicHearingResulted shareResultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
-        shareResultsMessage.getHearing().setHearingDays(Arrays.asList(HearingDay.hearingDay()
+        shareResultsMessage.setHearing(Hearing.hearing().withValuesFrom(shareResultsMessage.getHearing()).withHearingDays(Arrays.asList(HearingDay.hearingDay()
                 .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 06, 04), LocalTime.of(12, 00), ZoneId.of("UTC")))
                 .withListedDurationMinutes(100)
-                .build()));
+                .build())).build());
+
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
 

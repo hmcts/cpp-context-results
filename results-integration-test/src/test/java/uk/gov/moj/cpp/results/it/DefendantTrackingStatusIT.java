@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.it;
 
+import static com.google.common.collect.ImmutableList.of;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -33,6 +33,7 @@ import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -41,6 +42,7 @@ import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.UUID;
@@ -557,28 +559,52 @@ public class DefendantTrackingStatusIT {
      */
     private PublicHearingResulted updateHearingTemplateWithResultDefinitionGroup(final PublicHearingResulted hearingTemplate, final String resultDefinitionGroup, final LocalDate orderDate, final Optional<Offence> offence, final Optional<Offence> offence2, final Optional<UUID> resharedHearingId) {
 
-        if (offence.isPresent()) {
-            final Offence o = hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0);
-            o.setId(offence.get().getId());
-            o.getJudicialResults().get(0)
-                    .setResultDefinitionGroup(resultDefinitionGroup)
-                    .setOrderedDate(orderDate)
-                    .setOffenceId(offence.get().getId())
-                    .setJudicialResultId(randomUUID());
-        }
+        Defendant defendant1 = Defendant.defendant().build();
+        Defendant defendant2 = Defendant.defendant().build();
 
-        if (offence2.isPresent()) {
-            final Offence o = hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(1).getOffences().get(0);
-            o.setId(offence2.get().getId());
-            o.getJudicialResults().get(0)
-                    .setResultDefinitionGroup(resultDefinitionGroup)
-                    .setOrderedDate(orderDate)
-                    .setOffenceId(offence2.get().getId())
-                    .setJudicialResultId(randomUUID());
+        if (offence.isPresent()) {
+            final Offence o1 = hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0);
+
+            final JudicialResult judicialResult = JudicialResult.judicialResult().withValuesFrom(o1.getJudicialResults().get(0))
+                    .withResultDefinitionGroup(resultDefinitionGroup)
+                    .withOrderedDate(orderDate)
+                    .withOffenceId(offence.get().getId())
+                    .withJudicialResultId(randomUUID())
+                    .build();
+
+            defendant1 = Defendant.defendant().withValuesFrom(hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(0)).withOffences(Arrays.asList(
+                    Offence.offence().withValuesFrom(o1).withId(offence.get().getId())
+                            .withJudicialResults(of(judicialResult))
+                            .build()
+            )).build();
+
         }
+        if (offence2.isPresent()) {
+            final Offence o2 = hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(1).getOffences().get(0);
+
+            final JudicialResult judicialResult = JudicialResult.judicialResult().withValuesFrom(o2.getJudicialResults().get(0))
+                    .withResultDefinitionGroup(resultDefinitionGroup)
+                    .withOrderedDate(orderDate)
+                    .withOffenceId(offence2.get().getId())
+                    .withJudicialResultId(randomUUID())
+                    .build();
+
+            defendant2 = Defendant.defendant().withValuesFrom(hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(1)).withOffences(Arrays.asList(
+                    Offence.offence().withValuesFrom(o2).withId(offence2.get().getId())
+                            .withJudicialResults(of(judicialResult))
+                            .build()
+            )).build();
+
+        }
+        final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(hearingTemplate.getHearing().getProsecutionCases().get(0))
+                .withDefendants(Arrays.asList(defendant1, defendant2)).build();
+
+        hearingTemplate.setHearing(Hearing.hearing().withValuesFrom(hearingTemplate.getHearing()).
+                withProsecutionCases(of(prosecutionCase)).build());
 
         if (resharedHearingId.isPresent()) {
-            hearingTemplate.getHearing().setId(resharedHearingId.get());
+            hearingTemplate.setHearing(Hearing.hearing().withValuesFrom(hearingTemplate.getHearing())
+                    .withId(resharedHearingId.get()).build());
         }
 
         return hearingTemplate;
@@ -595,27 +621,47 @@ public class DefendantTrackingStatusIT {
      */
     private PublicHearingResulted updateHearingTemplateWithDifferentResultDefinitionGroupsForMultipleDefendants(final PublicHearingResulted hearingTemplate, final String resultDefinitionGroup1, final String resultDefinitionGroup2, final LocalDate orderDate, final Optional<Offence> offence, final Optional<Offence> offence2) {
 
+        Defendant defendant1 = Defendant.defendant().build();
+        Defendant defendant2 = Defendant.defendant().build();
+
         if (offence.isPresent()) {
             final Offence o = hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0);
-            o.setId(offence.get().getId());
-            o.getJudicialResults().get(0)
-                    .setResultDefinitionGroup(resultDefinitionGroup1)
-                    .setOrderedDate(orderDate)
-                    .setOffenceId(offence.get().getId())
-                    .setJudicialResultId(randomUUID());
-        }
 
+            final JudicialResult judicialResult = JudicialResult.judicialResult().withValuesFrom(o.getJudicialResults().get(0))
+                    .withResultDefinitionGroup(resultDefinitionGroup1)
+                    .withOrderedDate(orderDate)
+                    .withOffenceId(offence.get().getId())
+                    .withJudicialResultId(randomUUID())
+                    .build();
+            defendant1 = Defendant.defendant().withValuesFrom(hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(0)).withOffences(Arrays.asList(
+                    Offence.offence().withValuesFrom(o).withId(offence.get().getId())
+                            .withJudicialResults(of(judicialResult))
+                            .build()
+            )).build();
+        }
         if (offence2.isPresent()) {
             final Offence o2 = hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(1).getOffences().get(0);
-            o2.setId(offence2.get().getId());
+
             final JsonObject jr = objectToJsonObjectConverter.convert(o2.getJudicialResults().get(0));
-            final JudicialResult deepCopyJudicialResult = jsonToObjectConverter.convert(jr, JudicialResult.class);
-            deepCopyJudicialResult.setResultDefinitionGroup(resultDefinitionGroup2)
-                    .setOrderedDate(orderDate)
-                    .setOffenceId(offence2.get().getId())
-                    .setJudicialResultId(randomUUID());
-            o2.setJudicialResults(singletonList(deepCopyJudicialResult));
+            final JudicialResult deepCopyJudicialResult = JudicialResult.judicialResult().withValuesFrom(jsonToObjectConverter.convert(jr, JudicialResult.class))
+                    .withResultDefinitionGroup(resultDefinitionGroup2)
+                    .withOrderedDate(orderDate)
+                    .withOffenceId(offence2.get().getId())
+                    .withJudicialResultId(randomUUID())
+                    .build();
+            defendant2 = Defendant.defendant().withValuesFrom(hearingTemplate.getHearing().getProsecutionCases().get(0).getDefendants().get(1)).withOffences(Arrays.asList(
+                    Offence.offence().withValuesFrom(o2).withId(offence2.get().getId())
+                            .withJudicialResults(of(deepCopyJudicialResult))
+                            .build()
+            )).build();
+
         }
+
+        final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(hearingTemplate.getHearing().getProsecutionCases().get(0))
+                .withDefendants(Arrays.asList(defendant1, defendant2)).build();
+
+        hearingTemplate.setHearing(Hearing.hearing().withValuesFrom(hearingTemplate.getHearing()).
+                withProsecutionCases(of(prosecutionCase)).build());
 
         return hearingTemplate;
     }

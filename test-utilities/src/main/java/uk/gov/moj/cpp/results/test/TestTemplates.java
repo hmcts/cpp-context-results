@@ -113,7 +113,7 @@ public class TestTemplates {
                 .withApplicant(courtApplicationPartyTemplates())
                 .withApplicationStatus(ApplicationStatus.DRAFT)
                 .withSubject(courtApplicationPartyTemplates())
-                .withCourtApplicationCases(singletonList(createCourtApplicationCaseWithOffences()))
+                .withCourtApplicationCases(asList(createCourtApplicationCaseWithOffences()))
                 .withApplicationParticulars("bail application")
                 .withAllegationOrComplaintStartDate(now())
                 .build()));
@@ -129,7 +129,7 @@ public class TestTemplates {
                         .withDescription("Trial")
                         .build())
                 .withCourtApplications(courtApplications)
-                .withProsecutionCases(singletonList(createProsecutionCase1(null, false)))
+                .withProsecutionCases(asList(createProsecutionCase1(null, false)))
                 .withJurisdictionType(jurisdictionType)
                 .withHearingDays(hearingDays)
                 .withCourtCentre(CourtCentre.courtCentre()
@@ -215,7 +215,7 @@ public class TestTemplates {
                         .build())
                 .withProsecutionCases(asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)))
                 .withProsecutionCases(prosecutionCases)
-                .withDefendantJudicialResults(singletonList(DefendantJudicialResult.defendantJudicialResult()
+                .withDefendantJudicialResults(asList(DefendantJudicialResult.defendantJudicialResult()
                         .withMasterDefendantId(randomUUID())
                         .withJudicialResult(judicialResult()
                                 .withJudicialResultId(randomUUID())
@@ -607,7 +607,7 @@ public class TestTemplates {
                     .build());
         }
 
-        return singletonList(
+        return asList(
                 builder.build()
         );
     }
@@ -632,8 +632,8 @@ public class TestTemplates {
                 .build();
     }
 
-    public static ImmutableList<JudicialResult> buildJudicialResultList() {
-        return of(judicialResult()
+    public static List<JudicialResult> buildJudicialResultList() {
+        return asList(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(JudicialResultCategory.FINAL)
                 .withCjsCode(CJS_CODE)

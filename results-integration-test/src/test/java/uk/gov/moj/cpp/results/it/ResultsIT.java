@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 import static uk.gov.justice.core.courts.CourtApplication.courtApplication;
+import static uk.gov.justice.core.courts.CourtApplicationCase.courtApplicationCase;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
@@ -58,11 +59,15 @@ import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.ApplicationStatus;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Plea;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.justice.core.courts.Verdict;
 import uk.gov.justice.core.courts.VerdictType;
 import uk.gov.justice.core.courts.external.ApiAddress;
@@ -82,6 +87,7 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -253,8 +259,20 @@ public class ResultsIT {
     public void testCCForSpiOutFalse() throws JMSException {
         final PublicHearingResulted resultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         stubSpiOutFlag(false, true);
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+
+        final ProsecutionCase prosecutionCase1 = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .build();
+
+        final ProsecutionCase prosecutionCase2 = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(1))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .build();
+
+        resultsMessage.getHearing().getProsecutionCases().set(0, prosecutionCase1);
+        resultsMessage.getHearing().getProsecutionCases().set(1, prosecutionCase2);
+
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -331,8 +349,6 @@ public class ResultsIT {
     public void testGeneratePoliceResultsForDefendantCCWhenSpiOutFalse() throws JMSException {
         stubSpiOutFlag(false, true);
         final PublicHearingResulted resultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(1).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         verifyPrivateEventsWithPoliceResultGenerated(false);
@@ -590,9 +606,21 @@ public class ResultsIT {
         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), MAGISTRATES))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
-        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+
+        final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .withOriginatingOrganisation(null)
+                .build();
+
+        final CourtApplicationCase courtApplicationCase = courtApplicationCase().
+                withValuesFrom(resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build()).build();
+
+        resultsMessage.getHearing().getProsecutionCases().set(0, prosecutionCase);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().set(0, courtApplicationCase);
+
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -616,7 +644,7 @@ public class ResultsIT {
 
         final PublicHearingResulted resultsMessage = PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplateWithCustomApplication(randomUUID(), MAGISTRATES,
-                        singletonList(courtApplication()
+                        Arrays.asList(courtApplication()
                                 .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
                                 .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
                                 .withApplicationReference("OFFENCE_CODE_REFERENCE")
@@ -624,7 +652,7 @@ public class ResultsIT {
                                 .withApplicant(TestTemplates.courtApplicationPartyTemplates())
                                 .withApplicationStatus(ApplicationStatus.DRAFT)
                                 .withSubject(TestTemplates.courtApplicationPartyTemplates())
-                                .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffences()))
+                                .withCourtApplicationCases(Arrays.asList(TestTemplates.createCourtApplicationCaseWithOffences()))
                                 .withApplicationParticulars("bail application")
                                 .withJudicialResults(buildJudicialResultList())
                                 .withAllegationOrComplaintStartDate(now())
@@ -642,9 +670,21 @@ public class ResultsIT {
                                         .build())
                                 .build())))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-        resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
-        resultsMessage.getHearing().getProsecutionCases().get(0).setOriginatingOrganisation(null);
-        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0).getProsecutionCaseIdentifier().setProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE);
+
+
+        final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .withOriginatingOrganisation(null)
+                .build();
+
+        final CourtApplicationCase courtApplicationCase = courtApplicationCase().
+                withValuesFrom(resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0))
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build()).build();
+
+        resultsMessage.getHearing().getProsecutionCases().set(0, prosecutionCase);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().set(0, courtApplicationCase);
 
         hearingResultsHaveBeenShared(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());

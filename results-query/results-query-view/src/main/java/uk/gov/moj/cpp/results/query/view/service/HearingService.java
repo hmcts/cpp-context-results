@@ -94,7 +94,7 @@ public class HearingService {
     public HearingResultsAdded findHearingDetailsByHearingIdDefendantId(final UUID hearingId, final UUID defendantId) {
 
         final HearingResultsAdded hearingResultsAdded = findHearingForHearingId(hearingId);
-        final Hearing hearing = hearingResultsAdded.getHearing();
+        Hearing hearing = hearingResultsAdded.getHearing();
         ProsecutionCase foundProsecutionCase = null;
         Defendant foundDefendant = null;
         for (final ProsecutionCase prosecutionCase : hearing.getProsecutionCases()) {
@@ -115,8 +115,8 @@ public class HearingService {
             }
             return null;
         }
-        foundProsecutionCase.setDefendants(asList(foundDefendant));
-        hearingResultsAdded.getHearing().setProsecutionCases(asList(foundProsecutionCase));
+        foundProsecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(foundProsecutionCase).withDefendants(asList(foundDefendant)).build();
+        hearing = Hearing.hearing().withValuesFrom(hearingResultsAdded.getHearing()).withProsecutionCases(asList(foundProsecutionCase)).build();
         return new HearingResultsAdded(hearing, hearingResultsAdded.getSharedTime());
     }
 
