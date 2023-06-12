@@ -421,7 +421,12 @@ public class ResultsAggregate implements Aggregate {
     }
 
     private void updateDefendant(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final Defendant defendantFromAggregate, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay) {
-        if (defendantFromRequest.getOffences().size() > defendantFromAggregate.getOffences().size() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
+
+        final List<OffenceDetails>  anyNonMatchingOffenceList = defendantFromRequest.getOffences().stream()
+                .filter(dfr -> defendantFromAggregate.getOffences().stream().noneMatch(dfa -> dfr.getId().equals(dfa.getId())))
+                .collect(toList());
+
+        if (!anyNonMatchingOffenceList.isEmpty() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {
@@ -438,6 +443,8 @@ public class ResultsAggregate implements Aggregate {
             }
         }
     }
+
+
 
     public Stream<Object> generatePoliceResults(final String caseIdFromApi, final String defendantIdFromApi, final Optional<LocalDate> hearingDay) {
         final Stream.Builder<Object> builder = builder();
