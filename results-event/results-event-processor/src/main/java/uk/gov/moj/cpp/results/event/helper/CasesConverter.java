@@ -141,15 +141,15 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                         .build();
     }
 
-    @SuppressWarnings({"squid:S3358", "squid:S1125"})
+    @SuppressWarnings({"squid:S3358", "squid:S1125", "squid:S3776"})
     private Function<CourtOrderOffence, CaseDetails> buildCaseDetailsFromCourtOrder(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
         return courtOrderOffence -> {
             final DefendantCase defendantCase = courtApplication.getSubject().getMasterDefendant() == null ? null : courtApplication.getSubject().getMasterDefendant().getDefendantCase() == null ? null :
                     courtApplication.getSubject().getMasterDefendant().getDefendantCase().isEmpty() == true ? null : courtApplication.getSubject().getMasterDefendant().getDefendantCase().get(0);
             final UUID caseId = defendantCase == null ? courtOrderOffence.getProsecutionCaseId() : defendantCase.getCaseId();
             final String urn = defendantCase == null ? getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid) : defendantCase.getCaseReference();
-            final String prosecutorAuthorityCode = defendantCase == null ? courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode() :
-                    courtApplication.getApplicant().getProsecutingAuthority().getProsecutionAuthorityCode();
+            final String prosecutorAuthorityCode = defendantCase == null ? courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode() : courtApplication.getApplicant().getProsecutingAuthority() != null ?
+                    courtApplication.getApplicant().getProsecutingAuthority().getProsecutionAuthorityCode() : courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
 
            return caseDetails()
                     .withCaseId(caseId)
