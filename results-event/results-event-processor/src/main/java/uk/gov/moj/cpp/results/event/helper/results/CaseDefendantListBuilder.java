@@ -29,7 +29,6 @@ import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -85,7 +84,6 @@ public class CaseDefendantListBuilder {
         return buildDefendantList(courtApplication, hearing, new OffenceDetails().buildOffences(courtOrderOffence, courtApplication), isPoliceProsecutor);
     }
 
-    @SuppressWarnings("squid:S3358")
     private List<CaseDefendant> buildDefendantList(final CourtApplication courtApplication,
                                                    final Hearing hearing,
                                                    final List<uk.gov.justice.core.courts.OffenceDetails> offences,
@@ -94,10 +92,8 @@ public class CaseDefendantListBuilder {
         final MasterDefendant masterDefendant = courtApplication.getSubject().getMasterDefendant();
         if(nonNull(masterDefendant)) {
             final List<AttendanceDay> attendanceDays = null != hearing.getDefendantAttendance() ? new uk.gov.moj.cpp.results.event.helper.results.AttendanceDay().buildAttendance(hearing.getDefendantAttendance(), masterDefendant.getMasterDefendantId()) : emptyList();
-            final UUID defendantId = courtApplication.getSubject().getMasterDefendant().getDefendantCase() == null ? courtApplication.getSubject().getMasterDefendant().getMasterDefendantId() :
-                    courtApplication.getSubject().getMasterDefendant().getDefendantCase().isEmpty() ? courtApplication.getSubject().getMasterDefendant().getMasterDefendantId() : courtApplication.getSubject().getMasterDefendant().getDefendantCase().get(0).getDefendantId();
             final uk.gov.justice.core.courts.CaseDefendant.Builder builder = caseDefendant()
-                    .withDefendantId(defendantId)
+                    .withDefendantId(masterDefendant.getMasterDefendantId())
                     .withProsecutorReference(getProsecutorReference(masterDefendant.getProsecutionAuthorityReference(), masterDefendant.getPersonDefendant(), isPoliceProsecutor))
                     .withPncId(masterDefendant.getPncId())
                     .withAttendanceDays(attendanceDays)

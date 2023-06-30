@@ -30,10 +30,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CasesConverter implements Converter<PublicHearingResulted, List<CaseDetails>> {
@@ -88,7 +86,7 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
 
         final List<CaseDetails> applicationCaseDetailsFromCourtOrder = streamSupplier.get().filter(courtApplication -> !isNull(courtApplication.getCourtOrder())).map(courtApplication -> {
             final CourtOrder courtOrder = courtApplication.getCourtOrder();
-            return courtOrder.getCourtOrderOffences().stream().filter(this::hasJudicialResultsForCourtOrderOffence)
+            return courtOrder.getCourtOrderOffences().stream()
                     .map(courtOrderOffence -> {
                                 final String prosecutionAuthorityCode = courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
                                 final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(null, prosecutionAuthorityCode);
@@ -104,11 +102,6 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
 
     }
 
-    private  boolean hasJudicialResultsForCourtOrderOffence(final CourtOrderOffence co) {
-        return (null != co.getOffence().getJudicialResults()) && (!co.getOffence().getJudicialResults().isEmpty());
-    }
-
-    @SuppressWarnings({"squid:S4034"})
     private List<CaseDetails> mergeCaseDetailsForMatchingCaseAndDefendants(final List<CaseDetails> originalCaseDetails) {
         final List<CaseDetails> mergedCaseDetails = new ArrayList<>();
         originalCaseDetails.forEach(caseDetails -> {
@@ -118,8 +111,7 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                     final Stream<CaseDefendant> mergedCaseDefendantStream = matchedCaseDetail.get().getDefendants().stream();
                     final Optional<CaseDefendant> matchedDefendant = mergedCaseDefendantStream.filter(caseDefendant1 -> caseDefendant1.getDefendantId().equals(caseDefendant.getDefendantId())).findFirst();
                     if (matchedDefendant.isPresent()) {
-                        final List<OffenceDetails> uniqueOffences = ofNullable(caseDefendant.getOffences()).orElse(new ArrayList<>()).stream().filter(od -> !matchedDefendant.get().getOffences().stream().anyMatch(existing -> existing.getId().equals(od.getId()))).collect(Collectors.toList());
-                        matchedDefendant.get().getOffences().addAll(uniqueOffences);
+                        matchedDefendant.get().getOffences().addAll(caseDefendant.getOffences());
                     } else {
                         matchedCaseDetail.get().getDefendants().add(caseDefendant);
                     }
@@ -141,23 +133,15 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                         .build();
     }
 
-    @SuppressWarnings({"squid:S3358", "squid:S1125", "squid:S3776"})
+    @SuppressWarnings({"squid:S3358", "squid:S1125"})
     private Function<CourtOrderOffence, CaseDetails> buildCaseDetailsFromCourtOrder(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
-        return courtOrderOffence -> {
-            final DefendantCase defendantCase = courtApplication.getSubject().getMasterDefendant() == null ? null : courtApplication.getSubject().getMasterDefendant().getDefendantCase() == null ? null :
-                    courtApplication.getSubject().getMasterDefendant().getDefendantCase().isEmpty() == true ? null : courtApplication.getSubject().getMasterDefendant().getDefendantCase().get(0);
-            final UUID caseId = defendantCase == null ? courtOrderOffence.getProsecutionCaseId() : defendantCase.getCaseId();
-            final String urn = defendantCase == null ? getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid) : defendantCase.getCaseReference();
-            final String prosecutorAuthorityCode = defendantCase == null ? courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode() : courtApplication.getApplicant().getProsecutingAuthority() != null ?
-                    courtApplication.getApplicant().getProsecutingAuthority().getProsecutionAuthorityCode() : courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
-
-           return caseDetails()
-                    .withCaseId(caseId)
-                    .withUrn(urn)
-                    .withProsecutionAuthorityCode(prosecutorAuthorityCode)
-                    .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(courtOrderOffence, courtApplication, source.getHearing(), isPoliceProsecutor))
-                    .build();
-        };
+        return courtOrderOffence ->
+                caseDetails()
+                        .withCaseId(courtOrderOffence.getProsecutionCaseId())
+                        .withUrn(getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
+                        .withProsecutionAuthorityCode(courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode())
+                        .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(courtOrderOffence, courtApplication, source.getHearing(), isPoliceProsecutor))
+                        .build();
     }
 
     private boolean doesApplicationOrApplicationCaseHasJudicialResults(final CourtApplication courtApplication) {
