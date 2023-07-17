@@ -304,7 +304,7 @@ public class ResultsAggregateTest {
                         .build())
                 .build()));
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantAddedEvent(caseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
     }
@@ -314,7 +314,7 @@ public class ResultsAggregateTest {
     public void testHandleDefendantsWhenTheirResultIsPresentButNoOffenceExist() {
         final CaseDetails caseDetails = createCaseDetails(of(judicialResult().withJudicialResultId(randomUUID()).build()), of());
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantAddedEvent(caseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
     }
@@ -324,7 +324,7 @@ public class ResultsAggregateTest {
     public void testHandleDefendantsRejectEvent() {
         final CaseDetails caseDetails = createCaseDetails(of(), of());
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty()).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty(),"").collect(toList());
         final DefendantRejectedEvent defendantRejectedEvent = objectList.stream().filter(e -> e instanceof DefendantRejectedEvent)
                 .map(o -> (DefendantRejectedEvent) o)
                 .findFirst()
@@ -336,6 +336,7 @@ public class ResultsAggregateTest {
     }
 
     @Test
+    @SuppressWarnings({"squid:S1607"})
     public void testHandleDefendantsWhenANewOffenceHasBeenAdded() {
         final List<OffenceDetails> offenceDetailsList = new ArrayList<>();
         offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
@@ -355,10 +356,10 @@ public class ResultsAggregateTest {
         resultsAggregate.saveHearingResults(hearingResultedWithYouthCourt);
         resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         caseDefendant.getOffences().add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult().withJudicialResultId(randomUUID()).build())).build());
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(caseDefendant, objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
 
@@ -375,7 +376,7 @@ public class ResultsAggregateTest {
         offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
         final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, false, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, false, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantAddedEvent(caseDetails.getDefendants().get(0), objectList);
         assertThat(objectList.size(), is(1));
     }
@@ -388,13 +389,13 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         offences.get(0).getJudicialResults().set(0, JudicialResult.judicialResult().withValuesFrom(judicialResult).withAmendmentDate(LocalDate.of(2019, 2, 3)).build());
         final CaseDetails finalCaseDetails = CaseDetails.caseDetails().withValuesFrom(caseDetails).withDefendants(of(CaseDefendant.caseDefendant().withValuesFrom(caseDetails.getDefendants().get(0)).withOffences(offences).build()))
                 .build();
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(caseDefendant, objectList);
         assertPoliceResultGeneratedEvent(finalCaseDetails.getDefendants().get(0), objectList);
     }
@@ -411,9 +412,9 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
         resultList.remove(judicialResultTwo);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(caseDefendant, objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
     }
@@ -430,12 +431,12 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
         offences.get(0).getJudicialResults().set(1, JudicialResult.judicialResult().withValuesFrom(judicialResultTwo).withIsNewAmendment(true).build());
         final CaseDetails finalCaseDetails = CaseDetails.caseDetails().withValuesFrom(caseDetails).withDefendants(of(CaseDefendant.caseDefendant().withValuesFrom(caseDetails.getDefendants().get(0)).withOffences(offences).build()))
                 .build();
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(caseDefendant, objectList);
         assertPoliceResultGeneratedEvent(finalCaseDetails.getDefendants().get(0), objectList);
     }
@@ -448,11 +449,11 @@ public class ResultsAggregateTest {
         offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult().withJudicialResultId(randomUUID()).build())).build());
         CaseDetails caseDetails = createCaseDetails(null, offences);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult)).build()));
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
     }
@@ -464,11 +465,11 @@ public class ResultsAggregateTest {
         offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult().withJudicialResultId(randomUUID()).build())).build());
         CaseDetails caseDetails = createCaseDetails(null, offences);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).build()));
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         final DefendantUpdatedEvent defendantUpdatedEvent = objectList.stream().filter(e -> e instanceof DefendantUpdatedEvent)
                 .map(o -> (DefendantUpdatedEvent) o)
                 .findFirst()
@@ -489,17 +490,17 @@ public class ResultsAggregateTest {
         offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult().withJudicialResultId(randomUUID()).build())).build());
         CaseDetails caseDetails = createCaseDetails(null, offences);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         final JudicialResult judicialResult = judicialResult().withJudicialResultId(randomUUID()).build();
         caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult)).build()));
-        final List<Object> objectListAfterAdd = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectListAfterAdd = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
 
         assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectListAfterAdd);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectListAfterAdd);
 
         caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).build()));
-        final List<Object> objectListAfterRemove = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectListAfterRemove = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
 
         assertDefendantUpdatedEvent(caseDetails.getDefendants().get(0), objectListAfterRemove);
         final PoliceResultGenerated policeResultGenerated = objectListAfterRemove.stream().filter(e -> e instanceof PoliceResultGenerated)
@@ -518,13 +519,13 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         offences.get(0).getJudicialResults().set(0, JudicialResult.judicialResult().withValuesFrom(judicialResult).withAmendmentDate(LocalDate.of(2019, 2, 3)).build());
         final CaseDefendant finalDefendant = CaseDefendant.caseDefendant().withValuesFrom(caseDefendant).withOffences(offences).build();
         final CaseDetails finalCaseDetails = CaseDetails.caseDetails().withValuesFrom(caseDetails).withDefendants(of(finalDefendant)).build();
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(finalDefendant, objectList);
         assertPoliceResultGeneratedEvent(finalCaseDetails.getDefendants().get(0), objectList);
     }
@@ -536,9 +537,9 @@ public class ResultsAggregateTest {
         offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(of(judicialResult)).build());
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertThat(objectList, hasSize(0));
     }
 
@@ -549,13 +550,13 @@ public class ResultsAggregateTest {
         offences.add(offenceDetails().withId(randomUUID()).withJudicialResults(Arrays.asList(judicialResult)).build());
         final CaseDetails caseDetails = createCaseDetails(null, offences);
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         offences.get(0).getJudicialResults().set(0, JudicialResult.judicialResult().withValuesFrom(judicialResult).withJudicialResultId(randomUUID()).build());
         final CaseDetails finalCaseDetails = CaseDetails.caseDetails().withValuesFrom(caseDetails).withDefendants(of(CaseDefendant.caseDefendant().withValuesFrom(caseDetails.getDefendants().get(0)).withOffences(offences).build()))
                 .build();
 
-        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(finalCaseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
         assertDefendantUpdatedEvent(finalCaseDetails.getDefendants().get(0), objectList);
         assertPoliceResultGeneratedEvent(finalCaseDetails.getDefendants().get(0), objectList);
     }
@@ -578,7 +579,7 @@ public class ResultsAggregateTest {
 
         final CaseDetails caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withAllocationDecision(buildAllocationDecision()).withJudicialResults(of(judicialResult().build())).build()));
         resultsAggregate.handleCase(caseDetails);
-        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"");
 
         final UUID defendantId = caseDetails.getDefendants().get(0).getDefendantId();
         final List<Object> objectList = resultsAggregate.generatePoliceResults(caseDetails.getCaseId().toString(), defendantId.toString(), Optional.empty()).collect(toList());
@@ -637,7 +638,7 @@ public class ResultsAggregateTest {
         resultsAggregate.saveHearingResults(hearingResultedWithYouthCourt);
         resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
         resultsAggregate.handleCase(caseDetails);
-        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true).collect(toList());
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,"").collect(toList());
 
         final PoliceResultGenerated policeResultGenerated = (PoliceResultGenerated) objectList.get(1);
         assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);

@@ -1,5 +1,9 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.lang.Boolean.*;
+import static java.lang.String.format;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
@@ -13,9 +17,13 @@ import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 
+import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
+import uk.gov.justice.core.courts.IndividualDefendant;
+import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -29,8 +37,10 @@ import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
+import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
+import uk.gov.moj.cpp.results.event.helper.FixedListComparator;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
@@ -48,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
@@ -57,12 +68,17 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ServiceComponent(EVENT_PROCESSOR)
-@SuppressWarnings({"squid:S2221"})
+@SuppressWarnings({"squid:S2221", "squid:S1132"})
 public class ResultsEventProcessor {
+    public static final String DELIMITER = ",";
+    public static final String YES = "yes";
+    public static final String NO = "no";
+    public static final String AMEND_RESHARE1 = "Amend & Reshare";
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsEventProcessor.class);
     private static final String PROSECUTION_CASE_ID = "prosecutionCaseId";
     private static final String HEARING_IDS = "hearingIds";
@@ -78,7 +94,14 @@ public class ResultsEventProcessor {
     private static final String CACHE_KEY_INTERNAL_PREFIX = "INT_";
     private static final String SHARED_TIME = "sharedTime";
     private static final String URN = "URN";
+    private static final String DEFENDANTS = "Defendants";
+    private static final String SUBJECT = "Subject";
+    private static final String APPLICATIONS = "Applications";
+    private static final String APPLICATION = "Application /";
+    private static final String AMEND_RESHARE = "Amend_Reshare";
     private static final String COMMON_PLATFORM_URL = "common_platform_url";
+    private static final String COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
+    public static final String PROSECUTION_CASEFILE_CASE_AT_A_GLANCE = "prosecution-casefile/case-at-a-glance/";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -174,7 +197,7 @@ public class ResultsEventProcessor {
 
     @Handles("results.events.hearing-results-added-for-day")
     public void hearingResultAddedForDay(final JsonEnvelope resultsAddedForDayEvent) {
-        final LocalDate hearingDay = LocalDate.parse(resultsAddedForDayEvent.payloadAsJsonObject().getString("hearingDay"), DateTimeFormatter.ISO_LOCAL_DATE);
+        final LocalDate hearingDay = LocalDate.parse(resultsAddedForDayEvent.payloadAsJsonObject().getString("hearingDay"), ISO_LOCAL_DATE);
         processResultsAdded(resultsAddedForDayEvent, "results.command.create-results-for-day", Optional.of(hearingDay));
 
         processDefendantTrackingStatus(resultsAddedForDayEvent);
@@ -268,6 +291,13 @@ public class ResultsEventProcessor {
         notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
     }
 
+    @Handles("results.event.police-notification-requested-v2")
+    public void handlePoliceNotificationRequestedV2(final JsonEnvelope envelope) {
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = this.jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), PoliceNotificationRequestedV2.class);
+        final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(buildNotificationV2(policeNotificationRequestedV2));
+        notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
+    }
+
     private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, final String eventType) {
         final Optional<String> userId = envelope.metadata().userId();
         try {
@@ -291,6 +321,7 @@ public class ResultsEventProcessor {
 
         final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
 
+        final List<CourtApplication> courtApplications = publicHearingResulted.getHearing().getCourtApplications();
         final List<CaseDetails> caseDetails = new CasesConverter(referenceCache, referenceDataService).convert(publicHearingResulted);
 
         if (isNotEmpty(caseDetails)) {
@@ -303,9 +334,13 @@ public class ResultsEventProcessor {
             resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
             resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
 
-            if (hearingDay.isPresent()) {
-                resultJsonPayload.add("hearingDay", hearingDay.get().toString());
+            hearingDay.ifPresent(localDate -> resultJsonPayload.add("hearingDay", localDate.toString()));
+            if (isNotEmpty(courtApplications)) {
+                final JsonArrayBuilder courtApplicationJsonArrayBuilder = createArrayBuilder();
+                courtApplications.forEach(c -> courtApplicationJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
+                resultJsonPayload.add("courtApplications", courtApplicationJsonArrayBuilder.build());
             }
+
 
             final Metadata metadata = metadataFrom(envelope.metadata())
                     .withName(commandName)
@@ -353,6 +388,105 @@ public class ResultsEventProcessor {
         personalisationProperties.put(URN, policeNotificationRequested.getUrn());
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
         return new Notification(policeNotificationRequested.getNotificationId(), fromString(applicationParameters.getEmailTemplateId()), policeNotificationRequested.getPoliceEmailAddress(), personalisationProperties);
+    }
+
+    private Notification buildNotificationV2(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
+        final Map<String, String> personalisationProperties = new HashMap<>();
+        String emailTemplateId = applicationParameters.getEmailTemplateId();
+        personalisationProperties.put(URN, policeNotificationRequestedV2.getUrn());
+        personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
+
+        if (isNotEmpty(policeNotificationRequestedV2.getCaseDefendants())) {
+            personalisationProperties.put(DEFENDANTS, getCaseDefendants(policeNotificationRequestedV2.getCaseDefendants()));
+
+            final Boolean resultsAmended = !policeNotificationRequestedV2.getAmendReshare().isEmpty();
+            personalisationProperties.put(AMEND_RESHARE, TRUE.equals(resultsAmended) ? YES : NO);
+
+            final String sortedSubject = FixedListComparator.sortBasedOnFixedList(getCaseSubject(policeNotificationRequestedV2.getCaseDefendants()));
+            final String caseApplication = policeNotificationRequestedV2.getApplicationTypeForCase();
+
+            if (StringUtils.isNotEmpty(caseApplication)) {
+                personalisationProperties.put(APPLICATIONS, caseApplication);
+                emailTemplateId = getPoliceEmailTemplate(true, resultsAmended);
+            } else {
+                emailTemplateId = getPoliceEmailTemplate(false, resultsAmended);
+            }
+
+            personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject));
+            personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
+        }
+
+        return new Notification(policeNotificationRequestedV2.getNotificationId(),
+                fromString(emailTemplateId),
+                policeNotificationRequestedV2.getPoliceEmailAddress(), personalisationProperties);
+    }
+
+    private String getCaseSubject(final List<CaseDefendant> caseDefendants) {
+        final String caseSubject = caseDefendants.stream()
+                .flatMap(caseDefendant -> caseDefendant.getOffences().stream())
+                .flatMap(offenceDetails -> {
+                    if (offenceDetails.getJudicialResults() != null) {
+                        return offenceDetails.getJudicialResults().stream();
+                    } else {
+                        return Stream.empty();
+                    }
+                })
+                .filter(judicialResult -> {
+                    String policeSubjectLineTitle = judicialResult.getPoliceSubjectLineTitle();
+                    String resultText = judicialResult.getResultText();
+                    return !(policeSubjectLineTitle != null && policeSubjectLineTitle.equals("Bail Conditions Cancelled")
+                            && (resultText != null && (resultText.contains("Domestic Violence case") || resultText.contains("Vulnerable or Intimidated Victim"))));
+                })
+                .map(JudicialResult::getPoliceSubjectLineTitle)
+                .filter(StringUtils::isNotEmpty)
+                .distinct()
+                .collect(Collectors.joining(DELIMITER));
+        return caseSubject.isEmpty() ? "" : caseSubject;
+    }
+
+
+    private String buildEmailSubject(final Boolean resultsAmended, final String urn, final String hearingDate, final String caseApplication, final String subject) {
+        final String amendReshareText = TRUE.equals(resultsAmended) ? AMEND_RESHARE1 : "";
+        final String applicationText = isEmpty(caseApplication) ? "" : APPLICATION;
+        final String dateTimeFormat = dateTimeFormat(hearingDate);
+        final String formattedSubject = subject.replace(DELIMITER, " / ").trim();
+
+        if (formattedSubject.isEmpty() && !applicationText.isEmpty()) {
+            return format("%s %s %s %s", amendReshareText, urn, dateTimeFormat, "Application").trim();
+        }
+        if (isEmpty(applicationText)) {
+            return format("%s %s %s %s", amendReshareText, urn, dateTimeFormat, formattedSubject).trim();
+        } else {
+            return format("%s %s %s %s %s", amendReshareText, urn, dateTimeFormat, "Application /", formattedSubject).trim();
+        }
+    }
+
+    private String getPoliceEmailTemplate(final Boolean includeApplications, final Boolean includeResultsAmended) {
+        if (TRUE.equals(includeApplications)) {
+            if (TRUE.equals(includeResultsAmended)) {
+                return applicationParameters.getPoliceEmailHearingResultsAmendedWithApplicationTemplateId();
+            }
+            return applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId();
+        } else if (TRUE.equals(includeResultsAmended)) {
+            return applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId();
+        }
+        return applicationParameters.getPoliceEmailHearingResultsTemplateId();
+    }
+
+    private String dateTimeFormat(final String hearingDate) {
+        final DateTimeFormatter dateTimeFormatter = ofPattern("yyyy-MM-dd");
+        final LocalDate date = LocalDate.parse(hearingDate.isEmpty() ? LocalDate.now().toString() : hearingDate, dateTimeFormatter);
+        final DateTimeFormatter formatter = ofPattern("dd-MM-yyyy");
+        return date.format(formatter);
+    }
+
+    private String getCaseDefendants(final List<CaseDefendant> caseDefendants) {
+        return caseDefendants.stream()
+                .map(CaseDefendant::getIndividualDefendant)
+                .map(IndividualDefendant::getPerson)
+                .map(individual -> individual.getFirstName().concat(" ")
+                        .concat(individual.getLastName()))
+                .collect(Collectors.joining(", "));
     }
 
     private void raiseHandlerEvent(final JsonEnvelope envelope, final JsonObject commandPayload) {

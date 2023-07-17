@@ -81,6 +81,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String RESULTS_EVENT_DEFENDANT_REJECTED_EVENT = "results.event.defendant-rejected-event";
     private static final String RESULTS_EVENT_POLICE_RESULT_GENERATED = "results.event.police-result-generated";
     private static final String RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED = "results.event.police-notification-requested";
+    private static final String RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED_V2 = "results.event.police-notification-requested-v2";
     private static final String RESULTS_EVENT_POLICE_NOTIFICATION_FAILED = "results.event.email-notification-failed";
 
     private static final String PUBLIC_EVENT_HEARING_RESULTED = "public.hearing.resulted";
@@ -109,6 +110,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         privateDefendantRejectedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_REJECTED_EVENT);
         privatePoliceResultGeneratedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_RESULT_GENERATED);
         privatePoliceNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED);
+        privatePoliceNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED_V2);
         privatePoliceNotificationFailedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_FAILED);
         publicMessageConsumer = new MessageConsumerClient();
     }

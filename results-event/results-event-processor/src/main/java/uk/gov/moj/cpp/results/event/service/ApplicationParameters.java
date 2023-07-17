@@ -14,6 +14,22 @@ public class ApplicationParameters {
     private String emailTemplateId;
 
     @Inject
+    @Value(key = "police_email_hearing_results_template_id", defaultValue = "efc18c42-bea2-4124-8c02-7a7ae4556b73")
+    private String policeEmailHearingResultsTemplateId;
+
+    @Inject
+    @Value(key = "police_email_hearing_results_with_application_template_id", defaultValue = "f6c999fd-0495-4502-90d6-f6dc4676da6f")
+    private String policeEmailHearingResultsWithApplicationTemplateId;
+
+    @Inject
+    @Value(key = "police_email_hearing_results_amended_template_id", defaultValue = "c8b5a9dd-df0c-4f0d-83b1-b1c4c58dec13")
+    private String policeEmailHearingResultsAmendedTemplateId;
+
+    @Inject
+    @Value(key = "police_email_hearing_results_amended_with_application_template_id", defaultValue = "f3359bce-8cfb-454f-a504-aa916ea9e9e9")
+    private String policeEmailHearingResultsAmendedWithApplicationTemplateId;
+
+    @Inject
     @Value(key = "ncesEmailNotificationTemplateId", defaultValue = "d3ce1ce3-5233-4b9d-b881-3857351fbfb0")
     private String ncesEmailNotificationTemplateId;
 
@@ -52,6 +68,23 @@ public class ApplicationParameters {
     public String getEmailTemplateId() {
         return emailTemplateId;
     }
+
+    public String getPoliceEmailHearingResultsTemplateId() {
+        return policeEmailHearingResultsTemplateId;
+    }
+
+    public String getPoliceEmailHearingResultsWithApplicationTemplateId() {
+        return policeEmailHearingResultsWithApplicationTemplateId;
+    }
+
+    public String getPoliceEmailHearingResultsAmendedTemplateId() {
+        return policeEmailHearingResultsAmendedTemplateId;
+    }
+
+    public String getPoliceEmailHearingResultsAmendedWithApplicationTemplateId() {
+        return policeEmailHearingResultsAmendedWithApplicationTemplateId;
+    }
+
 
     public String getEmailTemplateId(final String templateName) {
         final Map<String, String> emailTemplatesMap = new HashMap<>();

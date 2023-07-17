@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.event.processor;
 
 import static com.google.common.collect.ImmutableList.of;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.Arrays.asList;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
@@ -15,6 +16,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
+import static uk.gov.justice.core.courts.BailStatus.bailStatus;
+import static uk.gov.justice.core.courts.CaseDefendant.caseDefendant;
+import static uk.gov.justice.core.courts.Individual.individual;
+import static uk.gov.justice.core.courts.IndividualDefendant.individualDefendant;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
@@ -26,7 +32,14 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
+import uk.gov.justice.core.courts.Address;
+import uk.gov.justice.core.courts.CaseDefendant;
+import uk.gov.justice.core.courts.ContactNumber;
+import uk.gov.justice.core.courts.Gender;
+import uk.gov.justice.core.courts.Individual;
+import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -35,9 +48,11 @@ import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
+import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
@@ -52,6 +67,8 @@ import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +94,9 @@ import org.mockito.Spy;
 @RunWith(DataProviderRunner.class)
 public class ResultsEventProcessorTest {
 
+    public static final String FIELD_AMEND_RESHARE = "Amend_Reshare";
+    public static final String YES = "yes";
+    public static final String AMEND_RESHARE = YES;
     private static final UUID PROMPT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d");
     private static final UUID PROMPT_ID_1 = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6742d");
     private static final UUID RESULT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6743d");
@@ -85,15 +105,33 @@ public class ResultsEventProcessorTest {
     private static final UUID DEFAULT_DEFENDANT_ID2 = fromString("dddd2222-1e20-4c21-916a-81a6c90239e5");
     private static final String OU_CODE = "GFL123";
     private static final String URN = "urn123";
+    private static final String SUBJECT = "Amend & Reshare urn123 06-06-2023 Application / Bail without conditions / Remand / Final Sentence / Warrant Withdrawn";
     private static final String EMAIL_ADDRESS = "test@hmcts.net";
-    private static final String COMMON_PLATFORM_URL = "http://xxx.xx.com";
+    private static final String COMMON_PLATFORM_URL = "http://xxx.xx.com/";
+    private static final String COMMON_PLATFORM_URL_CAAG = "http://xxx.xx.com/prosecution-casefile/case-at-a-glance/b45b1b7d-ee42-4d02-94d4-41877873bb71";
     private static final String POLICE_TEMPLATE_ID = "781b970d-a13e-4440-97c3-ecf22a4540d5";
+
+    private static final String POLICE_EMAIL_HEARING_RESULTS_TEMPLATE_ID = "efc18c42-bea2-4124-8c02-7a7ae4556b73";
+
+    private static final String POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID = "f6c999fd-0495-4502-90d6-f6dc4676da6f";
+
+    private static final String POLICE_EMAIL_HEARING_RESULTS_AMENDED_TEMPLATE_ID = "c8b5a9dd-df0c-4f0d-83b1-b1c4c58dec13";
+
+    private static final String POLICE_EMAIL_HEARING_RESULTS_AMENDED_WITH_APPLICATIONS_TEMPLATE_ID = "f3359bce-8cfb-454f-a504-aa916ea9e9e9";
+
+    private static final String CASE_ID = "b45b1b7d-ee42-4d02-94d4-41877873bb71";
     private static final String FIELD_SEND_TO_ADDRESS = "sendToAddress";
     private static final String FIELD_PERSONALISATION = "personalisation";
     private static final String FIELD_URN = "URN";
     private static final String FIELD_COMMON_PLATFORM_URL = "common_platform_url";
+    private static final String FIELD_COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
     private static final String FIELD_TEMPLATE_ID = "templateId";
     private static final String FIELD_NOTIFICATION_ID = "notificationId";
+    public static final String DEFENDANTS = "Jack Smith, Henry Cole";
+    public static final String FIELD_DEFENDANTS = "Defendants";
+    public static final String FIELD_APPLICATIONS = "Applications";
+    public static final String FILED_SUBJECT = "Subject";
+    public static final String NO = "no";
 
     @Spy
     private final Enveloper enveloper = createEnveloper();
@@ -338,6 +376,7 @@ public class ResultsEventProcessorTest {
     @Test
     public void shouldHandleTheEventPoliceNotificationRequested() {
         final UUID notificationId = randomUUID();
+
         final JsonEnvelope jsonEnvelope = envelope()
                 .with(metadataBuilder().withId(randomUUID()).withName("dummy"))
                 .withPayloadOf(URN, "urn")
@@ -359,6 +398,355 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL), is(COMMON_PLATFORM_URL));
 
+    }
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndApplication() {
+
+        List<CaseDefendant> caseDefendants = getDefendants();
+
+        PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail");
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_WITH_APPLICATIONS_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is(SUBJECT));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+
+    }
+
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndNoApplication() {
+
+        List<CaseDefendant> caseDefendants = getDefendantsWithNoApplication();
+
+        PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, null);
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+
+    }
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareJudicialResults() {
+
+        List<String> policeSubjectLineTitle = asList("final sentence", "");
+        List<String> resultText = asList("Jorunal", "Fine paid");
+        List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
+
+        PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "");
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+
+    }
+
+    @Test
+    public void shouldNotIncludePoliceSubjectLineTitleWhenTitleIsBCCAndResultTextIsDomesticViolenceCase() {
+        List<String> policeSubjectLineTitle = asList("Bail Conditions Cancelled", null);
+        List<String> resultText = asList("URGENT - Urgent\nUrgent result: Domestic Violence case.", null);
+
+        List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
+
+        PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "");
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("Amend & Reshare urn123 06-06-2023"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+
+    }
+
+    @Test
+    public void shouldIncludePoliceSubjectLineTitleWhenTitleIsBCC() {
+        List<String> policeSubjectLineTitle = asList("Bail Conditions Cancelled", null);
+        List<String> resultText = asList("Remanded on conditional bail.", null);
+
+        List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
+
+        PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, null);
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("Amend & Reshare urn123 06-06-2023 Bail Conditions Cancelled"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+
+    }
+
+    @Test
+    public void shouldIncludePoliceSubjectLineTitleWhenResultTextIsBCCAnd() {
+        List<String> policeSubjectLineTitle = asList("Bail Conditions Cancelled", null);
+        List<String> resultText = asList("URGENT - Urgent\nUrgent result: Vulnerable or Intimidated Victim/Witness.", null);
+
+        List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
+
+        PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application X");
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_WITH_APPLICATIONS_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("Amend & Reshare urn123 06-06-2023 Application"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+
+    }
+
+    private PoliceNotificationRequestedV2 buildPoliceNotificationRequestedV2(final List<CaseDefendant> caseDefendants, final String applicationTypeForCase) {
+        return PoliceNotificationRequestedV2.
+                policeNotificationRequestedV2()
+                .withNotificationId(randomUUID())
+                .withCaseId(CASE_ID)
+                .withPoliceEmailAddress(EMAIL_ADDRESS)
+                .withAmendReshare("Amend & Reshare")
+                .withDateOfHearing(LocalDate.of(2023, 06, 6).toString())
+                .withUrn(URN)
+                .withCaseDefendants(caseDefendants)
+                .withApplicationTypeForCase(applicationTypeForCase)
+                .build();
+    }
+
+    private List<CaseDefendant> getDefendants() {
+        JudicialResult judicialResult1 =
+                JudicialResult.judicialResult()
+                        .withPoliceSubjectLineTitle("Remand").build();
+        JudicialResult judicialResult2 =
+                JudicialResult.judicialResult()
+                        .withPoliceSubjectLineTitle("Final Sentence").build();
+
+        List<JudicialResult> judicialResults1 = asList(judicialResult1, judicialResult2);
+
+        JudicialResult judicialResult3 =
+                JudicialResult.judicialResult()
+                        .withPoliceSubjectLineTitle("Warrant Withdrawn").build();
+        JudicialResult judicialResult4 =
+                JudicialResult.judicialResult()
+                        .withPoliceSubjectLineTitle("Bail without conditions").build();
+
+        List<JudicialResult> judicialResults2 = asList(judicialResult3, judicialResult4);
+
+
+        final CaseDefendant caseDefendant1 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(asList(OffenceDetails.offenceDetails().withJudicialResults(judicialResults1).build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Jack", "Smith", Gender.MALE, null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual().withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1", Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        final CaseDefendant caseDefendant2 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(asList(OffenceDetails.offenceDetails()
+                        .withJudicialResults(judicialResults2).build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code")
+                                .withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Henry", "Cole", Gender.MALE,
+                                null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual()
+                        .withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1",
+                                Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        return asList(caseDefendant1, caseDefendant2);
+    }
+
+    private List<CaseDefendant> getDefendantsWithNoApplication() {
+
+        final CaseDefendant caseDefendant1 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(asList(OffenceDetails.offenceDetails().build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Jack", "Smith", Gender.MALE, null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual().withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1", Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        final CaseDefendant caseDefendant2 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(asList(OffenceDetails.offenceDetails().build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code")
+                                .withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Henry", "Cole", Gender.MALE,
+                                null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual()
+                        .withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1",
+                                Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        return asList(caseDefendant1, caseDefendant2);
+    }
+
+    private List<CaseDefendant> getDefendantsWithJudicialResults(List<String> policeSubjectLineTitle, List<String> resultText) {
+
+        JudicialResult judicialResult1 = JudicialResult.judicialResult()
+                .withResultText(resultText.get(0)).withPoliceSubjectLineTitle(policeSubjectLineTitle.get(0))
+                .withJudicialResultId(randomUUID()).build();
+        JudicialResult judicialResult2 = JudicialResult.
+                judicialResult().withResultText(resultText.get(1))
+                .withPoliceSubjectLineTitle(policeSubjectLineTitle.get(1)).build();
+
+        final CaseDefendant caseDefendant1 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withOffences(asList(OffenceDetails.offenceDetails().withJudicialResults(Arrays.asList(judicialResult1, judicialResult2)).build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Jack", "Smith", Gender.MALE, null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual().withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1", Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        final CaseDefendant caseDefendant2 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(asList(OffenceDetails.offenceDetails().build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code")
+                                .withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Henry", "Cole", Gender.MALE,
+                                null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual()
+                        .withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1",
+                                Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        return asList(caseDefendant1, caseDefendant2);
+    }
+
+    private Individual createPerson(final String firstName, final String lastName, final Gender gender, final LocalDate dateOfBirth, final String title, final Address address, final ContactNumber contactNumber) {
+        return individual()
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withGender(gender)
+                .withDateOfBirth(dateOfBirth)
+                .withTitle(title)
+                .withAddress(address)
+                .withContact(contactNumber)
+                .build();
     }
 
     @Test
@@ -635,5 +1023,4 @@ public class ResultsEventProcessorTest {
         prompt.setId(promptId);
         return prompt;
     }
-
 }

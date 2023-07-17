@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/police-notification-requested-v2.json",
+  "type": "object",
+  "properties": {
+    "notificationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "urn": {
+      "type": "string"
+    },
+    "caseId": {
+      "type": "string"
+    },
+    "applicationTypeForCase": {
+      "type": "string"
+    },
+    "dateOfHearing": {
+      "type": "string"
+    },
+    "amendReshare": {
+      "type": "string"
+    },
+    "policeEmailAddress": {
+      "type": "string",
+      "format": "email"
+    },
+    "caseDefendants": {
+      "type": "array",
+      "items": {
+        "$ref": "http://justice.gov.uk/core/courts/caseDefendant.json"
+      }
+    }
+  },
+  "required": [
+    "urn",
+    "policeEmailAddress",
+    "notificationId"
+  ],
+  "additionalProperties": false
+}

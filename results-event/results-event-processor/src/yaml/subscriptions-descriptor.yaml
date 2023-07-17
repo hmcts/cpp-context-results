@@ -11,6 +11,8 @@ subscriptions_descriptor:
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-result-generated.json
         - name: results.event.police-notification-requested
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-notification-requested.json
+        - name: results.event.police-notification-requested-v2
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-notification-requested-v2.json
         - name: results.hearing-results-added
           schema_uri: http://justice.gov.uk/core/courts/hearing-results-added.json
         - name: results.events.hearing-results-added-for-day
@@ -38,7 +40,6 @@ subscriptions_descriptor:
 
         - name: public.progression.events.case-or-application-ejected
           schema_uri: http://justice.gov.uk/progression/courts/case-or-application-ejected
-
 
         - name: public.stagingenforcement.enforce-financial-imposition-acknowledgement
           schema_uri: http://cpp.moj.gov.uk/stagingenforcement/json/schema/event/public-enforce-financial-imposition-acknowledgement.json

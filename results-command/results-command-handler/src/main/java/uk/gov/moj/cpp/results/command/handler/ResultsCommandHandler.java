@@ -1,7 +1,12 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static javax.json.JsonValue.NULL;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
@@ -9,6 +14,7 @@ import static uk.gov.justice.services.core.enveloper.Enveloper.toEnvelopeWithMet
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
 import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
@@ -33,6 +39,8 @@ import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -110,12 +118,12 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     @Handles("results.command.create-results-for-day")
     public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
         final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
-        createResults(envelope, Optional.of(hearingDay));
+        createResults(envelope, of(hearingDay));
     }
 
     @Handles("results.create-results")
     public void createResult(final JsonEnvelope envelope) throws EventStreamException {
-        createResults(envelope, Optional.empty());
+        createResults(envelope, empty());
     }
 
     @Handles("results.command.generate-police-results-for-a-defendant")
@@ -126,12 +134,12 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final String defendantId = payload.getString("defendantId");
 
         if (payload.containsKey(HEARING_DAY)) {
-            final Optional<LocalDate> hearingDay = Optional.of(LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE));
+            final Optional<LocalDate> hearingDay = of(LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE));
             aggregate(ResultsAggregate.class, fromString(sessionId),
                     envelope, a -> a.generatePoliceResults(caseId, defendantId, hearingDay));
         } else {
             aggregate(ResultsAggregate.class, fromString(sessionId),
-                    envelope, a -> a.generatePoliceResults(caseId, defendantId, Optional.empty()));
+                    envelope, a -> a.generatePoliceResults(caseId, defendantId, empty()));
         }
 
     }
@@ -144,6 +152,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final String sourceType = session.getString("sourceType");
         final List<SessionDay> sessionDays = (List<SessionDay>) session.get("sessionDays");
         final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
+        final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications"))
+                .orElse(Collections.emptyList());
+
+
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
 
         final EventStream eventStream = eventSource.getStreamById(fromString(id));
@@ -153,6 +165,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 commandEnvelope, a -> a.handleSession(fromString(id), courtCentre, sessionDays));
 
         final List<UUID> caseIdsFromAggregate = aggregate.getCaseIds();
+        final List<CourtApplication> courtApplicationList = new ArrayList<>();
+        for (final JsonObject jsonObject : courtApplications) {
+            final CourtApplication courtApplication = jsonObjectToObjectConverter.convert(jsonObject, CourtApplication.class);
+            courtApplicationList.add(courtApplication);
+        }
 
         for (final JsonObject c : cases) {
 
@@ -189,12 +206,27 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 }
 
                 LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
-
+                final String applicationTypeForCase = getApplicationTypeForCase(caseDetails.getCaseId(), courtApplicationList);
                 aggregate(ResultsAggregate.class, fromString(id),
-                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay));
+                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase));
             }
         }
     }
+
+
+    private String getApplicationTypeForCase(UUID caseId, List<CourtApplication> courtApplications) {
+        final List<CourtApplication> courtApplicationList = courtApplications.stream()
+                .filter(courtApplication -> courtApplication.getCourtApplicationCases() != null)
+                .filter(courtApplication -> courtApplication.getCourtApplicationCases().stream()
+                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId))).collect(toList());
+
+        return courtApplicationList.stream()
+                .map(courtApplication -> courtApplication.getType() != null ? courtApplication.getType().getType() : "")
+                .filter(type -> type != null && !type.isEmpty())
+                .distinct()
+                .collect(joining(", "));
+    }
+
 
     private String getOriginatingOrganisation(final String originatingOrganisation) {
         if (SURREY_POLICE_CPS_ORGANISATION.equalsIgnoreCase(originatingOrganisation) || SUSSEX_POLICE_CPS_ORGANISATION.equalsIgnoreCase(originatingOrganisation)) {

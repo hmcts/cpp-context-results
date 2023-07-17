@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
@@ -65,6 +66,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
+import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.io.IOException;
@@ -73,7 +75,6 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -111,6 +112,7 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_8 = "json/results.update-results-crown-example-wo-origorganisation.json";
     private static final String TEMPLATE_PAYLOAD_9 = "json/results.track-results-example.json";
     private static final String TEMPLATE_PAYLOAD_10 = "json/results.command.update-defendant-tracking-status.json";
+    private static final String TEMPLATE_PAYLOAD_11 = "json/results.create-results-court-application.json";
     private static final String PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION = "json/results.create-results-magistrates-example_with_originating_organisation.json";
     private static final String EMAIL = "mail@mail.com";
     private static UUID metadataId;
@@ -132,6 +134,7 @@ public class ResultsCommandHandlerTest {
             PoliceResultGenerated.class,
             SjpCaseRejectedEvent.class,
             PoliceNotificationRequested.class,
+            PoliceNotificationRequestedV2.class,
             HearingResultsAddedForDay.class,
             HearingFinancialResultsTracked.class,
             MarkedAggregateSendEmailWhenAccountReceived.class,
@@ -480,7 +483,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "");
         this.resultsCommandHandler.createResult(envelope);
         verify(enveloper, Mockito.times(2)).withMetadataFrom(envelope);
         verify(eventStream, Mockito.times(2)).append(streamArgumentCaptor.capture());
@@ -536,10 +539,10 @@ public class ResultsCommandHandlerTest {
         final CaseDetails caseDetails = jsonObjectToObjectConverter.convert(caseDetailsJson, CaseDetails.class);
         verify(resultsAggregateSpy).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
         verify(resultsAggregateSpy).handleCase(eq(caseDetails));
-        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(Optional.empty()));
+        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(empty()), any());
     }
 
-    @Test
+     @Test
     public void shouldUpdateDefendantTrackingStatus() throws EventStreamException, IOException {
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_10);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.update-defendant-tracking-status.json"), payload);
@@ -589,7 +592,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "");
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_2);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
@@ -638,7 +641,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "");
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_6);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
@@ -657,7 +660,7 @@ public class ResultsCommandHandlerTest {
                                 )
                         )),
                 jsonEnvelope(
-                        withMetadataEnvelopedFrom(envelope).withName("results.event.police-notification-requested"),
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.police-notification-requested-v2"),
                         payloadIsJson(allOf(
                                         withJsonPath("$.urn", is("123445")),
                                         withJsonPath("$.policeEmailAddress", is(EMAIL))
@@ -687,7 +690,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "");
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_6);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
@@ -722,7 +725,7 @@ public class ResultsCommandHandlerTest {
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
         resultsCommandHandler.generatePoliceResultsForDefendant(policeResultsEnvelope);
-        verify(resultsAggregateSpy).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), Optional.empty());
+        verify(resultsAggregateSpy).generatePoliceResults(policeResultsPayload.getString("caseId"), policeResultsPayload.getString("defendantId"), empty());
     }
 
     @Test
@@ -746,7 +749,7 @@ public class ResultsCommandHandlerTest {
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, Optional.empty());
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "");
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_8);
 
@@ -766,7 +769,8 @@ public class ResultsCommandHandlerTest {
                                 )
                         )),
                 jsonEnvelope(
-                        withMetadataEnvelopedFrom(envelope).withName("results.event.police-notification-requested"),
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.police-notification-requested-v2"),
                         payloadIsJson(allOf(
                                         withJsonPath("$.urn", is("123445")),
                                         withJsonPath("$.policeEmailAddress", is(EMAIL))
