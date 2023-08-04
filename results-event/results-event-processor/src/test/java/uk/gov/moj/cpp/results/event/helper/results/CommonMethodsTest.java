@@ -28,6 +28,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,7 +69,7 @@ public class CommonMethodsTest {
         final List<AttendanceDay> attendanceDays = new ArrayList<>();
         attendanceDays.add(AttendanceDay.attendanceDay().withAttendanceType(AttendanceType.NOT_PRESENT).withDay(LocalDate.of(2019, 02, 02)).build());
 
-        final Hearing hearing = hearing().withHearingDays(asList(hearingDay()
+        final Hearing hearing = hearing().withHearingDays(Collections.singletonList(hearingDay()
                 .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
                 .withListedDurationMinutes(100)
                 .withListingSequence(10)

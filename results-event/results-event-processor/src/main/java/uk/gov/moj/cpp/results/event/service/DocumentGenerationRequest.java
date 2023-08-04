@@ -8,10 +8,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class DocumentGenerationRequest {
 
-    private TemplateIdentifier templateIdentifier;
-    private ConversionFormat conversionFormat;
-    private String sourceCorrelationId;
-    private UUID payloadFileServiceId;
+    private final TemplateIdentifier templateIdentifier;
+    private final ConversionFormat conversionFormat;
+    private final String sourceCorrelationId;
+    private final UUID payloadFileServiceId;
 
     public DocumentGenerationRequest(final TemplateIdentifier templateIdentifier,
                                      final ConversionFormat conversionFormat,

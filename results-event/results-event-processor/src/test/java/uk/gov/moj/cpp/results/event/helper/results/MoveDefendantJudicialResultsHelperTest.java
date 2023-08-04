@@ -35,7 +35,7 @@ public class MoveDefendantJudicialResultsHelperTest {
     private static final String CASE_DEFENDANT_LEVEL_JUDICIAL_RESULT_LABEL = "case defendant " + randomAlphabetic(10);
     private static final String OFFENCE_LEVEL_JUDICIAL_RESULT_LABEL = "offence " + randomAlphabetic(10);
 
-    private MoveDefendantJudicialResultsHelper moveDefendantJudicialResultsHelper = new MoveDefendantJudicialResultsHelper();
+    private final MoveDefendantJudicialResultsHelper moveDefendantJudicialResultsHelper = new MoveDefendantJudicialResultsHelper();
 
     @Test
     public void shouldReturnSameOffencesAndJRsWhenNoOtherJRsToMatch() {

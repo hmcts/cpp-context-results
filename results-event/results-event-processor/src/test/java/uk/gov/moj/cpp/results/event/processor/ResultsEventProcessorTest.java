@@ -69,6 +69,7 @@ import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -637,7 +638,7 @@ public class ResultsEventProcessorTest {
                 .withDefendantId(UUID.randomUUID())
                 .withProsecutorReference("prosecutorReference")
                 .withJudicialResults(null)
-                .withOffences(asList(OffenceDetails.offenceDetails().withJudicialResults(judicialResults1).build()))
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails().withJudicialResults(judicialResults1).build()))
                 .withIndividualDefendant(individualDefendant()
                         .withBailConditions("bailCondition")
                         .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
@@ -649,7 +650,7 @@ public class ResultsEventProcessorTest {
                 .withDefendantId(UUID.randomUUID())
                 .withProsecutorReference("prosecutorReference")
                 .withJudicialResults(null)
-                .withOffences(asList(OffenceDetails.offenceDetails()
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails()
                         .withJudicialResults(judicialResults2).build()))
                 .withIndividualDefendant(individualDefendant()
                         .withBailConditions("bailCondition")
@@ -671,7 +672,7 @@ public class ResultsEventProcessorTest {
                 .withDefendantId(UUID.randomUUID())
                 .withProsecutorReference("prosecutorReference")
                 .withJudicialResults(null)
-                .withOffences(asList(OffenceDetails.offenceDetails().build()))
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails().build()))
                 .withIndividualDefendant(individualDefendant()
                         .withBailConditions("bailCondition")
                         .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
@@ -683,7 +684,7 @@ public class ResultsEventProcessorTest {
                 .withDefendantId(UUID.randomUUID())
                 .withProsecutorReference("prosecutorReference")
                 .withJudicialResults(null)
-                .withOffences(asList(OffenceDetails.offenceDetails().build()))
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails().build()))
                 .withIndividualDefendant(individualDefendant()
                         .withBailConditions("bailCondition")
                         .withBailStatus(bailStatus().withCode("Bail status code")
@@ -710,7 +711,7 @@ public class ResultsEventProcessorTest {
         final CaseDefendant caseDefendant1 = caseDefendant()
                 .withDefendantId(UUID.randomUUID())
                 .withProsecutorReference("prosecutorReference")
-                .withOffences(asList(OffenceDetails.offenceDetails().withJudicialResults(Arrays.asList(judicialResult1, judicialResult2)).build()))
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails().withJudicialResults(asList(judicialResult1, judicialResult2)).build()))
                 .withIndividualDefendant(individualDefendant()
                         .withBailConditions("bailCondition")
                         .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
@@ -722,7 +723,7 @@ public class ResultsEventProcessorTest {
                 .withDefendantId(UUID.randomUUID())
                 .withProsecutorReference("prosecutorReference")
                 .withJudicialResults(null)
-                .withOffences(asList(OffenceDetails.offenceDetails().build()))
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails().build()))
                 .withIndividualDefendant(individualDefendant()
                         .withBailConditions("bailCondition")
                         .withBailStatus(bailStatus().withCode("Bail status code")

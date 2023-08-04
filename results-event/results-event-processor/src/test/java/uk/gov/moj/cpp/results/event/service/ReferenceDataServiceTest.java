@@ -49,6 +49,7 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -187,7 +188,7 @@ public class ReferenceDataServiceTest {
         final UUID id = randomUUID();
         final LocalDate now = now();
         final AllResultDefinitions allResultDefinitions = new AllResultDefinitions()
-                .setResultDefinitions(asList(
+                .setResultDefinitions(Collections.singletonList(
                         ResultDefinition.resultDefinition()
                                 .setId(id)
                 ));

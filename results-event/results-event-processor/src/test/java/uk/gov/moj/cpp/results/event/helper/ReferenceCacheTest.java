@@ -19,6 +19,7 @@ import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,7 +71,7 @@ public class ReferenceCacheTest {
     @Test
     public void getResultDefinitionById_shouldReturnValue() {
         final AllResultDefinitions allResultDefinitions = new AllResultDefinitions()
-                .setResultDefinitions(asList(
+                .setResultDefinitions(Collections.singletonList(
                         ResultDefinition.resultDefinition()
                                 .setId(randomUUID())
                 ));

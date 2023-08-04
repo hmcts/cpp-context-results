@@ -202,7 +202,7 @@ public class OffenceDetailsTest {
     }
 
     private List<Offence> getOffences() {
-        return Arrays.asList(Offence.offence()
+        return Collections.singletonList(Offence.offence()
                 .withId(ID)
                 .withOffenceDefinitionId(randomUUID())
                 .withOffenceCode(OFFENCE_CODE)

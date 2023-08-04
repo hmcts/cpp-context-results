@@ -8,7 +8,6 @@ import static javax.json.JsonValue.NULL;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
-import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.BailStatus;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions;
@@ -117,25 +116,6 @@ public class ReferenceCache {
         } finally {
             this.context.remove();
         }
-    }
-
-    public Optional<AllocationDecision> getAllocationDecision(final JsonEnvelope context, final String convertedModeOfTrial) {
-        try {
-             this.context.set(context);
-            final List<AllocationDecision> allocationDecisions = (List<AllocationDecision>) cache.get(new CacheKey(Type.MODE_OF_TRIAL_REASONS, null));
-
-            return allocationDecisions
-                    .stream()
-                    .filter( ad -> ad.getMotReasonCode().equals(convertedModeOfTrial))
-                    .findFirst();
-
-        } catch (final ExecutionException executionException) {
-            LOGGER.error("getAllocationDecision reference data service not available", executionException);
-            throw new RuntimeException(UNRECOVERABLE_SYSTEM_ERROR, executionException);
-        } finally {
-            this.context.remove();
-        }
-
     }
 
     private enum Type {

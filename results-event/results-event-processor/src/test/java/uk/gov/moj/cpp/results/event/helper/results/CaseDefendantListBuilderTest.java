@@ -39,6 +39,7 @@ import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.Plea;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.Verdict;
 import uk.gov.justice.core.courts.VerdictType;
@@ -47,6 +48,7 @@ import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -103,7 +105,7 @@ public class CaseDefendantListBuilderTest {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
         final Hearing hearing = TestTemplates.basicShareHearingTemplateWithCustomApplication(randomUUID(), JurisdictionType.MAGISTRATES,
-                asList(CourtApplication.courtApplication()
+                Collections.singletonList(CourtApplication.courtApplication()
                         .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
                         .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
                         .withApplicationReference("OFFENCE_CODE_REFERENCE")
@@ -111,11 +113,11 @@ public class CaseDefendantListBuilderTest {
                         .withApplicant(TestTemplates.courtApplicationPartyTemplates())
                         .withApplicationStatus(ApplicationStatus.DRAFT)
                         .withSubject(TestTemplates.courtApplicationPartyTemplates())
-                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffences()))
+                        .withCourtApplicationCases(Collections.singletonList(TestTemplates.createCourtApplicationCaseWithOffences()))
                         .withApplicationParticulars("bail application")
                         .withJudicialResults(buildJudicialResultList())
-                        .withAllegationOrComplaintStartDate(LocalDate.now())
-                        .withPlea(uk.gov.justice.core.courts.Plea.plea().withOffenceId(UUID.randomUUID()).withPleaDate(LocalDate.now()).withPleaValue("NOT_GUILTY").build())
+                        .withAllegationOrComplaintStartDate(now())
+                        .withPlea(Plea.plea().withOffenceId(randomUUID()).withPleaDate(now()).withPleaValue("NOT_GUILTY").build())
                         .withVerdict(Verdict.verdict()
                                 .withVerdictType(VerdictType.verdictType()
                                         .withId(fromString("3f0d69d0-2fda-3472-8d4c-a6248f661825"))
@@ -124,7 +126,7 @@ public class CaseDefendantListBuilderTest {
                                         .withCjsVerdictCode("N")
                                         .build())
                                 .withOriginatingHearingId(randomUUID())
-                                .withOffenceId(UUID.randomUUID())
+                                .withOffenceId(randomUUID())
                                 .withVerdictDate(now())
                                 .build())
                         .build()));
@@ -252,7 +254,7 @@ public class CaseDefendantListBuilderTest {
         assertEquals("", offence.getModeOfTrial());
         assertEquals(offence.getOffenceCode(), courtApplication.getType().getCode());
         assertEquals(offence.getWording(), courtApplication.getApplicationParticulars());
-        assertEquals(new Integer(0), offence.getOffenceSequenceNumber());
+        assertEquals(Integer.valueOf(0), offence.getOffenceSequenceNumber());
         assertEquals(offence.getStartDate(), courtApplication.getAllegationOrComplaintStartDate());
     }
 
@@ -282,7 +284,7 @@ public class CaseDefendantListBuilderTest {
 
     private void assertAttendanceDays(final List<uk.gov.justice.core.courts.AttendanceDay> attendanceDays, final List<DefendantAttendance> defendantAttendance, final UUID defendantId) {
         final Optional<List<uk.gov.justice.core.courts.AttendanceDay>> attendanceDaysFromRequest = defendantAttendance.stream().filter(a -> a.getDefendantId().equals(defendantId)).findFirst().map(a -> a.getAttendanceDays());
-        assertEquals(true, attendanceDaysFromRequest.isPresent());
+        assertTrue(attendanceDaysFromRequest.isPresent());
         final List<uk.gov.justice.core.courts.AttendanceDay> attendanceDaysListFromRequest = attendanceDaysFromRequest.get();
         assertEquals(1, attendanceDaysListFromRequest.size());
         assertEquals(attendanceDays.size(), attendanceDaysListFromRequest.size());
