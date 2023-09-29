@@ -7,7 +7,6 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASE_IDENTIFIER;
 
-import uk.gov.justice.services.core.annotation.FeatureControl;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
@@ -69,7 +68,6 @@ public class HearingResultedEventProcessor {
 
     @Handles("public.events.hearing.hearing-resulted")
     @SuppressWarnings({"squid:S2221"})
-    @FeatureControl("amendReshare")
     public void handleHearingResultedPublicEvent(final JsonEnvelope envelope) {
 
         if (LOGGER.isDebugEnabled()) {

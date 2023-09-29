@@ -95,8 +95,6 @@ public class HearingResultedIT {
         stubBailStatuses();
         stubModeOfTrialReasons();
         stubPoliceFlag(OU_CODE, PROSECUTION_AUTHORITY);
-        final ImmutableMap<String, Boolean> features = ImmutableMap.of("amendReshare", true);
-        FeatureStubber.stubFeaturesFor("results", features);
     }
 
     @After
@@ -150,9 +148,6 @@ public class HearingResultedIT {
     }
 
     private void setOuCodeAndProsecutorAuthority(final PublicHearingResulted resultsMessage) {
-        final ImmutableMap<String, Boolean> features = ImmutableMap.of("amendReshare", true);
-        FeatureStubber.stubFeaturesFor("results", features);
-        // mycode
         if (null != resultsMessage.getHearing().getProsecutionCases() && !resultsMessage.getHearing().getProsecutionCases().isEmpty()) {
             int size = resultsMessage.getHearing().getProsecutionCases().size();
             for (int i = 0; i < size; i++) {
