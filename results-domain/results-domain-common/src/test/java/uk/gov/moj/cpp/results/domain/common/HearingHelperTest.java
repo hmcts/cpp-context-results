@@ -33,7 +33,7 @@ public class HearingHelperTest {
 
     @Test
     public void shouldTransformHearing() {
-        final JsonObject hearingJson = getPayload();
+        final JsonObject hearingJson = getPayload("hearing.json");
 
         final JsonObject transformedObject = hearingHelper.transformedHearing(hearingJson);
 
@@ -52,11 +52,32 @@ public class HearingHelperTest {
 
     }
 
-    private static JsonObject getPayload() {
+    @Test
+    public void shouldTransformHearingWithAllAttributes() {
+        final JsonObject hearingJson = getPayload("hearingWithAllAttributes.json");
+
+        final JsonObject transformedObject = hearingHelper.transformedHearing(hearingJson);
+
+        final JsonObject prosecutionCaseJson = transformedObject.getJsonArray(PROSECUTION_CASES).getValuesAs(JsonObject.class).get(0);
+        final JsonObject defendantJson = prosecutionCaseJson.getJsonArray(DEFENDANTS).getValuesAs(JsonObject.class).get(0);
+        final JsonObject offenceJson = defendantJson.getJsonArray(OFFENCES).getValuesAs(JsonObject.class).get(0);
+        final JsonObject applicationJson = transformedObject.getJsonArray(COURT_APPLICATIONS).getValuesAs(JsonObject.class).get(0);
+        final JsonObject defendantWithWelshTranslationJson = transformedObject.getJsonArray(DEFENDANTS_WITH_WELSH_TRANSLATION_LIST).getValuesAs(JsonObject.class).get(0);
+
+        assertThat(transformedObject.getJsonArray(DEFENDANT_JUDICIAL_RESULTS).size(), is(1));
+        assertThat(defendantJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
+        assertThat(offenceJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
+        assertThat(applicationJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
+        assertThat(offenceJson.getJsonNumber(LISTING_NUMBER).intValue(), is(2));
+        assertThat(defendantWithWelshTranslationJson, is(notNullValue()));
+
+    }
+
+    private static JsonObject getPayload(final String filename) {
         String response = null;
         try {
             response = Resources.toString(
-                    Resources.getResource("hearing.json"),
+                    Resources.getResource(filename),
                     Charset.defaultCharset()
             );
         } catch (final Exception e) {

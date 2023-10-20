@@ -48,6 +48,28 @@
         <jackson-data-format.version>2.8.8</jackson-data-format.version>
         <systemdocgenerator.version>8.0.31</systemdocgenerator.version>
         <material.version>8.0.9</material.version>
+        <sonar.coverage.exclusions>
+            **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
+            **/uk/gov/justice/api/**/*,
+            **/uk/gov/justice/core/courts/**/*,
+            **/uk/gov/justice/hearing/courts/**/*,
+            **/uk/gov/justice/results/courts/**/*,
+            **/uk/gov/justice/sjp/results/**/*,
+            **/uk/gov/moj/cpp/domains/**/*,
+            **/uk/gov/moj/cpp/results/domain/event/**/*,
+            **/uk/gov/moj/cpp/results/query/view/response/**,
+            **/uk/gov/moj/cpp/results/command/**,
+            **/uk/gov/moj/cpp/results/domain/transformation/**/*,
+            **/uk/gov/justice/api/**,
+            **/uk/gov/moj/cpp/results/event/helper/resultdefinition/**,
+            **/uk/gov/moj/cpp/results/event/helper/ReferenceCache.*,
+            **/uk/gov/moj/cpp/results/event/helper/ReferenceCache.CacheKey.*,
+            **/uk/gov/moj/cpp/results/event/service/exception/**,
+            **/uk/gov/moj/cpp/results/event/service/EmailNotification.*,
+            **/uk/gov/moj/cpp/results/event/service/NcesEmailNotificationTemplateData.*,
+            **/uk/gov/moj/cpp/results/event/service/UploadMaterialContextBuilder.*,
+            **/uk/gov/moj/cpp/results/persist/entity/**/*
+        </sonar.coverage.exclusions>
     </properties>
     <build>
         <plugins>

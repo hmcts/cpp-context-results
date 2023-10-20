@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;

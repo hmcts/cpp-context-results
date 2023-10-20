@@ -22,9 +22,11 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.HearingTransformer;
+import uk.gov.moj.cpp.domains.JudicialRoleTypeEnum;
 
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javax.json.JsonObject;
 
@@ -146,6 +148,29 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getName(),isEmptyOrNullString());
         assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getProsecutorCategory(),is("PC"));
         assertThat(apiHearing.getProsecutionCases().get(0).getProsecutionCaseIdentifier().getProsecutorCategory(),is("PCIPC"));
+
+        assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
+        assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));
+    }
+
+    @Test
+    public void shouldTransformHearingWithAllAttributes() {
+        final JsonObject hearingJson = getHearingJson("hearingWithAllAttributes.json");
+        final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
+        final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
+
+        assertThat(apiHearing.getDefendantJudicialResults().size(), is(1));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getFirstName(),is("FN"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getMiddleName(),is("MN"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getLastName(),is("LN"));
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getName(),isEmptyOrNullString());
+        assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getProsecutorCategory(),is("PC"));
+        assertThat(apiHearing.getProsecutionCases().get(0).getProsecutionCaseIdentifier().getProsecutorCategory(),is("PCIPC"));
+        assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(0).getJudicialRoleType().getJudiciaryType()),is(Optional.of(JudicialRoleTypeEnum.CIRCUIT_JUDGE)));
+        assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(1).getJudicialRoleType().getJudiciaryType()),is(Optional.of(JudicialRoleTypeEnum.DISTRICT_JUDGE)));
+        assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(2).getJudicialRoleType().getJudiciaryType()),is(Optional.of(JudicialRoleTypeEnum.RECORDER)));
+        assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(3).getJudicialRoleType().getJudiciaryType()),is(Optional.of(JudicialRoleTypeEnum.MAGISTRATE)));
+        assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(4).getJudicialRoleType().getJudiciaryType()),is(Optional.empty()));
 
         assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
         assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));

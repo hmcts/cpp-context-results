@@ -8,23 +8,18 @@ import static uk.gov.justice.core.courts.CaseDetails.caseDetails;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.checkURNValidity;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getUrn;
 
-import org.apache.commons.collections.CollectionUtils;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtOrder;
 import uk.gov.justice.core.courts.CourtOrderOffence;
-import uk.gov.justice.core.courts.DefendantCase;
-import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.services.common.converter.Converter;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.helper.results.CaseDefendantListBuilder;
-
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +28,10 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import javax.inject.Inject;
+
+import org.apache.commons.collections.CollectionUtils;
 
 public class CasesConverter implements Converter<PublicHearingResulted, List<CaseDetails>> {
 

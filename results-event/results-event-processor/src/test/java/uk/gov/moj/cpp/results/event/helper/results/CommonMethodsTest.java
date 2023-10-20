@@ -19,6 +19,10 @@ import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.isUrnFor
 
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.AttendanceType;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationCase;
+import uk.gov.justice.core.courts.CourtOrder;
+import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
@@ -28,6 +32,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -88,6 +93,41 @@ public class CommonMethodsTest {
                 .build();
         String result = getUrn(prosecutionCaseIdentifier, true, false);
         assertThat(result, is("URN-12345678"));
+    }
+
+    @Test
+    public void testGetUrnWhenCourtApplicationCasesUrnsSupplied() {
+        final String URN1 = randomUUID().toString();
+        final String URN2 = randomUUID().toString();
+        final CourtApplication courtApplication = CourtApplication.courtApplication()
+                .withCourtApplicationCases(Arrays.asList(CourtApplicationCase.courtApplicationCase()
+                        .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withCaseURN(URN1).build()).build(),
+                        CourtApplicationCase.courtApplicationCase()
+                                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withCaseURN(URN2).build()).build())).build();
+        final String extractedURNs = getUrn(courtApplication,true);
+
+        assertThat(extractedURNs.split(",").length,is(2));
+        assertTrue(Arrays.stream(extractedURNs.split(",")).allMatch(s -> s.equals(URN1) || s.equals(URN2)));
+    }
+
+    @Test
+    public void testGetUrnWhencourtOrderUrnsSupplied() {
+        final String URN1 = randomUUID().toString();
+        final String URN2 = randomUUID().toString();
+        final CourtApplication courtApplication = CourtApplication.courtApplication()
+                .withCourtOrder(CourtOrder.courtOrder()
+                        .withCourtOrderOffences(
+                                Arrays.asList(CourtOrderOffence.courtOrderOffence()
+                                        .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                                                .withCaseURN(URN1).build()).build(),
+                                        CourtOrderOffence.courtOrderOffence()
+                                        .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                                                .withCaseURN(URN2).build()).build()))
+                        .build()).build();
+        final String extractedURNs = getUrn(courtApplication,true);
+
+        assertThat(extractedURNs.split(",").length,is(2));
+        assertTrue(Arrays.stream(extractedURNs.split(",")).allMatch(s -> s.equals(URN1) || s.equals(URN2)));
     }
 
     @Test

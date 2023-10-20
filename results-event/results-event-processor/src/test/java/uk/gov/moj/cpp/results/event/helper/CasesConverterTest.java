@@ -14,6 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -64,6 +65,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -120,7 +122,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    public void testConverter2() {
+    public void testConverter2()  {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
         when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
         when(referenceDataService.getPoliceFlag(anyString(), anyString())).thenReturn(false);
@@ -157,7 +159,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    public void convertApplicationWithNoOffences() {
+    public void convertApplicationWithNoOffences(){
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
         final UUID hearingId = randomUUID();
@@ -274,7 +276,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults() {
+    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults()  {
         final UUID hearingId = randomUUID();
         final JsonObject payload = getPayload("public.hearing-resulted-court-order-with-no-judicial-results.json", hearingId);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
@@ -302,7 +304,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    public void courtApplicationWithJustJudicialResultsAndNoCaseJudicialResults() {
+    public void courtApplicationWithJustJudicialResultsAndNoCaseJudicialResults()  {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
         final UUID hearingId = randomUUID();

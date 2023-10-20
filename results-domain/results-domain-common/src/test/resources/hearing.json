@@ -8,6 +8,99 @@
     "welshDescription": "Welsh sentence"
   },
   "judiciary": [],
+  "reportingRestrictionReason": "DO NOT SHOW IT TO PRESS",
+  "hasSharedResults": true,
+  "defendantReferralReasons": [
+    {
+      "defendantId": "66eae021-4d41-421f-9dc6-6f669834b348",
+      "description": "Defence request",
+      "id": "798e3d82-44fa-40e6-a93d-4c8f5322fa66"
+    }
+  ],
+  "prosecutionCounsels": [
+    {
+      "attendanceDays": [
+        "2020-08-13"
+      ],
+      "firstName": "John",
+      "id": "7bc12bc2-c391-4838-9c8d-44081d20a7e2",
+      "lastName": "Smith",
+      "middleName": "",
+      "prosecutionCases": [
+        "61792c99-50fb-4510-8af6-4195353b98ec"
+      ],
+      "status": "Junior",
+      "title": ""
+    }
+  ],
+  "defendantAttendance": [
+    {
+      "attendanceDays": [
+        {
+          "day": "2019-03-14",
+          "isInAttendance": false
+        }
+      ],
+      "defendantId": "a2480b4b-38fd-4c7d-bbb3-9f38aff10c7e"
+    }
+  ],
+  "isEffectiveTrial": true,
+  "isVacatedTrial": true,
+
+  "crackedIneffectiveTrial": {
+    "code": "M1",
+    "description": "The trial could not go ahead because the prosecution did not provide timely service of additional evidence. Please record the name of the prosecutor in the comments box.",
+    "id": "c51ce410-c124-310e-8db5-e4b97fc2af39",
+    "type": "Ineffective"
+  },
+  "isBoxHearing": true,
+  "defenceCounsels": [
+    {
+      "attendanceDays": [
+        "2020-08-03"
+      ],
+      "defendants": [
+        "c01d657c-e894-41da-a356-4dd11c3628a9"
+      ],
+      "firstName": "PAUL",
+      "id": "6f739b29-5533-425f-9a40-d577f60f488e",
+      "lastName": "JONES",
+      "middleName": "",
+      "status": "JUNIOR",
+      "title": ""
+    }
+  ],
+  "respondentCounsels": [
+    {
+      "attendanceDays": [
+        "2021-03-29"
+      ],
+      "firstName": "mark",
+      "id": "15b171f5-9be9-4786-a031-6899add99f5a",
+      "lastName": "jones",
+      "respondents": [
+        "e6e93db2-cfd0-4522-bfa2-f7922ab2b052"
+      ],
+      "status": "junior",
+      "title": ""
+    }
+  ],
+  "hearingCaseNotes": [],
+  "applicantCounsels": [
+    {
+      "applicants": [
+        "518fc761-559a-4a07-8263-4b5419fcab16"
+      ],
+      "attendanceDays": [
+        "2021-03-29"
+      ],
+      "firstName": "john",
+      "id": "c2e7da4a-82c3-499e-8fc6-e16efd17e07e",
+      "lastName": "smith",
+      "status": "junior",
+      "title": ""
+    }
+  ],
   "prosecutionCases": [
     {
       "id": "c10e3b71-6a6d-45ef-9b62-34df4d54971a",
@@ -74,10 +167,10 @@
                       "roomId": "7cb09222-49e1-3622-a5a6-ad253d2b3c39",
                       "roomName": "Crown Court 3-1"
                     },
-                    "type" : {
-                      "id" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
-                      "description" : "PTP",
-                      "welshDescription" : "welsh PTP"
+                    "type": {
+                      "id": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                      "description": "PTP",
+                      "welshDescription": "welsh PTP"
                     }
                   }
                 },
@@ -492,13 +585,15 @@
       "welshLjaName": "East Hampshire Magistrates' Court"
     }
   },
-  "defendantsWithWelshTranslationList" : [{
-    "defendantId" : "c6d76309-c912-436b-a21b-a4c4450bc052",
-    "welshTranslation": true
-  }],
+  "defendantsWithWelshTranslationList": [
+    {
+      "defendantId": "c6d76309-c912-436b-a21b-a4c4450bc052",
+      "welshTranslation": true
+    }
+  ],
   "youthCourt": {
-      "yourtCourtId": 192883,
-      "name": "Cheshire Youth Court"
+    "yourtCourtId": 192883,
+    "name": "Cheshire Youth Court"
   },
   "youthCourtDefendantIds": [
     "a285e3e9-0b71-4352-be31-670a8963359d",

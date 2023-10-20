@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.results.event.helper.results;
 
 import static com.google.common.collect.ImmutableList.of;
+import static java.lang.Boolean.TRUE;
 import static java.time.LocalDate.now;
-import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
@@ -28,6 +28,7 @@ import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
+import uk.gov.justice.core.courts.DefenceCounsel;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantAttendance;
 import uk.gov.justice.core.courts.Hearing;
@@ -47,14 +48,16 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.json.JsonObject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -137,7 +140,55 @@ public class CaseDefendantListBuilderTest {
         final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache)
                 .buildDefendantList(courtApplicationCase, courtApplication, hearing, false);
         assertEquals(1, caseDetailsDefendants.size());
-        assertDefendants(courtApplication, hearing.getCourtApplications().get(0).getSubject().getMasterDefendant(), caseDetailsDefendants, hearing);
+        assertDefendants(courtApplication, hearing.getCourtApplications().get(0).getSubject().getMasterDefendant(), caseDetailsDefendants, hearing,true);
+    }
+
+    @Test
+    public void shouldBuildDefendantsWithDefenceCounselsForApplication() {
+
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+
+        final Hearing hearing = TestTemplates.basicShareHearingTemplateWithCustomApplication(randomUUID(), JurisdictionType.MAGISTRATES,
+                Collections.singletonList(CourtApplication.courtApplication()
+                        .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
+                        .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                        .withApplicationReference("OFFENCE_CODE_REFERENCE")
+                        .withType(TestTemplates.courtApplicationTypeTemplates())
+                        .withApplicant(TestTemplates.courtApplicationPartyTemplates())
+                        .withApplicationStatus(ApplicationStatus.DRAFT)
+                        .withSubject(TestTemplates.courtApplicationPartyTemplates())
+                        .withCourtApplicationCases(Collections.singletonList(TestTemplates.createCourtApplicationCaseWithOffences()))
+                        .withApplicationParticulars("bail application")
+                        .withJudicialResults(buildJudicialResultList())
+                        .withAllegationOrComplaintStartDate(now())
+                        .withPlea(Plea.plea().withOffenceId(randomUUID()).withPleaDate(now()).withPleaValue("NOT_GUILTY").build())
+                        .withVerdict(Verdict.verdict()
+                                .withVerdictType(VerdictType.verdictType()
+                                        .withId(fromString("3f0d69d0-2fda-3472-8d4c-a6248f661825"))
+                                        .withCategory(STRING.next())
+                                        .withCategoryType(STRING.next())
+                                        .withCjsVerdictCode("N")
+                                        .build())
+                                .withOriginatingHearingId(randomUUID())
+                                .withOffenceId(randomUUID())
+                                .withVerdictDate(now())
+                                .build())
+
+                        .build()));
+        final Hearing hearinWithNoAttendance = Hearing.hearing().withValuesFrom(hearing) .withDefendantAttendance(Collections.emptyList()).build();
+
+        final CourtApplication courtApplication = hearinWithNoAttendance.getCourtApplications().get(0);
+
+        final CourtApplicationCase courtApplicationCase = courtApplication.getCourtApplicationCases().get(0);
+        final List<DefenceCounsel> defenceCounsels = Arrays.asList(DefenceCounsel.defenceCounsel().withDefendants(Arrays.asList(randomUUID())).withAttendanceDays(hearinWithNoAttendance.getDefendantAttendance().stream().flatMap(attendance-> attendance.getAttendanceDays().stream()).map(days->days.getDay()).collect(Collectors.toList())).build());
+        final Hearing hearingWithDefenceCounsels = Hearing.hearing().withValuesFrom(hearing).withDefenceCounsels(defenceCounsels) .withDefendantAttendance(Collections.emptyList()).build();
+
+
+        final List<uk.gov.justice.core.courts.CaseDefendant> caseDetailsDefendants = new CaseDefendantListBuilder(referenceCache)
+                .buildDefendantList(courtApplicationCase, courtApplication, hearingWithDefenceCounsels, false);
+
+        assertEquals(1, caseDetailsDefendants.size());
+        assertDefendants(courtApplication, hearingWithDefenceCounsels.getCourtApplications().get(0).getSubject().getMasterDefendant(), caseDetailsDefendants, hearingWithDefenceCounsels,false);
     }
 
     @Test
@@ -183,7 +234,7 @@ public class CaseDefendantListBuilderTest {
 
     }
 
-    private void assertDefendants(final CourtApplication courtApplication, final MasterDefendant defendant, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
+    private void assertDefendants(final CourtApplication courtApplication, final MasterDefendant defendant, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing, final boolean withPresence) {
         for (final uk.gov.justice.core.courts.CaseDefendant caseDetailsDefendant : caseDetailsDefendants) {
             assertEquals("ARREST_1234", caseDetailsDefendant.getProsecutorReference());
             assertEquals(caseDetailsDefendant.getPncId(), defendant.getPncId());
@@ -198,10 +249,12 @@ public class CaseDefendantListBuilderTest {
                     assertPerson(associatedIndividual.getPerson(), a.getPerson());
                 });
             }
-            if (null != hearing.getDefendantAttendance()) {
+            if (CollectionUtils.isNotEmpty(hearing.getDefendantAttendance())) {
                 assertAttendanceDays(caseDetailsDefendant.getAttendanceDays(), hearing.getDefendantAttendance(), caseDetailsDefendant.getDefendantId());
             }
-            assertPresentAtHearing(caseDetailsDefendant);
+            if(TRUE.equals(withPresence)) {
+                assertPresentAtHearing(caseDetailsDefendant);
+            }
             assertDefendantPerson(caseDetailsDefendant.getIndividualDefendant(), defendant.getPersonDefendant());
             assertOffences(caseDetailsDefendant.getOffences(), courtApplication);
         }
