@@ -155,7 +155,6 @@ import uk.gov.justice.core.courts.external.LinkType;
 import uk.gov.justice.core.courts.external.NoteType;
 import uk.gov.justice.core.courts.external.NotifiedPleaValue;
 import uk.gov.justice.core.courts.external.OffenceActiveOrder;
-import uk.gov.justice.core.courts.external.Position;
 import uk.gov.justice.core.courts.external.Source;
 import uk.gov.justice.core.courts.external.SummonsTemplateType;
 import uk.gov.justice.core.courts.external.VehicleCode;
@@ -225,7 +224,7 @@ public class HearingTransformer {
         return ApiCompanyRepresentative.apiCompanyRepresentative().withId(companyRepresentative.getId())
                 .withFirstName(companyRepresentative.getFirstName())
                 .withLastName(companyRepresentative.getLastName())
-                .withPosition(companyRepresentative.getPosition() == null ? null : Position.valueOf(companyRepresentative.getPosition().name()))
+                .withPosition(companyRepresentative.getPosition())
                 .withAttendanceDays(companyRepresentative.getAttendanceDays())
                 .withTitle(companyRepresentative.getTitle())
                 .withDefendants(companyRepresentative.getDefendants());
