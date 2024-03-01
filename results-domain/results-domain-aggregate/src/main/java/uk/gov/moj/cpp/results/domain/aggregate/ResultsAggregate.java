@@ -446,7 +446,11 @@ public class ResultsAggregate implements Aggregate {
                                  final boolean sendSpiOut,
                                  final Optional<JurisdictionType> jurisdictionType,
                                  final Optional<LocalDate> hearingDay) {
-        if (defendantFromRequest.getOffences().size() > defendantFromAggregate.getOffences().size() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
+        final List<OffenceDetails>  anyNonMatchingOffenceList = defendantFromRequest.getOffences().stream()
+                .filter(dfr -> defendantFromAggregate.getOffences().stream().noneMatch(dfa -> dfr.getId().equals(dfa.getId())))
+                .collect(toList());
+
+        if (!anyNonMatchingOffenceList.isEmpty() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {

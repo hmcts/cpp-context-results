@@ -111,7 +111,7 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_7 = "json/results.create-results-crown-example.json";
     private static final String TEMPLATE_PAYLOAD_8 = "json/results.update-results-crown-example-wo-origorganisation.json";
     private static final String TEMPLATE_PAYLOAD_9 = "json/results.track-results-example.json";
-    private static final String TEMPLATE_PAYLOAD_10 = "json/results.command.update-defendant-tracking-status.json";
+    private static final String TEMPLATE_PAYLOAD_10 = "json/results.command.update-defendant-tracking-status-example.json";
     private static final String TEMPLATE_PAYLOAD_11 = "json/results.create-results-court-application.json";
     private static final String PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION = "json/results.create-results-magistrates-example_with_originating_organisation.json";
     private static final String EMAIL = "mail@mail.com";

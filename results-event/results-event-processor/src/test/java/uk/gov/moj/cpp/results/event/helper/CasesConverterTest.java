@@ -286,21 +286,25 @@ public class CasesConverterTest {
         final Hearing hearing = publicHearingResulted.getHearing();
         when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
+        assertThat(caseDetailsList.size(), is(0));
+    }
+
+    @Test
+    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResultsHasSameCaseURNAsApplication() {
+        final UUID hearingId = randomUUID();
+        final JsonObject payload = getPayload("public.hearing-resulted-court-order-with-no-judicial-results-cloned-offence.json", hearingId);
+        final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
+
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+
+        final Hearing hearing = publicHearingResulted.getHearing();
+        when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
+        final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
         assertThat(caseDetailsList.size(), is(1));
         final CourtOrder courtOrder = publicHearingResulted.getHearing().getCourtApplications().get(0).getCourtOrder();
         final Optional<CourtOrderOffence> courtOrderOffence = courtOrder.getCourtOrderOffences().stream().filter(orderOffence -> orderOffence.getProsecutionCaseId().equals(caseDetailsList.get(0).getCaseId())).findFirst();
-        assertThat(courtOrderOffence.isPresent(), is(true));
-        final CourtOrderOffence orderOffence = courtOrderOffence.get();
-        final ProsecutionCaseIdentifier prosecutionCaseIdentifier = orderOffence.getProsecutionCaseIdentifier();
-        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
-            assertThat(caseDetailsList.get(0).getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
-        } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
-            assertThat(caseDetailsList.get(0).getUrn(), is("authorityReference"));
-        } else {
-            assertThat(caseDetailsList.get(0).getUrn(), is("00PP0000008"));
-        }
-        assertDefendants(courtOrderOffence.get(), hearing.getCourtApplications().get(0).getSubject(), caseDetailsList.get(0).getDefendants(), hearing, true);
-        assertThat(caseDetailsList.get(0).getDefendants(), hasSize(1));
+        assertThat(courtOrderOffence.isPresent(), is(false));
+        assertThat(caseDetailsList.get(0).getUrn(), is(publicHearingResulted.getHearing().getCourtApplications().get(0).getApplicationReference()));
     }
 
     @Test
@@ -342,6 +346,24 @@ public class CasesConverterTest {
         }
         assertThat(caseDetails.getDefendants(), hasSize(2));
         assertDefendantsWithJudicialResultsAndNoCaseJudicialResults(caseDetailsList.get(0).getDefendants(), hearing);
+    }
+
+    @Test
+    public void courtApplicationWithJudicialResultsAndCourtOrderJudicialResultsHasSameCaseURNAsApplication() {
+        final UUID hearingId = randomUUID();
+        final JsonObject payload = getPayload("public.hearing-resulted-court-order.json", hearingId);
+        final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
+
+        when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
+
+        final Hearing hearing = publicHearingResulted.getHearing();
+        when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
+        final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
+        assertThat(caseDetailsList.size(), is(1));
+        final CourtOrder courtOrder = publicHearingResulted.getHearing().getCourtApplications().get(0).getCourtOrder();
+        final Optional<CourtOrderOffence> courtOrderOffence = courtOrder.getCourtOrderOffences().stream().filter(orderOffence -> orderOffence.getProsecutionCaseId().equals(caseDetailsList.get(0).getCaseId())).findFirst();
+        assertThat(courtOrderOffence.isPresent(), is(true));
+        assertThat(caseDetailsList.get(0).getUrn(), is(publicHearingResulted.getHearing().getCourtApplications().get(0).getApplicationReference()));
     }
 
     private void assertDefendantsWithJudicialResultsAndNoCaseJudicialResults(final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {

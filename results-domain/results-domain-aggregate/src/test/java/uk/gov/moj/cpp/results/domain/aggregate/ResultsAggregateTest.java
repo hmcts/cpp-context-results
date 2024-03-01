@@ -512,6 +512,173 @@ public class ResultsAggregateTest {
     }
 
     @Test
+    public void testHandleDefendantWhenAnotheCourtOrderOffenceIsResultedInAmendAndReshare(){
+
+        final List<OffenceDetails> offences = new ArrayList<>();
+
+        offences.add(offenceDetails().withId(UUID.fromString("f0b1f9b1-c182-4401-8c64-c69027e84e92")).build());
+
+        final JudicialResult judicialResult1 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Conditional discharge")
+                .build();
+
+        offences.add(offenceDetails().withId(UUID.fromString("11896a41-e3d4-49ed-8775-753b46ce237d")).withJudicialResults(of(judicialResult1)).build());
+
+        final JudicialResult judicialResult2 = judicialResult().withJudicialResultId(UUID.fromString("52da305d-7a14-4307-91fa-7b20086eb9c8"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Absolute discharge")
+                .build();
+
+        offences.add(offenceDetails().withId(UUID.fromString("17d13499-e166-4d65-851f-6eb8eadcbb82")).withJudicialResults(of(judicialResult2)).build());
+
+        CaseDetails caseDetails = createCaseDetails(null, offences);
+
+        resultsAggregate.handleCase(caseDetails);
+
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, "");
+
+        final List<OffenceDetails> offences2 = new ArrayList<>();
+
+        offences2.add(offenceDetails().withId(UUID.fromString("f0b1f9b1-c182-4401-8c64-c69027e84e92")).build());
+
+
+
+        final JudicialResult judicialResult3 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(false)
+                .withLabel("Conditional discharge")
+                .build();
+        offences2.add(offenceDetails().withId(UUID.fromString("11896a41-e3d4-49ed-8775-753b46ce237d")).withJudicialResults(of(judicialResult3)).build());
+
+        final JudicialResult judicialResult4 = judicialResult().withJudicialResultId(UUID.fromString("90e43644-4953-47c5-93f7-9b611f4c9146"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Conditional discharge")
+                .build();
+
+        offences2.add(offenceDetails().withId(UUID.fromString("591a13d1-500b-415d-bd84-2447499d318b")).withJudicialResults(of(judicialResult4)).build());
+
+        CaseDetails caseDetails2 = createCaseDetails(null, offences2);
+
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails2, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, "").collect(toList());
+
+        assertDefendantUpdatedEvent(caseDetails2.getDefendants().get(0), objectList);
+
+    }
+
+
+    @Test
+    public void testHandleDefendantWhenCourtOrderOffenceIsResultedWithAmendAndReshareMultipleTimes(){
+
+        final List<OffenceDetails> offences = new ArrayList<>();
+
+        offences.add(offenceDetails().withId(UUID.fromString("f0b1f9b1-c182-4401-8c64-c69027e84e92")).build());
+
+        final JudicialResult judicialResult1 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Conditional discharge")
+                .build();
+
+        offences.add(offenceDetails().withId(UUID.fromString("11896a41-e3d4-49ed-8775-753b46ce237d")).withJudicialResults(of(judicialResult1)).build());
+
+        final JudicialResult judicialResult2 = judicialResult().withJudicialResultId(UUID.fromString("52da305d-7a14-4307-91fa-7b20086eb9c8"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Absolute discharge")
+                .build();
+
+        offences.add(offenceDetails().withId(UUID.fromString("17d13499-e166-4d65-851f-6eb8eadcbb82")).withJudicialResults(of(judicialResult2)).build());
+
+        CaseDetails caseDetails = createCaseDetails(null, offences);
+
+        resultsAggregate.handleCase(caseDetails);
+
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, "");
+
+        final List<OffenceDetails> offences2 = new ArrayList<>();
+
+
+        offences2.add(offenceDetails().withId(UUID.fromString("f0b1f9b1-c182-4401-8c64-c69027e84e92")).build());
+
+        final JudicialResult judicialResult4 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(false)
+                .withLabel("Conditional discharge")
+                .build();
+
+        offences2.add(offenceDetails().withId(UUID.fromString("11896a41-e3d4-49ed-8775-753b46ce237d")).withJudicialResults(of(judicialResult4)).build());
+
+
+        final JudicialResult judicialResult5 = judicialResult().withJudicialResultId(UUID.fromString("c386b775-774c-45da-b61d-4387beea2a8b"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(false)
+                .withLabel("DISM - Dismissed")
+                .build();
+
+
+        offences2.add(offenceDetails().withId(UUID.fromString("591a13d1-500b-415d-bd84-2447499d318b")).withJudicialResults(of(judicialResult5)).build());
+
+        final JudicialResult judicialResult6 = judicialResult().withJudicialResultId(UUID.fromString("4bb41c3d-15ca-45c5-8f3a-93b16f05b37d"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(false)
+                .withLabel("Absolute discharge")
+                .build();
+
+        offences2.add(offenceDetails().withId(UUID.fromString("17d13499-e166-4d65-851f-6eb8eadcbb82")).withJudicialResults(of(judicialResult6)).build());
+
+        CaseDetails caseDetails2 = createCaseDetails(null, offences2);
+
+        resultsAggregate.handleDefendants(caseDetails2, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, "");
+
+        final List<OffenceDetails> offences3 = new ArrayList<>();
+
+        offences3.add(offenceDetails().withId(UUID.fromString("f0b1f9b1-c182-4401-8c64-c69027e84e92")).build());
+
+
+        final JudicialResult judicialResult7 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Conditional discharge")
+                .build();
+
+        offences3.add(offenceDetails().withId(UUID.fromString("11896a41-e3d4-49ed-8775-753b46ce237d")).withJudicialResults(of(judicialResult7)).build());
+
+
+        final JudicialResult judicialResult8 = judicialResult().withJudicialResultId(UUID.fromString("52da305d-7a14-4307-91fa-7b20086eb9c8"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Absolute discharge")
+                .build();
+
+        offences3.add(offenceDetails().withId(UUID.fromString("17d13499-e166-4d65-851f-6eb8eadcbb82")).withJudicialResults(of(judicialResult8)).build());
+
+
+        CaseDetails caseDetails3 = createCaseDetails(null, offences3);
+
+
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails3, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, "").collect(toList());
+
+        assertDefendantUpdatedEvent(caseDetails3.getDefendants().get(0), objectList);
+
+
+    }
+
+    @Test
     public void testHandleDefendantsWhenAJudicialResultAmendedDateHasBeenChanged() {
         final List<OffenceDetails> offences = new ArrayList<>();
         final JudicialResult judicialResult = judicialResult().withAmendmentDate(LocalDate.of(2019, 2, 2)).withJudicialResultId(randomUUID()).build();
