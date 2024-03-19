@@ -415,12 +415,12 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived();
 
         markedAggregateSendEmailWhenAccountReceivedList.stream()
-                .filter(marked -> correlationIdHistoryItemList.stream().anyMatch(item -> marked.getAccountCorrelationId().equals(item.getAccountCorrelationId())
+                .filter(marked -> correlationIdHistoryItemList.stream().anyMatch(item ->(item.getAccountCorrelationId().equals( marked.getAccountCorrelationId()))
                         || Objects.equals(marked.getOldAccountCorrelationId(), item.getAccountCorrelationId())))
                 .forEach(marked -> {
                     markedBuilder.withValuesFrom(marked);
 
-                    final String accountNumber = correlationIdHistoryItemList.stream().filter(item -> marked.getAccountCorrelationId().equals(item.getAccountCorrelationId()))
+                    final String accountNumber = correlationIdHistoryItemList.stream().filter(item -> item.getAccountCorrelationId().equals(marked.getAccountCorrelationId()))
                             .findFirst().map(CorrelationIdHistoryItem::getAccountNumber).orElse(null);
 
                     markedBuilder.withGobAccountNumber(accountNumber);

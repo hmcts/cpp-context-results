@@ -10,20 +10,23 @@ import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 
+import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.UnmarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResults;
+import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -239,6 +242,7 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountCorrelationId(), is(CORRELATION_ID_2));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountDivisionCode(), is("adc"));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountDivisionCode(), is("new_division_code"));
+
     }
 
     @Test
@@ -1457,6 +1461,109 @@ public class HearingFinancialResultsAggregateTest {
 
         events = updateGobAccounts(singletonList(accountCorrelationId3));
         assertThat(events.size(), is(1));
+
+    }
+
+    @Test
+    public void shouldUpdateGobAccountsAfterResultsHasBeenAmendedAndReshared() {
+        final UUID accountCorrelationId = randomUUID();
+        final String accountDivisionCode = "36";
+        final UUID hearingId = randomUUID();
+        final UUID masterDefendantId = randomUUID();
+        final UUID offenceId = randomUUID();
+        final String gobAccountNumber ="24002079V";
+        final String subject ="ACCOUNTS TO BE CONSOLIDATED";
+        final  UUID markedAggregateSendEmailWhenAccountReceivedId = randomUUID();
+
+        final HearingFinancialResultsTracked hearingFinancialResultsTracked = HearingFinancialResultsTracked.hearingFinancialResultsTracked()
+                .withCreatedTime(ZonedDateTime.now())
+                .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
+                        .withAccountCorrelationId(accountCorrelationId)
+                        .withAccountDivisionCode(accountDivisionCode)
+                        .withMasterDefendantId(masterDefendantId)
+                        .withHearingId(hearingId)
+                        .withOffenceResults(asList(OffenceResults.offenceResults()
+                                .withIsFinancial(true)
+                                .withIsDeemedServed(true)
+                                .withOffenceId(offenceId)
+                                .withOffenceTitle("Assault by beating")
+                                .withResultCode("ACON")
+                                .build()))
+                        .build())
+                .build();
+
+
+        aggregate.apply(hearingFinancialResultsTracked);
+
+        MarkedAggregateSendEmailWhenAccountReceived  markedAggregateSendEmailWhenAccountReceived = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
+                .withAccountCorrelationId(accountCorrelationId)
+                .withMasterDefendantId(masterDefendantId)
+                .withDivisionCode(accountDivisionCode)
+                .withSubject(subject)
+                .withId(markedAggregateSendEmailWhenAccountReceivedId)
+                .withImpositionOffenceDetails(asList(ImpositionOffenceDetails.impositionOffenceDetails()
+                        .withTitle("Assault by beating")
+                        .build()))
+                .build();
+        aggregate.apply(markedAggregateSendEmailWhenAccountReceived);
+
+        MarkedAggregateSendEmailWhenAccountReceived  markedAggregateSendEmailWhenAccountReceivedAfterFirstAmendment = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
+                .withOldAccountCorrelationId(accountCorrelationId)
+                .withId(randomUUID())
+                .withDivisionCode(accountDivisionCode)
+                .withOldDivisionCode(accountDivisionCode)
+                .withSubject("AMEND RESULT/INPUT ERROR")
+                .withAmendmentDate(ZonedDateTime.now().plusDays(1).toString())
+                .withImpositionOffenceDetails(asList(ImpositionOffenceDetails.impositionOffenceDetails()
+                        .withTitle("Assault by beating")
+                        .build()))
+                .build();
+        aggregate.apply(markedAggregateSendEmailWhenAccountReceivedAfterFirstAmendment);
+
+
+        MarkedAggregateSendEmailWhenAccountReceived  markedAggregateSendEmailWhenAccountReceivedAfterSecondAmendment = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
+                .withOldAccountCorrelationId(accountCorrelationId)
+                .withId(randomUUID())
+                .withDivisionCode(accountDivisionCode)
+                .withOldDivisionCode(accountDivisionCode)
+                .withSubject("AMEND RESULT/INPUT ERROR")
+                .withAmendmentDate(ZonedDateTime.now().plusDays(2).toString())
+                .withImpositionOffenceDetails(asList(ImpositionOffenceDetails.impositionOffenceDetails()
+                        .withTitle("Assault by beating")
+                        .build()))
+                .build();
+
+        aggregate.apply(markedAggregateSendEmailWhenAccountReceivedAfterSecondAmendment);
+
+        List<Object> accountUpdateEvents = aggregate.updateAccountNumber(gobAccountNumber,accountCorrelationId).collect(toList());
+
+        List<Object> applicationEvents = aggregate.checkApplicationEmailAndSend().collect(toList());
+
+        assertThat(accountUpdateEvents.size(), is(1));
+
+        assertThat(applicationEvents.size(), is(2));
+
+        Optional.of(applicationEvents.get(0)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithAccountNumber(subject,gobAccountNumber, singletonList(offenceId), masterDefendantId, event));
+
+        Optional.of(applicationEvents.get(1)).map(o -> (UnmarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
+                verifyUnMarkSendMailWhenAccountReceived(markedAggregateSendEmailWhenAccountReceivedId,event));
+
+
+    }
+
+    private void  verifyUnMarkSendMailWhenAccountReceived(final UUID markedAggregateSendEmailWhenAccountReceivedId, final UnmarkedAggregateSendEmailWhenAccountReceived unmarkedAggregateSendEmailWhenAccountReceived) {
+        assertThat(unmarkedAggregateSendEmailWhenAccountReceived.getId(), is(markedAggregateSendEmailWhenAccountReceivedId));
+
+    }
+
+    private  void verifyEmailWithAccountNumber (final String subject,  final String accountNumber, final List<UUID> offenceids, final  UUID  masterDefendantId, final NcesEmailNotificationRequested ncesEmailNotificationRequestedApp1) {
+        assertThat(ncesEmailNotificationRequestedApp1.getMaterialId(), is(notNullValue()));
+        assertThat(ncesEmailNotificationRequestedApp1.getGobAccountNumber(), is(accountNumber));
+        assertThat(ncesEmailNotificationRequestedApp1.getSubject(), is(subject));
+        assertThat(ncesEmailNotificationRequestedApp1.getDivisionCode(), is("36"));
+        assertThat(ncesEmailNotificationRequestedApp1.getMasterDefendantId(), is(masterDefendantId));
+        assertThat(ncesEmailNotificationRequestedApp1.getImpositionOffenceDetails().size(), is(offenceids.size()));
 
     }
 
