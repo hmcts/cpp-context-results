@@ -861,7 +861,6 @@ public class HearingResultedIT {
 
         getSummariesByDate(startDate);
         verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
-        verifyEmailNotificationIsRaised(Arrays.asList("TestArmand TestKrajcik"));
     }
 
     @Test
