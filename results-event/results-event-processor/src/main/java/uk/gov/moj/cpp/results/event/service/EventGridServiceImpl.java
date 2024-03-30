@@ -103,7 +103,7 @@ public class EventGridServiceImpl implements EventGridService {
 
         try {
             final String eventGridEndpoint = String.format(
-                    "%s://%s:%s/",
+                    "%s://%s:%s",
                     eventgridTopicProtocol,
                     new URI(eventgridTopicHost),
                     eventgridTopicPort
