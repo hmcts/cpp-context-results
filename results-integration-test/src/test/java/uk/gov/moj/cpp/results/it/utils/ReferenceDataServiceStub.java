@@ -74,7 +74,8 @@ public class ReferenceDataServiceStub {
                 .add("spiOutFlag", spiOutFlag)
                 .add("policeFlag", policeFlag);
         if (nonNull(email)) {
-            prosecutorBodyBuilder.add("contactEmailAddress", email);
+            prosecutorBodyBuilder.add("contactEmailAddress", email)
+                                 .add("mcContactEmailAddress", email);
         }
 
         final JsonObject response = prosecutorBodyBuilder.build();
@@ -120,6 +121,14 @@ public class ReferenceDataServiceStub {
 
         waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.get.prosecutor+json");
         waitForStubToBeReady(urlPath + "?prosecutorCode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("prosecutorCode", equalTo("CITYPF"))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(prosecutorCodeResponse.toString())));
+        waitForStubToBeReady(urlPath + "?prosecutorCode=CITYPF", "application/vnd.referencedata.query.get.prosecutor+json");
     }
 
     public static void stubPoliceFlag(final String originatingOrganisation, final String prosecutionAuthority) {

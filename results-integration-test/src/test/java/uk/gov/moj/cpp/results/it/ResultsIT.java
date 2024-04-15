@@ -4,11 +4,9 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
-import static java.util.Collections.singletonList;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createReader;
-import static org.codehaus.groovy.runtime.InvokerHelper.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -34,11 +32,14 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyNotIn
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForAmendment;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForPoliceGenerateResultsForDefendant;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForRejected;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationFailed;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequested;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResultsAreCreatedBySystemAdmin;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
+import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
+import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionProsecutionCases;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.PROSECUTOR_WITH_SPI_OUT_FALSE;
@@ -59,7 +60,6 @@ import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.ApplicationStatus;
-import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.Hearing;
@@ -75,6 +75,8 @@ import uk.gov.justice.core.courts.external.ApiCourtCentre;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.event.AmendmentType;
+import uk.gov.moj.cpp.results.domain.event.JudicialResultDetails;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 import uk.gov.moj.cpp.results.it.utils.Queries;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
@@ -238,7 +240,7 @@ public class ResultsIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(false);
+        verifyPrivateEventsWithPoliceNotificationFailed();
     }
 
     @Test
@@ -252,7 +254,7 @@ public class ResultsIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(true);
+        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
     }
 
     @Test
@@ -302,7 +304,7 @@ public class ResultsIT {
     public void testCCForUpdatedEvent() throws JMSException {
         final UUID hearingId = randomUUID();
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD, hearingId);
-
+        stubSpiOutFlag(true, true, EMAIL);
         hearingResultsHaveBeenShared(payload);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -317,12 +319,13 @@ public class ResultsIT {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsForAmendment();
-        verifyInPublicTopic();
-
+        verifyPrivateEventsForAmendment(EMAIL, JudicialResultDetails.judicialResultDetails()
+                .withId(fromString("ea5eb48e-387c-4921-8f9d-d779d731fc38"))
+                .withResultTitle("Imprisonment")
+                .withJudicialResultTypeId(fromString("1726363f-e216-48a3-b0aa-567fd269f0cb"))
+                .withAmendmentType(AmendmentType.ADDED)
+                .build());
     }
-
-
 
     @Test
     public void testGeneratePoliceResultsForDefendantCC() throws JMSException {
@@ -705,8 +708,13 @@ public class ResultsIT {
 
     @Test
     public void shouldSentSpiOutForApplicationWithCourtOrderOnly() throws JMSException {
+        final UUID caseId = randomUUID();
+        final String caseUrn = "32DN1212262";
         final JsonObject payload = getPayload("json/public.hearing-resulted-court-order.json", randomUUID());
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
+
+        stubGetProgressionProsecutionCases(caseId);
+        stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
         hearingResultsHaveBeenShared(publicHearingResulted);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -717,7 +725,11 @@ public class ResultsIT {
         verifyPrivateEventsWithPoliceResultGenerated();
 
         Optional<String> response = verifyInPublicTopic();
-        final JSONObject jsonObject = new JSONObject(response.get());
+        JSONObject jsonObject = new JSONObject(response.get());
+        if(!jsonObject.getString("caseId").equalsIgnoreCase("4d7fd02d-2297-4249-a7c6-d1d7bd567d58")) {
+            response = verifyInPublicTopic();
+            jsonObject = new JSONObject(response.get());
+        }
         assertThat(jsonObject.getString("caseId"), is("4d7fd02d-2297-4249-a7c6-d1d7bd567d58"));
         assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").length(), is(2));
         assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("id"), is("b729153d-50e3-4ce4-811c-f16799043d4f"));

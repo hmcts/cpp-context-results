@@ -223,6 +223,18 @@
                         </exclusions>
                     </dependency>
                     <dependency>
+                        <groupId>uk.gov.moj.cpp.progression</groupId>
+                        <artifactId>progression-query-api</artifactId>
+                        <version>${progression.version}</version>
+                        <classifier>raml</classifier>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>*</groupId>
+                                <artifactId>*</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
                         <groupId>uk.gov.moj.cpp.notification.notify</groupId>
                         <artifactId>notificationnotify-command-api</artifactId>
                         <version>${notification.notify.version}</version>

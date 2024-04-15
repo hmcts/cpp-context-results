@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -17,7 +16,8 @@ import uk.gov.justice.core.courts.external.ApiCourtCentre;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.platform.test.feature.toggle.FeatureStubber;
+import uk.gov.moj.cpp.results.domain.event.AmendmentType;
+import uk.gov.moj.cpp.results.domain.event.JudicialResultDetails;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 import uk.gov.moj.cpp.results.it.utils.Queries;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
@@ -33,6 +33,7 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -58,29 +59,41 @@ import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.*;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequested;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
+import static uk.gov.moj.cpp.results.it.stub.NotificationServiceStub.verifyEmailNotificationIsRaised;
+import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
+import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionProsecutionCases;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.*;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
 import static uk.gov.moj.cpp.results.test.TestTemplates.*;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607"})
 public class HearingResultedIT {
 
-    private static final String TEMPLATE_PAYLOAD = "json/public.events.hearing.hearing-resulted.json";
-    private static final String TEMPLATE_PAYLOAD_1 = "json/public.events.hearing.hearing-results-reshared.json";
+    private static final String TEMPLATE_PAYLOAD_MAG = "json/public.events.hearing.hearing-resulted.json";
+    private static final String TEMPLATE_PAYLOAD_RESHARE_MAG = "json/public.events.hearing.hearing-results-reshared.json";
+    private static final String TEMPLATE_PAYLOAD_CROWN = "json/public.events.hearing.hearing-resulted-crown.json";
+    private static final String TEMPLATE_PAYLOAD_RESHARE_CROWN = "json/public.events.hearing.hearing-results-reshared-crown.json";
     private static final String SESSION_ID = "sessionId";
     private static final String CASE_ID = "caseId";
     private static final String DEFENDANT_ID = "defendantId";
     private static final String CASE_ID_VALUE = "cccc1111-1e20-4c21-916a-81a6c90239e5";
     private static final String DEFENDANT_ID_VALUE = "dddd1111-1e20-4c21-916a-81a6c90239e5";
     private static final String EMAIL = "email@email.com";
+    private static final String MAG_EMAIL = "mag@email.com";
     private static final String FINDING_VALUE_DEFAULT = "G";
     private static final String FINDING_VALUE_NOT_GUILTY = "N";
     private static final String OU_CODE = "0300000";
     private static final String PROSECUTION_AUTHORITY = "bdc190e7-c939-37ca-be4b-9f615d6ef40e";
+
+    private static final String HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN = "json/public.hearing-resulted_with_crown_judicialresults_in_application_only.json";
+    private static final String HEARING_RESULT_RESHARE_APPLICATION_ONLY_JURISDICTION_CROWN = "json/public.hearing-result_reshare_crown_judicialresults_in_application_only.json";
+    private static final String HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_MAGS = "json/public.hearing-resulted_with_mags_judicialresults_in_application_only.json";
 
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
@@ -95,6 +108,8 @@ public class HearingResultedIT {
         stubBailStatuses();
         stubModeOfTrialReasons();
         stubPoliceFlag(OU_CODE, PROSECUTION_AUTHORITY);
+        stubNotificationNotifyEndPoint();
+
     }
 
     @After
@@ -256,7 +271,7 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(false);
+        verifyPrivateEventsWithPoliceNotificationFailed();
     }
 
     @Test
@@ -272,7 +287,7 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(true);
+        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
     }
 
     @Test
@@ -307,11 +322,11 @@ public class HearingResultedIT {
     }
 
     @Test
-    public void testCCForUpdatedEvent() throws JMSException {
+    public void shouldGeneratePoliceResultForFirstShareAndSendEmailWhenAmendedForMagistrates() throws JMSException {
         final UUID hearingId = randomUUID();
         System.out.println(hearingId);
-        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD, hearingId);
-
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_MAG, hearingId);
+        stubSpiOutFlag(true, true, MAG_EMAIL);
         hearingResultsHaveBeenSharedV2(payload);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -322,14 +337,44 @@ public class HearingResultedIT {
         verifyPrivateEventsWithPoliceResultGenerated();
         verifyInPublicTopic();
 
-        final JsonObject amendedPayload = getPayload(TEMPLATE_PAYLOAD_1, hearingId);
+        final JsonObject amendedPayload = getPayload(TEMPLATE_PAYLOAD_RESHARE_MAG, hearingId);
         hearingResultsHaveBeenSharedV2(amendedPayload);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsForAmendment();
-        verifyInPublicTopic();
+        verifyPrivateEventsForAmendment(MAG_EMAIL, JudicialResultDetails.judicialResultDetails()
+                .withId(fromString("ea5eb48e-387c-4921-8f9d-d779d731fc38"))
+                .withJudicialResultTypeId(fromString("1726363f-e216-48a3-b0aa-567fd269f0cb"))
+                .withResultTitle("Imprisonment")
+                .withAmendmentType(AmendmentType.ADDED)
+                .build());
+    }
 
+    @Test
+    public void shouldSendEmailForFirstShareAndAmendmentsForCrownCourt() throws JMSException {
+        final UUID hearingId = randomUUID();
+        System.out.println(hearingId);
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_CROWN, hearingId);
+        stubSpiOutFlag(true, true, EMAIL);
+        hearingResultsHaveBeenSharedV2(payload);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        final LocalDate startDate = of(2019, 5, 25);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+
+        final JsonObject amendedPayload = getPayload(TEMPLATE_PAYLOAD_RESHARE_CROWN, hearingId);
+        hearingResultsHaveBeenSharedV2(amendedPayload);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsForAmendment(EMAIL, JudicialResultDetails.judicialResultDetails()
+                .withId(fromString("ea5eb48e-387c-4921-8f9d-d779d731fc38"))
+                .withJudicialResultTypeId(fromString("1726363f-e216-48a3-b0aa-567fd269f0cb"))
+                .withResultTitle("Imprisonment")
+                .withAmendmentType(AmendmentType.ADDED)
+                .build());
     }
 
     @Test
@@ -768,9 +813,96 @@ public class HearingResultedIT {
 
     @Test
     public void shouldSentSpiOutForApplicationWithCourtOrderOnlyV2() throws JMSException {
+        final UUID caseId = randomUUID();
+        final String caseUrn = "32DN1212262";
         final JsonObject payload = getPayload("json/public.events.hearing.hearing-resulted-court-order.json", randomUUID());
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
 
+        stubGetProgressionProsecutionCases(caseId);
+        stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
+        hearingResultsHaveBeenSharedV2(publicHearingResulted);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = publicHearingResulted.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceResultGenerated();
+
+        Optional<String> response = verifyInPublicTopic();
+        JSONObject jsonObject = new JSONObject(response.get());
+        if(!jsonObject.getString("caseId").equalsIgnoreCase("4d7fd02d-2297-4249-a7c6-d1d7bd567d58")) {
+            response = verifyInPublicTopic();
+            jsonObject = new JSONObject(response.get());
+        }
+        assertThat(jsonObject.getString("caseId"), is("4d7fd02d-2297-4249-a7c6-d1d7bd567d58"));
+        assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").length(), is(2));
+        assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("id"), is("b729153d-50e3-4ce4-811c-f16799043d4f"));
+    }
+
+    @Test
+    public void testCCForEmailNotificationSuccess_WhenApplicationIsResultedOnly() throws JMSException {
+        final UUID hearingId = randomUUID();
+        final UUID caseId = randomUUID();
+        final String caseUrn = "31DI1504926";
+        JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
+        final PublicHearingResulted resultsMessage = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN,hearingId), PublicHearingResulted.class);
+
+        stubGetProgressionProsecutionCases(caseId);
+        stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
+        stubSpiOutFlag(true, true, EMAIL);
+        setOuCodeAndProsecutorAuthority(resultsMessage);
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyEmailNotificationIsRaised(Arrays.asList("TestArmand TestKrajcik"));
+    }
+
+    @Test
+    public void testCCForEmailNotificationSuccess_WhenApplicationIsResultedAndResharedOnly() throws JMSException {
+        final UUID hearingId = randomUUID();
+        final UUID caseId = fromString("cfb28f37-5159-4297-ab6a-653a63627d0b");
+        final String caseUrn = "31DI1504926";
+        JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
+        final PublicHearingResulted resultsMessage = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN, hearingId), PublicHearingResulted.class);
+
+        stubGetProgressionProsecutionCases(caseId);
+        stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
+        stubSpiOutFlag(true, true, EMAIL);
+        setOuCodeAndProsecutorAuthority(resultsMessage);
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyEmailNotificationIsRaised(Arrays.asList("TestArmand TestKrajcik"));
+
+
+        final PublicHearingResulted resultsMessage1 = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_RESHARE_APPLICATION_ONLY_JURISDICTION_CROWN, hearingId), PublicHearingResulted.class);
+        hearingResultsHaveBeenSharedV2(resultsMessage1);
+        verifyEmailNotificationIsRaised(Arrays.asList("TestArmand1 TestKrajcik1"));
+    }
+
+    @Test
+    public void shouldSentSpiOutForResultApplicationOnlyForMags() throws JMSException {
+        final UUID hearingId = randomUUID();
+        final UUID caseId = randomUUID();
+        final String caseUrn = "31DI1504926";
+        JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
+        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_MAGS,hearingId), PublicHearingResulted.class);
+
+        stubGetProgressionProsecutionCases(caseId);
+        stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
         hearingResultsHaveBeenSharedV2(publicHearingResulted);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
@@ -782,8 +914,6 @@ public class HearingResultedIT {
 
         Optional<String> response = verifyInPublicTopic();
         final JSONObject jsonObject = new JSONObject(response.get());
-        assertThat(jsonObject.getString("caseId"), is("4d7fd02d-2297-4249-a7c6-d1d7bd567d58"));
-        assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").length(), is(2));
-        assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("id"), is("b729153d-50e3-4ce4-811c-f16799043d4f"));
+        assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
     }
 }

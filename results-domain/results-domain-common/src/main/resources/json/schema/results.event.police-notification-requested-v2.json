@@ -30,6 +30,12 @@
       "items": {
         "$ref": "http://justice.gov.uk/core/courts/caseDefendant.json"
       }
+    },
+    "courtCentre": {
+      "type": "string"
+    },
+    "caseResultDetails": {
+      "$ref": "#/definitions/caseResultDetails"
     }
   },
   "required": [
@@ -37,5 +43,118 @@
     "policeEmailAddress",
     "notificationId"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "definitions": {
+    "caseResultDetails": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "defendantResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/defendantResultDetails"
+          }
+        },
+        "applicationResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/applicationResultDetails"
+          }
+        }
+      }
+    },
+    "defendantResultDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "defendantName": {
+          "type": "string"
+        },
+        "offenceResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/offenceResultDetails"
+          }
+        }
+      }
+    },
+    "offenceResultDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "offenceNo": {
+          "type": "integer"
+        },
+        "offenceCount": {
+          "type": "integer"
+        },
+        "offenceTitle": {
+          "type": "string"
+        },
+        "judicialResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/judicialResultDetails"
+          }
+        }
+      }
+    },
+    "applicationResultDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "applicationTitle": {
+          "type": "string"
+        },
+        "judicialResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/judicialResultDetails"
+          }
+        },
+        "offenceResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/offenceResultDetails"
+          }
+        },
+        "applicationSubjectFirstName": {
+          "type": "string"
+        },
+        "applicationSubjectLastName": {
+          "type": "string"
+        }
+      }
+    },
+    "judicialResultDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "judicialResultTypeId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "resultTitle": {
+          "type": "string"
+        },
+        "amendmentType": {
+          "type": "string",
+          "enum": [
+            "ADDED",
+            "UPDATED",
+            "DELETED"
+          ]
+        }
+      }
+    }
+  }
 }

@@ -43,6 +43,7 @@ import uk.gov.justice.core.courts.DefendantAttendance;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
+import uk.gov.justice.core.courts.InitiationCode;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.Offence;
@@ -52,9 +53,11 @@ import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.event.helper.results.CommonMethods;
+import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
@@ -67,6 +70,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -100,11 +104,16 @@ public class CasesConverterTest {
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
 
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter(objectMapper);
+
     @Mock
     private ReferenceCache referenceCache;
 
     @Mock
     private ReferenceDataService referenceDataService;
+
+    @Mock
+    private ProgressionService progressionService;
 
     @InjectMocks
     private CasesConverter casesConverter;
@@ -276,7 +285,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults()  {
+    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults() {
         final UUID hearingId = randomUUID();
         final JsonObject payload = getPayload("public.hearing-resulted-court-order-with-no-judicial-results.json", hearingId);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
@@ -284,9 +293,14 @@ public class CasesConverterTest {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
         final Hearing hearing = publicHearingResulted.getHearing();
+        final UUID caseId = randomUUID();
         when(referenceDataService.getSpiOutFlag(any())).thenReturn(true);
+        when(progressionService.getProsecutionCaseDetails(any())).thenReturn(getProsecutionCase("32DN1212262", caseId));
+        when(progressionService.caseExistsByCaseUrn("32DN1212262")).thenReturn(Optional.of(Json.createObjectBuilder()
+                .add("caseId", caseId.toString())
+                .build()));
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
-        assertThat(caseDetailsList.size(), is(0));
+        assertThat(caseDetailsList.size(), is(1));
     }
 
     @Test
@@ -503,6 +517,20 @@ public class CasesConverterTest {
         }
         final JsonReader reader = createReader(new StringReader(request));
         return reader.readObject();
+    }
+
+    private JsonObject getProsecutionCase(final String caseUrn, final UUID caseId) {
+        ProsecutionCase prosecutionCase =  ProsecutionCase.prosecutionCase()
+                .withId(caseId)
+                .withCaseStatus("ACTIVE")
+                .withInitiationCode(InitiationCode.C)
+                .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier()
+                        .withCaseURN(caseUrn)
+                        .withProsecutionAuthorityId(randomUUID())
+                        .withProsecutionAuthorityReference("CITYPF")
+                        .build())
+                .build();
+        return Json.createObjectBuilder().add("prosecutionCase",objectToJsonObjectConverter.convert(prosecutionCase)).build();
     }
 
 }

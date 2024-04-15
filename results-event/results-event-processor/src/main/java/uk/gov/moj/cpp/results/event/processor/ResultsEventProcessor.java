@@ -1,10 +1,10 @@
 package uk.gov.moj.cpp.results.event.processor;
 
 import static java.lang.Boolean.*;
-import static java.lang.String.format;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.toList;
@@ -12,6 +12,7 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
@@ -35,12 +36,14 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.event.CaseResultDetails;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.FixedListComparator;
+import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
@@ -48,6 +51,7 @@ import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.time.LocalDate;
@@ -97,11 +101,12 @@ public class ResultsEventProcessor {
     private static final String DEFENDANTS = "Defendants";
     private static final String SUBJECT = "Subject";
     private static final String APPLICATIONS = "Applications";
-    private static final String APPLICATION = "Application /";
+    private static final String APPLICATION = "Application";
     private static final String AMEND_RESHARE = "Amend_Reshare";
     private static final String COMMON_PLATFORM_URL = "common_platform_url";
     private static final String COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
     public static final String PROSECUTION_CASEFILE_CASE_AT_A_GLANCE = "prosecution-casefile/case-at-a-glance/";
+    public static final String SPC = " ";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -135,6 +140,12 @@ public class ResultsEventProcessor {
 
     @Inject
     private DocumentGeneratorService documentGeneratorService;
+
+    @Inject
+    private ProgressionService progressionService;
+
+    @Inject
+    private PoliceEmailHelper policeEmailHelper;
 
 
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
@@ -294,7 +305,7 @@ public class ResultsEventProcessor {
     @Handles("results.event.police-notification-requested-v2")
     public void handlePoliceNotificationRequestedV2(final JsonEnvelope envelope) {
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = this.jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), PoliceNotificationRequestedV2.class);
-        final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(buildNotificationV2(policeNotificationRequestedV2));
+        final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(buildPoliceNotificationV2(policeNotificationRequestedV2));
         notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
     }
 
@@ -322,7 +333,7 @@ public class ResultsEventProcessor {
         final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(hearingResultPayload, PublicHearingResulted.class);
 
         final List<CourtApplication> courtApplications = publicHearingResulted.getHearing().getCourtApplications();
-        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache, referenceDataService).convert(publicHearingResulted);
+        final List<CaseDetails> caseDetails = new CasesConverter(referenceCache, referenceDataService, progressionService).convert(publicHearingResulted);
 
         if (isNotEmpty(caseDetails)) {
             publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
@@ -390,29 +401,40 @@ public class ResultsEventProcessor {
         return new Notification(policeNotificationRequested.getNotificationId(), fromString(applicationParameters.getEmailTemplateId()), policeNotificationRequested.getPoliceEmailAddress(), personalisationProperties);
     }
 
-    private Notification buildNotificationV2(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
+    private Notification buildPoliceNotificationV2(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
         final Map<String, String> personalisationProperties = new HashMap<>();
         String emailTemplateId = applicationParameters.getEmailTemplateId();
         personalisationProperties.put(URN, policeNotificationRequestedV2.getUrn());
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
 
         if (isNotEmpty(policeNotificationRequestedV2.getCaseDefendants())) {
-            personalisationProperties.put(DEFENDANTS, getCaseDefendants(policeNotificationRequestedV2.getCaseDefendants()));
+            final boolean resultsAmended = !policeNotificationRequestedV2.getAmendReshare().isEmpty();
+            final CaseResultDetails caseResultDetails = policeNotificationRequestedV2.getCaseResultDetails();
 
-            final Boolean resultsAmended = !policeNotificationRequestedV2.getAmendReshare().isEmpty();
-            personalisationProperties.put(AMEND_RESHARE, TRUE.equals(resultsAmended) ? YES : NO);
+            if (resultsAmended && nonNull(caseResultDetails) && isNotEmpty(caseResultDetails.getDefendantResultDetails())) {
+                personalisationProperties.put(DEFENDANTS, policeEmailHelper.buildDefendantAmendmentDetails(policeNotificationRequestedV2.getCaseResultDetails()));
+            } else {
+                personalisationProperties.put(DEFENDANTS, getCaseDefendants(policeNotificationRequestedV2.getCaseDefendants(), resultsAmended));
+            }
+
+            personalisationProperties.put(AMEND_RESHARE, resultsAmended ? YES : NO);
 
             final String sortedSubject = FixedListComparator.sortBasedOnFixedList(getCaseSubject(policeNotificationRequestedV2.getCaseDefendants()));
             final String caseApplication = policeNotificationRequestedV2.getApplicationTypeForCase();
 
-            if (StringUtils.isNotEmpty(caseApplication)) {
-                personalisationProperties.put(APPLICATIONS, caseApplication);
+            if (isNotEmpty(caseApplication)) {
+                if (resultsAmended && nonNull(caseResultDetails) && nonNull(caseResultDetails.getApplicationResultDetails())) {
+                    personalisationProperties.put(APPLICATIONS, policeEmailHelper.buildApplicationAmendmentDetails(caseResultDetails.getApplicationResultDetails()));
+                } else {
+                    personalisationProperties.put(APPLICATIONS, caseApplication);
+                }
+
                 emailTemplateId = getPoliceEmailTemplate(true, resultsAmended);
             } else {
                 emailTemplateId = getPoliceEmailTemplate(false, resultsAmended);
             }
 
-            personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject));
+            personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject, policeNotificationRequestedV2.getCourtCentre()));
             personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
         }
 
@@ -445,20 +467,36 @@ public class ResultsEventProcessor {
     }
 
 
-    private String buildEmailSubject(final Boolean resultsAmended, final String urn, final String hearingDate, final String caseApplication, final String subject) {
-        final String amendReshareText = TRUE.equals(resultsAmended) ? AMEND_RESHARE1 : "";
-        final String applicationText = isEmpty(caseApplication) ? "" : APPLICATION;
+    private String buildEmailSubject(final Boolean resultsAmended, final String urn, final String hearingDate, final String caseApplication, final String subject, final String courtCentre) {
         final String dateTimeFormat = dateTimeFormat(hearingDate);
         final String formattedSubject = subject.replace(DELIMITER, " / ").trim();
 
-        if (formattedSubject.isEmpty() && !applicationText.isEmpty()) {
-            return format("%s %s %s %s", amendReshareText, urn, dateTimeFormat, "Application").trim();
+        final StringBuilder sb = new StringBuilder();
+        if (Boolean.TRUE.equals(resultsAmended)) {
+            sb.append(AMEND_RESHARE1).append(SPC);
         }
-        if (isEmpty(applicationText)) {
-            return format("%s %s %s %s", amendReshareText, urn, dateTimeFormat, formattedSubject).trim();
-        } else {
-            return format("%s %s %s %s %s", amendReshareText, urn, dateTimeFormat, "Application /", formattedSubject).trim();
+
+        sb.append(urn).append(SPC);
+        sb.append(dateTimeFormat).append(SPC);
+
+        if (Boolean.TRUE.equals(resultsAmended) && nonNull(courtCentre)) {
+            sb.append(courtCentre).append(SPC);
         }
+
+        if (isNotEmpty(caseApplication)) {
+            sb.append(APPLICATION).append(SPC);
+            if (!formattedSubject.isEmpty()) {
+                sb.append("/").append(SPC);
+            }
+        }
+
+        if (!formattedSubject.isEmpty()) {
+            sb.append(formattedSubject);
+        }
+
+
+        return sb.toString().trim();
+
     }
 
     private String getPoliceEmailTemplate(final Boolean includeApplications, final Boolean includeResultsAmended) {
@@ -480,13 +518,13 @@ public class ResultsEventProcessor {
         return date.format(formatter);
     }
 
-    private String getCaseDefendants(final List<CaseDefendant> caseDefendants) {
+    private String getCaseDefendants(final List<CaseDefendant> caseDefendants, final boolean amended) {
         return caseDefendants.stream()
                 .map(CaseDefendant::getIndividualDefendant)
                 .map(IndividualDefendant::getPerson)
                 .map(individual -> individual.getFirstName().concat(" ")
                         .concat(individual.getLastName()))
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(amended ? "<br />": ", "));
     }
 
     private void raiseHandlerEvent(final JsonEnvelope envelope, final JsonObject commandPayload) {

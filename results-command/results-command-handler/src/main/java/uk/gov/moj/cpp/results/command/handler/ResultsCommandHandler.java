@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
@@ -194,31 +195,40 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                     refDataProsecutorJson.ifPresent(prosecutorJson -> {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
-                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
+                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
                     });
                 } else {
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(caseDetails.getProsecutionAuthorityCode());
                     refDataProsecutorJson.ifPresent(prosecutorJson -> {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
-                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson));
+                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
                     });
                 }
 
                 LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
                 final String applicationTypeForCase = getApplicationTypeForCase(caseDetails.getCaseId(), courtApplicationList);
                 aggregate(ResultsAggregate.class, fromString(id),
-                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase));
+                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase, courtCentre.getCourtCentre().getName()));
             }
         }
     }
 
 
     private String getApplicationTypeForCase(UUID caseId, List<CourtApplication> courtApplications) {
-        final List<CourtApplication> courtApplicationList = courtApplications.stream()
+        final List<CourtApplication> courtApplicationList = new ArrayList<>();
+
+        courtApplications.stream()
                 .filter(courtApplication -> courtApplication.getCourtApplicationCases() != null)
                 .filter(courtApplication -> courtApplication.getCourtApplicationCases().stream()
-                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId))).collect(toList());
+                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId)))
+                .forEach(courtApplicationList::add);
+
+        courtApplications.stream()
+                .filter(courtApplication -> nonNull(courtApplication.getCourtOrder()) &&  nonNull(courtApplication.getCourtOrder().getCourtOrderOffences()))
+                .filter(courtApplication -> courtApplication.getCourtOrder().getCourtOrderOffences().stream()
+                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId)))
+                .forEach(courtApplicationList::add);
 
         return courtApplicationList.stream()
                 .map(courtApplication -> courtApplication.getType() != null ? courtApplication.getType().getType() : "")
@@ -266,7 +276,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
         final Stream<Object> updateEvents = aggregate.updateFinancialResults(hearingFinancialResultRequest);
 
-        eventStream.append(updateEvents.map(enveloper.withMetadataFrom(envelope)));
+        eventStream.append(updateEvents.map(toEnvelopeWithMetadataFrom(envelope)));
 
         LOGGER.info("masterDefandantId : {} HearingFinancialResultsAggregate:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(aggregate));
     }
@@ -275,8 +285,14 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         return prosecutorJson.containsKey(key) ? prosecutorJson.getBoolean(key) : FALSE;
     }
 
-    private String getEmailAddress(JsonObject prosecutorJson) {
-        return prosecutorJson.containsKey("contactEmailAddress") ? prosecutorJson.getString("contactEmailAddress") : "";
+    private String getEmailAddress(final JsonObject prosecutorJson, final Optional<JurisdictionType> jurisdictionType) {
+        if (isCrownCourt(jurisdictionType) && prosecutorJson.containsKey("contactEmailAddress")) {
+            return prosecutorJson.getString("contactEmailAddress");
+        } else if (isMagsCourt(jurisdictionType) && prosecutorJson.containsKey("mcContactEmailAddress")) {
+            return prosecutorJson.getString("mcContactEmailAddress");
+        }
+
+        return "";
     }
 
     private void appendEventsToStream(final Envelope<?> envelope, final EventStream eventStream, final Stream<Object> events) throws EventStreamException {
@@ -284,4 +300,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         eventStream.append(events.map(toEnvelopeWithMetadataFrom(jsonEnvelope)));
     }
 
+    private boolean isCrownCourt(final Optional<JurisdictionType> jurisdictionType) {
+        return jurisdictionType.map(type -> type.equals(JurisdictionType.CROWN)).orElse(false);
+    }
+
+    private boolean isMagsCourt(final Optional<JurisdictionType> jurisdictionType) {
+        return jurisdictionType.map(type -> type.equals(JurisdictionType.MAGISTRATES)).orElse(false);
+    }
 }

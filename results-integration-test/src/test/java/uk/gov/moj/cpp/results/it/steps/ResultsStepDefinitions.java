@@ -29,6 +29,7 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsCourt
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
+import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
@@ -37,6 +38,7 @@ import uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.event.JudicialResultDetails;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.test.matchers.MapJsonObjectToTypeMatcher;
 
@@ -345,24 +347,37 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         }
     }
 
-    public static void verifyPrivateEventsWithPoliceNotificationRequested(final boolean isSuccessExpected) throws JMSException {
+    public static void verifyPrivateEventsWithPoliceNotificationFailed() throws JMSException {
         verifyPrivateEvents();
 
-        if (isSuccessExpected) {
-            final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
-            assertThat(policeNotificationRequestedGenerated, notNullValue());
-        } else {
-            final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
-            assertThat(policeNotificationFailedGenerated, notNullValue());
-        }
+        final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
+        assertThat(policeNotificationFailedGenerated, notNullValue());
     }
 
-    public static void verifyPrivateEventsForAmendment() throws JMSException {
+
+    public static void verifyPrivateEventsWithPoliceNotificationRequested(final String expectedEmail) throws JMSException {
+        verifyPrivateEvents();
+
+        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
+        assertThat(policeNotificationRequestedGenerated, notNullValue());
+        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
+        assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
+    }
+
+    public static void verifyPrivateEventsForAmendment(final String expectedEmail, final JudicialResultDetails amendedResultDetail) throws JMSException {
         final Message defendantAdded = privateDefendantUpdatedEventConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(defendantAdded, notNullValue());
 
-        final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(policeResultGenerated, notNullValue());
+        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
+        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
+        assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
+        final JSONObject judicialResult = event.getJSONObject("caseResultDetails")
+                .getJSONArray("defendantResultDetails").getJSONObject(0)
+                .getJSONArray("offenceResultDetails").getJSONObject(0)
+                .getJSONArray("judicialResultDetails").getJSONObject(0);
+
+        assertThat(judicialResult.getString("resultTitle"), is(amendedResultDetail.getResultTitle()));
+        assertThat(judicialResult.getString("amendmentType"), is(amendedResultDetail.getAmendmentType().name()));
     }
 
     public static void verifyPrivateEventsForRejected() throws JMSException {
