@@ -50,4 +50,12 @@ subscriptions_descriptor:
         - name: material.material-added
           schema_uri: http://justice.gov.uk/json/schemas/domains/public/material/material-added.json
 
+        #System available doc generator
+        - name: public.systemdocgenerator.events.document-available
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/document-available.json
+
+        #System fail doc generator
+        - name: public.systemdocgenerator.events.generation-failed
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/generation-failed.json
+
       event_source_name: public.event.source

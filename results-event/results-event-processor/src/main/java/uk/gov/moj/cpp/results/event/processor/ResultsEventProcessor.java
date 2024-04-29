@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static java.lang.Boolean.*;
+import static java.lang.Boolean.TRUE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
@@ -27,6 +27,7 @@ import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
@@ -47,12 +48,16 @@ import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
-import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
+import uk.gov.moj.cpp.results.event.service.ConversionFormat;
+import uk.gov.moj.cpp.results.event.service.DocumentGenerationRequest;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.SystemDocGeneratorService;
+import uk.gov.moj.cpp.results.event.service.TemplateIdentifier;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -107,6 +112,8 @@ public class ResultsEventProcessor {
     private static final String COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
     public static final String PROSECUTION_CASEFILE_CASE_AT_A_GLANCE = "prosecution-casefile/case-at-a-glance/";
     public static final String SPC = " ";
+    private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -139,14 +146,19 @@ public class ResultsEventProcessor {
     private NotificationNotifyService notificationNotifyService;
 
     @Inject
-    private DocumentGeneratorService documentGeneratorService;
-
-    @Inject
     private ProgressionService progressionService;
 
     @Inject
     private PoliceEmailHelper policeEmailHelper;
 
+    @Inject
+    private UtcClock utcClock;
+
+    @Inject
+    private FileService fileService;
+
+    @Inject
+    private SystemDocGeneratorService systemDocGeneratorService;
 
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
 
@@ -227,16 +239,22 @@ public class ResultsEventProcessor {
 
     @Handles("results.event.nces-email-notification-requested")
     public void handleNcesEmailNotificationRequested(final JsonEnvelope envelope) {
-        final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
+        LOGGER.info("results.event.nces-email-notification-requested {}", envelope.payload());
 
-        final JsonObject requestJson = envelope.payloadAsJsonObject();
-        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("materialId"));
+        final JsonObject payload = envelope.payloadAsJsonObject();
+
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Nces notification requested payload - {}", requestJson);
+            LOGGER.info("Nces notification requested payload - {}", payload);
         }
 
-        //generate and upload pdf
-        documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
+        final String materialId = envelope.payloadAsJsonObject().getString("materialId");
+
+        final String fileName = String.format("NcesNotificationRequest_%s.pdf", utcClock.now().format(TIMESTAMP_FORMATTER));
+
+        final UUID fileId = fileService.storePayload(payload, fileName, TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID.getValue());
+
+        sendRequestToGenerateDocumentAsynchronous(envelope, materialId, fileId);
+
     }
 
     @Handles("results.event.nces-email-notification")
@@ -351,7 +369,6 @@ public class ResultsEventProcessor {
                 courtApplications.forEach(c -> courtApplicationJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
                 resultJsonPayload.add("courtApplications", courtApplicationJsonArrayBuilder.build());
             }
-
 
             final Metadata metadata = metadataFrom(envelope.metadata())
                     .withName(commandName)
@@ -533,4 +550,16 @@ public class ResultsEventProcessor {
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
     }
+
+    private void sendRequestToGenerateDocumentAsynchronous(final JsonEnvelope envelope, final String materialId, final UUID fileId) {
+        final DocumentGenerationRequest documentGenerationRequest = new DocumentGenerationRequest(
+                NCES_EMAIL_NOTIFICATION_REQUEST,
+                TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
+                ConversionFormat.PDF,
+                materialId,
+                fileId);
+
+        systemDocGeneratorService.generateDocument(documentGenerationRequest, envelope);
+    }
+
 }
