@@ -3,7 +3,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-command</artifactId>
-        <version>8.0.50</version>
+        <version>8.0.51-SNAPSHOT</version>
     </parent>
     <artifactId>results-command-api</artifactId>
     <packaging>war</packaging>
