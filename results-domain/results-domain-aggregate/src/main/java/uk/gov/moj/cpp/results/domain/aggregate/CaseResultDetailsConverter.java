@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import uk.gov.moj.cpp.domains.resultdetails.JudicialResultAmendmentType;
+import uk.gov.moj.cpp.results.domain.event.ApplicationCasesResultDetails;
 import uk.gov.moj.cpp.results.domain.event.ApplicationResultDetails;
 import uk.gov.moj.cpp.results.domain.event.AmendmentType;
 import uk.gov.moj.cpp.results.domain.event.OffenceResultDetails;
@@ -64,6 +65,26 @@ public class CaseResultDetailsConverter {
                 .build();
     }
 
+    private static ApplicationCasesResultDetails convertApplicationCasesResultDetails(uk.gov.moj.cpp.domains.resultdetails.OffenceResultDetails offenceResultDetails) {
+        final List<JudicialResultDetails> judicialResultDetailsList = offenceResultDetails.getResults().stream()
+                .filter(judicialResultDetails -> judicialResultDetails.getAmendmentType() != JudicialResultAmendmentType.NONE)
+                .map(CaseResultDetailsConverter::convertResultDetails)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        if (judicialResultDetailsList.isEmpty()) {
+            return null;
+        }
+
+        return ApplicationCasesResultDetails.applicationCasesResultDetails()
+                .withId(offenceResultDetails.getOffenceId())
+                .withOffenceNo(offenceResultDetails.getOffenceNo())
+                .withOffenceCount(offenceResultDetails.getOffenceCount())
+                .withOffenceTitle(offenceResultDetails.getOffenceTitle())
+                .withJudicialResultDetails(judicialResultDetailsList)
+                .build();
+    }
+
     private static OffenceResultDetails convertOffenceResultDetails(uk.gov.moj.cpp.domains.resultdetails.OffenceResultDetails offenceResultDetails) {
         final List<JudicialResultDetails> judicialResultDetailsList = offenceResultDetails.getResults().stream()
                 .filter(judicialResultDetails -> judicialResultDetails.getAmendmentType() != JudicialResultAmendmentType.NONE)
@@ -91,11 +112,18 @@ public class CaseResultDetailsConverter {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        final List<OffenceResultDetails> offenceResultDetails = applicationResultDetails.getCourtOrderOffenceResultDetails().stream()
-                .map(CaseResultDetailsConverter::convertOffenceResultDetails)
+
+        final List<ApplicationCasesResultDetails> applicationCasesResultDetails = applicationResultDetails.getCourtApplicationCasesResultDetails().stream()
+                .map(CaseResultDetailsConverter::convertApplicationCasesResultDetails)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        if (judicialResultDetailsList.isEmpty() && offenceResultDetails.isEmpty()) {
+        final List<OffenceResultDetails> offenceResultDetails = applicationResultDetails.getCourtOrderOffenceResultDetails().stream()
+                .map(CaseResultDetailsConverter::convertOffenceResultDetails)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        if (judicialResultDetailsList.isEmpty() && offenceResultDetails.isEmpty() && applicationCasesResultDetails.isEmpty()) {
             return null;
         }
 
@@ -104,6 +132,7 @@ public class CaseResultDetailsConverter {
                 .withApplicationTitle(applicationResultDetails.getApplicationTitle())
                 .withJudicialResultDetails(judicialResultDetailsList)
                 .withOffenceResultDetails(offenceResultDetails)
+                .withApplicationCasesResultDetails(applicationCasesResultDetails)
                 .withApplicationSubjectFirstName(applicationResultDetails.getApplicationSubjectFirstName())
                 .withApplicationSubjectLastName(applicationResultDetails.getApplicationSubjectLastName())
                 .build();

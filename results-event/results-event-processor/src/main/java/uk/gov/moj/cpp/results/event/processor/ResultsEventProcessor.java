@@ -12,6 +12,7 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
@@ -439,25 +440,43 @@ public class ResultsEventProcessor {
             final String sortedSubject = FixedListComparator.sortBasedOnFixedList(getCaseSubject(policeNotificationRequestedV2.getCaseDefendants()));
             final String caseApplication = policeNotificationRequestedV2.getApplicationTypeForCase();
 
-            if (isNotEmpty(caseApplication)) {
-                if (resultsAmended && nonNull(caseResultDetails) && nonNull(caseResultDetails.getApplicationResultDetails())) {
-                    personalisationProperties.put(APPLICATIONS, policeEmailHelper.buildApplicationAmendmentDetails(caseResultDetails.getApplicationResultDetails()));
-                } else {
-                    personalisationProperties.put(APPLICATIONS, caseApplication);
-                }
-
-                emailTemplateId = getPoliceEmailTemplate(true, resultsAmended);
-            } else {
-                emailTemplateId = getPoliceEmailTemplate(false, resultsAmended);
+            final String applicationPropValue = buildApplicationProp(policeNotificationRequestedV2);
+            if (isNotEmpty(applicationPropValue)) {
+                personalisationProperties.put(APPLICATIONS, applicationPropValue);
             }
 
-            personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject, policeNotificationRequestedV2.getCourtCentre()));
+            emailTemplateId = getPoliceEmailTemplate(isNotEmpty(caseApplication), resultsAmended);
+
+            final boolean isApplicationAmended = nonNull(caseResultDetails) && isNotEmpty(caseResultDetails.getApplicationResultDetails()) && caseResultDetails.getApplicationResultDetails().stream()
+                    .anyMatch(applicationResultDetails -> isNotEmpty(applicationResultDetails.getJudicialResultDetails()));
+
+            personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject, policeNotificationRequestedV2.getCourtCentre(), isApplicationAmended));
             personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
         }
 
         return new Notification(policeNotificationRequestedV2.getNotificationId(),
                 fromString(emailTemplateId),
                 policeNotificationRequestedV2.getPoliceEmailAddress(), personalisationProperties);
+    }
+
+    private String buildApplicationProp(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
+        final String caseApplication = policeNotificationRequestedV2.getApplicationTypeForCase();
+        final boolean resultsAmended = !policeNotificationRequestedV2.getAmendReshare().isEmpty();
+        final CaseResultDetails caseResultDetails = policeNotificationRequestedV2.getCaseResultDetails();
+
+        if (isEmpty(caseApplication)) {
+            return null;
+        }
+
+        if (!resultsAmended){
+            return caseApplication;
+        }
+
+        if (nonNull(caseResultDetails) && nonNull(caseResultDetails.getApplicationResultDetails())) {
+            return policeEmailHelper.buildApplicationAmendmentDetails(caseResultDetails.getApplicationResultDetails());
+        }
+
+        return null;
     }
 
     private String getCaseSubject(final List<CaseDefendant> caseDefendants) {
@@ -470,6 +489,7 @@ public class ResultsEventProcessor {
                         return Stream.empty();
                     }
                 })
+                .filter(JudicialResult::getIsNewAmendment)
                 .filter(judicialResult -> {
                     String policeSubjectLineTitle = judicialResult.getPoliceSubjectLineTitle();
                     String resultText = judicialResult.getResultText();
@@ -484,7 +504,7 @@ public class ResultsEventProcessor {
     }
 
 
-    private String buildEmailSubject(final Boolean resultsAmended, final String urn, final String hearingDate, final String caseApplication, final String subject, final String courtCentre) {
+    private String buildEmailSubject(final Boolean resultsAmended, final String urn, final String hearingDate, final String caseApplication, final String subject, final String courtCentre, final boolean isApplicationAmended) {
         final String dateTimeFormat = dateTimeFormat(hearingDate);
         final String formattedSubject = subject.replace(DELIMITER, " / ").trim();
 
@@ -500,7 +520,7 @@ public class ResultsEventProcessor {
             sb.append(courtCentre).append(SPC);
         }
 
-        if (isNotEmpty(caseApplication)) {
+        if (printApplicationText(resultsAmended, caseApplication, isApplicationAmended)) {
             sb.append(APPLICATION).append(SPC);
             if (!formattedSubject.isEmpty()) {
                 sb.append("/").append(SPC);
@@ -511,9 +531,20 @@ public class ResultsEventProcessor {
             sb.append(formattedSubject);
         }
 
-
         return sb.toString().trim();
 
+    }
+
+    private boolean printApplicationText(final boolean resultsAmended, final String caseApplication, final boolean isApplicationAmended) {
+        if (isEmpty(caseApplication)) {
+            return false;
+        }
+
+        if (!Boolean.TRUE.equals(resultsAmended)) {
+            return true;
+        }
+
+        return isApplicationAmended;
     }
 
     private String getPoliceEmailTemplate(final Boolean includeApplications, final Boolean includeResultsAmended) {

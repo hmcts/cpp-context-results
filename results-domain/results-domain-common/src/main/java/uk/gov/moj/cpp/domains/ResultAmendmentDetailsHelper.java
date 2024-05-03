@@ -33,6 +33,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
 public class ResultAmendmentDetailsHelper {
     private ResultAmendmentDetailsHelper() {
@@ -153,21 +154,9 @@ public class ResultAmendmentDetailsHelper {
                 .filter(resultDetail -> resultDetail.getAmendmentType() != JudicialResultAmendmentType.DELETED)
                 .collect(toList())).orElse(Collections.emptyList());
 
-        final List<JudicialResult> allJudicialResults = new ArrayList<>();
-
-        if (nonNull(application.getJudicialResults())) {
-            allJudicialResults.addAll(application.getJudicialResults());
-        }
-
-        allJudicialResults.addAll(getResultsFromCourtApplicationCases(application, caseId));
-
-        final List<JudicialResultDetails> judicialResultDetails = buildResulDetails(allJudicialResults, existingResultDetails);
-
-        if (judicialResultDetails.isEmpty()) {
-            return Optional.empty();
-        }
-
-        final List<OffenceResultDetails> courtOrderOffenceResultDetails = getCourtOrderOffenceResultDetails(application, existingApplicationResultDetails);
+        final List<JudicialResultDetails> judicialResultDetails = buildResulDetails(application.getJudicialResults(), existingResultDetails);
+        final List<OffenceResultDetails> courtApplicationCasesResultDetails = getCourtApplicationCasesOffenceResultDetails(application, caseId, existingApplicationResultDetails);
+        final List<OffenceResultDetails> courtOrderOffenceResultDetails = getCourtOrderOffenceResultDetails(application, caseId, existingApplicationResultDetails);
 
         String applicationSubjectFirstName = null;
         String applicationSubjectLastName = null;
@@ -181,10 +170,37 @@ public class ResultAmendmentDetailsHelper {
             applicationSubjectFirstName = person.getFirstName();
         }
 
-        return Optional.of(new ApplicationResultDetails(application.getId(), application.getType().getType(), judicialResultDetails, courtOrderOffenceResultDetails, applicationSubjectFirstName, applicationSubjectLastName));
+        return Optional.of(new ApplicationResultDetails(application.getId(), application.getType().getType(), judicialResultDetails, courtOrderOffenceResultDetails, courtApplicationCasesResultDetails, applicationSubjectFirstName, applicationSubjectLastName));
     }
 
-    private static List<OffenceResultDetails> getCourtOrderOffenceResultDetails(final CourtApplication application, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
+    private static List<OffenceResultDetails> getCourtApplicationCasesOffenceResultDetails(final CourtApplication application, final UUID caseId, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
+        if (isNull(application.getCourtApplicationCases())) {
+            return Collections.emptyList();
+        }
+
+        final List<OffenceResultDetails> courtApplicationResultDetails = new ArrayList<>();
+        application.getCourtApplicationCases().stream()
+                .filter(courtApplicationCase -> Objects.equals(caseId, courtApplicationCase.getProsecutionCaseId()) && nonNull(courtApplicationCase.getOffences()))
+                .flatMap(courtApplicationCase -> courtApplicationCase.getOffences().stream())
+                .forEach(offence -> {
+                    final Optional<OffenceResultDetails> existingCourtApplicationCaseOffenceDetails;
+
+                    if (existingApplicationResultDetails.isPresent() && isNotEmpty(existingApplicationResultDetails.get().getCourtApplicationCasesResultDetails())) {
+                        existingCourtApplicationCaseOffenceDetails = existingApplicationResultDetails.get().getCourtApplicationCasesResultDetails().stream()
+                                .filter(courtOrderOffenceDetail -> Objects.equals(courtOrderOffenceDetail.getOffenceId(), offence.getId()))
+                                .findFirst();
+                    }  else {
+                        existingCourtApplicationCaseOffenceDetails = Optional.empty();
+                    }
+
+                    buildOffenceResultDetails(offence, Collections.emptyList(), Collections.emptyList(), existingCourtApplicationCaseOffenceDetails)
+                            .ifPresent(courtApplicationResultDetails::add);
+                });
+
+        return courtApplicationResultDetails;
+    }
+
+    private static List<OffenceResultDetails> getCourtOrderOffenceResultDetails(final CourtApplication application, final UUID caseId, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
         if (isNull(application.getCourtOrder()) || isNull(application.getCourtOrder().getCourtOrderOffences())) {
             return Collections.emptyList();
         }
@@ -192,6 +208,7 @@ public class ResultAmendmentDetailsHelper {
         final List<OffenceResultDetails> clonedOffenceResultDetails = new ArrayList<>();
 
         application.getCourtOrder().getCourtOrderOffences().stream()
+                .filter(courtOrderOffence -> Objects.equals(caseId, courtOrderOffence.getProsecutionCaseId()))
                 .map(CourtOrderOffence::getOffence)
                 .forEach(offence -> {
                     final Optional<OffenceResultDetails> existingCourtOrderOffenceDetails;
@@ -211,18 +228,7 @@ public class ResultAmendmentDetailsHelper {
         return clonedOffenceResultDetails;
     }
 
-    private static List<JudicialResult> getResultsFromCourtApplicationCases(final CourtApplication courtApplication, final UUID caseId) {
-        if (isNull(courtApplication.getCourtApplicationCases())) {
-            return Collections.emptyList();
-        }
 
-        return courtApplication.getCourtApplicationCases().stream()
-                .filter(courtApplicationCase -> Objects.equals(courtApplicationCase.getProsecutionCaseId(), caseId) && nonNull(courtApplicationCase.getOffences()))
-                .flatMap(courtApplicationCase -> courtApplicationCase.getOffences().stream())
-                .filter(offence -> nonNull(offence.getJudicialResults()))
-                .flatMap(offence -> offence.getJudicialResults().stream())
-                .collect(toList());
-    }
 
     private static Optional<DefendantResultDetails> buildDefendantResultDetails(final Defendant defendant,
                                                                                 final List<DefendantJudicialResult> defendantJudicialResultList,

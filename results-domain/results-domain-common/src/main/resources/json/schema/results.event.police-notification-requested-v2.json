@@ -120,6 +120,12 @@
             "$ref": "#/definitions/judicialResultDetails"
           }
         },
+        "applicationCasesResultDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/offenceResultDetails"
+          }
+        },
         "offenceResultDetails": {
           "type": "array",
           "items": {

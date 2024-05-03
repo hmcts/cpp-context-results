@@ -11,6 +11,7 @@ public class ApplicationResultDetails implements Serializable {
     private String applicationTitle;
     private List<JudicialResultDetails> results;
     private List<OffenceResultDetails> courtOrderOffenceResultDetails;
+    private List<OffenceResultDetails> courtApplicationCasesResultDetails;
     private String applicationSubjectFirstName;
     private String applicationSubjectLastName;
 
@@ -18,12 +19,14 @@ public class ApplicationResultDetails implements Serializable {
                                     final String applicationTitle,
                                     final List<JudicialResultDetails> results,
                                     final List<OffenceResultDetails> courtOrderOffenceResultDetails,
+                                    final List<OffenceResultDetails> courtApplicationCasesResultDetails,
                                     final String applicationSubjectFirstName,
                                     final String applicationSubjectLastName) {
         this.applicationId = applicationId;
         this.applicationTitle = applicationTitle;
         this.results = results;
         this.courtOrderOffenceResultDetails = courtOrderOffenceResultDetails;
+        this.courtApplicationCasesResultDetails = courtApplicationCasesResultDetails;
         this.applicationSubjectFirstName = applicationSubjectFirstName;
         this.applicationSubjectLastName = applicationSubjectLastName;
     }
@@ -42,6 +45,10 @@ public class ApplicationResultDetails implements Serializable {
 
     public List<OffenceResultDetails> getCourtOrderOffenceResultDetails() {
         return courtOrderOffenceResultDetails;
+    }
+
+    public List<OffenceResultDetails> getCourtApplicationCasesResultDetails() {
+        return courtApplicationCasesResultDetails;
     }
 
     public String getApplicationSubjectFirstName() {
@@ -66,12 +73,13 @@ public class ApplicationResultDetails implements Serializable {
                 && applicationTitle.equals(that.applicationTitle)
                 && Objects.equals(results, that.results)
                 && Objects.equals(courtOrderOffenceResultDetails, that.courtOrderOffenceResultDetails)
+                && Objects.equals(courtApplicationCasesResultDetails, that.courtApplicationCasesResultDetails)
                 && Objects.equals(applicationSubjectFirstName, that.applicationSubjectFirstName)
                 && Objects.equals(applicationSubjectLastName, that.applicationSubjectLastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(applicationId, applicationTitle, results, courtOrderOffenceResultDetails, applicationSubjectFirstName, applicationSubjectLastName);
+        return Objects.hash(applicationId, applicationTitle, results, courtOrderOffenceResultDetails, courtApplicationCasesResultDetails, applicationSubjectFirstName, applicationSubjectLastName);
     }
 }

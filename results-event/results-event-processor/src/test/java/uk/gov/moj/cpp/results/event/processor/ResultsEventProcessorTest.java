@@ -118,7 +118,7 @@ public class ResultsEventProcessorTest {
     private static final UUID DEFAULT_DEFENDANT_ID2 = fromString("dddd2222-1e20-4c21-916a-81a6c90239e5");
     private static final String OU_CODE = "GFL123";
     private static final String URN = "urn123";
-    private static final String SUBJECT = "Amend & Reshare urn123 06-06-2023 Croydon Magistrates' Court Application / Bail without conditions / Remand / Final Sentence / Warrant Withdrawn";
+    private static final String SUBJECT = "Amend & Reshare urn123 06-06-2023 Croydon Magistrates' Court Bail without conditions / Remand / Final Sentence / Warrant Withdrawn";
     private static final String EMAIL_ADDRESS = "test@hmcts.net";
     private static final String COMMON_PLATFORM_URL = "http://xxx.xx.com/";
     private static final String COMMON_PLATFORM_URL_CAAG = "http://xxx.xx.com/prosecution-casefile/case-at-a-glance/b45b1b7d-ee42-4d02-94d4-41877873bb71";
@@ -600,7 +600,6 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is("yes"));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(AMENDED_DEFENDANTS_WITHOUT_DETAILS));
-        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_APPLICATIONS), is("Application to Vary bail"));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
     }
 
@@ -707,7 +706,7 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(AMENDED_DEFENDANTS));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_APPLICATIONS), is(AMENDED_APPLICATIONS));
-        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("Amend & Reshare urn123 06-06-2023 Croydon Magistrates' Court Application"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("Amend & Reshare urn123 06-06-2023 Croydon Magistrates' Court"));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
 
     }
@@ -736,18 +735,22 @@ public class ResultsEventProcessorTest {
     private List<CaseDefendant> getDefendants() {
         JudicialResult judicialResult1 =
                 JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
                         .withPoliceSubjectLineTitle("Remand").build();
         JudicialResult judicialResult2 =
                 JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
                         .withPoliceSubjectLineTitle("Final Sentence").build();
 
         List<JudicialResult> judicialResults1 = asList(judicialResult1, judicialResult2);
 
         JudicialResult judicialResult3 =
                 JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
                         .withPoliceSubjectLineTitle("Warrant Withdrawn").build();
         JudicialResult judicialResult4 =
                 JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
                         .withPoliceSubjectLineTitle("Bail without conditions").build();
 
         List<JudicialResult> judicialResults2 = asList(judicialResult3, judicialResult4);
@@ -821,10 +824,12 @@ public class ResultsEventProcessorTest {
     private List<CaseDefendant> getDefendantsWithJudicialResults(List<String> policeSubjectLineTitle, List<String> resultText) {
 
         JudicialResult judicialResult1 = JudicialResult.judicialResult()
+                .withIsNewAmendment(true)
                 .withResultText(resultText.get(0)).withPoliceSubjectLineTitle(policeSubjectLineTitle.get(0))
                 .withJudicialResultId(randomUUID()).build();
-        JudicialResult judicialResult2 = JudicialResult.
-                judicialResult().withResultText(resultText.get(1))
+        JudicialResult judicialResult2 = JudicialResult.judicialResult()
+                .withIsNewAmendment(true)
+                .withResultText(resultText.get(1))
                 .withPoliceSubjectLineTitle(policeSubjectLineTitle.get(1)).build();
 
         final CaseDefendant caseDefendant1 = caseDefendant()

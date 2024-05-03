@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import org.apache.commons.collections.CollectionUtils;
 import uk.gov.moj.cpp.results.domain.event.AmendmentType;
+import uk.gov.moj.cpp.results.domain.event.ApplicationCasesResultDetails;
 import uk.gov.moj.cpp.results.domain.event.ApplicationResultDetails;
 import uk.gov.moj.cpp.results.domain.event.CaseResultDetails;
 import uk.gov.moj.cpp.results.domain.event.DefendantResultDetails;
@@ -14,13 +14,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
 public class PoliceEmailHelper {
     private static final String BEGIN_PARAGRAPH = "<p style='line-height: 1.6'>";
     private static final String END_PARAGRAPH = "</p>";
     private static final String DEFENDANT_NAME_TEMPL = "$DEFENDANT_NAME<br />";
-    private static final String OFFENCE_TEMPL = "$OFFENCE_COUNT_OR_INDEX_LABEL: $OFFENCE_COUNT_OR_INDEX_VALUE &nbsp;&nbsp;&nbsp;&nbsp;$OFFENCE_TITLE - $AMENDMENT_DETAILS <br />";
+    private static final String OFFENCE_TEMPL = "$OFFENCE_COUNT_OR_INDEX_LABEL: $OFFENCE_COUNT_OR_INDEX_VALUE &nbsp;$OFFENCE_TITLE - $AMENDMENT_DETAILS <br />";
     private static final String APP_OFFENCE_TEMPL = "$OFFENCE_TITLE - $AMENDMENT_DETAILS <br />";
     private static final String AMENDMENT_DETAILS_TEMPL= "$AMENDMENT_TYPE: $RESULT_TITLES &nbsp;";
     private static final String APPLICATION_TEMPL = "$APPLICATION_TITLE - $AMENDMENT_DETAILS <br />";
@@ -46,7 +47,7 @@ public class PoliceEmailHelper {
             appendDefendantResultDetailsFromApplications(caseResultDetails, sb);
         }
         sb.append(END_PARAGRAPH);
-        return sb.toString();
+        return sb.toString().replace("<br /></p>", "</p>");
     }
 
     public String buildApplicationAmendmentDetails(final List<ApplicationResultDetails> applicationResultDetailsList) {
@@ -65,8 +66,15 @@ public class PoliceEmailHelper {
             }
         }
 
+        for (final ApplicationResultDetails applicationResultDetails: applicationResultDetailsList) {
+            for (final ApplicationCasesResultDetails applicationCasesResultDetails: applicationResultDetails.getApplicationCasesResultDetails()) {
+
+                sb.append(APP_OFFENCE_TEMPL.replace(OFFENCE_TITLE, applicationCasesResultDetails.getOffenceTitle())
+                        .replace(AMENDMENT_DETAILS, buildResultsAmendmentDetails(applicationCasesResultDetails.getJudicialResultDetails())));
+            }
+        }
         sb.append(END_PARAGRAPH);
-        return sb.toString();
+        return sb.toString().replace("<br /></p>", "</p>");
     }
 
     private String buildResultsAmendmentDetails(final List<JudicialResultDetails> judicialResultDetailsList) {
@@ -87,7 +95,7 @@ public class PoliceEmailHelper {
     }
 
     private Optional<String> buildResultTitlesText(final AmendmentType amendmentType, final List<JudicialResultDetails> judicialResultDetails) {
-        if (CollectionUtils.isEmpty(judicialResultDetails)) {
+        if (isEmpty(judicialResultDetails)) {
             return Optional.empty();
         }
 
@@ -107,12 +115,12 @@ public class PoliceEmailHelper {
             sb.append(DEFENDANT_NAME_TEMPL.replace(DEFENDANT_NAME, applicationResultDetails.getApplicationSubjectFirstName()
                     .concat(" ")
                     .concat(applicationResultDetails.getApplicationSubjectLastName())));
-            sb.append(EMPTY_LINE);
         }
     }
 
     private void appendDefendantResultDetailsFromDefendants(final CaseResultDetails caseResultDetails, final StringBuilder sb) {
-        for (final DefendantResultDetails defendantResultDetails : caseResultDetails.getDefendantResultDetails()) {
+        for (int i = 0; i < caseResultDetails.getDefendantResultDetails().size(); i++) {
+            final DefendantResultDetails defendantResultDetails = caseResultDetails.getDefendantResultDetails().get(i);
             sb.append(DEFENDANT_NAME_TEMPL.replace(DEFENDANT_NAME, defendantResultDetails.getDefendantName()));
             for (final OffenceResultDetails offenceResultDetails : defendantResultDetails.getOffenceResultDetails()) {
                 final boolean offenceCountIsNotEmpty = nonNull(offenceResultDetails.getOffenceCount()) && offenceResultDetails.getOffenceCount() > 0;
@@ -127,7 +135,9 @@ public class PoliceEmailHelper {
 
             }
 
-            sb.append(EMPTY_LINE);
+            if (i < caseResultDetails.getDefendantResultDetails().size() - 1) {
+                sb.append(EMPTY_LINE);
+            }
         }
     }
 

@@ -24,6 +24,7 @@ import uk.gov.moj.cpp.domains.resultdetails.JudicialResultDetails;
 import uk.gov.moj.cpp.domains.resultdetails.OffenceResultDetails;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class ResultAmendmentDetailsHelperTest {
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
                                 new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
-                        ), emptyList(), "firstName", "lastName")
+                        ), emptyList(), emptyList(), "firstName", "lastName")
                 )
         ));
 
@@ -138,7 +139,7 @@ public class ResultAmendmentDetailsHelperTest {
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
                                 new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
                                 new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
-                        ), emptyList(), "firstName", "lastName")
+                        ), emptyList(), emptyList(),"firstName", "lastName")
                 )
         ));
 
@@ -186,7 +187,7 @@ public class ResultAmendmentDetailsHelperTest {
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
                                 new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
                                 new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
-                        ), emptyList(), "firstName", "lastName")
+                        ), emptyList(), emptyList(),"firstName", "lastName")
                 )
         ));
 
@@ -262,7 +263,7 @@ public class ResultAmendmentDetailsHelperTest {
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
                                 new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
                                 new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
-                        ), emptyList(), "firstName", "lastName")
+                        ), emptyList(), emptyList(),"firstName", "lastName")
                 )
         ));
 
@@ -320,6 +321,7 @@ public class ResultAmendmentDetailsHelperTest {
         UUID offenceId3 = UUID.randomUUID();
         UUID offenceId4 = UUID.randomUUID();
         UUID clonedOffenceId1 = UUID.randomUUID();
+        UUID courtApplicationCaseOffenceId1 = UUID.randomUUID();
         UUID judicialResultIdInCase1 = UUID.randomUUID();
         UUID judicialResultIdInCase2 = UUID.randomUUID();
         UUID judicialResultIdInCase3 = UUID.randomUUID();
@@ -331,8 +333,8 @@ public class ResultAmendmentDetailsHelperTest {
 
 
         UUID applicationId = UUID.randomUUID();
-        UUID judicialResultIdInApp1 = UUID.randomUUID();
-        UUID judicialResultIdInApp2 = UUID.randomUUID();
+        UUID judicialResultIdInCourtAppCase1 = UUID.randomUUID();
+        UUID judicialResultIdInClonedOffence = UUID.randomUUID();
         UUID judicialResultIdInApp3 = UUID.randomUUID();
 
         final Map<UUID, CaseResultDetails> caseResultDetailsMap = new HashMap<>();
@@ -359,11 +361,14 @@ public class ResultAmendmentDetailsHelperTest {
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
                                 new JudicialResultDetails(judicialResultIdInApp3, "Result In App 3", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
-                        ), Arrays.asList(
-                                new OffenceResultDetails(clonedOffenceId1, 0, 0, "Cloned Offence",
-                                        Arrays.asList(new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)))), "firstName", "lastName")
+                                    ), Arrays.asList(
+                                            new OffenceResultDetails(clonedOffenceId1, 0, 0, "Cloned Offence",
+                                                    Arrays.asList(new JudicialResultDetails(judicialResultIdInClonedOffence, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)))
+                                    ), Arrays.asList(
+                                            new OffenceResultDetails(courtApplicationCaseOffenceId1, 0, 0, "CourtApplicationCase Offence",
+                                                    Arrays.asList(new JudicialResultDetails(judicialResultIdInCourtAppCase1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)))
+                                    ),"firstName", "lastName")
                 )
         ));
 
@@ -387,8 +392,8 @@ public class ResultAmendmentDetailsHelperTest {
                 ),
                 singletonList(
                         application(applicationId, caseId,
-                                Arrays.asList(judicialResult(judicialResultIdInApp1, false)),
-                                clonedOffenceId1, Arrays.asList(judicialResult(judicialResultIdInApp2, true)),
+                                courtApplicationCaseOffenceId1, Arrays.asList(judicialResult(judicialResultIdInCourtAppCase1, false)),
+                                clonedOffenceId1, Arrays.asList(judicialResult(judicialResultIdInClonedOffence, true)),
                                 Arrays.asList(judicialResult(judicialResultIdInApp3, false)))));
 
         List<CaseResultDetails> resultDetails = ResultAmendmentDetailsHelper.buildHearingResultDetails(hearing, caseResultDetailsMap);
@@ -407,8 +412,8 @@ public class ResultAmendmentDetailsHelperTest {
 
         verifyCaseResult(resultDetails.get(0), defendantId3, offenceId4, judicialResultIdInCase6, JudicialResultAmendmentType.NONE);
 
-        verifyApplicationResult(resultDetails.get(0), applicationId, judicialResultIdInApp1, JudicialResultAmendmentType.NONE);
-        verifyApplicationOffenceResult(resultDetails.get(0), applicationId, clonedOffenceId1, judicialResultIdInApp2, JudicialResultAmendmentType.UPDATED);
+        verifyApplicationCasesOffenceResult(resultDetails.get(0), applicationId, courtApplicationCaseOffenceId1, judicialResultIdInCourtAppCase1, JudicialResultAmendmentType.NONE);
+        verifyApplicationOffenceResult(resultDetails.get(0), applicationId, clonedOffenceId1, judicialResultIdInClonedOffence, JudicialResultAmendmentType.UPDATED);
         verifyApplicationResult(resultDetails.get(0), applicationId, judicialResultIdInApp3, JudicialResultAmendmentType.NONE);
     }
 
@@ -506,6 +511,26 @@ public class ResultAmendmentDetailsHelperTest {
         assertThat(judicialResultDetails.get().getAmendmentType(), is(amendmentType));
     }
 
+    private void verifyApplicationCasesOffenceResult(CaseResultDetails resultDetails, UUID applicationId, UUID offenceId, UUID resultId, JudicialResultAmendmentType amendmentType) {
+        Optional<ApplicationResultDetails>  applicationResultDetails = resultDetails.getApplicationResultDetails().stream()
+                .filter(a -> a.getApplicationId().equals(applicationId))
+                .findFirst();
+
+        assertThat(applicationResultDetails.isPresent(), is(true));
+
+        Optional<OffenceResultDetails> offenceResultDetails = applicationResultDetails.get().getCourtApplicationCasesResultDetails().stream()
+                .filter(r -> r.getOffenceId().equals(offenceId))
+                .findFirst();
+
+        Optional<JudicialResultDetails> judicialResultDetails = offenceResultDetails.get().getResults().stream()
+                .filter(r -> r.getResultId().equals(resultId))
+                .findFirst();
+
+        assertThat(judicialResultDetails.isPresent(), is(true));
+        assertThat(judicialResultDetails.get().getAmendmentType(), is(amendmentType));
+    }
+
+
     private void verifyApplicationOffenceResult(CaseResultDetails resultDetails, UUID applicationId, UUID offenceId, UUID resultId, JudicialResultAmendmentType amendmentType) {
         Optional<ApplicationResultDetails>  applicationResultDetails = resultDetails.getApplicationResultDetails().stream()
                 .filter(a -> a.getApplicationId().equals(applicationId))
@@ -555,6 +580,7 @@ public class ResultAmendmentDetailsHelperTest {
                 .withId(applicationId)
                 .withCourtApplicationCases(Arrays.asList(CourtApplicationCase.courtApplicationCase()
                         .withProsecutionCaseId(prosecutionCaseId)
+                        .withOffences(Collections.emptyList())
                         .build()))
                 .withJudicialResults(Arrays.asList(results))
                 .withType(CourtApplicationType.courtApplicationType()
@@ -581,12 +607,12 @@ public class ResultAmendmentDetailsHelperTest {
                 .build();
     }
 
-    private CourtApplication application(final UUID applicationId, final UUID prosecutionCaseId, final List<JudicialResult> courtApplicationCasesJudicialResults, final UUID courtOrderOffenceId,final List<JudicialResult> courtOrderResults, final List<JudicialResult> results) {
+    private CourtApplication application(final UUID applicationId, final UUID prosecutionCaseId, final UUID courtApplicationCaseOffenceId, final List<JudicialResult> courtApplicationCasesJudicialResults, final UUID courtOrderOffenceId,final List<JudicialResult> courtOrderResults, final List<JudicialResult> results) {
         return CourtApplication.courtApplication()
                 .withId(applicationId)
                 .withCourtApplicationCases(Arrays.asList(CourtApplicationCase.courtApplicationCase()
                         .withProsecutionCaseId(prosecutionCaseId)
-                        .withOffences(Arrays.asList(offence(UUID.randomUUID(), courtApplicationCasesJudicialResults)))
+                        .withOffences(Arrays.asList(offence(courtApplicationCaseOffenceId, courtApplicationCasesJudicialResults)))
                         .build()))
                 .withCourtOrder(CourtOrder.courtOrder()
                         .withId(UUID.randomUUID())
