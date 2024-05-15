@@ -27,8 +27,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SystemDocGeneratorTest {
 
-    private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
-
     @Mock
     private Sender sender;
     @InjectMocks
@@ -42,7 +40,6 @@ public class SystemDocGeneratorTest {
         final String sourceCorrelationId = randomUUID().toString();
         final UUID payloadFileServiceId = randomUUID();
         final DocumentGenerationRequest request = new DocumentGenerationRequest(
-                NCES_EMAIL_NOTIFICATION_REQUEST,
                 TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
                 ConversionFormat.PDF,
                 sourceCorrelationId,

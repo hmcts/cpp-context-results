@@ -14,7 +14,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -48,7 +47,6 @@ import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
@@ -70,12 +68,11 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
+import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
-import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
-import uk.gov.moj.cpp.results.event.service.SystemDocGeneratorService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
@@ -181,6 +178,7 @@ public class ResultsEventProcessorTest {
     @Mock
     private BaseStructureConverter baseStructureConverter;
 
+
     @Mock
     private ApplicationParameters applicationParameters;
 
@@ -188,7 +186,7 @@ public class ResultsEventProcessorTest {
     private NotificationNotifyService notificationNotifyService;
 
     @Mock
-    private FileService fileService;
+    DocumentGeneratorService documentGeneratorService;
 
     @Mock
     MaterialUrlGenerator materialUrlGenerator;
@@ -216,12 +214,6 @@ public class ResultsEventProcessorTest {
 
     @Captor
     private ArgumentCaptor<EmailNotification> emailNotificationArgumentCaptor;
-
-    @Spy
-    private UtcClock utcClock;
-
-    @Mock
-    private SystemDocGeneratorService systemDocGeneratorService;
 
     @Before
     public void setUp() {
@@ -876,8 +868,6 @@ public class ResultsEventProcessorTest {
 
     @Test
     public void shouldHandleTheNcesEmailNotificationRequested() {
-        when(fileService.storePayload(anyObject(), anyString(), anyString())).thenReturn(randomUUID());
-
         final String materialId = randomUUID().toString();
         final JsonEnvelope jsonEnvelope = envelope()
                 .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
@@ -886,8 +876,9 @@ public class ResultsEventProcessorTest {
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
-        verify(fileService, times(1)).storePayload(anyObject(), anyString(), anyString());
-        verify(systemDocGeneratorService, times(1)).generateDocument(anyObject(), anyObject());
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                anyObject(), jsonEnvelopeArgumentCaptor.capture(), anyObject(), anyObject());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
     }
 
     @Test

@@ -1,31 +1,35 @@
 package uk.gov.moj.cpp.results.it;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
+import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getEmailNotificationDetails;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
-import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubDocGeneratorEndPoint;
+import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubDocumentCreate;
+import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.verifyCreate;
 import static uk.gov.moj.cpp.results.it.stub.NotificationServiceStub.verifyEmailNotificationIsRaised;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.sendMessage;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.messaging.JsonMetadata;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
-import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
 import uk.gov.moj.cpp.results.it.stub.NotificationServiceStub;
 
 import java.util.Arrays;
@@ -34,6 +38,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.json.JsonObject;
 
@@ -49,42 +54,45 @@ public class NcesEmailNotificationIT {
 
     private static final String MATERIAL_ID = "materialId";
     private static final String MATERIAL_MATERIAL_ADDED = "material.material-added";
+    private static final String DOCUMENT_TEXT = STRING.next();
     private static final String RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED = "results.event.nces-email-notification-requested";
     private static final String SOURCE = "originator-nces";
     private static final String ORIGINATOR_VALUE = "nces";
+
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter(objectMapper);
     private MessageProducer messageProducerClientPrivate;
     private MessageProducer messageProducerClientPublic;
+    private MessageConsumer messagePrivateConsumer;
     private UUID userId;
 
     @BeforeClass
     public static void setupStubs() {
         setupUsersGroupQueryStub();
-        stubDocGeneratorEndPoint();
-        NotificationServiceStub.setUp();
-        stubMaterialUploadFile();
     }
 
     @Before
     public void setup() {
         userId = getUserId();
+
         messageProducerClientPrivate = privateEvents.createProducer();
         messageProducerClientPublic = publicEvents.createPublicProducer();
+        messagePrivateConsumer = privateEvents.createConsumer("results.event.nces-email-notification");
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
     }
 
     @After
     public void tearDown() throws JMSException {
+        messageProducerClientPrivate.close();
         messageProducerClientPublic.close();
     }
 
     @Test
-    public void shouldSendNcesNotificationRequestedAndCreateDocumentWithAsynchronousFlow() {
+    public void shouldSendNcesNotificationRequested() {
 
-        final UUID USER_ID_VALUE_AS_ADMIN = randomUUID();
+        stubDocumentCreate(DOCUMENT_TEXT);
+        NotificationServiceStub.setUp();
 
-        NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
 
         final NcesEmailNotificationRequested ncesEmailNotificationRequested = generateNcesNotificationRequested();
 
@@ -94,26 +102,21 @@ public class NcesEmailNotificationIT {
 
         sendMessage(messageProducerClientPrivate, RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED, requestAsJson, metadata);
 
-        final UUID documentFileServiceId = randomUUID();
-        final UUID payloadFileServiceId = randomUUID();
-
-        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(USER_ID_VALUE_AS_ADMIN,
-                ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId, documentFileServiceId);
-
+        verifyCreate(singletonList(ncesEmailNotificationRequested.getGobAccountNumber()));
         verifyNcesEmailNotificationDetails(userId, ncesEmailNotificationRequested);
+
         sendMaterialFileUploadedPublicEvent(ncesEmailNotificationRequested.getMaterialId(), userId, true);
+        assertNotNull(retrieveMessage(messagePrivateConsumer));
 
-        ncesNotificationRequestDocumentRequestHelper.verifyNcesDocumentRequestRecordedPrivateTopic(ncesEmailNotificationRequested.getMaterialId().toString());
-
-        List<String> details = Arrays.asList("templateId", "sendToAddress", "materialUrl", "subject", ncesEmailNotificationRequested.getSubject());
+        List<String> details = Arrays.asList("templateId","sendToAddress", "materialUrl", "subject", ncesEmailNotificationRequested.getSubject());
         verifyEmailNotificationIsRaised(details);
+
     }
 
     @Test
     public void shouldNotSendNcesNotificationRequestedForNonNcesOriginator() {
-        final UUID USER_ID_VALUE_AS_ADMIN = randomUUID();
 
-        NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
+        stubDocumentCreate(DOCUMENT_TEXT);
 
         final NcesEmailNotificationRequested ncesEmailNotificationRequested = generateNcesNotificationRequested();
 
@@ -122,13 +125,12 @@ public class NcesEmailNotificationIT {
 
         sendMessage(messageProducerClientPrivate, RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED, requestAsJson, metadata);
 
-        final UUID documentFileServiceId = randomUUID();
-        final UUID payloadFileServiceId = randomUUID();
+        verifyCreate(singletonList(ncesEmailNotificationRequested.getGobAccountNumber()));
 
-                ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(USER_ID_VALUE_AS_ADMIN,
-                ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId, documentFileServiceId);
+        sendMaterialFileUploadedPublicEvent(ncesEmailNotificationRequested.getMaterialId(), userId, false);
+        assertNull(retrieveMessage(messagePrivateConsumer));
 
-        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicFailedEvent(USER_ID_VALUE_AS_ADMIN, ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId);
+
     }
 
     public NcesEmailNotificationRequested generateNcesNotificationRequested() {
@@ -210,3 +212,4 @@ public class NcesEmailNotificationIT {
 
     }
 }
+

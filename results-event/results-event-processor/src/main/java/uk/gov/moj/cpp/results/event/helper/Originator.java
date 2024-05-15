@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static java.util.Objects.nonNull;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
@@ -28,18 +27,14 @@ public class Originator {
     }
 
     public static Metadata createMetadataWithProcessIdAndUserId(final String id, final String name, final String userId) {
-        final JsonObjectBuilder builder = Json.createObjectBuilder()
+        return metadataFrom(Json.createObjectBuilder()
                 .add(ID, id)
                 .add(NAME, name)
                 .add(SOURCE, ORIGINATOR_VALUE)
-                .add(SOURCE_NCES, ORIGINATOR_VALUE_NCES);
-
-        if (nonNull(userId)) {
-            builder.add(CONTEXT, Json.createObjectBuilder()
-                   .add(USER_ID, userId));
-        }
-
-        return metadataFrom(builder.build()).build();
+                .add(SOURCE_NCES, ORIGINATOR_VALUE_NCES)
+                .add(CONTEXT, Json.createObjectBuilder()
+                        .add(USER_ID, userId))
+                .build()).build();
     }
 
     public static JsonEnvelope assembleEnvelopeWithPayloadAndMetaDetails(final JsonObject payload, final String contentType, final String userId) {

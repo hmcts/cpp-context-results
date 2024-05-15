@@ -12,22 +12,15 @@ public class DocumentGenerationRequest {
     private final ConversionFormat conversionFormat;
     private final String sourceCorrelationId;
     private final UUID payloadFileServiceId;
-    private final String originatingSource;
 
-    public DocumentGenerationRequest(final String originatingSource,
-                                     final TemplateIdentifier templateIdentifier,
+    public DocumentGenerationRequest(final TemplateIdentifier templateIdentifier,
                                      final ConversionFormat conversionFormat,
                                      final String sourceCorrelationId,
                                      final UUID payloadFileServiceId) {
-        this.originatingSource = originatingSource;
         this.templateIdentifier = templateIdentifier;
         this.conversionFormat = conversionFormat;
         this.sourceCorrelationId = sourceCorrelationId;
         this.payloadFileServiceId = payloadFileServiceId;
-    }
-
-    public String getOriginatingSource() {
-        return originatingSource;
     }
 
     public TemplateIdentifier getTemplateIdentifier() {

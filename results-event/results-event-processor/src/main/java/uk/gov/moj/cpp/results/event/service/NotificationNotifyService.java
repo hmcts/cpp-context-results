@@ -33,7 +33,6 @@ public class NotificationNotifyService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(uk.gov.moj.cpp.results.event.service.NotificationNotifyService.class);
     private static final String NOTIFICATION_NOTIFY_EMAIL_METADATA_TYPE = "notificationnotify.send-email-notification";
-    private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
 
     @Inject
     @ServiceComponent(EVENT_PROCESSOR)
@@ -157,7 +156,6 @@ public class NotificationNotifyService {
 
     private void requestEmailAttachmentGeneration(final String sourceCorrelationId, final UUID fileId, final JsonEnvelope envelope) {
         final DocumentGenerationRequest request = new DocumentGenerationRequest(
-                NCES_EMAIL_NOTIFICATION_REQUEST,
                 TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
                 PDF,
                 sourceCorrelationId,
