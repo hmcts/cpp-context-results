@@ -703,6 +703,13 @@ public class ResultsEventProcessorTest {
 
     }
 
+    @Test
+    public void handleGetCaseSubject(){
+        List<CaseDefendant> caseDefendantsList = getDefendantsWithNoIsNewAmendmentBooleanInJudicialResult();
+        final String subject = resultsEventProcessor.getCaseSubject(caseDefendantsList);
+        assertThat(subject, is("Final Sentence,Warrant Withdrawn,Bail without conditions"));
+    }
+
     private PoliceNotificationRequestedV2 buildPoliceNotificationRequestedV2(final List<CaseDefendant> caseDefendants, final String applicationTypeForCase, final boolean amendAndReshare) {
         return PoliceNotificationRequestedV2.
                 policeNotificationRequestedV2()
@@ -1139,5 +1146,60 @@ public class ResultsEventProcessorTest {
         prompt.setReference("reference");
         prompt.setId(promptId);
         return prompt;
+    }
+
+    private List<CaseDefendant> getDefendantsWithNoIsNewAmendmentBooleanInJudicialResult() {
+        JudicialResult judicialResult1 =
+                JudicialResult.judicialResult()
+                        .withPoliceSubjectLineTitle("Remand").build();
+        JudicialResult judicialResult2 =
+                JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
+                        .withPoliceSubjectLineTitle("Final Sentence").build();
+
+        List<JudicialResult> judicialResults1 = asList(judicialResult1, judicialResult2);
+
+        JudicialResult judicialResult3 =
+                JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
+                        .withPoliceSubjectLineTitle("Warrant Withdrawn").build();
+        JudicialResult judicialResult4 =
+                JudicialResult.judicialResult()
+                        .withIsNewAmendment(true)
+                        .withPoliceSubjectLineTitle("Bail without conditions").build();
+
+        List<JudicialResult> judicialResults2 = asList(judicialResult3, judicialResult4);
+
+
+        final CaseDefendant caseDefendant1 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails().withJudicialResults(judicialResults1).build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code").withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Jack", "Smith", Gender.MALE, null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual().withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1", Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        final CaseDefendant caseDefendant2 = caseDefendant()
+                .withDefendantId(UUID.randomUUID())
+                .withProsecutorReference("prosecutorReference")
+                .withJudicialResults(null)
+                .withOffences(Collections.singletonList(OffenceDetails.offenceDetails()
+                        .withJudicialResults(judicialResults2).build()))
+                .withIndividualDefendant(individualDefendant()
+                        .withBailConditions("bailCondition")
+                        .withBailStatus(bailStatus().withCode("Bail status code")
+                                .withDescription("Bail status description").withId(randomUUID()).build())
+                        .withPerson(createPerson("Henry", "Cole", Gender.MALE,
+                                null, "TITLE", null, null)).build())
+                .withAssociatedPerson(of(associatedIndividual()
+                        .withPerson(createPerson("FIRST_NAME_1", "LAST_NAME_1",
+                                Gender.MALE, null, "TITLE_1", null, null))
+                        .withRole("role").build()))
+                .build();
+        return asList(caseDefendant1, caseDefendant2);
     }
 }

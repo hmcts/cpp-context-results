@@ -462,7 +462,7 @@ public class ResultsEventProcessor {
         return null;
     }
 
-    private String getCaseSubject(final List<CaseDefendant> caseDefendants) {
+    protected String getCaseSubject(final List<CaseDefendant> caseDefendants) {
         final String caseSubject = caseDefendants.stream()
                 .flatMap(caseDefendant -> caseDefendant.getOffences().stream())
                 .flatMap(offenceDetails -> {
@@ -472,7 +472,7 @@ public class ResultsEventProcessor {
                         return Stream.empty();
                     }
                 })
-                .filter(JudicialResult::getIsNewAmendment)
+                .filter(judicialResult -> nonNull(judicialResult.getIsNewAmendment()) && judicialResult.getIsNewAmendment())
                 .filter(judicialResult -> {
                     String policeSubjectLineTitle = judicialResult.getPoliceSubjectLineTitle();
                     String resultText = judicialResult.getResultText();

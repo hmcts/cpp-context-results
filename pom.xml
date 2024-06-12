@@ -38,8 +38,8 @@
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>8.0.2</coredomain.version>
         <criminal-court-public-model.version>${coredomain.version}</criminal-court-public-model.version>
-        <referencedata.version>8.0.61</referencedata.version>
-        <progression.version>8.0.176</progression.version>
+        <referencedata.version>8.0.65</referencedata.version>
+        <progression.version>8.0.187</progression.version>
         <lettuce.core.version>5.2.1.RELEASE</lettuce.core.version>
         <azure-client-authentication.version>1.5.2</azure-client-authentication.version>
         <azure-eventgrid.version>1.0.0</azure-eventgrid.version>
@@ -85,6 +85,11 @@
                     <archiveClasses>true</archiveClasses>
                     <attachClasses>true</attachClasses>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.11.0.3922</version>
             </plugin>
         </plugins>
     </build>
