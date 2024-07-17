@@ -76,6 +76,8 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -269,6 +271,123 @@ public class ResultsCommandHandlerTest {
                                 )
                         ))));
 
+    }
+
+    @Test
+    public void shouldRaiseHearingResultsForDayAddedWhenSaveShareResultsForDayForGroupCases() throws EventStreamException {
+        final LocalDate hearingDay = LocalDate.now();
+        final UUID hearingId = UUID.randomUUID();
+        final UUID case1Id = UUID.randomUUID();
+        final UUID case2Id = UUID.randomUUID();
+        final UUID case3Id = UUID.randomUUID();
+        final UUID case4Id = UUID.randomUUID();
+        final UUID groupId = UUID.randomUUID();
+        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
+
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.add-hearing-result-for-day"),
+                Json.createObjectBuilder()
+                        .add("hearingDay", hearingDay.toString())
+                        .add("hearing", Json.createObjectBuilder()
+                                .add("id", hearingId.toString())
+                                .add("isGroupProceedings", Boolean.TRUE)
+                                .add("prosecutionCases", Json.createArrayBuilder()
+                                        .add(Json.createObjectBuilder()
+                                                .add("id", case1Id.toString())
+                                                .add("isCivil", Boolean.TRUE)
+                                                .add("groupId", groupId.toString())
+                                                .add("isGroupMember", Boolean.TRUE)
+                                                .add("isGroupMaster", Boolean.TRUE)
+                                                .add("defendants", Json.createArrayBuilder()
+                                                        .add(Json.createObjectBuilder()
+                                                                .add("id", UUID.randomUUID().toString())
+                                                                .add("offences",  Json.createArrayBuilder()
+                                                                        .add(Json.createObjectBuilder()
+                                                                                .add("id", UUID.randomUUID().toString()))
+                                                                        .build())
+                                                                .build())
+                                                        .build())
+                                                .build())
+                                        .add(Json.createObjectBuilder()
+                                                .add("id", case2Id.toString())
+                                                .add("isCivil", Boolean.TRUE)
+                                                .add("groupId", groupId.toString())
+                                                .add("isGroupMember", Boolean.TRUE)
+                                                .add("isGroupMaster", Boolean.FALSE)
+                                                .add("defendants", Json.createArrayBuilder()
+                                                        .add(Json.createObjectBuilder()
+                                                                .add("id", UUID.randomUUID().toString())
+                                                                .add("offences",  Json.createArrayBuilder()
+                                                                        .add(Json.createObjectBuilder()
+                                                                                .add("id", UUID.randomUUID().toString()))
+                                                                                .build())
+                                                                        .build())
+                                                        .build())
+                                                .build())
+                                        .add(Json.createObjectBuilder()
+                                                .add("id", case3Id.toString())
+                                                .add("isCivil", Boolean.TRUE)
+                                                .add("groupId", groupId.toString())
+                                                .add("isGroupMember", Boolean.FALSE)
+                                                .add("isGroupMaster", Boolean.FALSE)
+                                                .add("defendants", Json.createArrayBuilder()
+                                                        .add(Json.createObjectBuilder()
+                                                                .add("id", UUID.randomUUID().toString())
+                                                                .add("offences",  Json.createArrayBuilder()
+                                                                        .add(Json.createObjectBuilder()
+                                                                                .add("id", UUID.randomUUID().toString()))
+                                                                        .build())
+                                                                .build())
+                                                        .build())
+                                                .build())
+                                        .add(Json.createObjectBuilder()
+                                                .add("id", case4Id.toString())
+                                                .add("isCivil", Boolean.TRUE)
+                                                .add("groupId", groupId.toString())
+                                                .add("isGroupMember", Boolean.FALSE)
+                                                .add("defendants", Json.createArrayBuilder()
+                                                        .add(Json.createObjectBuilder()
+                                                                .add("id", UUID.randomUUID().toString())
+                                                                .add("offences",  Json.createArrayBuilder()
+                                                                        .add(Json.createObjectBuilder()
+                                                                                .add("id", UUID.randomUUID().toString()))
+                                                                        .build())
+                                                                .build())
+                                                        .build())
+                                                .build())
+                                        .build())
+                                .build())
+                        .build());
+
+        this.resultsCommandHandler.addHearingResultForDay(envelope);
+
+        assertThat(verifyAppendAndGetArgumentFrom(this.eventStream), streamContaining(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.events.hearing-results-added-for-day"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.hearing.id", is(hearingId.toString())),
+                                withJsonPath("$.hearingDay", is(hearingDay.toString())),
+                                withJsonPath("$.hearing.isGroupProceedings", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[0].id", is(case1Id.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[1].id", is(case2Id.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[2].id", is(case3Id.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[3].id", is(case4Id.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[0].isCivil", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[1].isCivil", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[2].isCivil", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[3].isCivil", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[0].groupId", is(groupId.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[1].groupId", is(groupId.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[2].groupId", is(groupId.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[3].groupId", is(groupId.toString())),
+                                withJsonPath("$.hearing.prosecutionCases[0].isGroupMember", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[1].isGroupMember", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[2].isGroupMember", is(false)),
+                                withJsonPath("$.hearing.prosecutionCases[3].isGroupMember", is(false)),
+                                withJsonPath("$.hearing.prosecutionCases[0].isGroupMember", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[1].isGroupMember", is(true)),
+                                withJsonPath("$.hearing.prosecutionCases[2].isGroupMember", is(false)),
+                                withJsonPath("$.hearing.prosecutionCases[3].isGroupMember", Objects::isNull)
+                        )))));
     }
 
     @Test

@@ -1,10 +1,11 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.BailStatus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,15 +85,15 @@ public class Defendant implements Serializable {
     }
 
     public List<AssociatedIndividual> getAssociatedIndividuals() {
-        return associatedIndividuals;
+        return Collections.synchronizedList(associatedIndividuals);
     }
 
     public void setAssociatedIndividuals(final List<AssociatedIndividual> associatedIndividuals) {
-        this.associatedIndividuals = associatedIndividuals;
+        this.associatedIndividuals = new ArrayList<>(associatedIndividuals);
     }
 
     public List<Offence> getOffences() {
-        return offences;
+        return Collections.synchronizedList(offences);
     }
 
     public void setOffences(final List<Offence> offences) {
@@ -100,11 +101,11 @@ public class Defendant implements Serializable {
     }
 
     public List<Result> getResults() {
-        return results;
+        return Collections.synchronizedList(results);
     }
 
     public void setResults(final List<Result> results) {
-        this.results = results;
+        this.results = new ArrayList<>(results);
     }
 
     public String getBailCondition() {
@@ -116,11 +117,11 @@ public class Defendant implements Serializable {
     }
 
     public List<AttendanceDay> getAttendanceDays() {
-        return attendanceDays;
+        return Collections.synchronizedList(attendanceDays);
     }
 
     public void setAttendanceDays(final List<AttendanceDay> attendanceDays) {
-        this.attendanceDays = attendanceDays;
+        this.attendanceDays = new ArrayList<>(attendanceDays);
     }
 
     public String getPncId() {

@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ public class AttendanceDay implements Serializable {
             return false;
         }
 
-        AttendanceDay that = (AttendanceDay) o;
+        final AttendanceDay that = (AttendanceDay) o;
 
         if (day != null ? !day.equals(that.day) : that.day != null) {
             return false;

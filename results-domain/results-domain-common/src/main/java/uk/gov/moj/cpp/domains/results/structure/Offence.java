@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 
 import uk.gov.justice.core.courts.AllocationDecision;
@@ -6,6 +6,7 @@ import uk.gov.justice.core.courts.AllocationDecision;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,8 +49,10 @@ public class Offence implements Serializable {
 
     private String finding;
 
+    private CivilOffence civilOffence;
+
     @SuppressWarnings("squid:S00107")
-    public Offence(UUID id, String offenceCode, Integer offenceSequenceNumber, String wording, Integer offenceDateCode, LocalDate startDate, LocalDate endDate, LocalDate arrestDate, LocalDate chargeDate, OffenceFacts offenceFacts, Plea plea, String modeOfTrial, Integer convictingCourt, LocalDate convictionDate, String finalDisposal, List<Result> resultDetails, String finding, final AllocationDecision allocationDecision ) {
+    public Offence(UUID id, String offenceCode, Integer offenceSequenceNumber, String wording, Integer offenceDateCode, LocalDate startDate, LocalDate endDate, LocalDate arrestDate, LocalDate chargeDate, OffenceFacts offenceFacts, Plea plea, String modeOfTrial, Integer convictingCourt, LocalDate convictionDate, String finalDisposal, List<Result> resultDetails, String finding, final AllocationDecision allocationDecision, final CivilOffence civilOffence) {
         this.id = id;
         this.offenceCode = offenceCode;
         this.offenceSequenceNumber = offenceSequenceNumber;
@@ -65,9 +68,10 @@ public class Offence implements Serializable {
         this.convictingCourt = convictingCourt;
         this.convictionDate = convictionDate;
         this.finalDisposal = finalDisposal;
-        this.resultDetails = resultDetails;
+        this.resultDetails = new ArrayList<>(resultDetails);
         this.finding = finding;
         this.allocationDecision = allocationDecision ;
+        this.civilOffence = civilOffence;
     }
 
     public UUID getId() {
@@ -131,10 +135,14 @@ public class Offence implements Serializable {
     }
 
     public List<Result> getResultDetails() {
-        return resultDetails;
+        return Collections.synchronizedList(resultDetails);
     }
 
     public AllocationDecision getAllocationDecision() { return allocationDecision; }
+
+    public CivilOffence getCivilOffence() {
+        return civilOffence;
+    }
 
     public static Offence.Builder offence() {
         return new Builder();
@@ -143,10 +151,14 @@ public class Offence implements Serializable {
     @SuppressWarnings("squid:S3776")
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true;}
-        if (o == null || getClass() != o.getClass()) {return false;}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-        Offence offence = (Offence) o;
+        final Offence offence = (Offence) o;
 
         if (id != null ? !id.equals(offence.id) : offence.id != null) {
             return false;
@@ -199,6 +211,10 @@ public class Offence implements Serializable {
         if (allocationDecision != null ? !allocationDecision.equals(offence.allocationDecision) : offence.allocationDecision != null) {
             return false;
         }
+
+        if (civilOffence != null ? !civilOffence.equals(offence.civilOffence) : offence.civilOffence != null) {
+            return false;
+        }
         return resultDetails != null ? resultDetails.equals(offence.resultDetails) : offence.resultDetails == null;
     }
 
@@ -223,6 +239,7 @@ public class Offence implements Serializable {
         result = 31 * result + (resultDetails != null ? resultDetails.hashCode() : 0);
         result = 31 * result + (finding != null ? finding.hashCode() : 0);
         result = 31 * result + (allocationDecision != null ? allocationDecision.hashCode() : 0);
+        result = 31 * result + (civilOffence != null ? civilOffence.hashCode() : 0);
 
         return result;
     }
@@ -263,6 +280,8 @@ public class Offence implements Serializable {
         private String finding;
 
         private AllocationDecision allocationDecision ;
+
+        private CivilOffence civilOffence;
 
         public Offence.Builder withFinding(final String finding) {
             this.finding = finding;
@@ -305,7 +324,7 @@ public class Offence implements Serializable {
         }
 
         public Offence.Builder withJudicialResults(final List<Result> results) {
-            this.results = results;
+            this.results = Collections.synchronizedList(results);
             return this;
         }
 
@@ -354,6 +373,11 @@ public class Offence implements Serializable {
             return this;
         }
 
+        public Offence.Builder withCivilOffence(final CivilOffence civilOffence) {
+            this.civilOffence = civilOffence;
+            return this;
+        }
+
         public Offence build() {
             OffenceFacts offenceFactsResult = null;
             if(null != offenceFacts){
@@ -363,7 +387,7 @@ public class Offence implements Serializable {
             if(null != this.plea){
                 pleaResult= new Plea(plea.getOffenceId(), plea.getPleaDate(), plea.getPleaValue(), plea.getOriginatingHearingId());
             }
-            return new Offence(id,offenceCode,orderSequenceNumber,wording,offenceDateCode, startDate, endDate, arrestDate, chargeDate, offenceFactsResult, pleaResult, modeOfTrial, convictingCourt, convictionDate, finalDisposal, results, finding, allocationDecision);
+            return new Offence(id, offenceCode, orderSequenceNumber, wording, offenceDateCode, startDate, endDate, arrestDate, chargeDate, offenceFactsResult, pleaResult, modeOfTrial, convictingCourt, convictionDate, finalDisposal, results, finding, allocationDecision, civilOffence);
         }
     }
 }

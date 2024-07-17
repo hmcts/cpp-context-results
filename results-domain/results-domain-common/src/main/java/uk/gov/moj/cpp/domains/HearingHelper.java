@@ -24,6 +24,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.HEARING_LANGUAGE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_BOX_HEARING;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_EFFECTIVE_TRIAL;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_PROCEEDINGS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_VACATED_TRIAL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIARY;
@@ -177,6 +178,10 @@ public class HearingHelper {
 
         if (hearing.containsKey(DEFENDANTS_WITH_WELSH_TRANSLATION_LIST)) {
             transformedPayloadObjectBuilder.add(DEFENDANTS_WITH_WELSH_TRANSLATION_LIST, hearing.getJsonArray(DEFENDANTS_WITH_WELSH_TRANSLATION_LIST));
+        }
+
+        if (hearing.containsKey(IS_GROUP_PROCEEDINGS)) {
+            transformedPayloadObjectBuilder.add(IS_GROUP_PROCEEDINGS, hearing.getBoolean(IS_GROUP_PROCEEDINGS));
         }
 
         return transformedPayloadObjectBuilder.build();

@@ -8,20 +8,24 @@ import static uk.gov.justice.core.courts.OrganisationDetails.organisationDetails
 import static uk.gov.justice.core.courts.Plea.plea;
 
 import uk.gov.justice.core.courts.CaseDefendant;
+import uk.gov.justice.core.courts.CivilOffence;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.Plea;
-import uk.gov.moj.cpp.domains.resultStructure.CorporateDefendant;
-import uk.gov.moj.cpp.domains.resultStructure.Defendant;
-import uk.gov.moj.cpp.domains.resultStructure.Offence;
-import uk.gov.moj.cpp.domains.resultStructure.Person;
-import uk.gov.moj.cpp.domains.resultStructure.Result;
+import uk.gov.moj.cpp.domains.results.structure.CorporateDefendant;
+import uk.gov.moj.cpp.domains.results.structure.Defendant;
+import uk.gov.moj.cpp.domains.results.structure.Offence;
+import uk.gov.moj.cpp.domains.results.structure.Person;
+import uk.gov.moj.cpp.domains.results.structure.Result;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Objects.nonNull;
+
 import java.util.UUID;
 
 public class DefendantToCaseDefendantConverter {
@@ -97,12 +101,13 @@ public class DefendantToCaseDefendantConverter {
                     .withPlea(buildPlea(offence.getPlea(), offence.getId()))
                     .withStartDate(offence.getStartDate())
                     .withWording(offence.getWording())
+                    .withCivilOffence(buildCivilOffence(offence.getCivilOffence()))
                     .build());
         }
         return offenceDetails;
     }
 
-    private static Plea buildPlea(final uk.gov.moj.cpp.domains.resultStructure.Plea plea, final UUID offenceId) {
+    private static Plea buildPlea(final uk.gov.moj.cpp.domains.results.structure.Plea plea, final UUID offenceId) {
         if (null != plea) {
             return plea()
                     .withOriginatingHearingId(plea.getEnteredHearingId())
@@ -156,6 +161,16 @@ public class DefendantToCaseDefendantConverter {
                     .build());
         }
         return judicialResults;
+    }
+
+    private static CivilOffence buildCivilOffence(final uk.gov.moj.cpp.domains.results.structure.CivilOffence civilOffence) {
+        if (nonNull(civilOffence)) {
+            return CivilOffence.civilOffence()
+                    .withIsExParte(civilOffence.getIsExParte())
+                    .withIsRespondent(civilOffence.getIsRespondent())
+                    .build();
+        }
+        return null;
     }
 
 }

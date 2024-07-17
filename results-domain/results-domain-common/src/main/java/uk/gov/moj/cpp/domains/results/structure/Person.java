@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.ContactNumber;
@@ -30,6 +30,18 @@ public class Person implements Serializable {
     private String middleName;
 
     private String nationality;
+
+    private Person(String title, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, ContactNumber contact, Address address, String middleName, String nationality) {
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.contact = contact;
+        this.address = address;
+        this.middleName = middleName;
+        this.nationality = nationality;
+    }
 
     public String getTitle() {
         return title;
@@ -72,17 +84,6 @@ public class Person implements Serializable {
     }
 
     @SuppressWarnings("squid:S00107")
-    private Person(String title, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, ContactNumber contact, Address address, String middleName, String nationality) {
-        this.title = title;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.contact = contact;
-        this.address = address;
-        this.middleName = middleName;
-        this.nationality = nationality;
-    }
     public static Builder person() {
         return new Builder();
     }
@@ -97,7 +98,7 @@ public class Person implements Serializable {
             return false;
         }
 
-        Person person = (Person) o;
+        final Person person = (Person) o;
 
         if (title != person.title) {
             return false;

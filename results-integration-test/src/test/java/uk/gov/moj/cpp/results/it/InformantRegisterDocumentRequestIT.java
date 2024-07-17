@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.it;
 import static java.time.ZoneOffset.UTC;
 import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,6 +12,7 @@ import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestH
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegister;
 import static uk.gov.moj.cpp.results.it.helper.RestHelper.postCommand;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
+import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryGroupMemberCases;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
 
@@ -33,10 +35,12 @@ import org.junit.Test;
 public class InformantRegisterDocumentRequestIT {
     private MessageProducer producer;
     private InformantRegisterDocumentRequestHelper helper;
+    private static final UUID GROUP_ID = randomUUID();
 
     @BeforeClass
     public static void setupStubs() {
         setupUsersGroupQueryStub();
+        stubQueryGroupMemberCases(GROUP_ID);
     }
 
     @Before
@@ -63,6 +67,25 @@ public class InformantRegisterDocumentRequestIT {
         assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
         helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
+
+        generateInformantRegister();
+        helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());
+        helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
+    }
+
+    @Test
+    public void shouldAddInformantRegisterRequestForGroupCases() throws IOException {
+        final UUID prosecutionAuthorityId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final String prosecutionAuthorityCode = STRING.next();
+
+        final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, randomAlphanumeric(7), registerDate,
+                hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-with-groupId.json", GROUP_ID);
+        assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
+        helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
+        helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId, true, 3);
 
         generateInformantRegister();
         helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());

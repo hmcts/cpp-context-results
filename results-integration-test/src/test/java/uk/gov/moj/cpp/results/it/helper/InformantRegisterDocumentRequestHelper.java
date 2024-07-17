@@ -3,10 +3,13 @@ package uk.gov.moj.cpp.results.it.helper;
 import static com.jayway.awaitility.Awaitility.await;
 import static com.jayway.awaitility.Duration.ONE_MINUTE;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
+import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.ws.rs.core.Response.Status.OK;
+import static org.apache.commons.lang.StringUtils.EMPTY;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -87,10 +90,28 @@ public class InformantRegisterDocumentRequestHelper {
     }
 
     public void verifyInformantRegisterRequestsExists(final UUID prosecutionAuthorityId) {
-        getInformantRegisterDocumentRequests(RECORDED.name(), allOf(
+        verifyInformantRegisterRequestsExists(prosecutionAuthorityId, false, 0);
+    }
+
+    public void verifyInformantRegisterRequestsExists(final UUID prosecutionAuthorityId, final boolean isGroup, final int defCount) {
+        String payload = getInformantRegisterDocumentRequests(RECORDED.name(), allOf(
                 withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", hasItem(prosecutionAuthorityId.toString())),
                 withJsonPath("$.informantRegisterDocumentRequests[*].status", hasItem(RECORDED.name()))
         ));
+
+        if (isGroup) {
+            final int multiple = countMatches(payload, "groupId");
+            for (int i = 0; i < defCount; i++) {
+                assertThat(countMatches(payload, ("person" + i + "Address1")), is(1 * multiple));
+                assertThat(countMatches(payload, ("person" + i + "FirstName")), is(2 * multiple));
+                assertThat(countMatches(payload, ("person" + i + "LastName")), is(2 * multiple));
+            }
+
+            assertThat(countMatches(payload, "MASTER_CASE_ASN"), is(1 * multiple));
+            assertThat(countMatches(payload, "MASTER_CASE_OFFENCE_CODE"), is(defCount * multiple));
+            assertThat(countMatches(payload, "MASTER_CASE_RESULT_TEXT"), is(defCount * multiple));
+            assertThat(countMatches(payload, "MASTER_CASE_OFFENCE_RESULT_TEXT"), is(defCount * multiple));
+        }
     }
 
     private String getInformantRegisterDocumentRequests(final String status, final Matcher... matchers) {
@@ -113,17 +134,22 @@ public class InformantRegisterDocumentRequestHelper {
     }
 
     public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName) throws IOException {
-        return recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, randomAlphanumeric(7), registerDate, hearingId, hearingDate, fileName);
+        return recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, randomAlphanumeric(7), registerDate, hearingId, hearingDate, fileName, null);
     }
 
     public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final String prosecutionAuthorityOuCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName) throws IOException {
+        return recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, prosecutionAuthorityOuCode, registerDate, hearingId, hearingDate, fileName, null);
+    }
+
+    public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final String prosecutionAuthorityOuCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName, final UUID groupId) throws IOException {
         final String body = getPayload(fileName)
                 .replaceAll("%PROSECUTION_AUTHORITY_ID%", prosecutionAuthorityId.toString())
                 .replaceAll("%PROSECUTION_AUTHORITY_CODE%", prosecutionAuthorityCode)
                 .replaceAll("%PROSECUTION_AUTHORITY_OU_CODE%", prosecutionAuthorityOuCode)
                 .replaceAll("%REGISTER_DATE%", registerDate.toString())
                 .replaceAll("%HEARING_ID%", hearingId.toString())
-                .replaceAll("%HEARING_DATE%", hearingDate.toString());
+                .replaceAll("%HEARING_DATE%", hearingDate.toString())
+                .replaceAll("%GROUP_ID%", nonNull(groupId) ? groupId.toString() : EMPTY);
 
         return postCommand(getWriteUrl("/informant-register"),
                 "application/vnd.results.add-informant-register+json",

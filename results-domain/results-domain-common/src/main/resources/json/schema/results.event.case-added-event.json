@@ -11,6 +11,18 @@
     },
     "prosecutionAuthorityCode": {
       "type": "string"
+    },
+    "isCivil": {
+      "type": "boolean"
+    },
+    "groupId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "isGroupMember": {
+      "type": "boolean"
+    },
+    "isGroupMaster": {
+      "type": "boolean"
     }
   },
   "required": [

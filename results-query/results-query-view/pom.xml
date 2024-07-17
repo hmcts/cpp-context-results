@@ -12,6 +12,7 @@
 
     <properties>
         <cpp.framework.action.mapping.enabled>true</cpp.framework.action.mapping.enabled>
+        <usersgroups.version>8.0.30</usersgroups.version>
         <cpp.service-component>QUERY_VIEW</cpp.service-component>
     </properties>
 

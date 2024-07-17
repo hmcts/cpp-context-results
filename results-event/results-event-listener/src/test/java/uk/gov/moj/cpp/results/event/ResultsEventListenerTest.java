@@ -16,6 +16,7 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplat
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -157,6 +158,66 @@ public class ResultsEventListenerTest {
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(LocalDate.now().plusDays(2)));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.now()));
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.now().plusDays(3)));
+    }
+
+    @Test
+    public void shouldHearingResultsAddedForDayForGroupCases() {
+        final UUID hearingId = randomUUID();
+        final UUID groupId = randomUUID();
+        final UUID case1Id = randomUUID();
+        final UUID case2Id = randomUUID();
+        final UUID case3Id = randomUUID();
+
+        final JsonObject payload = Json.createObjectBuilder()
+                .add("hearing", objectToJsonObjectConverter.convert(Hearing.hearing()
+                        .withId(hearingId)
+                        .withIsGroupProceedings(Boolean.TRUE)
+                        .withHearingDays(Arrays.asList(HearingDay.hearingDay()
+                                        .withSittingDay(ZonedDateTime.now())
+                                        .build(),
+                                HearingDay.hearingDay()
+                                        .withSittingDay(ZonedDateTime.now().plusDays(2))
+                                        .build(),
+                                HearingDay.hearingDay()
+                                        .withSittingDay(ZonedDateTime.now().plusDays(3))
+                                        .build()))
+                        .withProsecutionCases(Arrays.asList(ProsecutionCase.prosecutionCase()
+                                        .withId(case1Id)
+                                        .withIsCivil(Boolean.TRUE)
+                                        .withGroupId(groupId)
+                                        .withIsGroupMember(Boolean.TRUE)
+                                        .withIsGroupMaster(Boolean.TRUE)
+                                        .build(),
+                                ProsecutionCase.prosecutionCase()
+                                        .withId(case2Id)
+                                        .withIsCivil(Boolean.TRUE)
+                                        .withGroupId(groupId)
+                                        .withIsGroupMember(Boolean.TRUE)
+                                        .withIsGroupMaster(Boolean.FALSE)
+                                        .build(),
+                                ProsecutionCase.prosecutionCase()
+                                        .withId(case3Id)
+                                        .withIsCivil(Boolean.TRUE)
+                                        .withGroupId(groupId)
+                                        .withIsGroupMember(Boolean.FALSE)
+                                        .build()))
+                        .build()))
+                .add("hearingDay", LocalDate.now().plusDays(2).toString())
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.events.hearing-results-added-for-day"),
+                objectToJsonObjectConverter.convert(payload));
+
+        resultsEventListener.hearingResultsAddedForDay(envelope);
+
+        verify(this.hearingResultedDocumentRepository, times(1)).save(this.hearingResultedDocumentArgumentCaptor.capture());
+
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(1));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingId(), is(hearingId));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(LocalDate.now().plusDays(2)));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.now()));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.now().plusDays(3)));
+        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getPayload(), is(payload.toString()));
     }
 
     @Test

@@ -16,6 +16,10 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.DEFENDANT_CASE_JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INITIATION_CODE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_CIVIL;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.GROUP_ID;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MASTER;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MEMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_YOUTH;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LEGAL_ENTITY_DEFENDANT;
@@ -79,6 +83,22 @@ public class ProsecutionCaseHelper {
                 .add(PROSECUTION_CASE_IDENTIFIER, prosecutionCase.getJsonObject(PROSECUTION_CASE_IDENTIFIER))
                 .add(INITIATION_CODE, prosecutionCase.getString(INITIATION_CODE))
                 .add(DEFENDANTS, transformDefendants(prosecutionCase.getJsonArray(DEFENDANTS)));
+
+        if (prosecutionCase.containsKey(IS_CIVIL)) {
+            transformProsecutionCaseBuilder.add(IS_CIVIL, prosecutionCase.getBoolean(IS_CIVIL));
+        }
+
+        if (prosecutionCase.containsKey(GROUP_ID)) {
+            transformProsecutionCaseBuilder.add(GROUP_ID, prosecutionCase.getString(GROUP_ID));
+        }
+
+        if (prosecutionCase.containsKey(IS_GROUP_MEMBER)) {
+            transformProsecutionCaseBuilder.add(IS_GROUP_MEMBER, prosecutionCase.getBoolean(IS_GROUP_MEMBER));
+        }
+
+        if (prosecutionCase.containsKey(IS_GROUP_MASTER)) {
+            transformProsecutionCaseBuilder.add(IS_GROUP_MASTER, prosecutionCase.getBoolean(IS_GROUP_MASTER));
+        }
 
         if (prosecutionCase.containsKey(CASE_STATUS)) {
             transformProsecutionCaseBuilder.add(CASE_STATUS, prosecutionCase.getString(CASE_STATUS));

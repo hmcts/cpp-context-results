@@ -78,6 +78,14 @@ public final class SchemaVariableConstants {
     public static final String STATEMENT_OF_FACTS_WELSH = "statementOfFactsWelsh";
     public static final String STATEMENT_OF_FACTS = "statementOfFacts";
     public static final String CASE_STATUS = "caseStatus";
+    public static final String IS_GROUP_PROCEEDINGS = "isGroupProceedings";
+    public static final String IS_CIVIL = "isCivil";
+    public static final String GROUP_ID = "groupId";
+    public static final String IS_GROUP_MEMBER = "isGroupMember";
+    public static final String IS_GROUP_MASTER = "isGroupMaster";
+    public static final String CIVIL_OFFENCE = "civilOffence";
+    public static final String IS_EX_PARTE = "isExParte";
+    public static final String IS_RESPONDENT = "isRespondent";
     public static final String ORIGINATING_ORGANISATION = "originatingOrganisation";
     public static final String DEFENDANTS = "defendants";
     public static final String INITIATION_CODE = "initiationCode";

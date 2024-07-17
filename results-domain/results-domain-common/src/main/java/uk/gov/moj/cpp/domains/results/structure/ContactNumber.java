@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import java.io.Serializable;
 
@@ -44,7 +44,7 @@ public class ContactNumber implements Serializable {
             return false;
         }
 
-        ContactNumber that = (ContactNumber) o;
+        final ContactNumber that = (ContactNumber) o;
 
         if (home != null ? !home.equals(that.home) : that.home != null) {
             return false;

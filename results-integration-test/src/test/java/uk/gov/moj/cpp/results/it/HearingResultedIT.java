@@ -46,10 +46,12 @@ import static java.nio.charset.Charset.defaultCharset;
 import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
 import static java.util.Arrays.asList;
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createReader;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -79,6 +81,7 @@ public class HearingResultedIT {
     private static final String TEMPLATE_PAYLOAD_RESHARE_MAG = "json/public.events.hearing.hearing-results-reshared.json";
     private static final String TEMPLATE_PAYLOAD_CROWN = "json/public.events.hearing.hearing-resulted-crown.json";
     private static final String TEMPLATE_PAYLOAD_RESHARE_CROWN = "json/public.events.hearing.hearing-results-reshared-crown.json";
+    private static final String TEMPLATE_PAYLOAD_GROUP_CASES = "json/public.events.hearing.hearing-resulted-group-cases.json";
     private static final String SESSION_ID = "sessionId";
     private static final String CASE_ID = "caseId";
     private static final String DEFENDANT_ID = "defendantId";
@@ -375,6 +378,27 @@ public class HearingResultedIT {
                 .withResultTitle("Imprisonment")
                 .withAmendmentType(AmendmentType.ADDED)
                 .build());
+    }
+
+    @Test
+    public void testCCForUpdatedEventGroupCases() throws JMSException {
+        final UUID hearingId = randomUUID();
+        final UUID groupId = randomUUID();
+        System.out.println(hearingId);
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_GROUP_CASES, hearingId, groupId);
+
+        hearingResultsHaveBeenSharedV2(payload);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        final LocalDate startDate = of(2019, 5, 25);
+
+        getSummariesByDate(startDate);
+
+        final List<Boolean> isGroupMember = asList(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+        final List<Boolean> isGroupMaster = asList(Boolean.TRUE, Boolean.FALSE, null);
+
+        verifyPrivateEventsWithPoliceResultGenerated(Boolean.TRUE, groupId.toString(), isGroupMember, isGroupMaster);
+        verifyInPublicTopic();
     }
 
     @Test
@@ -688,11 +712,18 @@ public class HearingResultedIT {
     }
 
     private static JsonObject getPayload(final String path, final UUID hearingId) {
+        return getPayload(path, hearingId, null);
+    }
+
+    private static JsonObject getPayload(final String path, final UUID hearingId, final UUID groupId) {
         String request = null;
         try {
             final InputStream inputStream = HearingResultedIT.class.getClassLoader().getResourceAsStream(path);
             assertThat(inputStream, IsNull.notNullValue());
-            request = IOUtils.toString(inputStream, defaultCharset()).replace("HEARING_ID", hearingId.toString());
+            final String groupIdStr = nonNull(groupId) ? groupId.toString() : EMPTY;
+            request = IOUtils.toString(inputStream, defaultCharset())
+                    .replace("HEARING_ID", hearingId.toString())
+                    .replace("GROUP_ID", groupIdStr);
         } catch (final Exception e) {
             fail("Error consuming file from location " + path);
         }

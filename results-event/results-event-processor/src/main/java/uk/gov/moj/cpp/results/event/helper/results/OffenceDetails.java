@@ -78,7 +78,8 @@ public class OffenceDetails {
                     .withStartDate(offence.getStartDate())
                     .withJudicialResults(offence.getJudicialResults())
                     .withFinding(getVerdictCode(nonNull(offence.getVerdict()) && nonNull(offence.getVerdict().getVerdictType()) ? offence.getVerdict().getVerdictType().getCjsVerdictCode() : null, offence.getConvictionDate()))
-                    .withWording(offence.getWording());
+                    .withWording(offence.getWording())
+                    .withCivilOffence(offence.getCivilOffence());
 
             offenceDetailsList.add(offenceDetailsBuilder.build());
         }

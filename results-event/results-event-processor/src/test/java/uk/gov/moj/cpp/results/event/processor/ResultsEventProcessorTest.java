@@ -595,7 +595,6 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
     }
 
-
     @Test
     public void shouldNotIncludePoliceSubjectLineTitleWhenTitleIsBCCAndResultTextIsDomesticViolenceCase() {
         List<String> policeSubjectLineTitle = asList("Bail Conditions Cancelled", null);

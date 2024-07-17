@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.command.handler;
 
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.groupingBy;
 import static javax.json.Json.createObjectBuilder;
@@ -10,7 +11,10 @@ import static uk.gov.justice.services.core.enveloper.Enveloper.toEnvelopeWithMet
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
+import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
@@ -27,10 +31,12 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.command.GenerateInformantRegisterByDate;
+import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 import uk.gov.moj.cpp.results.domain.aggregate.ProsecutionAuthorityAggregate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,6 +44,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,11 +76,18 @@ public class InformantRegisterHandler {
     @Inject
     private StringToJsonObjectConverter stringToJsonObjectConverter;
 
+    @Inject
+    private ProgressionQueryService progressionQueryService;
+
     @Handles("results.command.add-informant-register")
     public void handleAddInformantRegisterToEventStream(final Envelope<InformantRegisterDocumentRequest> envelope) throws EventStreamException {
         LOGGER.debug("results.command.add-informant-register {}", envelope);
 
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = envelope.payload();
+        if (nonNull(informantRegisterDocumentRequest.getGroupId())) {
+            final JsonEnvelope jsonEnvelope = JsonEnvelope.envelopeFrom(envelope.metadata(), JsonValue.NULL);
+            populateMemberCasesForGroupCase(jsonEnvelope, informantRegisterDocumentRequest);
+        }
 
         final UUID prosecutionAuthorityId = informantRegisterDocumentRequest.getProsecutionAuthorityId();
 
@@ -84,6 +98,35 @@ public class InformantRegisterHandler {
         final Stream<Object> events = prosecutionAuthorityAggregate.createInformantRegister(prosecutionAuthorityId, informantRegisterDocumentRequest);
 
         appendEventsToStream(envelope, eventStream, events);
+    }
+
+    private void populateMemberCasesForGroupCase(final JsonEnvelope envelope, final InformantRegisterDocumentRequest informantRegisterDocumentRequest) {
+        final Optional<JsonObject> jsonObject = progressionQueryService.getGroupMemberCases(envelope, informantRegisterDocumentRequest.getGroupId().toString());
+
+        if (!jsonObject.isPresent()) {
+            throw new IllegalStateException(String.format("Unable to find member cases for the groupId %s", informantRegisterDocumentRequest.getGroupId()));
+        }
+
+        final List<ProsecutionCase> prosecutionCases = jsonObject.get().getJsonArray("prosecutionCases")
+                .getValuesAs(JsonObject.class)
+                .stream()
+                .map(pc -> jsonObjectToObjectConverter.convert(pc, ProsecutionCase.class))
+                .collect(Collectors.toList());
+
+        inflateInformantRegister(informantRegisterDocumentRequest, prosecutionCases);
+    }
+
+    private void inflateInformantRegister(final InformantRegisterDocumentRequest informantRegisterDocumentRequest,
+                                          final List<ProsecutionCase> prosecutionCases) {
+        if (isNotEmpty(informantRegisterDocumentRequest.getHearingVenue().getCourtSessions())) {
+            final InformantRegisterDefendant masterDefendant = informantRegisterDocumentRequest.getHearingVenue()
+                    .getCourtSessions().get(0)
+                    .getDefendants().get(0);
+            informantRegisterDocumentRequest.getHearingVenue()
+                    .getCourtSessions().get(0)
+                    .getDefendants()
+                    .addAll(getDefendants(masterDefendant, prosecutionCases));
+        }
     }
 
     @Handles("results.command.generate-informant-register")

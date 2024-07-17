@@ -12,7 +12,7 @@ import static uk.gov.justice.core.courts.AllocationDecision.allocationDecision;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
 import static uk.gov.justice.core.courts.CourtIndicatedSentence.courtIndicatedSentence;
 import static uk.gov.justice.core.courts.Individual.individual;
-import static uk.gov.moj.cpp.domains.resultStructure.Result.result;
+import static uk.gov.moj.cpp.domains.results.structure.Result.result;
 import static uk.gov.moj.cpp.results.domain.aggregate.DefendantToCaseDefendantConverter.convert;
 
 import uk.gov.justice.core.courts.Address;
@@ -29,14 +29,15 @@ import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.VehicleCode;
-import uk.gov.moj.cpp.domains.resultStructure.AttendanceDay;
-import uk.gov.moj.cpp.domains.resultStructure.CorporateDefendant;
-import uk.gov.moj.cpp.domains.resultStructure.Defendant;
-import uk.gov.moj.cpp.domains.resultStructure.Offence;
-import uk.gov.moj.cpp.domains.resultStructure.OffenceFacts;
-import uk.gov.moj.cpp.domains.resultStructure.Person;
-import uk.gov.moj.cpp.domains.resultStructure.Plea;
-import uk.gov.moj.cpp.domains.resultStructure.Result;
+import uk.gov.moj.cpp.domains.results.structure.AttendanceDay;
+import uk.gov.moj.cpp.domains.results.structure.CivilOffence;
+import uk.gov.moj.cpp.domains.results.structure.CorporateDefendant;
+import uk.gov.moj.cpp.domains.results.structure.Defendant;
+import uk.gov.moj.cpp.domains.results.structure.Offence;
+import uk.gov.moj.cpp.domains.results.structure.OffenceFacts;
+import uk.gov.moj.cpp.domains.results.structure.Person;
+import uk.gov.moj.cpp.domains.results.structure.Plea;
+import uk.gov.moj.cpp.domains.results.structure.Result;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -125,6 +126,9 @@ public class DefendantToCaseDefendantConverterTest {
             assertThat(offenceDetail.getPlea().getPleaDate(), is(offenceFromRequest.getPlea().getDate()));
             assertThat(offenceDetail.getPlea().getPleaValue(), is(offenceFromRequest.getPlea().getValue()));
             assertThat(offenceDetail.getPlea().getOriginatingHearingId(), is(offenceFromRequest.getPlea().getEnteredHearingId()));
+
+            assertThat(offenceDetail.getCivilOffence().getIsExParte(), is(Boolean.TRUE));
+            assertThat(offenceDetail.getCivilOffence().getIsRespondent(), is(Boolean.FALSE));
         }
     }
 
@@ -249,7 +253,7 @@ public class DefendantToCaseDefendantConverterTest {
         final List<Offence> offences = new ArrayList<>();
         final Offence offence = new Offence(OFFENCE_ID, "offenceCode", 1, "offenceWording"
                 , 2, now(), now(), now(), now(), buildOffenceFacts(), GUILTY, "1010", 24,
-                LocalDate.of(2018, 5, 2), "N", buildListOfResults(), "finding", buildAllocationDecision());
+                LocalDate.of(2018, 5, 2), "N", buildListOfResults(), "finding", buildAllocationDecision(), buildCivilOffence());
         offences.add(offence);
         return offences;
     }
@@ -328,5 +332,12 @@ public class DefendantToCaseDefendantConverterTest {
     private OffenceFacts buildOffenceFacts() {
         OffenceFacts offenceFacts = new OffenceFacts(1, "alcoholreadingMethod", VehicleCode.LARGE_GOODS_VEHICLE, "12345");
         return offenceFacts;
+    }
+
+    private CivilOffence buildCivilOffence(){
+        return CivilOffence.civilOffence()
+                .withIsExParte(Boolean.TRUE)
+                .withIsRespondent(Boolean.FALSE)
+                .build();
     }
 }

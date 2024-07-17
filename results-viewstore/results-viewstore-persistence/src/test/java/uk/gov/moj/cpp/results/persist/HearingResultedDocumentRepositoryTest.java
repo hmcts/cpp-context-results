@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.persist;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNull;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
@@ -82,7 +83,7 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
     }
 
 
-    @Test(expected = NoResultException.class)
+    @Test
     public void shouldThrowNoResultExceptionWhenFindByHearingIdAndLatestHearingDayNoHearingPresent(){
         final UUID hearingId = randomUUID();
         final LocalDate hearingDay1 = LocalDate.of(2018, 12, 04);
@@ -93,6 +94,7 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
         persistDocument(hearingId, hearingDay3);
 
         final HearingResultedDocument hearingResultedDocument = hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(randomUUID());
+        assertNull(hearingResultedDocument);
     }
 
     private void persistDocument(final UUID hearingId, final LocalDate hearingDay) {

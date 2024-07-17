@@ -8,6 +8,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ALLOCATION_DECISION
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.AQUITTAL_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ARREST_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CHARGE_DATE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CIVIL_OFFENCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COMMITTING_COURT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CONVICTION_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.COUNT;
@@ -21,7 +22,9 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INDICATED_PLEA;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INDICATED_PLEA_DATE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.INDICATED_PLEA_VALUE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_DISCONTINUED;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_EX_PARTE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_INTRODUCEAFTERINITIALPROCEEDINGS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_RESPONDENT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAA_APPLN_REFERENCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAID_DATE;
@@ -190,6 +193,10 @@ public class OffenceHelper {
         if (offence.containsKey(LISTING_NUMBER)) {
             offenceBuilder.add(LISTING_NUMBER, offence.getInt(LISTING_NUMBER));
         }
+        if (offence.containsKey(CIVIL_OFFENCE)) {
+            offenceBuilder.add(CIVIL_OFFENCE, transformCivilOffence(offence.getJsonObject(CIVIL_OFFENCE)));
+        }
+
         return offenceBuilder;
 
     }
@@ -253,6 +260,20 @@ public class OffenceHelper {
         if (jsonObject.containsKey(ORIGINATING_HEARING_ID)) {
             jsonObjectBuilder.add(ORIGINATING_HEARING_ID, jsonObject.getString(ORIGINATING_HEARING_ID));
         }
+        return jsonObjectBuilder.build();
+    }
+
+    public static JsonObject transformCivilOffence(final JsonObject jsonObject) {
+        final JsonObjectBuilder jsonObjectBuilder = createObjectBuilder();
+
+        if (jsonObject.containsKey(IS_EX_PARTE)) {
+            jsonObjectBuilder.add(IS_EX_PARTE, jsonObject.getBoolean(IS_EX_PARTE));
+        }
+
+        if (jsonObject.containsKey(IS_RESPONDENT)) {
+            jsonObjectBuilder.add(IS_RESPONDENT, jsonObject.getBoolean(IS_RESPONDENT));
+        }
+
         return jsonObjectBuilder.build();
     }
 }

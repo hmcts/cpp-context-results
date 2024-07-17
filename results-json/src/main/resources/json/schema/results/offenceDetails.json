@@ -70,6 +70,10 @@
     "allocationDecision": {
       "type": "object",
       "$ref": "http://justice.gov.uk/core/courts/allocationDecision.json"
+    },
+    "civilOffence": {
+      "description": "The Offence data object related to civil cases",
+      "$ref": "http://justice.gov.uk/core/courts/civilOffence.json"
     }
   },
   "required": [

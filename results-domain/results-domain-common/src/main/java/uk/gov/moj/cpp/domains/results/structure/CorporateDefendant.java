@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.ContactNumber;
@@ -16,6 +16,13 @@ public class CorporateDefendant implements Serializable {
 
     private Address address;
 
+    public CorporateDefendant(String incorporationNumber, String name, ContactNumber contact, Address address) {
+        this.incorporationNumber = incorporationNumber;
+        this.name = name;
+        this.contact = contact;
+        this.address = address;
+    }
+
     public String getIncorporationNumber() {
         return incorporationNumber;
     }
@@ -32,13 +39,6 @@ public class CorporateDefendant implements Serializable {
         return address;
     }
 
-    public CorporateDefendant(String incorporationNumber, String name, ContactNumber contact, Address address) {
-        this.incorporationNumber = incorporationNumber;
-        this.name = name;
-        this.contact = contact;
-        this.address = address;
-    }
-
     public static CorporateDefendant.Builder corporateDefendant() {
         return new CorporateDefendant.Builder();
     }
@@ -52,7 +52,7 @@ public class CorporateDefendant implements Serializable {
             return false;
         }
 
-        CorporateDefendant that = (CorporateDefendant) o;
+        final CorporateDefendant that = (CorporateDefendant) o;
 
         if (incorporationNumber != null ? !incorporationNumber.equals(that.incorporationNumber) : that.incorporationNumber != null) {
             return false;

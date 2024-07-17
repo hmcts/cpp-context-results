@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import uk.gov.justice.core.courts.VehicleCode;
 
@@ -23,12 +23,14 @@ public class OffenceFacts implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true;}
+        if (this == o) {
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
-        OffenceFacts that = (OffenceFacts) o;
+        final OffenceFacts that = (OffenceFacts) o;
 
         if (alcoholReadingAmount != null ? !alcoholReadingAmount.equals(that.alcoholReadingAmount) : that.alcoholReadingAmount != null) {
             return false;

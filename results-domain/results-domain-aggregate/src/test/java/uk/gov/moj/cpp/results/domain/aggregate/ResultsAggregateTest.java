@@ -303,6 +303,35 @@ public class ResultsAggregateTest {
     }
 
     @Test
+    public void testHandleCasesForGroupCases() {
+        final UUID id = randomUUID();
+        final UUID groupId = randomUUID();
+        final String urn = "123445";
+        final String prosecutionAuthorityCode = randomAlphanumeric(5);
+        final CaseDetails caseDetails = caseDetails()
+                .withCaseId(id)
+                .withUrn(urn)
+                .withProsecutionAuthorityCode(prosecutionAuthorityCode)
+                .withIsCivil(Boolean.TRUE)
+                .withGroupId(groupId)
+                .withIsGroupMember(Boolean.TRUE)
+                .withIsGroupMaster(Boolean.FALSE)
+                .build();
+        final CaseAddedEvent update = resultsAggregate.handleCase(caseDetails)
+                .map(o -> (CaseAddedEvent) o)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(update);
+        assertEquals(id, update.getCaseId());
+        assertEquals(urn, update.getUrn());
+        assertEquals(prosecutionAuthorityCode, update.getProsecutionAuthorityCode());
+        assertEquals(true, update.getIsCivil());
+        assertEquals(groupId, update.getGroupId());
+        assertEquals(true, update.getIsGroupMember());
+        assertEquals(false, update.getIsGroupMaster());
+    }
+
+    @Test
     public void testHandleDefendantsWhenOffenceAndTheirResultIsPresent() {
         final CaseDetails caseDetails = createCaseDetails(null, of(offenceDetails()
                 .withId(OFFENCE_ID).withAllocationDecision(buildAllocationDecision())

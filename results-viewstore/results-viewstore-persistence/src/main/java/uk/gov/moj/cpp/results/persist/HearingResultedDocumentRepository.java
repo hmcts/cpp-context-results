@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.results.persist;
 
+import static org.apache.deltaspike.data.api.SingleResultType.OPTIONAL;
+
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 
 import java.time.LocalDate;
@@ -21,7 +23,7 @@ public abstract class HearingResultedDocumentRepository extends AbstractEntityRe
     public abstract List<HearingResultedDocument> findByHearingId(@QueryParam("hearingId") final UUID hearingId);
 
     @Query(value = "from HearingResultedDocument h where h.id.hearingId = :hearingId and " +
-            "h.id.hearingDay = (select max(hh.id.hearingDay) from HearingResultedDocument hh where hh.id.hearingId = :hearingId)")
+            "h.id.hearingDay = (select max(hh.id.hearingDay) from HearingResultedDocument hh where hh.id.hearingId = :hearingId)", singleResult = OPTIONAL)
     public abstract HearingResultedDocument findByHearingIdAndLatestHearingDay(@QueryParam("hearingId") final UUID hearingId);
 
     @Query(value = "from HearingResultedDocument h where h.id.hearingId = :hearingId and h.id.hearingDay = :hearingDate")

@@ -549,9 +549,7 @@ public class HearingTransformer {
     }
 
     private ApiCourtApplicationPayment.Builder courtApplicationPayment(final CourtApplicationPayment courtApplicationPayment) {
-        return ApiCourtApplicationPayment.apiCourtApplicationPayment().withIsFeeExempt(courtApplicationPayment.getIsFeeExempt())
-                .withIsFeePaid(courtApplicationPayment.getIsFeePaid())
-                .withIsFeeUndertakingAttached(courtApplicationPayment.getIsFeeUndertakingAttached())
+        return ApiCourtApplicationPayment.apiCourtApplicationPayment()
                 .withPaymentReference(courtApplicationPayment.getPaymentReference());
     }
 

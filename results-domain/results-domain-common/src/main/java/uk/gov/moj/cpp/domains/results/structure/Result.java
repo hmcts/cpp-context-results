@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 import uk.gov.justice.core.courts.DelegatedPowers;
 import uk.gov.justice.core.courts.JudicialResultCategory;
@@ -7,6 +7,8 @@ import uk.gov.justice.core.courts.JudicialResultPrompt;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -68,13 +70,13 @@ public class Result implements Serializable {
         this.isAvailableForCourtExtract = isAvailableForCourtExtract;
         this.isConvictedResult = isConvictedResult;
         this.isFinancialResult = isFinancialResult;
-        this.judicialResultPrompts = judicialResultPrompts;
+        this.judicialResultPrompts = Collections.synchronizedList(judicialResultPrompts);
         this.label = label;
         this.lastSharedDateTime = lastSharedDateTime;
         this.orderedDate = orderedDate;
         this.orderedHearingId = orderedHearingId;
         this.rank = rank;
-        this.usergroups = usergroups;
+        this.usergroups = new ArrayList<>(usergroups);
         this.welshLabel = welshLabel;
         this.lifeDuration = lifeDuration;
         this.resultText = resultText;
@@ -202,11 +204,11 @@ public class Result implements Serializable {
     }
 
     public List<JudicialResultPrompt> getJudicialResultPrompts() {
-        return judicialResultPrompts;
+        return !judicialResultPrompts.isEmpty() ? Collections.synchronizedList(judicialResultPrompts) : null;
     }
 
     public Result setJudicialResultPrompts(final List<JudicialResultPrompt> judicialResultPrompts) {
-        this.judicialResultPrompts = judicialResultPrompts;
+        this.judicialResultPrompts = new ArrayList<>(judicialResultPrompts);
         return this;
     }
 
@@ -256,11 +258,11 @@ public class Result implements Serializable {
     }
 
     public List<String> getUsergroups() {
-        return usergroups;
+        return !usergroups.isEmpty() ? Collections.synchronizedList(usergroups) : null;
     }
 
     public Result setUsergroups(final List<String> usergroups) {
-        this.usergroups = usergroups;
+        this.usergroups = new ArrayList<>(usergroups);
         return this;
     }
 
@@ -617,7 +619,11 @@ public class Result implements Serializable {
         }
 
         public Builder withJudicialResultPrompts(final List<JudicialResultPrompt> judicialResultPrompts) {
-            this.judicialResultPrompts = judicialResultPrompts;
+            if(judicialResultPrompts != null) {
+                this.judicialResultPrompts = Collections.synchronizedList(judicialResultPrompts);
+            } else {
+                this.judicialResultPrompts = new ArrayList<>();
+            }
             return this;
         }
 
@@ -647,7 +653,11 @@ public class Result implements Serializable {
         }
 
         public Builder withUsergroups(final List<String> usergroups) {
-            this.usergroups = usergroups;
+            if(usergroups != null) {
+                this.usergroups = Collections.synchronizedList(usergroups);
+            } else {
+                this.usergroups = new ArrayList<>();
+            }
             return this;
         }
 

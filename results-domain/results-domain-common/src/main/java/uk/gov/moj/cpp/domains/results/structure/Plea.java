@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.domains.resultStructure;
+package uk.gov.moj.cpp.domains.results.structure;
 
 
 import java.io.Serializable;
@@ -21,14 +21,24 @@ public class Plea implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true;}
-        if (o == null || getClass() != o.getClass()){return false;}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-        Plea plea = (Plea) o;
+        final Plea plea = (Plea) o;
 
-        if (id != null ? !id.equals(plea.id) : plea.id != null){return false;}
-        if (date != null ? !date.equals(plea.date) : plea.date != null) {return false;}
-        if (value != null ? !value.equals(plea.value) : plea.value != null) {return false;}
+        if (id != null ? !id.equals(plea.id) : plea.id != null) {
+            return false;
+        }
+        if (date != null ? !date.equals(plea.date) : plea.date != null) {
+            return false;
+        }
+        if (value != null ? !value.equals(plea.value) : plea.value != null) {
+            return false;
+        }
         return enteredHearingId != null ? enteredHearingId.equals(plea.enteredHearingId) : plea.enteredHearingId == null;
     }
 

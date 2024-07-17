@@ -23,10 +23,10 @@ import static uk.gov.justice.core.courts.SjpCaseRejectedEvent.sjpCaseRejectedEve
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoNothing;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
-import static uk.gov.moj.cpp.domains.resultStructure.CorporateDefendant.corporateDefendant;
-import static uk.gov.moj.cpp.domains.resultStructure.Offence.offence;
-import static uk.gov.moj.cpp.domains.resultStructure.Person.person;
-import static uk.gov.moj.cpp.domains.resultStructure.Result.result;
+import static uk.gov.moj.cpp.domains.results.structure.CorporateDefendant.corporateDefendant;
+import static uk.gov.moj.cpp.domains.results.structure.Offence.offence;
+import static uk.gov.moj.cpp.domains.results.structure.Person.person;
+import static uk.gov.moj.cpp.domains.results.structure.Result.result;
 
 import com.google.common.base.Functions;
 import org.apache.commons.collections.map.HashedMap;
@@ -57,12 +57,13 @@ import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.YouthCourt;
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.moj.cpp.domains.ResultAmendmentDetailsHelper;
-import uk.gov.moj.cpp.domains.resultStructure.AttendanceDay;
-import uk.gov.moj.cpp.domains.resultStructure.Case;
-import uk.gov.moj.cpp.domains.resultStructure.Defendant;
-import uk.gov.moj.cpp.domains.resultStructure.Offence;
-import uk.gov.moj.cpp.domains.resultStructure.Result;
 import uk.gov.moj.cpp.domains.resultdetails.CaseResultDetails;
+import uk.gov.moj.cpp.domains.results.structure.AttendanceDay;
+import uk.gov.moj.cpp.domains.results.structure.Case;
+import uk.gov.moj.cpp.domains.results.structure.Defendant;
+import uk.gov.moj.cpp.domains.results.structure.Offence;
+import uk.gov.moj.cpp.domains.results.structure.CivilOffence;
+import uk.gov.moj.cpp.domains.results.structure.Result;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.EmailNotificationFailed;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
@@ -296,6 +297,7 @@ public class ResultsAggregate implements Aggregate {
                 .withConvictionDate(offenceFromEvent.getConvictionDate())
                 .withFinalDisposal(offenceFromEvent.getFinalDisposal())
                 .withJudicialResults(buildJudicialResults(offenceFromEvent.getJudicialResults()))
+                .withCivilOffence(buildCivilOffence(offenceFromEvent.getCivilOffence()))
                 .build();
     }
 
@@ -307,6 +309,16 @@ public class ResultsAggregate implements Aggregate {
             }
         }
         return results;
+    }
+
+    private CivilOffence buildCivilOffence(final uk.gov.justice.core.courts.CivilOffence civilOffence) {
+        if (nonNull(civilOffence)) {
+            return CivilOffence.civilOffence()
+                    .withIsExParte(civilOffence.getIsExParte())
+                    .withIsRespondent(civilOffence.getIsRespondent())
+                    .build();
+        }
+        return null;
     }
 
     private Result buildJudicialResult(final uk.gov.justice.core.courts.JudicialResult judicialResultFromEvent) {
@@ -348,7 +360,8 @@ public class ResultsAggregate implements Aggregate {
     }
 
     private void storeCaseAddedEvent(final CaseAddedEvent caseAddedEvent) {
-        this.cases.add(new Case(caseAddedEvent.getCaseId(), caseAddedEvent.getUrn(), caseAddedEvent.getProsecutionAuthorityCode()));
+        this.cases.add(new Case(caseAddedEvent.getCaseId(), caseAddedEvent.getUrn(), caseAddedEvent.getProsecutionAuthorityCode(),
+                caseAddedEvent.getIsCivil(), caseAddedEvent.getGroupId(), caseAddedEvent.getIsGroupMember(), caseAddedEvent.getIsGroupMaster()));
     }
 
     private void storeSessionAddedEvent(final SessionAddedEvent sessionAddedEvent) {
@@ -372,6 +385,10 @@ public class ResultsAggregate implements Aggregate {
                     .withCaseId(caseFromRequest.getCaseId())
                     .withUrn(caseFromRequest.getUrn())
                     .withProsecutionAuthorityCode(caseFromRequest.getProsecutionAuthorityCode())
+                    .withIsCivil(caseFromRequest.getIsCivil())
+                    .withGroupId(caseFromRequest.getGroupId())
+                    .withIsGroupMember(caseFromRequest.getIsGroupMember())
+                    .withIsGroupMaster(caseFromRequest.getIsGroupMaster())
                     .build());
         }
         return apply(builder.build());

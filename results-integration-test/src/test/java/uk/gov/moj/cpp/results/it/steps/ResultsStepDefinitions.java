@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.it.steps;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -18,6 +19,10 @@ import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.
 import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CIVIL_OFFENCE;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.GROUP_ID;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MASTER;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MEMBER;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.createResultsCommand;
@@ -48,6 +53,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -305,7 +311,12 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void verifyPrivateEventsWithPoliceResultGenerated() throws JMSException {
-        verifyPrivateEventsWithPoliceResultGenerated(true);
+        verifyPrivateEventsWithPoliceResultGenerated(Boolean.FALSE, null, null, null);
+    }
+
+    public static void verifyPrivateEventsWithPoliceResultGenerated(final Boolean isGroupProceedings, final String groupId,
+                                                                    final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
+        verifyPrivateEventsWithPoliceResultGenerated(true, isGroupProceedings, groupId, isGroupMember, isGroupMaster);
     }
 
     public static void verifyPrivateEventsWithPoliceResultGeneratedForDay(final LocalDate hearingDay) throws JMSException {
@@ -313,27 +324,64 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void verifyPrivateEventsWithPoliceResultGenerated(final boolean includePoliceResults) throws JMSException {
-        verifyPrivateEvents();
+        verifyPrivateEventsWithPoliceResultGenerated(includePoliceResults, Boolean.FALSE, null, null, null);
+    }
+
+    public static void verifyPrivateEventsWithPoliceResultGenerated(final boolean includePoliceResults, final Boolean isGroupProceedings, final String groupId,
+                                                                    final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
+        verifyPrivateEvents(isGroupProceedings, groupId, isGroupMember, isGroupMaster);
 
         if (includePoliceResults) {
-            final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
-            assertThat(policeResultGenerated, notNullValue());
+            if (isGroupProceedings) {
+                for (int i = 0; i < isGroupMember.size(); i++) {
+                    final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
+                    assertThat(policeResultGenerated.getBody(String.class).contains(CIVIL_OFFENCE), is(true));
+                }
+            } else {
+                final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
+                assertThat(policeResultGenerated, notNullValue());
+            }
         }
     }
 
-    private static void verifyPrivateEvents() throws JMSException {
+    private static void verifyPrivateEvents(final Boolean isGroupProceedings, final String groupId,
+                                            final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
         final Message sessionAdded = privateSessionAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(sessionAdded, notNullValue());
 
-        final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(caseAdded, notNullValue());
+        if (isGroupProceedings) {
+            for (int i = 0; i < isGroupMember.size(); i++) {
+                final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+                assertThat(caseAdded.getBody(String.class).contains("\"" + GROUP_ID + "\":\"" + groupId + "\""), is(true));
+                if (nonNull(isGroupMember.get(i))) {
+                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MEMBER + "\":" + isGroupMember.get(i).booleanValue()), is(true));
+                } else {
+                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MEMBER + "\""), is(false));
+                }
+                if (nonNull(isGroupMaster.get(i))) {
+                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MASTER + "\":" + isGroupMaster.get(i).booleanValue()), is(true));
+                } else {
+                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MASTER + "\""), is(false));
+                }
+            }
+        } else {
+            final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+            assertThat(caseAdded, notNullValue());
+        }
 
-        final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(defendantAdded, notNullValue());
+        if (isGroupProceedings) {
+            for (int i = 0; i < isGroupMember.size(); i++) {
+                final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+                assertThat(defendantAdded.getBody(String.class).contains(CIVIL_OFFENCE), is(true));
+            }
+        } else {
+            final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
+            assertThat(defendantAdded, notNullValue());
+        }
     }
 
     public static void verifyPrivateEventsWithPoliceResultGeneratedForDay(final boolean includePoliceResults, final LocalDate hearingDay) throws JMSException {
-        verifyPrivateEvents();
+        verifyPrivateEvents(Boolean.FALSE, null, null, null);
 
         if (includePoliceResults) {
             final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
@@ -348,7 +396,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void verifyPrivateEventsWithPoliceNotificationFailed() throws JMSException {
-        verifyPrivateEvents();
+        verifyPrivateEvents(Boolean.FALSE, null, null, null);
 
         final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(policeNotificationFailedGenerated, notNullValue());
@@ -356,7 +404,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
 
     public static void verifyPrivateEventsWithPoliceNotificationRequested(final String expectedEmail) throws JMSException {
-        verifyPrivateEvents();
+        verifyPrivateEvents(Boolean.FALSE, null, null, null);
 
         final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(policeNotificationRequestedGenerated, notNullValue());
