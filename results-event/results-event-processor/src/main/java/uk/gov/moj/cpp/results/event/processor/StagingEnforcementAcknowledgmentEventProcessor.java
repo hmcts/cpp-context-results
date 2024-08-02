@@ -83,6 +83,12 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         this.sender.sendAsAdmin(envelope);
     }
 
+    @Handles("public.progression.defendant-address-changed")
+    public void updateDefendantAddressInAggregateForNewApplication(final JsonEnvelope event){
+        final Envelope<JsonObject> envelope = envelop(event.payloadAsJsonObject()).withName("result.command.update-defendant-address-for-application").withMetadataFrom(event);
+        this.sender.sendAsAdmin(envelope);
+    }
+
     private void updateGobAccount(JsonEnvelope event, String accountNumber, String correlationId) {
             final JsonObject commandPayload = createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber).add(CORRELATION_ID, correlationId).build();
             final Envelope<JsonObject> envelope = envelop(commandPayload).withName("result.command.update-gob-account").withMetadataFrom(event);

@@ -14,6 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,8 +35,6 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import org.apache.commons.lang3.NotImplementedException;
-import rx.functions.ActionN;
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.ContactNumber;
@@ -47,6 +46,7 @@ import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
@@ -71,19 +71,18 @@ import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -177,7 +176,6 @@ public class ResultsEventProcessorTest {
 
     @Mock
     private BaseStructureConverter baseStructureConverter;
-
 
     @Mock
     private ApplicationParameters applicationParameters;
@@ -875,9 +873,13 @@ public class ResultsEventProcessorTest {
     @Test
     public void shouldHandleTheNcesEmailNotificationRequested() {
         final String materialId = randomUUID().toString();
+        final String email = "email@email.com";
+        final String name = "myname";
         final JsonEnvelope jsonEnvelope = envelope()
                 .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
                 .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(name, "defendantName")
+                .withPayloadOf(email, "defendantEmail")
                 .build();
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
@@ -885,6 +887,8 @@ public class ResultsEventProcessorTest {
         verify(documentGeneratorService, times(1)).generateNcesDocument(
                 anyObject(), jsonEnvelopeArgumentCaptor.capture(), anyObject(), anyObject());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantName"), is(name));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantEmail"), is(email));
     }
 
     @Test

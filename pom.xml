@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>10.9.5</version>
+        <version>10.9.10</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.results</groupId>
@@ -36,7 +36,7 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <coredomain.version>8.0.3</coredomain.version>
+        <coredomain.version>8.0.4</coredomain.version>
         <criminal-court-public-model.version>${coredomain.version}</criminal-court-public-model.version>
         <referencedata.version>8.0.67</referencedata.version>
         <progression.version>8.0.193</progression.version>

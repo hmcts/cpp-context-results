@@ -79,6 +79,8 @@ public class NcesEmailNotificationRequestedListenerTest {
                 .withMaterialId(randomUUID())
                 .withSubject("Subject")
                 .withSendTo("SendTo@gmail.com")
+                .withDefendantEmail("email@email.com")
+                .withDefendantName("name")
                 .build();
     }
 

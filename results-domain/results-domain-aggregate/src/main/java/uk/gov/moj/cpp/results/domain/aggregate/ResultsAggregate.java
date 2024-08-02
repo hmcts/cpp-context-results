@@ -105,6 +105,7 @@ public class ResultsAggregate implements Aggregate {
     private YouthCourt youthCourt;
     private List<UUID> youthCourtDefendantIds;
     private Map<UUID, CaseResultDetails> caseResultAmendmentDetailsList = new HashedMap();
+    private Hearing hearing;
 
 
     @Override
@@ -121,7 +122,7 @@ public class ResultsAggregate implements Aggregate {
     }
 
     private void handleHearingResultsAddedForDay(final HearingResultsAddedForDay hearingResultsAddedForDay) {
-        final Hearing hearing = hearingResultsAddedForDay.getHearing();
+        this.hearing = hearingResultsAddedForDay.getHearing();
         this.hearingIds.add(hearing.getId());
 
         final List<CaseResultDetails> newCaseResultDetailsList = ResultAmendmentDetailsHelper.buildHearingResultDetails(hearing, caseResultAmendmentDetailsList);
@@ -130,15 +131,15 @@ public class ResultsAggregate implements Aggregate {
     }
 
     private void handleHearingResultsAdded(final HearingResultsAdded hearingResultsAdded) {
-        final Hearing hearing = hearingResultsAdded.getHearing();
-        this.hearingIds.add(hearing.getId());
+        final Hearing resultedHearing = hearingResultsAdded.getHearing();
+        this.hearingIds.add(resultedHearing.getId());
 
-        this.youthCourt = hearing.getYouthCourt();
+        this.youthCourt = resultedHearing.getYouthCourt();
         this.youthCourtDefendantIds = new ArrayList<>(); // interested in the latest event
-        ofNullable(hearing.getYouthCourtDefendantIds())
+        ofNullable(resultedHearing.getYouthCourtDefendantIds())
                 .ifPresent(e -> youthCourtDefendantIds.addAll(e));
 
-        final List<CaseResultDetails> newCaseResultDetailsList = ResultAmendmentDetailsHelper.buildHearingResultDetails(hearing, caseResultAmendmentDetailsList);
+        final List<CaseResultDetails> newCaseResultDetailsList = ResultAmendmentDetailsHelper.buildHearingResultDetails(resultedHearing, caseResultAmendmentDetailsList);
         this.caseResultAmendmentDetailsList = newCaseResultDetailsList.stream()
                 .collect(toMap(CaseResultDetails::getCaseId, Functions.identity()));
     }
@@ -646,6 +647,10 @@ public class ResultsAggregate implements Aggregate {
 
     public List<UUID> getCaseIds() {
         return this.cases.stream().map(Case::getCaseId).collect(toList());
+    }
+
+    public Hearing getHearing() {
+        return this.hearing;
     }
 
     public Optional<String> getProsecutionAuthorityCode(final String caseIdFromApi) {

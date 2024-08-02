@@ -13,10 +13,31 @@
         "type": "string"
       }
     },
+    "hearingSittingDay": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "hearingCourtCentreName": {
+      "type": "string"
+    },
     "masterDefendantId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
     "defendantName": {
+      "type": "string"
+    },
+    "defendantDateOfBirth": {
+      "type": "string",
+      "format": "date"
+    },
+    "defendantAddress": {
+      "type": "string"
+    },
+    "defendantEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "defendantContactNumber": {
       "type": "string"
     },
     "ncesEmail": {

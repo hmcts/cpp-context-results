@@ -1,7 +1,9 @@
 package uk.gov.moj.cpp.results.command.handler;
 
+import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.aggregate.AggregateService;
@@ -41,6 +43,7 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
     public static final String CORRELATION_ID = "correlationId";
     public static final String ACCOUNT_NUMBER = "accountNumber";
     public static final String APPLICATION_TYPE = "applicationType";
+    public static final String HEARING_COURT_CENTRE_NAME = "hearingCourtCentreName";
     public static final String LISTING_DATE = "listingDate";
     public static final String CASE_URNS = "caseUrns";
     public static final String IN_FORMAT = "dd/MM/yyyy";
@@ -103,8 +106,9 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE),DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
+        final String hearingCourtCentreName = envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME);
         final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
-                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns));
+                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns,hearingCourtCentreName));
 
         LOGGER.info("masterDefandantId : {} HearingFinancialResultsAggregate:{}", masterDefandantId, objectToJsonObjectConverter.convert(hearingFinancialResultsAggregate));
     }
@@ -116,5 +120,22 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final UUID masterDefendantId = fromString(payload.getString(MASTER_DEFENDANT_ID));
         aggregate(HearingFinancialResultsAggregate.class, masterDefendantId,
                 envelope, a -> a.ncesEmailNotFound(markedAggregateSendEmailWhenAccountReceived));
+    }
+
+    @Handles("result.command.update-defendant-address-for-application")
+    public void handleUpdateDefendantAddressInAggregateForNewApplication(final JsonEnvelope envelope) throws EventStreamException {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("result.command.update-defendant-address-for-application received for application :{}", envelope.payloadAsJsonObject());
+        }
+        if(nonNull(envelope.payloadAsJsonObject()) && nonNull(envelope.payloadAsJsonObject().getJsonObject("courtApplication"))) {
+            final CourtApplication courtApplication = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject().getJsonObject("courtApplication"), CourtApplication.class);
+            final UUID masterDefendantId = nonNull(courtApplication.getSubject()) && nonNull(courtApplication.getSubject().getMasterDefendant())
+                    ? courtApplication.getSubject().getMasterDefendant().getMasterDefendantId()
+                    : null;
+            if (nonNull(masterDefendantId)) {
+                aggregate(HearingFinancialResultsAggregate.class, masterDefendantId,
+                        envelope, a -> a.updateDefendantAddressInAggregate(courtApplication.getSubject().getMasterDefendant()));
+            }
+        }
     }
 }

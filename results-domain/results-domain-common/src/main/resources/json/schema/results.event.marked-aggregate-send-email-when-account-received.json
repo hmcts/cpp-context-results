@@ -21,6 +21,12 @@
     "caseReferences": {
       "type": "string"
     },
+    "hearingSittingDay": {
+      "type": "string"
+    },
+    "hearingCourtCentreName": {
+      "type": "string"
+    },
     "masterDefendantId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
@@ -35,7 +41,47 @@
     "defendantName": {
       "type": "string"
     },
+    "defendantDateOfBirth": {
+      "type": "string",
+      "format": "date"
+    },
+    "isFinancialPenaltiesWrittenOff": {
+      "type": "string"
+    },
+    "originalDateOfOffence": {
+      "type": "string"
+    },
+    "originalDateOfSentence": {
+      "type": "string"
+    },
+    "defendantAddress": {
+      "type": "string"
+    },
+    "defendantEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "defendantContactNumber": {
+      "type": "string"
+    },
+    "applicationResult": {
+      "type": "string"
+    },
     "impositionOffenceDetails": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "newOffenceByResult": {
       "type": "array",
       "items": {
         "type": "object",

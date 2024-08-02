@@ -123,6 +123,11 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         publicMessageConsumer = new MessageConsumerClient();
     }
 
+    public static void createMessageConsumerForPublicMessage() {
+        publicMessageConsumer = new MessageConsumerClient();
+    }
+
+
     public static void whenPrisonAdminTriesToViewResultsForThePerson(final UUID userId) {
         setupUserAsPrisonAdminGroup(userId);
         setLoggedInUser(userId);

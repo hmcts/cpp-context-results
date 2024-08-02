@@ -1,0 +1,29 @@
+{
+  "hearingId": "29978004-8002-11eb-9439-0242ac130002",
+  "prosecutionCaseReferences": [
+    "urn1",
+    "urn2"
+  ],
+  "masterDefendantId": "29978298-8002-11eb-9439-0242ac130002",
+  "defendantName": "defendantName",
+  "ncesEmail": "nces@email.com",
+  "accountCorrelationId" : "29978298-8002-11eb-9439-0242ac130003",
+  "offenceResults": [
+    {
+      "resultId": "4fc80104-8002-11eb-9439-0242ac130002",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "applicationResultType",
+      "offenceId": "OFFENCE_ID",
+      "amendmentReason": "amendmentReason",
+      "isDeemedServed": false,
+      "resultCode": "G",
+      "impositionAmount": "500",
+      "impositionOffenceDetails": "impositionOffenceDetails",
+      "offenceTitle": "offenceTitle",
+      "dateOfResult": "01-01-2021",
+      "accountCorrelationId": "2997837e-8002-11eb-9439-0242ac130002\n\n",
+      "accountDivisionCode": "accountDivisionCode",
+      "isFinancial": true
+    }
+  ]
+}

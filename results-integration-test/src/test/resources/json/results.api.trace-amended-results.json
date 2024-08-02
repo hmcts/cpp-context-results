@@ -1,10 +1,16 @@
 {
-  "hearingId" : "a02df768-a722-4b0e-b851-7496e13b82d4",
+  "hearingId": "HEARING_ID",
   "masterDefendantId" : "MASTER_DEFENDANT_ID",
   "defendantName" : "John Doe",
   "accountCorrelationId" : "CORRELATION_ID",
   "accountDivisionCode" : "DIVISION_CODE",
   "prosecutionCaseReferences" : ["REF1","REF2"],
+  "hearingSittingDay": "HEARING_SITTING_DAY",
+  "hearingCourtCentreName": "HEARING_COURT_CENTRE_NAME",
+  "defendantDateOfBirth": "DEFENDANT_DATE_OF_BIRTH",
+  "defendantAddress": "DEFENDANT_ADDRESS",
+  "defendantEmail": "DEFENDANT_EMAIL",
+  "defendantContactNumber": "DEFENDANT_CONTACT_NUMBER",
   "ncesEmail" : "John.Doe@xxx.com",
   "offenceResults" : [{
     "amendmentReason": "Any reason",

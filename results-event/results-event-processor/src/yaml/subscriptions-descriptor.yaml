@@ -50,4 +50,7 @@ subscriptions_descriptor:
         - name: material.material-added
           schema_uri: http://justice.gov.uk/json/schemas/domains/public/material/material-added.json
 
+        - name: public.progression.defendant-address-changed
+          schema_uri: http://justice.gov.uk/core/courts/public.progression.defendant-address-changed.json
+
       event_source_name: public.event.source
