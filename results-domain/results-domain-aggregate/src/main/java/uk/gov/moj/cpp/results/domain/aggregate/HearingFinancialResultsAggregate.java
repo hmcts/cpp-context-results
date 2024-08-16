@@ -9,6 +9,9 @@ import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.builder;
 import static java.util.stream.Stream.empty;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static org.apache.commons.collections.CollectionUtils.isEqualCollection;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.core.courts.HearingFinancialResultsUpdated.hearingFinancialResultsUpdated;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoNothing;
@@ -53,6 +56,7 @@ import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
+
 
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class HearingFinancialResultsAggregate implements Aggregate {
@@ -469,6 +473,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .withAccountCorrelationId(request.getAccountCorrelationId())
                     .withAccountDivisionCode(request.getAccountDivisionCode())
                     .withCreatedTime(createdTime)
+                    .withProsecutionCaseReferences(request.getProsecutionCaseReferences())
                     .build());
         }
 
@@ -898,7 +903,18 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
     private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithOlds(final HearingFinancialResultRequest hearingFinancialResultRequest, final List<ImpositionOffenceDetails> impositionOffenceDetails,
                                                                                      final String applicationResult) {
-        final CorrelationIdHistoryItem previousItem = correlationIdHistoryItemList.peekLast();
+        CorrelationIdHistoryItem previousItem = correlationIdHistoryItemList.peekLast();
+        final LinkedList<CorrelationIdHistoryItem> filteredList = correlationIdHistoryItemList.stream()
+                .filter(e -> isNotEmpty(e.getProsecutionCaseReferences())
+                        && isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences())
+                        && isEqualCollection(e.getProsecutionCaseReferences(), hearingFinancialResultRequest.getProsecutionCaseReferences()))
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        if (!isEmpty(filteredList)){
+            previousItem = filteredList.peekLast();
+        }
+
+
         final Optional<OffenceResults> offenceResult = hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getAmendmentDate())).findFirst();
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
                 .withId(randomUUID())

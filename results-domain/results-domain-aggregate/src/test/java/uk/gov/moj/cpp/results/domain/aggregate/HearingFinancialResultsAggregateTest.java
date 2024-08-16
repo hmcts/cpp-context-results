@@ -10,6 +10,7 @@ import static java.util.stream.IntStream.range;
 import static javax.json.Json.createReader;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static org.apache.commons.collections.CollectionUtils.isEqualCollection;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.is;
@@ -427,7 +428,68 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountNumber(), is(accountCorrelationIds.get(0) + "ACCOUNT"));
 
     }
+    @Test
+    public void shouldMatchAccountNumberWhenMultipleCorrelationIdReceivedWithDifferentCaseReference() {
+        final List<UUID> accountCorrelationIds = asList(randomUUID(), randomUUID(), randomUUID());
+        final UUID offenceId = randomUUID();
 
+
+            HearingFinancialResultRequest request1 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                    .withAccountCorrelationId(accountCorrelationIds.get(0))
+                    .withProsecutionCaseReferences(asList("RANDOM_CASE_1"))
+                    .withOffenceResults(asList(OffenceResults.offenceResults()
+                            .withOffenceId(offenceId)
+                            .withIsFinancial(true)
+                            .withIsDeemedServed(false).build()))
+                    .withAccountDivisionCode(accountCorrelationIds.get(0).toString() + "DIVCODE")
+                    .build();
+            aggregate.updateFinancialResults(request1,"false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+
+        HearingFinancialResultRequest request2 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withAccountCorrelationId(accountCorrelationIds.get(1))
+                .withProsecutionCaseReferences(asList("RANDOM_CASE_2"))
+                .withOffenceResults(asList(OffenceResults.offenceResults()
+                        .withOffenceId(offenceId)
+                        .withIsFinancial(true)
+                        .withIsDeemedServed(false).build()))
+                .withAccountDivisionCode(accountCorrelationIds.get(1).toString() + "DIVCODE")
+                .build();
+        aggregate.updateFinancialResults(request2,"false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+
+        HearingFinancialResultRequest request3 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withAccountCorrelationId(accountCorrelationIds.get(2))
+                .withProsecutionCaseReferences(asList("RANDOM_CASE_1"))
+                .withOffenceResults(asList(OffenceResults.offenceResults()
+                        .withOffenceId(offenceId)
+                        .withIsFinancial(true)
+                        .withIsDeemedServed(false).build()))
+                .withAccountDivisionCode(accountCorrelationIds.get(2).toString() + "DIVCODE")
+                .build();
+        aggregate.updateFinancialResults(request3, "false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+        Collections.reverse(accountCorrelationIds);
+        accountCorrelationIds.forEach(accountCorrelationId ->
+                aggregate.updateAccountNumber(accountCorrelationId.toString() + "ACCOUNT",
+                        accountCorrelationId)
+        );
+
+
+        assertThat(aggregate.getCorrelationIdHistoryItemList().size(), is(3));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountCorrelationId(), is(accountCorrelationIds.get(2)));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountDivisionCode(), is(accountCorrelationIds.get(2) + "DIVCODE"));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountNumber(), is(accountCorrelationIds.get(2) + "ACCOUNT"));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getProsecutionCaseReferences(), is( asList("RANDOM_CASE_1")));
+
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountCorrelationId(), is(accountCorrelationIds.get(1)));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountDivisionCode(), is(accountCorrelationIds.get(1) + "DIVCODE"));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountNumber(), is(accountCorrelationIds.get(1) + "ACCOUNT"));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getProsecutionCaseReferences(), is( asList("RANDOM_CASE_2")));
+
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountCorrelationId(), is(accountCorrelationIds.get(0)));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountDivisionCode(), is(accountCorrelationIds.get(0) + "DIVCODE"));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountNumber(), is(accountCorrelationIds.get(0) + "ACCOUNT"));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getProsecutionCaseReferences(), is( asList("RANDOM_CASE_1")));
+
+    }
     @Test
     public void shouldMatchAccountNumberWhenMultipleCorrelationIdReceivedWithNullValue() {
         final List<UUID> accountCorrelationIds = asList(randomUUID(), null, randomUUID());

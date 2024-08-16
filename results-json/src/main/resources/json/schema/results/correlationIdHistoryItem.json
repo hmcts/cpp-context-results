@@ -12,6 +12,13 @@
     "accountDivisionCode": {
       "type": "string"
     },
+    "prosecutionCaseReferences": {
+      "description": "ProsecutionCaseReferences for this item",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "createdTime": {
       "type": "string",
       "format": "date-time"
