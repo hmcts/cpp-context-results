@@ -338,15 +338,23 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                                              final String originalDateOfSentenceList,
                                              final List<NewOffenceByResult> newResultByOffenceList,
                                              final String applicationResult) {
-        hearingFinancialResultRequest.getOffenceResults().removeIf(result -> nonNull(result.getApplicationType()));
+        final HearingFinancialResultRequest hfRequest = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withValuesFrom(hearingFinancialResultRequest)
+                .withOffenceResults(getOffenceResults(hearingFinancialResultRequest.getOffenceResults())).build();
 
-        if (isAmendmentProcess(hearingFinancialResultRequest, hasApplicationResult)) {
-            appendAmendmentEvents(hearingFinancialResultRequest, markedEvents, isWrittenOffExists, originalDateOfOffenceList,
+        hfRequest.getOffenceResults().removeIf(result -> nonNull(result.getApplicationType()));
+
+        if (isAmendmentProcess(hfRequest, hasApplicationResult)) {
+            appendAmendmentEvents(hfRequest, markedEvents, isWrittenOffExists, originalDateOfOffenceList,
                     originalDateOfSentenceList, newResultByOffenceList, applicationResult);
         } else {
-            appendDeemedServedEvents(hearingFinancialResultRequest, markedEvents);
-            appendACONEvents(hearingFinancialResultRequest, markedEvents);
+            appendDeemedServedEvents(hfRequest, markedEvents);
+            appendACONEvents(hfRequest, markedEvents);
         }
+    }
+
+    private List<OffenceResults> getOffenceResults(final List<OffenceResults> offenceResults) {
+        return new ArrayList<>(offenceResults);
     }
 
     private void appendAmendmentEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
