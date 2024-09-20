@@ -454,6 +454,27 @@ public class ResultAmendmentDetailsHelperTest {
     }
 
 
+    @Test
+    public void shouldHandleApplicationWithClonedOffences() {
+        UUID caseId = UUID.randomUUID();
+        UUID prevCaseId = UUID.randomUUID();
+        UUID offenceId = UUID.randomUUID();
+        UUID applicationId = UUID.randomUUID();
+        UUID judicialResultIdInApp1 = UUID.randomUUID();
+        final Map<UUID, CaseResultDetails> caseResultDetailsMap = new HashMap<>();
+
+        final Hearing hearing = hearing(
+                null,
+                singletonList(applicationWithClonedOffenceFromPrevCase(applicationId,offenceId, caseId, prevCaseId, judicialResult(judicialResultIdInApp1, false))));
+
+        List<CaseResultDetails> resultDetails = ResultAmendmentDetailsHelper.buildHearingResultDetails(hearing, caseResultDetailsMap);
+        assertThat(resultDetails.size(), is(2));
+        Optional<CaseResultDetails> caseResultDetails = resultDetails.stream().filter(c -> c.getCaseId().equals(caseId)).findFirst();
+        assertThat(caseResultDetails.isPresent(), is(true));
+        verifyApplicationOffenceResult(caseResultDetails.get(), applicationId, offenceId, judicialResultIdInApp1, JudicialResultAmendmentType.ADDED);
+    }
+
+
 
     private void verifyCaseResultNotExists(CaseResultDetails resultDetails, UUID defendantId, UUID offenceId, UUID resultId) {
         Optional<DefendantResultDetails>  defendantResultDetails = resultDetails.getDefendantResultDetails().stream()
@@ -606,6 +627,30 @@ public class ResultAmendmentDetailsHelperTest {
                         .build())
                 .build();
     }
+
+
+    private CourtApplication applicationWithClonedOffenceFromPrevCase(final UUID applicationId, final UUID offenceId, final UUID prosecutionCaseId, final UUID prevProsecutionCaseId, final JudicialResult... results) {
+        return CourtApplication.courtApplication()
+                .withId(applicationId)
+                .withCourtApplicationCases(Arrays.asList(
+                        CourtApplicationCase.courtApplicationCase()
+                                .withProsecutionCaseId(prosecutionCaseId)
+                                .build()
+                ))
+                .withCourtOrder(CourtOrder.courtOrder()
+                        .withCourtOrderOffences(Arrays.asList(
+                                CourtOrderOffence.courtOrderOffence()
+                                        .withProsecutionCaseId(prevProsecutionCaseId)
+                                        .withOffence(Offence.offence().withId(offenceId).withJudicialResults(Arrays.asList(results)).build())
+                                        .build()
+                        ))
+                        .build())
+                .withType(CourtApplicationType.courtApplicationType()
+                        .withType("Application Title")
+                        .build())
+                .build();
+    }
+
 
     private CourtApplication application(final UUID applicationId, final UUID prosecutionCaseId, final UUID courtApplicationCaseOffenceId, final List<JudicialResult> courtApplicationCasesJudicialResults, final UUID courtOrderOffenceId,final List<JudicialResult> courtOrderResults, final List<JudicialResult> results) {
         return CourtApplication.courtApplication()

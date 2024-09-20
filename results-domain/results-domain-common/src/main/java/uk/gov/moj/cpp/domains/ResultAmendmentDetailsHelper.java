@@ -156,7 +156,7 @@ public class ResultAmendmentDetailsHelper {
 
         final List<JudicialResultDetails> judicialResultDetails = buildResulDetails(application.getJudicialResults(), existingResultDetails);
         final List<OffenceResultDetails> courtApplicationCasesResultDetails = getCourtApplicationCasesOffenceResultDetails(application, caseId, existingApplicationResultDetails);
-        final List<OffenceResultDetails> courtOrderOffenceResultDetails = getCourtOrderOffenceResultDetails(application, caseId, existingApplicationResultDetails);
+        final List<OffenceResultDetails> courtOrderOffenceResultDetails = getCourtOrderOffenceResultDetails(application, existingApplicationResultDetails);
 
         String applicationSubjectFirstName = null;
         String applicationSubjectLastName = null;
@@ -200,7 +200,7 @@ public class ResultAmendmentDetailsHelper {
         return courtApplicationResultDetails;
     }
 
-    private static List<OffenceResultDetails> getCourtOrderOffenceResultDetails(final CourtApplication application, final UUID caseId, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
+    private static List<OffenceResultDetails> getCourtOrderOffenceResultDetails(final CourtApplication application, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
         if (isNull(application.getCourtOrder()) || isNull(application.getCourtOrder().getCourtOrderOffences())) {
             return Collections.emptyList();
         }
@@ -208,7 +208,6 @@ public class ResultAmendmentDetailsHelper {
         final List<OffenceResultDetails> clonedOffenceResultDetails = new ArrayList<>();
 
         application.getCourtOrder().getCourtOrderOffences().stream()
-                .filter(courtOrderOffence -> Objects.equals(caseId, courtOrderOffence.getProsecutionCaseId()))
                 .map(CourtOrderOffence::getOffence)
                 .forEach(offence -> {
                     final Optional<OffenceResultDetails> existingCourtOrderOffenceDetails;
