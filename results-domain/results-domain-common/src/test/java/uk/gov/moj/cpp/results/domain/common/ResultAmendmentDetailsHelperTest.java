@@ -474,6 +474,57 @@ public class ResultAmendmentDetailsHelperTest {
         verifyApplicationOffenceResult(caseResultDetails.get(), applicationId, offenceId, judicialResultIdInApp1, JudicialResultAmendmentType.ADDED);
     }
 
+    @Test
+    public void shouldHandleDeletedResultsWhenAllResulsAreDeleted() {
+        UUID caseId = UUID.randomUUID();
+        UUID defendantId = UUID.randomUUID();
+        UUID offenceId = UUID.randomUUID();
+        UUID offenceIdInAppOffence = UUID.randomUUID();
+        UUID offenceIdInCourtAppCases = UUID.randomUUID();
+        UUID applicationId = UUID.randomUUID();
+        UUID judicialResultIdInCase1 = UUID.randomUUID();
+        UUID judicialResultIdInApp1 = UUID.randomUUID();
+        UUID judicialResultIdInAppOffence = UUID.randomUUID();
+        UUID judicialResultIdInCourtAppCases = UUID.randomUUID();
+
+
+        final Map<UUID, CaseResultDetails> caseResultDetailsMap = new HashMap<>();
+        caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
+                new DefendantResultDetails(defendantId, "Defendant Name", Arrays.asList(
+                        new OffenceResultDetails(offenceId, 1, 1, "Offence 1", Arrays.asList(
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                        ))
+                ))),
+                Arrays.asList(
+                        new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
+                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                        ),
+                                Arrays.asList(new OffenceResultDetails(offenceIdInAppOffence, 1, 1, "App Offence 1", Arrays.asList(
+                                        new JudicialResultDetails(judicialResultIdInAppOffence, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.NONE)))),
+
+                                Arrays.asList(new OffenceResultDetails(offenceIdInCourtAppCases, 1, 1, "AppCase Offence 1", Arrays.asList(
+                                        new JudicialResultDetails(judicialResultIdInCourtAppCases, "Result 3", UUID.randomUUID(), JudicialResultAmendmentType.NONE)))),
+                                "firstName", "lastName")
+                )
+        ));
+
+        final Hearing hearing = hearing(
+                singletonList(
+                        prosecutionCase(caseId,
+                                defendant(defendantId,
+                                        offence(offenceId, emptyList())))),
+                singletonList(application(applicationId, caseId, offenceIdInCourtAppCases, emptyList(), offenceIdInAppOffence, emptyList(), emptyList())));
+
+        List<CaseResultDetails> resultDetails = ResultAmendmentDetailsHelper.buildHearingResultDetails(hearing, caseResultDetailsMap);
+        assertThat(resultDetails.size(), is(1));
+        Optional<CaseResultDetails> caseResultDetails = resultDetails.stream().filter(c -> c.getCaseId().equals(caseId)).findFirst();
+        assertThat(caseResultDetails.isPresent(), is(true));
+        verifyApplicationResult(caseResultDetails.get(), applicationId, judicialResultIdInApp1, JudicialResultAmendmentType.DELETED);
+        verifyApplicationOffenceResult(caseResultDetails.get(), applicationId, offenceIdInAppOffence, judicialResultIdInAppOffence, JudicialResultAmendmentType.DELETED);
+        verifyApplicationCasesOffenceResult(caseResultDetails.get(), applicationId, offenceIdInCourtAppCases, judicialResultIdInCourtAppCases, JudicialResultAmendmentType.DELETED);
+        verifyCaseResult(caseResultDetails.get(), defendantId, offenceId, judicialResultIdInCase1, JudicialResultAmendmentType.DELETED);
+    }
+
 
 
     private void verifyCaseResultNotExists(CaseResultDetails resultDetails, UUID defendantId, UUID offenceId, UUID resultId) {
