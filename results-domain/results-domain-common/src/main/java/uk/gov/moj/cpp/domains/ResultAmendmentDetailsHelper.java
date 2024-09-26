@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.domains;
 
+import org.apache.commons.collections.CollectionUtils;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtOrderOffence;
@@ -116,7 +117,6 @@ public class ResultAmendmentDetailsHelper {
                 .filter(courtApplication -> nonNull(courtApplication.getCourtOrder()) && nonNull(courtApplication.getCourtOrder().getCourtOrderOffences()))
                 .filter(courtApplication -> courtApplication.getCourtOrder().getCourtOrderOffences().stream()
                         .anyMatch(courtOrderOffence -> courtOrderOffence.getProsecutionCaseId().equals(caseId)))
-                .filter(courtApplication -> result.stream().noneMatch(c -> Objects.equals(c.getId(), courtApplication.getId())))
                 .forEach(result::add);
 
         return result;
@@ -156,7 +156,7 @@ public class ResultAmendmentDetailsHelper {
 
         final List<JudicialResultDetails> judicialResultDetails = buildResulDetails(application.getJudicialResults(), existingResultDetails);
         final List<OffenceResultDetails> courtApplicationCasesResultDetails = getCourtApplicationCasesOffenceResultDetails(application, caseId, existingApplicationResultDetails);
-        final List<OffenceResultDetails> courtOrderOffenceResultDetails = getCourtOrderOffenceResultDetails(application, existingApplicationResultDetails);
+        final List<OffenceResultDetails> courtOrderOffenceResultDetails = getCourtOrderOffenceResultDetails(application, caseId, existingApplicationResultDetails);
 
         String applicationSubjectFirstName = null;
         String applicationSubjectLastName = null;
@@ -200,7 +200,7 @@ public class ResultAmendmentDetailsHelper {
         return courtApplicationResultDetails;
     }
 
-    private static List<OffenceResultDetails> getCourtOrderOffenceResultDetails(final CourtApplication application, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
+    private static List<OffenceResultDetails> getCourtOrderOffenceResultDetails(final CourtApplication application, final UUID caseId, final Optional<ApplicationResultDetails> existingApplicationResultDetails) {
         if (isNull(application.getCourtOrder()) || isNull(application.getCourtOrder().getCourtOrderOffences())) {
             return Collections.emptyList();
         }
@@ -208,6 +208,7 @@ public class ResultAmendmentDetailsHelper {
         final List<OffenceResultDetails> clonedOffenceResultDetails = new ArrayList<>();
 
         application.getCourtOrder().getCourtOrderOffences().stream()
+                .filter(courtOrderOffence -> Objects.equals(caseId, courtOrderOffence.getProsecutionCaseId()))
                 .map(CourtOrderOffence::getOffence)
                 .forEach(offence -> {
                     final Optional<OffenceResultDetails> existingCourtOrderOffenceDetails;
@@ -313,11 +314,13 @@ public class ResultAmendmentDetailsHelper {
 
 
     private static List<JudicialResultDetails> buildResulDetails(final List<JudicialResult> judicialResults, final List<JudicialResultDetails> existingResultDetails) {
-        final List<JudicialResult> newJudicialResults = isNull(judicialResults) ? new ArrayList<>(): judicialResults;
+        if (CollectionUtils.isEmpty(judicialResults)) {
+            return Collections.emptyList();
+        }
 
         final List<JudicialResultDetails> judicialResultDetails = new ArrayList<>();
 
-        for (final JudicialResult judicialResult: newJudicialResults) {
+        for (final JudicialResult judicialResult: judicialResults) {
             final boolean isAdded = existingResultDetails.stream().noneMatch(resultDetail -> Objects.equals(resultDetail.getResultId(), judicialResult.getJudicialResultId()));
             JudicialResultAmendmentType resultAmendmentType = JudicialResultAmendmentType.NONE;
 
@@ -332,7 +335,7 @@ public class ResultAmendmentDetailsHelper {
 
 
         final List<JudicialResultDetails> deletedResults = existingResultDetails.stream()
-                .filter(r -> newJudicialResults.stream().noneMatch(jr -> Objects.equals(r.getResultId(), jr.getJudicialResultId())))
+                .filter(r -> judicialResults.stream().noneMatch(jr -> Objects.equals(r.getResultId(), jr.getJudicialResultId())))
                 .map(resultDetail -> new JudicialResultDetails(resultDetail.getResultId(), resultDetail.getTitle(), resultDetail.getResultTypeId(), JudicialResultAmendmentType.DELETED))
                 .collect(toList());
 

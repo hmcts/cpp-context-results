@@ -428,7 +428,7 @@ public class ResultsEventProcessor {
                 personalisationProperties.put(APPLICATIONS, applicationPropValue);
             }
 
-            emailTemplateId = getPoliceEmailTemplate(isNotEmpty(applicationPropValue), resultsAmended);
+            emailTemplateId = getPoliceEmailTemplate(isNotEmpty(caseApplication), resultsAmended);
 
             final boolean isApplicationAmended = nonNull(caseResultDetails) && isNotEmpty(caseResultDetails.getApplicationResultDetails()) && caseResultDetails.getApplicationResultDetails().stream()
                     .anyMatch(applicationResultDetails -> isNotEmpty(applicationResultDetails.getJudicialResultDetails()));
