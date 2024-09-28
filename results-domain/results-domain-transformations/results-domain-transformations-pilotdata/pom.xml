@@ -3,15 +3,11 @@
     <parent>
         <artifactId>results-domain-transformations</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>8.0.63-SNAPSHOT</version>
+        <version>17.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>results-domain-transformations-pilotdata</artifactId>
-
-    <properties>
-        <stream-transformation-tool.version>6.4.5</stream-transformation-tool.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -27,7 +23,6 @@
         <dependency>
             <groupId>uk.gov.justice</groupId>
             <artifactId>stream-transformation-tool-api</artifactId>
-            <version>${stream-transformation-tool.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.everit-org.json-schema</groupId>
@@ -40,7 +35,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
+            <groupId>io.rest-assured</groupId>
             <artifactId>json-path</artifactId>
             <scope>compile</scope>
         </dependency>
@@ -48,6 +43,11 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

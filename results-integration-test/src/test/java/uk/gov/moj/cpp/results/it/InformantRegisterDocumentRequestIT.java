@@ -15,6 +15,7 @@ import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryGroupMemberCases;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
 
 import uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper;
 
@@ -26,24 +27,26 @@ import java.util.UUID;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 
-import com.jayway.restassured.response.Response;
+import io.restassured.response.Response;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class InformantRegisterDocumentRequestIT {
     private MessageProducer producer;
     private InformantRegisterDocumentRequestHelper helper;
     private static final UUID GROUP_ID = randomUUID();
 
-    @BeforeClass
+    @BeforeAll
     public static void setupStubs() {
         setupUsersGroupQueryStub();
         stubQueryGroupMemberCases(GROUP_ID);
+        stubNotificationNotifyEndPoint();
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         helper = new InformantRegisterDocumentRequestHelper();
         producer = publicEvents.createProducer();

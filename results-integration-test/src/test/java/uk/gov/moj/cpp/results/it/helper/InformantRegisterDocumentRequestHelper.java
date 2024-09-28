@@ -1,14 +1,14 @@
 package uk.gov.moj.cpp.results.it.helper;
 
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Duration.ONE_MINUTE;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.ws.rs.core.Response.Status.OK;
-import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Durations.ONE_MINUTE;
 import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -38,10 +38,10 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 
 import com.google.common.base.Joiner;
-import com.jayway.awaitility.Duration;
-import com.jayway.restassured.path.json.JsonPath;
-import com.jayway.restassured.response.Response;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.awaitility.Durations;
 import org.hamcrest.Matcher;
 
 public class InformantRegisterDocumentRequestHelper {
@@ -80,12 +80,12 @@ public class InformantRegisterDocumentRequestHelper {
     }
 
     public void verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(final String prosecutionAuthId) {
-        await().pollInterval(Duration.ONE_SECOND).atMost(ONE_MINUTE).until(() -> retrieveMessage(privateNotifiedEventsConsumer).getString("prosecutionAuthorityId"),
+        await().pollInterval(Durations.ONE_SECOND).atMost(ONE_MINUTE).until(() -> retrieveMessage(privateNotifiedEventsConsumer).getString("prosecutionAuthorityId"),
                 is(prosecutionAuthId));
     }
 
     public void verifyInformantRegisterNotificationIgnoredPrivateTopic(final String prosecutionAuthId) {
-        await().pollInterval(Duration.ONE_SECOND).atMost(ONE_MINUTE).until(() -> retrieveMessage(privateNotificationIgnoredEventsConsumer).getString("prosecutionAuthorityId"),
+        await().pollInterval(Durations.ONE_SECOND).atMost(ONE_MINUTE).until(() -> retrieveMessage(privateNotificationIgnoredEventsConsumer).getString("prosecutionAuthorityId"),
                 is(prosecutionAuthId));
     }
 

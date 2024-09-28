@@ -6,7 +6,7 @@ import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
@@ -16,13 +16,9 @@ import uk.gov.justice.services.messaging.MetadataBuilder;
 
 import javax.json.JsonObjectBuilder;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-@RunWith(DataProviderRunner.class)
 public class ProsecutorResultsQueryValidatorTest {
 
     private ProsecutorResultsQueryValidator validator = new ProsecutorResultsQueryValidator();
@@ -30,7 +26,6 @@ public class ProsecutorResultsQueryValidatorTest {
     private static final String ERROR_CODE_SHARED_DATE_IN_FUTURE = "SHARED_DATE_IN_FUTURE";
     private static final String ERROR_CODE_SHARED_DATE_RANGE_INVALID = "SHARED_DATE_RANGE_INVALID";
 
-    @DataProvider
     public static Object[][] errorScenarioSpecification() {
         return new Object[][]{
                 // start date, end date, error code
@@ -55,7 +50,6 @@ public class ProsecutorResultsQueryValidatorTest {
         };
     }
 
-    @DataProvider
     public static Object[][] successScenarioSpecification() {
         return new Object[][]{
                 // start date, end date
@@ -71,8 +65,8 @@ public class ProsecutorResultsQueryValidatorTest {
         };
     }
 
-    @UseDataProvider("errorScenarioSpecification")
-    @Test
+    @ParameterizedTest
+    @MethodSource("errorScenarioSpecification")
     public void shouldThrowException(final String startDate, final String endDate, final String errorCode) {
         try {
             validator.validatePayload(createPayload(startDate, endDate));
@@ -83,8 +77,8 @@ public class ProsecutorResultsQueryValidatorTest {
         fail("Should have failed specification");
     }
 
-    @UseDataProvider("successScenarioSpecification")
-    @Test
+    @ParameterizedTest
+    @MethodSource("successScenarioSpecification")
     public void shouldProcessSuccessfully(final String startDate, final String endDate) {
         try {
             validator.validatePayload(createPayload(startDate, endDate));

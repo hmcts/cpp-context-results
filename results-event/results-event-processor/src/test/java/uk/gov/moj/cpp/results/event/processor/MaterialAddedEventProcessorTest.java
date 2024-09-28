@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.event.processor;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,17 +28,14 @@ import java.util.function.Function;
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 
-@RunWith(DataProviderRunner.class)
 public class MaterialAddedEventProcessorTest {
 
     @Mock
@@ -65,7 +62,7 @@ public class MaterialAddedEventProcessorTest {
     @Captor
     private ArgumentCaptor<JsonEnvelope> sentEnvelopes;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initMocks(this);
         setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());

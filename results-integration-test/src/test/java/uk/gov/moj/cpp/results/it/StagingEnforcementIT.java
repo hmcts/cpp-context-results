@@ -34,11 +34,12 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.json.JsonObject;
 
-import com.jayway.restassured.path.json.JsonPath;
+import io.restassured.path.json.JsonPath;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class StagingEnforcementIT {
 
@@ -106,7 +107,7 @@ public class StagingEnforcementIT {
     static MessageConsumer hearingFinancialResultsUpdatedConsumer;
     static MessageConsumer ncesEmailEventConsumer;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass(){
         stubDocGeneratorEndPoint();
         stubNotificationNotifyEndPoint();
@@ -116,7 +117,7 @@ public class StagingEnforcementIT {
 
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         QueueUtil.removeMessagesFromQueue(correlationIdAndMasterDefendantIdAddedConsumer);
         QueueUtil.removeMessagesFromQueue(hearingFinancialResultsUpdatedConsumer);
@@ -131,6 +132,7 @@ public class StagingEnforcementIT {
         ncesEmailEventConsumer.close();
     }
 
+    @SuppressWarnings("java:S5961")
     @Test
     public void shouldSendNcesEmailForNewApplicationThatWasRejectedOrGranted(){
         final String masterDefendantId = randomUUID().toString();
@@ -341,6 +343,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
     }
 
+    @SuppressWarnings("java:S5961")
     @Test
     public void shouldSendNcesEmailForNewApplicationThenRejectAfterReceivedAccountNumber() {
         final String masterDefendantId = randomUUID().toString();
@@ -621,7 +624,7 @@ public class StagingEnforcementIT {
 
     }
 
-
+    @SuppressWarnings("java:S5961")
     @Test
     public void shouldSendNcesEmailWhenAccountNumberReceivedUnordered(){
         final String masterDefendantId = randomUUID().toString();

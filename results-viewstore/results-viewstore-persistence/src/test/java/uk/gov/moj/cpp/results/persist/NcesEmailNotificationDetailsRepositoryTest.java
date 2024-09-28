@@ -4,7 +4,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
+import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(CdiTestRunner.class)
-public class NcesEmailNotificationDetailsRepositoryTest extends BaseTransactionalTest {
+public class NcesEmailNotificationDetailsRepositoryTest extends BaseTransactionalJunit4Test {
 
     @Inject
     private NcesEmailNotificationDetailsRepository ncesEmailNotificationDetailsRepository;

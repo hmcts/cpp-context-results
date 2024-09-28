@@ -53,9 +53,10 @@ import javax.json.JsonObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matcher;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2699")
 public class DefendantTrackingStatusIT {
@@ -75,7 +76,7 @@ public class DefendantTrackingStatusIT {
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
     private final ObjectToJsonObjectConverter objectToJsonObjectConverter = new ObjectToJsonObjectConverter(objectMapper);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
@@ -90,7 +91,7 @@ public class DefendantTrackingStatusIT {
         closeMessageConsumers();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         cleanViewStoreTables();
         stubSpiOutFlag(true, true);

@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.core.courts.CourtApplication.courtApplication;
 import static uk.gov.justice.core.courts.CourtApplicationCase.courtApplicationCase;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
@@ -109,9 +109,10 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607", "java:S2699"})
 public class ResultsIT {
@@ -130,7 +131,7 @@ public class ResultsIT {
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
@@ -146,7 +147,7 @@ public class ResultsIT {
         closeMessageConsumers();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         stubSpiOutFlag(true, true);
         createMessageConsumers();

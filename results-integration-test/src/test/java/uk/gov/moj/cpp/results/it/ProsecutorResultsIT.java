@@ -30,47 +30,45 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import com.jayway.restassured.response.Response;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-@RunWith(DataProviderRunner.class)
 public class ProsecutorResultsIT {
 
     private static final String ERROR_CODE_SHARED_DATE_IN_FUTURE = "SHARED_DATE_IN_FUTURE";
     private static final String ERROR_CODE_SHARED_DATE_RANGE_INVALID = "SHARED_DATE_RANGE_INVALID";
 
-    @DataProvider
-    public static Object[][] errorScenarioSpecification() {
-        return new Object[][]{
+    public static Stream<Arguments> errorScenarioSpecification() {
+        return Stream.of(
                 // start date, end date, error code
 
                 // start date in future
-                {LocalDate.now().plusDays(1).toString(), null, ERROR_CODE_SHARED_DATE_IN_FUTURE},
+                Arguments.of(LocalDate.now().plusDays(1).toString(), null, ERROR_CODE_SHARED_DATE_IN_FUTURE),
 
                 // end date in future
-                {LocalDate.now().toString(), LocalDate.now().plusDays(1).toString(), ERROR_CODE_SHARED_DATE_IN_FUTURE},
+                Arguments.of(LocalDate.now().toString(), LocalDate.now().plusDays(1).toString(), ERROR_CODE_SHARED_DATE_IN_FUTURE),
 
                 // date range exceeding last 7 days
-                {LocalDate.now().minusDays(8).toString(), LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID},
+                Arguments.of(LocalDate.now().minusDays(8).toString(), LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID),
 
                 // end date before start date
-                {LocalDate.now().minusDays(3).toString(), LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID},
+                Arguments.of(LocalDate.now().minusDays(3).toString(), LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID),
 
                 // invalid start date
-                {"dummy", LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID},
+                Arguments.of("dummy", LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID),
 
                 // invalid end date
-                {LocalDate.now().minusDays(5).toString(), "dummy", ERROR_CODE_SHARED_DATE_RANGE_INVALID},
-        };
+                Arguments.of(LocalDate.now().minusDays(5).toString(), "dummy", ERROR_CODE_SHARED_DATE_RANGE_INVALID)
+        );
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setupStubs() {
         setupUsersGroupQueryStub();
     }
@@ -125,8 +123,8 @@ public class ProsecutorResultsIT {
 
     }
 
-    @UseDataProvider("errorScenarioSpecification")
-    @Test
+    @MethodSource("errorScenarioSpecification")
+    @ParameterizedTest
     public void shouldQueryProsecutorResults_BadRequestCheck(final String startDate, final String endDate, final String errorCode) {
         final String prosecutionAuthorityOuCode = randomAlphanumeric(7);
 
@@ -147,7 +145,5 @@ public class ProsecutorResultsIT {
                         status().is(status),
                         responsePayloadMatcher
                 );
-
-
     }
 }

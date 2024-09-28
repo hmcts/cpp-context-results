@@ -26,6 +26,7 @@ import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -37,19 +38,17 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InformantRegisterEventListenerTest {
 
     @Mock
@@ -64,7 +63,7 @@ public class InformantRegisterEventListenerTest {
     @Spy
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
-    @Before
+    @BeforeEach
     public void setup() {
         setField(this.jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
@@ -123,7 +122,7 @@ public class InformantRegisterEventListenerTest {
                 objectToJsonObjectConverter.convert(informantRegisterGenerated)));
 
         assertThat(informantRegisterEntity.getProcessedOn().toString(), is(notNullValue()));
-        Assert.assertThat(informantRegisterEntity.getStatus(), is(GENERATED));
+        assertThat(informantRegisterEntity.getStatus(), is(GENERATED));
     }
 
     @Test
@@ -137,12 +136,18 @@ public class InformantRegisterEventListenerTest {
                 .build();
 
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+
         informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
         informantRegisterEntity.setStatus(GENERATED);
+
         when(informantRegisterRepository.findByProsecutionAuthorityIdAndStatusGenerated(prosecutionAuthId)).thenReturn(Lists.newArrayList(informantRegisterEntity));
-        informantRegisterEventListener.notifyInformantRegister(envelopeFrom(metadataWithRandomUUID("results.event.informant-register-notified"),
-                objectToJsonObjectConverter.convert(informantRegisterNotified)));
-        Assert.assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
-        Assert.assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-notified"),
+                objectToJsonObjectConverter.convert(informantRegisterNotified)
+        );
+        informantRegisterEventListener.notifyInformantRegister(jsonEnvelope);
+        assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
+        assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
     }
 }

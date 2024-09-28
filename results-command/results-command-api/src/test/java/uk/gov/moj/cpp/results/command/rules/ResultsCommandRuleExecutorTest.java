@@ -10,18 +10,18 @@ import uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;
 import uk.gov.moj.cpp.accesscontrol.test.utils.BaseDroolsAccessControlTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.kie.api.runtime.ExecutionResults;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest {
 
     private static final String GROUP_LISTING_OFFICERS = "Listing Officers";
@@ -36,10 +36,13 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
     @Mock
     protected UserAndGroupProvider userAndGroupProvider;
 
+    public ResultsCommandRuleExecutorTest() {
+        super("COMMAND_API_SESSION");
+    }
+
     @Override
-    protected Map<Class, Object> getProviderMocks() {
-        return ImmutableMap.<Class, Object>builder()
-                .put(UserAndGroupProvider.class, userAndGroupProvider).build();
+    protected Map<Class<?>, Object> getProviderMocks() {
+        return Collections.singletonMap(UserAndGroupProvider.class, userAndGroupProvider);
     }
 
     @Test

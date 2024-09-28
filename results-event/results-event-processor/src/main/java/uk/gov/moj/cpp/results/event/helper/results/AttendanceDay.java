@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.event.helper.results;
 
 import uk.gov.justice.core.courts.DefendantAttendance;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

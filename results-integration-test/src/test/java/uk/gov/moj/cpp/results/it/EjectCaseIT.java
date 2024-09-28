@@ -9,6 +9,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResu
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
@@ -27,11 +28,11 @@ import javax.jms.MessageConsumer;
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import com.jayway.restassured.path.json.JsonPath;
+import io.restassured.path.json.JsonPath;
 import org.hamcrest.Matcher;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class EjectCaseIT {
 
@@ -44,13 +45,15 @@ public class EjectCaseIT {
     private MessageConsumer hearingCaseEjectedConsumer;
     private MessageConsumer hearingApplicationEjectedConsumer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         setupUserAsPrisonAdminGroup(getUserId());
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        stubGetOrgainsationUnit();
         hearingCaseEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-case-ejected");
         hearingApplicationEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-application-ejected");
         createMessageConsumers();
+
     }
 
     @Test

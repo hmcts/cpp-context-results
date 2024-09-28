@@ -1,12 +1,12 @@
 package uk.gov.moj.cpp.results.domain.transformation.transform;
 
+import static javax.json.Json.createObjectBuilder;
+import static uk.gov.moj.cpp.results.domain.transformation.util.SchemaVariableConstants.EVENT_RESULTS_ADD_HEARING;
+
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.domain.transformation.util.SchemaVariableConstants;
 import uk.gov.moj.cpp.results.domain.transformation.util.TransformUtil;
 
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Map;
@@ -17,8 +17,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static javax.json.Json.createObjectBuilder;
-import static uk.gov.moj.cpp.results.domain.transformation.util.SchemaVariableConstants.EVENT_RESULTS_ADD_HEARING;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 public class MasterDefendantIdEventTransformer implements ResultsEventTransformer {
 

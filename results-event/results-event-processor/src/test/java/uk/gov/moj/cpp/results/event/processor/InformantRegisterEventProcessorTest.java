@@ -10,9 +10,9 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
@@ -44,17 +44,17 @@ import javax.json.JsonObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InformantRegisterEventProcessorTest {
     private static final String TEMPLATE_ID = randomUUID().toString();
 
@@ -83,7 +83,7 @@ public class InformantRegisterEventProcessorTest {
     @Mock
     private Sender sender;
 
-    @Before
+    @BeforeEach
     public void setup() {
         setField(this.jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
@@ -111,7 +111,6 @@ public class InformantRegisterEventProcessorTest {
         assertThat(IOUtils.toString(byteInputStreamArgumentCaptor.getValue(), defaultCharset()), is(expectedCsvContent));
         final JsonObject fileStoreMetadataValue = filestorerMetadata.getValue();
         final UUID fileId = randomUUID();
-        when(fileStorer.store(eq(fileStoreMetadataValue), any(ByteArrayInputStream.class))).thenReturn(fileId);
         ArgumentCaptor<Envelope> captor = forClass(Envelope.class);
         verify(sender).send(captor.capture());
         assertThat(captor.getValue().payload().toString(), is(containsString("31af405e-7b60-4dd8-a244-c24c2d3fa595")));
@@ -155,7 +154,6 @@ public class InformantRegisterEventProcessorTest {
         final JsonEnvelope requestEnvelope = envelopeFrom(
                 metadataWithRandomUUID("results.event.informant-register-notified").withUserId(randomUUID().toString()),
                 notificationObject);
-        when(applicationParameters.getEmailTemplateId(anyString())).thenReturn(TEMPLATE_ID);
         informantRegisterEventProcessor.notifyProsecutionAuthority(requestEnvelope);
         verify(notificationNotifyService).sendEmailNotification(eq(requestEnvelope), notificationJson.capture());
         assertThat(notificationJson.getValue().getString("notificationId"), is(notNullValue()));

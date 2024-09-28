@@ -3,18 +3,13 @@
     <parent>
         <artifactId>results-parent</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>8.0.63-SNAPSHOT</version>
+        <version>17.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>results-performance-test</artifactId>
 
     <properties>
-
-        <jmeter-maven-plugin.version>1.10.1</jmeter-maven-plugin.version>
-        <jmeter-plugins-standard.version>1.3.1</jmeter-plugins-standard.version>
-
-
         <jmeter.test.file>*.jmx</jmeter.test.file>
         <!-- Performance tests don't need compilation -->
         <maven.test.skip>true</maven.test.skip>
@@ -32,11 +27,9 @@
             </properties>
             <build>
                 <plugins>
-
                     <plugin>
                         <groupId>com.lazerycode.jmeter</groupId>
                         <artifactId>jmeter-maven-plugin</artifactId>
-                        <version>${jmeter-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>jmeter-tests</id>
@@ -68,19 +61,11 @@
                                 </configuration>
                             </execution>
                         </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>kg.apc</groupId>
-                                <artifactId>jmeter-plugins-standard</artifactId>
-                                <version>${jmeter-plugins-standard.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
 
                     <plugin>
                         <groupId>uk.co.automatictester</groupId>
                         <artifactId>jmeter-lightning-maven-plugin</artifactId>
-                        <version>1.0.0</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -94,7 +79,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>

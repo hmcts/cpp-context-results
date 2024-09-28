@@ -334,6 +334,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return empty();
     }
 
+    @SuppressWarnings("java:S107")
     private void appendFinancialResultEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                              final boolean hasApplicationResult,
                                              final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents,
@@ -809,6 +810,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withOldGobAccountNumber(marked.getOldGobAccountNumber());
     }
 
+    @SuppressWarnings("java:S107")
     private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOldsForSpecificCorrelationId(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject, final CorrelationIdHistoryItem correlationIdHistoryItem, final List<ImpositionOffenceDetails> impositionOffenceDetails,
                                                                                                                 final String isWrittenOffExists,
                                                                                                                 final String originalDateOfOffenceList,
@@ -820,6 +822,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 originalDateOfSentenceList, newResultByOffenceList, applicationResult);
     }
 
+    @SuppressWarnings("java:S107")
     private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject, final CorrelationIdHistoryItem correlationIdHistoryItem, final List<ImpositionOffenceDetails> impositionOffenceDetails, final String ncesEMail,
                                                                                                                          final String isFinancialPenaltiesWrittenOff,
                                                                                                                          final String originalDateOfOffenceList,

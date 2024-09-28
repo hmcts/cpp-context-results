@@ -1,16 +1,15 @@
 package uk.gov.moj.cpp.results.event.helper;
 
 import static org.jgroups.util.UUID.randomUUID;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
 import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWithPayloadAndMetaDetails;
 
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-
-import org.junit.Test;
 
 public class OriginatorTest {
 

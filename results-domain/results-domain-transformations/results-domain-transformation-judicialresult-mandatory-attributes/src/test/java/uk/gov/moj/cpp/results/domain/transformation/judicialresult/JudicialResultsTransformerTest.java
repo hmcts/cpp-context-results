@@ -27,16 +27,13 @@ import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-@RunWith(DataProviderRunner.class)
 public class JudicialResultsTransformerTest {
 
     private static final String JUDICIAL_RESULTS_KEYWORD = "judicialResults";
@@ -46,7 +43,6 @@ public class JudicialResultsTransformerTest {
 
     private JudicialResultsTransformer underTest;
 
-    @DataProvider
     public static Object[][] validEventToTransform() {
         return new Object[][]{
                 {POLICE_RESULT_GENERATED.getEventName()},
@@ -56,7 +52,7 @@ public class JudicialResultsTransformerTest {
         };
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         underTest = new JudicialResultsTransformer();
@@ -66,8 +62,8 @@ public class JudicialResultsTransformerTest {
         eventPayloadTransformerField.set(underTest, eventPayloadTransformer);
     }
 
-    @Test
-    @UseDataProvider("validEventToTransform")
+    @ParameterizedTest
+    @MethodSource("validEventToTransform")
     public void shouldTransformValidEventThatHasJudicialResultsInThePayload(final String eventToTransform) {
         final JsonEnvelope event = prepareWithEventAndJudicialResultsToTransform(eventToTransform);
 
@@ -85,8 +81,8 @@ public class JudicialResultsTransformerTest {
         assertThat(action, is(NO_ACTION));
     }
 
-    @Test
-    @UseDataProvider("validEventToTransform")
+    @ParameterizedTest
+    @MethodSource("validEventToTransform")
     public void shouldNotTransformValidEventWhenJudicialResultsIsNotInThePayload(final String eventToTransform) {
         final JsonEnvelope event = prepareWithEventWithoutJudicialResultsToTransform(eventToTransform);
 

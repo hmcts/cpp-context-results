@@ -7,6 +7,7 @@ import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
 
 import uk.gov.justice.core.courts.CorrelationIdAndMasterdefendantAdded;
 import uk.gov.justice.domain.aggregate.Aggregate;
+
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;

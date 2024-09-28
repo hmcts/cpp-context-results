@@ -1,18 +1,19 @@
 package uk.gov.moj.cpp.results.query.view.service;
 
+import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
+
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
 
 @SuppressWarnings("squid:S3655")
 public class UserGroupsService {

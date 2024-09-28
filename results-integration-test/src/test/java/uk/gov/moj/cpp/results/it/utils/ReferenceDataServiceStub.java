@@ -38,7 +38,7 @@ public class ReferenceDataServiceStub {
 
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/organisation-units/";
 
-        stubFor(get(urlPathEqualTo(urlPath))
+        stubFor(get(urlPathMatching(urlPath + ".*"))
                 .willReturn(aResponse().withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
@@ -143,8 +143,8 @@ public class ReferenceDataServiceStub {
                         .withBody(getJsonResponse("stub-data/referencedata.query.organisation-unit-prosecution-authority.json"))));
         waitForStubToBeReady(urlPath + "?oucode=" + originatingOrganisation, "application/vnd.referencedata.query.get.prosecutor.by.oucode+json");
 
-        stubFor(get(urlPathEqualTo(urlPath + "?prosecutorCode=" + prosecutionAuthority))
-
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("prosecutorCode", equalTo(prosecutionAuthority))
                 .willReturn(aResponse().withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)

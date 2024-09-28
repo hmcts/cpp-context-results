@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
-import static org.junit.rules.ExpectedException.none;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.integer;
@@ -37,18 +37,13 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-@RunWith(DataProviderRunner.class)
 public class EventPayloadTransformerTest {
 
     private static final String JUDICIAL_RESULTS_ATTRIBUTE = "judicialResults";
@@ -56,10 +51,6 @@ public class EventPayloadTransformerTest {
     private static final String EXCLUDED_FROM_RESULTS_ATTRIBUTE = "excludedFromResults";
     private static final String ALWAYS_PUBLISHED_ATTRIBUTE = "alwaysPublished";
 
-    @Rule
-    public ExpectedException expectedException = none();
-
-    @DataProvider
     public static Object[][] validEventToTransform() {
         return new Object[][]{
                 {POLICE_RESULT_GENERATED.getEventName()},
@@ -69,13 +60,13 @@ public class EventPayloadTransformerTest {
         };
     }
 
-    private final EventPayloadTransformer underTest = new EventPayloadTransformer();
+    private final EventPayloadTransformer eventPayloadTransformer = new EventPayloadTransformer();
 
     @Test
     public void shouldEvaluateRollUpPromptsToTrueWhenAllMandatoryAttributesAreFalse() {
         final JsonEnvelope event = prepareValidEventToTransformWithAllMandatoryAttributesSetToFalse();
 
-        final JsonObject transformedPayload = underTest.transform(event);
+        final JsonObject transformedPayload = eventPayloadTransformer.transform(event);
 
         assertThat(transformedPayload, isJson(allOf(
                 withJsonPath("$.offences[0].judicialResults[0].publishedAsAPrompt", equalTo(FALSE)),
@@ -90,7 +81,7 @@ public class EventPayloadTransformerTest {
     public void shouldEvaluateRollUpPromptsToFalseWhenOneOfTheMandatoryAttributesIsTrue() {
         final JsonEnvelope event = prepareValidEventToTransformWithOneOfTheMandatoryAttributesSetToTrue();
 
-        final JsonObject transformedPayload = underTest.transform(event);
+        final JsonObject transformedPayload = eventPayloadTransformer.transform(event);
 
         final JsonObject expectedJudicialResult = event.payloadAsJsonObject().getJsonArray("offences").getValuesAs(JsonObject.class).get(0)
                 .getJsonArray("judicialResults").getValuesAs(JsonObject.class).get(0);
@@ -110,21 +101,23 @@ public class EventPayloadTransformerTest {
     @Test
     public void shouldThrowExceptionWhenOneOrMoreOfTheMandatoryAttributeIsMissing() {
         final JsonEnvelope invalidEvent = prepareInvalidEventWithOneOfTheMandatoryAttributeMissing();
-        expectedException.expect(TransformationException.class);
-        expectedException.expectMessage(matchesPattern("Mandatory attribute/s [\\w,]+ missing from judicialResult payload \\{.*\\}"));
 
-        underTest.transform(invalidEvent);
+        final TransformationException transformationException = assertThrows(
+                TransformationException.class,
+                () -> eventPayloadTransformer.transform(invalidEvent));
+
+        assertThat(transformationException.getMessage(), matchesPattern("Mandatory attribute/s [\\w,]+ missing from judicialResult payload \\{.*\\}"));
     }
 
-    @Test
-    @UseDataProvider("validEventToTransform")
+    @ParameterizedTest
+    @MethodSource("validEventToTransform")
     public void shouldTransformRealEventsFromFile(final String eventToTransform) {
         final JsonObject eventPayload = loadTestFile(format("%s.json", eventToTransform));
         final String expectedPayloadInString = eventPayload.toString();
         assertThat(expectedPayloadInString, not(containsString("publishedForNows")));
         assertThat(expectedPayloadInString, not(containsString("rollUpPrompts")));
 
-        final JsonObject transformedPayload = underTest.transform(envelope()
+        final JsonObject transformedPayload = eventPayloadTransformer.transform(envelope()
                 .with(metadataWithRandomUUID(eventToTransform))
                 .withPayloadFrom(eventPayload).build());
 

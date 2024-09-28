@@ -7,8 +7,8 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,16 +41,16 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonString;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class HearingResultedEventProcessorTest {
 
     @Mock
@@ -190,7 +190,6 @@ public class HearingResultedEventProcessorTest {
         final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
-        when(eventGridService.sendHearingResultedEvent(userId, hearingId.toString(), "Hearing_Resulted")).thenThrow(new RuntimeException("Error"));
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -228,7 +227,6 @@ public class HearingResultedEventProcessorTest {
                 .add("prosecutionCases", prosecutionCases.build())
                 .build();
 
-        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(referenceDataService.getPoliceFlag(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         final JsonArray policeProsecutionCases = eventProcessor.extractPoliceCases(hearing);
 
@@ -247,8 +245,6 @@ public class HearingResultedEventProcessorTest {
                 .add("id", hearingId.toString())
                 .build();
 
-        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
-        when(referenceDataService.getPoliceFlag(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
         final JsonArray policeProsecutionCases = eventProcessor.extractPoliceCases(hearing);
         assertThat(policeProsecutionCases.size(), is(0));
     }
@@ -267,8 +263,6 @@ public class HearingResultedEventProcessorTest {
                 .add("prosecutionCases", prosecutionCases.build())
                 .build();
 
-        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
-        when(referenceDataService.getPoliceFlag(null, null)).thenReturn(false);
         final JsonArray policeProsecutionCases = eventProcessor.extractPoliceCases(hearing);
         assertThat(policeProsecutionCases.size(), is(0));
     }
@@ -288,8 +282,6 @@ public class HearingResultedEventProcessorTest {
                 .add("prosecutionCases", prosecutionCases.build())
                 .build();
 
-        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
-        when(referenceDataService.getPoliceFlag(null, null)).thenReturn(false);
         final JsonArray policeProsecutionCases = eventProcessor.extractPoliceCases(hearing);
         assertThat(policeProsecutionCases.size(), is(0));
     }
@@ -317,7 +309,6 @@ public class HearingResultedEventProcessorTest {
                 .add("prosecutionCases", prosecutionCases.build())
                 .build();
 
-        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(referenceDataService.getPoliceFlag(null, null)).thenReturn(false);
         final JsonArray policeProsecutionCases = eventProcessor.extractPoliceCases(hearing);
         assertThat(policeProsecutionCases.size(), is(0));
@@ -356,7 +347,6 @@ public class HearingResultedEventProcessorTest {
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(hearing);
         when(referenceDataService.getPoliceFlag(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
-        when(eventGridService.sendHearingResultedEvent(userId, hearingId.toString(), "Hearing_Resulted")).thenThrow(new RuntimeException("Error"));
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 

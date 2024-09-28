@@ -8,7 +8,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import uk.gov.justice.core.courts.BailStatus;
@@ -25,13 +25,13 @@ import java.util.UUID;
 
 import javax.json.JsonObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ReferenceCacheTest {
     private static final UUID NATIONALITY_ID = randomUUID();
 
@@ -51,7 +51,7 @@ public class ReferenceCacheTest {
                 .add(nationality)
                 .build()).build();
 
-        when(referenceDataService.getAllNationality(anyObject())).thenReturn(responsePayload);
+        when(referenceDataService.getAllNationality(any())).thenReturn(responsePayload);
 
         final Optional<JsonObject> nationalityResult = referenceCache.getNationalityById(NATIONALITY_ID);
 
@@ -60,7 +60,7 @@ public class ReferenceCacheTest {
 
     @Test
     public void getEmptyNationalityByIsoCode() throws Exception {
-        when(referenceDataService.getAllNationality(anyObject())).thenReturn(createObjectBuilder().build());
+        when(referenceDataService.getAllNationality(any())).thenReturn(createObjectBuilder().build());
 
         final Optional<JsonObject> nationalityResult = referenceCache.getNationalityById(NATIONALITY_ID);
 

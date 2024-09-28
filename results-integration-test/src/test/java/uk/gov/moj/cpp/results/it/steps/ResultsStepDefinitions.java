@@ -260,7 +260,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void hearingResultsHaveBeenShared(final PublicHearingResulted shareResultsMessage) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "public.event");
+        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 
@@ -271,7 +271,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void hearingResultsHaveBeenSharedV2(final PublicHearingResulted shareResultsMessage) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "public.event");
+        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 
@@ -282,7 +282,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void hearingResultsHaveBeenShared(final JsonObject payload) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "public.event");
+        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 
@@ -291,7 +291,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static void hearingResultsHaveBeenSharedV2(final JsonObject payload) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "public.event");
+        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 

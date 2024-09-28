@@ -4,11 +4,11 @@ import static com.jayway.jsonassert.JsonAssert.with;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,16 +30,16 @@ import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import javax.json.JsonObject;
 
 import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class NotificationNotifyServiceTest {
 
     private static final String OU_CODE = "GFL123";
@@ -142,12 +142,12 @@ public class NotificationNotifyServiceTest {
                 .add("caseReferenceNumber", "ref")
                 .add("defendantName", "name")
                 .build();
-        when(objectToJsonObjectConverter.convert(anyObject())).thenReturn(obj);
-        when(fileStorer.store(anyObject(), anyObject())).thenReturn(randomUUID());
-        doNothing().when(systemDocGenerator).generateDocument(anyObject(), anyObject());
+        when(objectToJsonObjectConverter.convert(any())).thenReturn(obj);
+        when(fileStorer.store(any(), any())).thenReturn(randomUUID());
+        doNothing().when(systemDocGenerator).generateDocument(any(), any());
         assertNotNull(notificationNotifyService.generateNotification(ncesEmailNotificationRequested, envelope()));
-        verify(objectToJsonObjectConverter).convert(anyObject());
-        verify(fileStorer).store(anyObject(), anyObject());
-        verify(systemDocGenerator).generateDocument(anyObject(), anyObject());
+        verify(objectToJsonObjectConverter).convert(any());
+        verify(fileStorer).store(any(), any());
+        verify(systemDocGenerator).generateDocument(any(), any());
     }
 }

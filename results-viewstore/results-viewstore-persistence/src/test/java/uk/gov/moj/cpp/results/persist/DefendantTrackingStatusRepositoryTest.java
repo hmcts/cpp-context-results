@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
+import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
 import uk.gov.moj.cpp.results.persist.entity.DefendantTrackingStatus;
 
@@ -17,11 +18,11 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.Test;
 
 @RunWith(CdiTestRunner.class)
-public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalTest {
+public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJunit4Test {
 
     private static final UUID DEFENDANT_ID1 = randomUUID();
     private static final UUID DEFENDANT_ID2 = randomUUID();

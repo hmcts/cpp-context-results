@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.moj.cpp.domains.resultdetails.ApplicationResultDetails;
 import uk.gov.moj.cpp.domains.resultdetails.CaseResultDetails;
 import uk.gov.moj.cpp.domains.resultdetails.DefendantResultDetails;

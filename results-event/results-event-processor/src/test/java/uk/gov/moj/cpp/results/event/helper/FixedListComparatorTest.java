@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static uk.gov.moj.cpp.results.event.helper.FixedListComparator.sortBasedOnFixedList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FixedListComparatorTest {
 

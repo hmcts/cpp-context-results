@@ -9,16 +9,12 @@ import static uk.gov.moj.cpp.results.domain.transformation.judicialresult.domain
 import static uk.gov.moj.cpp.results.domain.transformation.judicialresult.domain.EventToTransform.POLICE_RESULT_GENERATED;
 import static uk.gov.moj.cpp.results.domain.transformation.judicialresult.domain.EventToTransform.isEventToTransform;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-@RunWith(DataProviderRunner.class)
 public class EventToTransformTest {
 
-    @DataProvider
     public static Object[][] validEventToMatch() {
         return new Object[][]{
                 {POLICE_RESULT_GENERATED.getEventName()},
@@ -28,8 +24,8 @@ public class EventToTransformTest {
         };
     }
 
-    @Test
-    @UseDataProvider("validEventToMatch")
+    @ParameterizedTest
+    @MethodSource("validEventToMatch")
     public void shouldReturnTrueIfEventNameIsAMatch(final String eventName) {
         assertThat(isEventToTransform(eventName), is(true));
     }

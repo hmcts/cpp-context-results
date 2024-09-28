@@ -5,14 +5,14 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
@@ -81,16 +81,16 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.hamcrest.MatcherAssert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InformantRegisterHandlerTest {
 
     private static final String ADD_INFORMANT_REGISTER_COMMAND_NAME = "results.command.add-informant-register";
@@ -135,11 +135,9 @@ public class InformantRegisterHandlerTest {
     @Spy
     private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterRecorded.class, InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotificationIgnored.class);
 
-    @Before
+    @BeforeEach
     public void setup() {
         aggregate = new ProsecutionAuthorityAggregate();
-        when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         ReflectionUtil.setField(this.jsonToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
     }
@@ -154,6 +152,9 @@ public class InformantRegisterHandlerTest {
 
     @Test
     public void shouldProcessCommand() throws Exception {
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
 
         informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope());
 
@@ -173,6 +174,8 @@ public class InformantRegisterHandlerTest {
 
     @Test
     public void shouldProcessCommandForGroupCases() throws Exception {
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(progressionQueryService.getGroupMemberCases(any(), any())).thenReturn(getMemberCasesJson(GROUP_ID, 2));
 
         informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope(GROUP_ID, true, true));
@@ -233,6 +236,8 @@ public class InformantRegisterHandlerTest {
 
     @Test
     public void shouldProcessCommandForGroupCasesWithoutDefAndCaseResults() throws Exception {
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(progressionQueryService.getGroupMemberCases(any(), any())).thenReturn(getMemberCasesJson(GROUP_ID, 2));
 
         informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope(GROUP_ID, false, false));
@@ -283,6 +288,9 @@ public class InformantRegisterHandlerTest {
                 .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
                 .build()).build();
         final JsonObject jsonObject = createObjectBuilder().add("informantRegisterDocumentRequests", jsonValues).build();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(queryEnvelope.payloadAsJsonObject()).thenReturn(jsonObject);
         when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
         informantRegisterHandler.handleGenerateInformantRegister(generateInformantRegisterEnvelope);
@@ -297,6 +305,10 @@ public class InformantRegisterHandlerTest {
 
         final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
         aggregate.setInformantRegisterRecipients(Collections.singletonList(recipient));
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
+
         informantRegisterHandler.handleNotifyInformantRegister(notifyInformantRegisterEnvelope);
         verifyNotifyInformantRegisterDocumentRequestHandlerResults();
     }
@@ -311,6 +323,9 @@ public class InformantRegisterHandlerTest {
                 .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
                 .build()).build();
         final JsonObject jsonObject = createObjectBuilder().add("informantRegisterDocumentRequests", jsonValues).build();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(queryEnvelope.payloadAsJsonObject()).thenReturn(jsonObject);
         when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
         informantRegisterHandler.handleGenerateInformantRegisterByDate(generateInformantRegisterEnvelope);

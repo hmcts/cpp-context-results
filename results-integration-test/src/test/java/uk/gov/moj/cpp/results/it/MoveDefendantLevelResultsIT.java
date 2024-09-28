@@ -26,8 +26,8 @@ import java.time.LocalDate;
 import javax.jms.JMSException;
 
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class MoveDefendantLevelResultsIT {
 
@@ -36,7 +36,7 @@ public class MoveDefendantLevelResultsIT {
         closeMessageConsumers();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubCountryNationalities();

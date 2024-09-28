@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ResultsQueryApiComponentTest {
 
@@ -29,7 +29,7 @@ public class ResultsQueryApiComponentTest {
     private Map<String, String> apiMethodsToHandlerNames;
     private Map<String, String> informantAPIMethodsToHandlerNames;
 
-    @Before
+    @BeforeEach
     public void setup() {
         apiMethodsToHandlerNames = stream(ResultsQueryApi.class.getMethods())
                 .filter(method -> method.getAnnotation(Handles.class) != null)

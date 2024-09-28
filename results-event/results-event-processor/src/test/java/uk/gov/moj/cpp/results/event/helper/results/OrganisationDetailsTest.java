@@ -2,8 +2,8 @@ package uk.gov.moj.cpp.results.event.helper.results;
 
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static uk.gov.justice.core.courts.Address.address;
 import static uk.gov.justice.core.courts.AttendanceDay.attendanceDay;
 import static uk.gov.justice.core.courts.ContactNumber.contactNumber;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OrganisationDetailsTest {
 

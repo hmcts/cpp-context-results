@@ -1,10 +1,11 @@
 package uk.gov.moj.cpp.results.persist.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "hearing_defendant_document")

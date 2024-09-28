@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
-import static java.util.Collections.emptyList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
@@ -14,13 +13,11 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -88,8 +85,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -101,20 +96,19 @@ import javax.json.JsonReader;
 import com.google.common.io.Resources;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD = "json/results.create-results-magistrates-example.json";
     private static final String TEMPLATE_PAYLOAD_1 = "json/results.create-results-without-offence-results.json";
@@ -204,7 +198,7 @@ public class ResultsCommandHandlerTest {
     @InjectMocks
     private ResultsCommandHandler resultsCommandHandler;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         shareResultsWithMagistratesMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
         shareResultsWithCrownMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.CROWN);
@@ -238,20 +232,18 @@ public class ResultsCommandHandlerTest {
         return reader.readObject();
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         setField(this.jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
-        when(eventSource.getStreamById(anyObject())).thenReturn(eventStream);
-        when(this.eventSource.getStreamById(shareResultsWithMagistratesMessage.getHearing().getId())).thenReturn(this.eventStream);
-        when(this.eventSource.getStreamById(shareResultsWithCrownMessage.getHearing().getId())).thenReturn(this.eventStream);
-
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
     }
 
     @Test
     public void shouldRaiseHearingResultsAddedWhenSaveShareResults() throws EventStreamException {
 
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(this.eventSource.getStreamById(shareResultsWithMagistratesMessage.getHearing().getId())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
 
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.add-hearing-result"),
@@ -272,6 +264,10 @@ public class ResultsCommandHandlerTest {
     public void shouldRaiseHearingResultsForDayAddedWhenSaveShareResultsForDay() throws EventStreamException {
         final LocalDate hearingDay = LocalDate.now();
         final UUID hearingId = UUID.randomUUID();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
+
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
 
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.add-hearing-result-for-day"),
@@ -304,6 +300,8 @@ public class ResultsCommandHandlerTest {
         final UUID case3Id = UUID.randomUUID();
         final UUID case4Id = UUID.randomUUID();
         final UUID groupId = UUID.randomUUID();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
 
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.add-hearing-result-for-day"),
@@ -415,6 +413,9 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldHandleCaseOrApplicationEjectedWhenPayloadContainsCaseIdExpectHearingCaseEjectedEvent() throws EventStreamException {
 
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
+
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
         final UUID hearingId1 = randomUUID();
         final UUID hearingId2 = randomUUID();
@@ -457,15 +458,19 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject hearingCaseEjectedPayload = filterdJsonEnvelopList.get(1).payloadAsJsonObject();
         final Metadata metadata = filterdJsonEnvelopList.get(1).metadata();
-        Assert.assertThat(metadata.name(), is("results.hearing-case-ejected"));
-        Assert.assertThat(hearingCaseEjectedPayload.getString(CASE_ID), is(caseId.toString()));
+        assertThat(metadata.name(), is("results.hearing-case-ejected"));
+        assertThat(hearingCaseEjectedPayload.getString(CASE_ID), is(caseId.toString()));
 
     }
 
     @Test
     public void shouldHandleCaseOrApplicationEjectedWhenPayloadContainsApplicationIdExpectHearingApplicationEjectedEvent() throws EventStreamException {
 
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
+
+
         final UUID hearingId1 = randomUUID();
         final UUID hearingId2 = randomUUID();
         final UUID applicationId = randomUUID();
@@ -509,8 +514,8 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject hearingCaseEjectedPayload = filterdJsonEnvelopList.get(1).payloadAsJsonObject();
         final Metadata metadata = filterdJsonEnvelopList.get(1).metadata();
-        Assert.assertThat(metadata.name(), is("results.hearing-application-ejected"));
-        Assert.assertThat(hearingCaseEjectedPayload.getString(APPLICATION_ID), is(applicationId.toString()));
+        assertThat(metadata.name(), is("results.hearing-application-ejected"));
+        assertThat(hearingCaseEjectedPayload.getString(APPLICATION_ID), is(applicationId.toString()));
 
     }
 
@@ -523,6 +528,9 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", true)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
         when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
 
         this.resultsCommandHandler.createResult(envelope);
@@ -563,7 +571,10 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SURREY_POLICE_CPS_ORGANISATION);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
+
         createResults(payload, envelope, jsonProsecutorBuilder);
         verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION);
     }
@@ -578,7 +589,10 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SUSSEX_POLICE_CPS_ORGANISATION);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
+
         createResults(payload, envelope, jsonProsecutorBuilder);
         verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION);
     }
@@ -592,6 +606,8 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SURREY_POLICE_ORIG_ORGANISATION);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
         createResults(payload, envelope, jsonProsecutorBuilder);
         verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SURREY_POLICE_ORIG_ORGANISATION);
@@ -606,6 +622,8 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION, SUSSEX_POLICE_ORIG_ORGANISATION);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION)).thenReturn(of(jsonProsecutorBuilder.build()));
         createResults(payload, envelope, jsonProsecutorBuilder);
         verify(referenceDataService, times(1)).getSpiOutFlagForOriginatingOrganisation(SUSSEX_POLICE_ORIG_ORGANISATION);
@@ -615,6 +633,8 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldCreateResultCommandForSjpCaseRejected() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_3);
@@ -651,6 +671,8 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("OUCODE")).thenReturn(of(jsonProsecutorBuilder.build()));
         createResults(payload, envelope, jsonProsecutorBuilder);
     }
@@ -661,16 +683,21 @@ public class ResultsCommandHandlerTest {
                 .add("spiOutFlag", true)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any())).thenReturn(of(jsonProsecutorBuilder.build()));
 
 
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_5);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
-        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
         createResults(payload, envelope, jsonProsecutorBuilder);
     }
 
     private void createResults(final JsonObject payload, final JsonEnvelope envelope, final JsonObjectBuilder jsonProsecutorBuilder) throws EventStreamException {
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
+
         resultsCommandHandler.createResult(envelope);
         final JsonObject session = payload.getJsonObject("session");
         final UUID sessionId = fromString(session.getString("id"));
@@ -689,9 +716,11 @@ public class ResultsCommandHandlerTest {
         final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_10);
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.update-defendant-tracking-status-example.json"), payload);
 
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(defendantAggregate);
 
         resultsCommandHandler.updateDefendantTrackingStatus(envelope);
+
         verify(eventStream).append(streamArgumentCaptor.capture());
         final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
         assertThat(jsonEnvelopeList.size(), is(1));
@@ -716,9 +745,9 @@ public class ResultsCommandHandlerTest {
                 .withOffenceId(offence.getId()).build());
         setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -744,9 +773,9 @@ public class ResultsCommandHandlerTest {
                 .withOffenceId(offence.getId()).build());
         setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -756,6 +785,9 @@ public class ResultsCommandHandlerTest {
     }
     @Test
     public void shouldTrackResultWhenApplicationIsGranted() throws Exception {
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+
         final String offenceId = UUID.randomUUID().toString();
 
         final String payload = FileUtil.getPayload(TEMPLATE_PAYLOAD_9_WITH_GRANTED_APPLICATION).replaceAll("OFFENCE_ID", offenceId);
@@ -789,9 +821,8 @@ public class ResultsCommandHandlerTest {
         setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -844,9 +875,9 @@ public class ResultsCommandHandlerTest {
         setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -898,9 +929,9 @@ public class ResultsCommandHandlerTest {
         setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -922,11 +953,11 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject hearingPayload = getPayload(TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF_TRUE_WITH_OFFENCE_IS_NULL_AND_JUDICIAL_RESULT_IS_NULL);
         Hearing hearingObject = jsonObjectToObjectConverter.convert((JsonObject) hearingPayload.get("hearing"), Hearing.class);
-        when(this.resultsAggregateSpy.getHearing()).thenReturn(hearingObject);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(this.resultsAggregateSpy.getHearing()).thenReturn(hearingObject);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -944,9 +975,9 @@ public class ResultsCommandHandlerTest {
         Hearing hearingObject = jsonObjectToObjectConverter.convert((JsonObject) hearingPayload.get("hearing"), Hearing.class);
         when(this.resultsAggregateSpy.getHearing()).thenReturn(hearingObject);
 
-        when(aggregateService.get(any(EventStream.class), any())).thenReturn(hearingFinancialResultsAggregateSpy);
-        when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(resultsAggregateSpy);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(resultsAggregateSpy);
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -958,6 +989,8 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldUpdateResultCommandWithJurisdictionMagistratesAndRaisePoliceNotificationRequested() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
 
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
@@ -1009,6 +1042,8 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldUpdateResultCommandWithJurisdictionCrownAndRaisePoliceNotificationRequested() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
 
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
@@ -1057,6 +1092,8 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldUpdateResultCommandWithJurisdictionCrownAndRaisePoliceResultGenerated() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
 
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
@@ -1100,12 +1137,14 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldGeneratePoliceResultsForDefendantWhenProsecutionAuthorityCodeSet() throws EventStreamException {
 
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
+
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
         jsonProsecutorBuilder
                 .add("spiOutFlag", false)
                 .add("policeFlag", true)
                 .add("contactEmailAddress", EMAIL);
-        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
 
         final JsonObject policeResultsPayload = getPayload(TEMPLATE_PAYLOAD_4);
         final JsonEnvelope policeResultsEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.generate-police-results-for-a-defendant"), policeResultsPayload);
@@ -1116,6 +1155,8 @@ public class ResultsCommandHandlerTest {
     @Test
     public void shouldUpdateResultCommandWithProsecutionAuthorityCodeAndWithoutOriginatingOrganisation() throws EventStreamException {
         final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
 
         final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();

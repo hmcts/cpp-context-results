@@ -59,6 +59,7 @@ import uk.gov.justice.core.courts.Source;
 import uk.gov.justice.core.courts.SummonsTemplateType;
 import uk.gov.justice.core.courts.Verdict;
 import uk.gov.justice.core.courts.VerdictType;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.domains.JudicialRoleTypeEnum;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
@@ -68,6 +69,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -99,6 +101,7 @@ public class TestTemplates {
     private static final String LINKED_CASE_ID = "cccc1111-1e20-4c21-916a-81a6c90239e5";
     private static final String ACTIVE = "ACTIVE";
     private static final String AUTHORITY_REFERENCE = "authorityReference";
+    private static final ZonedDateTime FIXED_UTC_TIME = ZonedDateTime.of(2021, 6, 15, 10, 35, 10, 0, ZoneId.of("UTC"));
 
 
     private TestTemplates() {
@@ -350,7 +353,7 @@ public class TestTemplates {
 
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), isWithVerdict), createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType, isSJPHearing))
-                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+                .setSharedTime(FIXED_UTC_TIME);
     }
 
     public static PublicHearingResulted basicShareResultsTemplateForIndicatedPlea(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing) {
@@ -506,7 +509,7 @@ public class TestTemplates {
 
     private static Defendant createDefendant(final String defendantId, final String prosecutionAuthorityReference, final List<JudicialResult> judicialResults, final boolean isWithVerdict, final Integer offenceDateCode, final Boolean isIndicatedPlea) {
         return Defendant.defendant()
-                .withCourtProceedingsInitiated(ZonedDateTime.now())
+                .withCourtProceedingsInitiated(new UtcClock().now())
                 .withMasterDefendantId(UUID.fromString(defendantId))
                 .withId(fromString(defendantId))
                 .withProsecutionCaseId(randomUUID())
@@ -542,7 +545,7 @@ public class TestTemplates {
     private static List<HearingDay> buildHearingDays() {
         final List<HearingDay> hearingDays = new ArrayList<>();
         hearingDays.add(HearingDay.hearingDay()
-                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
+                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.of("UTC")))
                 .withListedDurationMinutes(100)
                 .withListingSequence(10)
                 .build());

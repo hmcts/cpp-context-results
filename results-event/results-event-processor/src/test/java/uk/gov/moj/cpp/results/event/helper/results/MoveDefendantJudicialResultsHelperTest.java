@@ -1,19 +1,5 @@
 package uk.gov.moj.cpp.results.event.helper.results;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
-import uk.gov.justice.core.courts.Defendant;
-import uk.gov.justice.core.courts.DefendantJudicialResult;
-import uk.gov.justice.core.courts.JudicialResult;
-import uk.gov.justice.core.courts.JudicialResultCategory;
-import uk.gov.justice.core.courts.Offence;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import static com.google.common.collect.ImmutableList.of;
 import static java.time.LocalDate.now;
 import static java.util.Collections.emptyList;
@@ -27,6 +13,21 @@ import static uk.gov.justice.core.courts.Defendant.defendant;
 import static uk.gov.justice.core.courts.DefendantJudicialResult.defendantJudicialResult;
 import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
 import static uk.gov.justice.core.courts.Offence.offence;
+
+import uk.gov.justice.core.courts.Defendant;
+import uk.gov.justice.core.courts.DefendantJudicialResult;
+import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
+import uk.gov.justice.core.courts.Offence;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 public class MoveDefendantJudicialResultsHelperTest {
 
@@ -289,7 +290,7 @@ public class MoveDefendantJudicialResultsHelperTest {
         UUID offenceId1 = randomUUID();
         UUID offenceId2 = randomUUID();
 
-        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch), buildOffence(offenceId1), buildOffence(offenceId2));
+        final List<Offence> originalOffenceList = of(buildOffence(offenceIdMatch), buildOffence(offenceId1), buildOffence(offenceId2)); //3
         UUID ddchCaseDefendantJudicialResultId = randomUUID();
         List<JudicialResult> caseDefendantJudicialResultList = of(buildCaseDefendantJudicialResultList(null, ddchCaseDefendantJudicialResultId));
         final Defendant defendant = getDefendant(masterDefendantIdMatch, originalOffenceList, caseDefendantJudicialResultList);

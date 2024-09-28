@@ -3,24 +3,21 @@ package uk.gov.moj.cpp.results.persist;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.Assert.assertNull;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
-
-import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;
@@ -28,7 +25,7 @@ import org.junit.runner.RunWith;
 
 @SuppressWarnings("CdiInjectionPointsInspection")
 @RunWith(CdiTestRunner.class)
-public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest {
+public class HearingResultedDocumentRepositoryTest extends BaseTransactionalJunit4Test {
 
     @Inject
     private HearingResultedDocumentRepository hearingResultedDocumentRepository;
@@ -53,7 +50,7 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
     }
 
     @Test
-    public void shouldFindByHearingIdAndLatestHearingDay(){
+    public void shouldFindByHearingIdAndLatestHearingDay() {
         final UUID hearingId = randomUUID();
         final LocalDate hearingDay1 = LocalDate.of(2018, 12, 04);
         final LocalDate hearingDay2 = LocalDate.of(2018, 12, 05);
@@ -68,7 +65,7 @@ public class HearingResultedDocumentRepositoryTest extends BaseTransactionalTest
     }
 
     @Test
-    public void shouldFindByHearingIdAndHearingDay(){
+    public void shouldFindByHearingIdAndHearingDay() {
         final UUID hearingId = UUID.randomUUID();
         final LocalDate hearingDay1 = LocalDate.of(2018, 12, 04);
         final LocalDate hearingDay2 = LocalDate.of(2018, 12, 05);

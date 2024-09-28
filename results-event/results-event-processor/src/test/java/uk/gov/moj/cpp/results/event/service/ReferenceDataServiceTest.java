@@ -14,10 +14,11 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -61,18 +62,18 @@ import javax.json.JsonValue;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @SuppressWarnings("unused")
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ReferenceDataServiceTest {
 
     protected static final String GAFTL_00 = "GAFTL00";
@@ -113,7 +114,7 @@ public class ReferenceDataServiceTest {
     @Spy
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initMocks(this);
         setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
@@ -319,7 +320,6 @@ public class ReferenceDataServiceTest {
         );
     }
 
-    @Test(expected = NullPointerException.class)
     public void shouldFailWhenSpiOutFlagNotFound() {
         final JsonObject responsePayload = createObjectBuilder().build();
         final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
@@ -327,7 +327,7 @@ public class ReferenceDataServiceTest {
 
         when(requester.requestAsAdmin(any(), any())).then(mock -> queryResponse);
 
-        referenceDataService.getSpiOutFlag(originatingOrganisation);
+        assertThrows(NullPointerException.class, () -> referenceDataService.getSpiOutFlag(originatingOrganisation));
     }
 
     @Test
@@ -376,7 +376,6 @@ public class ReferenceDataServiceTest {
         final JsonObject responsePayload = createObjectBuilder().add("modeOfTrialReasons", modeOfTrialArray).build();
 
         final JsonEnvelope queryResponse = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), responsePayload);
-        when(requester.request(any())).thenReturn(queryResponse);
 
         final JsonEnvelope context = envelopeFrom(MetadataBuilderFactory.metadataWithRandomUUIDAndName(), createObjectBuilder().build());
 
@@ -445,8 +444,6 @@ public class ReferenceDataServiceTest {
         when(requester.requestAsAdmin(any(), any())).then(mock -> queryResponse);
 
         final List<String> prosecutorIds = referenceDataService.getProsecutorIdForCPSFlagTrue();
-
-        when(requester.requestAsAdmin(any(), any())).thenReturn(Envelope.envelopeFrom(DefaultJsonMetadata.metadataBuilder().withId(randomUUID()).withName("referencedata.query.get.prosecutor.by.cpsflag"), prosecutorIds));
 
         assertThat(prosecutorIds.size(), is(1));
     }

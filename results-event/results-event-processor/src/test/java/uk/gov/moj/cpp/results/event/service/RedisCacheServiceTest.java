@@ -2,24 +2,24 @@ package uk.gov.moj.cpp.results.event.service;
 
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.Ignore;
 import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
-@Ignore
+@ExtendWith(MockitoExtension.class)
+@Disabled
 public class RedisCacheServiceTest {
 
     @InjectMocks
@@ -43,7 +43,7 @@ public class RedisCacheServiceTest {
         when(statefulRedisConnection.sync()).thenReturn(redisCommands);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         redisCacheService = new RedisCacheService();
         mockRedis();

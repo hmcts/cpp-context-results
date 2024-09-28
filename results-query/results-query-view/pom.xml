@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-query</artifactId>
-        <version>8.0.63-SNAPSHOT</version>
+        <version>17.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-query-view</artifactId>
@@ -12,7 +12,6 @@
 
     <properties>
         <cpp.framework.action.mapping.enabled>true</cpp.framework.action.mapping.enabled>
-        <usersgroups.version>8.0.30</usersgroups.version>
         <cpp.service-component>QUERY_VIEW</cpp.service-component>
     </properties>
 
@@ -21,20 +20,6 @@
             <plugin>
                 <groupId>uk.gov.justice.generators</groupId>
                 <artifactId>pojo-generation-plugin</artifactId>
-                <dependencies>
-                    <dependency>
-                        <groupId>uk.gov.moj.cpp.usersgroups</groupId>
-                        <artifactId>usersgroups-query-api</artifactId>
-                        <version>${usersgroups.version}</version>
-                        <classifier>raml</classifier>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>*</groupId>
-                                <artifactId>*</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>

@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.domains.results.structure;
 
-import uk.gov.justice.core.courts.Gender;
-import uk.gov.justice.core.courts.ContactNumber;
 import uk.gov.justice.core.courts.Address;
+import uk.gov.justice.core.courts.ContactNumber;
+import uk.gov.justice.core.courts.Gender;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -31,6 +31,7 @@ public class Person implements Serializable {
 
     private String nationality;
 
+    @SuppressWarnings("java:S107")
     private Person(String title, String firstName, String lastName, Gender gender, LocalDate dateOfBirth, ContactNumber contact, Address address, String middleName, String nationality) {
         this.title = title;
         this.firstName = firstName;

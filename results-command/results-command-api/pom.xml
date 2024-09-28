@@ -3,7 +3,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-command</artifactId>
-        <version>8.0.63-SNAPSHOT</version>
+        <version>17.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>results-command-api</artifactId>
     <packaging>war</packaging>
@@ -22,10 +22,6 @@
             <groupId>uk.gov.moj.cpp.common</groupId>
             <artifactId>command-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>uk.gov.moj.cpp.system.authorisation</groupId>
-            <artifactId>authorisation-interceptor</artifactId>
-        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
@@ -41,7 +37,6 @@
         <dependency>
             <groupId>uk.gov.moj.cpp.access-control</groupId>
             <artifactId>access-control-refdata-providers</artifactId>
-            <version>${cpp.platform-libraries.version}</version>
         </dependency>
     </dependencies>
     <build>

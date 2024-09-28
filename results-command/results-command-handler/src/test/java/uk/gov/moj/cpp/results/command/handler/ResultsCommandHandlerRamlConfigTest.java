@@ -15,8 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ResultsCommandHandlerRamlConfigTest {
 
@@ -26,7 +26,7 @@ public class ResultsCommandHandlerRamlConfigTest {
 
     private Map<String, String> handlerMethodsToHandlerNames;
 
-    @Before
+    @BeforeEach
     public void setup() {
         handlerMethodsToHandlerNames = handlerMethodsToHandlerNames(ResultsCommandHandler.class, InformantRegisterHandler.class, NcesDocumentNotificationCommandHandler.class);
     }

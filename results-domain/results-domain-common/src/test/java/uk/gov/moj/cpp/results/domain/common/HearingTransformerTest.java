@@ -31,15 +31,15 @@ import java.util.Optional;
 import javax.json.JsonObject;
 
 import com.google.common.io.Resources;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class HearingTransformerTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(HearingHelperTest.class.getName());
 
@@ -48,7 +48,7 @@ public class HearingTransformerTest {
 
     private final HearingTransformer hearingTransformer = new HearingTransformer();
 
-    @Before
+    @BeforeEach
     public void setup() {
         setField(this.jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
     }

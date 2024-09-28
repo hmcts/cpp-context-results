@@ -8,8 +8,8 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,17 +73,17 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StagingEnforcementResponseHandlerTest {
 
     @Spy
@@ -134,9 +134,9 @@ public class StagingEnforcementResponseHandlerTest {
     @InjectMocks
     private StagingEnforcementResponseHandler stagingEnforcementResponseHandler;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        when(eventSource.getStreamById(anyObject())).thenReturn(eventStream);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.eventSource.getStreamById(any())).thenReturn(this.eventStream);
     }
 
@@ -289,6 +289,63 @@ public class StagingEnforcementResponseHandlerTest {
     }
 
     @Test
+    public void shouldSendNcesEmailForNewApplicationWithoutHearingCountCentreName() throws EventStreamException {
+        final UUID masterDefendantId = randomUUID();
+        final UUID offenceId = randomUUID();
+        final ZonedDateTime hearingSittingDay = ZonedDateTimes.fromString("2020-03-07T14:22:00.000Z");
+
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(randomUUID(), "result.command.send-nces-email-for-application"),
+                Json.createObjectBuilder()
+                        .add("applicationType", "applicationType")
+                        .add("masterDefendantId", masterDefendantId.toString())
+                        .add("listingDate", "28/12/2021")
+                        .add("caseUrns", createCaseUrns()).build());
+        HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
+        hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
+                .withCreatedTime(ZonedDateTime.now())
+                .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
+                        .withHearingId(randomUUID())
+                        .withMasterDefendantId(masterDefendantId)
+                        .withAccountDivisionCode("10")
+                        .withOffenceResults(getOffenceResults(offenceId)).withHearingSittingDay(hearingSittingDay)
+                        .build())
+                .build());
+        hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
+                .withCreatedTime(ZonedDateTime.now())
+                .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
+                        .withHearingId(randomUUID())
+                        .withMasterDefendantId(masterDefendantId)
+                        .withAccountCorrelationId(randomUUID())
+                        .withAccountDivisionCode("10")
+                        .withAccountNumber("abc")
+                        .withHearingSittingDay(hearingSittingDay)
+                        .withOffenceResults(getOffenceResults(offenceId))
+                        .build())
+                .build());
+
+        when(this.aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregate);
+
+        stagingEnforcementResponseHandler.sendNcesEmailForNewApplication(envelope);
+
+        verify(eventSource, times(1)).getStreamById(eventSourceArgumentCaptor.capture());
+
+        verify(eventStream, times(1)).append(eventStreamArgumentCaptor.capture());
+        JsonEnvelope event = eventStreamArgumentCaptor.getValue().collect(toList()).get(0);
+
+        final JsonEnvelope allValues = envelopeFrom(event.metadata(), event.payload());
+        assertThat(allValues,
+                jsonEnvelope(
+                        metadata().withName("results.event.marked-aggregate-send-email-when-account-received"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.masterDefendantId", is(masterDefendantId.toString())),
+                                withJsonPath("$.listedDate", is("2021-12-28")),
+                                withJsonPath("$.hearingSittingDay", is("2020-03-07")),
+                                withJsonPath("$.originalDateOfSentence", is("2020-03-07"))
+                        ))));
+    }
+
+    @Test
+    @SuppressWarnings("java:S2699")
     public void shouldUpdateDefendantAddressInAggregateForNewApplication() throws EventStreamException {
         final MetadataBuilder metadataBuilder = getMetadata("result.command.update-defendant-address-for-application");
         final JsonEnvelope event = envelopeFrom(metadataBuilder,  Json.createObjectBuilder().add("courtApplication",createObjectBuilder().build()).build());

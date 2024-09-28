@@ -14,10 +14,9 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.json.JsonObject;
 
-import com.jayway.restassured.path.json.JsonPath;
+import io.restassured.path.json.JsonPath;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.apache.activemq.artemis.jms.client.ActiveMQTopic;
-import org.apache.activemq.command.ActiveMQTextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,11 +31,11 @@ public class QueueUtilForPrivateEvents {
 
     public static final long RETRIEVE_TIMEOUT = 30000;
 
-    private final Session session;
+    private static Session session;
 
     private final Topic topic;
 
-    public static final QueueUtilForPrivateEvents privateEvents = new QueueUtilForPrivateEvents("results.event");
+    public static final QueueUtilForPrivateEvents privateEvents = new QueueUtilForPrivateEvents("jms.topic.results.event");
 
     private QueueUtilForPrivateEvents(final String topicName) {
         try {
@@ -78,7 +77,7 @@ public class QueueUtilForPrivateEvents {
         final String json = jsonEnvelope.toDebugStringPrettyPrint();
 
         try {
-            final TextMessage message = new ActiveMQTextMessage();
+            final TextMessage message = session.createTextMessage();
 
             message.setText(json);
             message.setStringProperty("CPPNAME", commandName);

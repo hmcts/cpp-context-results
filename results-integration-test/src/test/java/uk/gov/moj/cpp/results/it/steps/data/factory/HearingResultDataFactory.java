@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.results.it.steps.data.factory;
 
-import java.util.UUID;
-
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.UUID;
+
+import java.util.UUID;
 
 public class HearingResultDataFactory {
 

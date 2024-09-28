@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.domain.common;
 
 import org.apache.commons.collections.map.HashedMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtApplicationType;

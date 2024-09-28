@@ -11,10 +11,8 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,8 +31,9 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePaylo
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.ContactNumber;
@@ -45,14 +44,13 @@ import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
+import uk.gov.justice.services.test.utils.framework.api.JsonObjectConvertersFactory;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
@@ -71,10 +69,8 @@ import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
-import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
-import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -89,18 +85,14 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
-@RunWith(DataProviderRunner.class)
 public class ResultsEventProcessorTest {
 
     public static final String FIELD_AMEND_RESHARE = "Amend_Reshare";
@@ -193,10 +185,10 @@ public class ResultsEventProcessorTest {
     PoliceEmailHelper policeEmailHelper;
 
     @Spy
-    private JsonObjectToObjectConverter jsonObjectToObjectConverter;
+    private JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectConvertersFactory().jsonObjectToObjectConverter();
 
     @Spy
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter = new JsonObjectConvertersFactory().objectToJsonObjectConverter();
 
     @InjectMocks
     private ResultsEventProcessor resultsEventProcessor;
@@ -213,11 +205,9 @@ public class ResultsEventProcessorTest {
     @Captor
     private ArgumentCaptor<EmailNotification> emailNotificationArgumentCaptor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initMocks(this);
-        setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
-        setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
         final JsonObject result = createObjectBuilder()
                 .add("isoCode", "USA")
                 .add("id", NATIONALITY_ID.toString())
@@ -270,7 +260,6 @@ public class ResultsEventProcessorTest {
                         )));
 
     }
-
 
     @Test
     public void shouldIssueCreateResultCommandWhenHearingResulted() {
@@ -885,7 +874,7 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                anyObject(), jsonEnvelopeArgumentCaptor.capture(), anyObject(), anyObject());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantName"), is(name));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantEmail"), is(email));
@@ -912,7 +901,7 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
 
         verify(notificationNotifyService, times(1)).sendNcesEmail(
-                anyObject(), jsonEnvelopeArgumentCaptor.capture());
+                any(), jsonEnvelopeArgumentCaptor.capture());
         verify(notificationNotifyService, times(1)).sendNcesEmail(
                 emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("sendToAddress"), is(sendToAddress));

@@ -3,6 +3,8 @@ package uk.gov.moj.cpp.results.it.steps;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.test.utils.core.http.BaseUriProvider.getBaseUri;
 
+import uk.gov.justice.services.test.utils.core.http.ResponseData;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
@@ -17,7 +19,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.justice.services.test.utils.core.http.ResponseData;
 
 public abstract class AbstractStepDefinitions {
 

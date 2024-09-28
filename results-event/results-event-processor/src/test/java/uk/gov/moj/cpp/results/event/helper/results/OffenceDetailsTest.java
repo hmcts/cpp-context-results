@@ -3,11 +3,11 @@ package uk.gov.moj.cpp.results.event.helper.results;
 import static com.google.common.collect.ImmutableList.of;
 import static java.time.LocalDate.now;
 import static java.util.UUID.randomUUID;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.justice.core.courts.CourtApplication.courtApplication;
 import static uk.gov.justice.core.courts.CourtApplicationType.courtApplicationType;
 import static uk.gov.justice.core.courts.Hearing.hearing;
@@ -38,7 +38,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class OffenceDetailsTest {
 

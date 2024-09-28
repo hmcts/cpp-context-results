@@ -1,9 +1,9 @@
 package uk.gov.moj.cpp.results.it.steps;
 
-import static com.google.common.collect.Lists.newArrayList;
+import uk.gov.moj.cpp.results.it.steps.data.hearing.DefenceCounsel;
+
 import java.util.Optional;
 import java.util.UUID;
-import uk.gov.moj.cpp.results.it.steps.data.hearing.DefenceCounsel;
 
 public class DefendantDefenceCounselPair {
 

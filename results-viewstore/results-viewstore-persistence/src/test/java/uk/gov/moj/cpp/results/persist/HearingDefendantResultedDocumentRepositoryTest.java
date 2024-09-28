@@ -1,25 +1,24 @@
 package uk.gov.moj.cpp.results.persist;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
+
+import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
+import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
+import uk.gov.moj.cpp.results.persist.entity.HearingDefendantKey;
+import uk.gov.moj.cpp.results.persist.entity.HearingDefendantResultedDocument;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+import javax.inject.Inject;
 
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
-import uk.gov.moj.cpp.results.persist.entity.HearingDefendantKey;
-import uk.gov.moj.cpp.results.persist.entity.HearingDefendantResultedDocument;
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.util.UUID;
 
 @SuppressWarnings("CdiInjectionPointsInspection")
 @RunWith(CdiTestRunner.class)
-public class HearingDefendantResultedDocumentRepositoryTest extends BaseTransactionalTest {
+public class HearingDefendantResultedDocumentRepositoryTest extends BaseTransactionalJunit4Test {
 
     @Inject
     private HearingDefendantResultedDocumentRepository hearingResultedDocumentRepository;

@@ -8,11 +8,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static com.jayway.awaitility.Awaitility.await;
-import static com.jayway.awaitility.Awaitility.waitAtMost;
-import static com.jayway.awaitility.Duration.TEN_SECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.waitAtMost;
+import static org.awaitility.Durations.TEN_SECONDS;
 import static uk.gov.justice.services.test.utils.core.http.BaseUriProvider.getBaseUri;
 
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
@@ -21,11 +21,12 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
-import com.github.tomakehurst.wiremock.client.RequestPatternBuilder;
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
+
 
 public class DocumentGeneratorStub {
 
-    public static final String PATH = "/systemdocgenerator-service/command/api/rest/systemdocgenerator";
+    private static final String PATH = "/systemdocgenerator-service/command/api/rest/systemdocgenerator/";
 
     public static void stubDocumentCreate(String documentText) {
         stubFor(post(urlPathMatching(PATH))
@@ -37,11 +38,12 @@ public class DocumentGeneratorStub {
 
     public static void verifyCreate(List<String> expectedValues) {
         await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
-        RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(PATH));
-        expectedValues.forEach(
-                expectedValue -> requestPatternBuilder.withRequestBody(containing(expectedValue))
-        );
-        verify(requestPatternBuilder);
+            RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(PATH + ".*"));
+            expectedValues.forEach(
+                    expectedValue -> requestPatternBuilder.withRequestBody(containing(expectedValue))
+            );
+            verify(requestPatternBuilder);
+            return true;
         });
     }
 

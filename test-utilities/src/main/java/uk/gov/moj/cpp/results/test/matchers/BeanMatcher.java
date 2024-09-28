@@ -1,15 +1,6 @@
 package uk.gov.moj.cpp.results.test.matchers;
 
-import static org.hamcrest.CoreMatchers.is;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.SelfDescribing;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -20,11 +11,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.DynamicType;
+import net.bytebuddy.implementation.InvocationHandlerAdapter;
+import net.bytebuddy.matcher.ElementMatchers;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.SelfDescribing;
+
+import static org.hamcrest.CoreMatchers.is;
 
 @SuppressWarnings({"squid:S1166", "squid:S1141", "squid:S00108", "squid:S2221", "squid:S00112", "squid:S2129"})
 public class BeanMatcher<T> extends BaseMatcher<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BeanMatcher.class);
     private Class<T> clazz;
     private Error error;
     private String methodName;
@@ -36,6 +36,22 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
     }
 
     public <R> BeanMatcher<T> with(Function<T, R> accessor, Matcher<R> matcher) {
+        assertions.add(new Assertion<>(accessor, matcher));
+        return this;
+    }
+
+    public <R> BeanMatcher<T> withOptional(Function<T, Optional<R>> accessor, Matcher<R> underlyingMatcher) {
+        final Matcher<Optional<R>> matcher = new BaseMatcher<Optional<R>>() {
+            @Override
+            public boolean matches(Object o) {
+                return underlyingMatcher.matches(o == null ? null : ((Optional) o).orElse(null));
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                underlyingMatcher.describeTo(description);
+            }
+        };
         assertions.add(new Assertion<>(accessor, matcher));
         return this;
     }
@@ -58,15 +74,19 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
             return false;
         }
 
-        final Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
-        enhancer.setCallback((MethodInterceptor) (obj, method, args, proxy) -> {
-            methodName = method.getName();
-            return method.invoke(item, args);
-        });
+        Class<?> loadedProxyClazz;
+        try (DynamicType.Unloaded<T> unloaded = new ByteBuddy().subclass(clazz).method(ElementMatchers.any())
+                .intercept(InvocationHandlerAdapter.of((proxyArg, method, args) -> {
+                    methodName = method.getName();
+                    return method.invoke(item, args);
+                })).make()) {
+            loadedProxyClazz = unloaded.load(clazz.getClassLoader()).getLoaded();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to create proxy for class: " + clazz.getName(), e);
+        }
 
         try {
-            final T proxy = (T) create(enhancer, clazz);
+            final T proxy = (T) create(loadedProxyClazz, clazz);
 
             for (final Assertion<T, ?> assertion : assertions) {
                 if (!assertion.getMatcher().matches(assertion.getAccessor().apply(proxy))) {
@@ -82,17 +102,17 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
         return true;
     }
 
-    private Object create(final Enhancer enhancer, final Class<?> theClazz) {
+    private Object create(final Class<?> proxyClazz, final Class<?> theClazz) {
         try {
             //try the default constructor first
-            final Class<?> []noArgs = {};
+            final Class<?>[] noArgs = {};
             Constructor<?> constructor = null;
             try {
                 constructor = theClazz.getDeclaredConstructor(noArgs);
             } catch (Exception ex) {
             }
             if (constructor != null && Modifier.isPublic(constructor.getModifiers())) {
-                return enhancer.create();
+                return proxyClazz.getDeclaredConstructor().newInstance();
             }
             // try to find a non default constructor
             final Optional<Constructor<?>> nonDefaultConstructor = Arrays.asList(theClazz.getConstructors()).stream()
@@ -105,7 +125,7 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
             for (int done = 0; done < parameters.length; done++) {
                 parameters[done] = getExampleParamValue(paramTypes[done]);
             }
-            return enhancer.create(paramTypes, parameters);
+            return proxyClazz.getDeclaredConstructor(paramTypes).newInstance(parameters);
         } catch (Exception ex) {
             throw new RuntimeException("failed to create a " + theClazz.getCanonicalName(), ex);
         }
@@ -113,21 +133,21 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
 
     private Object getExampleParamValue(Class theClass) {
         if (Integer.TYPE == theClass) {
-            return new Integer(1);
+            return Integer.valueOf(1);
         } else if (Long.TYPE == theClass) {
-            return new Long(1);
+            return Long.valueOf(1);
         } else if (Boolean.TYPE == theClass) {
-            return new Boolean(true);
+            return true;
         } else if (Float.TYPE == theClass) {
-            return new Float(1);
+            return Float.valueOf(1);
         } else if (Double.TYPE == theClass) {
-            return new Double(1);
+            return Double.valueOf(1);
         } else if (Short.TYPE == theClass) {
-            return new Short((short) 1);
+            return Short.valueOf((short) 1);
         } else if (Byte.TYPE == theClass) {
-            return new Byte((byte) 1);
+            return Byte.valueOf(((byte) 1));
         } else if (Character.TYPE == theClass) {
-            return new Character('a');
+            return Character.valueOf(('a'));
         } else {
             return null;
         }
@@ -169,18 +189,7 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
         }
 
         if (error == Error.INVALID_ASSERTION) {
-
-            Object value = "unavailable";
-            try {
-                value = this.failedAssertion.getAccessor().apply((T) item);
-            } catch (Exception ex) {
-                LOGGER.error(ex.getMessage(), ex);
-                value = "unavailable " + ex.toString();
-            }
-
-
-
-            this.failedAssertion.getMatcher().describeMismatch(value, description);
+            this.failedAssertion.getMatcher().describeMismatch(this.failedAssertion.getAccessor().apply((T) item), description);
         }
     }
 

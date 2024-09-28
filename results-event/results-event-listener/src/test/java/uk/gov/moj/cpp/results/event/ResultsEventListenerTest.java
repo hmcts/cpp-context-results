@@ -5,6 +5,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -44,19 +45,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import net.minidev.json.JSONValue;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ResultsEventListenerTest {
 
 
@@ -75,7 +75,7 @@ public class ResultsEventListenerTest {
     @Captor
     private ArgumentCaptor<HearingResultedDocument> hearingResultedDocumentArgumentCaptor;
 
-    @Before
+    @BeforeEach
     public void setup() {
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
         setField(this.jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
@@ -243,8 +243,11 @@ public class ResultsEventListenerTest {
         final ArrayNode caseArrayNode = (ArrayNode) hearingNode.path(HEARING).path(PROSECUTION_CASES);
         caseArrayNode.forEach(caseNode -> {
             if (caseNode.get("id").asText().equals(caseId)) {
-                Assert.assertEquals("Check if the application status is ejected", "true",
-                        caseNode.path("isEjected").asText());
+                assertEquals(
+                        "true",
+                        caseNode.path("isEjected").asText(),
+                        "Check if the application status is ejected"
+                );
             }
         });
     }
@@ -292,16 +295,22 @@ public class ResultsEventListenerTest {
         final ArrayNode caseArrayNode = (ArrayNode) hearingNode.path(HEARING).path(PROSECUTION_CASES);
         caseArrayNode.forEach(caseNode -> {
             if (caseNode.get("id").asText().equals(caseId)) {
-                Assert.assertEquals("Check if the case status is ejected", "true",
-                        caseNode.path("isEjected").asText());
+                assertEquals(
+                        "true",
+                        caseNode.path("isEjected").asText(),
+                        "Check if the case status is ejected"
+                );
             }
         });
         final ArrayNode applicationArrayNode = (ArrayNode) hearingNode.path(HEARING).path(COURT_APPLICATIONS);
         applicationArrayNode.forEach(applicationNode -> {
             final JsonNode linkedCaseNode = applicationNode.path("linkedCaseId");
             if (!linkedCaseNode.isMissingNode() && linkedCaseNode.asText().equals(caseId)) {
-                Assert.assertEquals("Check if the application status is ejected", "true",
-                        applicationNode.path("isEjected").asText());
+                assertEquals(
+                        "true",
+                        applicationNode.path("isEjected").asText(),
+                        "Check if the application status is ejected"
+                );
             }
         });
     }
@@ -329,8 +338,11 @@ public class ResultsEventListenerTest {
         final ArrayNode applicationArrayNode = (ArrayNode) hearingNode.path(HEARING).path(COURT_APPLICATIONS);
         applicationArrayNode.forEach(applicationNode -> {
             if (applicationNode.get("id").asText().equals(applicationId) || applicationNode.get("parentApplicationId").asText().equals(applicationId)) {
-                Assert.assertEquals("Check if the application status is ejected", "true",
-                        applicationNode.path("isEjected").asText());
+                assertEquals(
+                        "true",
+                        applicationNode.path("isEjected").asText(),
+                        "Check if the application status is ejected"
+                );
             }
         });
     }
@@ -358,8 +370,10 @@ public class ResultsEventListenerTest {
         final ArrayNode applicationArrayNode = (ArrayNode) hearingNode.path(HEARING).path(COURT_APPLICATIONS);
         applicationArrayNode.forEach(applicationNode -> {
             if (applicationNode.get("id").asText().equals(applicationId)) {
-                Assert.assertEquals("Check if the application status is ejected", "true",
-                        applicationNode.path("isEjected").asText());
+                assertEquals(
+                        "true",
+                        applicationNode.path("isEjected").asText(),
+                        "Check if the application status is ejected");
             }
         });
     }

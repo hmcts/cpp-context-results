@@ -7,9 +7,10 @@ import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.justice.core.courts.*;
 import uk.gov.justice.core.courts.external.ApiAddress;
 import uk.gov.justice.core.courts.external.ApiCourtCentre;
@@ -55,7 +56,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.core.courts.CourtApplicationCase.courtApplicationCase;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
@@ -101,7 +102,7 @@ public class HearingResultedIT {
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
@@ -120,7 +121,7 @@ public class HearingResultedIT {
         closeMessageConsumers();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         stubSpiOutFlag(true, true);
 

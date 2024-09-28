@@ -8,16 +8,15 @@ import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 import static javax.json.Json.createReader;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
-import static org.apache.commons.collections.CollectionUtils.isEqualCollection;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate.APPLICATION_UPDATED_SUBJECT;
 
@@ -29,8 +28,6 @@ import uk.gov.justice.core.courts.UnmarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResults;
-import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
-import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -54,19 +51,16 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-@RunWith(DataProviderRunner.class)
 public class HearingFinancialResultsAggregateTest {
     public static final String STAT_DEC = "STAT_DEC";
     public static final String REOPEN = "REOPEN";
@@ -101,6 +95,7 @@ public class HearingFinancialResultsAggregateTest {
     private String defendantAddress = "address";
     private String defendantEmail = "aa@aa.com";
     private String defendantContactNumber = "02074561234";
+
     private final HearingFinancialResultRequest input = HearingFinancialResultRequest.hearingFinancialResultRequest()
             .withAccountCorrelationId(CORRELATION_ID_1)
             .withHearingId(HEARING_ID)
@@ -143,7 +138,6 @@ public class HearingFinancialResultsAggregateTest {
                                                                             "APPLICATION TO REOPEN GRANTED",
                                                                             "APPLICATION TO REOPEN GRANTED",
                                                                             "APPEAL GRANTED");
-    @DataProvider
     public static Object[][] applicationTypes() {
         return new String[][]{
                 {STAT_DEC, "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"},
@@ -152,7 +146,6 @@ public class HearingFinancialResultsAggregateTest {
         };
     }
 
-    @DataProvider
     public static Object[][] subjects() {
         return new String[][]{
                 {STAT_DEC, RFSD, "STATUTORY DECLARATION REFUSED"},
@@ -174,7 +167,6 @@ public class HearingFinancialResultsAggregateTest {
         };
     }
 
-    @DataProvider
     public static Object[][] applicationUpdateSubjects() {
         return new String[][]{
                 {STAT_DEC, "ABC", STATUTORY_DECLARATION_UPDATED},
@@ -182,10 +174,11 @@ public class HearingFinancialResultsAggregateTest {
                 {APPEAL, "APPEAL", APPEAL_APPLICATION_UPDATED}
         };
     }
+
     @InjectMocks
     private HearingFinancialResultsAggregate aggregate;
 
-    @Before
+    @BeforeEach
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
         ncesEMail = "John.Doe@xxx.com";
@@ -387,7 +380,6 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountCorrelationId(), is(CORRELATION_ID_2));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountDivisionCode(), is("adc"));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountDivisionCode(), is("new_division_code"));
-
     }
 
     @Test
@@ -532,8 +524,8 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountDivisionCode(), is(accountCorrelationIds.get(2) + "DIVCODE"));
     }
 
-    @UseDataProvider("applicationTypes")
-    @Test
+    @ParameterizedTest
+    @MethodSource("applicationTypes")
     public void shouldRaiseEmailEventWithCorrectSubject(final String applicationType, final String subject) {
         final List<UUID> accountCorrelationIds = asList(randomUUID(), randomUUID(), randomUUID());
         final UUID offenceId1 = randomUUID();
@@ -595,8 +587,8 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(unmarkedAggregateSendEmailWhenAccountReceived.getId(), is(notNullValue()));
     }
 
-    @UseDataProvider("subjects")
-    @Test
+    @ParameterizedTest
+    @MethodSource("subjects")
     public void shouldRaiseEmailWhenSingleCaseSingleDefendantSingleOffence(final String applicationType, final String applicationResultCode, final String subject) {
         final String createAppSubject = Arrays.stream(applicationTypes()).filter(s -> s[0].equals(applicationType)).map(s -> (String) s[1]).findFirst().orElse("subject not found");
         final UUID accountCorrelationId = randomUUID();
@@ -619,9 +611,8 @@ public class HearingFinancialResultsAggregateTest {
 
     }
 
-
-    @UseDataProvider("applicationUpdateSubjects")
-    @Test
+    @ParameterizedTest
+    @MethodSource("applicationUpdateSubjects")
     public void shouldRaiseEmailWhenSingleCaseSingleDefendantSingleOffenceForUpdateSubjects(final String applicationType, final String applicationResultCode, final String subject) {
         final String createAppSubject = Arrays.stream(applicationTypes()).filter(s -> s[0].equals(applicationType)).map(s -> (String) s[1]).findFirst().orElse("subject not found");
         final UUID accountCorrelationId = randomUUID();
@@ -648,9 +639,8 @@ public class HearingFinancialResultsAggregateTest {
         );
     }
 
-
-    @UseDataProvider("subjects")
-    @Test
+    @ParameterizedTest
+    @MethodSource("subjects")
     public void shouldRaiseEmailWhenSingleCaseSingleDefendantMultipleOffencesBothFinancial(final String applicationType, final String applicationResultCode, final String subject) {
         final String createAppSubject = Arrays.stream(applicationTypes()).filter(s -> s[0].equals(applicationType)).map(s -> (String) s[1]).findFirst().orElse("subject not found");
         final UUID accountCorrelationId = randomUUID();
@@ -673,8 +663,8 @@ public class HearingFinancialResultsAggregateTest {
 
     }
 
-    @UseDataProvider("subjects")
-    @Test
+    @ParameterizedTest
+    @MethodSource("subjects")
     public void shouldRaiseEmailWhenSingleCaseSingleDefendantMultipleOffencesOnlyOneFinancial(final String applicationType, final String applicationResultCode, final String subject) {
         {
             final String createAppSubject = Arrays.stream(applicationTypes()).filter(s -> s[0].equals(applicationType)).map(s -> (String) s[1]).findFirst().orElse("subject not found");
@@ -700,8 +690,8 @@ public class HearingFinancialResultsAggregateTest {
         }
     }
 
-    @UseDataProvider("subjects")
-    @Test
+    @ParameterizedTest
+    @MethodSource("subjects")
     public void shouldRaiseEmailWhenMultipleCasesOneDefendantMultipleOffences(final String applicationType, final String applicationResultCode, final String subject) {
         final String createAppSubject = Arrays.stream(applicationTypes()).filter(s -> s[0].equals(applicationType)).map(s -> (String) s[1]).findFirst().orElse("subject not found");
         final UUID accountCorrelationId1 = randomUUID();

@@ -10,8 +10,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.google.common.io.Resources.getResource;
-import static com.jayway.awaitility.Awaitility.waitAtMost;
-import static com.jayway.awaitility.Duration.TEN_SECONDS;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
@@ -19,6 +17,8 @@ import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.awaitility.Awaitility.waitAtMost;
+import static org.awaitility.Durations.TEN_SECONDS;
 import static uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils.stubPingFor;
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 import static uk.gov.justice.services.test.utils.core.http.BaseUriProvider.getBaseUri;
@@ -126,13 +126,14 @@ public class WireMockStubUtils {
     }
 
     public static void waitForStubToBeReady(final String resource, final String mediaType, final Status expectedStatus) {
-        poll(requestParams(format("{0}/{1}", getBaseUri(), resource), mediaType)).until(status().is(expectedStatus));
+        var urlFormatter = resource.startsWith("/") ? "{0}{1}" : "{0}/{1}";
+        poll(requestParams(format(urlFormatter, getBaseUri(), resource), mediaType)).until(status().is(expectedStatus));
     }
 
     public static void stubDocGeneratorEndPoint() {
         stubPingFor("systemdocgenerator-service");
 
-        final String urlPath = "/systemdocgenerator-service/command/api/rest/systemdocgenerator/generate-document/*";
+        final String urlPath = "/systemdocgenerator-service/command/api/rest/systemdocgenerator/generate-document/.*";
 
         stubFor(post(urlPathMatching(urlPath))
                 .willReturn(aResponse().withStatus(SC_ACCEPTED)
@@ -149,7 +150,7 @@ public class WireMockStubUtils {
     public static void stubNotificationNotifyEndPoint() {
         stubPingFor("notificationnotify-service");
 
-        final String urlPath = "/notificationnotify-service/command/api/rest/notificationnotify/notifications/*";
+        final String urlPath = "/notificationnotify-service/command/api/rest/notificationnotify/notifications/.*";
 
         stubFor(post(urlPathMatching(urlPath))
                 .willReturn(aResponse().withStatus(SC_ACCEPTED)

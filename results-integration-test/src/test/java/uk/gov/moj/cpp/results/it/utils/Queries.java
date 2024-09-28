@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.it.utils;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
 

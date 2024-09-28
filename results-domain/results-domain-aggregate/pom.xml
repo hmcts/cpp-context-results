@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-domain</artifactId>
-        <version>8.0.63-SNAPSHOT</version>
+        <version>17.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-domain-aggregate</artifactId>
@@ -45,9 +45,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.tngtech.java</groupId>
-            <artifactId>junit-dataprovider</artifactId>
-            <version>1.13.1</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

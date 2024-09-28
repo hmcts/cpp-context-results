@@ -48,15 +48,15 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @SuppressWarnings({"CdiInjectionPointsInspection", "unused", "unchecked"})
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ResultsQueryViewTest {
 
     private static final String REQUEST_NAME_GET_RESULTS_SUMMARY = "results.get-results-summary";
@@ -154,9 +154,6 @@ public class ResultsQueryViewTest {
                 .add(FIELD_HEARING_ID, HEARING_ID.toString())
                 .build());
 
-        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
-                asList("Court Clerk", "Listing Officer")
-        );
 
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingDetailsByHearingIdDefendantId(HEARING_ID, DEFENDANT_ID)).thenReturn(hearingResultsAdded);
@@ -176,9 +173,6 @@ public class ResultsQueryViewTest {
                 .add(FIELD_HEARING_ID, HEARING_ID.toString())
                 .build());
 
-        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
-                asList("Court Clerk", "Listing Officer")
-        );
 
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(hearingResultsAdded);
@@ -210,10 +204,6 @@ public class ResultsQueryViewTest {
                 .add(FIELD_HEARING_DATE, LocalDate.now().toString())
                 .build());
 
-        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
-                asList("Court Clerk", "Listing Officer")
-        );
-
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingForHearingIdAndHearingDate(HEARING_ID, LocalDate.now())).thenReturn(hearingResultsAdded);
 
@@ -242,9 +232,6 @@ public class ResultsQueryViewTest {
                 .add(FIELD_HEARING_ID, HEARING_ID.toString())
                 .build());
 
-        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
-                asList("Court Clerk", "Listing Officer")
-        );
 
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(null);
@@ -260,10 +247,6 @@ public class ResultsQueryViewTest {
         final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
                 .add(FIELD_HEARING_ID, HEARING_ID.toString())
                 .build());
-
-        when(userGroupsService.findUserGroupsByUserId(query)).thenReturn(
-                asList("Court Clerk", "Listing Officer")
-        );
 
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(null);

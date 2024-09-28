@@ -4,10 +4,11 @@ import static java.util.Collections.emptyList;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.randomEnum;
+
+import uk.gov.moj.cpp.domains.results.result.ResultLevel;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,9 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.hamcrest.core.IsNot;
-import org.junit.Test;
-
-import uk.gov.moj.cpp.domains.results.result.ResultLevel;
+import org.junit.jupiter.api.Test;
 
 public class HearingResultSummaryViewTest {
 

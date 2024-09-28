@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
+import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -22,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(CdiTestRunner.class)
-public class InformantRegisterRepositoryTest extends BaseTransactionalTest {
+public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test {
 
     private static final UUID PROSECUTION_AUTHORITY_ID = randomUUID();
     private static final String PROSECUTION_AUTHORITY_OU_CODE = randomAlphanumeric(10);

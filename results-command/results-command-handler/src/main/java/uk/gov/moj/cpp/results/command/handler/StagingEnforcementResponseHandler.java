@@ -47,6 +47,7 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
     public static final String LISTING_DATE = "listingDate";
     public static final String CASE_URNS = "caseUrns";
     public static final String IN_FORMAT = "dd/MM/yyyy";
+    public static final String EMPTY_STRING = "";
 
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -106,7 +107,9 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE),DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
-        final String hearingCourtCentreName = envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME);
+        final String hearingCourtCentreName = envelope.payloadAsJsonObject().containsKey(HEARING_COURT_CENTRE_NAME)
+                ? envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME)
+                : EMPTY_STRING;
         final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
                 envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns,hearingCourtCentreName));
 
