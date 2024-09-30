@@ -28,10 +28,9 @@ import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 
 import io.restassured.response.Response;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 public class InformantRegisterDocumentRequestIT {
@@ -52,7 +51,7 @@ public class InformantRegisterDocumentRequestIT {
         producer = publicEvents.createProducer();
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws JMSException {
         producer.close();
         helper.closeMessageConsumers();

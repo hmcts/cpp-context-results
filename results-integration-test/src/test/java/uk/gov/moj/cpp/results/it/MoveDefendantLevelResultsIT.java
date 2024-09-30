@@ -25,13 +25,13 @@ import java.time.LocalDate;
 
 import javax.jms.JMSException;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MoveDefendantLevelResultsIT {
 
-    @After
+    @AfterEach
     public void teardown() throws JMSException {
         closeMessageConsumers();
     }

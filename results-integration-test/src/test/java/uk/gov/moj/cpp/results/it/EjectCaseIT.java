@@ -30,7 +30,7 @@ import javax.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
 import org.hamcrest.Matcher;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -138,7 +138,7 @@ public class EjectCaseIT {
 
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws JMSException {
         hearingCaseEjectedConsumer.close();
         hearingApplicationEjectedConsumer.close();

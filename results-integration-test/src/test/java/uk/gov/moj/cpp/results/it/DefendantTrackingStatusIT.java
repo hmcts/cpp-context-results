@@ -52,10 +52,9 @@ import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matcher;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2699")
@@ -86,7 +85,7 @@ public class DefendantTrackingStatusIT {
         stubModeOfTrialReasons();
     }
 
-    @After
+    @AfterEach
     public void teardown() throws JMSException {
         closeMessageConsumers();
     }

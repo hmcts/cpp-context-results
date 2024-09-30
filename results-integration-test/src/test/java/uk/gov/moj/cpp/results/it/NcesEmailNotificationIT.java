@@ -44,10 +44,9 @@ import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matcher;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({"squid:S1607"})
@@ -82,7 +81,7 @@ public class NcesEmailNotificationIT {
         setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws JMSException {
         messageProducerClientPrivate.close();
         messageProducerClientPublic.close();

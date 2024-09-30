@@ -6,10 +6,9 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import uk.gov.justice.core.courts.*;
 import uk.gov.justice.core.courts.external.ApiAddress;
@@ -116,7 +115,7 @@ public class HearingResultedIT {
 
     }
 
-    @After
+    @AfterEach
     public void teardown() throws JMSException {
         closeMessageConsumers();
     }

@@ -108,10 +108,9 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607", "java:S2699"})
@@ -142,7 +141,7 @@ public class ResultsIT {
         stubModeOfTrialReasons();
     }
 
-    @After
+    @AfterEach
     public void teardown() throws JMSException {
         closeMessageConsumers();
     }
