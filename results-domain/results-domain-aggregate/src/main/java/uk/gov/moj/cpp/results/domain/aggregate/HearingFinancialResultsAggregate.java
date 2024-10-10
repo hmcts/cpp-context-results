@@ -35,6 +35,7 @@ import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -172,6 +173,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             .build();
     public static final String AMEND_AND_RESHARE = "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED";
     public static final String EMPTY_STRING = "";
+    public static final String BRITISH_DATE_FORMAT = "dd/MM/yyyy";
 
     private UUID hearingId;
     private ZonedDateTime hearingSittingDay;
@@ -227,20 +229,29 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                                                  final String originalDateOfSentenceList,
                                                  final List<NewOffenceByResult> newResultByOffenceList,
                                                  final String applicationResult) {
+        return this.updateFinancialResults(hearingFinancialResultRequest, isWrittenOffExists, originalDateOfOffenceList, originalDateOfSentenceList, newResultByOffenceList, applicationResult, new HashMap<>());
+    }
+    public Stream<Object> updateFinancialResults(final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                                 final String isWrittenOffExists,
+                                                 final String originalDateOfOffenceList,
+                                                 final String originalDateOfSentenceList,
+                                                 final List<NewOffenceByResult> newResultByOffenceList,
+                                                 final String applicationResult,
+                                                 final Map<UUID, String> offenceDateMap) {
         final Stream.Builder<Object> builder = Stream.builder();
         final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents = new ArrayList<>();
 
         final boolean hasApplicationResult = hasApplicationResult(hearingFinancialResultRequest);
 
-        if (hasApplicationResult && !(hasAmendmentDate(hearingFinancialResultRequest))) {
+        if (hasApplicationResult) {
             if (hearingFinancialResultRequest.getOffenceResults().stream()
                     .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
                     .anyMatch(offence -> APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))){
                 requestNcesEmailNotificationForRejectedOrGrantedApplication(hearingFinancialResultRequest, isWrittenOffExists, originalDateOfOffenceList,
-                        originalDateOfSentenceList, newResultByOffenceList, applicationResult).ifPresent(markedEvents::add);
+                        originalDateOfSentenceList, newResultByOffenceList, applicationResult,offenceDateMap).ifPresent(markedEvents::add);
             } else {
                 requestNcesEmailNotificationForUpdatedApplication(hearingFinancialResultRequest, isWrittenOffExists, originalDateOfOffenceList,
-                        originalDateOfSentenceList, newResultByOffenceList, applicationResult).ifPresent(markedEvents::add);
+                        originalDateOfSentenceList, newResultByOffenceList, applicationResult, offenceDateMap).ifPresent(markedEvents::add);
             }
         }
 
@@ -254,7 +265,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             }
 
             appendFinancialResultEvents(hearingFinancialResultRequest, hasApplicationResult, markedEvents, isWrittenOffExists, originalDateOfOffenceList,
-                    originalDateOfSentenceList, newResultByOffenceList, applicationResult);
+                    originalDateOfSentenceList, newResultByOffenceList, applicationResult, offenceDateMap);
         }
 
         markedEvents.stream()
@@ -342,7 +353,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                                              final String originalDateOfOffenceList,
                                              final String originalDateOfSentenceList,
                                              final List<NewOffenceByResult> newResultByOffenceList,
-                                             final String applicationResult) {
+                                             final String applicationResult, final Map<UUID, String> offenceDateMap) {
         final HearingFinancialResultRequest hfRequest = HearingFinancialResultRequest.hearingFinancialResultRequest()
                 .withValuesFrom(hearingFinancialResultRequest)
                 .withOffenceResults(getOffenceResults(hearingFinancialResultRequest.getOffenceResults())).build();
@@ -351,10 +362,10 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
         if (isAmendmentProcess(hfRequest, hasApplicationResult)) {
             appendAmendmentEvents(hfRequest, markedEvents, isWrittenOffExists, originalDateOfOffenceList,
-                    originalDateOfSentenceList, newResultByOffenceList, applicationResult);
+                    originalDateOfSentenceList, newResultByOffenceList, applicationResult, offenceDateMap);
         } else {
-            appendDeemedServedEvents(hfRequest, markedEvents);
-            appendACONEvents(hfRequest, markedEvents);
+            appendDeemedServedEvents(hfRequest, markedEvents, offenceDateMap);
+            appendACONEvents(hfRequest, markedEvents, offenceDateMap);
         }
     }
 
@@ -368,12 +379,12 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                                        final String originalDateOfOffenceList,
                                        final String originalDateOfSentenceList,
                                        final List<NewOffenceByResult> newResultByOffenceList,
-                                       final String applicationResult) {
+                                       final String applicationResult, final Map<UUID, String> offenceDateMap) {
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForFinancial = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offenceFromRequest -> ofNullable(offenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
-                .map(this::buildImpositionOffenceDetailsFromRequest)
+                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .collect(toList());
 
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForNonFinancial = hearingFinancialResultRequest.getOffenceResults().stream()
@@ -381,7 +392,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(o -> Objects.nonNull(o.getAmendmentDate()))
                 .filter(o -> !o.getIsFinancial())
                 .filter(offenceFromRequest -> ofNullable(offenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
-                .map(this::buildImpositionOffenceDetailsFromRequest)
+                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .collect(toList());
         if (!impositionOffenceDetailsForNonFinancial.isEmpty()) {
             if (!impositionOffenceDetailsForFinancial.isEmpty()) {
@@ -400,7 +411,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsDeemedServed)
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
-                .map(this::buildImpositionOffenceDetailsFromRequest)
+                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .collect(toList());
         if (!impositionOffenceDetailsForDeemed.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed));
@@ -411,7 +422,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offence -> ACON.equals(offence.getResultCode()))
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
-                .map(this::buildImpositionOffenceDetailsFromRequest)
+                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .collect(toList());
         if (!impositionOffenceDetailsForACON.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, ACON_EMAIL_SUBJECT, impositionOffenceDetailsForACON));
@@ -419,11 +430,11 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     private void appendDeemedServedEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                          final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
+                                          final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents, final Map<UUID, String> offenceDateMap) {
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsDeemedServed)
-                .map(this::buildImpositionOffenceDetailsFromRequest)
+                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .collect(toList());
         if (!impositionOffenceDetailsForDeemed.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed));
@@ -431,12 +442,12 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     private void appendACONEvents(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                  final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents) {
+                                  final List<MarkedAggregateSendEmailWhenAccountReceived> markedEvents, final Map<UUID, String> offenceDateMap) {
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForAcon = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offence -> ACON.equals(offence.getResultCode()))
-                .map(this::buildImpositionOffenceDetailsFromRequest)
+                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .collect(toList());
         if (!impositionOffenceDetailsForAcon.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, ACON_EMAIL_SUBJECT, impositionOffenceDetailsForAcon));
@@ -530,7 +541,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
         ofNullable(hearingSittingDay)
                 .ifPresent(a -> ncesEmailNotificationRequested.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN)))
-                                                         .withOriginalDateOfSentence(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
+                                                         .withOriginalDateOfSentence(a.format(ofPattern(BRITISH_DATE_FORMAT))));
 
 
         final Stream<Object> events = ofNullable(correlationIdHistoryItemList.peekLast())
@@ -595,7 +606,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                                                                                                                               final String originalDateOfOffenceList,
                                                                                                                               final String originalDateOfSentenceList,
                                                                                                                               final List<NewOffenceByResult> newResultByOffenceList,
-                                                                                                                              final String applicationResult) {
+                                                                                                                              final String applicationResult,
+                                                                                                                              final Map<UUID, String> offenceDateMap) {
 
         final Optional<OffenceResults> offenceForApplication = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
@@ -609,7 +621,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .map(offenceFromRequest -> offenceResultsDetails.get(offenceFromRequest.getOffenceId()))
                     .filter(Objects::nonNull)
                     .filter(OffenceResultsDetails::getIsFinancial)
-                    .map(this::buildImpositionOffenceDetailsFromAggregate).distinct()
+                    .map(offenceResults -> this.buildImpositionOffenceDetailsFromAggregate(offenceResults, offenceDateMap)).distinct()
                     .collect(Collectors.toList());
 
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
@@ -629,7 +641,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                                                                                                                               final String originalDateOfOffenceList,
                                                                                                                               final String originalDateOfSentenceList,
                                                                                                                               final List<NewOffenceByResult> newResultByOffenceList,
-                                                                                                                              final String applicationResult) {
+                                                                                                                              final String applicationResult,
+                                                                                                                              final Map<UUID, String> offenceDateMap) {
 
         final Optional<OffenceResults> offenceForApplication = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
@@ -642,7 +655,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .map(offenceFromRequest -> offenceResultsDetails.get(offenceFromRequest.getOffenceId()))
                     .filter(Objects::nonNull)
                     .filter(OffenceResultsDetails::getIsFinancial)
-                    .map(this::buildImpositionOffenceDetailsFromAggregate).distinct()
+                    .map(offenceResults -> this.buildImpositionOffenceDetailsFromAggregate(offenceResults, offenceDateMap)).distinct()
                     .collect(Collectors.toList());
 
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
@@ -739,7 +752,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         } else if (WRITE_OFF_ONE_DAY_DEEMED_SERVED.equals(marked.getSubject())) {
             buildDefendantParameters(ncesNotification, marked);
             return ncesNotification.withHearingSittingDay(marked.getHearingSittingDay())
-                    .withOriginalDateOfSentence(marked.getHearingSittingDay())
+                    .withOriginalDateOfSentence(getFormattedDates(marked.getHearingSittingDay()))
                     .build();
         } else if (getApplicationGrantedSubjects().contains(marked.getSubject()) || getApplicationAppealAllowedSubjects().contains(marked.getSubject())) {
             ncesNotification.withHearingSittingDay(marked.getHearingSittingDay());
@@ -763,6 +776,17 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
         return ncesNotification.withDateDecisionMade(marked.getDateDecisionMade())
                 .build();
+    }
+
+    private String getFormattedDates(final String dates){
+        if(!dates.isEmpty()) {
+            final DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern(HEARING_SITTING_DAY_PATTERN);
+            final DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern(BRITISH_DATE_FORMAT);
+            return Arrays.stream(dates.split(","))
+                    .map(date -> LocalDate.parse(date, inputFormat).format(outputFormat))
+                    .collect(Collectors.joining(","));
+        }
+        return "";
     }
 
     private boolean isThisApplicationUpdated(MarkedAggregateSendEmailWhenAccountReceived marked){
@@ -810,7 +834,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withOldGobAccountNumber(marked.getOldGobAccountNumber());
     }
 
-    @SuppressWarnings("java:S107")
     private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOldsForSpecificCorrelationId(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject, final CorrelationIdHistoryItem correlationIdHistoryItem, final List<ImpositionOffenceDetails> impositionOffenceDetails,
                                                                                                                 final String isWrittenOffExists,
                                                                                                                 final String originalDateOfOffenceList,
@@ -822,7 +845,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 originalDateOfSentenceList, newResultByOffenceList, applicationResult);
     }
 
-    @SuppressWarnings("java:S107")
     private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject, final CorrelationIdHistoryItem correlationIdHistoryItem, final List<ImpositionOffenceDetails> impositionOffenceDetails, final String ncesEMail,
                                                                                                                          final String isFinancialPenaltiesWrittenOff,
                                                                                                                          final String originalDateOfOffenceList,
@@ -945,16 +967,18 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return builder.build();
     }
 
-    private ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest) {
+    private ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID,String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
                 .withDetails(offencesFromRequest.getImpositionOffenceDetails())
+                .withOffenceDate(offenceDateMap.get(offencesFromRequest.getOffenceId()))
                 .withTitle(offencesFromRequest.getOffenceTitle())
                 .build();
     }
 
-    private ImpositionOffenceDetails buildImpositionOffenceDetailsFromAggregate(final OffenceResultsDetails offencesFromAggregate) {
+    private ImpositionOffenceDetails buildImpositionOffenceDetailsFromAggregate(final OffenceResultsDetails offencesFromAggregate, final Map<UUID,String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
                 .withDetails(offencesFromAggregate.getImpositionOffenceDetails())
+                .withOffenceDate(offenceDateMap.get(offencesFromAggregate.getOffenceId()))
                 .withTitle(offencesFromAggregate.getOffenceTitle())
                 .build();
     }

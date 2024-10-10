@@ -84,7 +84,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.hamcrest.MatcherAssert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -182,7 +181,7 @@ public class InformantRegisterHandlerTest {
 
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
 
-        MatcherAssert.assertThat(envelopeStream, streamContaining(
+        assertThat(envelopeStream, streamContaining(
                 jsonEnvelope(
                         metadata().withName("results.event.informant-register-recorded"),
                         JsonEnvelopePayloadMatcher.payload().isJson(allOf(
@@ -244,7 +243,7 @@ public class InformantRegisterHandlerTest {
 
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
 
-        MatcherAssert.assertThat(envelopeStream, streamContaining(
+        assertThat(envelopeStream, streamContaining(
                 jsonEnvelope(
                         metadata().withName("results.event.informant-register-recorded"),
                         JsonEnvelopePayloadMatcher.payload().isJson(allOf(

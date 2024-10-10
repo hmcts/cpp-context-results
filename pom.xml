@@ -36,10 +36,10 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <coredomain.version>17.21.11</coredomain.version>
+        <coredomain.version>17.21.12</coredomain.version>
         <referencedata.version>17.0.22</referencedata.version>
         <notification.notify.version>17.0.1</notification.notify.version>
-        <systemdocgenerator.version>17.0.6</systemdocgenerator.version>
+        <systemdocgenerator.version>17.0.10</systemdocgenerator.version>
         <progression.version>17.0.7</progression.version>
         <material.version>17.0.20</material.version>
         <usersgroups.version>17.0.19</usersgroups.version>
