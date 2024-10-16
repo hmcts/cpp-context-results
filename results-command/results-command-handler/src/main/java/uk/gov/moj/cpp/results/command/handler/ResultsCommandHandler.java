@@ -1,8 +1,6 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
-import static java.time.format.DateTimeFormatter.ofPattern;
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -21,16 +19,14 @@ import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
-import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
-import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
+import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.aggregate.AggregateService;
@@ -47,15 +43,12 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
-import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,10 +63,9 @@ import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 @ServiceComponent(COMMAND_HANDLER)
 public class ResultsCommandHandler extends AbstractCommandHandler {
@@ -85,7 +77,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     private static final String SOURCE_TYPE_SJP = "SJP";
     private static final String HEARING_DAY = "hearingDay";
     public static final String FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF = "financialPenaltiesToBeWrittenOff";
-    public static final String YYYY_MM_DD = "yyyy-MM-dd";
     final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private final ReferenceDataService referenceDataService;
     public static final String SURREY_POLICE_CPS_ORGANISATION = "A45AA00";
@@ -235,10 +226,19 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
 
     private String getApplicationTypeForCase(UUID caseId, List<CourtApplication> courtApplications) {
-        final List<CourtApplication> courtApplicationList = courtApplications.stream()
+        final List<CourtApplication> courtApplicationList = new ArrayList<>();
+
+        courtApplications.stream()
                 .filter(courtApplication -> courtApplication.getCourtApplicationCases() != null)
                 .filter(courtApplication -> courtApplication.getCourtApplicationCases().stream()
-                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId))).collect(toList());
+                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId)))
+                .forEach(courtApplicationList::add);
+
+        courtApplications.stream()
+                .filter(courtApplication -> nonNull(courtApplication.getCourtOrder()) &&  nonNull(courtApplication.getCourtOrder().getCourtOrderOffences()))
+                .filter(courtApplication -> courtApplication.getCourtOrder().getCourtOrderOffences().stream()
+                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId)))
+                .forEach(courtApplicationList::add);
 
         return courtApplicationList.stream()
                 .map(courtApplication -> courtApplication.getType() != null ? courtApplication.getType().getType() : "")
@@ -284,55 +284,24 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final EventStream eventStream = eventSource.getStreamById(hearingFinancialResultRequest.getMasterDefendantId());
         final HearingFinancialResultsAggregate aggregate = aggregateService.get(eventStream, HearingFinancialResultsAggregate.class);
 
-        EventStream eventStreamForHearing = eventSource.getStreamById(hearingFinancialResultRequest.getHearingId());
-        ResultsAggregate resultsAggregate = aggregateService.get(eventStreamForHearing, ResultsAggregate.class);
-
-        if(nonNull(resultsAggregate.getHearing()) && nonNull(resultsAggregate.getHearing().getIsSJPHearing())
-                && resultsAggregate.getHearing().getIsSJPHearing() && nonNull(aggregate.getHearingId())){
-            eventStreamForHearing = eventSource.getStreamById(aggregate.getHearingId());
-            resultsAggregate = aggregateService.get(eventStreamForHearing, ResultsAggregate.class);
-        }
+        final EventStream eventStreamForHearing = eventSource.getStreamById(hearingFinancialResultRequest.getHearingId());
+        final ResultsAggregate resultsAggregate = aggregateService.get(eventStreamForHearing, ResultsAggregate.class);
 
         final String isWrittenOffExists = isFinancialPenaltiesToBeWrittenOff(resultsAggregate);
 
         LOGGER.info("Hearing  : {} ResultsAggregate: {}  HearingFinancialResultsAggregate:{} ", resultsAggregate.getHearing(), objectToJsonObjectConverter.convert(resultsAggregate),
                 objectToJsonObjectConverter.convert(aggregate));
         final String originalDateOfOffenceList = getOriginalDateOfOffence(resultsAggregate);
-        final String originalDateOfSentenceList = getOriginalDateOfSentence(aggregate,hearingFinancialResultRequest);
+        final String originalDateOfSentenceList = getOriginalDateOfSentence(aggregate, resultsAggregate);
         final List<NewOffenceByResult> newResultByOffenceList = getNewResultByOffence(resultsAggregate);
         final String applicationResult = getApplicationResult(resultsAggregate.getHearing());
-        final Map<UUID, String> offenceDateMap = getOffenceDateMap(resultsAggregate);
+
         final Stream<Object> updateEvents = aggregate.updateFinancialResults(hearingFinancialResultRequest, isWrittenOffExists, originalDateOfOffenceList,
-                originalDateOfSentenceList, newResultByOffenceList, applicationResult,offenceDateMap);
+                originalDateOfSentenceList, newResultByOffenceList, applicationResult);
 
         eventStream.append(updateEvents.map(toEnvelopeWithMetadataFrom(envelope)));
 
         LOGGER.info("masterDefandantId : {} HearingFinancialResultsAggregate:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(aggregate));
-    }
-
-    private Map<UUID, String> getOffenceDateMap(final ResultsAggregate resultsAggregate) {
-        final Map<UUID, String> offenceDateMap = new HashMap<>();
-        if (isNull(resultsAggregate.getHearing())) {
-            return offenceDateMap;
-        }
-        Stream<Offence> offenceStream = null;
-        if (CollectionUtils.isNotEmpty(resultsAggregate.getHearing().getProsecutionCases())) {
-            offenceStream = resultsAggregate.getHearing()
-                    .getProsecutionCases().stream()
-                    .map(ProsecutionCase::getDefendants).flatMap(List::stream)
-                    .map(Defendant::getOffences).flatMap(List::stream);
-        }else if (CollectionUtils.isNotEmpty(resultsAggregate.getHearing().getCourtApplications())){
-            offenceStream = resultsAggregate.getHearing().getCourtApplications().stream()
-                    .map(CourtApplication::getCourtApplicationCases).flatMap(List::stream)
-                    .filter(courtApplicationCase -> nonNull(courtApplicationCase.getOffences()))
-                    .map(CourtApplicationCase::getOffences).flatMap(List::stream);
-        }
-        ofNullable(offenceStream).ifPresent(stream -> stream.forEach(offence -> {
-            if (Optional.ofNullable(offence.getStartDate()).isPresent()){
-                offenceDateMap.put(offence.getId(), offence.getStartDate().format(ofPattern(YYYY_MM_DD)));
-            }
-        }));
-        return offenceDateMap;
     }
 
     private String getApplicationResult(Hearing hearing) {
@@ -350,9 +319,9 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private String getOriginalDateOfOffence(ResultsAggregate resultsAggregate) {
-        if (isNull(resultsAggregate.getHearing())
-                || (!getIsSJPHearing(resultsAggregate) && isNull(resultsAggregate.getHearing().getCourtApplications()))
-                || (getIsSJPHearing(resultsAggregate))) {
+        if (Objects.isNull(resultsAggregate.getHearing())
+                || Objects.isNull(resultsAggregate.getHearing().getCourtApplications())
+        ) {
             return null;
         }
 
@@ -364,65 +333,40 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 .map(Offence::getStartDate).distinct().map(LocalDate::toString).collect(Collectors.joining(","));
     }
 
-    private String getOriginalDateOfSentence(HearingFinancialResultsAggregate hearingFinancialResultsAggregate, final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        if(nonNull(hearingFinancialResultsAggregate.getHearingId())) {
-            final EventStream eventStreamForHearing = eventSource.getStreamById(hearingFinancialResultsAggregate.getHearingId());
-            final ResultsAggregate resultsAggregate = aggregateService.get(eventStreamForHearing, ResultsAggregate.class);
-
-            if (isNull(resultsAggregate.getHearing())
-                    || isNull(resultsAggregate.getHearing().getProsecutionCases())) {
-                return null;
-            }
-
-            final List<Offence> allOffences = resultsAggregate.getHearing()
-                    .getProsecutionCases().stream()
-                    .map(ProsecutionCase::getDefendants).flatMap(List::stream)
-                    .map(Defendant::getOffences).flatMap(List::stream).collect(toList());
-
-            final List<OffenceResults> originalOffences = new ArrayList<>(hearingFinancialResultRequest.getOffenceResults());
-
-            final List<Offence> filteredOffences = allOffences.stream()
-                    .filter(allOffence -> originalOffences.stream().anyMatch(orgOffence -> orgOffence.getOffenceId().equals(allOffence.getId())))
-                    .collect(toList());
-
-            final List<LocalDate> listOfDates = filteredOffences.stream()
-                    .filter(offence -> Objects.nonNull(offence.getJudicialResults()))
-                    .map(offence -> offence.getJudicialResults().stream()
-                            .filter(JudicialResult::getIsConvictedResult)
-                            .filter(judicialResult -> Objects.nonNull(judicialResult.getOrderedDate()))
-                            .map(JudicialResult::getOrderedDate)
-                            .findFirst()
-                            .orElse(null))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            return !listOfDates.isEmpty()
-                    ? listOfDates.stream().filter(Objects::nonNull).map(date -> date.format(formatter)).collect(joining(","))
-                    : null;
+    private String getOriginalDateOfSentence(HearingFinancialResultsAggregate hearingFinancialResultsAggregate,
+                                             ResultsAggregate resultsAggregate) {
+        if (Objects.isNull(resultsAggregate.getHearing()) || Objects.isNull(resultsAggregate.getHearing().getCourtApplications())) {
+            return null;
         }
-        return null;
-    }
 
-    private Boolean getIsSJPHearing(final ResultsAggregate resultsAggregate) {
+        final List<Offence> allOffences = resultsAggregate.getHearing().getCourtApplications().stream()
+                .map(CourtApplication::getCourtApplicationCases).flatMap(List::stream)
+                .filter(courtApplicationCase -> nonNull(courtApplicationCase.getOffences()))
+                .map(CourtApplicationCase::getOffences).flatMap(List::stream).collect(toList());
 
-        if (isNull(resultsAggregate.getHearing().getIsSJPHearing())) {
-            return false;
-        }
-        return resultsAggregate.getHearing().getIsSJPHearing();
+        final List<OffenceResultsDetails> originalOffences = hearingFinancialResultsAggregate.getOffenceResultsDetails().values().stream().collect(toList());
+
+        final List<Offence> filteredOffences = allOffences.stream()
+                .filter(a -> originalOffences.stream().anyMatch(of -> of.getOffenceId().equals(a.getId())))
+                .collect(toList());
+
+        final List<LocalDate> listOfDates = filteredOffences.stream()
+                .filter(jd -> nonNull(jd.getJudicialResults()))
+                .map(a -> a.getJudicialResults().stream()
+                        .filter(JudicialResult::getIsConvictedResult).filter(jd -> nonNull(jd.getOrderedDate()))
+                        .map(JudicialResult::getOrderedDate).collect(toList()))
+                .collect(toList()).stream()
+                .flatMap(List::stream).collect(toList());
+
+        return !listOfDates.isEmpty()
+                ? listOfDates.stream().map(LocalDate::toString).collect(joining(","))
+                : null ;
     }
 
     private List<NewOffenceByResult> getNewResultByOffence(ResultsAggregate resultsAggregate) {
         final List<NewOffenceByResult> result = new ArrayList<>();
-
-        if (isNull(resultsAggregate.getHearing())
-                || (!getIsSJPHearing(resultsAggregate) && isNull(resultsAggregate.getHearing().getCourtApplications()))
-                || (getIsSJPHearing(resultsAggregate))) {
+        if (Objects.isNull(resultsAggregate.getHearing()) || Objects.isNull(resultsAggregate.getHearing().getCourtApplications())) {
             return result;
-        }
-
-        if (getIsSJPHearing(resultsAggregate)) {
-            return getNewResultByOffenceForSJP(resultsAggregate);
         }
 
         final Stream<Offence> offenceStream = resultsAggregate.getHearing().getCourtApplications().stream()
@@ -430,51 +374,28 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 .filter(courtApplicationCase -> nonNull(courtApplicationCase.getOffences()))
                 .map(CourtApplicationCase::getOffences).flatMap(List::stream);
 
-        buildNewOffecenResult(result, offenceStream);
-        return result;
-    }
-
-    private void buildNewOffecenResult(final List<NewOffenceByResult> result, final Stream<Offence> offenceStream) {
-        offenceStream.forEach(offence -> {
-            if (nonNull(offence.getJudicialResults())) {
+        offenceStream.forEach( offence -> {
+            if (nonNull(offence.getJudicialResults())){
                 String title = "";
-                String offenceDate = StringUtils.EMPTY;
                 final String details = offence.getJudicialResults().stream()
-                        .filter(jd -> nonNull(jd.getResultText()))
+                        .filter(jd-> nonNull(jd.getResultText()))
                         .map(JudicialResult::getResultText).collect(joining(StringUtils.LF));
-                if (nonNull(offence.getOffenceTitle()) && !offence.getOffenceTitle().isEmpty()) {
-                    title = offence.getOffenceTitle();
+                 if (!offence.getOffenceTitle().isEmpty()){
+                     title = offence.getOffenceTitle();
                 }
-                if (Optional.ofNullable(offence.getStartDate()).isPresent()) {
-                    offenceDate = offence.getStartDate().format(ofPattern(YYYY_MM_DD));
-                }
-                result.add(NewOffenceByResult.newOffenceByResult()
-                        .withDetails(details)
-                        .withOffenceDate(offenceDate)
-                        .withTitle(title)
-                        .build());
+                 result.add(NewOffenceByResult.newOffenceByResult()
+                         .withDetails(details)
+                         .withTitle(title)
+                         .build());
             }
         });
-    }
-
-    private List<NewOffenceByResult> getNewResultByOffenceForSJP(ResultsAggregate resultsAggregate) {
-        final List<NewOffenceByResult> result = new ArrayList<>();
-        if (isNull(resultsAggregate.getHearing().getProsecutionCases())) {
-            return result;
-        }
-        final Stream<Offence> offenceStream = resultsAggregate
-                .getHearing()
-                .getProsecutionCases().stream()
-                .map(ProsecutionCase::getDefendants).flatMap(List::stream)
-                .map(Defendant::getOffences).flatMap(List::stream);
-
-        buildNewOffecenResult(result, offenceStream);
         return result;
     }
 
     private String isFinancialPenaltiesToBeWrittenOff(ResultsAggregate resultsAggregate) {
         final Hearing hearing = resultsAggregate.getHearing();
-        if (isNull(hearing) || isNull(hearing.getCourtApplications())) {
+        if (Objects.isNull(hearing)
+                || Objects.isNull(resultsAggregate.getHearing().getCourtApplications())) {
             return null;
         }
         final List<JudicialResultPrompt> judicialResultPromptList = hearing.getCourtApplications().stream()

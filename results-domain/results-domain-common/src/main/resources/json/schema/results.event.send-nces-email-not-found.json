@@ -74,9 +74,6 @@
           "title": {
             "type": "string"
           },
-          "offenceDate": {
-            "type": "string"
-          },
           "details": {
             "type": "string"
           }
@@ -89,9 +86,6 @@
         "type": "object",
         "properties": {
           "title": {
-            "type": "string"
-          },
-          "offenceDate": {
             "type": "string"
           },
           "details": {

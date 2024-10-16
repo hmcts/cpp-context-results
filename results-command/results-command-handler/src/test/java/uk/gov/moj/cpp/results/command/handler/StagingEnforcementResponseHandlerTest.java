@@ -284,7 +284,7 @@ public class StagingEnforcementResponseHandlerTest {
                                 withJsonPath("$.masterDefendantId", is(masterDefendantId.toString())),
                                 withJsonPath("$.listedDate", is("2021-12-28")),
                                 withJsonPath("$.hearingSittingDay", is("2020-03-07")),
-                                withJsonPath("$.originalDateOfSentence", is("07/03/2020"))
+                                withJsonPath("$.originalDateOfSentence", is("2020-03-07"))
                         ))));
     }
 
@@ -340,7 +340,7 @@ public class StagingEnforcementResponseHandlerTest {
                                 withJsonPath("$.masterDefendantId", is(masterDefendantId.toString())),
                                 withJsonPath("$.listedDate", is("2021-12-28")),
                                 withJsonPath("$.hearingSittingDay", is("2020-03-07")),
-                                withJsonPath("$.originalDateOfSentence", is("07/03/2020"))
+                                withJsonPath("$.originalDateOfSentence", is("2020-03-07"))
                         ))));
     }
 
