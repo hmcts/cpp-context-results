@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
@@ -31,6 +32,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePaylo
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +46,7 @@ import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
@@ -69,8 +72,12 @@ import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.SjpService;
+import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -144,6 +151,8 @@ public class ResultsEventProcessorTest {
 
     @Mock
     ReferenceDataService referenceDataService;
+    @Mock
+    ProgressionService progressionService;
 
     @Mock
     ReferenceCache referenceCache;
@@ -179,6 +188,9 @@ public class ResultsEventProcessorTest {
     DocumentGeneratorService documentGeneratorService;
 
     @Mock
+    SjpService sjpService;
+
+    @Mock
     MaterialUrlGenerator materialUrlGenerator;
 
     @Mock
@@ -208,6 +220,8 @@ public class ResultsEventProcessorTest {
     @BeforeEach
     public void setUp() {
         initMocks(this);
+        setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
+        setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
         final JsonObject result = createObjectBuilder()
                 .add("isoCode", "USA")
                 .add("id", NATIONALITY_ID.toString())
@@ -226,6 +240,7 @@ public class ResultsEventProcessorTest {
         when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
         when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
         when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(Json.createObjectBuilder().add("caseId", randomUUID().toString()).build()));
     }
 
     @Test
@@ -867,17 +882,103 @@ public class ResultsEventProcessorTest {
         final JsonEnvelope jsonEnvelope = envelope()
                 .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
                 .withPayloadOf(materialId, "materialId")
-                .withPayloadOf(name, "defendantName")
-                .withPayloadOf(email, "defendantEmail")
+                .withPayloadOf("abc11", "caseReferences")
+                .withPayloadOf("C", "initiationCode")
+                .withPayloadOf(false, "isSJPHearing")
                 .build();
 
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(1)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+    }
+
+    private void setSjpServiceMock(){
+        JsonObject sjpPayload = createObjectBuilder().add("id", randomUUID().toString()).build();
+        when(sjpService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(sjpPayload));
+
+    }
+    @Test
+    public void shouldHandleTheNcesEmailNotificationRequestedWhenSjpCase() {
+        final String materialId = randomUUID().toString();
+        final String email = "email@email.com";
+        final String name = "myname";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf("abc1", "caseReferences")
+                .withPayloadOf(true, "isSJPHearing")
+                .build();
+
+        setSjpServiceMock();
+        JsonObject progressionPayload = createObjectBuilder().add("id", randomUUID().toString()).build();
+
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.empty());
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(sjpService, times(1)).caseExistsByCaseUrn(any());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+    }
+
+    @Test
+    public void shouldHandleTheNcesEmailNotificationRequestedWhenCaseIdExistsInCacheForSJPCase() {
+        final String materialId = randomUUID().toString();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf("abc", "caseReferences")
+                .withPayloadOf(true, "isSJPHearing")
+                .build();
+        setSjpServiceMock();
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
                 any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantName"), is(name));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("defendantEmail"), is(email));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(2)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+    }
+
+    @Test
+    public void shouldHandleTheNcesEmailNotificationRequestedWhenProgressionServiceReturnsNull() {
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.ofNullable(null));
+        JsonObject sjpPayload = createObjectBuilder().add("id", randomUUID().toString()).build();
+        when(sjpService.caseExistsByCaseUrn(any())).thenReturn(Optional.ofNullable(sjpPayload));
+
+        final String materialId = randomUUID().toString();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf("abc2", "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(1)).caseExistsByCaseUrn(any());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(2)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(2)).caseExistsByCaseUrn(any());
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
     }
 
     @Test

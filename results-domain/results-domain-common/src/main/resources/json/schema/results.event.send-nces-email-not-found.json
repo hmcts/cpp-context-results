@@ -60,6 +60,9 @@
     "defendantContactNumber": {
       "type": "string"
     },
+    "isSJPHearing": {
+      "type": "boolean"
+    },
     "applicationResult": {
       "type": "string"
     },

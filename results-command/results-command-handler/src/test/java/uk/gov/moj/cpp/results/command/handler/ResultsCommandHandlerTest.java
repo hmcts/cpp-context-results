@@ -984,6 +984,9 @@ public class ResultsCommandHandlerTest {
         final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
         assertThat(jsonEnvelopeList.size(), is(1));
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
+        JsonObject res = jsonEnvelopeList.get(0).payloadAsJsonObject();
+        JsonObject hearingobject = res.getJsonObject("hearingFinancialResultRequest");
+        assertThat(hearingobject.getBoolean("isSJPHearing"), is(true));
     }
 
     @Test

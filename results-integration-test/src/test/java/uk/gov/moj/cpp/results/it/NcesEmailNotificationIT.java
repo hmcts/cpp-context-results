@@ -19,6 +19,7 @@ import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFact
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubDocumentCreate;
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.verifyCreate;
 import static uk.gov.moj.cpp.results.it.stub.NotificationServiceStub.verifyEmailNotificationIsRaised;
+import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
@@ -69,6 +70,7 @@ public class NcesEmailNotificationIT {
     @BeforeAll
     public static void setupStubs() {
         setupUsersGroupQueryStub();
+        stubGetProgressionCaseExistsByUrn("CaseReference",  randomUUID());
     }
 
     @BeforeEach
@@ -132,6 +134,7 @@ public class NcesEmailNotificationIT {
 
 
     }
+
 
     public NcesEmailNotificationRequested generateNcesNotificationRequested() {
         return NcesEmailNotificationRequested.ncesEmailNotificationRequested()

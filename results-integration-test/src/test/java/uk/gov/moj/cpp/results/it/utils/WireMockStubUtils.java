@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.it.utils;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.reset;
@@ -120,7 +121,6 @@ public class WireMockStubUtils {
         waitForStubToBeReady(UPLOAD_MATERIAL_COMMAND, MATERIAL_UPLOAD_COMMAND_TYPE);
     }
 
-
     public static void waitForStubToBeReady(final String resource, final String mediaType) {
         waitForStubToBeReady(resource, mediaType, Status.OK);
     }
@@ -157,5 +157,15 @@ public class WireMockStubUtils {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)));
         waitForPostStubToBeReady(urlPath, "application/vnd.notificationnotify.send-email-notification+json", Response.Status.ACCEPTED);
+    }
+
+    public static void stubDocumentCreate(String documentText) {
+
+        final String PATH = "/systemdocgenerator-service/command/api/rest/systemdocgenerator/render";
+
+        stubFor(post(urlPathMatching(PATH))
+                .withHeader(CONTENT_TYPE, equalTo("application/vnd.systemdocgenerator.render+json"))
+                .willReturn(aResponse().withStatus(OK.getStatusCode())
+                        .withBody(documentText.getBytes())));
     }
 }

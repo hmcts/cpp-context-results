@@ -7,12 +7,12 @@ import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
@@ -21,11 +21,15 @@ import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.CaseDocument;
 import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtDocument;
+import uk.gov.justice.core.courts.DocumentCategory;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.Material;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -51,13 +55,16 @@ import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +83,7 @@ import javax.json.JsonString;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.gov.moj.cpp.results.event.service.SjpService;
 
 @ServiceComponent(EVENT_PROCESSOR)
 @SuppressWarnings({"squid:S2221", "squid:S1132"})
@@ -88,9 +96,12 @@ public class ResultsEventProcessor {
     private static final String PROSECUTION_CASE_ID = "prosecutionCaseId";
     private static final String HEARING_IDS = "hearingIds";
     private static final String CASE_ID = "caseId";
+    private static final String SJP_CASE_ID = "id";
     private static final String APPLICATION_ID = "applicationId";
     private static final String HEARING_ID = "id";
     private static final String HEARING = "hearing";
+    private static final String IS_SJP_HEARING = "isSJPHearing";
+
     private static final String RESULTS_COMMAND_UPDATE_DEFENDANT_TRACKING_STATUS = "results.command.update-defendant-tracking-status";
     private static final String RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED = "results.case-or-application-ejected";
     private static final String CACHE_KEY_SUFFIX = "_result_";
@@ -108,7 +119,15 @@ public class ResultsEventProcessor {
     private static final String COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
     public static final String PROSECUTION_CASEFILE_CASE_AT_A_GLANCE = "prosecution-casefile/case-at-a-glance/";
     public static final String SPC = " ";
-
+    private static final String MATERIAL_ID = "materialId" ;
+    private static final String COURT_DOCUMENT = "courtDocument" ;
+    private static final String PROGRESSION_ADD_COURT_DOCUMENT = "progression.add-court-document" ;
+    private static final String CASE_REFERENCES = "caseReferences" ;
+    private static final String DOCUMENT_TYPE_DESCRIPTION = "Electronic Notifications" ;
+    private static final String SJP_DOCUMENT_TYPE_OTHER = "OTHER" ;
+    private static final UUID CASE_DOCUMENT_TYPE_ID = fromString("f471eb51-614c-4447-bd8d-28f9c2815c9e");
+    private static final String APPLICATION_PDF = "application/pdf";
+    private static final String SJP_UPLOAD_CASE_DOCUMENT = "sjp.upload-case-document";
     @Inject
     ReferenceDataService referenceDataService;
 
@@ -144,6 +163,8 @@ public class ResultsEventProcessor {
 
     @Inject
     private ProgressionService progressionService;
+    @Inject
+    private SjpService sjpService;
 
     @Inject
     private PoliceEmailHelper policeEmailHelper;
@@ -165,7 +186,7 @@ public class ResultsEventProcessor {
                 .build();
         final String hearingId = transformedHearing.getString(HEARING_ID);
 
-        if (hearingPayload.getJsonObject(HEARING).getBoolean("isSJPHearing", false)) {
+        if (hearingPayload.getJsonObject(HEARING).getBoolean(IS_SJP_HEARING, false)) {
 
             final String cacheKeySjp = CACHE_KEY_SJP_PREFIX + hearingId + CACHE_KEY_SUFFIX;
 
@@ -229,15 +250,94 @@ public class ResultsEventProcessor {
     @Handles("results.event.nces-email-notification-requested")
     public void handleNcesEmailNotificationRequested(final JsonEnvelope envelope) {
         final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
+        boolean isSJPHearing = false ;
 
-        final JsonObject requestJson = envelope.payloadAsJsonObject();
-        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("materialId"));
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("Nces notification requested payload - {}", requestJson);
+        if(envelope.payloadAsJsonObject().containsKey(IS_SJP_HEARING)){
+            isSJPHearing = envelope.payloadAsJsonObject().getBoolean(IS_SJP_HEARING) ;
         }
 
-        //generate and upload pdf
-        documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
+        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
+        final String caseUrn = envelope.payloadAsJsonObject().getString(CASE_REFERENCES);
+        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
+
+        if (isSJPHearing) {
+            getSjpCaseUUID(caseUrn).ifPresent(caseUUID -> {
+                LOGGER.info("In SJP case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
+                addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
+            });
+        } else {
+            getCcCaseUUID(caseUrn).ifPresent(caseUUID -> {
+                LOGGER.info("In CC case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
+                addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
+            } );
+        }
+    }
+
+    private void addCourtDocumentForSjpCase(final JsonEnvelope envelope, final UUID caseUUID, final String fileName, final UUID fileId) {
+        LOGGER.info("addCourtDocumentForSjpCase caseUUID {} , fileName { } , fileid {}" , caseUUID , fileName , fileId);
+        final JsonObject uploadCaseDocumentPayload = createObjectBuilder()
+                .add(CASE_ID, caseUUID.toString())
+                .add("caseDocumentType", SJP_DOCUMENT_TYPE_OTHER + "-" + fileName)
+                .add("caseDocument", fileId.toString())
+                .build();
+
+        final Envelope<JsonObject> sjpEenvelope = Envelope.envelopeFrom(
+                JsonEnvelope.metadataFrom(envelope.metadata()).withName(SJP_UPLOAD_CASE_DOCUMENT),
+                uploadCaseDocumentPayload);
+
+        sender.send(sjpEenvelope);
+    }
+
+    private void addCourtDocumentForCCCase(final JsonEnvelope envelope, final UUID caseUUID, final UUID materialId, final String fileName) {
+        LOGGER.info("addCourtDocumentForCCCase caseUUID {} , fileName { } , materialId {}" , caseUUID , fileName , materialId);
+        final CourtDocument courtDocument = buildCourtDocument(caseUUID, materialId, fileName);
+        final JsonObject jsonObject = createObjectBuilder()
+                .add(MATERIAL_ID, materialId.toString())
+                .add(COURT_DOCUMENT, objectToJsonObjectConverter.convert(courtDocument))
+                .build();
+        final Envelope<JsonObject> data = envelopeFrom(JsonEnvelope.metadataFrom(envelope.metadata())
+                .withName(PROGRESSION_ADD_COURT_DOCUMENT), jsonObject);
+        sender.send(data);
+    }
+
+    private CourtDocument buildCourtDocument(UUID caseUUID, UUID materialId, String fileName) {
+        final DocumentCategory documentCategory = DocumentCategory.documentCategory()
+                .withCaseDocument(CaseDocument.caseDocument()
+                        .withProsecutionCaseId(caseUUID)
+                        .build())
+                .build();
+
+        final Material material = Material.material().withId(materialId)
+                .withReceivedDateTime(ZonedDateTime.now())
+                .build();
+
+        return CourtDocument.courtDocument()
+                .withCourtDocumentId(randomUUID())
+                .withDocumentCategory(documentCategory)
+                .withDocumentTypeDescription(DOCUMENT_TYPE_DESCRIPTION)
+                .withDocumentTypeId(CASE_DOCUMENT_TYPE_ID)
+                .withMimeType(APPLICATION_PDF)
+                .withName(fileName)
+                .withMaterials(Collections.singletonList(material))
+                .withSendToCps(false)
+                .withContainsFinancialMeans(false)
+                .build();
+    }
+
+    private Optional<UUID> getCcCaseUUID(final String caseUrn) {
+        final Optional<JsonObject> caseIdJsonObject = progressionService.caseExistsByCaseUrn(caseUrn);
+        if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(CASE_ID)){
+            return Optional.of(fromString(caseIdJsonObject.get().getString(CASE_ID)));
+        }
+        return Optional.empty() ;
+    }
+
+    private Optional<UUID> getSjpCaseUUID(final String caseUrn) {
+        final Optional<JsonObject> caseIdJsonObject = sjpService.caseExistsByCaseUrn(caseUrn);
+        if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(SJP_CASE_ID)){
+            return Optional.of(fromString(caseIdJsonObject.get().getString(SJP_CASE_ID)));
+        }
+        return Optional.empty() ;
     }
 
     @Handles("results.event.nces-email-notification")

@@ -8,6 +8,7 @@
   "defendantName": "defendantName",
   "ncesEmail": "nces@email.com",
   "accountCorrelationId" : "29978298-8002-11eb-9439-0242ac130003",
+  "isSJPHearing": false,
   "offenceResults": [
     {
       "resultId": "4fc80104-8002-11eb-9439-0242ac130002",

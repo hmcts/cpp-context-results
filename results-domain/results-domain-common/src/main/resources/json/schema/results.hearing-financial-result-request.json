@@ -40,6 +40,9 @@
     "defendantContactNumber": {
       "type": "string"
     },
+    "isSJPHearing": {
+      "type": "boolean"
+    },
     "ncesEmail": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/email"
     },

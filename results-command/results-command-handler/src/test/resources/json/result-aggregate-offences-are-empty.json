@@ -1,5 +1,6 @@
 {
   "hearing": {
+    "isSJPHearing": false,
     "courtApplications": [{
       "applicant": {
         "id": "0ef33db2-e6ae-4699-a428-cc589b722d59",

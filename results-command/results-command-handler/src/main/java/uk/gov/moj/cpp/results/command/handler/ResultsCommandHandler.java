@@ -278,8 +278,8 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     @Handles("results.command.track-results")
     public void trackResult(final JsonEnvelope envelope) throws EventStreamException {
-        final HearingFinancialResultRequest hearingFinancialResultRequest = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), HearingFinancialResultRequest.class);
-        LOGGER.info("masterDefandantId : {} HearingFinancialResultRequest:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(hearingFinancialResultRequest));
+        HearingFinancialResultRequest hearingFinancialResultRequest = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), HearingFinancialResultRequest.class);
+        LOGGER.info("masterDefendantId : {} HearingFinancialResultRequest:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(hearingFinancialResultRequest));
 
         final EventStream eventStream = eventSource.getStreamById(hearingFinancialResultRequest.getMasterDefendantId());
         final HearingFinancialResultsAggregate aggregate = aggregateService.get(eventStream, HearingFinancialResultsAggregate.class);
@@ -295,6 +295,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final String originalDateOfSentenceList = getOriginalDateOfSentence(aggregate, resultsAggregate);
         final List<NewOffenceByResult> newResultByOffenceList = getNewResultByOffence(resultsAggregate);
         final String applicationResult = getApplicationResult(resultsAggregate.getHearing());
+        hearingFinancialResultRequest = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withValuesFrom(hearingFinancialResultRequest)
+                .withIsSJPHearing(getIsSJPHearingFlag(resultsAggregate)).build();
+
 
         final Stream<Object> updateEvents = aggregate.updateFinancialResults(hearingFinancialResultRequest, isWrittenOffExists, originalDateOfOffenceList,
                 originalDateOfSentenceList, newResultByOffenceList, applicationResult);
@@ -302,6 +306,13 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         eventStream.append(updateEvents.map(toEnvelopeWithMetadataFrom(envelope)));
 
         LOGGER.info("masterDefandantId : {} HearingFinancialResultsAggregate:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(aggregate));
+    }
+
+    private boolean getIsSJPHearingFlag(ResultsAggregate resultsAggregate) {
+        if(nonNull(resultsAggregate.getHearing()) && nonNull(resultsAggregate.getHearing().getIsSJPHearing())){
+            return resultsAggregate.getHearing().getIsSJPHearing();
+        }
+        return false ;
     }
 
     private String getApplicationResult(Hearing hearing) {

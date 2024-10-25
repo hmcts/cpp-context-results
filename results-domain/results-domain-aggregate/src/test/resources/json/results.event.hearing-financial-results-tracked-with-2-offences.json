@@ -13,6 +13,7 @@
     "hearingSittingDay": "2024-04-04T11:00:00.000Z",
     "masterDefendantId": "MASTER_DEFENDANT_ID",
     "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "isSJPHearing": "false",
     "offenceResults": [{
       "applicationType": "STAT_DEC",
       "applicationResultType": "Granted",

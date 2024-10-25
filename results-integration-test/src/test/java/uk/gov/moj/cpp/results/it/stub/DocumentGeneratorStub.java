@@ -36,6 +36,13 @@ public class DocumentGeneratorStub {
         waitForPostStubToBeReady(PATH, "application/vnd.systemdocgenerator.render+json", Response.Status.ACCEPTED);
     }
 
+    public static void stubDocumentCreateWithStatusOk(String documentText) {
+        final String PATH = "/systemdocgenerator-command-api/command/api/rest/systemdocgenerator/render";
+        stubFor(post(urlPathMatching(PATH))
+                .withHeader(CONTENT_TYPE, equalTo("application/vnd.systemdocgenerator.render+json"))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode())
+                        .withBody(documentText.getBytes())));
+    }
     public static void verifyCreate(List<String> expectedValues) {
         await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
             RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(PATH + ".*"));

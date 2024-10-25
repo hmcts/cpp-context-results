@@ -50,6 +50,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
+
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
@@ -181,6 +182,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private String defendantAddress;
     private String defendantEmail;
     private String defendantContactNumber;
+    private Boolean isSJPHearing;
     private UUID masterDefendantId;
     private String ncesEmail;
     private List<String> prosecutionCaseReferences;
@@ -321,6 +323,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .withDefendantAddress(accountReceived.getDefendantAddress())
                     .withDefendantEmail(accountReceived.getDefendantEmail())
                     .withDefendantContactNumber(accountReceived.getDefendantContactNumber())
+                    .withIsSJPHearing(accountReceived.getIsSJPHearing())
                     .withApplicationResult(accountReceived.getApplicationResult())
                     .withDivisionCode(accountReceived.getDivisionCode())
                     .withGobAccountNumber(accountReceived.getGobAccountNumber())
@@ -452,6 +455,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         this.defendantAddress = request.getDefendantAddress();
         this.defendantEmail = request.getDefendantEmail();
         this.defendantContactNumber = request.getDefendantContactNumber();
+        this.isSJPHearing = request.getIsSJPHearing();
         this.masterDefendantId = request.getMasterDefendantId();
         this.hearingId = request.getHearingId();
         this.prosecutionCaseReferences = request.getProsecutionCaseReferences();
@@ -524,6 +528,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withDefendantAddress(defendantAddress)
                 .withDefendantEmail(defendantEmail)
                 .withDefendantContactNumber(defendantContactNumber)
+                .withIsSJPHearing(isSJPHearing)
                 .withCaseReferences(String.join(COMMA, caseUrns))
                 .withMasterDefendantId(masterDefendantId)
                 .withListedDate(listingDate);
@@ -675,6 +680,9 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     public String getDefendantContactNumber() {
         return defendantContactNumber;
     }
+    public Boolean getIsSJPHearing() {
+        return isSJPHearing;
+    }
 
     public UUID getMasterDefendantId() {
         return masterDefendantId;
@@ -714,6 +722,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withDefendantAddress(ncesEmailNotificationRequested.getDefendantAddress())
                 .withDefendantEmail(ncesEmailNotificationRequested.getDefendantEmail())
                 .withDefendantContactNumber(ncesEmailNotificationRequested.getDefendantContactNumber())
+                .withIsSJPHearing(ncesEmailNotificationRequested.getIsSJPHearing())
                 .withApplicationResult(ncesEmailNotificationRequested.getApplicationResult())
                 .withCaseReferences(ncesEmailNotificationRequested.getCaseReferences())
                 .withMasterDefendantId(ncesEmailNotificationRequested.getMasterDefendantId())
@@ -807,7 +816,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withAmendmentDate(marked.getAmendmentDate())
                 .withAmendmentReason(marked.getAmendmentReason())
                 .withOldDivisionCode(marked.getOldDivisionCode())
-                .withOldGobAccountNumber(marked.getOldGobAccountNumber());
+                .withOldGobAccountNumber(marked.getOldGobAccountNumber())
+                .withIsSJPHearing(marked.getIsSJPHearing());
     }
 
     @SuppressWarnings("java:S107")
@@ -839,6 +849,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
                 .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
                 .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
+                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
                 .withApplicationResult(applicationResult)
                 .withCaseReferences(String.join(COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
                 .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
@@ -875,6 +886,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withId(randomUUID())
                 .withSendTo(ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail))
                 .withSubject(subject)
+                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
                 .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
                 .withDefendantName(hearingFinancialResultRequest.getDefendantName())
                 .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
@@ -937,6 +949,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
                 .withOldDivisionCode(previousItem.getAccountDivisionCode())
                 .withImpositionOffenceDetails(impositionOffenceDetails)
+                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
                 .withAmendmentDate(offenceResult.map(OffenceResults::getAmendmentDate).orElse(LocalDate.now().toString()))
                 .withAmendmentReason(offenceResult.map(OffenceResults::getAmendmentReason).orElse("Admin error on shared result (a result recorded incorrectly)"));
 

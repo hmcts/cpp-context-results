@@ -35,7 +35,7 @@ public class DocumentGeneratorService {
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
     private static final String ERROR_MESSAGE = "Error while uploading document generation or upload ";
     public static final String NCES_DOCUMENT_TEMPLATE_NAME = "NCESNotification";
-    public static final String NCES_DOCUMENT_ORDER = "NCESDocumentOrder";
+    public static final String ENF_DOCUMENT_ORDER = "ENFDocumentOrder";
 
     private final DocumentGeneratorClientProducer documentGeneratorClientProducer;
 
@@ -60,27 +60,31 @@ public class DocumentGeneratorService {
 
 
     @Transactional(REQUIRES_NEW)
-    public void generateNcesDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
-                                     final UUID userId, UUID materialId ) {
+    public FileParams generateNcesDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
+                                           final UUID userId, UUID materialId ) {
+        FileParams fileParams = new FileParams();
+        final String fileName = getTimeStampAmendedFileName(ENF_DOCUMENT_ORDER) ;
         try {
             final JsonObject ncesDocumentJson = originatingEnvelope.payloadAsJsonObject();
             final DocumentGeneratorClient documentGeneratorClient = documentGeneratorClientProducer.documentGeneratorClient();
             final byte[] resultOrderAsByteArray = documentGeneratorClient.generatePdfDocument(ncesDocumentJson, NCES_DOCUMENT_TEMPLATE_NAME, getSystemUserUuid());
-            addDocumentToMaterial(sender, originatingEnvelope, getTimeStampAmendedFileName(NCES_DOCUMENT_ORDER),
+            final UUID fileId = addDocumentToMaterial(sender, originatingEnvelope, fileName,
                     new ByteArrayInputStream(resultOrderAsByteArray), userId,  materialId);
-
+            fileParams.setFileId(fileId);
+            fileParams.setFilename(fileName);
         } catch (IOException | RuntimeException e) {
             LOGGER.error(ERROR_MESSAGE, e);
         }
+        return fileParams ;
     }
 
-    private void addDocumentToMaterial(Sender sender, JsonEnvelope originatingEnvelope, final String filename, final InputStream fileContent,
+    private UUID addDocumentToMaterial(Sender sender, JsonEnvelope originatingEnvelope, final String filename, final InputStream fileContent,
                                        final UUID userId,
                                        final UUID materialId) {
-
+        final UUID fileId ;
         try {
             //Uploading the file
-            final UUID fileId = storeFile(fileContent, filename);
+            fileId = storeFile(fileContent, filename);
             LOGGER.info("Stored material {} in file store {}", materialId, fileId);
             final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
             uploadMaterialService.uploadMaterial(uploadMaterialContextBuilder
@@ -96,6 +100,7 @@ public class DocumentGeneratorService {
 
             throw new FileUploadException(e);
         }
+        return fileId ;
     }
 
 
