@@ -69,7 +69,7 @@
           "chargeDate": "2022-12-15",
           "count": 0,
           "endorsableFlag": false,
-          "id": "4cf7e063-4701-4329-a4fd-ec06de5f184f",
+          "id": "66ab677a-722d-418a-a670-507512e2b88d",
           "isDisposed": false,
           "listingNumber": 1,
           "maxPenalty": "S:L3",
@@ -525,7 +525,7 @@
         "lastSharedDateTime": "2024-04-25",
         "level": "D",
         "lifeDuration": false,
-        "offenceId": "4cf7e063-4701-4329-a4fd-ec06de5f184f",
+        "offenceId": "66ab677a-722d-418a-a670-507512e2b88d",
         "orderedDate": "2024-04-25",
         "orderedHearingId": "093cd2dc-fb6d-4e6c-b501-b4f6863e739b",
         "parentJudicialResultId": "4f35d98a-e7a3-488b-8272-4a2b443b05b4",
@@ -584,7 +584,7 @@
         "lastSharedDateTime": "2024-04-25",
         "level": "D",
         "lifeDuration": false,
-        "offenceId": "4cf7e063-4701-4329-a4fd-ec06de5f184f",
+        "offenceId": "66ab677a-722d-418a-a670-507512e2b88d",
         "orderedDate": "2024-04-25",
         "orderedHearingId": "093cd2dc-fb6d-4e6c-b501-b4f6863e739b",
         "parentJudicialResultId": "ca024da0-b2ef-4889-8c91-49cb03016a11",
@@ -633,7 +633,7 @@
           "chargeDate": "2022-12-15",
           "count": 0,
           "endorsableFlag": false,
-          "id": "4cf7e063-4701-4329-a4fd-ec06de5f184f",
+          "id": "eb4146cb-39f9-4ed3-ba86-088d2954a937",
           "isDisposed": true,
           "judicialResults": [{
             "alwaysPublished": false,
@@ -779,7 +779,8 @@
     "type": {
       "description": "First hearing",
       "id": "4a0e892d-c0c5-3c51-95b8-704d8c781776"
-    }
+    },
+    "isSJPHearing": false
   },
   "caseIds": ["3c671f95-0d9e-4b06-893a-358f9aa751a7"]
 }

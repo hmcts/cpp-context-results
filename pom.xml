@@ -39,8 +39,8 @@
         <coredomain.version>17.21.14</coredomain.version>
         <referencedata.version>17.0.29</referencedata.version>
         <notification.notify.version>17.0.1</notification.notify.version>
-        <systemdocgenerator.version>17.0.10</systemdocgenerator.version>
-        <progression.version>17.0.12</progression.version>
+        <systemdocgenerator.version>17.0.18</systemdocgenerator.version>
+        <progression.version>17.0.21</progression.version>
         <material.version>17.0.20</material.version>
         <usersgroups.version>17.0.19</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>

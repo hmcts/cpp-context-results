@@ -22,8 +22,10 @@ import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAgg
 
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.Offence;
+
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;
+
 import uk.gov.justice.core.courts.UnmarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
@@ -32,6 +34,9 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.ZonedDateTimes;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
@@ -90,7 +95,8 @@ public class HearingFinancialResultsAggregateTest {
     private String ncesEMail;
     private ZonedDateTime hearingSittingDay = ZonedDateTimes.fromString("2020-03-07T14:22:00.000Z");
     private static final String HEARING_SITTING_DAY_PATTERN = "yyyy-MM-dd";
-    private String hearingCourtCentreName = "Croydon Crown Court" ;
+    public static final String BRITISH_DATE_FORMAT = "dd/MM/yyyy";
+    private String hearingCourtCentreName = "Croydon Crown Court";
     private String defendantDateOfBirth = "1988-07-07";
     private String defendantAddress = "address";
     private String defendantEmail = "aa@aa.com";
@@ -114,12 +120,14 @@ public class HearingFinancialResultsAggregateTest {
             .withOffenceResults(asList(offenceResults()
                             .withOffenceId(OFFENCE_ID_1)
                             .withResultCode("rc1")
+                            .withDateOfResult("24/05/2024")
                             .withIsFinancial(true)
                             .withIsDeemedServed(false)
                             .build(),
                     offenceResults()
                             .withOffenceId(OFFENCE_ID_2)
                             .withResultCode("rc2")
+                            .withDateOfResult("24/05/2024")
                             .withIsFinancial(true)
                             .withIsDeemedServed(false)
                             .build()))
@@ -127,18 +135,19 @@ public class HearingFinancialResultsAggregateTest {
 
     private final List<String> applicationSubjects = asList("STATUTORY DECLARATION REFUSED", STATUTORY_DECLARATION_WITHDRAWN, STATUTORY_DECLARATION_GRANTED,
             "APPLICATION TO REOPEN REFUSED", "APPLICATION TO REOPEN WITHDRAWN", APPLICATION_TO_REOPEN_GRANTED, APPEAL_DISMISSED, "APPEAL DISMISSED SENTENCE VARIED",
-            "APPEAL ABANDONED", "APPEAL WITHDRAWN", APPEAL_ALLOWED, STATUTORY_DECLARATION_UPDATED, APPLICATION_TO_REOPEN_UPDATED,APPEAL_APPLICATION_UPDATED);
+            "APPEAL ABANDONED", "APPEAL WITHDRAWN", APPEAL_ALLOWED, STATUTORY_DECLARATION_UPDATED, APPLICATION_TO_REOPEN_UPDATED, APPEAL_APPLICATION_UPDATED);
 
-    private static final String STATUTORY_DECLARATION_UPDATED  = "STATUTORY DECLARATION UPDATED" ;
-    private static final String APPLICATION_TO_REOPEN_UPDATED  = "APPLICATION TO REOPEN UPDATED" ;
-    private static final String APPEAL_APPLICATION_UPDATED  = "APPEAL APPLICATION UPDATED";
-    private static final String APPLICATION_RESULT = "NEXH --" ;
+    private static final String STATUTORY_DECLARATION_UPDATED = "STATUTORY DECLARATION UPDATED";
+    private static final String APPLICATION_TO_REOPEN_UPDATED = "APPLICATION TO REOPEN UPDATED";
+    private static final String APPEAL_APPLICATION_UPDATED = "APPEAL APPLICATION UPDATED";
+    private static final String APPLICATION_RESULT = "NEXH --";
 
 
     private final List<String> applicationGrantedSubjects = Arrays.asList("STATUTORY DECLARATION GRANTED",
-                                                                            "APPLICATION TO REOPEN GRANTED",
-                                                                            "APPLICATION TO REOPEN GRANTED",
-                                                                            "APPEAL GRANTED");
+            "APPLICATION TO REOPEN GRANTED",
+            "APPLICATION TO REOPEN GRANTED",
+            "APPEAL GRANTED");
+
     public static Object[][] applicationTypes() {
         return new String[][]{
                 {STAT_DEC, "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"},
@@ -187,7 +196,7 @@ public class HearingFinancialResultsAggregateTest {
 
     @Test
     public void shouldTrackFinancialResults() {
-        aggregate.updateFinancialResults(input, "false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+        aggregate.updateFinancialResults(input, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         assertThat(aggregate.getDefendantName(), is("name"));
         assertThat(aggregate.getOffenceResultsDetails().size(), is(2));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1), is(notNullValue()));
@@ -201,7 +210,7 @@ public class HearingFinancialResultsAggregateTest {
         final String TEMPLATE_PAYLOAD_2_OFFENCE_RESULT = "json/results.event.hearing-financial-results-tracked-with-2-offences.json";
         final String MASTER_DEFENDANT_ID = randomUUID().toString();
         final String OFFENCE_RESULTS_ID = randomUUID().toString();
-        final String ACCOUNT_CORRELATION_ID  = randomUUID().toString();
+        final String ACCOUNT_CORRELATION_ID = randomUUID().toString();
 
         aggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                 .withCreatedTime(ZonedDateTime.now())
@@ -222,20 +231,25 @@ public class HearingFinancialResultsAggregateTest {
 
         HearingFinancialResultsTracked input = jsonToObjectConverter.convert(stringToObject(payloadAsString), HearingFinancialResultsTracked.class);
 
-        aggregate.updateFinancialResults(input.getHearingFinancialResultRequest(), "false", "2021-21-21", "2021-21-21" , null, APPLICATION_RESULT );
+        aggregate.updateFinancialResults(input.getHearingFinancialResultRequest(), "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         Field markedAggregateSendEmailWhenAccountReceivedListField = HearingFinancialResultsAggregate.class.getDeclaredField("markedAggregateSendEmailWhenAccountReceivedList");
         markedAggregateSendEmailWhenAccountReceivedListField.setAccessible(true);
 
         ArrayList markedAggregateSendEmailWhenAccountReceivedList = (ArrayList) markedAggregateSendEmailWhenAccountReceivedListField.get(aggregate);
-        assertThat(((MarkedAggregateSendEmailWhenAccountReceived)markedAggregateSendEmailWhenAccountReceivedList.get(0)).getImpositionOffenceDetails().size(), is(1));
-        assertThat(((MarkedAggregateSendEmailWhenAccountReceived)markedAggregateSendEmailWhenAccountReceivedList.get(0)).getImpositionOffenceDetails().get(0).getTitle(), is("Title"));
-        assertThat(((MarkedAggregateSendEmailWhenAccountReceived)markedAggregateSendEmailWhenAccountReceivedList.get(0)).getImpositionOffenceDetails().get(0).getDetails(), is("impositionOffenceDetails"));
+        assertThat(((MarkedAggregateSendEmailWhenAccountReceived) markedAggregateSendEmailWhenAccountReceivedList.get(0)).getImpositionOffenceDetails().size(), is(1));
+        assertThat(((MarkedAggregateSendEmailWhenAccountReceived) markedAggregateSendEmailWhenAccountReceivedList.get(0)).getImpositionOffenceDetails().get(0).getTitle(), is("Title"));
+        assertThat(((MarkedAggregateSendEmailWhenAccountReceived) markedAggregateSendEmailWhenAccountReceivedList.get(0)).getImpositionOffenceDetails().get(0).getDetails(), is("impositionOffenceDetails"));
     }
 
     private List<OffenceResults> getOffenceResults(final UUID offenceId) {
         List<OffenceResults> offenceResults = new ArrayList<>();
-        offenceResults.add(OffenceResults.offenceResults().withIsFinancial(true).withOffenceId(offenceId).withOffenceTitle("Title").withImpositionOffenceDetails("impositionOffenceDetails").build());
-        return  offenceResults;
+        offenceResults.add(OffenceResults.offenceResults().withIsFinancial(true)
+                .withDateOfResult("24/05/2024")
+                .withOffenceId(offenceId)
+                .withOffenceTitle("Title")
+                .withImpositionOffenceDetails("impositionOffenceDetails")
+                .build());
+        return offenceResults;
     }
 
     private static JsonObject stringToObject(final String request) {
@@ -255,12 +269,12 @@ public class HearingFinancialResultsAggregateTest {
         return request;
     }
 
-    public static JsonObject convertStringToJson(String str){
+    public static JsonObject convertStringToJson(String str) {
         final JsonReader reader = createReader(new StringReader(str));
         return reader.readObject();
     }
 
-    public void assertAdditionalData(HearingFinancialResultsAggregate aggregate){
+    public void assertAdditionalData(HearingFinancialResultsAggregate aggregate) {
         assertThat(aggregate.getHearingSittingDay(), is(hearingSittingDay));
         assertThat(aggregate.getHearingCourtCentreName(), is(hearingCourtCentreName));
         assertThat(aggregate.getDefendantDateOfBirth(), is(defendantDateOfBirth));
@@ -306,11 +320,15 @@ public class HearingFinancialResultsAggregateTest {
 
     @Test
     public void shouldUpdateTrackedFinancialResults() {
-        aggregate.updateFinancialResults(input, "false", "2021-21-21" , "2021-21-21" , null, APPLICATION_RESULT);
+        aggregate.updateFinancialResults(input, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         assertThat(aggregate.getDefendantName(), is("name"));
         assertThat(aggregate.getOffenceResultsDetails().size(), is(2));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1), is(notNullValue()));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2), is(notNullValue()));
+
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getDateOfResult(), is("24/05/2024"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getDateOfResult(), is("24/05/2024"));
+
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountDivisionCode(), is("adc"));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountDivisionCode(), is("adc"));
         assertAdditionalData(aggregate);
@@ -336,7 +354,7 @@ public class HearingFinancialResultsAggregateTest {
                                 .withResultCode("rc1")
                                 .withAmendmentReason("AmendmentReason")
                                 .withAmendmentDate("AmendmentDate")
-                                .withDateOfResult("DateOfResult")
+                                .withDateOfResult("24/05/2024")
                                 .withResultId(resultId)
                                 .withImpositionOffenceDetails("impositionDetails")
                                 .withOffenceTitle("offenceTitle")
@@ -347,17 +365,19 @@ public class HearingFinancialResultsAggregateTest {
                         offenceResults()
                                 .withOffenceId(OFFENCE_ID_2)
                                 .withResultCode("rc2")
+                                .withDateOfResult("24/05/2024")
                                 .withIsFinancial(true)
                                 .withIsDeemedServed(false)
                                 .build(),
                         offenceResults()
                                 .withOffenceId(offenceId3)
                                 .withResultCode("rc3")
+                                .withDateOfResult("24/05/2024")
                                 .withIsFinancial(true)
                                 .withIsDeemedServed(false)
                                 .build()))
                 .build();
-        aggregate.updateFinancialResults(newInput, "false", "2021-21-21", "2021-21-21" , null, APPLICATION_RESULT);
+        aggregate.updateFinancialResults(newInput, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         assertThat(aggregate.getDefendantName(), is("name"));
         assertAdditionalData(aggregate);
         assertThat(aggregate.getOffenceResultsDetails().size(), is(3));
@@ -365,7 +385,7 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getResultCode(), is("rc1"));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getAmendmentReason(), is("AmendmentReason"));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getAmendmentDate(), is("AmendmentDate"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getDateOfResult(), is("DateOfResult"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getDateOfResult(), is("24/05/2024"));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getImpositionOffenceDetails(), is("impositionDetails"));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getOffenceTitle(), is("offenceTitle"));
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getIsDeemedServed(), is(true));
@@ -373,7 +393,9 @@ public class HearingFinancialResultsAggregateTest {
 
 
         assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getOffenceId(), is(notNullValue()));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getDateOfResult(), is("24/05/2024"));
         assertThat(aggregate.getOffenceResultsDetails().get(offenceId3).getOffenceId(), is(notNullValue()));
+        assertThat(aggregate.getOffenceResultsDetails().get(offenceId3).getDateOfResult(), is("24/05/2024"));
 
         verifyHistory();
     }
@@ -401,7 +423,7 @@ public class HearingFinancialResultsAggregateTest {
                             .withIsDeemedServed(false).build()))
                     .withAccountDivisionCode(accountCorrelationId.toString() + "DIVCODE")
                     .build();
-            aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21" , null, APPLICATION_RESULT);
+            aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         });
 
 
@@ -425,23 +447,24 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountNumber(), is(accountCorrelationIds.get(0) + "ACCOUNT"));
 
     }
+
     @Test
     public void shouldMatchAccountNumberWhenMultipleCorrelationIdReceivedWithDifferentCaseReference() {
         final List<UUID> accountCorrelationIds = asList(randomUUID(), randomUUID(), randomUUID());
         final UUID offenceId = randomUUID();
 
 
-            HearingFinancialResultRequest request1 = HearingFinancialResultRequest.hearingFinancialResultRequest()
-                    .withAccountCorrelationId(accountCorrelationIds.get(0))
-                    .withIsSJPHearing(false)
-                    .withProsecutionCaseReferences(asList("RANDOM_CASE_1"))
-                    .withOffenceResults(asList(OffenceResults.offenceResults()
-                            .withOffenceId(offenceId)
-                            .withIsFinancial(true)
-                            .withIsDeemedServed(false).build()))
-                    .withAccountDivisionCode(accountCorrelationIds.get(0).toString() + "DIVCODE")
-                    .build();
-            aggregate.updateFinancialResults(request1,"false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+        HearingFinancialResultRequest request1 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withAccountCorrelationId(accountCorrelationIds.get(0))
+                .withIsSJPHearing(false)
+                .withProsecutionCaseReferences(asList("RANDOM_CASE_1"))
+                .withOffenceResults(asList(OffenceResults.offenceResults()
+                        .withOffenceId(offenceId)
+                        .withIsFinancial(true)
+                        .withIsDeemedServed(false).build()))
+                .withAccountDivisionCode(accountCorrelationIds.get(0).toString() + "DIVCODE")
+                .build();
+        aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
 
         HearingFinancialResultRequest request2 = HearingFinancialResultRequest.hearingFinancialResultRequest()
                 .withAccountCorrelationId(accountCorrelationIds.get(1))
@@ -453,7 +476,7 @@ public class HearingFinancialResultsAggregateTest {
                         .withIsDeemedServed(false).build()))
                 .withAccountDivisionCode(accountCorrelationIds.get(1).toString() + "DIVCODE")
                 .build();
-        aggregate.updateFinancialResults(request2,"false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+        aggregate.updateFinancialResults(request2, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
 
         HearingFinancialResultRequest request3 = HearingFinancialResultRequest.hearingFinancialResultRequest()
                 .withAccountCorrelationId(accountCorrelationIds.get(2))
@@ -465,7 +488,7 @@ public class HearingFinancialResultsAggregateTest {
                         .withIsDeemedServed(false).build()))
                 .withAccountDivisionCode(accountCorrelationIds.get(2).toString() + "DIVCODE")
                 .build();
-        aggregate.updateFinancialResults(request3, "false", "2021-21-21", "2021-21-21" , null , APPLICATION_RESULT);
+        aggregate.updateFinancialResults(request3, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         Collections.reverse(accountCorrelationIds);
         accountCorrelationIds.forEach(accountCorrelationId ->
                 aggregate.updateAccountNumber(accountCorrelationId.toString() + "ACCOUNT",
@@ -477,19 +500,20 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountCorrelationId(), is(accountCorrelationIds.get(2)));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountDivisionCode(), is(accountCorrelationIds.get(2) + "DIVCODE"));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getAccountNumber(), is(accountCorrelationIds.get(2) + "ACCOUNT"));
-        assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getProsecutionCaseReferences(), is( asList("RANDOM_CASE_1")));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(0).getProsecutionCaseReferences(), is(asList("RANDOM_CASE_1")));
 
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountCorrelationId(), is(accountCorrelationIds.get(1)));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountDivisionCode(), is(accountCorrelationIds.get(1) + "DIVCODE"));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getAccountNumber(), is(accountCorrelationIds.get(1) + "ACCOUNT"));
-        assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getProsecutionCaseReferences(), is( asList("RANDOM_CASE_2")));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(1).getProsecutionCaseReferences(), is(asList("RANDOM_CASE_2")));
 
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountCorrelationId(), is(accountCorrelationIds.get(0)));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountDivisionCode(), is(accountCorrelationIds.get(0) + "DIVCODE"));
         assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getAccountNumber(), is(accountCorrelationIds.get(0) + "ACCOUNT"));
-        assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getProsecutionCaseReferences(), is( asList("RANDOM_CASE_1")));
+        assertThat(aggregate.getCorrelationIdHistoryItemList().get(2).getProsecutionCaseReferences(), is(asList("RANDOM_CASE_1")));
 
     }
+
     @Test
     public void shouldMatchAccountNumberWhenMultipleCorrelationIdReceivedWithNullValue() {
         final List<UUID> accountCorrelationIds = asList(randomUUID(), null, randomUUID());
@@ -543,7 +567,7 @@ public class HearingFinancialResultsAggregateTest {
         Collections.reverse(accountCorrelationIds);
         updateGobAccounts(accountCorrelationIds);
 
-        final List<Object> events = aggregate.sendNcesEmailForNewApplication(applicationType, "01/01/2020", singletonList("caseUrn"),hearingCourtCentreName).collect(toList());
+        final List<Object> events = aggregate.sendNcesEmailForNewApplication(applicationType, "01/01/2020", singletonList("caseUrn"), hearingCourtCentreName).collect(toList());
 
         assertThat(events.size(), is(1));
         final NcesEmailNotificationRequested ncesEmailNotificationRequested = Optional.of(events.get(0)).map(o -> (NcesEmailNotificationRequested) o).get();
@@ -1712,9 +1736,9 @@ public class HearingFinancialResultsAggregateTest {
         final UUID hearingId = randomUUID();
         final UUID masterDefendantId = randomUUID();
         final UUID offenceId = randomUUID();
-        final String gobAccountNumber ="24002079V";
-        final String subject ="ACCOUNTS TO BE CONSOLIDATED";
-        final  UUID markedAggregateSendEmailWhenAccountReceivedId = randomUUID();
+        final String gobAccountNumber = "24002079V";
+        final String subject = "ACCOUNTS TO BE CONSOLIDATED";
+        final UUID markedAggregateSendEmailWhenAccountReceivedId = randomUUID();
 
         final HearingFinancialResultsTracked hearingFinancialResultsTracked = HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                 .withCreatedTime(ZonedDateTime.now())
@@ -1737,7 +1761,7 @@ public class HearingFinancialResultsAggregateTest {
 
         aggregate.apply(hearingFinancialResultsTracked);
 
-        MarkedAggregateSendEmailWhenAccountReceived  markedAggregateSendEmailWhenAccountReceived = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
+        MarkedAggregateSendEmailWhenAccountReceived markedAggregateSendEmailWhenAccountReceived = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
                 .withAccountCorrelationId(accountCorrelationId)
                 .withMasterDefendantId(masterDefendantId)
                 .withDivisionCode(accountDivisionCode)
@@ -1750,7 +1774,7 @@ public class HearingFinancialResultsAggregateTest {
                 .build();
         aggregate.apply(markedAggregateSendEmailWhenAccountReceived);
 
-        MarkedAggregateSendEmailWhenAccountReceived  markedAggregateSendEmailWhenAccountReceivedAfterFirstAmendment = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
+        MarkedAggregateSendEmailWhenAccountReceived markedAggregateSendEmailWhenAccountReceivedAfterFirstAmendment = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
                 .withOldAccountCorrelationId(accountCorrelationId)
                 .withId(randomUUID())
                 .withDivisionCode(accountDivisionCode)
@@ -1765,7 +1789,7 @@ public class HearingFinancialResultsAggregateTest {
         aggregate.apply(markedAggregateSendEmailWhenAccountReceivedAfterFirstAmendment);
 
 
-        MarkedAggregateSendEmailWhenAccountReceived  markedAggregateSendEmailWhenAccountReceivedAfterSecondAmendment = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
+        MarkedAggregateSendEmailWhenAccountReceived markedAggregateSendEmailWhenAccountReceivedAfterSecondAmendment = MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived()
                 .withOldAccountCorrelationId(accountCorrelationId)
                 .withId(randomUUID())
                 .withDivisionCode(accountDivisionCode)
@@ -1780,7 +1804,7 @@ public class HearingFinancialResultsAggregateTest {
 
         aggregate.apply(markedAggregateSendEmailWhenAccountReceivedAfterSecondAmendment);
 
-        List<Object> accountUpdateEvents = aggregate.updateAccountNumber(gobAccountNumber,accountCorrelationId).collect(toList());
+        List<Object> accountUpdateEvents = aggregate.updateAccountNumber(gobAccountNumber, accountCorrelationId).collect(toList());
 
         List<Object> applicationEvents = aggregate.checkApplicationEmailAndSend().collect(toList());
 
@@ -1789,20 +1813,20 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(applicationEvents.size(), is(2));
 
         Optional.of(applicationEvents.get(0)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithAccountNumber(subject,gobAccountNumber, singletonList(offenceId), masterDefendantId, event));
+                verifyEmailWithAccountNumber(subject, gobAccountNumber, singletonList(offenceId), masterDefendantId, event));
 
         Optional.of(applicationEvents.get(1)).map(o -> (UnmarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyUnMarkSendMailWhenAccountReceived(markedAggregateSendEmailWhenAccountReceivedId,event));
+                verifyUnMarkSendMailWhenAccountReceived(markedAggregateSendEmailWhenAccountReceivedId, event));
 
 
     }
 
-    private void  verifyUnMarkSendMailWhenAccountReceived(final UUID markedAggregateSendEmailWhenAccountReceivedId, final UnmarkedAggregateSendEmailWhenAccountReceived unmarkedAggregateSendEmailWhenAccountReceived) {
+    private void verifyUnMarkSendMailWhenAccountReceived(final UUID markedAggregateSendEmailWhenAccountReceivedId, final UnmarkedAggregateSendEmailWhenAccountReceived unmarkedAggregateSendEmailWhenAccountReceived) {
         assertThat(unmarkedAggregateSendEmailWhenAccountReceived.getId(), is(markedAggregateSendEmailWhenAccountReceivedId));
 
     }
 
-    private  void verifyEmailWithAccountNumber (final String subject,  final String accountNumber, final List<UUID> offenceids, final  UUID  masterDefendantId, final NcesEmailNotificationRequested ncesEmailNotificationRequestedApp1) {
+    private void verifyEmailWithAccountNumber(final String subject, final String accountNumber, final List<UUID> offenceids, final UUID masterDefendantId, final NcesEmailNotificationRequested ncesEmailNotificationRequestedApp1) {
         assertThat(ncesEmailNotificationRequestedApp1.getMaterialId(), is(notNullValue()));
         assertThat(ncesEmailNotificationRequestedApp1.getGobAccountNumber(), is(accountNumber));
         assertThat(ncesEmailNotificationRequestedApp1.getSubject(), is(subject));
@@ -1865,7 +1889,7 @@ public class HearingFinancialResultsAggregateTest {
                     .withAccountDivisionCode(accountCorrelationId == null ? null : accountCorrelationId.toString() + "DIVCODE")
                     .build();
 
-            events.addAll(aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21" , null, APPLICATION_RESULT).collect(toList()));
+            events.addAll(aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT).collect(toList()));
         });
         return events;
     }
@@ -1923,7 +1947,7 @@ public class HearingFinancialResultsAggregateTest {
                             .collect(toList()))
                     .withAccountDivisionCode(accountCorrelationId == null ? null : accountCorrelationId.toString() + "DIVCODE")
                     .build();
-            events.addAll(aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21" , null, APPLICATION_RESULT).collect(toList()));
+            events.addAll(aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT).collect(toList()));
         });
         return events;
     }
@@ -1997,7 +2021,7 @@ public class HearingFinancialResultsAggregateTest {
     }
 
     private void verifyEmailWithoutOlds(final String subject, final UUID accountCorrelationId, final List<UUID> offenceIds, final NcesEmailNotificationRequested ncesEmailNotificationRequestedApp1, final String caseUrn, final List<String> suffixes) {
-        String CASE_REOPENED = "Case reopened" ;
+        String CASE_REOPENED = "Case reopened";
 
         assertThat(ncesEmailNotificationRequestedApp1.getMaterialId(), is(notNullValue()));
         assertThat(ncesEmailNotificationRequestedApp1.getGobAccountNumber(), is(accountCorrelationId.toString() + "ACCOUNT"));
@@ -2013,9 +2037,9 @@ public class HearingFinancialResultsAggregateTest {
         }
 
         if (subject.equals(WRITE_OFF_ONE_DAY_DEEMED_SERVED)) {
-            assertThat(ncesEmailNotificationRequestedApp1.getOriginalDateOfSentence(), is(hearingSittingDay.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
+            assertThat(ncesEmailNotificationRequestedApp1.getOriginalDateOfSentence(), is(hearingSittingDay.format(ofPattern(BRITISH_DATE_FORMAT))));
             assertThat(ncesEmailNotificationRequestedApp1.getAmendmentReason(), is(nullValue()));
-        } else if ( applicationSubjects.contains(subject) || ACON_EMAIL_SUBJECT.equals(subject)) {
+        } else if (applicationSubjects.contains(subject) || ACON_EMAIL_SUBJECT.equals(subject)) {
             assertThat(ncesEmailNotificationRequestedApp1.getAmendmentReason(), is(nullValue()));
         } else {
             assertThat(ncesEmailNotificationRequestedApp1.getAmendmentDate(), is("01/02/2021"));
@@ -2025,11 +2049,11 @@ public class HearingFinancialResultsAggregateTest {
             assertThat(ncesEmailNotificationRequestedApp1.getDefendantContactNumber(), is(nullValue()));
             assertThat(ncesEmailNotificationRequestedApp1.getHearingSittingDay(), is(nullValue()));
         }
-        if (applicationGrantedSubjects.contains(subject)){
+        if (applicationGrantedSubjects.contains(subject)) {
             assertThat(ncesEmailNotificationRequestedApp1.getIsFinancialPenaltiesWrittenOff(), is("false"));
             assertThat(ncesEmailNotificationRequestedApp1.getOriginalDateOfSentence(), is("2021-21-21"));
         }
-        if (APPLICATION_UPDATED_SUBJECT.values().stream().anyMatch(e -> e.equals(subject))){
+        if (APPLICATION_UPDATED_SUBJECT.values().stream().anyMatch(e -> e.equals(subject))) {
             assertThat(ncesEmailNotificationRequestedApp1.getApplicationResult().split(",")[0], is(CASE_REOPENED));
         }
 

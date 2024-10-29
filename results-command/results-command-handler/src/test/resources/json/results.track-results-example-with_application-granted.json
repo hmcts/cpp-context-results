@@ -1,30 +1,40 @@
 {
-  "hearingId": "29978004-8002-11eb-9439-0242ac130002",
-  "prosecutionCaseReferences": [
-    "urn1",
-    "urn2"
-  ],
-  "masterDefendantId": "29978298-8002-11eb-9439-0242ac130002",
-  "defendantName": "defendantName",
-  "ncesEmail": "nces@email.com",
+  "accountCorrelationId":"2e9d83d1-f86c-482f-875c-9ae7ffd7656b",
+  "accountDivisionCode": "77",
+  "defendantAddress": "56saon 56Police House StreetDescription1 Locality1 Town2 TW14 9XD",
+  "defendantContactNumber": "09998021888",
+  "defendantDateOfBirth": "1997-12-17",
+  "defendantEmail": "robert@gmail.com",
+  "defendantName": "Jerel Gonzalo",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "cf255131-1f94-4205-b3e5-5befff5483e2",
+  "hearingSittingDay": "2024-08-17T19:43:40.237Z",
+  "masterDefendantId": "ed661109-b353-4d8d-8573-1ef36080eb08",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
   "isSJPHearing": false,
-  "accountCorrelationId" : "29978298-8002-11eb-9439-0242ac130003",
   "offenceResults": [
     {
-      "resultId": "4fc80104-8002-11eb-9439-0242ac130002",
+      "applicationResultType": "Statutory Declaration",
       "applicationType": "STAT_DEC",
-      "applicationResultType": "applicationResultType",
-      "offenceId": "OFFENCE_ID",
-      "amendmentReason": "amendmentReason",
+      "dateOfResult": "2024-08-17",
       "isDeemedServed": false,
-      "resultCode": "G",
-      "impositionAmount": "500",
-      "impositionOffenceDetails": "impositionOffenceDetails",
-      "offenceTitle": "offenceTitle",
-      "dateOfResult": "01-01-2021",
-      "accountCorrelationId": "2997837e-8002-11eb-9439-0242ac130002\n\n",
-      "accountDivisionCode": "accountDivisionCode",
-      "isFinancial": true
+      "isFinancial": true,
+      "offenceId": "eb4146cb-39f9-4ed3-ba86-088d2954a937",
+      "offenceTitle": "Fail / refuse give assistance to person executing Communications Act search warrant",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Statutory Declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2024-08-17",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "66ab677a-722d-418a-a670-507512e2b88d",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "STDEC"
     }
+  ],
+  "prosecutionCaseReferences": [
+    "10GD7213798"
   ]
 }

@@ -57,7 +57,7 @@
                 "chargeDate": "2018-05-30",
                 "count": 499,
                 "endDate": "2018-08-05",
-                "id": "ae5f4188-669b-4091-8345-e1529643ff85",
+                "id": "eb4146cb-39f9-4ed3-ba86-088d2954a937",
                 "judicialResults": [
                   {
                     "alwaysPublished": false,
@@ -153,7 +153,7 @@
                 "notifiedPlea": {
                   "notifiedPleaDate": "2024-09-18",
                   "notifiedPleaValue": "NO_NOTIFICATION",
-                  "offenceId": "ae5f4188-669b-4091-8345-e1529643ff85"
+                  "offenceId": "eb4146cb-39f9-4ed3-ba86-088d2954a937"
                 },
                 "offenceCode": "CA03014",
                 "offenceDateCode": 3,

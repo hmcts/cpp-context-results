@@ -697,7 +697,8 @@
     "type": {
       "description": "Application",
       "id": "3449743b-95d6-4836-8941-57f588b52068"
-    }
+    },
+    "isSJPHearing": false
   },
   "hearingDay": "2024-04-16",
   "sharedTime": "2024-04-23T16:53:00.899Z"

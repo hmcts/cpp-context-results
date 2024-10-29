@@ -1,6 +1,6 @@
 {
   "hearing": {
-    "isSJPHearing": false,
+    "isSJPHearing": true,
     "courtApplications": [
       {
         "applicant": {
