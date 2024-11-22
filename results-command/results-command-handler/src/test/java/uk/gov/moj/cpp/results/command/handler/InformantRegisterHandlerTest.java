@@ -29,6 +29,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetad
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeStreamMatcher.streamContaining;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegisterStreamId;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
@@ -44,6 +45,7 @@ import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
+import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -81,10 +83,10 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.hamcrest.MatcherAssert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -98,6 +100,8 @@ public class InformantRegisterHandlerTest {
     private static final String RESULT_TYPE_CASE = "case";
     private static final String RESULT_TYPE_OFFENCE = "offence";
     private static final UUID PROSECUTION_AUTHORITY_ID = randomUUID();
+
+    private static final ZonedDateTime REGISTER_DATE = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
     private static final UUID GROUP_ID = randomUUID();
 
     @Mock
@@ -133,7 +137,7 @@ public class InformantRegisterHandlerTest {
     private final StringToJsonObjectConverter stringToJsonObjectConverter = new StringToJsonObjectConverter();
 
     @Spy
-    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterRecorded.class, InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotificationIgnored.class);
+    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterRecorded.class, InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class);
 
     @BeforeEach
     public void setup() {
@@ -153,21 +157,22 @@ public class InformantRegisterHandlerTest {
     @Test
     public void shouldProcessCommand() throws Exception {
 
-        when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
+        final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
+        when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
 
         informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope());
 
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
 
         assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata().withName("results.event.informant-register-recorded"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
-                                withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
-                                withJsonPath("$.informantRegister", notNullValue())
-                                )
-                        ))
+                        jsonEnvelope(
+                                metadata().withName("results.event.informant-register-recorded"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                                withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                                withJsonPath("$.informantRegister.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                                withJsonPath("$.informantRegister.registerDate", is(REGISTER_DATE.toString()))
+                                        )
+                                ))
                 )
         );
     }
@@ -175,7 +180,6 @@ public class InformantRegisterHandlerTest {
     @Test
     public void shouldProcessCommandForGroupCases() throws Exception {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(progressionQueryService.getGroupMemberCases(any(), any())).thenReturn(getMemberCasesJson(GROUP_ID, 2));
 
         informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope(GROUP_ID, true, true));
@@ -183,53 +187,53 @@ public class InformantRegisterHandlerTest {
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
 
         MatcherAssert.assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata().withName("results.event.informant-register-recorded"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
-                                withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
-                                withJsonPath("$.informantRegister", notNullValue()),
-                                withJsonPath("$.informantRegister.hearingVenue.courtHouse", is("courtHouse")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants", hasSize(3)),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].title", is("title_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].firstName", is("firstName_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].address1", is("address1_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "prosecutionCasesOrApplications[0].caseOrApplicationReference", is("caseURN_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "prosecutionCasesOrApplications[0].results[0].cjsResultCode", is(RESULT_TYPE_CASE + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "results[0].cjsResultCode", is(RESULT_TYPE_DEFENDANT + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].title", is("title_1_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].firstName", is("firstName_1_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].address1", is("address1_1_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "prosecutionCasesOrApplications[0].caseOrApplicationReference", is("caseURN_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "prosecutionCasesOrApplications[0].results[0].cjsResultCode", is(RESULT_TYPE_CASE + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "results[0].cjsResultCode", is(RESULT_TYPE_DEFENDANT + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].title", is("title_2_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].firstName", is("firstName_2_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].address1", is("address1_2_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "prosecutionCasesOrApplications[0].caseOrApplicationReference", is("caseURN_2")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "prosecutionCasesOrApplications[0].results[0].cjsResultCode", is(RESULT_TYPE_CASE + "CjsResultCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "results[0].cjsResultCode", is(RESULT_TYPE_DEFENDANT + "CjsResultCode_Main_1"))
-                        )))
+                        jsonEnvelope(
+                                metadata().withName("results.event.informant-register-recorded"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                        withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                        withJsonPath("$.informantRegister", notNullValue()),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtHouse", is("courtHouse")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants", hasSize(3)),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].title", is("title_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].firstName", is("firstName_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].address1", is("address1_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "prosecutionCasesOrApplications[0].caseOrApplicationReference", is("caseURN_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "prosecutionCasesOrApplications[0].results[0].cjsResultCode", is(RESULT_TYPE_CASE + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "results[0].cjsResultCode", is(RESULT_TYPE_DEFENDANT + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].title", is("title_1_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].firstName", is("firstName_1_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].address1", is("address1_1_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "prosecutionCasesOrApplications[0].caseOrApplicationReference", is("caseURN_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "prosecutionCasesOrApplications[0].results[0].cjsResultCode", is(RESULT_TYPE_CASE + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "results[0].cjsResultCode", is(RESULT_TYPE_DEFENDANT + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].title", is("title_2_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].firstName", is("firstName_2_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].address1", is("address1_2_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "prosecutionCasesOrApplications[0].caseOrApplicationReference", is("caseURN_2")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "prosecutionCasesOrApplications[0].results[0].cjsResultCode", is(RESULT_TYPE_CASE + "CjsResultCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "results[0].cjsResultCode", is(RESULT_TYPE_DEFENDANT + "CjsResultCode_Main_1"))
+                                )))
                 )
         );
     }
@@ -237,7 +241,6 @@ public class InformantRegisterHandlerTest {
     @Test
     public void shouldProcessCommandForGroupCasesWithoutDefAndCaseResults() throws Exception {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(progressionQueryService.getGroupMemberCases(any(), any())).thenReturn(getMemberCasesJson(GROUP_ID, 2));
 
         informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope(GROUP_ID, false, false));
@@ -245,35 +248,35 @@ public class InformantRegisterHandlerTest {
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
 
         MatcherAssert.assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata().withName("results.event.informant-register-recorded"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
-                                withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
-                                withJsonPath("$.informantRegister", notNullValue()),
-                                withJsonPath("$.informantRegister.hearingVenue.courtHouse", is("courtHouse")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants", hasSize(3)),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].title", is("title_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
-                                withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].prosecutionCasesOrApplications[0].results"),
-                                withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].results"),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].title", is("title_1_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
-                                withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].prosecutionCasesOrApplications[0].results"),
-                                withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].results"),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].title", is("title_2_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
-                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
-                                        "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
-                                withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].prosecutionCasesOrApplications[0].results"),
-                                withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].results")
-                        )))
+                        jsonEnvelope(
+                                metadata().withName("results.event.informant-register-recorded"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                        withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                        withJsonPath("$.informantRegister", notNullValue()),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtHouse", is("courtHouse")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants", hasSize(3)),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].title", is("title_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
+                                        withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].prosecutionCasesOrApplications[0].results"),
+                                        withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].results"),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].title", is("title_1_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
+                                        withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].prosecutionCasesOrApplications[0].results"),
+                                        withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[1].results"),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].title", is("title_2_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceCode", is("offenceCode_Main_1")),
+                                        withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2]." +
+                                                "prosecutionCasesOrApplications[0].offences[0].offenceResults[0].cjsResultCode", is(RESULT_TYPE_OFFENCE + "CjsResultCode_Main_1")),
+                                        withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].prosecutionCasesOrApplications[0].results"),
+                                        withoutJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[2].results")
+                                )))
                 )
         );
     }
@@ -282,15 +285,21 @@ public class InformantRegisterHandlerTest {
     public void generateInformantRegister() throws EventStreamException {
         final Envelope<GenerateInformantRegister> generateInformantRegisterEnvelope = prepareEnvelope();
         final UUID prosecutionAuthorityId = randomUUID();
+        final ZonedDateTime registerDate = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
         final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest().withProsecutionAuthorityId(prosecutionAuthorityId).build();
-        final JsonArray jsonValues = createArrayBuilder().add(createObjectBuilder().add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
-                .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
-                .build()).build();
+        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+                .withProsecutionAuthorityId(prosecutionAuthorityId)
+                .withRegisterDate(registerDate)
+                .build();
+        final JsonArray jsonValues = createArrayBuilder()
+                .add(createObjectBuilder()
+                        .add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
+                        .add("registerDate", REGISTER_DATE.toString())
+                        .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
+                        .build()).build();
         final JsonObject jsonObject = createObjectBuilder().add("informantRegisterDocumentRequests", jsonValues).build();
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(queryEnvelope.payloadAsJsonObject()).thenReturn(jsonObject);
         when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
         informantRegisterHandler.handleGenerateInformantRegister(generateInformantRegisterEnvelope);
@@ -317,15 +326,22 @@ public class InformantRegisterHandlerTest {
     public void generateInformantRegisterByDate() throws EventStreamException {
         final Envelope<GenerateInformantRegisterByDate> generateInformantRegisterEnvelope = prepareGenerateInformantRegisterByDateEnvelope();
         final UUID prosecutionAuthorityId = randomUUID();
+        final ZonedDateTime registerDate = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
+
         final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest().withProsecutionAuthorityId(prosecutionAuthorityId).build();
-        final JsonArray jsonValues = createArrayBuilder().add(createObjectBuilder().add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
-                .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
-                .build()).build();
+        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+                .withProsecutionAuthorityId(prosecutionAuthorityId)
+                .withRegisterDate(registerDate)
+                .build();
+        final JsonArray jsonValues = createArrayBuilder()
+                .add(createObjectBuilder()
+                        .add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
+                        .add("registerDate", REGISTER_DATE.toString())
+                        .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
+                        .build()).build();
         final JsonObject jsonObject = createObjectBuilder().add("informantRegisterDocumentRequests", jsonValues).build();
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(aggregateService.get(eventStream, ProsecutionAuthorityAggregate.class)).thenReturn(aggregate);
         when(queryEnvelope.payloadAsJsonObject()).thenReturn(jsonObject);
         when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
         informantRegisterHandler.handleGenerateInformantRegisterByDate(generateInformantRegisterEnvelope);
@@ -337,6 +353,7 @@ public class InformantRegisterHandlerTest {
     private Envelope prepareNotificationEnvelope(final UUID fileId) {
         final NotifyInformantRegister notifyInformantRegister = NotifyInformantRegister.notifyInformantRegister()
                 .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
+                .withRegisterDate(REGISTER_DATE.toLocalDate())
                 .withFileId(fileId)
                 .withTemplateId("template Id")
                 .build();
@@ -351,13 +368,14 @@ public class InformantRegisterHandlerTest {
     private void verifyNotifyInformantRegisterDocumentRequestHandlerResults() throws EventStreamException {
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
         assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata()
-                                .withName("results.event.informant-register-notified"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(anyOf(
-                                withJsonPath("prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString()))
-                                )
-                        ))
+                        jsonEnvelope(
+                                metadata()
+                                        .withName("results.event.informant-register-notified-v2"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(anyOf(
+                                                withJsonPath("prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                                withJsonPath("registerDate", is(REGISTER_DATE.toString()))
+                                        )
+                                ))
                 )
         );
     }
@@ -391,13 +409,13 @@ public class InformantRegisterHandlerTest {
         final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
 
         assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata()
-                                .withName("results.event.informant-register-generated"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(anyOf(
-                                withJsonPath("$.informantRegisterDocumentRequests.length()", is(greaterThan(0)))
-                                )
-                        ))
+                        jsonEnvelope(
+                                metadata()
+                                        .withName("results.event.informant-register-generated"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(anyOf(
+                                                withJsonPath("$.informantRegisterDocumentRequests.length()", is(greaterThan(0)))
+                                        )
+                                ))
 
                 )
         );
@@ -412,7 +430,7 @@ public class InformantRegisterHandlerTest {
                 .withGroupId(groupId)
                 .withHearingId(randomUUID())
                 .withHearingDate(ZonedDateTime.now())
-                .withRegisterDate(ZonedDateTime.now().minusDays(1))
+                .withRegisterDate(REGISTER_DATE)
                 .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
                 .withProsecutionAuthorityCode("prosecutionAuthorityCode")
                 .withProsecutionAuthorityOuCode("prosecutionAuthorityOuCode")

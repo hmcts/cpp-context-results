@@ -160,6 +160,31 @@ public class InformantRegisterEventProcessorTest {
         assertThat(notificationJson.getValue().getString("templateId"), is(TEMPLATE_ID));
         assertThat(notificationJson.getValue().getString("sendToAddress"), is(emailAddress1));
         assertThat(notificationJson.getValue().getString("fileId"), is(fileId.toString()));
+    }
+
+    @Test
+    public void notifyProsecutionAuthorityV2() {
+        final JsonArrayBuilder recipientJsonArray = createArrayBuilder();
+        final String emailAddress1 = "abc@test.com";
+        recipientJsonArray.add(createObjectBuilder()
+                .add("recipientName", "Prosecutor_name")
+                .add("emailTemplateName", "some template")
+                .add("emailAddress1", emailAddress1).build());
+        final UUID fileId = randomUUID();
+        final JsonObject notificationObject = createObjectBuilder()
+                .add("recipients", recipientJsonArray)
+                .add("fileId", fileId.toString())
+                .add("templateId", TEMPLATE_ID)
+                .build();
+        final JsonEnvelope requestEnvelope = envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-notified-v2").withUserId(randomUUID().toString()),
+                notificationObject);
+        informantRegisterEventProcessor.notifyProsecutionAuthorityV2(requestEnvelope);
+        verify(notificationNotifyService).sendEmailNotification(eq(requestEnvelope), notificationJson.capture());
+        assertThat(notificationJson.getValue().getString("notificationId"), is(notNullValue()));
+        assertThat(notificationJson.getValue().getString("templateId"), is(TEMPLATE_ID));
+        assertThat(notificationJson.getValue().getString("sendToAddress"), is(emailAddress1));
+        assertThat(notificationJson.getValue().getString("fileId"), is(fileId.toString()));
 
     }
 

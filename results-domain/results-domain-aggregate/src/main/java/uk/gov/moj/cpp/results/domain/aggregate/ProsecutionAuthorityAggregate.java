@@ -16,11 +16,11 @@ import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
+import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,17 +45,6 @@ public class ProsecutionAuthorityAggregate implements Aggregate {
         );
     }
 
-    public Stream<Object> createInformantRegister(final UUID prosecutionAuthorityId, final InformantRegisterDocumentRequest informantRegisterRequest) {
-        return Stream.of(new InformantRegisterRecorded(informantRegisterRequest, prosecutionAuthorityId));
-    }
-
-    public Stream<Object> generateInformantRegister(final List<InformantRegisterDocumentRequest> informantRegisterRequests, final boolean systemGenerated) {
-        return apply(Stream.of(InformantRegisterGenerated.informantRegisterGenerated()
-                .withInformantRegisterDocumentRequests(informantRegisterRequests)
-                .withSystemGenerated(systemGenerated)
-                .build()));
-    }
-
     public Stream<Object> notifyProsecutingAuthority(final NotifyInformantRegister notifyInformantRegister) {
 
         if (isEmpty(informantRegisterRecipients) || isBlank(notifyInformantRegister.getTemplateId()) || isNull(notifyInformantRegister.getFileId())) {
@@ -65,10 +54,12 @@ public class ProsecutionAuthorityAggregate implements Aggregate {
                     .withProsecutionAuthorityId(notifyInformantRegister.getProsecutionAuthorityId()).build()));
         }
 
-        return apply(Stream.of(InformantRegisterNotified.informantRegisterNotified().withRecipients(informantRegisterRecipients)
+        return apply(Stream.of(InformantRegisterNotifiedV2.informantRegisterNotifiedV2().withRecipients(informantRegisterRecipients)
                 .withFileId(notifyInformantRegister.getFileId())
                 .withTemplateId(notifyInformantRegister.getTemplateId())
-                .withProsecutionAuthorityId(notifyInformantRegister.getProsecutionAuthorityId()).build()));
+                .withProsecutionAuthorityId(notifyInformantRegister.getProsecutionAuthorityId())
+                        .withRegisterDate(notifyInformantRegister.getRegisterDate())
+                .build()));
     }
 
     public void setInformantRegisterRecipients(List<InformantRegisterRecipient> informantRegisterRecipients) {

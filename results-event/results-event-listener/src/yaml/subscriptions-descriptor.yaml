@@ -26,6 +26,9 @@ subscriptions_descriptor:
         - name: results.event.informant-register-notified
           schema_uri: http://justice.gov.uk/results/courts/informant-register-notified.json
 
+        - name: results.event.informant-register-notified-v2
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-notified-v2.json
+
         - name: results.events.defendant-tracking-status-updated
           schema_uri: http://justice.gov.uk/results/courts/results.events.defendant-tracking-status-updated.json
 

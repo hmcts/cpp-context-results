@@ -34,6 +34,8 @@ import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +56,7 @@ import org.apache.commons.lang3.StringUtils;
 @ServiceComponent(EVENT_PROCESSOR)
 public class InformantRegisterEventProcessor {
     private static final String FIELD_PROSECUTION_AUTHORITY_ID = "prosecutionAuthorityId";
+    private static final String FIELD_REGISTER_DATE = "registerDate";
     private static final String FIELD_INFORMANT_REGISTER_DOCUMENT_REQUESTS = "informantRegisterDocumentRequests";
     private static final String FILE_NAME = "fileName";
     private static final String FIELD_RECIPIENTS = "recipients";
@@ -97,6 +100,7 @@ public class InformantRegisterEventProcessor {
         final List<JsonObject> informantRegisters = payload.getJsonArray(FIELD_INFORMANT_REGISTER_DOCUMENT_REQUESTS).getValuesAs(JsonObject.class);
         final JsonObject informantRegister = informantRegisters.get(0);
         final UUID prosecutionAuthorityId = fromString(informantRegister.getString(FIELD_PROSECUTION_AUTHORITY_ID));
+        final LocalDate registerDate = ZonedDateTime.parse(informantRegister.getString(FIELD_REGISTER_DATE)).toLocalDate();
         final String fileName = informantRegister.getString(FILE_NAME);
 
         final byte[] informantRegisterInBytes = generateCsvDocument(informantRegisters);
@@ -111,7 +115,12 @@ public class InformantRegisterEventProcessor {
         if (StringUtils.isNotBlank(templateId)) {
             fileId = fileStorer.store(metadata, new ByteArrayInputStream(informantRegisterInBytes));
         }
-        processInformantRegisterNotificationRequest(envelope, prosecutionAuthorityId, fileId, templateId);
+        processInformantRegisterNotificationRequest(envelope, prosecutionAuthorityId, registerDate, fileId, templateId);
+    }
+
+    @Handles("results.event.informant-register-notified-v2")
+    public void notifyProsecutionAuthorityV2(final JsonEnvelope envelope) {
+        notifyProsecutionAuthority(envelope);
     }
 
     @Handles("results.event.informant-register-notified")
@@ -133,9 +142,10 @@ public class InformantRegisterEventProcessor {
         }
     }
 
-    private void processInformantRegisterNotificationRequest(final JsonEnvelope event, final UUID prosecutionAuthorityId, final UUID fileId, final String templateId) {
+    private void processInformantRegisterNotificationRequest(final JsonEnvelope event, final UUID prosecutionAuthorityId, final LocalDate registerDate, final UUID fileId, final String templateId) {
         final NotifyInformantRegister notifyInformantRegister = NotifyInformantRegister.notifyInformantRegister()
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
+                .withRegisterDate(registerDate)
                 .withFileId(fileId)
                 .withTemplateId(templateId)
                 .build();

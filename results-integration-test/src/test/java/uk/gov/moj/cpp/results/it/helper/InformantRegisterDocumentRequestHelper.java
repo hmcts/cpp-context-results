@@ -47,7 +47,7 @@ import org.hamcrest.Matcher;
 public class InformantRegisterDocumentRequestHelper {
 
     public static final String USER_ID = randomUUID().toString();
-    private static final String EVENT_SELECTOR_INFORMANT_REGISTER_DOCUMENT_REQUEST_NOTIFIED = "results.event.informant-register-notified";
+    private static final String EVENT_SELECTOR_INFORMANT_REGISTER_DOCUMENT_REQUEST_NOTIFIED = "results.event.informant-register-notified-v2";
     private static final String EVENT_SELECTOR_INFORMANT_REGISTER_DOCUMENT_REQUEST_NOTIFICATION_IGNORED = "results.event.informant-register-notification-ignored";
     private static final String EVENT_SELECTOR_INFORMANT_REGISTER_DOCUMENT_REQUEST_RECORDED = "results.event.informant-register-recorded";
 

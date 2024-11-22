@@ -32,8 +32,19 @@ public interface InformantRegisterRepository extends EntityRepository<InformantR
             " and ir.status = 'RECORDED' AND ir.processedOn is null group by ir.hearingId, ir.status)")
     List<InformantRegisterEntity> findByProsecutionAuthorityIdAndStatusRecorded(@QueryParam("prosecutionAuthorityId") final UUID prosecutionAuthorityId);
 
+    @Query("select informantRegister from InformantRegisterEntity informantRegister " +
+            " where informantRegister.prosecutionAuthorityId = :prosecutionAuthorityId " +
+            " and informantRegister.registerDate = :registerDate " +
+            " and informantRegister.status = 'RECORDED' and informantRegister.processedOn is null and (informantRegister.registerTime, informantRegister.hearingId) IN " +
+            " (select max(ir.registerTime), ir.hearingId from InformantRegisterEntity ir where ir.prosecutionAuthorityId = :prosecutionAuthorityId " +
+            " and ir.status = 'RECORDED' AND ir.processedOn is null group by ir.hearingId, ir.status)")
+    List<InformantRegisterEntity> findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(@QueryParam("prosecutionAuthorityId") final UUID prosecutionAuthorityId, @QueryParam("registerDate") final LocalDate registerDate);
+
     @Query("select informantRegister FROM InformantRegisterEntity informantRegister where prosecutionAuthorityId=:prosecutionAuthorityId and status='GENERATED'")
     List<InformantRegisterEntity> findByProsecutionAuthorityIdAndStatusGenerated(@QueryParam("prosecutionAuthorityId") final UUID prosecutionAuthorityId);
+
+    @Query("select informantRegister FROM InformantRegisterEntity informantRegister where prosecutionAuthorityId=:prosecutionAuthorityId and registerDate=:registerDate and status='GENERATED'")
+    List<InformantRegisterEntity> findByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated(@QueryParam("prosecutionAuthorityId") final UUID prosecutionAuthorityId, @QueryParam("registerDate") final LocalDate registerDate);
 
     @Query("select informantRegister from InformantRegisterEntity informantRegister " +
             "where informantRegister.generatedDate = :registerDate " +

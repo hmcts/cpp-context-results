@@ -23,6 +23,7 @@ import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
+import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -31,6 +32,7 @@ import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.io.StringReader;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -102,6 +104,7 @@ public class InformantRegisterEventListenerTest {
     @Test
     public void shouldSaveInformantRegisterGenerated() {
         final UUID prosecutionAuthId = randomUUID();
+        final LocalDate registerDate = LocalDate.now();
         final UUID fileId = randomUUID();
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
                 .withProsecutionAuthorityId(prosecutionAuthId)
@@ -116,7 +119,7 @@ public class InformantRegisterEventListenerTest {
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
         informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
         informantRegisterEntity.setStatus(RECORDED);
-        when(informantRegisterRepository.findByProsecutionAuthorityIdAndStatusRecorded(prosecutionAuthId)).thenReturn(singletonList(informantRegisterEntity));
+        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthId, registerDate)).thenReturn(singletonList(informantRegisterEntity));
 
         informantRegisterEventListener.generateInformantRegister(envelopeFrom(metadataWithRandomUUID("results.event.informant-register-generated"),
                 objectToJsonObjectConverter.convert(informantRegisterGenerated)));
@@ -147,6 +150,34 @@ public class InformantRegisterEventListenerTest {
                 objectToJsonObjectConverter.convert(informantRegisterNotified)
         );
         informantRegisterEventListener.notifyInformantRegister(jsonEnvelope);
+        assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
+        assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
+    }
+
+    @Test
+    public void shouldNotifyInformantRegisterV2() {
+        final UUID prosecutionAuthId = randomUUID();
+        final UUID fileId = randomUUID();
+        final LocalDate registerDate = LocalDate.parse("2024-10-24");
+
+        final InformantRegisterNotifiedV2 informantRegisterNotified = InformantRegisterNotifiedV2.informantRegisterNotifiedV2()
+                .withFileId(fileId)
+                .withProsecutionAuthorityId(prosecutionAuthId)
+                .withRegisterDate(registerDate)
+                .build();
+
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
+        informantRegisterEntity.setRegisterDate(registerDate);
+        informantRegisterEntity.setStatus(GENERATED);
+
+        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated(prosecutionAuthId, registerDate)).thenReturn(Lists.newArrayList(informantRegisterEntity));
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-notified-v2"),
+                objectToJsonObjectConverter.convert(informantRegisterNotified)
+        );
+        informantRegisterEventListener.notifyInformantRegisterV2(jsonEnvelope);
         assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
         assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
     }

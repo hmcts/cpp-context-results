@@ -17,6 +17,7 @@ import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRec
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
+import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 
 import java.util.List;
@@ -39,36 +40,6 @@ public class ProsecutionAuthorityAggregateTest {
     }
 
     @Test
-    public void shouldReturnInformantRegisterAdded() {
-        final UUID prosecutionAuthId = randomUUID();
-
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .withHearingVenue(informantRegisterHearingVenue().build())
-                .build();
-
-        final List<Object> eventStream = aggregate.createInformantRegister(prosecutionAuthId, informantRegisterDocumentRequest).collect(toList());
-        assertThat(eventStream.size(), is(1));
-        final Object object = eventStream.get(0);
-        assertThat(object.getClass(), is(equalTo(InformantRegisterRecorded.class)));
-    }
-
-    @Test
-    public void shouldReturnInformantRegisterGenerated() {
-        final UUID prosecutionAuthId = randomUUID();
-
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .withHearingVenue(informantRegisterHearingVenue().build())
-                .build();
-
-        final List<Object> eventStream = aggregate.generateInformantRegister(singletonList(informantRegisterDocumentRequest), false).collect(toList());
-        assertThat(eventStream.size(), is(1));
-        final Object object = eventStream.get(0);
-        assertThat(object.getClass(), is(equalTo(InformantRegisterGenerated.class)));
-    }
-
-    @Test
     public void shouldReturnInformantRegisterNotified() {
         final UUID fileId = randomUUID();
         final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
@@ -82,7 +53,7 @@ public class ProsecutionAuthorityAggregateTest {
         final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
         assertThat(eventStream.size(), is(1));
         final Object object = eventStream.get(0);
-        assertThat(object.getClass(), is(equalTo(InformantRegisterNotified.class)));
+        assertThat(object.getClass(), is(equalTo(InformantRegisterNotifiedV2.class)));
     }
 
     @Test
