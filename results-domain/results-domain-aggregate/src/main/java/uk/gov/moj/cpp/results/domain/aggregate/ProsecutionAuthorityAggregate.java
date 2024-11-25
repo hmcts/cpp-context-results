@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ProsecutionAuthorityAggregate implements Aggregate {
-    private static final long serialVersionUID = 101L;
+    private static final long serialVersionUID = 102L;
     private List<InformantRegisterRecipient> informantRegisterRecipients;
 
     @Override
