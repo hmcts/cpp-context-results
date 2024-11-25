@@ -41,12 +41,13 @@
         <referencedata.version>17.0.34</referencedata.version>
         <notification.notify.version>17.0.1</notification.notify.version>
         <systemdocgenerator.version>17.0.18</systemdocgenerator.version>
-        <progression.version>17.0.21</progression.version>
+        <progression.version>17.0.38</progression.version>
         <material.version>17.0.20</material.version>
         <usersgroups.version>17.0.19</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty-common>4.1.113.Final</netty-common>
+        <sjp.version>17.0.28</sjp.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
             **/uk/gov/justice/api/**/*,

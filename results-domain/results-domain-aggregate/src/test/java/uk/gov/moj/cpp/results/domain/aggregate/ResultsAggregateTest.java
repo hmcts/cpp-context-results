@@ -597,7 +597,8 @@ public class ResultsAggregateTest {
         CaseDetails caseDetails = createCaseDetails(null, offences);
 
         resultsAggregate.handleCase(caseDetails);
-
+        resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offences.get(0).getId(), judicialResult1)), LocalDate.now());
         resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty(), "", "");
 
         final List<OffenceDetails> offences2 = new ArrayList<>();
@@ -876,8 +877,46 @@ public class ResultsAggregateTest {
         assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("1234"));
     }
 
+    @Test
+    public void shouldSetSharedDateAsSessionDayForBoxWorkHearingInPoliceResultGenerated(){
+        final CourtCentreWithLJA courtCentre = courtCentreWithLJA()
+                .withCourtCentre(courtCentre()
+                        .withCode(courtCode)
+                        .withLja(LjaDetails.ljaDetails().withLjaCode("123").build())
+                        .withPsaCode(987)
+                        .build())
+                .build();
+        final ZonedDateTime sittingDay = now();
+        final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
+        final List<SessionDay> sessionDays = of(sessionDay);
+
+        final List<OffenceDetails> offenceDetailsList = new ArrayList<>();
+        offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
+        final JudicialResult judicialResult1 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Conditional discharge")
+                .build();
+        final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
+
+        resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
+                .setSharedTime(ZonedDateTime.now())
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1)), LocalDate.now());
+        resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
+        resultsAggregate.handleCase(caseDetails);
+        final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true,Optional.empty(), "", "").collect(toList());
+
+        final PoliceResultGenerated policeResultGenerated = (PoliceResultGenerated) objectList.get(1);
+        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getPsaCode(), valueOf(987));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
+        assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("123"));
+        assertEquals(LocalDate.now(), policeResultGenerated.getSessionDays().get(0).getSittingDay().toLocalDate());
+    }
+
     private Hearing createHearing(UUID caseId, UUID defendantId, UUID offenceId, JudicialResult judicialResult) {
-        return hearing().withProsecutionCases(Arrays.asList(
+        return hearing().withIsBoxHearing(true).withProsecutionCases(Arrays.asList(
                 ProsecutionCase.prosecutionCase()
                         .withId(caseId)
                         .withDefendants(singletonList(Defendant.defendant()

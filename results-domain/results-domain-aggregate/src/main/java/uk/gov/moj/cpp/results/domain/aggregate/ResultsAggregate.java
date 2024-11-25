@@ -69,6 +69,7 @@ import uk.gov.moj.cpp.results.domain.event.EmailNotificationFailed;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -91,7 +92,7 @@ public class ResultsAggregate implements Aggregate {
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
     private static final String INVALID_EMAIL_ID = "Police Email Address is not Available";
-    private static final long serialVersionUID = 105L;
+    private static final long serialVersionUID = 106L;
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
     private UUID id;
@@ -106,6 +107,7 @@ public class ResultsAggregate implements Aggregate {
     private List<UUID> youthCourtDefendantIds;
     private Map<UUID, CaseResultDetails> caseResultAmendmentDetailsList = new HashedMap();
     private Hearing hearing;
+    private ZonedDateTime sharedDate;
 
 
     @Override
@@ -123,6 +125,7 @@ public class ResultsAggregate implements Aggregate {
 
     private void handleHearingResultsAddedForDay(final HearingResultsAddedForDay hearingResultsAddedForDay) {
         this.hearing = hearingResultsAddedForDay.getHearing();
+        this.sharedDate = hearingResultsAddedForDay.getSharedTime();
         this.hearingIds.add(hearing.getId());
 
         final List<CaseResultDetails> newCaseResultDetailsList = ResultAmendmentDetailsHelper.buildHearingResultDetails(hearing, caseResultAmendmentDetailsList);
@@ -555,6 +558,10 @@ public class ResultsAggregate implements Aggregate {
         if (hearingDay.isPresent()) {
             sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().toLocalDate())).collect(Collectors.toList());
         }
+        if(hearing != null && Boolean.TRUE.equals(hearing.getIsBoxHearing())){
+            sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).collect(Collectors.toList());
+        }
+
 
         return policeResultGenerated()
                 .withId(id)
