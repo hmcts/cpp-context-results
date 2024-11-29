@@ -35,12 +35,10 @@ public class EventPayloadTransformer {
         final String eventPayload = eventEnvelope.payload().toString();
 
         final JsonObject payloadToTransform = new Gson().fromJson(eventPayload, JsonObject.class);
-        final String preTransformedPayload = payloadToTransform.toString();
 
-        LOGGER.debug("Before: Payload '{}'", preTransformedPayload);
+        LOGGER.debug("Transforming payload for event: {}", eventEnvelope.toObfuscatedDebugString());
         process(payloadToTransform);
         final String postTransformedPayload = payloadToTransform.toString();
-        LOGGER.debug("After: Payload '{}'", postTransformedPayload);
 
         try (final JsonReader jsonReader = createReader(new StringReader(postTransformedPayload))) {
             return jsonReader.readObject();
@@ -95,6 +93,6 @@ public class EventPayloadTransformer {
             missingAttributes.add(ALWAYS_PUBLISHED_ATTRIBUTE);
         }
         throw new TransformationException(format("Mandatory attribute/s %s missing from judicialResult payload %s",
-                String.join(",", missingAttributes), judicialResult.toString()));
+                String.join(",", missingAttributes), judicialResult.get("judicialResultId")));
     }
 }

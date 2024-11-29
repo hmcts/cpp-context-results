@@ -278,7 +278,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     @Handles("results.command.track-results")
     public void trackResult(final JsonEnvelope envelope) throws EventStreamException {
         HearingFinancialResultRequest hearingFinancialResultRequest = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), HearingFinancialResultRequest.class);
-        LOGGER.info("masterDefendantId : {} HearingFinancialResultRequest:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(hearingFinancialResultRequest));
+        LOGGER.info("masterDefendantId: {}, HearingFinancialResultRequest.getHearingId: {}", hearingFinancialResultRequest.getMasterDefendantId(), hearingFinancialResultRequest.getHearingId());
 
         final EventStream eventStream = eventSource.getStreamById(hearingFinancialResultRequest.getMasterDefendantId());
         final HearingFinancialResultsAggregate aggregate = aggregateService.get(eventStream, HearingFinancialResultsAggregate.class);
@@ -288,8 +288,9 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
         final String isWrittenOffExists = isFinancialPenaltiesToBeWrittenOff(resultsAggregate);
 
-        LOGGER.info("Hearing  : {} ResultsAggregate: {}  HearingFinancialResultsAggregate:{} ", resultsAggregate.getHearing(), objectToJsonObjectConverter.convert(resultsAggregate),
-                objectToJsonObjectConverter.convert(aggregate));
+        LOGGER.info("ResultsAggregate HearingId: {},  HearingFinancialResultsAggregate MasterDefendantId: {} ",
+                nonNull(resultsAggregate.getHearing()) ? resultsAggregate.getHearing().getId() : null,
+                aggregate.getMasterDefendantId());
         final String originalDateOfOffenceList = getOriginalDateOfOffence(resultsAggregate);
         final String originalDateOfSentenceList = getOriginalDateOfSentence(aggregate, hearingFinancialResultRequest);
         final List<NewOffenceByResult> newResultByOffenceList = getNewResultByOffence(resultsAggregate);
@@ -305,7 +306,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
         eventStream.append(updateEvents.map(toEnvelopeWithMetadataFrom(envelope)));
 
-        LOGGER.info("masterDefandantId : {} HearingFinancialResultsAggregate:{}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(aggregate));
+        LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", hearingFinancialResultRequest.getMasterDefendantId());
     }
 
     private Map<UUID, String> getOffenceDateMap(final ResultsAggregate resultsAggregate) {
@@ -378,7 +379,9 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 eventStreamForHearing = eventSource.getStreamById(hearingFinancialResultsAggregate.getHearingId());
             }
             resultsAggregateForInitialCaseHearing = aggregateService.get(eventStreamForHearing, ResultsAggregate.class);
-            LOGGER.info("masterDefendantId  : {} resultsAggregateForInitialCaseHearing: {}", hearingFinancialResultRequest.getMasterDefendantId(), objectToJsonObjectConverter.convert(resultsAggregateForInitialCaseHearing));
+            LOGGER.info("masterDefendantId  : {}, resultsAggregateForInitialCaseHearing.getHearing().getId(): {}",
+                    hearingFinancialResultRequest.getMasterDefendantId(),
+                    nonNull(resultsAggregateForInitialCaseHearing.getHearing()) ? resultsAggregateForInitialCaseHearing.getHearing().getId() : null);
             if (isNull(resultsAggregateForInitialCaseHearing.getHearing())
                     || isNull(resultsAggregateForInitialCaseHearing.getHearing().getProsecutionCases())) {
                 return null;

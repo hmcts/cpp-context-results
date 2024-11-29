@@ -40,7 +40,7 @@ public class MaterialAddedEventProcessor {
 
     @Handles("material.material-added")
     public void processMaterialAdded(final JsonEnvelope envelope) {
-        LOGGER.info("Received MaterialAddedEvent {}", envelope);
+        LOGGER.info("Received MaterialAddedEvent {}", envelope.toObfuscatedDebugString());
         if (envelope.metadata().asJsonObject().containsKey(ORIGINATOR)
                 && ORIGINATOR_VALUE.equalsIgnoreCase(envelope.metadata().asJsonObject().getString(ORIGINATOR))) {
             processNcesDocumentNotification(envelope);

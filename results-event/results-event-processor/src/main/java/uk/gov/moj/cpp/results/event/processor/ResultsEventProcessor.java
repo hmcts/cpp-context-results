@@ -238,7 +238,7 @@ public class ResultsEventProcessor {
 
     @Handles("results.event.police-result-generated")
     public void createResult(final JsonEnvelope envelope) {
-        LOGGER.debug("results.event.police-result-generated {}", envelope.payload());
+        LOGGER.debug("results.event.police-result-generated {}", envelope.toObfuscatedDebugString());
 
         final Metadata metadata = metadataFrom(envelope.metadata())
                 .withName("public.results.police-result-generated")
@@ -274,7 +274,7 @@ public class ResultsEventProcessor {
     }
 
     private void addCourtDocumentForSjpCase(final JsonEnvelope envelope, final UUID caseUUID, final String fileName, final UUID fileId) {
-        LOGGER.info("addCourtDocumentForSjpCase caseUUID {} , fileName { } , fileid {}" , caseUUID , fileName , fileId);
+        LOGGER.info("addCourtDocumentForSjpCase caseUUID {} , fileName {} , fileId {}" , caseUUID , fileName , fileId);
         final JsonObject uploadCaseDocumentPayload = createObjectBuilder()
                 .add(CASE_ID, caseUUID.toString())
                 .add("caseDocumentType", SJP_DOCUMENT_TYPE_OTHER + "-" + fileName)
@@ -289,7 +289,7 @@ public class ResultsEventProcessor {
     }
 
     private void addCourtDocumentForCCCase(final JsonEnvelope envelope, final UUID caseUUID, final UUID materialId, final String fileName) {
-        LOGGER.info("addCourtDocumentForCCCase caseUUID {} , fileName { } , materialId {}" , caseUUID , fileName , materialId);
+        LOGGER.info("addCourtDocumentForCCCase caseUUID {} , fileName {} , materialId {}" , caseUUID , fileName , materialId);
         final CourtDocument courtDocument = buildCourtDocument(caseUUID, materialId, fileName);
         final JsonObject jsonObject = createObjectBuilder()
                 .add(MATERIAL_ID, materialId.toString())
@@ -344,7 +344,7 @@ public class ResultsEventProcessor {
     public void handleSendNcesEmailNotification(final JsonEnvelope envelope) {
         final JsonObject requestJson = envelope.payloadAsJsonObject();
         final NcesEmailNotification ncesEmailNotification = jsonObjectToObjectConverter.convert(requestJson, NcesEmailNotification.class);
-        LOGGER.info("Nces email notification payload - {}", requestJson);
+        LOGGER.info("Nces email notification event - {}", envelope.toObfuscatedDebugString());
 
         final EmailNotification emailNotification = EmailNotification.emailNotification()
                 .withNotificationId(ncesEmailNotification.getNotificationId())
@@ -355,7 +355,7 @@ public class ResultsEventProcessor {
                 .build();
 
         //Send Email
-        LOGGER.info("send email notification - {}", emailNotification);
+        LOGGER.info("send email notification - {}", emailNotification.getNotificationId());
         if (isEmpty(emailNotification.getSendToAddress())) {
             final Envelope<JsonObject> jsonObjectEnvelope = envelop(envelope.payloadAsJsonObject())
                     .withName(RESULTS_NCES_SEND_EMAIL_NOT_FOUND)

@@ -52,7 +52,7 @@ public class ResultsNewTransformer implements EventTransformation {
         JsonObject payload = event.payloadAsJsonObject();
 
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("----------------------event name------------ {}", event.metadata().name());
+            LOGGER.info("----------------------event name {}--------------", event.metadata().name());
         }
 
         final String eventName = event.metadata().name().toLowerCase();
@@ -61,7 +61,7 @@ public class ResultsNewTransformer implements EventTransformation {
         }
 
         if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("-------------------transformedPayload---------------{}", payload);
+            LOGGER.info("-------------------payload transformed for {}---------------", eventName);
         }
 
         return of(envelopeFrom(metadataFrom(event.metadata()), payload));

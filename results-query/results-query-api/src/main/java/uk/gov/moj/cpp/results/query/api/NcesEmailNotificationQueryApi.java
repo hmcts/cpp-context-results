@@ -22,7 +22,7 @@ public class NcesEmailNotificationQueryApi {
 
     @Handles("results.query.nces-email-notification-details")
     public JsonEnvelope getNcesEmailNotificationDetails(final JsonEnvelope envelope) {
-        LOGGER.info("Received getNcesEmailNotificationDetails api {}", envelope);
+        LOGGER.info("Received getNcesEmailNotificationDetails api {}", envelope.toObfuscatedDebugString());
         return ncesEmailNotificationQueryView.getNcesEmailNotificationDetails(envelope);
     }
 }

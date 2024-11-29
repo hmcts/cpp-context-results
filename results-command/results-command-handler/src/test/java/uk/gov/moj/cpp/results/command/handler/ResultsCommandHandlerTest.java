@@ -751,7 +751,6 @@ public class ResultsCommandHandlerTest {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(any(HearingFinancialResultRequest.class));
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -845,7 +844,6 @@ public class ResultsCommandHandlerTest {
 
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(any(HearingFinancialResultRequest.class));
 
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
 
@@ -902,7 +900,6 @@ public class ResultsCommandHandlerTest {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(any(HearingFinancialResultRequest.class));
 
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
         resultsCommandHandler.trackResult(envelope);
@@ -955,8 +952,6 @@ public class ResultsCommandHandlerTest {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(any(HearingFinancialResultRequest.class));
-
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -1004,7 +999,6 @@ public class ResultsCommandHandlerTest {
 
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(any(HearingFinancialResultRequest.class));
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
@@ -1033,7 +1027,6 @@ public class ResultsCommandHandlerTest {
 
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
-        doReturn(hearingPayload).when(objectToJsonObjectConverter).convert(any(HearingFinancialResultRequest.class));
 
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());

@@ -51,7 +51,7 @@ public class NotificationNotifyService {
 
     public void sendEmailNotification(final JsonEnvelope event, final JsonObject emailNotification) {
 
-        LOGGER.info("sending - {} ", emailNotification);
+        LOGGER.info("sending email notification for event: {}", event.toObfuscatedDebugString());
 
         final Envelope<JsonObject> jsonObjectEnvelope = envelop(emailNotification)
                 .withName(NOTIFICATION_NOTIFY_EMAIL_METADATA_TYPE)

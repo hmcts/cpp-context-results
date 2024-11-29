@@ -111,7 +111,7 @@ public class HearingService {
         }
         if (foundProsecutionCase == null) {
             if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(String.format("findHearingDetailsByHearingIdDefendantId cant find defendant %s for hearing %s in payload %s ", defendantId, hearingId, hearingResultsAdded));
+                LOGGER.error(String.format("findHearingDetailsByHearingIdDefendantId can't find defendant %s for hearing %s in payload", defendantId, hearingId));
             }
             return null;
         }

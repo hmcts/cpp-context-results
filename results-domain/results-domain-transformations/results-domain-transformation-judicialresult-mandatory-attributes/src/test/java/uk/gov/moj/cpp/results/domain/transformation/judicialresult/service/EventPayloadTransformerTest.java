@@ -106,7 +106,7 @@ public class EventPayloadTransformerTest {
                 TransformationException.class,
                 () -> eventPayloadTransformer.transform(invalidEvent));
 
-        assertThat(transformationException.getMessage(), matchesPattern("Mandatory attribute/s [\\w,]+ missing from judicialResult payload \\{.*\\}"));
+        assertThat(transformationException.getMessage(), matchesPattern("Mandatory attribute/s [\\w,]+ missing from judicialResult payload [\\w\\d]+"));
     }
 
     @ParameterizedTest

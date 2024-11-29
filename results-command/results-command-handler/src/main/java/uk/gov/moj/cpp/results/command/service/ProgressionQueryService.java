@@ -36,12 +36,12 @@ public class ProgressionQueryService {
                 .withName("progression.query.group-member-cases")
                 .withMetadataFrom(envelope);
 
-        LOGGER.info("groupId {}, Get group member cases detail request {}", groupId, requestParameter);
+        LOGGER.info("Get group member cases detail requested for groupId {}", groupId);
 
         final Envelope<JsonObject> response = requester.requestAsAdmin(requestEnvelope, JsonObject.class);
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("groupId {} group member case detail payload {}", groupId, getPayload(response));
+            LOGGER.debug("groupId {} get group member cases detail response: {}", groupId, response.metadata().asJsonObject());
         }
 
         return Optional.ofNullable(getPayload(response));

@@ -158,7 +158,7 @@ public class HearingResultedEventProcessor {
      * @return JSonArray return policeCases caseids
      */
     public JsonArray extractPoliceCases(JsonObject hearing) {
-        LOGGER.info("Results extractPoliceCases hearing {}", hearing);
+        LOGGER.info("Results extractPoliceCases hearing {}", hearing.get(ID));
         final JsonArray prosecutionCases = (JsonArray) hearing.get(PROSECUTION_CASES);
         final JsonArrayBuilder policeCases = Json.createArrayBuilder();
         if (null != prosecutionCases && !prosecutionCases.isEmpty()) {

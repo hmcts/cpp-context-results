@@ -56,7 +56,7 @@ public class NcesDocumentNotificationCommandHandler extends AbstractCommandHandl
 
     @Handles("results.command.nces-document-notification")
     public void processNcesEmailNotification(final JsonEnvelope envelope) throws EventStreamException {
-        LOGGER.info("Received EmailToNcesNotificationEvent {}", envelope);
+        LOGGER.info("Received EmailToNcesNotificationEvent {}", envelope.toObfuscatedDebugString());
         final String materialUrl = envelope.payloadAsJsonObject().getString(MATERIAL_URL);
 
         final JsonObject ncesEmailNotificationDetailsObj = getNcesEmailNotificationDetails(envelope);

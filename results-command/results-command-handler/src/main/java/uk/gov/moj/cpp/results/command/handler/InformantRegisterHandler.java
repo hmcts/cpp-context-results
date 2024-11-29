@@ -83,7 +83,7 @@ public class InformantRegisterHandler {
 
     @Handles("results.command.add-informant-register")
     public void handleAddInformantRegisterToEventStream(final Envelope<InformantRegisterDocumentRequest> envelope) throws EventStreamException {
-        LOGGER.debug("results.command.add-informant-register {}", envelope);
+        LOGGER.debug("results.command.add-informant-register {}", envelope.metadata().asJsonObject());
 
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = envelope.payload();
         if (nonNull(informantRegisterDocumentRequest.getGroupId())) {

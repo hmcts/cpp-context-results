@@ -59,12 +59,10 @@ public class EventPayloadTransformer {
         final Optional<String> inlinedHearingSittingDate = getInlinedHearingDate(eventPayload);
 
         final JsonObject payloadToTransform = new Gson().fromJson(eventPayload, JsonObject.class);
-        final String preTransformedPayload = payloadToTransform.toString();
 
-        LOGGER.debug("Before: Payload '{}'", preTransformedPayload);
+        LOGGER.debug("Transforming payload for event: {}", eventEnvelope.toObfuscatedDebugString());
         process(payloadToTransform, hearingId, inlinedHearingSittingDate);
         final String postTransformedPayload = payloadToTransform.toString();
-        LOGGER.debug("After: Payload '{}'", postTransformedPayload);
 
         try (final JsonReader jsonReader = createReader(new StringReader(postTransformedPayload))) {
             return jsonReader.readObject();

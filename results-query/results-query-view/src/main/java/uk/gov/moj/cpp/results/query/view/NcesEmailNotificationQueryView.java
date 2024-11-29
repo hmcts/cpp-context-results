@@ -30,7 +30,7 @@ public class NcesEmailNotificationQueryView {
 
     @Handles("results.query.nces-email-notification-details")
     public JsonEnvelope getNcesEmailNotificationDetails(final JsonEnvelope envelope) {
-        LOGGER.info("Received getNcesEmailNotificationDetails view {}", envelope);
+        LOGGER.info("Received getNcesEmailNotificationDetails view {}", envelope.toObfuscatedDebugString());
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("materialId"));
 
         final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = ncesEmailNotificationDetailsRepository.findByMaterialId(materialId);
