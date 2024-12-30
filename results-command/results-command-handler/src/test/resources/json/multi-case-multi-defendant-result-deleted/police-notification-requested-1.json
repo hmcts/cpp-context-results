@@ -1,0 +1,248 @@
+{
+  "amendReshare": "Amend & Reshare",
+  "applicationTypeForCase": "",
+  "caseDefendants": [
+    {
+      "associatedPerson": [],
+      "attendanceDays": [
+        {
+          "attendanceType": "NOT_PRESENT",
+          "day": "2024-09-23"
+        }
+      ],
+      "defendantId": "9b79f6ac-f9f6-4a46-9184-510f92dcedec",
+      "individualDefendant": {
+        "bailConditions": "",
+        "bailStatus": {
+          "code": "A",
+          "description": "Not applicable",
+          "id": "86009c70-759d-3308-8de4-194886ff9a77"
+        },
+        "person": {
+          "address": {
+            "address1": "9999A9999AAAA",
+            "address2": "Woodlane",
+            "address3": "addressline 3",
+            "address4": "Bristol",
+            "address5": "Avon"
+          },
+          "contact": {
+            "home": "0206446923",
+            "mobile": "07776446923",
+            "primaryEmail": "REDDY.TEST016446923@gmail.com"
+          },
+          "dateOfBirth": "1989-12-23",
+          "firstName": "Tsong",
+          "gender": "MALE",
+          "lastName": "Tbisil",
+          "title": "Mr"
+        },
+        "presentAtHearing": "N"
+      },
+      "offences": [
+        {
+          "arrestDate": "2022-10-28",
+          "chargeDate": "2022-10-28",
+          "finalDisposal": "Y",
+          "id": "b11b58b7-4292-4be3-b5dd-a207ea0b6a14",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "1015",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": true,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "fa7b4d93-1e7e-4510-9cae-3fae613bf74f",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": true,
+                  "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                  "label": "Amount of fine",
+                  "promptReference": "AOF",
+                  "promptSequence": 100,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£500.00",
+                  "welshLabel": "Swm y ddirwy",
+                  "welshValue": "£500.00"
+                }
+              ],
+              "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "label": "Fine",
+              "lastSharedDateTime": "2024-09-23",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-23",
+              "orderedHearingId": "c34afa4c-0537-48d5-9e3a-de001af16a38",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 72100,
+              "resultDefinitionGroup": "Imposition",
+              "resultText": "FO - Fine\nFined £500.00",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "fa7b4d93-1e7e-4510-9cae-3fae613bf74f",
+              "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Dirwy"
+            },
+            {
+              "alwaysPublished": true,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "f6342059-d7f7-4599-996e-c12bcb12a08c",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "8e235a65-5ea2-4fff-ba3b-6cdb74195436",
+                  "label": "Lump sum amount",
+                  "promptReference": "LSA",
+                  "promptSequence": 100,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£500.00",
+                  "welshLabel": "Swm y Cyfandaliad",
+                  "welshValue": "£500.00"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "1393acda-7a35-4d65-859d-6298e1470cf1",
+                  "label": "Instalment amount",
+                  "promptReference": "IAMT",
+                  "promptSequence": 200,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£100.00",
+                  "welshLabel": "Swm y Rhandaliad",
+                  "welshValue": "£100.00"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "fb4f761c-29d0-4a8e-a947-3debf281dab0",
+                  "label": "Payment frequency following lump sum",
+                  "promptReference": "PF",
+                  "promptSequence": 300,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "monthly",
+                  "welshLabel": "Amlder y taliadau yn dilyn y cyfandaliad",
+                  "welshValue": "yn fisol"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "b487696e-dfc9-4c89-80d3-337a4319e925",
+                  "label": "Instalment start date",
+                  "promptReference": "instalmentStartDate",
+                  "promptSequence": 400,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "24/12/2024",
+                  "welshLabel": "Dyddiad cychwyn y rhandaliadau",
+                  "welshValue": "24/12/2024"
+                }
+              ],
+              "judicialResultTypeId": "272d1ec2-634b-11e8-adc0-fa7ae01bbebc",
+              "label": "Payment terms - Lump sum plus instalments",
+              "lastSharedDateTime": "2024-09-23",
+              "level": "D",
+              "lifeDuration": false,
+              "offenceId": "b11b58b7-4292-4be3-b5dd-a207ea0b6a14",
+              "orderedDate": "2024-09-23",
+              "orderedHearingId": "c34afa4c-0537-48d5-9e3a-de001af16a38",
+              "parentJudicialResultId": "74874e4c-d295-4c52-8511-a02693a42c54",
+              "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 193100,
+              "resultDefinitionGroup": "Payment terms",
+              "resultText": "LUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £500.00. Instalment amount: £100.00 to be paid monthly from 24/12/2024.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "fa7b4d93-1e7e-4510-9cae-3fae613bf74f",
+              "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Telerau talu - Cyfandaliad a rhandaliadau"
+            }
+          ],
+          "modeOfTrial": "Summary",
+          "offenceCode": "CA03013",
+          "offenceDateCode": 1,
+          "offenceSequenceNumber": 1,
+          "startDate": "2022-10-28",
+          "wording": "Test Theft of pedal cycle."
+        }
+      ],
+      "prosecutorReference": "547215884133616830"
+    }
+  ],
+  "caseId": "8a26cf88-9068-4f50-9a40-f2f758c6ceb3",
+  "caseResultDetails": {
+    "caseId": "8a26cf88-9068-4f50-9a40-f2f758c6ceb3",
+    "defendantResultDetails": [
+      {
+        "defendantName": "Tsong Tbisil",
+        "id": "9b79f6ac-f9f6-4a46-9184-510f92dcedec",
+        "offenceResultDetails": [
+          {
+            "id": "b11b58b7-4292-4be3-b5dd-a207ea0b6a14",
+            "judicialResultDetails": [
+              {
+                "amendmentType": "DELETED",
+                "id": "c8a8bb9b-517f-41dc-8c2f-93cecebc1789",
+                "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                "resultTitle": "Surcharge"
+              }
+            ],
+            "offenceCount": 0,
+            "offenceNo": 1,
+            "offenceTitle": "Obstruct person executing search warrant for TV receiver"
+          }
+        ]
+      }
+    ]
+  },
+  "courtCentre": "Lavender Hill Magistrates' Court",
+  "dateOfHearing": "2024-09-23",
+  "notificationId": "2a65070d-ebaa-4a39-a362-772624ac2c30",
+  "policeEmailAddress": "cpnotifications@bch.police.uk",
+  "urn": "20NX6446923"
+}

@@ -205,6 +205,7 @@
                   "label": "a",
                   "welshLabel": "a",
                   "isAdjournmentResult": true,
+                  "isNewAmendment": true,
                   "isFinancialResult": true,
                   "isConvictedResult": true,
                   "isAvailableForCourtExtract": true,
@@ -259,5 +260,6 @@
       "prosecutionAuthorityCode": "someCode"
     }
   ],
-  "jurisdictionType" : "CROWN"
+  "jurisdictionType" : "CROWN",
+  "isReshare": true
 }

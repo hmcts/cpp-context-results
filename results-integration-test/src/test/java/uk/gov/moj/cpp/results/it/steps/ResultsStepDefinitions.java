@@ -34,7 +34,6 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsCourt
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
@@ -54,6 +53,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -105,6 +105,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static MessageConsumer privateDefendantRejectedEventConsumer;
     private static MessageConsumer privatePoliceResultGeneratedConsumer;
     private static MessageConsumer privatePoliceNotificationRequestedConsumer;
+    private static MessageConsumer privatePoliceNotificationRequestedConsumerV2;
     private static MessageConsumer privatePoliceNotificationFailedConsumer;
     private static MessageConsumerClient publicMessageConsumer;
 
@@ -118,7 +119,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         privateDefendantRejectedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_REJECTED_EVENT);
         privatePoliceResultGeneratedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_RESULT_GENERATED);
         privatePoliceNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED);
-        privatePoliceNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED_V2);
+        privatePoliceNotificationRequestedConsumerV2 = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED_V2);
         privatePoliceNotificationFailedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_FAILED);
         publicMessageConsumer = new MessageConsumerClient();
     }
@@ -417,11 +418,20 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
     }
 
+    public static void verifyPrivateEventsWithPoliceNotificationRequestedV2(final String expectedEmail) throws JMSException {
+        verifyPrivateEvents(Boolean.FALSE, null, null, null);
+
+        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumerV2.receive(RETRIEVE_TIMEOUT);
+        assertThat(policeNotificationRequestedGenerated, notNullValue());
+        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
+        assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
+    }
+
     public static void verifyPrivateEventsForAmendment(final String expectedEmail, final JudicialResultDetails amendedResultDetail) throws JMSException {
         final Message defendantAdded = privateDefendantUpdatedEventConsumer.receive(RETRIEVE_TIMEOUT);
         assertThat(defendantAdded, notNullValue());
 
-        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
+        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumerV2.receive(RETRIEVE_TIMEOUT);
         final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
         assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
         final JSONObject judicialResult = event.getJSONObject("caseResultDetails")
@@ -431,6 +441,16 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
         assertThat(judicialResult.getString("resultTitle"), is(amendedResultDetail.getResultTitle()));
         assertThat(judicialResult.getString("amendmentType"), is(amendedResultDetail.getAmendmentType().name()));
+    }
+
+    public static void verifyPrivateEventsPoliceNotificationRequestedGeneratedV2(final Map<String,String> matchingValuesMap) throws JMSException {
+        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumerV2.receive(RETRIEVE_TIMEOUT);
+        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
+        matchingValuesMap.forEach((key, value) -> {
+            if (event.has(key)) {
+                assertThat(event.get(key), is(value));
+            }
+        });
     }
 
     public static void verifyPrivateEventsForRejected() throws JMSException {

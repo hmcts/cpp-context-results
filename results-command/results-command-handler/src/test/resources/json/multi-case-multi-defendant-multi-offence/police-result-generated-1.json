@@ -1,0 +1,496 @@
+{
+  "caseId": "52557617-aa67-4573-a15a-cb17331335ec",
+  "courtCentreWithLJA": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "courtHearingLocation": "B01LY01",
+    "psaCode": 2577
+  },
+  "defendant": {
+    "associatedPerson": [],
+    "attendanceDays": [
+      {
+        "attendanceType": "IN_PERSON",
+        "day": "2024-09-24"
+      }
+    ],
+    "defendantId": "8247577f-15a7-47f0-bf65-ac30319d1704",
+    "individualDefendant": {
+      "bailConditions": "",
+      "bailStatus": {
+        "code": "C",
+        "description": "Custody",
+        "id": "12e69486-4d01-3403-a50a-7419ca040635"
+      },
+      "person": {
+        "address": {
+          "address1": "21",
+          "address2": "Furnburry Park Road",
+          "address3": "London",
+          "postcode": "SW11 3TQ"
+        },
+        "contact": {
+          "home": "015325443756"
+        },
+        "dateOfBirth": "1991-02-18",
+        "firstName": "Megane",
+        "gender": "MALE",
+        "lastName": "Spinka",
+        "title": "MR"
+      },
+      "presentAtHearing": "Y"
+    },
+    "offences": [
+      {
+        "arrestDate": "2022-12-14",
+        "chargeDate": "2022-12-15",
+        "finalDisposal": "N",
+        "id": "d9e7aa81-fad4-4d7b-8738-3cdf33397254",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "INTERMEDIARY",
+            "cjsCode": "4506",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "4b0968d9-61d5-40d0-bd48-1bf15c81c580",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "judicialResultPromptTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
+                "label": "Next hearing in magistrates' court",
+                "promptReference": "a8bd6976-2c2e-4bee-8648-6ec0c92b2667",
+                "promptSequence": 0,
+                "usergroups": [],
+                "value": "Date of hearing:27/09/2024\nTime of hearing:14:00\nCourthouse organisation name:Lavender Hill Magistrates' Court\nCourthouse address line 1:176A Lavender Hill\nCourthouse address line 2:London\nCourthouse post code:SW11 1JU\nCourtroom:Courtroom 02\nHearing type:Plea\nEstimated duration:20 MINUTES\nBooking reference:b1b73a7d-2a25-4778-9b5c-d2117ba2cdda",
+                "welshLabel": "Ni wnaeth y Llys barhau â’r treial yn absenoldeb y diffynnydd"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "61f951c3-f18d-4a44-ae4a-0cad4efb4133",
+                "label": "Defendant to attend the next hearing",
+                "promptReference": "defendantToAttendTheNextHearing",
+                "promptSequence": 100,
+                "type": "BOOLEAN",
+                "usergroups": [],
+                "value": "true",
+                "welshLabel": "Diffynnydd i fynychu’r gwrandawiad nesaf",
+                "welshValue": "true"
+              },
+              {
+                "courtExtract": "Y",
+                "judicialResultPromptTypeId": "dbf9f59c-eee5-4285-8a1c-4fefe4508581",
+                "label": "To produce motor insurance documents or test certificates (not driving licence)",
+                "promptReference": "7b169502-be96-4af0-83e4-e75a2610bd41",
+                "promptSequence": 200,
+                "qualifier": "DO",
+                "usergroups": [],
+                "value": ""
+              },
+              {
+                "courtExtract": "Y",
+                "judicialResultPromptTypeId": "7fc17a01-2f5a-4433-aae9-28e0c959f73b",
+                "label": "Adjournment reasons",
+                "promptReference": "652f0efd-f348-4d21-af45-3941d61ab3be",
+                "promptSequence": 300,
+                "usergroups": [],
+                "value": "",
+                "welshLabel": "Rheswm dros ohirio:"
+              }
+            ],
+            "judicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
+            "label": "Adjournment",
+            "lastSharedDateTime": "2024-09-24",
+            "level": "O",
+            "lifeDuration": false,
+            "nextHearing": {
+              "adjournmentReason": "To produce motor insurance documents or test certificates (not driving licence)",
+              "bookingReference": "b1b73a7d-2a25-4778-9b5c-d2117ba2cdda",
+              "courtCentre": {
+                "address": {
+                  "address1": "176A Lavender Hill",
+                  "address2": "London",
+                  "postcode": "SW11 1JU"
+                },
+                "code": "B01LY00",
+                "courtHearingLocation": "B01LY02",
+                "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+                "name": "Lavender Hill Magistrates' Court",
+                "psaCode": 2577,
+                "roomId": "b4562684-9209-3ec4-a544-7f80dabd94d8",
+                "roomName": "Courtroom 02",
+                "welshName": "Llys Ynadon Lavender Hill"
+              },
+              "estimatedDuration": "20 MINUTES",
+              "estimatedMinutes": 20,
+              "jurisdictionType": "MAGISTRATES",
+              "listedStartDateTime": "2024-09-27T13:00:00.000Z",
+              "type": {
+                "description": "Plea",
+                "id": "511fe0a3-1391-4954-8158-6b10eed0dad9"
+              }
+            },
+            "orderedDate": "2024-09-24",
+            "orderedHearingId": "9b95abcf-6bf8-4da2-bb2f-1023a82483bb",
+            "policeSubjectLineTitle": "Adjourned",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "qualifier": "DO",
+            "rank": 194200,
+            "resultText": "A - Adjournment\nAdjourned for hearing on 27/09/2024 at 14:00 in Courtroom 02, Lavender Hill Magistrates' Court. Reason: To produce motor insurance documents or test certificates (not driving licence). Defendant to attend the next hearing.",
+            "resultWording": "",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "4b0968d9-61d5-40d0-bd48-1bf15c81c580",
+            "rootJudicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Gohiriad"
+          },
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "7b169502-be96-4af0-83e4-e75a2610bd41",
+            "judicialResultTypeId": "dbf9f59c-eee5-4285-8a1c-4fefe4508581",
+            "label": "To produce motor insurance documents or test certificates (not driving licence)",
+            "lastSharedDateTime": "2024-09-24",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-24",
+            "orderedHearingId": "9b95abcf-6bf8-4da2-bb2f-1023a82483bb",
+            "parentJudicialResultId": "652f0efd-f348-4d21-af45-3941d61ab3be",
+            "parentJudicialResultTypeId": "7fc17a01-2f5a-4433-aae9-28e0c959f73b",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": true,
+            "publishedForNows": true,
+            "rank": 32100,
+            "resultDefinitionGroup": "Adjournment reasons",
+            "resultText": "To produce motor insurance documents or test certificates (not driving licence)",
+            "resultWording": "",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "4b0968d9-61d5-40d0-bd48-1bf15c81c580",
+            "rootJudicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "a8bd6976-2c2e-4bee-8648-6ec0c92b2667",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d27a5d86-d51f-4c6e-914b-cb4b0abc4283",
+                "label": "Date of hearing",
+                "promptReference": "HDATE",
+                "promptSequence": 100,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "27/09/2024",
+                "welshLabel": "Dyddiad y gwrandawiad",
+                "welshValue": "27/09/2024"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "4d125a5a-acbc-461d-a657-ba5643af85a6",
+                "label": "Time of hearing",
+                "promptReference": "timeOfHearing",
+                "promptSequence": 200,
+                "type": "TIME",
+                "usergroups": [],
+                "value": "14:00",
+                "welshLabel": "Amser y gwrandawiad",
+                "welshValue": "14:00"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse organisation name",
+                "promptReference": "hCHOUSEOrganisationName",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "Lavender Hill Magistrates' Court",
+                "welshValue": "Lavender Hill Magistrates' Court"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse address line 1",
+                "promptReference": "hCHOUSEAddress1",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "176A Lavender Hill",
+                "welshValue": "176A Lavender Hill"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse address line 2",
+                "promptReference": "hCHOUSEAddress2",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "London",
+                "welshValue": "London"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse post code",
+                "promptReference": "hCHOUSEPostCode",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "SW11 1JU",
+                "welshValue": "SW11 1JU"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "49ec9b26-dd63-4637-b2e9-55ba9948a90f",
+                "label": "Courtroom",
+                "promptReference": "HCROOM",
+                "promptSequence": 400,
+                "type": "INT",
+                "usergroups": [],
+                "value": "Courtroom 02",
+                "welshLabel": "Ystafell Llys",
+                "welshValue": "Courtroom 02"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "c1116d12-dd35-4171-807a-2cb845357d22",
+                "label": "Hearing type",
+                "promptReference": "HTYPE",
+                "promptSequence": 500,
+                "type": "TXT",
+                "usergroups": [],
+                "value": "Plea",
+                "welshLabel": "Math o wrandawiad",
+                "welshValue": "Plea"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d85cc2d7-66c8-471e-b6ff-c1bc60c6cdac",
+                "label": "Estimated duration",
+                "promptReference": "HEST",
+                "promptSequence": 600,
+                "type": "INT",
+                "usergroups": [],
+                "value": "20 MINUTES",
+                "welshLabel": "Amcangyfrif amser",
+                "welshValue": "20 MINUTES"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "e73e6ab8-9bfe-4135-9fe6-f526544584d6",
+                "label": "Booking reference",
+                "promptReference": "bookingReference",
+                "promptSequence": 700,
+                "type": "TXT",
+                "usergroups": [],
+                "value": "b1b73a7d-2a25-4778-9b5c-d2117ba2cdda",
+                "welshLabel": "Cyfeirnod archebu",
+                "welshValue": "b1b73a7d-2a25-4778-9b5c-d2117ba2cdda"
+              }
+            ],
+            "judicialResultTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
+            "label": "Next hearing in magistrates' court",
+            "lastSharedDateTime": "2024-09-24",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-24",
+            "orderedHearingId": "9b95abcf-6bf8-4da2-bb2f-1023a82483bb",
+            "parentJudicialResultId": "70c41bae-b3ce-468a-a36b-fd748f8a7b20",
+            "parentJudicialResultTypeId": "f00359b5-7303-403b-b59e-0b1a1daa89bc",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": true,
+            "publishedForNows": true,
+            "rank": 2300,
+            "resultDefinitionGroup": "Next hearing",
+            "resultText": "hearing on 27/09/2024 at 14:00 in Courtroom 02, Lavender Hill Magistrates' Court",
+            "resultWording": "",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "4b0968d9-61d5-40d0-bd48-1bf15c81c580",
+            "rootJudicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Ni wnaeth y Llys barhau â’r treial yn absenoldeb y diffynnydd"
+          }
+        ],
+        "modeOfTrial": "Indictable",
+        "offenceCode": "TH68023A",
+        "offenceDateCode": 1,
+        "offenceSequenceNumber": 1,
+        "startDate": "2022-12-12",
+        "wording": "Attempt robbery"
+      },
+      {
+        "arrestDate": "2022-12-14",
+        "chargeDate": "2022-12-15",
+        "finalDisposal": "Y",
+        "id": "9be4edbe-5281-4ce1-b438-4ccea978a287",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": true,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "1018",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "durationElement": {
+              "primaryDurationUnit": "M",
+              "primaryDurationValue": 6
+            },
+            "dvlaCode": "E",
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": true,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "f99d4fa1-6fb6-4ac1-87c1-48ee35f89145",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "durationSequence": 1,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                "label": "Period of conditional discharge",
+                "promptReference": "periodofConditionalDischarge",
+                "promptSequence": 100,
+                "type": "INT",
+                "usergroups": [],
+                "value": "6 Months",
+                "welshLabel": "Cyfnod o ryddhad amodol",
+                "welshValue": "6 Months"
+              }
+            ],
+            "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+            "label": "Conditional discharge",
+            "lastSharedDateTime": "2024-09-24",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-24",
+            "orderedHearingId": "9b95abcf-6bf8-4da2-bb2f-1023a82483bb",
+            "policeSubjectLineTitle": "Final Sentence",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 73800,
+            "resultText": "CD - Conditional discharge\nDischarged conditionally for 6 Months.",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "f99d4fa1-6fb6-4ac1-87c1-48ee35f89145",
+            "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Rhyddhad Amodol"
+          }
+        ],
+        "modeOfTrial": "Indictable",
+        "offenceCode": "TH68023",
+        "offenceDateCode": 1,
+        "offenceSequenceNumber": 1,
+        "startDate": "2022-12-12",
+        "wording": "Robbery"
+      }
+    ],
+    "prosecutorReference": "D27GC01129410771"
+  },
+  "id": "9b95abcf-6bf8-4da2-bb2f-1023a82483bb",
+  "sessionDays": [
+    {
+      "listedDurationMinutes": 20,
+      "listingSequence": 0,
+      "sittingDay": "2024-09-24T22:30:00.000Z"
+    }
+  ],
+  "urn": "28DI9410771"
+}

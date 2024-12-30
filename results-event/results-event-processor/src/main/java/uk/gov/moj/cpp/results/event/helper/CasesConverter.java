@@ -178,7 +178,7 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
 
     private Function<CourtApplicationCase, CaseDetails> buildCaseDetails(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
         return courtApplicationCase ->
-                caseDetails()
+                 caseDetails()
                         .withCaseId(courtApplicationCase.getProsecutionCaseId())
                         .withUrn(getUrn(courtApplicationCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
                         .withProsecutionAuthorityCode(courtApplicationCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode())

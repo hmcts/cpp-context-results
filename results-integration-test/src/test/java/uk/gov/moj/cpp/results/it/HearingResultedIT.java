@@ -61,7 +61,7 @@ import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.*;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequested;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequestedV2;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.NotificationServiceStub.verifyEmailNotificationIsRaised;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
@@ -123,7 +123,6 @@ public class HearingResultedIT {
     @BeforeEach
     public void setUp() {
         stubSpiOutFlag(true, true);
-
         createMessageConsumers();
     }
 
@@ -163,23 +162,6 @@ public class HearingResultedIT {
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getOrderIndex(), is(new JSONObject(response.get()).getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).get("offenceSequenceNumber")));
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getIndicatedPlea(), is(notNullValue()));
         assertThat(resultsMessage.getHearing().getProsecutionCases().get(0).getDefendants().get(0).getOffences().get(0).getIndicatedPlea().getIndicatedPleaValue(), is(IndicatedPleaValue.INDICATED_GUILTY));
-    }
-
-    private void setOuCodeAndProsecutorAuthority(final PublicHearingResulted resultsMessage) {
-        if (null != resultsMessage.getHearing().getProsecutionCases() && !resultsMessage.getHearing().getProsecutionCases().isEmpty()) {
-            int size = resultsMessage.getHearing().getProsecutionCases().size();
-            for (int i = 0; i < size; i++) {
-                final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(i))
-                        .withOriginatingOrganisation(OU_CODE)
-                        .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(i).getProsecutionCaseIdentifier())
-                                .withProsecutionAuthorityCode(PROSECUTION_AUTHORITY)
-                                .withProsecutionAuthorityOUCode(OU_CODE).build())
-                        .build();
-
-                resultsMessage.getHearing().getProsecutionCases().set(i, prosecutionCase);
-
-            }
-        }
     }
 
     @Test
@@ -290,7 +272,7 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyPrivateEventsWithPoliceNotificationRequestedV2(EMAIL);
     }
 
     @Test
@@ -365,7 +347,7 @@ public class HearingResultedIT {
         final LocalDate startDate = of(2019, 5, 25);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyPrivateEventsWithPoliceNotificationRequestedV2(EMAIL);
 
         final JsonObject amendedPayload = getPayload(TEMPLATE_PAYLOAD_RESHARE_CROWN, hearingId);
         hearingResultsHaveBeenSharedV2(amendedPayload);
@@ -711,26 +693,6 @@ public class HearingResultedIT {
         verifyPrivateEventsWithPoliceResultGenerated();
     }
 
-    private static JsonObject getPayload(final String path, final UUID hearingId) {
-        return getPayload(path, hearingId, null);
-    }
-
-    private static JsonObject getPayload(final String path, final UUID hearingId, final UUID groupId) {
-        String request = null;
-        try {
-            final InputStream inputStream = HearingResultedIT.class.getClassLoader().getResourceAsStream(path);
-            assertThat(inputStream, IsNull.notNullValue());
-            final String groupIdStr = nonNull(groupId) ? groupId.toString() : EMPTY;
-            request = IOUtils.toString(inputStream, defaultCharset())
-                    .replace("HEARING_ID", hearingId.toString())
-                    .replace("GROUP_ID", groupIdStr);
-        } catch (final Exception e) {
-            fail("Error consuming file from location " + path);
-        }
-        final JsonReader reader = createReader(new StringReader(request));
-        return reader.readObject();
-    }
-
     @Test
     public void shouldBeSentToSpiOutForApplicationWithNoJudicialResultsV2() throws JMSException {
 
@@ -846,7 +808,7 @@ public class HearingResultedIT {
     public void shouldSentSpiOutForApplicationWithCourtOrderOnlyV2() throws JMSException {
         final UUID caseId = randomUUID();
         final String caseUrn = "32DN1212262";
-        final JsonObject payload = getPayload("json/public.events.hearing.hearing-resulted-court-order.json", randomUUID());
+        final JsonObject payload = getPayload("json/public.events.hearing.hearing-resulted-court-order.json", randomUUID(), caseId, null);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
 
         stubGetProgressionProsecutionCases(caseId);
@@ -862,11 +824,11 @@ public class HearingResultedIT {
 
         Optional<String> response = verifyInPublicTopic();
         JSONObject jsonObject = new JSONObject(response.get());
-        if(!jsonObject.getString("caseId").equalsIgnoreCase("4d7fd02d-2297-4249-a7c6-d1d7bd567d58")) {
+        if(!jsonObject.getString("caseId").equalsIgnoreCase(caseId.toString())) {
             response = verifyInPublicTopic();
             jsonObject = new JSONObject(response.get());
         }
-        assertThat(jsonObject.getString("caseId"), is("4d7fd02d-2297-4249-a7c6-d1d7bd567d58"));
+        assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
         assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").length(), is(2));
         assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("id"), is("b729153d-50e3-4ce4-811c-f16799043d4f"));
     }
@@ -877,7 +839,7 @@ public class HearingResultedIT {
         final UUID caseId = randomUUID();
         final String caseUrn = "31DI1504926";
         JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
-        final PublicHearingResulted resultsMessage = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN,hearingId), PublicHearingResulted.class);
+        final PublicHearingResulted resultsMessage = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN, hearingId, caseId, null), PublicHearingResulted.class);
 
         stubGetProgressionProsecutionCases(caseId);
         stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
@@ -891,7 +853,7 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyPrivateEventsWithPoliceNotificationRequestedV2(EMAIL);
     }
 
     @Test
@@ -900,7 +862,7 @@ public class HearingResultedIT {
         final UUID caseId = fromString("cfb28f37-5159-4297-ab6a-653a63627d0b");
         final String caseUrn = "31DI1504926";
         JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
-        final PublicHearingResulted resultsMessage = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN, hearingId), PublicHearingResulted.class);
+        final PublicHearingResulted resultsMessage = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_CROWN, hearingId, caseId, null), PublicHearingResulted.class);
 
         stubGetProgressionProsecutionCases(caseId);
         stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
@@ -914,7 +876,7 @@ public class HearingResultedIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyPrivateEventsWithPoliceNotificationRequestedV2(EMAIL);
         verifyEmailNotificationIsRaised(Arrays.asList("TestArmand TestKrajcik"));
 
 
@@ -929,7 +891,7 @@ public class HearingResultedIT {
         final UUID caseId = randomUUID();
         final String caseUrn = "31DI1504926";
         JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
-        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_MAGS,hearingId), PublicHearingResulted.class);
+        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_APPLICATION_ONLY_JURISDICTION_MAGS, hearingId, caseId, null), PublicHearingResulted.class);
 
         stubGetProgressionProsecutionCases(caseId);
         stubGetProgressionCaseExistsByUrn(caseUrn, caseId);
@@ -945,5 +907,59 @@ public class HearingResultedIT {
         Optional<String> response = verifyInPublicTopic();
         final JSONObject jsonObject = new JSONObject(response.get());
         assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
+    }
+
+    private void setOuCodeAndProsecutorAuthority(final PublicHearingResulted resultsMessage) {
+        if (null != resultsMessage.getHearing().getProsecutionCases() && !resultsMessage.getHearing().getProsecutionCases().isEmpty()) {
+            int size = resultsMessage.getHearing().getProsecutionCases().size();
+            for (int i = 0; i < size; i++) {
+                final ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(i))
+                        .withOriginatingOrganisation(OU_CODE)
+                        .withProsecutionCaseIdentifier(ProsecutionCaseIdentifier.prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(i).getProsecutionCaseIdentifier())
+                                .withProsecutionAuthorityCode(PROSECUTION_AUTHORITY)
+                                .withProsecutionAuthorityOUCode(OU_CODE).build())
+                        .build();
+
+                resultsMessage.getHearing().getProsecutionCases().set(i, prosecutionCase);
+
+            }
+        }
+    }
+
+    private static JsonObject getPayload(final String path, final UUID hearingId) {
+        return getPayload(path, hearingId, null);
+    }
+
+    private static JsonObject getPayload(final String path, final UUID hearingId, final UUID groupId) {
+        String request = null;
+        try {
+            final InputStream inputStream = HearingResultedIT.class.getClassLoader().getResourceAsStream(path);
+            assertThat(inputStream, IsNull.notNullValue());
+            final String groupIdStr = nonNull(groupId) ? groupId.toString() : EMPTY;
+            request = IOUtils.toString(inputStream, defaultCharset())
+                    .replace("HEARING_ID", hearingId.toString())
+                    .replace("GROUP_ID", groupIdStr);
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = createReader(new StringReader(request));
+        return reader.readObject();
+    }
+
+    private static JsonObject getPayload(final String path, final UUID hearingId, final UUID caseId, final UUID groupId) {
+        String request = null;
+        try {
+            final InputStream inputStream = HearingResultedIT.class.getClassLoader().getResourceAsStream(path);
+            assertThat(inputStream, IsNull.notNullValue());
+            final String groupIdStr = nonNull(groupId) ? groupId.toString() : EMPTY;
+            request = IOUtils.toString(inputStream, defaultCharset())
+                    .replace("HEARING_ID", hearingId.toString())
+                    .replace("CASE_ID", caseId.toString())
+                    .replace("GROUP_ID", groupIdStr);
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = createReader(new StringReader(request));
+        return reader.readObject();
     }
 }

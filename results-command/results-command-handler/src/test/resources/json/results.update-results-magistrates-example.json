@@ -208,6 +208,7 @@
                   "isFinancialResult": true,
                   "isConvictedResult": true,
                   "isAvailableForCourtExtract": true,
+                  "isNewAmendment": true,
                   "amendmentReasonId": "ab746921-d839-4867-bcf9-b41db8ebc852",
                   "amendmentReason": "a",
                   "amendmentDate": "2019-02-01",
@@ -260,5 +261,6 @@
       "originatingOrganisation": "OUCODE"
     }
   ],
-  "jurisdictionType" : "MAGISTRATES"
+  "jurisdictionType" : "MAGISTRATES",
+  "isReshare": true
 }

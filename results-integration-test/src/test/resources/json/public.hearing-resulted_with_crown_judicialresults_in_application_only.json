@@ -7,7 +7,7 @@
           "masterDefendant": {
             "defendantCase": [
               {
-                "caseId": "cfb28f37-5159-4297-ab6a-653a63627d0b",
+                "caseId": "CASE_ID",
                 "caseReference": "31DI1504926",
                 "defendantId": "b23a559d-2709-4d27-8deb-42d83bde3f53"
               }
@@ -91,7 +91,7 @@
                 "startDate": "2023-12-14",
                 "wording": ""
               },
-              "prosecutionCaseId": "cfb28f37-5159-4297-ab6a-653a63627d0b",
+              "prosecutionCaseId": "CASE_ID",
               "prosecutionCaseIdentifier": {
                 "address": {
                   "address1": "Bishopsgate police station",
@@ -405,7 +405,7 @@
           "masterDefendant": {
             "defendantCase": [
               {
-                "caseId": "cfb28f37-5159-4297-ab6a-653a63627d0b",
+                "caseId": "CASE_ID",
                 "caseReference": "31DI1504926",
                 "defendantId": "b23a559d-2709-4d27-8deb-42d83bde3f53"
               }

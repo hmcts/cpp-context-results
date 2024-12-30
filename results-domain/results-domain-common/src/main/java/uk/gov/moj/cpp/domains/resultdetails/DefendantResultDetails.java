@@ -14,6 +14,8 @@ public class DefendantResultDetails implements Serializable {
 
     private List<OffenceResultDetails> offences;
 
+
+
     public DefendantResultDetails(final UUID defendantId, final String defendantName, final List<OffenceResultDetails> offences) {
         this.defendantId = defendantId;
         this.defendantName = defendantName;

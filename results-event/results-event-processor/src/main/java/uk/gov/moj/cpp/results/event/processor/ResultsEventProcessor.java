@@ -128,6 +128,8 @@ public class ResultsEventProcessor {
     private static final UUID CASE_DOCUMENT_TYPE_ID = fromString("f471eb51-614c-4447-bd8d-28f9c2815c9e");
     private static final String APPLICATION_PDF = "application/pdf";
     private static final String SJP_UPLOAD_CASE_DOCUMENT = "sjp.upload-case-document";
+    public static final String IS_RESHARE = "isReshare";
+
     @Inject
     ReferenceDataService referenceDataService;
 
@@ -453,6 +455,10 @@ public class ResultsEventProcessor {
                 resultJsonPayload.add("courtApplications", courtApplicationJsonArrayBuilder.build());
             }
 
+            if (hearingResultPayload.containsKey(IS_RESHARE)) {
+                resultJsonPayload.add(IS_RESHARE, hearingResultPayload.getBoolean(IS_RESHARE));
+            }
+
 
             final Metadata metadata = metadataFrom(envelope.metadata())
                     .withName(commandName)
@@ -528,7 +534,7 @@ public class ResultsEventProcessor {
                 personalisationProperties.put(APPLICATIONS, applicationPropValue);
             }
 
-            emailTemplateId = getPoliceEmailTemplate(isNotEmpty(caseApplication), resultsAmended);
+            emailTemplateId = getPoliceEmailTemplate(isNotEmpty(applicationPropValue), resultsAmended);
 
             final boolean isApplicationAmended = nonNull(caseResultDetails) && isNotEmpty(caseResultDetails.getApplicationResultDetails()) && caseResultDetails.getApplicationResultDetails().stream()
                     .anyMatch(applicationResultDetails -> isNotEmpty(applicationResultDetails.getJudicialResultDetails()));

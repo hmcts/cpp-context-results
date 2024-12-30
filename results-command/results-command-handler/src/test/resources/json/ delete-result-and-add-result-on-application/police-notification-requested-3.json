@@ -1,0 +1,486 @@
+{
+  "amendReshare": "Amend & Reshare",
+  "applicationTypeForCase": "Failing to comply with the requirements of a community order",
+  "caseDefendants": [
+    {
+      "associatedPerson": [],
+      "attendanceDays": [
+        {
+          "attendanceType": "IN_PERSON",
+          "day": "2024-09-25"
+        }
+      ],
+      "defendantId": "5d9fdb17-1cec-46ee-8a8e-739b5a899aa2",
+      "individualDefendant": {
+        "bailConditions": "",
+        "bailStatus": {
+          "code": "A",
+          "description": "Not applicable",
+          "id": "86009c70-759d-3308-8de4-194886ff9a77"
+        },
+        "person": {
+          "address": {
+            "address1": "56saon",
+            "address2": "56Police House",
+            "address3": "StreetDescription1",
+            "address4": "Locality1",
+            "address5": "Town2",
+            "postcode": "TW14 9XD"
+          },
+          "contact": {
+            "home": "0917894278022",
+            "mobile": "0917894278022",
+            "primaryEmail": "robert@gmail.com",
+            "secondaryEmail": "ormsby@gmail.com",
+            "work": "0917894278022"
+          },
+          "dateOfBirth": "1997-08-08",
+          "firstName": "Clementine",
+          "gender": "MALE",
+          "lastName": "McGlynn77",
+          "title": "MR"
+        },
+        "presentAtHearing": "Y"
+      },
+      "offences": [
+        {
+          "chargeDate": "2024-09-25",
+          "convictionDate": "2024-09-25",
+          "endDate": "2024-09-11",
+          "finalDisposal": "Y",
+          "finding": "G",
+          "id": "674c9ac5-d40b-4bc2-acbc-11d1531cf9de",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "1030",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "0eba630e-a486-439f-8d76-b49b1363067c",
+                  "label": "Court that made the original order",
+                  "promptReference": "courtThatMadeTheOriginalOrder",
+                  "promptSequence": 100,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "Aberdeen JP Court",
+                  "welshLabel": "Y llys a wnaeth y gorchymyn gwreiddiol",
+                  "welshValue": "Aberdeen JP Court"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "39355876-d028-48fa-82d8-ccedbe4312f8",
+                  "label": "Date original order made",
+                  "promptReference": "dateOriginalOrderMade",
+                  "promptSequence": 200,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "12/12/2024",
+                  "welshLabel": "Dyddiad y gwnaethpwyd y gorchymyn gwreiddiol",
+                  "welshValue": "12/12/2024"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "361cee65-0550-4c9a-9fbd-3a234e9431f1",
+                  "label": "The end date of the order has been changed and the requirements must be complied with by",
+                  "promptReference": "theEndDateOfTheOrderHasBeenChangedAndTheRequirementsMustBeCompliedWithBy",
+                  "promptSequence": 800,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "12/12/2024",
+                  "welshValue": "12/12/2024"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "27bf0204-a185-4e82-8c34-7317287513c8",
+                  "label": "Responsible officer for the order",
+                  "promptReference": "responsibleOfficerForTheOrder",
+                  "promptSequence": 1000,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "a member of the youth offending team",
+                  "welshValue": "aelod o'r tîm troseddwyr ifanc"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "f4a4f159-779e-4f35-822a-b559a2415ecb",
+                  "label": "Supervising Court",
+                  "promptReference": "supervisingCourt",
+                  "promptSequence": 1020,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "Aberdeen JP Court",
+                  "welshLabel": "Llys sy’n Goruchwylio",
+                  "welshValue": "Aberdeen JP Court"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                  "label": "Probation team to be notified organisation name",
+                  "promptReference": "probationteamtobenotifiedOrganisationName",
+                  "promptSequence": 1200,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [],
+                  "value": "London Division NPS",
+                  "welshValue": "London Division NPS"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                  "label": "Probation team to be notified email address 1",
+                  "promptReference": "probationteamtobenotifiedEmailAddress1",
+                  "promptSequence": 1200,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [],
+                  "value": "londonnps.court@justice.gov.uk",
+                  "welshValue": "londonnps.court@justice.gov.uk"
+                }
+              ],
+              "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+              "label": "Community order varied",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "7a5ac833-5e78-400f-9a8c-d6ecb1229e6b",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 196800,
+              "resultText": "COV - Community order varied\nOrder made on 12/12/2024 by Aberdeen JP Court varied. The end date of the order has been changed and the requirements must be complied with by 12/12/2024. The new and amended requirements are shown below. The responsible officer nominated is a member of the youth offending team. The supervising court is Aberdeen JP Court. ",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
+              "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": []
+            },
+            {
+              "alwaysPublished": true,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "ANCILLARY",
+              "cjsCode": "3111",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "46dc97c9-04d1-4fa3-9bba-32ce83657963",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "72413aef-ecb9-4e9b-a143-31d1e9c11584",
+                  "label": "Number of hours",
+                  "promptReference": "numberOfHours",
+                  "promptSequence": 100,
+                  "type": "INT",
+                  "usergroups": [],
+                  "value": "200 Hours",
+                  "welshLabel": "Nifer yr oriau",
+                  "welshValue": "200 Hours"
+                }
+              ],
+              "judicialResultTypeId": "f9eac601-a1e7-4d45-99ee-c49e2c4ca85b",
+              "label": "Attendance centre",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "7a5ac833-5e78-400f-9a8c-d6ecb1229e6b",
+              "parentJudicialResultId": "94d5965a-d20a-490a-b555-689e51a6ebec",
+              "parentJudicialResultTypeId": "b2dab2b7-3edd-4223-b1be-3819173ec54d",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 40900,
+              "resultDefinitionGroup": "Community Requirement",
+              "resultText": "ACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
+              "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Canolfan ymbresenoli"
+            },
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "ANCILLARY",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "8dd1b462-0742-4d84-8042-23119b373288",
+              "judicialResultTypeId": "346edadd-5b2f-4e52-9d71-cd2296508cdf",
+              "label": "The new and amended requirements are",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "7a5ac833-5e78-400f-9a8c-d6ecb1229e6b",
+              "parentJudicialResultId": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
+              "parentJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": true,
+              "publishedForNows": true,
+              "rank": 36100,
+              "resultText": "The new and amended requirements are shown below.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
+              "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": []
+            }
+          ],
+          "modeOfTrial": "",
+          "offenceCode": "CJ03510",
+          "offenceDateCode": 4,
+          "offenceSequenceNumber": 0,
+          "startDate": "2024-09-11",
+          "wording": ""
+        },
+        {
+          "arrestDate": "2023-06-13",
+          "chargeDate": "2023-06-13",
+          "endDate": "2023-04-12",
+          "finalDisposal": "Y",
+          "id": "98c8b745-7f9f-4d00-a71d-d7c393bd21e3",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "amendmentDate": "2024-09-25",
+              "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+              "amendmentReasonId": "a02018a1-915c-3343-95ad-abc5f99b339a",
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "1015",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": true,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "caa6ecb6-dc73-4aaf-ac10-f2f0e55ccbc3",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": true,
+                  "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                  "label": "Amount of fine",
+                  "promptReference": "AOF",
+                  "promptSequence": 100,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£300.00",
+                  "welshLabel": "Swm y ddirwy",
+                  "welshValue": "£300.00"
+                }
+              ],
+              "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "label": "Fine",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "7a5ac833-5e78-400f-9a8c-d6ecb1229e6b",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 72100,
+              "resultDefinitionGroup": "Imposition",
+              "resultText": "FO - Fine\nFined £300.00",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "caa6ecb6-dc73-4aaf-ac10-f2f0e55ccbc3",
+              "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Dirwy"
+            },
+            {
+              "alwaysPublished": true,
+              "amendmentDate": "2024-09-25",
+              "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+              "amendmentReasonId": "a02018a1-915c-3343-95ad-abc5f99b339a",
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "cf948f3d-9ea8-4d1f-b0fc-352a09dc5fa7",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "ee7d253a-c629-11e8-a355-529269fb1459",
+                  "label": "Date to pay in full by",
+                  "promptReference": "PBD",
+                  "promptSequence": 100,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "12/12/2024",
+                  "welshLabel": "Dyddiad terfyn ar gyfer talu'r swm llawn",
+                  "welshValue": "12/12/2024"
+                }
+              ],
+              "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
+              "label": "Pay by date",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "D",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "7a5ac833-5e78-400f-9a8c-d6ecb1229e6b",
+              "parentJudicialResultId": "f896ab46-4951-41ea-ad8d-50aa41108115",
+              "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 120500,
+              "resultDefinitionGroup": "Payment terms",
+              "resultText": "PDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2024.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "caa6ecb6-dc73-4aaf-ac10-f2f0e55ccbc3",
+              "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Dyddiad terfyn ar gyfer talu"
+            }
+          ],
+          "modeOfTrial": "Indictable",
+          "offenceCode": "CJ03522",
+          "offenceDateCode": 4,
+          "offenceFacts": {
+            "alcoholReadingAmount": 500,
+            "alcoholReadingMethodCode": "A",
+            "alcoholReadingMethodDescription": "Blood",
+            "vehicleCode": "LARGE_GOODS_VEHICLE",
+            "vehicleRegistration": "TE4654"
+          },
+          "offenceSequenceNumber": 1,
+          "startDate": "2023-04-12",
+          "wording": "Original CaseURN: 25SepVTC987, Re-sentenced Original code : TH68023, Original details: Has a violent past and fear that he will commit further offences and interfere with witnesse"
+        }
+      ],
+      "prosecutorReference": "330059575494006800"
+    }
+  ],
+  "caseId": "b5b9388e-3a18-46a9-ac7d-c1d6c6bb9332",
+  "caseResultDetails": {
+    "applicationResultDetails": [
+      {
+        "applicationCasesResultDetails": [],
+        "applicationSubjectFirstName": "Clementine",
+        "applicationSubjectLastName": "McGlynn77",
+        "applicationTitle": "Failing to comply with the requirements of a community order",
+        "id": "674c9ac5-d40b-4bc2-acbc-11d1531cf9de",
+        "judicialResultDetails": [
+          {
+            "amendmentType": "ADDED",
+            "id": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
+            "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "resultTitle": "Community order varied"
+          },
+          {
+            "amendmentType": "ADDED",
+            "id": "46dc97c9-04d1-4fa3-9bba-32ce83657963",
+            "judicialResultTypeId": "f9eac601-a1e7-4d45-99ee-c49e2c4ca85b",
+            "resultTitle": "Attendance centre"
+          },
+          {
+            "amendmentType": "ADDED",
+            "id": "8dd1b462-0742-4d84-8042-23119b373288",
+            "judicialResultTypeId": "346edadd-5b2f-4e52-9d71-cd2296508cdf",
+            "resultTitle": "The new and amended requirements are"
+          },
+          {
+            "amendmentType": "DELETED",
+            "id": "4a087a52-98e1-4baa-9d75-6a135f238552",
+            "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+            "resultTitle": "No adjudication - dealt with for original offence"
+          }
+        ],
+        "offenceResultDetails": []
+      }
+    ],
+    "caseId": "b5b9388e-3a18-46a9-ac7d-c1d6c6bb9332",
+    "defendantResultDetails": []
+  },
+  "courtCentre": "Kingston upon Thames Crown Court",
+  "dateOfHearing": "2024-09-25",
+  "notificationId": "42b3add9-b997-4c46-9ebd-95748120cde4",
+  "policeEmailAddress": "cpnotifications@bch.police.uk",
+  "urn": "25SepVTC987"
+}

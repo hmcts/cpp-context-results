@@ -48,4 +48,18 @@ public class NotificationServiceStub {
         });
     }
 
+    public static void verifyEmailNotificationIsRaised(final List<String> expectedValues, final List<String> notMatchingValues) {
+        await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
+            final RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT));
+            expectedValues.forEach(
+                    expectedValue -> requestPatternBuilder.withRequestBody(containing(expectedValue))
+            );
+            notMatchingValues.forEach(
+                    unMatchedValue -> requestPatternBuilder.withRequestBody(notMatching(unMatchedValue))
+            );
+            verify(requestPatternBuilder);
+            return true;
+        });
+    }
+
 }

@@ -582,7 +582,7 @@ public class ResultsEventProcessorTest {
 
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
-        when(applicationParameters.getPoliceEmailHearingResultsAmendedWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_WITH_APPLICATIONS_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);

@@ -16,9 +16,13 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,12 +37,16 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeStrea
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.justice.core.courts.CaseAddedEvent;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CorrelationIdHistoryItem;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
+import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
 import uk.gov.justice.core.courts.DefendantRejectedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
@@ -49,7 +57,10 @@ import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.HearingResultsAddedForDay;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.Person;
+import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
+import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.SjpCaseRejectedEvent;
@@ -67,6 +78,7 @@ import uk.gov.justice.services.eventsourcing.source.core.EventStream;
 import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
+import uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.command.handler.utils.FileUtil;
 import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
@@ -83,13 +95,16 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.json.Json;
@@ -104,6 +119,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -538,6 +554,10 @@ public class ResultsCommandHandlerTest {
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
         when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode")).thenReturn(of(jsonProsecutorBuilder.build()));
 
+        final JsonObject caseDetailsJson = payload.getJsonArray("cases").getJsonObject(0);
+        final CaseDetails caseDetails = jsonObjectToObjectConverter.convert(caseDetailsJson, CaseDetails.class);
+        this.resultsAggregateSpy.apply(hearingResultsAddedForDay(caseDetails));
+
         this.resultsCommandHandler.createResult(envelope);
         verify(enveloper, Mockito.times(3)).withMetadataFrom(envelope);
         verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
@@ -648,9 +668,10 @@ public class ResultsCommandHandlerTest {
         final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
         final JsonObject session = payload.getJsonObject("session");
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
+        resultsAggregate.apply(hearingResultsAddedForDay(convertedCaseDetails));
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "");
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "", Optional.of(Boolean.TRUE));
         this.resultsCommandHandler.createResult(envelope);
         verify(enveloper, Mockito.times(2)).withMetadataFrom(envelope);
         verify(eventStream, Mockito.times(2)).append(streamArgumentCaptor.capture());
@@ -703,7 +724,6 @@ public class ResultsCommandHandlerTest {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregateSpy);
 
-        resultsCommandHandler.createResult(envelope);
         final JsonObject session = payload.getJsonObject("session");
         final UUID sessionId = fromString(session.getString("id"));
         final CourtCentreWithLJA courtCentreWithLJA = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
@@ -711,9 +731,13 @@ public class ResultsCommandHandlerTest {
 
         final JsonObject caseDetailsJson = payload.getJsonArray("cases").getJsonObject(0);
         final CaseDetails caseDetails = jsonObjectToObjectConverter.convert(caseDetailsJson, CaseDetails.class);
+
+        resultsAggregateSpy.apply(hearingResultsAddedForDay(caseDetails));
+        resultsCommandHandler.createResult(envelope);
+
         verify(resultsAggregateSpy).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
         verify(resultsAggregateSpy).handleCase(eq(caseDetails));
-        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(empty()), any(), any());
+        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(empty()), any(), any(), any());
     }
 
     @Test
@@ -1059,13 +1083,18 @@ public class ResultsCommandHandlerTest {
         final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
         final JsonObject session = payload.getJsonObject("session");
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
+
+        resultsAggregate.apply(hearingResultsAddedForDay(convertedCaseDetails));
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "");
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "", Optional.of(Boolean.TRUE));
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_2);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
+        final List<JsonObject> updatedCases = (List<JsonObject>) updatePayload.get("cases");
+        final CaseDetails updatedCaseDetails = jsonObjectToObjectConverter.convert(updatedCases.get(0), CaseDetails.class);
 
+        resultsAggregate.apply(hearingResultsAddedForDay(updatedCaseDetails));
         this.resultsCommandHandler.createResult(updateEnvelope);
         verify(enveloper, Mockito.times(3)).withMetadataFrom(updateEnvelope);
         verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
@@ -1111,13 +1140,17 @@ public class ResultsCommandHandlerTest {
         final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
         final JsonObject session = payload.getJsonObject("session");
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
+        resultsAggregate.apply(hearingResultsAddedForDay(convertedCaseDetails));
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "");
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "", Optional.of(Boolean.TRUE));
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_6);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
 
+        final List<JsonObject> updatedCases = (List<JsonObject>) updatePayload.get("cases");
+        final CaseDetails updatedCaseDetails = jsonObjectToObjectConverter.convert(updatedCases.get(0), CaseDetails.class);
+        resultsAggregate.apply(hearingResultsAddedForDay(updatedCaseDetails));
         this.resultsCommandHandler.createResult(updateEnvelope);
         verify(enveloper, Mockito.times(3)).withMetadataFrom(updateEnvelope);
         verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
@@ -1162,13 +1195,17 @@ public class ResultsCommandHandlerTest {
         final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
         final JsonObject session = payload.getJsonObject("session");
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
+        resultsAggregate.apply(hearingResultsAddedForDay(convertedCaseDetails));
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "");
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "", Optional.of(Boolean.TRUE));
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_6);
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
 
+        final List<JsonObject> updatedCases = (List<JsonObject>) updatePayload.get("cases");
+        final CaseDetails updatedCaseDetails = jsonObjectToObjectConverter.convert(updatedCases.get(0), CaseDetails.class);
+        resultsAggregate.apply(hearingResultsAddedForDay(updatedCaseDetails));
         this.resultsCommandHandler.createResult(updateEnvelope);
         verify(enveloper, Mockito.times(3)).withMetadataFrom(updateEnvelope);
         verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
@@ -1184,6 +1221,51 @@ public class ResultsCommandHandlerTest {
                         ))
         ));
 
+    }
+
+
+    @Test
+    void shouldBuildApplicationTypeForCase() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
+        jsonProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL);
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation("OUCODE")).thenReturn(of(jsonProsecutorBuilder.build()));
+
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_11);
+
+        final JsonEnvelope createResultEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+
+        final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
+        final List<CaseDetails> caseDetails = cases.stream()
+                .map(c -> jsonObjectToObjectConverter.convert(c, CaseDetails.class))
+                .collect(toList());
+
+        resultsAggregate.apply(hearingResultsAddedForDay(caseDetails));
+        this.resultsCommandHandler.createResult(createResultEnvelope);
+
+        verify(eventStream, Mockito.times(5)).append(streamArgumentCaptor.capture());
+
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+        final Optional<JsonEnvelope> policeNotificationEnv1 = allValues.stream().filter(json -> json.metadata().name().equals("results.event.police-notification-requested-v2")
+                && json.payloadAsJsonObject().getJsonString("caseId").getString().equals("bfd697f8-31ae-4e25-8654-4a10b812f5dd"))
+                .findFirst();
+
+        assertThat(policeNotificationEnv1.isPresent(), is(true));
+        assertThat(policeNotificationEnv1.get().payloadAsJsonObject().getString("applicationTypeForCase"), is("Sorry Application, Breach of a supervision default order"));
+
+        final Optional<JsonEnvelope> policeNotificationEnv2 = allValues.stream().filter(json -> json.metadata().name().equals("results.event.police-notification-requested-v2")
+                        && json.payloadAsJsonObject().getJsonString("caseId").getString().equals("cffb892f-e5a5-45bb-8fe9-e443a7840385"))
+                .findFirst();
+
+        assertThat(policeNotificationEnv2.isPresent(), is(true));
+        assertThat(policeNotificationEnv2.get().payloadAsJsonObject().getString("applicationTypeForCase"), is("Only Breach, Breach of a supervision default order, Sorry Application"));
     }
 
     @Test
@@ -1225,14 +1307,18 @@ public class ResultsCommandHandlerTest {
         final CaseDetails convertedCaseDetails = jsonObjectToObjectConverter.convert(cases.get(0), CaseDetails.class);
         final JsonObject session = payload.getJsonObject("session");
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
+        resultsAggregate.apply(hearingResultsAddedForDay(convertedCaseDetails));
         resultsAggregate.handleSession(fromString(session.getString("id")), courtCentre, (List<SessionDay>) session.get("sessionDays"));
         resultsAggregate.handleCase(convertedCaseDetails);
-        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "");
+        resultsAggregate.handleDefendants(convertedCaseDetails, true, of(JurisdictionType.MAGISTRATES), EMAIL, true, empty(), "", "", Optional.of(Boolean.FALSE));
 
         final JsonObject updatePayload = getPayload(TEMPLATE_PAYLOAD_8);
+        final List<JsonObject> updateCases = (List<JsonObject>) updatePayload.get("cases");
+        final CaseDetails updatedCaseDetails = jsonObjectToObjectConverter.convert(updateCases.get(0), CaseDetails.class);
 
         final JsonEnvelope updateEnvelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), updatePayload);
 
+        resultsAggregate.apply(hearingResultsAddedForDay(updatedCaseDetails));
         this.resultsCommandHandler.createResult(updateEnvelope);
         verify(enveloper, Mockito.times(3)).withMetadataFrom(updateEnvelope);
         verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
@@ -1262,5 +1348,352 @@ public class ResultsCommandHandlerTest {
         return listOfStreams.stream()
                 .flatMap(jsonEnvelopeStream -> jsonEnvelopeStream).collect(toList());
     }
+
+    /***
+     *  Delete the existing result  and add a new result on Application and do NOT amend the result on offence
+     * @throws EventStreamException
+     * @throws IOException
+     */
+    @Test
+    void deleteResultAndAddResultOnApplication() throws EventStreamException, IOException {
+        final String resourceRoot = "json/ delete-result-and-add-result-on-application/";
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        doReturn(resultsAggregate).when(aggregateService).get(any(EventStream.class), eq(ResultsAggregate.class));
+
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
+        jsonProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any())).thenReturn(of(jsonProsecutorBuilder.build()));
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-1.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-1.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-2.json"));
+        final JsonEnvelope createResultEnvelope = whenCreateResultCommandHandled(resourceRoot + "create-results-2.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-3.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-3.json");
+
+        verify(eventStream, atLeast(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+
+        final List<JsonEnvelope> policeNoficationRequestedEvents = allValues.stream()
+                .filter(envelope -> envelope.metadata().name().equals("results.event.police-notification-requested-v2"))
+                .collect(toList());
+
+        assertThat(policeNoficationRequestedEvents.size(), is(3));
+
+        JsonObject payload1 = getPayload(resourceRoot + "police-notification-requested-1.json");
+        JsonObject payload2 = getPayload(resourceRoot + "police-notification-requested-2.json");
+        JsonObject payload3 = getPayload(resourceRoot + "police-notification-requested-3.json");
+
+        verifyPoliceNotificationRequests(policeNoficationRequestedEvents, Arrays.asList(payload1, payload2, payload3), createResultEnvelope);
+    }
+
+    /***
+     *  Amend only the new offence existing result on the case and do NOT amend cloned offence and Application result
+     * @throws EventStreamException
+     * @throws IOException
+     */
+    @Test
+    void amendNewOffenceNotAmendOthers() throws EventStreamException, IOException {
+        final String resourceRoot = "json/amend-new-offence-only/";
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        doReturn(resultsAggregate).when(aggregateService).get(any(EventStream.class), eq(ResultsAggregate.class));
+
+        final JsonObjectBuilder jsonProsecutorBuilder = createObjectBuilder();
+        jsonProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(any())).thenReturn(of(jsonProsecutorBuilder.build()));
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-1.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-1.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-2.json"));
+        final JsonEnvelope createResultEnvelope = whenCreateResultCommandHandled(resourceRoot + "create-results-2.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-3.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-3.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-4.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-4.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-5.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-5.json");
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-6.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-6.json");
+
+        verify(eventStream, atLeast(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+
+        final List<JsonEnvelope> policeNoficationRequestedEvents = allValues.stream()
+                .filter(envelope -> envelope.metadata().name().equals("results.event.police-notification-requested-v2"))
+                .collect(toList());
+
+        assertThat(policeNoficationRequestedEvents.size(), is(6));
+
+        verifyPoliceNotificationRequests(policeNoficationRequestedEvents, Arrays.asList(
+                getPayload(resourceRoot + "police-notification-requested-1.json"),
+                getPayload(resourceRoot + "police-notification-requested-2.json"),
+                getPayload(resourceRoot + "police-notification-requested-3.json"),
+                getPayload(resourceRoot + "police-notification-requested-4.json"),
+                getPayload(resourceRoot + "police-notification-requested-5.json"),
+                getPayload(resourceRoot + "police-notification-requested-6.json")
+
+        ), createResultEnvelope);
+    }
+
+
+
+    /**
+     *  Create command handler for test cases where we expect PoliceResultGeneration and PoliceNotification events
+     *  and one PoliceNotificationEvent are raised.
+     *
+     * @throws EventStreamException
+     * @throws IOException
+     */
+    @ParameterizedTest
+    @MethodSource("createResultTestCasesParams")
+    void createResultTestCases(final String resourceRoot, final int policeResultGeneratedEventCount, final int policeNotificationEventCount) throws EventStreamException, IOException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        doReturn(resultsAggregate).when(aggregateService).get(any(EventStream.class), eq(ResultsAggregate.class));
+
+        final JsonObject jsonProsecutor = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL)
+                .build();
+
+        lenient().when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(any())).thenReturn(of(jsonProsecutor));
+        lenient().when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any())).thenReturn(of(jsonProsecutor));
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-1.json"));
+        whenCreateResultCommandHandled(resourceRoot + "create-results-1.json");
+
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay(resourceRoot + "hearing-results-added-for-day-2.json"));
+        final JsonEnvelope createResultEnvelope = whenCreateResultCommandHandled(resourceRoot + "create-results-2.json");
+
+        verify(eventStream, atLeast(policeResultGeneratedEventCount + policeNotificationEventCount)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        final List<JsonObject> policeResultGeneratedEvents = allValues.stream()
+                .filter(envelope -> envelope.metadata().name().equals("results.event.police-result-generated"))
+                .map(JsonEnvelope::payloadAsJsonObject)
+                .collect(toList());
+
+        assertThat(policeResultGeneratedEvents.size(), is(policeResultGeneratedEventCount));
+
+        assertThat(policeResultGeneratedEvents, containsInAnyOrder(
+                expectedPoliceResultGeneratedEvents(resourceRoot, policeResultGeneratedEventCount)
+        ));
+
+
+        final List<JsonEnvelope> policeNoficationRequestedEvents = allValues.stream()
+                .filter(envelope -> envelope.metadata().name().equals("results.event.police-notification-requested-v2"))
+                .collect(toList());
+
+        assertThat(policeNoficationRequestedEvents.size(), is(policeNotificationEventCount));
+
+        verifyPoliceNotificationRequests(policeNoficationRequestedEvents, expectedPoliceNotificationRequestedEvents(resourceRoot, policeNotificationEventCount), createResultEnvelope);
+    }
+
+    /**
+     * arg 0: payload
+     * arg 1: policeResultGeneratedEventCount
+     * arg 2: policeNotificationEventCount
+     * @return
+     */
+    public static Stream<Arguments> createResultTestCasesParams() {
+        return Stream.of(
+                arguments(named(
+                        "Delete the existing result on new offence on the case and cloned offence and do NOT amend Application result",
+                        "json/delete-result-new-offence-on-case/"
+                ), 1, 1),
+                arguments(named(
+                        "Add another new result to the cloned offence and do NOT amend new offence and Application result",
+                        "json/add-result-cloned-offence/"
+                ), 1, 1),
+                arguments(named(
+                        " Add a new result on Application and cloned offence and do NOT amend new offence result",
+                        "json/add-result-on-application-and-cloned-offence/"
+                ), 1, 1),
+                arguments(named(
+                        "Inactive case with 2 defendants but Application for 1 defendant -Amend and Reshare",
+                        "json/inactive-case-2-defendant-application-1-defendant/"
+                ), 1, 1),
+                arguments(named(
+                        "Delete the existing result on Application and do NOT amend the result on offence",
+                        "json/delete-on-application-not-amend-offence/"
+                ), 1, 1),
+                arguments(named(
+                        "Delete the existing result and add a new result on Application and do NOT amend the result on offence",
+                        "json/delete-and-add-on-application-not-amend-offence/"
+                ), 1, 1),
+                arguments(named(
+                        "Multiple case with multiple defendant and multiple offence",
+                        "json/multi-case-multi-defendant-multi-offence/"
+                ), 4, 2),
+                arguments(named(
+                        "Multiple case multiple defendant resulted and amended (deleted/updated/added)",
+                        "json/multi-case-defendant-amendment-add-remove-update/"
+                ), 3, 3),
+                arguments(named(
+                        "Delete the existing result on offence and do NOT amend result on Application",
+                        "json/delete-result-on-offence-dont-amend-application/"
+                ), 0, 2),
+                arguments(named(
+                        "Delete existing result and add another new result to the cloned offence and do NOT amend new offence and Application result",
+                        "json/delete-add-cloned-offence-not-amend-others/"
+                ), 1, 1),
+                arguments(named(
+                        "Delete the existing result on Application and cloned offence and do NOT amend new offence result",
+                        "json/delete-application-and-clones-offence-result/"
+                ), 1, 1),
+                arguments(named(
+                        "Delete the existing result and add new result on new offence on the case and cloned offence and do NOT amend Application result",
+                        "json/delete-add-on-offence-not-amend-others/"
+                ), 1, 1),
+                arguments(named(
+                        "Multiple case multiple defendant resulted and amended (deleted)",
+                        "json/multi-case-multi-defendant-result-deleted/"
+                ), 2, 2),
+                arguments(named(
+                        "Delete the existing result and add a new result on offence and do NOT amend result on Application",
+                        "json/delete-and-add-offence/"
+                ), 1, 1),
+                arguments(named(
+                        "Amend the existing result on both offence and Application",
+                        "json/amend-on-offence-and-application/"
+                ), 1, 1),
+                arguments(named(
+                        "Application resulted and amended on an InActive case",
+                        "json/application-amended-on-inactive-case/"
+                ), 1, 1),
+                arguments(named(
+                        "Application and Offences resulted and amended for single InActive case",
+                        "json/application-and-offences-amended-on-inactive-case/"
+                ), 1, 1),
+                arguments(named(
+                        "Multiple case with multiple defendant and result NOT amended on defendant offences for 1 or more case",
+                        "json/multi-case-with-multi-defendant-result-not-amended-some-cases/"
+                ), 2, 1),
+                arguments(named(
+                        "Multiple case with multiple defendant and multiple offences, result NOT entered on 1 case, later amended and added result in Mags court",
+                        "json/multi-case-when-case-resulted-second-share/"
+                ), 2, 0)
+            );
+    }
+
+    private Object[] expectedPoliceResultGeneratedEvents(final String resourceRoot, int count) {
+        return IntStream.range(1, count + 1)
+                .mapToObj(index -> getPayload(resourceRoot + String.format("police-result-generated-%d.json", index)))
+                .toArray();
+    }
+
+    private List<JsonObject> expectedPoliceNotificationRequestedEvents(final String resourceRoot, int count) {
+        return IntStream.range(1, count + 1)
+                .mapToObj(index -> getPayload(resourceRoot + String.format("police-notification-requested-%d.json", index)))
+                .collect(toList());
+    }
+
+    private void verifyPoliceNotificationRequests(final List<JsonEnvelope> actualEvents, final List<JsonObject> expectedEvents, final JsonEnvelope createResultEnvelope) {
+
+        assertThat(actualEvents, containsInAnyOrder(expectedEvents.stream()
+                .map(payload -> policeNotificationMatcher(payload, createResultEnvelope)).collect(toList())));
+
+        final List<JsonObject> policeNoficationRequestedDetails = actualEvents.stream()
+                .map(envelope -> envelope.payloadAsJsonObject().getJsonObject("caseResultDetails"))
+                .collect(toList());
+
+        assertThat(policeNoficationRequestedDetails, containsInAnyOrder(
+                expectedEvents.stream().map(payload -> payload.getJsonObject("caseResultDetails")).toArray()
+        ));
+    }
+
+    private JsonEnvelopeMatcher policeNotificationMatcher(JsonObject payload, final JsonEnvelope createResultEnvelope) {
+        return jsonEnvelope(
+                withMetadataEnvelopedFrom(createResultEnvelope)
+                        .withName("results.event.police-notification-requested-v2"),
+                payloadIsJson(allOf(
+                                withJsonPath("$.amendReshare", is(payload.getString("amendReshare"))),
+                                withJsonPath("$.applicationTypeForCase", is(payload.getString("applicationTypeForCase"))),
+                                withJsonPath("$.caseId", is(payload.getString("caseId")))
+                        )
+                ));
+    }
+
+    private JsonEnvelope whenCreateResultCommandHandled(final String filename) throws EventStreamException {
+        final JsonObject payload = getPayload(filename);
+        JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.create-results"), payload);
+        this.resultsCommandHandler.createResult(envelope);
+        return envelope;
+    }
+
+    private HearingResultsAddedForDay loadHearingResultsAddedForDay(final String file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
+        return objectMapper.readValue(Resources.getResource(file), HearingResultsAddedForDay.class);
+    }
+
+    private HearingResultsAddedForDay hearingResultsAddedForDay(List<CaseDetails> caseDetailsList) {
+        return HearingResultsAddedForDay.hearingResultsAddedForDay()
+                .withHearing(Hearing.hearing()
+                        .withProsecutionCases(caseDetailsList.stream()
+                                .map(this::convertProsecutionCase)
+                                .collect(toList()))
+                        .build())
+                .build();
+    }
+
+    private HearingResultsAddedForDay hearingResultsAddedForDay(CaseDetails caseDetails) {
+        return HearingResultsAddedForDay.hearingResultsAddedForDay()
+                .withHearing(Hearing.hearing()
+                        .withProsecutionCases(Arrays.asList(convertProsecutionCase(caseDetails)))
+                        .build())
+                .build();
+    }
+
+    private ProsecutionCase convertProsecutionCase(CaseDetails caseDetails) {
+        return ProsecutionCase.prosecutionCase()
+                .withId(caseDetails.getCaseId())
+                .withDefendants(
+                        caseDetails.getDefendants().stream()
+                                .map(d -> Defendant.defendant()
+                                        .withId(d.getDefendantId())
+                                        .withPersonDefendant(PersonDefendant.personDefendant()
+                                                .withPersonDetails(Person.person()
+                                                        .withFirstName(d.getIndividualDefendant().getPerson().getFirstName())
+                                                        .withLastName(d.getIndividualDefendant().getPerson().getLastName())
+                                                        .build())
+                                                .build())
+                                        .withOffences(
+                                                d.getOffences().stream()
+                                                        .map(o -> Offence.offence()
+                                                                .withId(o.getId())
+                                                                .withJudicialResults(o.getJudicialResults())
+                                                                .build())
+                                                        .collect(toList())
+                                        )
+                                        .build())
+                                .collect(toList())
+                )
+                .build();
+    }
+
 }
 

@@ -23,6 +23,9 @@
       "items": {
         "$ref": "http://justice.gov.uk/core/courts/courtApplication.json"
       }
+    },
+    "isReshare": {
+      "type": "boolean"
     }
   },
   "additionalProperties": true,

@@ -56,7 +56,8 @@ public class CaseResultDetailsConverterTest {
                                         new JudicialResultDetails(judicialResultIdInAppOffence2, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.NONE)
                                 ))
                         ), Collections.emptyList(), "firstName", "lastName")
-                )
+                ),
+                false
         );
 
 

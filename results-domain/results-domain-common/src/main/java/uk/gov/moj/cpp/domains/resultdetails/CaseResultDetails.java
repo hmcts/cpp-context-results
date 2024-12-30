@@ -8,14 +8,15 @@ import java.util.UUID;
 @SuppressWarnings({"squid:S2384"})
 public class CaseResultDetails implements Serializable {
     private UUID caseId;
-
+    private boolean isThisCaseReshared;
     private List<DefendantResultDetails> defendantResultDetails;
     private List<ApplicationResultDetails> applicationResultDetails;
 
-    public CaseResultDetails(final UUID caseId, final List<DefendantResultDetails> defendantResultDetails, final List<ApplicationResultDetails> applicationResultDetails) {
+    public CaseResultDetails(final UUID caseId, final List<DefendantResultDetails> defendantResultDetails, final List<ApplicationResultDetails> applicationResultDetails, final boolean isThisCaseReshared) {
         this.caseId = caseId;
         this.defendantResultDetails = defendantResultDetails;
         this.applicationResultDetails = applicationResultDetails;
+        this.isThisCaseReshared = isThisCaseReshared;
     }
 
     public UUID getCaseId() {
@@ -28,6 +29,10 @@ public class CaseResultDetails implements Serializable {
 
     public List<ApplicationResultDetails> getApplicationResultDetails() {
         return applicationResultDetails;
+    }
+
+    public boolean isThisCaseReshared() {
+        return isThisCaseReshared;
     }
 
     @Override

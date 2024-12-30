@@ -1,0 +1,576 @@
+{
+  "session": {
+    "courtCentreWithLJA": {
+      "courtCentre": {
+        "address": {
+          "address1": "176A Lavender Hill",
+          "address2": "London",
+          "address3": "",
+          "address4": "",
+          "address5": "",
+          "postcode": "SW11 1JU"
+        },
+        "code": "B01LY00",
+        "courtHearingLocation": "B01LY01",
+        "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "lja": {
+          "ljaCode": "2577",
+          "ljaName": "South West London Magistrates' Court"
+        },
+        "name": "Lavender Hill Magistrates' Court",
+        "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "roomName": "Courtroom 01"
+      },
+      "courtHearingLocation": "B01LY01",
+      "psaCode": 2577
+    },
+    "id": "741301cf-090d-4b20-8ac4-c96c70574066",
+    "sessionDays": [
+      {
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2024-09-25T09:00:00.000Z"
+      }
+    ],
+    "sourceType": "CC"
+  },
+  "cases": [
+    {
+      "caseId": "8047b7f9-b75c-45d5-9b86-29e3712f98ee",
+      "defendants": [
+        {
+          "associatedPerson": [],
+          "attendanceDays": [
+            {
+              "attendanceType": "IN_PERSON",
+              "day": "2024-09-25"
+            }
+          ],
+          "defendantId": "f42c1694-f1a9-4015-9dfa-b08d777628b6",
+          "individualDefendant": {
+            "bailConditions": "",
+            "bailStatus": {
+              "code": "A",
+              "description": "Not applicable",
+              "id": "86009c70-759d-3308-8de4-194886ff9a77"
+            },
+            "person": {
+              "address": {
+                "address1": "56saon",
+                "address2": "56Police House",
+                "address3": "StreetDescription1",
+                "address4": "Locality1",
+                "address5": "Town2",
+                "postcode": "TW14 9XD"
+              },
+              "contact": {
+                "home": "0917894278022",
+                "mobile": "0917894278022",
+                "primaryEmail": "robert@gmail.com",
+                "secondaryEmail": "ormsby@gmail.com",
+                "work": "0917894278022"
+              },
+              "dateOfBirth": "1997-08-08",
+              "firstName": "Bert",
+              "gender": "MALE",
+              "lastName": "Nitzsche84",
+              "title": "MR"
+            },
+            "presentAtHearing": "Y"
+          },
+          "offences": [
+            {
+              "chargeDate": "2024-09-25",
+              "finalDisposal": "Y",
+              "id": "cfa749cf-257a-4829-bb24-0e6255d0f99d",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "FINAL",
+                  "cjsCode": "3501",
+                  "courtClerk": {
+                    "firstName": "Erica",
+                    "lastName": "Wilson",
+                    "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": false,
+                  "isDeleted": false,
+                  "isFinancialResult": false,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "b179e7ca-fc81-435f-9152-4eeba89f05b0",
+                  "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+                  "label": "No adjudication - dealt with for original offence",
+                  "lastSharedDateTime": "2024-09-25",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-25",
+                  "orderedHearingId": "741301cf-090d-4b20-8ac4-c96c70574066",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 36100,
+                  "resultText": "BRO - No adjudication - dealt with for original offence",
+                  "rollUpPrompts": false,
+                  "rootJudicialResultId": "b179e7ca-fc81-435f-9152-4eeba89f05b0",
+                  "rootJudicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": []
+                }
+              ],
+              "modeOfTrial": "",
+              "offenceCode": "MC80524",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 0,
+              "startDate": "2024-09-25",
+              "wording": ""
+            },
+            {
+              "arrestDate": "2023-06-13",
+              "chargeDate": "2023-06-13",
+              "endDate": "2023-04-12",
+              "finalDisposal": "Y",
+              "id": "39f8db32-7223-42a2-8347-29d87abc38b6",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "canBeSubjectOfBreach": true,
+                  "canBeSubjectOfVariation": false,
+                  "category": "FINAL",
+                  "cjsCode": "1018",
+                  "courtClerk": {
+                    "firstName": "Erica",
+                    "lastName": "Wilson",
+                    "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                  },
+                  "d20": false,
+                  "durationElement": {
+                    "primaryDurationUnit": "Y",
+                    "primaryDurationValue": 1
+                  },
+                  "dvlaCode": "E",
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": true,
+                  "isDeleted": false,
+                  "isFinancialResult": false,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "457f9773-69ec-4cd3-8251-ca893fdcb547",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "durationSequence": 1,
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                      "label": "Period of conditional discharge",
+                      "promptReference": "periodofConditionalDischarge",
+                      "promptSequence": 100,
+                      "type": "INT",
+                      "usergroups": [],
+                      "value": "1 Years",
+                      "welshLabel": "Cyfnod o ryddhad amodol",
+                      "welshValue": "1 Years"
+                    }
+                  ],
+                  "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                  "label": "Conditional discharge",
+                  "lastSharedDateTime": "2024-09-25",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-25",
+                  "orderedHearingId": "741301cf-090d-4b20-8ac4-c96c70574066",
+                  "policeSubjectLineTitle": "Final Sentence",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 73800,
+                  "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+                  "rollUpPrompts": true,
+                  "rootJudicialResultId": "457f9773-69ec-4cd3-8251-ca893fdcb547",
+                  "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Rhyddhad Amodol"
+                }
+              ],
+              "modeOfTrial": "Indictable",
+              "offenceCode": "TH68023",
+              "offenceDateCode": 4,
+              "offenceFacts": {
+                "alcoholReadingAmount": 500,
+                "alcoholReadingMethodCode": "A",
+                "alcoholReadingMethodDescription": "Blood",
+                "vehicleCode": "LARGE_GOODS_VEHICLE",
+                "vehicleRegistration": "TE4654"
+              },
+              "offenceSequenceNumber": 1,
+              "startDate": "2023-04-12",
+              "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+            }
+          ],
+          "prosecutorReference": "624193403892469800"
+        }
+      ],
+      "prosecutionAuthorityCode": "CAMPF",
+      "urn": "25SepVTC883"
+    }
+  ],
+  "jurisdictionType": "MAGISTRATES",
+  "hearingDay": "2024-09-25",
+  "courtApplications": [
+    {
+      "applicant": {
+        "id": "6c5a47dc-8cdf-418d-9dd6-d70dade49e71",
+        "notificationRequired": true,
+        "prosecutingAuthority": {
+          "address": {
+            "address1": "CTC Prosecutions Team",
+            "address2": "Stevenage Police Station",
+            "address3": "Lytton Way",
+            "address4": "Stevenage",
+            "address5": "Herts",
+            "postcode": "SG1 1HF"
+          },
+          "contact": {
+            "primaryEmail": "cpnotifications@bch.police.uk"
+          },
+          "majorCreditorCode": "PO35",
+          "name": "Cambridgeshire Police",
+          "prosecutionAuthorityCode": "CAMPF",
+          "prosecutionAuthorityId": "317c62c0-eaad-3ca8-b9cf-dea1dba9b5f8",
+          "prosecutionAuthorityOUCode": "0350000",
+          "welshName": "Heddlu Swydd Gaergrawnt"
+        },
+        "summonsRequired": false
+      },
+      "applicationReceivedDate": "2024-09-25",
+      "applicationReference": "25SepVTC883",
+      "applicationStatus": "UN_ALLOCATED",
+      "commissionerOfOath": false,
+      "courtApplicationCases": [
+        {
+          "caseStatus": "INACTIVE",
+          "isSJP": false,
+          "offences": [
+            {
+              "arrestDate": "2023-06-13",
+              "chargeDate": "2023-06-13",
+              "count": 0,
+              "endDate": "2023-04-12",
+              "endorsableFlag": false,
+              "id": "39f8db32-7223-42a2-8347-29d87abc38b6",
+              "isDisposed": true,
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "canBeSubjectOfBreach": true,
+                  "canBeSubjectOfVariation": false,
+                  "category": "FINAL",
+                  "cjsCode": "1018",
+                  "courtClerk": {
+                    "firstName": "Erica",
+                    "lastName": "Wilson",
+                    "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                  },
+                  "d20": false,
+                  "durationElement": {
+                    "primaryDurationUnit": "Y",
+                    "primaryDurationValue": 1
+                  },
+                  "dvlaCode": "E",
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": true,
+                  "isDeleted": false,
+                  "isFinancialResult": false,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "457f9773-69ec-4cd3-8251-ca893fdcb547",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "durationSequence": 1,
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                      "label": "Period of conditional discharge",
+                      "promptReference": "periodofConditionalDischarge",
+                      "promptSequence": 100,
+                      "type": "INT",
+                      "usergroups": [],
+                      "value": "1 Years",
+                      "welshLabel": "Cyfnod o ryddhad amodol",
+                      "welshValue": "1 Years"
+                    }
+                  ],
+                  "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                  "label": "Conditional discharge",
+                  "lastSharedDateTime": "2024-09-25",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-25",
+                  "orderedHearingId": "741301cf-090d-4b20-8ac4-c96c70574066",
+                  "policeSubjectLineTitle": "Final Sentence",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 73800,
+                  "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+                  "rollUpPrompts": true,
+                  "rootJudicialResultId": "457f9773-69ec-4cd3-8251-ca893fdcb547",
+                  "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Rhyddhad Amodol"
+                }
+              ],
+              "listingNumber": 1,
+              "maxPenalty": "Indictable only",
+              "modeOfTrial": "Indictable",
+              "offenceCode": "TH68023",
+              "offenceDateCode": 4,
+              "offenceDefinitionId": "6795cbe7-3e0f-3f6a-b59d-29a87a9d6f8d",
+              "offenceFacts": {
+                "alcoholReadingAmount": 500,
+                "alcoholReadingMethodCode": "A",
+                "alcoholReadingMethodDescription": "Blood",
+                "vehicleCode": "LARGE_GOODS_VEHICLE",
+                "vehicleRegistration": "TE4654"
+              },
+              "offenceLegislation": "Contrary to section 8(1) of the Theft Act 1968.",
+              "offenceLegislationWelsh": "Yn groes i adran 8(1) Deddf Dwyn 1968.",
+              "offenceTitle": "Robbery",
+              "offenceTitleWelsh": "Ysbeilio/Lladrad",
+              "orderIndex": 1,
+              "proceedingsConcluded": true,
+              "startDate": "2023-04-12",
+              "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+            }
+          ],
+          "prosecutionCaseId": "8047b7f9-b75c-45d5-9b86-29e3712f98ee",
+          "prosecutionCaseIdentifier": {
+            "address": {
+              "address1": "CTC Prosecutions Team",
+              "address2": "Stevenage Police Station",
+              "address3": "Lytton Way",
+              "address4": "Stevenage",
+              "address5": "Herts",
+              "postcode": "SG1 1HF"
+            },
+            "contact": {
+              "primaryEmail": "cpnotifications@bch.police.uk"
+            },
+            "majorCreditorCode": "PO35",
+            "prosecutionAuthorityCode": "CAMPF",
+            "prosecutionAuthorityId": "317c62c0-eaad-3ca8-b9cf-dea1dba9b5f8",
+            "prosecutionAuthorityName": "Cambridgeshire Police",
+            "prosecutionAuthorityOUCode": "0350000",
+            "caseURN": "25SepVTC883"
+          }
+        }
+      ],
+      "id": "cfa749cf-257a-4829-bb24-0e6255d0f99d",
+      "judicialResults": [
+        {
+          "alwaysPublished": false,
+          "canBeSubjectOfBreach": false,
+          "canBeSubjectOfVariation": false,
+          "category": "FINAL",
+          "cjsCode": "3501",
+          "courtClerk": {
+            "firstName": "Erica",
+            "lastName": "Wilson",
+            "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+          },
+          "d20": false,
+          "excludedFromResults": false,
+          "isAdjournmentResult": false,
+          "isAvailableForCourtExtract": true,
+          "isConvictedResult": false,
+          "isDeleted": false,
+          "isFinancialResult": false,
+          "isNewAmendment": true,
+          "isUnscheduled": false,
+          "judicialResultId": "b179e7ca-fc81-435f-9152-4eeba89f05b0",
+          "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+          "label": "No adjudication - dealt with for original offence",
+          "lastSharedDateTime": "2024-09-25",
+          "level": "O",
+          "lifeDuration": false,
+          "orderedDate": "2024-09-25",
+          "orderedHearingId": "741301cf-090d-4b20-8ac4-c96c70574066",
+          "postHearingCustodyStatus": "A",
+          "publishedAsAPrompt": false,
+          "publishedForNows": false,
+          "rank": 36100,
+          "resultText": "BRO - No adjudication - dealt with for original offence",
+          "rollUpPrompts": false,
+          "rootJudicialResultId": "b179e7ca-fc81-435f-9152-4eeba89f05b0",
+          "rootJudicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+          "terminatesOffenceProceedings": false,
+          "urgent": false,
+          "usergroups": []
+        }
+      ],
+      "respondents": [
+        {
+          "id": "9c7bf5ae-ef8c-4e5e-a1e5-f80b592b4a4f",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "8047b7f9-b75c-45d5-9b86-29e3712f98ee",
+                "caseReference": "25SepVTC883",
+                "defendantId": "f42c1694-f1a9-4015-9dfa-b08d777628b6"
+              }
+            ],
+            "masterDefendantId": "f42c1694-f1a9-4015-9dfa-b08d777628b6",
+            "personDefendant": {
+              "arrestSummonsNumber": "624193403892469800",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "ABCDE0,0010BCFAA",
+              "perceivedBirthYear": 1997,
+              "personDetails": {
+                "address": {
+                  "address1": "56saon",
+                  "address2": "56Police House",
+                  "address3": "StreetDescription1",
+                  "address4": "Locality1",
+                  "address5": "Town2",
+                  "postcode": "TW14 9XD"
+                },
+                "contact": {
+                  "home": "0917894278022",
+                  "mobile": "0917894278022",
+                  "primaryEmail": "robert@gmail.com",
+                  "secondaryEmail": "ormsby@gmail.com",
+                  "work": "0917894278022"
+                },
+                "dateOfBirth": "1997-08-08",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Bert",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "interpreterLanguageNeeds": "LanguageNeeds0",
+                "lastName": "Nitzsche84",
+                "occupation": "Occupation0Occupation0Occupation0Occupation0Occupation",
+                "occupationCode": "50345",
+                "title": "MR"
+              },
+              "policeBailConditions": "BailConditions0",
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        }
+      ],
+      "subject": {
+        "id": "9c7bf5ae-ef8c-4e5e-a1e5-f80b592b4a4f",
+        "masterDefendant": {
+          "defendantCase": [
+            {
+              "caseId": "8047b7f9-b75c-45d5-9b86-29e3712f98ee",
+              "caseReference": "25SepVTC883",
+              "defendantId": "f42c1694-f1a9-4015-9dfa-b08d777628b6"
+            }
+          ],
+          "masterDefendantId": "f42c1694-f1a9-4015-9dfa-b08d777628b6",
+          "personDefendant": {
+            "arrestSummonsNumber": "624193403892469800",
+            "bailConditions": "",
+            "bailStatus": {
+              "code": "A",
+              "description": "Not applicable",
+              "id": "86009c70-759d-3308-8de4-194886ff9a77"
+            },
+            "driverNumber": "ABCDE0,0010BCFAA",
+            "perceivedBirthYear": 1997,
+            "personDetails": {
+              "address": {
+                "address1": "56saon",
+                "address2": "56Police House",
+                "address3": "StreetDescription1",
+                "address4": "Locality1",
+                "address5": "Town2",
+                "postcode": "TW14 9XD"
+              },
+              "contact": {
+                "home": "0917894278022",
+                "mobile": "0917894278022",
+                "primaryEmail": "robert@gmail.com",
+                "secondaryEmail": "ormsby@gmail.com",
+                "work": "0917894278022"
+              },
+              "dateOfBirth": "1997-08-08",
+              "documentationLanguageNeeds": "ENGLISH",
+              "firstName": "Bert",
+              "gender": "MALE",
+              "hearingLanguageNeeds": "ENGLISH",
+              "interpreterLanguageNeeds": "LanguageNeeds0",
+              "lastName": "Nitzsche84",
+              "occupation": "Occupation0Occupation0Occupation0Occupation0Occupation",
+              "occupationCode": "50345",
+              "title": "MR"
+            },
+            "policeBailConditions": "BailConditions0",
+            "policeBailStatus": {
+              "code": "C",
+              "description": "Custody",
+              "id": "12e69486-4d01-3403-a50a-7419ca040635"
+            }
+          }
+        },
+        "notificationRequired": true,
+        "summonsRequired": false
+      },
+      "type": {
+        "appealFlag": false,
+        "applicantAppellantFlag": false,
+        "boxworkNotifTemplate": "NOT_APPLICABLE",
+        "breachType": "NOT_APPLICABLE",
+        "categoryCode": "CO",
+        "code": "MC80524",
+        "commrOfOathFlag": false,
+        "contestedFeeApplicable": false,
+        "courtExtractAvlFlag": true,
+        "courtOfAppealFlag": false,
+        "exParte": false,
+        "hearingCode": "APN",
+        "id": "44c238d9-3bc2-3cf3-a2eb-a7d1437b8383",
+        "initialFeeApplicable": false,
+        "jurisdiction": "MAGISTRATES",
+        "lastModified": "2022-03-15T15:16:53.761Z",
+        "legislation": "In accordance with section 142 of the Magistrates' Courts Act 1980.",
+        "legislationWelsh": "Yn unol ag adran 142 Deddf Llysoedd Ynadon 1980.",
+        "linkType": "SJP",
+        "listingNotifTemplate": "POSTAL_NOTIFICATION",
+        "offenceActiveOrder": "OFFENCE",
+        "pleaApplicableFlag": false,
+        "prosecutorThirdPartyFlag": true,
+        "spiOutApplicableFlag": true,
+        "summonsTemplateType": "NOT_APPLICABLE",
+        "type": "Application to reopen case",
+        "typeWelsh": "Cais i ailagor achos"
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Stream.builder;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.CaseAddedEvent.caseAddedEvent;
 import static uk.gov.justice.core.courts.CourtCentre.courtCentre;
@@ -27,6 +28,7 @@ import static uk.gov.moj.cpp.domains.results.structure.CorporateDefendant.corpor
 import static uk.gov.moj.cpp.domains.results.structure.Offence.offence;
 import static uk.gov.moj.cpp.domains.results.structure.Person.person;
 import static uk.gov.moj.cpp.domains.results.structure.Result.result;
+import static uk.gov.moj.cpp.results.domain.aggregate.ResultReshareHelper.hasResults;
 
 import com.google.common.base.Functions;
 import org.apache.commons.collections.map.HashedMap;
@@ -81,12 +83,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.json.JsonObject;
-
 import org.slf4j.Logger;
 
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class ResultsAggregate implements Aggregate {
-    private static final Logger LOGGER = getLogger(ResultsAggregate.class);
 
     public static final String AMEND_RESHARE = "Amend & Reshare";
     private static final String CASE_ID = "caseId";
@@ -98,10 +98,7 @@ public class ResultsAggregate implements Aggregate {
     private UUID id;
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
-    private boolean isEligibleForNotification = false;
     private List<CaseDefendant> defendants = new ArrayList<>();
-    private boolean isResultAmendedReshared = false;
-
 
     private YouthCourt youthCourt;
     private List<UUID> youthCourtDefendantIds;
@@ -117,7 +114,6 @@ public class ResultsAggregate implements Aggregate {
                 when(CaseAddedEvent.class).apply(this::storeCaseAddedEvent),
                 when(DefendantAddedEvent.class).apply(this::storeDefendantAddedEvent),
                 when(DefendantUpdatedEvent.class).apply(this::storeDefendantUpdatedEvent),
-                when(HearingResultsAdded.class).apply(this::handleHearingResultsAdded),
                 when(HearingResultsAddedForDay.class).apply(this::handleHearingResultsAddedForDay),
                 when(HearingResultsAdded.class).apply(this::handleHearingResultsAdded),
                 otherwiseDoNothing());
@@ -175,7 +171,12 @@ public class ResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> saveHearingResultsForDay(final PublicHearingResulted payload, final LocalDate hearingDay) {
-        return apply(Stream.of(new HearingResultsAddedForDay(payload.getHearing(), hearingDay, payload.getSharedTime())));
+        Boolean isReshare = Boolean.FALSE;
+        final Optional<Boolean> isReshareFromPayload = payload.getIsReshare();
+        if (nonNull(isReshareFromPayload) && isReshareFromPayload.isPresent()) {
+            isReshare = isReshareFromPayload.get();
+        }
+        return apply(Stream.of(new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime())));
     }
 
     public Stream<Object> ejectCaseOrApplication(final UUID hearingId, final JsonObject payload) {
@@ -384,7 +385,7 @@ public class ResultsAggregate implements Aggregate {
     public Stream<Object> handleCase(final CaseDetails caseFromRequest) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOption = this.cases.stream().filter(c -> caseFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        if (!aCaseAggregateOption.isPresent()) {
+        if (aCaseAggregateOption.isEmpty()) {
             builder.add(caseAddedEvent()
                     .withCaseId(caseFromRequest.getCaseId())
                     .withUrn(caseFromRequest.getUrn())
@@ -403,55 +404,63 @@ public class ResultsAggregate implements Aggregate {
     }
 
     @SuppressWarnings("java:S107")
-    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre) {
+    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre, final Optional<Boolean> isReshare) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre));
+        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre,isReshare));
         return apply(builder.build());
     }
 
+    @SuppressWarnings("java:S3776")
     private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate,
                                          final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress,
-                                         final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre) {
+                                         final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre,
+                                         final Optional<Boolean> isReshare) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
-        final String hearingDate = hearingDay.map(LocalDate::toString).orElse("");
+        final String hearingDate = hearingDay.map(LocalDate::toString).orElse(EMPTY);
         final String caseId = caseDetailsFromRequest.getCaseId().toString();
-        isEligibleForNotification = false;
+        final CaseResultDetails caseResultDetails = caseResultAmendmentDetailsList.get(caseDetailsFromRequest.getCaseId());
+
         defendants = new ArrayList<>();
-        isResultAmendedReshared = false;
+        final boolean isResultReshared = nonNull(caseResultDetails) ? caseResultDetails.isThisCaseReshared(): isReshare.orElse(false);
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
-            if (!defendantOptional.isPresent()) {
-                buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay);
+            if (defendantOptional.isEmpty()) {
+                buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay, isResultReshared);
             } else {
-                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, defendantOptional.get(), sendSpiOut, jurisdictionType, hearingDay);
+                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, isResultReshared);
             }
         }
 
-        if (isEligibleForNotification && isEligibleForEmailNotification(jurisdictionType, isPoliceProsecutor, isResultAmendedReshared)) {
-            if (nonNull(prosecutorEmailAddress) && !("").equals(prosecutorEmailAddress)) {
-                final CaseResultDetails caseResultDetails = caseResultAmendmentDetailsList.get(caseDetailsFromRequest.getCaseId());
+        if (isEligibleForEmailNotification(jurisdictionType, isPoliceProsecutor, isResultReshared, sendSpiOut)) {
+            if (nonNull(prosecutorEmailAddress) && !(EMPTY).equalsIgnoreCase(prosecutorEmailAddress)) {
 
-                builder.add(PoliceNotificationRequestedV2.policeNotificationRequestedV2()
-                        .withNotificationId(randomUUID())
-                        .withCaseDefendants(defendants)
-                        .withAmendReshare(isResultAmendedReshared ? AMEND_RESHARE : "")
-                        .withPoliceEmailAddress(prosecutorEmailAddress)
-                        .withDateOfHearing(hearingDate)
-                        .withApplicationTypeForCase(applicationTypeForCase)
-                        .withUrn(caseDetailsFromRequest.getUrn())
-                        .withCaseId(caseId)
-                        .withCourtCentre(courtCentre)
-                        .withCaseResultDetails(CaseResultDetailsConverter.convert(caseResultDetails))
-                        .build());
+                final uk.gov.moj.cpp.results.domain.event.CaseResultDetails caseResultDetailsForEmail = CaseResultDetailsConverter.convert(caseResultDetails);
+
+                if (hasResults(caseResultDetailsForEmail)) {
+                    builder.add(PoliceNotificationRequestedV2.policeNotificationRequestedV2()
+                            .withNotificationId(randomUUID())
+                            .withCaseDefendants(defendants)
+                            .withAmendReshare(isResultReshared ? AMEND_RESHARE : EMPTY)
+                            .withPoliceEmailAddress(prosecutorEmailAddress)
+                            .withDateOfHearing(hearingDate)
+                            .withApplicationTypeForCase(applicationTypeForCase)
+                            .withUrn(caseDetailsFromRequest.getUrn())
+                            .withCaseId(caseId)
+                            .withCourtCentre(courtCentre)
+                            .withCaseResultDetails(caseResultDetailsForEmail)
+                            .build());
+                }
             } else {
                 builder.add(EmailNotificationFailed.emailNotificationFailed().withUrn(caseDetailsFromRequest.getUrn()).withErrorMessage(INVALID_EMAIL_ID).build());
             }
         }
     }
 
-    private boolean isEligibleForEmailNotification(final Optional<JurisdictionType> jurisdictionType, final boolean isProsecutorPolice, final boolean isResultAmendedReshared) {
-        if (!isProsecutorPolice) {
+
+
+    private boolean isEligibleForEmailNotification(final Optional<JurisdictionType> jurisdictionType, final boolean isProsecutorPolice, final boolean isResultAmendedReshared, final boolean sendSpiOut) {
+        if (!isProsecutorPolice || !sendSpiOut) {
             return false;
         }
 
@@ -467,16 +476,14 @@ public class ResultsAggregate implements Aggregate {
     }
 
     @SuppressWarnings({"squid:CommentedOutCodeLine"})
-    private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay) {
+    private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest,
+                                     final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay, final boolean isResultReshared) {
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {
-
-                isEligibleForNotification = true;
                 defendants.add(defendantFromRequest);
-
-                if (!isCrownCourt(jurisdictionType) && !isResultAmendedReshared) {
+                if (!isCrownCourt(jurisdictionType) && !isResultReshared) {
                     builder.add(
                             buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
                     );
@@ -490,30 +497,10 @@ public class ResultsAggregate implements Aggregate {
     private void updateDefendant(final CaseDetails casesDetailsFromRequest,
                                  final Stream.Builder<Object> builder,
                                  final CaseDefendant defendantFromRequest,
-                                 final Defendant defendantFromAggregate,
-                                 final boolean sendSpiOut,
-                                 final Optional<JurisdictionType> jurisdictionType,
-                                 final Optional<LocalDate> hearingDay) {
-        final List<OffenceDetails> anyNonMatchingOffenceList = defendantFromRequest.getOffences().stream()
-                .filter(dfr -> defendantFromAggregate.getOffences().stream().noneMatch(dfa -> dfr.getId().equals(dfa.getId())))
-                .collect(toList());
-
-        if (!anyNonMatchingOffenceList.isEmpty() || checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences())) {
+                                 final boolean isResultReshared) {
+        if (isResultReshared) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
-            final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
-            if (sendSpiOut) {
-
-                isEligibleForNotification = true;
-                defendants.add(defendantFromRequest);
-                isResultAmendedReshared = checkJudicialResultsUpdated(defendantFromRequest.getOffences(), defendantFromAggregate.getOffences());
-                if (!isCrownCourt(jurisdictionType) && isResultPresent(defendantFromRequest) && !isResultAmendedReshared) {
-                    builder.add(
-                            buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
-                    );
-                }
-            } else {
-                LOGGER.info("spiOutFlag false, police results will not be sent");
-            }
+            defendants.add(defendantFromRequest);
         }
     }
 
@@ -571,40 +558,6 @@ public class ResultsAggregate implements Aggregate {
                 .withUrn(caseUrn)
                 .withDefendant(defendant)
                 .build();
-    }
-
-    private boolean checkJudicialResultsUpdated(final List<OffenceDetails> offenceFromRequestList, final List<Offence> aggregateOffences) {
-        for (final OffenceDetails offenceFromRequest : offenceFromRequestList) {
-            final Optional<Offence> aggregateOffence = aggregateOffences.stream().filter(oa -> oa.getId().equals(offenceFromRequest.getId())).findFirst();
-            if (aggregateOffence.isPresent() && findResultAmended(offenceFromRequest, aggregateOffence.get().getResultDetails())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @SuppressWarnings({"squid:S1067", "squid:S2259"})
-    private boolean findResultAmended(final OffenceDetails offenceFromRequest, final List<Result> resultDetails) {
-        if (isNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())) {
-            return false;
-        }
-        if (isNotNullOrEmpty(resultDetails) && isNullOrEmpty(offenceFromRequest.getJudicialResults())) {
-            return true;
-        }
-
-        return (isNullOrEmpty(resultDetails) && isNotNullOrEmpty(offenceFromRequest.getJudicialResults()))
-                || offenceFromRequest.getJudicialResults().size() > resultDetails.size()
-                || offenceFromRequest.getJudicialResults().stream().anyMatch(r ->
-                resultDetails.stream().filter(s -> s.getResultId() != null)
-                        .anyMatch(s -> s.getResultId().equals(r.getJudicialResultId())
-                                && ((null == s.getAmendmentDate() && null != r.getAmendmentDate())
-                                || (null != s.getAmendmentDate() && null != r.getAmendmentDate() && r.getAmendmentDate().isAfter(s.getAmendmentDate())) || (r.getIsNewAmendment() != null && r.getIsNewAmendment()))))
-                || !resultDetails
-                .stream()
-                .map(Result::getResultId)
-                .collect(toList())
-                .containsAll(offenceFromRequest.getJudicialResults().stream().map(JudicialResult::getJudicialResultId).collect(toList()))
-                || (offenceFromRequest.getJudicialResults().size() < resultDetails.size());
     }
 
     private boolean isResultPresent(final CaseDefendant defendantFromRequest) {

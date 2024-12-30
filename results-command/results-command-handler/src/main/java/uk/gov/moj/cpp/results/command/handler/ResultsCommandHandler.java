@@ -173,6 +173,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
         final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications"))
                 .orElse(Collections.emptyList());
+        final Optional<Boolean> isReshare = payload.containsKey("isReshare") ? Optional.of(payload.getBoolean("isReshare")) : Optional.empty();
 
 
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
@@ -227,17 +228,24 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
                 final String applicationTypeForCase = getApplicationTypeForCase(caseDetails.getCaseId(), courtApplicationList);
                 aggregate(ResultsAggregate.class, fromString(id),
-                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase, courtCentre.getCourtCentre().getName()));
+                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase, courtCentre.getCourtCentre().getName(), isReshare));
             }
         }
     }
 
 
     private String getApplicationTypeForCase(UUID caseId, List<CourtApplication> courtApplications) {
-        final List<CourtApplication> courtApplicationList = courtApplications.stream()
+        final List<CourtApplication> courtApplicationList = new ArrayList<>();
+
+        courtApplications.stream()
                 .filter(courtApplication -> courtApplication.getCourtApplicationCases() != null)
                 .filter(courtApplication -> courtApplication.getCourtApplicationCases().stream()
-                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId))).collect(toList());
+                        .anyMatch(courtApplicationCase -> courtApplicationCase.getProsecutionCaseId().equals(caseId)))
+                .forEach(courtApplicationList::add);
+
+        courtApplications.stream()
+                .filter(courtApplication -> nonNull(courtApplication.getCourtOrder()) &&  nonNull(courtApplication.getCourtOrder().getCourtOrderOffences()))
+                .forEach(courtApplicationList::add);
 
         return courtApplicationList.stream()
                 .map(courtApplication -> courtApplication.getType() != null ? courtApplication.getType().getType() : "")

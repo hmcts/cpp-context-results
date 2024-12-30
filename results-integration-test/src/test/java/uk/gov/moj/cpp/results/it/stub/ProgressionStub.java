@@ -5,7 +5,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static java.nio.charset.Charset.defaultCharset;
 import static java.text.MessageFormat.format;
+import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.SC_OK;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
@@ -13,9 +15,12 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.waitForStubToBeR
 
 import uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils;
 
+import java.util.Map;
 import java.util.UUID;
 
 import javax.json.Json;
+
+import org.apache.commons.io.IOUtils;
 
 public class ProgressionStub {
 
@@ -42,6 +47,46 @@ public class ProgressionStub {
         waitForStubToBeReady(stringUrl, PROGRESSION_PROSECUTION_CASE_MEDIA_TYPE);
     }
 
+    public static void stubGetProgressionProsecutionCasesFromPayload(final String filepath, final UUID caseId, final String urn, final UUID hearingId, final UUID applicationId) {
+        InternalEndpointMockUtils.stubPingFor(PROGRESSION_SERVICE_NAME);
+
+        final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_QUERY_URL, caseId);
+        final String payload = getPayload(filepath)
+                .replaceAll("HEARING_ID", hearingId.toString())
+                .replaceAll("CASE_ID", caseId.toString())
+                .replaceAll("CASE_URN", urn);
+        if (nonNull(applicationId)) {
+            payload.replaceAll("APPLICATION_ID", applicationId.toString());
+        }
+        stubFor(get(urlPathEqualTo(stringUrl))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader("CPPID", randomUUID().toString())
+                        .withHeader("Content-Type", PROGRESSION_PROSECUTION_CASE_MEDIA_TYPE)
+                        .withBody(payload)));
+
+        waitForStubToBeReady(stringUrl, PROGRESSION_PROSECUTION_CASE_MEDIA_TYPE);
+    }
+
+    public static void stubGetProgressionProsecutionCase_WhichHasLikedCases_AndHearings(final String filepath, final Map<String,String> caseIdMap, final Map<String,String> urnMap, final Map<String,String> hearingIdMap, final Map<String,String> applicationIdMap) {
+        InternalEndpointMockUtils.stubPingFor(PROGRESSION_SERVICE_NAME);
+
+        final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_QUERY_URL, caseIdMap.get("MAIN_CASE_ID"));
+        String payload = getPayload(filepath);
+        payload = updateKeyValueInString(caseIdMap,payload);
+        payload = updateKeyValueInString(urnMap,payload);
+        payload = updateKeyValueInString(applicationIdMap,payload);
+        payload = updateKeyValueInString(hearingIdMap,payload);
+        stubFor(get(urlPathEqualTo(stringUrl))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader("CPPID", randomUUID().toString())
+                        .withHeader("Content-Type", PROGRESSION_PROSECUTION_CASE_MEDIA_TYPE)
+                        .withBody(payload)));
+
+        waitForStubToBeReady(stringUrl, PROGRESSION_PROSECUTION_CASE_MEDIA_TYPE);
+    }
+
     public static void stubGetProgressionCaseExistsByUrn(final String caseUrn, final UUID caseId) {
         InternalEndpointMockUtils.stubPingFor(PROGRESSION_SERVICE_NAME);
 
@@ -58,5 +103,14 @@ public class ProgressionStub {
                         .withBody(payload)));
 
         waitForStubToBeReady(stringUrl+"?caseUrn="+caseUrn, PROGRESSION_PROSECUTION_CASE_URN_MEDIA_TYPE);
+    }
+
+    public static String updateKeyValueInString(final Map<String, String> keyValueMap, String payload) {
+        if (nonNull(keyValueMap)) {
+            for (Map.Entry entry : keyValueMap.entrySet()) {
+                payload = payload.replaceAll(entry.getKey().toString(), entry.getValue().toString());
+            }
+        }
+        return payload;
     }
 }

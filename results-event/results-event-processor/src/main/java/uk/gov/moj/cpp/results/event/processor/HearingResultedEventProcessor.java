@@ -43,6 +43,7 @@ public class HearingResultedEventProcessor {
     private static final String CACHE_KEY_EXTERNAL_PREFIX = "EXT_";
     private static final String CACHE_KEY_INTERNAL_PREFIX = "INT_";
     private static final String SHARED_TIME = "sharedTime";
+    private static final String IS_RESHARE = "isReshare";
     private static final String HEARING_DAY = "hearingDay";
     private static final String SHADOW_LISTED_OFFENCES = "shadowListedOffences";
     private static final String HEARING_POLICE_CASE_PROSECUTORS = "policeCases";
@@ -121,6 +122,7 @@ public class HearingResultedEventProcessor {
         final JsonObjectBuilder commandPayloadBuilder = createObjectBuilder()
                 .add(HEARING, incomingHearing)
                 .add(SHARED_TIME, sharedTime)
+                .add(IS_RESHARE, hearingPayload.getBoolean(IS_RESHARE))
                 .add(HEARING_DAY, hearingDay);
 
         if (hearingPayload.containsKey(SHADOW_LISTED_OFFENCES)) {

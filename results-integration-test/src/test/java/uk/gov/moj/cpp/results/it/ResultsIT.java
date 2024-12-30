@@ -33,7 +33,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPriva
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForPoliceGenerateResultsForDefendant;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsForRejected;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationFailed;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequested;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceNotificationRequestedV2;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResultsAreCreatedBySystemAdmin;
@@ -78,6 +78,7 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.AmendmentType;
 import uk.gov.moj.cpp.results.domain.event.JudicialResultDetails;
 import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
+import uk.gov.moj.cpp.results.it.stub.NotificationServiceStub;
 import uk.gov.moj.cpp.results.it.utils.Queries;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
@@ -111,6 +112,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607", "java:S2699"})
@@ -139,6 +141,7 @@ public class ResultsIT {
         stubJudicialResults();
         stubBailStatuses();
         stubModeOfTrialReasons();
+        NotificationServiceStub.setUp();
     }
 
     @AfterEach
@@ -254,7 +257,7 @@ public class ResultsIT {
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceNotificationRequested(EMAIL);
+        verifyPrivateEventsWithPoliceNotificationRequestedV2(EMAIL);
     }
 
     @Test
@@ -602,6 +605,21 @@ public class ResultsIT {
         return reader.readObject();
     }
 
+    private static JsonObject getPayload(final String path, final UUID hearingId, final UUID caseId) {
+        String request = null;
+        try {
+            final InputStream inputStream = ResultsIT.class.getClassLoader().getResourceAsStream(path);
+            assertThat(inputStream, IsNull.notNullValue());
+            request = IOUtils.toString(inputStream, defaultCharset())
+                    .replace("HEARING_ID", hearingId.toString())
+                    .replace("CASE_ID", caseId.toString());
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = createReader(new StringReader(request));
+        return reader.readObject();
+    }
+
 
     @Test
     public void shouldBeSentToSpiOutForApplicationWithNoJudicialResults() throws JMSException {
@@ -710,7 +728,7 @@ public class ResultsIT {
     public void shouldSentSpiOutForApplicationWithCourtOrderOnly() throws JMSException {
         final UUID caseId = randomUUID();
         final String caseUrn = "32DN1212262";
-        final JsonObject payload = getPayload("json/public.hearing-resulted-court-order.json", randomUUID());
+        final JsonObject payload = getPayload("json/public.hearing-resulted-court-order.json", randomUUID(), caseId);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
 
         stubGetProgressionProsecutionCases(caseId);
@@ -726,11 +744,11 @@ public class ResultsIT {
 
         Optional<String> response = verifyInPublicTopic();
         JSONObject jsonObject = new JSONObject(response.get());
-        if(!jsonObject.getString("caseId").equalsIgnoreCase("4d7fd02d-2297-4249-a7c6-d1d7bd567d58")) {
+        if(!jsonObject.getString("caseId").equalsIgnoreCase(caseId.toString())) {
             response = verifyInPublicTopic();
             jsonObject = new JSONObject(response.get());
         }
-        assertThat(jsonObject.getString("caseId"), is("4d7fd02d-2297-4249-a7c6-d1d7bd567d58"));
+        assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
         assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").length(), is(2));
         assertThat(jsonObject.getJSONObject("defendant").getJSONArray("offences").getJSONObject(0).getString("id"), is("b729153d-50e3-4ce4-811c-f16799043d4f"));
     }

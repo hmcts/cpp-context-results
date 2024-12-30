@@ -1,0 +1,612 @@
+{
+  "amendReshare": "Amend & Reshare",
+  "applicationTypeForCase": "Application to reopen case",
+  "caseDefendants": [
+    {
+      "associatedPerson": [],
+      "attendanceDays": [
+        {
+          "attendanceType": "NOT_PRESENT",
+          "day": "2024-09-24"
+        }
+      ],
+      "defendantId": "2b0562a2-0417-4457-9d5c-3b5a77c7229a",
+      "individualDefendant": {
+        "bailConditions": "",
+        "bailStatus": {
+          "code": "A",
+          "description": "Not applicable",
+          "id": "86009c70-759d-3308-8de4-194886ff9a77"
+        },
+        "person": {
+          "address": {
+            "address1": "9999A9999AAAA",
+            "address2": "Woodlane",
+            "address3": "addressline 3",
+            "address4": "Bristol",
+            "address5": "Avon"
+          },
+          "contact": {
+            "home": "0208824246",
+            "mobile": "07778824246",
+            "primaryEmail": "REDDY.TEST018824246@gmail.com"
+          },
+          "dateOfBirth": "1989-12-23",
+          "firstName": "Azhar",
+          "gender": "MALE",
+          "lastName": "Mah",
+          "title": "Mr"
+        },
+        "presentAtHearing": "N"
+      },
+      "offences": [
+        {
+          "chargeDate": "2024-09-24",
+          "finalDisposal": "Y",
+          "id": "d1991fd6-effb-46c7-9f47-565d579f3549",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "4584",
+              "courtClerk": {
+                "firstName": "Evan",
+                "lastName": "Roberts",
+                "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "e3d220f4-bbe3-4729-82ee-ac875cc12809",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "3872ea68-92d9-469f-9929-c676745982ef",
+                  "label": "Re-opened under",
+                  "promptReference": "reopenedUnder",
+                  "promptSequence": 50,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "Section 142 Magistrates' Courts Act 1980",
+                  "welshValue": "Section 142 Magistrates' Courts Act 1980"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "beb6bcb8-544c-4b83-943f-167d391e3ebd",
+                  "label": "Sentence imposed on the specified date is set aside",
+                  "promptReference": "sentenceImposedOnTheSpecifiedDateIsSetAside",
+                  "promptSequence": 200,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "24/12/2024",
+                  "welshValue": "24/12/2024"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                  "label": "Prosecutor to be notified organisation name",
+                  "promptReference": "prosecutortobenotifiedOrganisationName",
+                  "promptSequence": 500,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [
+                    "CPS",
+                    "Defence",
+                    "Judiciary",
+                    "NCES",
+                    "Probation",
+                    "Prosecuting Authorities",
+                    "YOTs"
+                  ],
+                  "value": "xasdvbdf",
+                  "welshValue": "xasdvbdf"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                  "label": "Prosecutor to be notified address line 1",
+                  "promptReference": "prosecutortobenotifiedAddress1",
+                  "promptSequence": 500,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [
+                    "CPS",
+                    "Defence",
+                    "Judiciary",
+                    "NCES",
+                    "Probation",
+                    "Prosecuting Authorities",
+                    "YOTs"
+                  ],
+                  "value": "xasvc",
+                  "welshValue": "xasvc"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                  "label": "Prosecutor to be notified post code",
+                  "promptReference": "prosecutortobenotifiedPostCode",
+                  "promptSequence": 500,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [
+                    "CPS",
+                    "Defence",
+                    "Judiciary",
+                    "NCES",
+                    "Probation",
+                    "Prosecuting Authorities",
+                    "YOTs"
+                  ],
+                  "value": "SG1 2LT",
+                  "welshValue": "SG1 2LT"
+                }
+              ],
+              "judicialResultTypeId": "e3fb46ee-e406-4f73-9bf1-71d513da8cc7",
+              "label": "Case reopened",
+              "lastSharedDateTime": "2024-09-24",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-24",
+              "orderedHearingId": "cb6d0c50-38f1-4262-a76d-475011ef75d0",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 159500,
+              "resultText": "ROPENED - Case reopened\nCase reopened Section 142 Magistrates' Courts Act 1980. Sentence imposed on 24/12/2024 set aside. ",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "e3d220f4-bbe3-4729-82ee-ac875cc12809",
+              "rootJudicialResultTypeId": "e3fb46ee-e406-4f73-9bf1-71d513da8cc7",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": []
+            }
+          ],
+          "modeOfTrial": "",
+          "offenceCode": "MC80524",
+          "offenceDateCode": 1,
+          "offenceSequenceNumber": 0,
+          "startDate": "2024-09-24",
+          "wording": ""
+        },
+        {
+          "arrestDate": "2022-10-28",
+          "chargeDate": "2022-10-28",
+          "finalDisposal": "Y",
+          "id": "931ff89b-2caa-4b1f-b823-8c196aaec810",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": true,
+              "canBeSubjectOfVariation": true,
+              "category": "FINAL",
+              "cjsCode": "1116",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "durationElement": {
+                "durationEndDate": "24/12/2024"
+              },
+              "dvlaCode": "M",
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "8ed09cb7-af23-410e-ba20-020147a07fa6",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isDurationEndDate": true,
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "d6caa3c4-ec9d-41ec-8f86-2c617ef0d5d9",
+                  "label": "End Date",
+                  "promptReference": "endDate",
+                  "promptSequence": 100,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "24/12/2024",
+                  "welshLabel": "Dyddiad terfyn",
+                  "welshValue": "24/12/2024"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "29f5b3c7-8d15-4606-9dcf-23f32a21b5ef",
+                  "label": "Responsible officer",
+                  "promptReference": "responsibleOfficer",
+                  "promptSequence": 200,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "a member of the youth offending team",
+                  "welshLabel": "Swyddog cyfrifol",
+                  "welshValue": "aelod o'r tîm troseddwyr ifanc"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "f4a4f159-779e-4f35-822a-b559a2415ecb",
+                  "label": "Supervising Court",
+                  "promptReference": "supervisingCourt",
+                  "promptSequence": 300,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "Aberdeen JP Court",
+                  "welshLabel": "Llys sy’n Goruchwylio",
+                  "welshValue": "Aberdeen JP Court"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                  "label": "Probation team to be notified organisation name",
+                  "promptReference": "probationteamtobenotifiedOrganisationName",
+                  "promptSequence": 700,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [],
+                  "value": "London Division NPS",
+                  "welshValue": "London Division NPS"
+                },
+                {
+                  "courtExtract": "N",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                  "label": "Probation team to be notified email address 1",
+                  "promptReference": "probationteamtobenotifiedEmailAddress1",
+                  "promptSequence": 700,
+                  "type": "NAMEADDRESS",
+                  "usergroups": [],
+                  "value": "londonnps.court@justice.gov.uk",
+                  "welshValue": "londonnps.court@justice.gov.uk"
+                }
+              ],
+              "judicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+              "label": "Community order England / Wales",
+              "lastSharedDateTime": "2024-09-24",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-24",
+              "orderedHearingId": "cb6d0c50-38f1-4262-a76d-475011ef75d0",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 64000,
+              "resultText": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 24/12/2024. ",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "8ed09cb7-af23-410e-ba20-020147a07fa6",
+              "rootJudicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": []
+            },
+            {
+              "alwaysPublished": true,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "ANCILLARY",
+              "cjsCode": "3108",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "3cd3e8cd-3e5e-4e6e-b8f7-58e73d83036a",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "a31e61d6-f5bc-4327-821a-ff1f9fc5050d",
+                  "label": "Medical practitioner / Psychologist",
+                  "promptReference": "medicalPractitionerPsychologist",
+                  "promptSequence": 100,
+                  "type": "TXT",
+                  "usergroups": [],
+                  "value": "dsdfb",
+                  "welshLabel": "Ymarferydd meddygol / Seicolegydd",
+                  "welshValue": "dsdfb"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "fb580537-9d36-4139-811b-77af09547b0d",
+                  "label": "Care home / Hospital",
+                  "promptReference": "careHomeHospital",
+                  "promptSequence": 200,
+                  "type": "TXT",
+                  "usergroups": [],
+                  "value": "zxvsdf",
+                  "welshLabel": "Cartref gofal / Ysbyty",
+                  "welshValue": "zxvsdf"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "5e636c8d-c742-4cd4-a873-5d002ef36f5d",
+                  "label": "Period of treatment",
+                  "promptReference": "periodOfTreatment",
+                  "promptSequence": 300,
+                  "type": "INT",
+                  "usergroups": [],
+                  "value": "5 Days",
+                  "welshLabel": "Cyfnod y driniaeth",
+                  "welshValue": "5 Days"
+                }
+              ],
+              "judicialResultTypeId": "5473390c-dbe2-4026-a95f-8bb99d2e011d",
+              "label": "Mental health treatment non-residential patient",
+              "lastSharedDateTime": "2024-09-24",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-24",
+              "orderedHearingId": "cb6d0c50-38f1-4262-a76d-475011ef75d0",
+              "parentJudicialResultId": "3bbb575a-0b40-41f9-96bd-4d196fd1fafb",
+              "parentJudicialResultTypeId": "b2dab2b7-3edd-4223-b1be-3819173ec54d",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "qualifier": "HF",
+              "rank": 65500,
+              "resultDefinitionGroup": "Community Requirement",
+              "resultText": "MHTRNR - Mental health treatment non-residential patient\nMental Health Treatment Requirement: Have mental health treatment by or under the direction of dsdfb at zxvsdf as a non-resident patient for 5 Days.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "8ed09cb7-af23-410e-ba20-020147a07fa6",
+              "rootJudicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Triniaeth iechyd meddwl fel claf dibreswyl"
+            },
+            {
+              "alwaysPublished": true,
+              "amendmentDate": "2024-09-24",
+              "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+              "amendmentReasonId": "a02018a1-915c-3343-95ad-abc5f99b339a",
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "ANCILLARY",
+              "cjsCode": "3117",
+              "courtClerk": {
+                "firstName": "Evan",
+                "lastName": "Roberts",
+                "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": true,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "d74da31c-5d47-4995-af9f-aa3ff1913372",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": true,
+                  "judicialResultPromptTypeId": "629a971e-9d7a-4526-838d-0a4cb922b5cb",
+                  "label": "Amount of surcharge",
+                  "promptReference": "AOS",
+                  "promptSequence": 100,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£250.00",
+                  "welshLabel": "Swm y gordal",
+                  "welshValue": "£250.00"
+                }
+              ],
+              "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+              "label": "Surcharge",
+              "lastSharedDateTime": "2024-09-24",
+              "level": "D",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-24",
+              "orderedHearingId": "cb6d0c50-38f1-4262-a76d-475011ef75d0",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 1100,
+              "resultDefinitionGroup": "Imposition",
+              "resultText": "FVS - Surcharge\nTo pay a surcharge of £250.00",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "d74da31c-5d47-4995-af9f-aa3ff1913372",
+              "rootJudicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Gordal"
+            },
+            {
+              "alwaysPublished": true,
+              "amendmentDate": "2024-09-24",
+              "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+              "amendmentReasonId": "a02018a1-915c-3343-95ad-abc5f99b339a",
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "courtClerk": {
+                "firstName": "Evan",
+                "lastName": "Roberts",
+                "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "e5a13e68-0950-422c-af07-14291a129538",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "8e235a65-5ea2-4fff-ba3b-6cdb74195436",
+                  "label": "Lump sum amount",
+                  "promptReference": "LSA",
+                  "promptSequence": 100,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£250.00",
+                  "welshLabel": "Swm y Cyfandaliad",
+                  "welshValue": "£250.00"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "1393acda-7a35-4d65-859d-6298e1470cf1",
+                  "label": "Instalment amount",
+                  "promptReference": "IAMT",
+                  "promptSequence": 200,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£50.00",
+                  "welshLabel": "Swm y Rhandaliad",
+                  "welshValue": "£50.00"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "fb4f761c-29d0-4a8e-a947-3debf281dab0",
+                  "label": "Payment frequency following lump sum",
+                  "promptReference": "PF",
+                  "promptSequence": 300,
+                  "type": "FIXL",
+                  "usergroups": [],
+                  "value": "fortnightly",
+                  "welshLabel": "Amlder y taliadau yn dilyn y cyfandaliad",
+                  "welshValue": "pob pythefnos"
+                },
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "b487696e-dfc9-4c89-80d3-337a4319e925",
+                  "label": "Instalment start date",
+                  "promptReference": "instalmentStartDate",
+                  "promptSequence": 400,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "24/12/2024",
+                  "welshLabel": "Dyddiad cychwyn y rhandaliadau",
+                  "welshValue": "24/12/2024"
+                }
+              ],
+              "judicialResultTypeId": "272d1ec2-634b-11e8-adc0-fa7ae01bbebc",
+              "label": "Payment terms - Lump sum plus instalments",
+              "lastSharedDateTime": "2024-09-24",
+              "level": "D",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-24",
+              "orderedHearingId": "cb6d0c50-38f1-4262-a76d-475011ef75d0",
+              "parentJudicialResultId": "db2a2589-d32f-427b-a8ba-fb4ea6712122",
+              "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 193100,
+              "resultDefinitionGroup": "Payment terms",
+              "resultText": "LUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £250.00. Instalment amount: £50.00 to be paid fortnightly from 24/12/2024.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "d74da31c-5d47-4995-af9f-aa3ff1913372",
+              "rootJudicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Telerau talu - Cyfandaliad a rhandaliadau"
+            }
+          ],
+          "modeOfTrial": "Summary",
+          "offenceCode": "CA03013",
+          "offenceDateCode": 1,
+          "offenceSequenceNumber": 1,
+          "startDate": "2022-10-28",
+          "wording": "Test Theft of pedal cycle."
+        }
+      ],
+      "prosecutorReference": "547215884133616830"
+    }
+  ],
+  "caseId": "468bd72c-126a-45be-b8e3-ef0b39f9d957",
+  "caseResultDetails": {
+    "applicationResultDetails": [
+      {
+        "applicationCasesResultDetails": [
+          {
+            "id": "931ff89b-2caa-4b1f-b823-8c196aaec810",
+            "judicialResultDetails": [
+              {
+                "amendmentType": "ADDED",
+                "id": "d74da31c-5d47-4995-af9f-aa3ff1913372",
+                "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                "resultTitle": "Surcharge"
+              },
+              {
+                "amendmentType": "ADDED",
+                "id": "e5a13e68-0950-422c-af07-14291a129538",
+                "judicialResultTypeId": "272d1ec2-634b-11e8-adc0-fa7ae01bbebc",
+                "resultTitle": "Payment terms - Lump sum plus instalments"
+              }
+            ],
+            "offenceCount": 0,
+            "offenceNo": 1,
+            "offenceTitle": "Obstruct person executing search warrant for TV receiver"
+          }
+        ],
+        "applicationSubjectFirstName": "Azhar",
+        "applicationSubjectLastName": "Mah",
+        "applicationTitle": "Application to reopen case",
+        "id": "d1991fd6-effb-46c7-9f47-565d579f3549",
+        "judicialResultDetails": [
+          {
+            "amendmentType": "ADDED",
+            "id": "e3d220f4-bbe3-4729-82ee-ac875cc12809",
+            "judicialResultTypeId": "e3fb46ee-e406-4f73-9bf1-71d513da8cc7",
+            "resultTitle": "Case reopened"
+          },
+          {
+            "amendmentType": "DELETED",
+            "id": "7ceaab90-0753-4d1f-b15a-2c079a3e7c3e",
+            "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "resultTitle": "Community order varied"
+          }
+        ],
+        "offenceResultDetails": []
+      }
+    ],
+    "caseId": "468bd72c-126a-45be-b8e3-ef0b39f9d957",
+    "defendantResultDetails": []
+  },
+  "courtCentre": "Bexley Magistrates' Court",
+  "dateOfHearing": "2024-09-24",
+  "notificationId": "230c8c40-682a-4265-b013-d992a8689fc1",
+  "policeEmailAddress": "cpnotifications@bch.police.uk",
+  "urn": "20NX8824246"
+}

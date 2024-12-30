@@ -204,6 +204,7 @@
                   "applicationId": "ab746921-d839-4867-bcf9-b41db8ebc852",
                   "label": "a",
                   "welshLabel": "a",
+                  "isNewAmendment": true,
                   "isAdjournmentResult": true,
                   "isFinancialResult": true,
                   "isConvictedResult": true,
@@ -260,5 +261,6 @@
       "originatingOrganisation": "OUCODE"
     }
   ],
-  "jurisdictionType" : "CROWN"
+  "jurisdictionType" : "CROWN",
+  "isReshare": true
 }

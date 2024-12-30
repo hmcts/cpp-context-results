@@ -1,0 +1,1209 @@
+{
+  "hearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "b52066a2-c1a2-48c4-9acf-708238d4b37f",
+          "notificationRequired": false,
+          "prosecutingAuthority": {
+            "address": {
+              "address1": "CTC Prosecutions Team",
+              "address2": "Stevenage Police Station",
+              "address3": "Lytton Way",
+              "address4": "Stevenage",
+              "address5": "Herts",
+              "postcode": "SG1 1HF"
+            },
+            "contact": {
+              "primaryEmail": "cpnotifications@bch.police.uk"
+            },
+            "majorCreditorCode": "PO35",
+            "name": "Cambridgeshire Police",
+            "prosecutionAuthorityCode": "CAMPF",
+            "prosecutionAuthorityId": "317c62c0-eaad-3ca8-b9cf-dea1dba9b5f8",
+            "prosecutionAuthorityOUCode": "0350000",
+            "welshName": "Heddlu Swydd Gaergrawnt"
+          },
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2024-09-23",
+        "applicationReference": "23SepVTC697",
+        "applicationStatus": "LISTED",
+        "courtApplicationCases": [
+          {
+            "caseStatus": "ACTIVE",
+            "isSJP": false,
+            "prosecutionCaseId": "7ff2e0aa-ab7f-43a1-afe8-1eb2bbb7c395",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "CTC Prosecutions Team",
+                "address2": "Stevenage Police Station",
+                "address3": "Lytton Way",
+                "address4": "Stevenage",
+                "address5": "Herts",
+                "postcode": "SG1 1HF"
+              },
+              "contact": {
+                "primaryEmail": "cpnotifications@bch.police.uk"
+              },
+              "majorCreditorCode": "PO35",
+              "prosecutionAuthorityCode": "CAMPF",
+              "prosecutionAuthorityId": "317c62c0-eaad-3ca8-b9cf-dea1dba9b5f8",
+              "prosecutionAuthorityName": "Cambridgeshire Police",
+              "prosecutionAuthorityOUCode": "0350000",
+              "caseURN": "23SepVTC697"
+            }
+          }
+        ],
+        "courtOrder": {
+          "canBeSubjectOfBreachProceedings": true,
+          "canBeSubjectOfVariationProceedings": true,
+          "courtOrderOffences": [
+            {
+              "offence": {
+                "arrestDate": "2023-06-13",
+                "chargeDate": "2023-06-13",
+                "count": 0,
+                "endDate": "2023-04-12",
+                "endorsableFlag": false,
+                "id": "ac6ed97d-435e-49be-aca8-b5b9052b211a",
+                "isDisposed": true,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": true,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "cjsCode": "1018",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                    },
+                    "d20": false,
+                    "durationElement": {
+                      "primaryDurationUnit": "Y",
+                      "primaryDurationValue": 1
+                    },
+                    "dvlaCode": "E",
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": false,
+                    "isUnscheduled": false,
+                    "judicialResultId": "3a857d8f-9883-4ef3-98c9-cc4664936514",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "durationSequence": 1,
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                        "label": "Period of conditional discharge",
+                        "promptReference": "periodofConditionalDischarge",
+                        "promptSequence": 100,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "1 Years",
+                        "welshLabel": "Cyfnod o ryddhad amodol",
+                        "welshValue": "1 Years"
+                      }
+                    ],
+                    "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                    "label": "Conditional discharge",
+                    "lastSharedDateTime": "2024-09-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-09-23",
+                    "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+                    "policeSubjectLineTitle": "Final Sentence",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 73800,
+                    "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "3a857d8f-9883-4ef3-98c9-cc4664936514",
+                    "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Rhyddhad Amodol"
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "Indictable only",
+                "modeOfTrial": "Indictable",
+                "offenceCode": "SE20512",
+                "offenceDateCode": 4,
+                "offenceDefinitionId": "6795cbe7-3e0f-3f6a-b59d-29a87a9d6f8d",
+                "offenceFacts": {
+                  "alcoholReadingAmount": 500,
+                  "alcoholReadingMethodCode": "A",
+                  "alcoholReadingMethodDescription": "Blood",
+                  "vehicleCode": "LARGE_GOODS_VEHICLE",
+                  "vehicleRegistration": "TE4654"
+                },
+                "offenceLegislation": "Contrary to section 8(1) of the Theft Act 1968.",
+                "offenceLegislationWelsh": "Yn groes i adran 8(1) Deddf Dwyn 1968.",
+                "offenceTitle": "Robbery",
+                "offenceTitleWelsh": "Ysbeilio/Lladrad",
+                "orderIndex": 1,
+                "startDate": "2023-04-12",
+                "wording": "Original CaseURN: 23SepVTC143, Re-sentenced Original code : TH68023, Original details: Has a violent past and fear that he will commit further offences and interfere with witnesse"
+              },
+              "prosecutionCaseId": "9e220f2a-dc68-4269-92fd-e1e4826034e0",
+              "prosecutionCaseIdentifier": {
+                "address": {
+                  "address1": "CTC Prosecutions Team",
+                  "address2": "Stevenage Police Station",
+                  "address3": "Lytton Way",
+                  "address4": "Stevenage",
+                  "address5": "Herts",
+                  "postcode": "SG1 1HF"
+                },
+                "contact": {
+                  "primaryEmail": "cpnotifications@bch.police.uk"
+                },
+                "majorCreditorCode": "PO35",
+                "prosecutionAuthorityCode": "CAMPF",
+                "prosecutionAuthorityId": "317c62c0-eaad-3ca8-b9cf-dea1dba9b5f8",
+                "prosecutionAuthorityName": "Cambridgeshire Police",
+                "prosecutionAuthorityOUCode": "0350000",
+                "caseURN": "23SepVTC143"
+              }
+            }
+          ],
+          "defendantIds": [
+            "949e99b9-464f-49f9-81e9-ee1218de4560"
+          ],
+          "endDate": "2024-12-12",
+          "id": "35f57acb-48f3-4593-b08a-86a22590662b",
+          "isSJPOrder": false,
+          "judicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+          "label": "Community order England / Wales",
+          "masterDefendantId": "949e99b9-464f-49f9-81e9-ee1218de4560",
+          "orderDate": "2024-09-23",
+          "orderingCourt": {
+            "address": {
+              "address1": "176A Lavender Hill",
+              "address2": "London",
+              "address3": "",
+              "address4": "",
+              "address5": "",
+              "postcode": "SW11 1JU"
+            },
+            "code": "B01LY00",
+            "courtHearingLocation": "B01LY01",
+            "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+            "lja": {
+              "ljaCode": "2577",
+              "ljaName": "South West London Magistrates' Court"
+            },
+            "name": "Lavender Hill Magistrates' Court",
+            "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+            "roomName": "Courtroom 01"
+          },
+          "orderingHearingId": "9e9ed575-5b5f-499c-b34e-7707fc7ecd18",
+          "startDate": "2024-09-23"
+        },
+        "id": "2c277164-318f-4984-b1de-90f2299dd899",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "1030",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": false,
+            "isUnscheduled": false,
+            "judicialResultId": "bfaa707a-787b-4179-9735-f13af6c45342",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0eba630e-a486-439f-8d76-b49b1363067c",
+                "label": "Court that made the original order",
+                "promptReference": "courtThatMadeTheOriginalOrder",
+                "promptSequence": 100,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "Aberdeen JP Court",
+                "welshLabel": "Y llys a wnaeth y gorchymyn gwreiddiol",
+                "welshValue": "Aberdeen JP Court"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "39355876-d028-48fa-82d8-ccedbe4312f8",
+                "label": "Date original order made",
+                "promptReference": "dateOriginalOrderMade",
+                "promptSequence": 200,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "12/12/2024",
+                "welshLabel": "Dyddiad y gwnaethpwyd y gorchymyn gwreiddiol",
+                "welshValue": "12/12/2024"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "361cee65-0550-4c9a-9fbd-3a234e9431f1",
+                "label": "The end date of the order has been changed and the requirements must be complied with by",
+                "promptReference": "theEndDateOfTheOrderHasBeenChangedAndTheRequirementsMustBeCompliedWithBy",
+                "promptSequence": 800,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "12/12/2024",
+                "welshValue": "12/12/2024"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "27bf0204-a185-4e82-8c34-7317287513c8",
+                "label": "Responsible officer for the order",
+                "promptReference": "responsibleOfficerForTheOrder",
+                "promptSequence": 1000,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "a member of the youth offending team",
+                "welshValue": "aelod o'r tîm troseddwyr ifanc"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "f4a4f159-779e-4f35-822a-b559a2415ecb",
+                "label": "Supervising Court",
+                "promptReference": "supervisingCourt",
+                "promptSequence": 1020,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "Aberdeen JP Court",
+                "welshLabel": "Llys sy’n Goruchwylio",
+                "welshValue": "Aberdeen JP Court"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                "label": "Probation team to be notified organisation name",
+                "promptReference": "probationteamtobenotifiedOrganisationName",
+                "promptSequence": 1200,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "Midlands Division NPS",
+                "welshValue": "Midlands Division NPS"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                "label": "Probation team to be notified email address 1",
+                "promptReference": "probationteamtobenotifiedEmailAddress1",
+                "promptSequence": 1200,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "midlandsnps.court@justice.gov.uk",
+                "welshValue": "midlandsnps.court@justice.gov.uk"
+              }
+            ],
+            "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "label": "Community order varied",
+            "lastSharedDateTime": "2024-09-23",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-23",
+            "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+            "policeSubjectLineTitle": "Final Sentence",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 196800,
+            "resultText": "COV - Community order varied\nOrder made on 12/12/2024 by Aberdeen JP Court varied. The end date of the order has been changed and the requirements must be complied with by 12/12/2024. The new and amended requirements are shown below. The responsible officer nominated is a member of the youth offending team. The supervising court is Aberdeen JP Court. ",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "bfaa707a-787b-4179-9735-f13af6c45342",
+            "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": true,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "cjsCode": "3111",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": false,
+            "isUnscheduled": false,
+            "judicialResultId": "f6c40614-86aa-48d1-bcd1-82cb206f712c",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "72413aef-ecb9-4e9b-a143-31d1e9c11584",
+                "label": "Number of hours",
+                "promptReference": "numberOfHours",
+                "promptSequence": 100,
+                "type": "INT",
+                "usergroups": [],
+                "value": "200 Hours",
+                "welshLabel": "Nifer yr oriau",
+                "welshValue": "200 Hours"
+              }
+            ],
+            "judicialResultTypeId": "f9eac601-a1e7-4d45-99ee-c49e2c4ca85b",
+            "label": "Attendance centre",
+            "lastSharedDateTime": "2024-09-23",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-23",
+            "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+            "parentJudicialResultId": "b1c535f5-ee83-4fe4-9158-32b0105467c2",
+            "parentJudicialResultTypeId": "b2dab2b7-3edd-4223-b1be-3819173ec54d",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 40900,
+            "resultDefinitionGroup": "Community Requirement",
+            "resultText": "ACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "bfaa707a-787b-4179-9735-f13af6c45342",
+            "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Canolfan ymbresenoli"
+          },
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": false,
+            "isUnscheduled": false,
+            "judicialResultId": "304b4cf8-e3ec-4e9d-90cd-b06ce072e1a5",
+            "judicialResultTypeId": "346edadd-5b2f-4e52-9d71-cd2296508cdf",
+            "label": "The new and amended requirements are",
+            "lastSharedDateTime": "2024-09-23",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-23",
+            "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+            "parentJudicialResultId": "bfaa707a-787b-4179-9735-f13af6c45342",
+            "parentJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": true,
+            "publishedForNows": true,
+            "rank": 36100,
+            "resultText": "The new and amended requirements are shown below.",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "bfaa707a-787b-4179-9735-f13af6c45342",
+            "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "respondents": [
+          {
+            "id": "cbede63d-0881-499c-a7cc-df7371f624c2",
+            "masterDefendant": {
+              "defendantCase": [
+                {
+                  "caseId": "7ff2e0aa-ab7f-43a1-afe8-1eb2bbb7c395",
+                  "defendantId": "c76e395a-97f1-4fe9-9c92-9c9ec9d8fa11"
+                }
+              ],
+              "masterDefendantId": "949e99b9-464f-49f9-81e9-ee1218de4560",
+              "personDefendant": {
+                "arrestSummonsNumber": "573405783438007100",
+                "bailConditions": "BailConditions0",
+                "bailStatus": {
+                  "code": "C",
+                  "description": "Custody",
+                  "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                },
+                "driverNumber": "ABCDE0,0010BCFAA",
+                "perceivedBirthYear": 1997,
+                "personDetails": {
+                  "address": {
+                    "address1": "56saon",
+                    "address2": "56Police House",
+                    "address3": "StreetDescription1",
+                    "address4": "Locality1",
+                    "address5": "Town2",
+                    "postcode": "TW14 9XD"
+                  },
+                  "contact": {
+                    "home": "0917894278022",
+                    "mobile": "0917894278022",
+                    "primaryEmail": "robert@gmail.com",
+                    "secondaryEmail": "ormsby@gmail.com",
+                    "work": "0917894278022"
+                  },
+                  "dateOfBirth": "1997-08-08",
+                  "documentationLanguageNeeds": "ENGLISH",
+                  "firstName": "Eric",
+                  "gender": "MALE",
+                  "hearingLanguageNeeds": "ENGLISH",
+                  "interpreterLanguageNeeds": "LanguageNeeds0",
+                  "lastName": "Mertz68",
+                  "occupation": "Occupation0Occupation0Occupation0Occupation0Occupation",
+                  "occupationCode": "50345",
+                  "title": "MR"
+                },
+                "policeBailConditions": "BailConditions0",
+                "policeBailStatus": {
+                  "code": "C",
+                  "description": "Custody",
+                  "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                }
+              }
+            },
+            "notificationRequired": false,
+            "summonsRequired": false
+          }
+        ],
+        "subject": {
+          "id": "cbede63d-0881-499c-a7cc-df7371f624c2",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "7ff2e0aa-ab7f-43a1-afe8-1eb2bbb7c395",
+                "defendantId": "c76e395a-97f1-4fe9-9c92-9c9ec9d8fa11"
+              }
+            ],
+            "masterDefendantId": "949e99b9-464f-49f9-81e9-ee1218de4560",
+            "personDefendant": {
+              "arrestSummonsNumber": "573405783438007100",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "ABCDE0,0010BCFAA",
+              "perceivedBirthYear": 1997,
+              "personDetails": {
+                "address": {
+                  "address1": "56saon",
+                  "address2": "56Police House",
+                  "address3": "StreetDescription1",
+                  "address4": "Locality1",
+                  "address5": "Town2",
+                  "postcode": "TW14 9XD"
+                },
+                "contact": {
+                  "home": "0917894278022",
+                  "mobile": "0917894278022",
+                  "primaryEmail": "robert@gmail.com",
+                  "secondaryEmail": "ormsby@gmail.com",
+                  "work": "0917894278022"
+                },
+                "dateOfBirth": "1997-08-08",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Eric",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "interpreterLanguageNeeds": "LanguageNeeds0",
+                "lastName": "Mertz68",
+                "occupation": "Occupation0Occupation0Occupation0Occupation0Occupation",
+                "occupationCode": "50345",
+                "title": "MR"
+              },
+              "policeBailConditions": "BailConditions0",
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": false,
+          "summonsRequired": false
+        },
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "COMMISSION_OF_NEW_OFFENCE_BREACH",
+          "categoryCode": "CB",
+          "code": "SE20511",
+          "commrOfOathFlag": false,
+          "contestedFeeApplicable": false,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "exParte": false,
+          "hearingCode": "BOO",
+          "id": "d5f455f9-a9bc-32bc-9c8e-1f07c50913c7",
+          "initialFeeApplicable": false,
+          "jurisdiction": "EITHER",
+          "lastModified": "2024-03-06T17:57:34.907Z",
+          "legislation": "In accordance with Part 2 of Schedule 16 to the Sentencing Act 2020.",
+          "linkType": "LINKED",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prefix": "Activation of Suspended sentence",
+          "prosecutorThirdPartyFlag": false,
+          "resentencingActivationCode": "SE20512",
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Commission of a further offence during the operational period of a suspended sentence order",
+          "validFrom": "2020-12-01"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2024-09-23"
+          }
+        ],
+        "defendantId": "c76e395a-97f1-4fe9-9c92-9c9ec9d8fa11"
+      }
+    ],
+    "defendantJudicialResults": [
+      {
+        "judicialResult": {
+          "alwaysPublished": true,
+          "canBeSubjectOfBreach": false,
+          "canBeSubjectOfVariation": false,
+          "category": "ANCILLARY",
+          "courtClerk": {
+            "firstName": "Erica",
+            "lastName": "Wilson",
+            "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+          },
+          "d20": false,
+          "excludedFromResults": false,
+          "isAdjournmentResult": false,
+          "isAvailableForCourtExtract": true,
+          "isConvictedResult": false,
+          "isDeleted": false,
+          "isFinancialResult": false,
+          "isNewAmendment": false,
+          "isUnscheduled": false,
+          "judicialResultId": "792debad-d258-48ed-9cf4-8cc755c74006",
+          "judicialResultPrompts": [
+            {
+              "courtExtract": "Y",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "042742a1-8d47-4558-9b3e-9f34b358e034",
+              "label": "Reason for no surcharge",
+              "promptReference": "reasonForNoSurcharge",
+              "promptSequence": 100,
+              "type": "TXT",
+              "usergroups": [],
+              "value": "test",
+              "welshValue": "test"
+            }
+          ],
+          "judicialResultTypeId": "204fc6b8-d6c9-4fb8-acd0-47d23c087625",
+          "label": "No surcharge",
+          "lastSharedDateTime": "2024-09-23",
+          "level": "D",
+          "lifeDuration": false,
+          "offenceId": "04ec54bb-b75e-4304-9c4c-61e2548e8cb4",
+          "orderedDate": "2024-09-23",
+          "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+          "parentJudicialResultId": "7bf65a3c-0f7d-4ee2-9c5d-b4d9ed37c783",
+          "parentJudicialResultTypeId": "386a3a47-b2cb-4017-9dd8-19ffeb457b56",
+          "postHearingCustodyStatus": "A",
+          "publishedAsAPrompt": false,
+          "publishedForNows": false,
+          "rank": 1000,
+          "resultText": "NOVS - No surcharge\nReason: test",
+          "rollUpPrompts": false,
+          "rootJudicialResultId": "aea6b38e-32ff-45fb-98e7-82e5cf2c7cde",
+          "rootJudicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
+          "terminatesOffenceProceedings": false,
+          "urgent": false,
+          "usergroups": []
+        },
+        "masterDefendantId": "949e99b9-464f-49f9-81e9-ee1218de4560"
+      },
+      {
+        "judicialResult": {
+          "alwaysPublished": false,
+          "canBeSubjectOfBreach": false,
+          "canBeSubjectOfVariation": false,
+          "category": "ANCILLARY",
+          "courtClerk": {
+            "firstName": "Erica",
+            "lastName": "Wilson",
+            "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+          },
+          "d20": false,
+          "excludedFromResults": false,
+          "isAdjournmentResult": false,
+          "isAvailableForCourtExtract": true,
+          "isConvictedResult": false,
+          "isDeleted": false,
+          "isFinancialResult": false,
+          "isNewAmendment": false,
+          "isUnscheduled": false,
+          "judicialResultId": "9254ac25-2464-4acb-a4ca-626bae8edb7c",
+          "judicialResultPrompts": [
+            {
+              "courtExtract": "Y",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "b2cf5a1e-8539-45a1-a287-4be5094a0e73",
+              "label": "Total custodial period",
+              "promptReference": "totalCustodialPeriod",
+              "promptSequence": 100,
+              "type": "INTM",
+              "usergroups": [],
+              "value": "1 Years",
+              "welshValue": "1 Years"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+              "label": "Prison organisation name",
+              "promptReference": "prisonOrganisationName",
+              "promptSequence": 900,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "HMP Ashfield",
+              "welshValue": "HMP Ashfield"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+              "label": "Prison email address 1",
+              "promptReference": "prisonEmailAddress1",
+              "promptSequence": 900,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "yoiashfield.premiercustody@premier-serco.cjsm.net",
+              "welshValue": "yoiashfield.premiercustody@premier-serco.cjsm.net"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+              "label": "Prison email address 2",
+              "promptReference": "prisonEmailAddress2",
+              "promptSequence": 900,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "yoiashfield.premiercustody@premier-serco.cjsm.net",
+              "welshValue": "yoiashfield.premiercustody@premier-serco.cjsm.net"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+              "label": "Conveyor / custodian name organisation name",
+              "promptReference": "conveyorcustodiannameOrganisationName",
+              "promptSequence": 1000,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "Aberystwyth Magistrates' Court: PECS",
+              "welshValue": "Aberystwyth Magistrates' Court: PECS"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+              "label": "Conveyor / custodian name email address 1",
+              "promptReference": "conveyorcustodiannameEmailAddress1",
+              "promptSequence": 1000,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "aberystwythmc@geoamey.co.uk",
+              "welshValue": "aberystwythmc@geoamey.co.uk"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+              "label": "Probation team to be notified organisation name",
+              "promptReference": "probationteamtobenotifiedOrganisationName",
+              "promptSequence": 1200,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "Midlands Division NPS",
+              "welshValue": "Midlands Division NPS"
+            },
+            {
+              "courtExtract": "N",
+              "isFinancialImposition": false,
+              "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+              "label": "Probation team to be notified email address 1",
+              "promptReference": "probationteamtobenotifiedEmailAddress1",
+              "promptSequence": 1200,
+              "type": "NAMEADDRESS",
+              "usergroups": [],
+              "value": "midlandsnps.court@justice.gov.uk",
+              "welshValue": "midlandsnps.court@justice.gov.uk"
+            }
+          ],
+          "judicialResultTypeId": "6cb15971-c945-4398-b7c9-3f8b743a4de3",
+          "label": "Total custodial period",
+          "lastSharedDateTime": "2024-09-23",
+          "level": "D",
+          "lifeDuration": false,
+          "offenceId": "04ec54bb-b75e-4304-9c4c-61e2548e8cb4",
+          "orderedDate": "2024-09-23",
+          "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+          "parentJudicialResultId": "aea6b38e-32ff-45fb-98e7-82e5cf2c7cde",
+          "parentJudicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
+          "postHearingCustodyStatus": "A",
+          "publishedAsAPrompt": false,
+          "publishedForNows": true,
+          "rank": 400,
+          "resultText": "Total custodial period: 1 Years.",
+          "rollUpPrompts": true,
+          "rootJudicialResultId": "aea6b38e-32ff-45fb-98e7-82e5cf2c7cde",
+          "rootJudicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
+          "terminatesOffenceProceedings": false,
+          "urgent": false,
+          "usergroups": []
+        },
+        "masterDefendantId": "949e99b9-464f-49f9-81e9-ee1218de4560"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2024-09-23T16:01:01.001Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "260e84e5-2f64-4806-8dd3-e14761e04382",
+    "isGroupProceedings": false,
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseMarkers": [
+          {
+            "id": "c956942d-0764-40ed-b720-9cf136c192b6",
+            "markerTypeCode": "HT",
+            "markerTypeDescription": "Human Trafficking",
+            "markerTypeid": "e7eff972-189c-4957-8b1e-cb45213aa64e"
+          }
+        ],
+        "caseStatus": "ACTIVE",
+        "cpsOrganisation": "A30AB00",
+        "defendants": [
+          {
+            "aliases": [
+              {
+                "firstName": "PersonTitle1",
+                "lastName": "PersonFamilyName2",
+                "middleName": "PersonTitle1 PersonTitle1",
+                "title": "PersonTitle1"
+              }
+            ],
+            "courtProceedingsInitiated": "2024-09-23T15:16:01.624Z",
+            "croNumber": "BB123456BCDE",
+            "id": "c76e395a-97f1-4fe9-9c92-9c9ec9d8fa11",
+            "isYouth": false,
+            "masterDefendantId": "949e99b9-464f-49f9-81e9-ee1218de4560",
+            "offences": [
+              {
+                "allocationDecision": {
+                  "allocationDecisionDate": "2024-09-23",
+                  "motReasonCode": "02",
+                  "motReasonDescription": "Indictable-only offence",
+                  "motReasonId": "4ba29b9f-9e57-32ed-b376-1840f4ba6c53",
+                  "offenceId": "04ec54bb-b75e-4304-9c4c-61e2548e8cb4",
+                  "originatingHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+                  "sequenceNumber": 100
+                },
+                "arrestDate": "2023-06-13",
+                "chargeDate": "2023-06-13",
+                "convictingCourt": {
+                  "code": "B01LY00",
+                  "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+                  "lja": {
+                    "ljaCode": "2577",
+                    "ljaName": "South West London Magistrates' Court"
+                  },
+                  "name": "Lavender Hill Magistrates' Court",
+                  "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8"
+                },
+                "convictionDate": "2024-09-23",
+                "count": 0,
+                "endDate": "2023-04-12",
+                "endorsableFlag": false,
+                "id": "04ec54bb-b75e-4304-9c4c-61e2548e8cb4",
+                "isDisposed": true,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "cjsCode": "1002",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+                    },
+                    "d20": false,
+                    "durationElement": {
+                      "primaryDurationUnit": "Y",
+                      "primaryDurationValue": 1
+                    },
+                    "dvlaCode": "A",
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": false,
+                    "isUnscheduled": false,
+                    "judicialResultId": "aea6b38e-32ff-45fb-98e7-82e5cf2c7cde",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "b2cf5a1e-8539-45a1-a287-4be5094a0e73",
+                        "label": "Total custodial period",
+                        "promptReference": "totalCustodialPeriod",
+                        "promptSequence": 100,
+                        "type": "INTM",
+                        "usergroups": [],
+                        "value": "1 Years",
+                        "welshValue": "1 Years"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison organisation name",
+                        "promptReference": "prisonOrganisationName",
+                        "promptSequence": 900,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "HMP Ashfield",
+                        "welshValue": "HMP Ashfield"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison email address 1",
+                        "promptReference": "prisonEmailAddress1",
+                        "promptSequence": 900,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "yoiashfield.premiercustody@premier-serco.cjsm.net",
+                        "welshValue": "yoiashfield.premiercustody@premier-serco.cjsm.net"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison email address 2",
+                        "promptReference": "prisonEmailAddress2",
+                        "promptSequence": 900,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "yoiashfield.premiercustody@premier-serco.cjsm.net",
+                        "welshValue": "yoiashfield.premiercustody@premier-serco.cjsm.net"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+                        "label": "Conveyor / custodian name organisation name",
+                        "promptReference": "conveyorcustodiannameOrganisationName",
+                        "promptSequence": 1000,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Aberystwyth Magistrates' Court: PECS",
+                        "welshValue": "Aberystwyth Magistrates' Court: PECS"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+                        "label": "Conveyor / custodian name email address 1",
+                        "promptReference": "conveyorcustodiannameEmailAddress1",
+                        "promptSequence": 1000,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "aberystwythmc@geoamey.co.uk",
+                        "welshValue": "aberystwythmc@geoamey.co.uk"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                        "label": "Probation team to be notified organisation name",
+                        "promptReference": "probationteamtobenotifiedOrganisationName",
+                        "promptSequence": 1200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Midlands Division NPS",
+                        "welshValue": "Midlands Division NPS"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                        "label": "Probation team to be notified email address 1",
+                        "promptReference": "probationteamtobenotifiedEmailAddress1",
+                        "promptSequence": 1200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "midlandsnps.court@justice.gov.uk",
+                        "welshValue": "midlandsnps.court@justice.gov.uk"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "durationSequence": 1,
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "76f15753-1706-42fb-b922-0d56d01e5706",
+                        "label": "Imprisonment Period",
+                        "promptReference": "imprisonmentPeriod",
+                        "promptSequence": 100,
+                        "type": "INTM",
+                        "usergroups": [],
+                        "value": "1 Years",
+                        "welshLabel": "Cyfnod Carcharu",
+                        "welshValue": "1 Years"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "ea957761-0813-4a92-9e7c-b536654325f0",
+                        "label": "Imprisonment reasons",
+                        "promptReference": "imprisonmentReasons",
+                        "promptSequence": 200,
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "failure to comply with a pre-sentence drug testing order",
+                        "welshLabel": "Rhesymau dros garcharu",
+                        "welshValue": "methu â chydymffurfio â gorchymyn profi cyffuriau cyn dedfrydu"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "622aa563-a3db-4102-ba7e-21c21cee0110",
+                        "label": "Reason for custody",
+                        "promptReference": "theReasonsForThis",
+                        "promptSequence": 300,
+                        "type": "FIXLOM",
+                        "usergroups": [],
+                        "value": "because of an unprovoked attack of a serious nature",
+                        "welshValue": "because of an unprovoked attack of a serious nature"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d10cd4b-fb39-40dd-88e1-2397832bc914",
+                        "label": "Bail remand days to count (tagged days)",
+                        "promptReference": "bailRemandDaysToCountTaggedDays",
+                        "promptSequence": 500,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "1",
+                        "welshLabel": "Dyddiau mechnïaeth ar remand i’w cyfrif (dyddiad gyda tag)",
+                        "welshValue": "1"
+                      }
+                    ],
+                    "judicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
+                    "label": "Imprisonment",
+                    "lastSharedDateTime": "2024-09-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-09-23",
+                    "orderedHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+                    "policeSubjectLineTitle": "Final Sentence",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 65400,
+                    "resultText": "IMP - Imprisonment\nCommitted to prison for 1 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 1. Total custodial period: 1 Years.",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "aea6b38e-32ff-45fb-98e7-82e5cf2c7cde",
+                    "rootJudicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": []
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "Indictable only",
+                "modeOfTrial": "Indictable",
+                "offenceCode": "TH68023A",
+                "offenceDateCode": 4,
+                "offenceDefinitionId": "42916c3b-128f-3b6e-ad14-b51fc36fbf1a",
+                "offenceFacts": {
+                  "alcoholReadingAmount": 500,
+                  "alcoholReadingMethodCode": "A",
+                  "alcoholReadingMethodDescription": "Blood",
+                  "vehicleCode": "LARGE_GOODS_VEHICLE",
+                  "vehicleRegistration": "TE4654"
+                },
+                "offenceLegislation": "Contrary to section 1(1) of the Criminal Attempts Act 1981.",
+                "offenceLegislationWelsh": "Yn groes i adran 1(1) Deddf Ymgeisiau i Droseddu 1981.",
+                "offenceTitle": "Attempt robbery",
+                "offenceTitleWelsh": "Ymgais i ysbeilio (robbery)",
+                "orderIndex": 1,
+                "plea": {
+                  "offenceId": "04ec54bb-b75e-4304-9c4c-61e2548e8cb4",
+                  "originatingHearingId": "260e84e5-2f64-4806-8dd3-e14761e04382",
+                  "pleaDate": "2024-09-23",
+                  "pleaValue": "GUILTY"
+                },
+                "startDate": "2023-04-12",
+                "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "573405783438007100",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "ABCDE0,0010BCFAA",
+              "perceivedBirthYear": 1997,
+              "personDetails": {
+                "address": {
+                  "address1": "56saon",
+                  "address2": "56Police House",
+                  "address3": "StreetDescription1",
+                  "address4": "Locality1",
+                  "address5": "Town2",
+                  "postcode": "TW14 9XD"
+                },
+                "contact": {
+                  "home": "0917894278022",
+                  "mobile": "0917894278022",
+                  "primaryEmail": "robert@gmail.com",
+                  "secondaryEmail": "ormsby@gmail.com",
+                  "work": "0917894278022"
+                },
+                "dateOfBirth": "1997-08-08",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Eric",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "interpreterLanguageNeeds": "LanguageNeeds0",
+                "lastName": "Mertz68",
+                "occupation": "Occupation0Occupation0Occupation0Occupation0Occupation",
+                "occupationCode": "50345",
+                "title": "MR"
+              },
+              "policeBailConditions": "BailConditions0",
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            },
+            "pncId": "PNCidentifier",
+            "prosecutionAuthorityReference": "573405783438007100",
+            "prosecutionCaseId": "7ff2e0aa-ab7f-43a1-afe8-1eb2bbb7c395"
+          }
+        ],
+        "id": "7ff2e0aa-ab7f-43a1-afe8-1eb2bbb7c395",
+        "initiationCode": "C",
+        "originatingOrganisation": "0350000",
+        "prosecutionCaseIdentifier": {
+          "address": {
+            "address1": "CTC Prosecutions Team",
+            "address2": "Stevenage Police Station",
+            "address3": "Lytton Way",
+            "address4": "Stevenage",
+            "address5": "Herts",
+            "postcode": "SG1 1HF"
+          },
+          "contact": {
+            "primaryEmail": "cpnotifications@bch.police.uk"
+          },
+          "majorCreditorCode": "PO35",
+          "prosecutionAuthorityCode": "CAMPF",
+          "prosecutionAuthorityId": "317c62c0-eaad-3ca8-b9cf-dea1dba9b5f8",
+          "prosecutionAuthorityName": "Cambridgeshire Police",
+          "prosecutionAuthorityOUCode": "0350000",
+          "caseURN": "23SepVTC697"
+        },
+        "statementOfFacts": "Has a violent past"
+      }
+    ],
+    "type": {
+      "description": "First hearing",
+      "id": "4a0e892d-c0c5-3c51-95b8-704d8c781776"
+    }
+  },
+  "hearingDay": "2024-09-23",
+  "sharedTime": "2024-09-23T15:24:40.946Z"
+}
