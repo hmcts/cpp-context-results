@@ -25,24 +25,22 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class SystemDocGeneratorTest {
-
-    private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
+public class SystemDocGeneratorServiceTest {
 
     @Mock
     private Sender sender;
     @InjectMocks
-    private SystemDocGenerator systemDocGenerator;
+    private SystemDocGeneratorService systemDocGenerator;
 
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> argumentCaptor;
 
     @Test
-    public void shouldGenerateDocument() {
+    public void shouldTestGenerateDocument() {
         final String sourceCorrelationId = randomUUID().toString();
         final UUID payloadFileServiceId = randomUUID();
         final DocumentGenerationRequest request = new DocumentGenerationRequest(
-                NCES_EMAIL_NOTIFICATION_REQUEST,
+                "NCES_EMAIL_NOTIFICATION_REQUEST",
                 TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
                 ConversionFormat.PDF,
                 sourceCorrelationId,
@@ -54,7 +52,8 @@ public class SystemDocGeneratorTest {
         verify(sender).sendAsAdmin(argumentCaptor.capture());
         final Envelope<JsonObject> actual = argumentCaptor.getValue();
         assertThat(actual.metadata().name(), equalTo("systemdocgenerator.generate-document"));
-        assertThat(actual.payload().getString("templateIdentifier"), equalTo("NCESNotification"));
+        assertThat(actual.payload().getString("originatingSource"), equalTo("NCES_EMAIL_NOTIFICATION_REQUEST"));
+        assertThat(actual.payload().getString("templateIdentifier"), equalTo(TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID.getValue()));
         assertThat(actual.payload().getString("conversionFormat"), equalTo("pdf"));
         assertThat(actual.payload().getString("sourceCorrelationId"), equalTo(sourceCorrelationId));
         assertThat(actual.payload().getString("payloadFileServiceId"), equalTo(payloadFileServiceId.toString()));

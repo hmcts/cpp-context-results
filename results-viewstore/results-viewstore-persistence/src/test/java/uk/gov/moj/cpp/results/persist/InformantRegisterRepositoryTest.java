@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.time.LocalDate;

@@ -3,12 +3,10 @@ package uk.gov.moj.cpp.results.persist;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.Assert.assertNull;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
 
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Test;

@@ -32,12 +32,6 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
-import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
-import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
-import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
-import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
-import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -57,7 +51,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
-
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
@@ -140,9 +133,9 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             .put(APPEAL, "APPEAL APPLICATION RECEIVED")
             .build();
 
-    public static final String STATUTORY_DECLARATION_UPDATED = "STATUTORY DECLARATION UPDATED";
-    public static final String APPLICATION_TO_REOPEN_UPDATED = "APPLICATION TO REOPEN UPDATED";
-    public static final String APPEAL_APPLICATION_UPDATED = "APPEAL APPLICATION UPDATED";
+    public static final String STATUTORY_DECLARATION_UPDATED  = "STATUTORY DECLARATION UPDATED" ;
+    public static final String APPLICATION_TO_REOPEN_UPDATED  = "APPLICATION TO REOPEN UPDATED" ;
+    public static final String APPEAL_APPLICATION_UPDATED  = "APPEAL APPLICATION UPDATED";
 
     public static final Map<String, String> APPLICATION_UPDATED_SUBJECT = ImmutableMap.<String, String>builder()
             .put(STAT_DEC, STATUTORY_DECLARATION_UPDATED)

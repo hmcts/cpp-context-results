@@ -19,12 +19,15 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.SelfDescribing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.hamcrest.CoreMatchers.is;
 
 @SuppressWarnings({"squid:S1166", "squid:S1141", "squid:S00108", "squid:S2221", "squid:S00112", "squid:S2129"})
 public class BeanMatcher<T> extends BaseMatcher<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeanMatcher.class);
     private Class<T> clazz;
     private Error error;
     private String methodName;
@@ -36,22 +39,6 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
     }
 
     public <R> BeanMatcher<T> with(Function<T, R> accessor, Matcher<R> matcher) {
-        assertions.add(new Assertion<>(accessor, matcher));
-        return this;
-    }
-
-    public <R> BeanMatcher<T> withOptional(Function<T, Optional<R>> accessor, Matcher<R> underlyingMatcher) {
-        final Matcher<Optional<R>> matcher = new BaseMatcher<Optional<R>>() {
-            @Override
-            public boolean matches(Object o) {
-                return underlyingMatcher.matches(o == null ? null : ((Optional) o).orElse(null));
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                underlyingMatcher.describeTo(description);
-            }
-        };
         assertions.add(new Assertion<>(accessor, matcher));
         return this;
     }
@@ -189,7 +176,18 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
         }
 
         if (error == Error.INVALID_ASSERTION) {
-            this.failedAssertion.getMatcher().describeMismatch(this.failedAssertion.getAccessor().apply((T) item), description);
+
+            Object value = "unavailable";
+            try {
+                value = this.failedAssertion.getAccessor().apply((T) item);
+            } catch (Exception ex) {
+                LOGGER.error(ex.getMessage(), ex);
+                value = "unavailable " + ex.toString();
+            }
+
+
+
+            this.failedAssertion.getMatcher().describeMismatch(value, description);
         }
     }
 

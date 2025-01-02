@@ -22,10 +22,8 @@ import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAgg
 
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.Offence;
-
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;
-
 import uk.gov.justice.core.courts.UnmarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
@@ -34,9 +32,6 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
-import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.converter.ZonedDateTimes;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;

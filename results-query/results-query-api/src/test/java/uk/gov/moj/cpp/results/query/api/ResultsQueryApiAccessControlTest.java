@@ -2,13 +2,9 @@ package uk.gov.moj.cpp.results.query.api;
 
 import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.given;
-import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_ADMINISTRATORS;
 import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_ASSOCIATE;
 import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_CLERKS;
-import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.CROWN_COURT_ADMINS;
-import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.JUDICIARY;
 import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.LEGAL_ADVISERS;
-import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.LISTING_OFFICERS;
 
 import uk.gov.moj.cpp.accesscontrol.common.providers.UserAndGroupProvider;
 import uk.gov.moj.cpp.accesscontrol.drools.Action;

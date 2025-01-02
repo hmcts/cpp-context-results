@@ -13,9 +13,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
@@ -47,6 +47,7 @@ import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
@@ -72,12 +73,13 @@ import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
-import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.test.TestTemplates;
+import uk.gov.moj.cpp.results.event.service.SjpService;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -98,7 +100,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import uk.gov.moj.cpp.results.test.TestTemplates;
 
 public class ResultsEventProcessorTest {
 
@@ -185,6 +186,9 @@ public class ResultsEventProcessorTest {
     private NotificationNotifyService notificationNotifyService;
 
     @Mock
+    private FileService fileService;
+
+    @Mock
     DocumentGeneratorService documentGeneratorService;
 
     @Mock
@@ -216,6 +220,9 @@ public class ResultsEventProcessorTest {
 
     @Captor
     private ArgumentCaptor<EmailNotification> emailNotificationArgumentCaptor;
+
+    @Spy
+    private UtcClock utcClock;
 
     @BeforeEach
     public void setUp() {
@@ -876,6 +883,8 @@ public class ResultsEventProcessorTest {
 
     @Test
     public void shouldHandleTheNcesEmailNotificationRequested() {
+        when(fileService.storePayload(any(), anyString(), anyString())).thenReturn(randomUUID());
+
         final String materialId = randomUUID().toString();
         final String email = "email@email.com";
         final String name = "myname";

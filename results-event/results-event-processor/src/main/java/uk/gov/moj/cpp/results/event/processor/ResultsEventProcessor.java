@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static java.lang.Boolean.*;
+import static java.lang.Boolean.TRUE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
@@ -32,6 +32,7 @@ import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.Material;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
@@ -52,13 +53,18 @@ import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
+import uk.gov.moj.cpp.results.event.service.ConversionFormat;
+import uk.gov.moj.cpp.results.event.service.DocumentGenerationRequest;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.SystemDocGeneratorService;
+import uk.gov.moj.cpp.results.event.service.TemplateIdentifier;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -130,6 +136,9 @@ public class ResultsEventProcessor {
     private static final String SJP_UPLOAD_CASE_DOCUMENT = "sjp.upload-case-document";
     public static final String IS_RESHARE = "isReshare";
 
+    private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
+
     @Inject
     ReferenceDataService referenceDataService;
 
@@ -171,6 +180,14 @@ public class ResultsEventProcessor {
     @Inject
     private PoliceEmailHelper policeEmailHelper;
 
+    @Inject
+    private UtcClock utcClock;
+
+    @Inject
+    private FileService fileService;
+
+    @Inject
+    private SystemDocGeneratorService systemDocGeneratorService;
 
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
 
@@ -670,4 +687,16 @@ public class ResultsEventProcessor {
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
     }
+
+    private void sendRequestToGenerateDocumentAsynchronous(final JsonEnvelope envelope, final String materialId, final UUID fileId) {
+        final DocumentGenerationRequest documentGenerationRequest = new DocumentGenerationRequest(
+                NCES_EMAIL_NOTIFICATION_REQUEST,
+                TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
+                ConversionFormat.PDF,
+                materialId,
+                fileId);
+
+        systemDocGeneratorService.generateDocument(documentGenerationRequest, envelope);
+    }
+
 }

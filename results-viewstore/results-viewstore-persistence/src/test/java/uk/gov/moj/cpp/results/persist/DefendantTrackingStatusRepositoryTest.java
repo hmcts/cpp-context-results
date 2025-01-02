@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalTest;
 import uk.gov.moj.cpp.results.persist.entity.DefendantTrackingStatus;
 
 import java.time.ZonedDateTime;

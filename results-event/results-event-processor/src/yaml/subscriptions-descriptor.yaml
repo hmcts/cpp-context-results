@@ -53,4 +53,12 @@ subscriptions_descriptor:
         - name: public.progression.defendant-address-changed
           schema_uri: http://justice.gov.uk/core/courts/public.progression.defendant-address-changed.json
 
+        #System available doc generator
+        - name: public.systemdocgenerator.events.document-available
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/document-available.json
+
+        #System fail doc generator
+        - name: public.systemdocgenerator.events.generation-failed
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/generation-failed.json
+
       event_source_name: public.event.source

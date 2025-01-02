@@ -163,4 +163,15 @@ public class QueueUtil {
         }
     }
 
+    public MessageConsumer createPrivateConsumer(final String eventSelector) {
+        try {
+            if(!isAlive(connection)){
+                initialize("progression.event");
+            }
+            return session.createConsumer(topic, String.format(EVENT_SELECTOR_TEMPLATE, eventSelector));
+        } catch (final JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
