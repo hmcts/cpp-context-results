@@ -19,14 +19,15 @@ import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 import java.util.List;
 import java.util.UUID;
 
+import com.github.tomakehurst.wiremock.client.VerificationException;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 
-public class NotificationServiceStub {
+public class NotificationNotifyServiceStub {
     public static final String NOTIFICATION_NOTIFY_ENDPOINT = "/notificationnotify-service/command/api/rest/notificationnotify/notifications/.*";
     public static final String NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON = "application/vnd.notificationnotify.email+json";
 
 
-    public static void setUp() {
+    public static void setupNotificationNotifyStubs() {
         stubPingFor("notificationnotify-service");
         stubFor(post(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
                 .withHeader(CONTENT_TYPE, equalTo(NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON))
@@ -37,19 +38,23 @@ public class NotificationServiceStub {
     }
 
     public static void verifyEmailNotificationIsRaised(final List<String> expectedValues) {
-        await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
+        await().atMost(30, SECONDS).pollInterval(1, SECONDS).until(() -> {
             final RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT));
             expectedValues.forEach(
                     expectedValue -> requestPatternBuilder.withRequestBody(containing(expectedValue))
             );
             requestPatternBuilder.withRequestBody(notMatching("materialUrl"));
-            verify(requestPatternBuilder);
+            try {
+                verify(requestPatternBuilder);
+            } catch (VerificationException e) {
+                return false;
+            }
             return true;
         });
     }
 
     public static void verifyEmailNotificationIsRaised(final List<String> expectedValues, final List<String> notMatchingValues) {
-        await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
+        await().atMost(30, SECONDS).pollInterval(1, SECONDS).until(() -> {
             final RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT));
             expectedValues.forEach(
                     expectedValue -> requestPatternBuilder.withRequestBody(containing(expectedValue))
@@ -57,7 +62,11 @@ public class NotificationServiceStub {
             notMatchingValues.forEach(
                     unMatchedValue -> requestPatternBuilder.withRequestBody(notMatching(unMatchedValue))
             );
-            verify(requestPatternBuilder);
+            try {
+                verify(requestPatternBuilder);
+            } catch (VerificationException e) {
+                return false;
+            }
             return true;
         });
     }

@@ -38,7 +38,7 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>17.101.0</coredomain.version>
-        <referencedata.version>17.0.35</referencedata.version>
+        <referencedata.version>17.0.53</referencedata.version>
         <notification.notify.version>17.0.1</notification.notify.version>
         <systemdocgenerator.version>17.0.26</systemdocgenerator.version>
         <progression.version>17.0.70</progression.version>

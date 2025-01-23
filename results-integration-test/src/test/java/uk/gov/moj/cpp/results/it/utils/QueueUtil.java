@@ -40,7 +40,7 @@ public class QueueUtil {
 
     private final String topicName;
 
-    private  Connection connection;
+    private Connection connection;
 
     public static final QueueUtil publicEvents = new QueueUtil("jms.topic.public.event");
 
@@ -124,31 +124,20 @@ public class QueueUtil {
         }
     }
 
-    public static void removeMessagesFromQueue(final MessageConsumer consumer){
-        JsonPath message = null;
-        do{
-            retrieveMessage(consumer, 10);
-        }while(message != null);
+    public static void removeMessagesFromQueue(final MessageConsumer consumer) {
+        JsonPath message;
+        do {
+            message = retrieveMessage(consumer, 10);
+        } while (message != null);
 
     }
 
     public MessageProducer createPublicProducer() {
         try {
-            if(!isAlive(this.connection)){
+            if (!isAlive(this.connection)) {
                 initialize("public.event");
             }
             return session.createProducer(topic);
-        } catch (final JMSException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public MessageConsumer createPublicConsumer(final String eventSelector) {
-        try {
-            if(!isAlive(connection)){
-                initialize("public.event");
-            }
-            return session.createConsumer(topic, String.format(EVENT_SELECTOR_TEMPLATE, eventSelector));
         } catch (final JMSException e) {
             throw new RuntimeException(e);
         }
@@ -158,20 +147,8 @@ public class QueueUtil {
         try {
             return (connection != null && connection.getMetaData() != null);
         } catch (JMSException ex) {
-            LOGGER.error("Failed on isAlive",ex);
+            LOGGER.error("Failed on isAlive", ex);
             return false;
         }
     }
-
-    public MessageConsumer createPrivateConsumer(final String eventSelector) {
-        try {
-            if(!isAlive(connection)){
-                initialize("progression.event");
-            }
-            return session.createConsumer(topic, String.format(EVENT_SELECTOR_TEMPLATE, eventSelector));
-        } catch (final JMSException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

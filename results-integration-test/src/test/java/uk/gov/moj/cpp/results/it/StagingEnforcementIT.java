@@ -23,6 +23,7 @@ import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionC
 import static uk.gov.moj.cpp.results.it.stub.SjpStub.setupSjpQueryStub;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.convertStringToJson;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.removeMessagesFromQueue;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocumentCreate;
@@ -63,7 +64,6 @@ public class StagingEnforcementIT {
     public static final String SUBJECT = "subject";
     public static final String DEFENDANT_NAME = "defendantName";
     public static final String APPLICATION_RESULT = "applicationResult";
-    public static final String APPLICATION_RESULT_VALUE = "ROPENED1,Account Consolidated";
     public static final String SEND_TO = "sendTo";
     public static final String GOB_ACCOUNT_NUMBER = "gobAccountNumber";
     public static final String OLD_GOB_ACCOUNT_NUMBER = "oldGobAccountNumber";
@@ -109,12 +109,12 @@ public class StagingEnforcementIT {
 
     private static final String TRACE_AMENDED_RESULT = "json/results.api.trace-amended-results.json";
 
-    private final String HEARING_SITTING_DAY_VALUE = "2018-09-30T09:30:00.000Z" ;
+    private final String HEARING_SITTING_DAY_VALUE = "2018-09-30T09:30:00.000Z";
     private final String HEARING_COURT_CENTRE_NAME_VALUE = "South West London Magistrates Court";
-    private final String DEFENDANT_DATE_OF_BIRTH_VALUE = "01-01-1988" ;
-    private final String DEFENDANT_ADDRESS_VALUE = "176A Lavender Hill" ;
+    private final String DEFENDANT_DATE_OF_BIRTH_VALUE = "01-01-1988";
+    private final String DEFENDANT_ADDRESS_VALUE = "176A Lavender Hill";
     private final String DEFENDANT_EMAIL_VALUE = "defendantEmail@gmail.com";
-    private final String DEFENDANT_CONTACT_NUMBER_VALUE =  "0206989859";
+    private final String DEFENDANT_CONTACT_NUMBER_VALUE = "0206989859";
 
     static MessageConsumer correlationIdAndMasterDefendantIdAddedConsumer;
     static MessageConsumer hearingFinancialResultsUpdatedConsumer;
@@ -122,14 +122,14 @@ public class StagingEnforcementIT {
     static MessageConsumer ncesEmailEventConsumer;
 
     @BeforeAll
-    public static void beforeClass(){
+    public static void beforeClass() {
         stubDocGeneratorEndPoint();
         stubNotificationNotifyEndPoint();
         stubDocumentCreate(STRING.next());
         stubDocumentCreateWithStatusOk(STRING.next());
         stubMaterialUploadFile();
         setupSjpQueryStub("caseUrn1", randomUUID());
-        stubGetProgressionCaseExistsByUrn("32DN1212262",  randomUUID());
+        stubGetProgressionCaseExistsByUrn("32DN1212262", randomUUID());
         correlationIdAndMasterDefendantIdAddedConsumer = privateEvents.createConsumer(CORRELATION_ID_AND_MASTERDEFENDANT_ADDED);
         hearingFinancialResultsUpdatedConsumer = privateEvents.createConsumer(HEARING_FINANCIAL_RESULT_UPDATED);
         sjpUploadCaseDocumentConsumer = privateEvents.createConsumer(SJP_UPLOAD_CASE_DOCUMENT);
@@ -139,10 +139,10 @@ public class StagingEnforcementIT {
 
     @BeforeEach
     public void setUp() {
-        QueueUtil.removeMessagesFromQueue(correlationIdAndMasterDefendantIdAddedConsumer);
-        QueueUtil.removeMessagesFromQueue(hearingFinancialResultsUpdatedConsumer);
-        QueueUtil.removeMessagesFromQueue(sjpUploadCaseDocumentConsumer);
-        QueueUtil.removeMessagesFromQueue(ncesEmailEventConsumer);
+        removeMessagesFromQueue(correlationIdAndMasterDefendantIdAddedConsumer);
+        removeMessagesFromQueue(hearingFinancialResultsUpdatedConsumer);
+        removeMessagesFromQueue(sjpUploadCaseDocumentConsumer);
+        removeMessagesFromQueue(ncesEmailEventConsumer);
         createMessageConsumers();
     }
 
@@ -156,7 +156,7 @@ public class StagingEnforcementIT {
 
     @SuppressWarnings("java:S5961")
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasRejectedOrGranted(){
+    public void shouldSendNcesEmailForNewApplicationThatWasRejectedOrGranted() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -167,7 +167,7 @@ public class StagingEnforcementIT {
                 .replaceAll("DEEMED_SERVED", "false")
                 .replaceAll("FINANCIAL", "true")
                 .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
                 .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
                 .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
                 .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
@@ -206,7 +206,7 @@ public class StagingEnforcementIT {
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -238,13 +238,13 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(DATE_DECISION_MADE), is("01/01/2021"));
         assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
-        Map impositionOffenceDetails =  (Map)jsonResponse.getList(IMPOSITION_OFFENCE_DETAILS).get(0);
+        Map impositionOffenceDetails = (Map) jsonResponse.getList(IMPOSITION_OFFENCE_DETAILS).get(0);
         assertThat(impositionOffenceDetails.get("details"), is(nullValue()));
         assertThat(impositionOffenceDetails.get("title"), is("Title 1"));
     }
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGranted(){
+    public void shouldSendNcesEmailForNewApplicationThatWasGranted() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -277,7 +277,7 @@ public class StagingEnforcementIT {
 
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_GRANTED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_GRANTED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_GRANTED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -288,12 +288,12 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
         assertThat(jsonResponse.getString("originalDateOfSentence"), is(nullValue()));
 
-        assertThat(jsonResponse.getString("newOffenceByResult"), containsString ("FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/12/2023."));
+        assertThat(jsonResponse.getString("newOffenceByResult"), containsString("FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/12/2023."));
     }
 
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGrantedWhenSjpCase(){
+    public void shouldSendNcesEmailForNewApplicationThatWasGrantedWhenSjpCase() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -326,7 +326,7 @@ public class StagingEnforcementIT {
 
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_GRANTED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_GRANTED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_GRANTED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -343,7 +343,7 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGrantedForSJP(){
+    public void shouldSendNcesEmailForNewApplicationThatWasGrantedForSJP() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -376,7 +376,7 @@ public class StagingEnforcementIT {
 
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPLICATION_TO_REOPEN_GRANTED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPLICATION_TO_REOPEN_GRANTED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(APPLICATION_TO_REOPEN_GRANTED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -390,7 +390,7 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasUpdated(){
+    public void shouldSendNcesEmailForNewApplicationThatWasUpdated() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -423,11 +423,11 @@ public class StagingEnforcementIT {
 
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        messages.stream().forEach(jsonPath -> System.out.println("subject = " + jsonPath.getString(SUBJECT)));
+        messages.forEach(jsonPath -> System.out.println("subject = " + jsonPath.getString(SUBJECT)));
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT)
-                .equalsIgnoreCase(APPEAL_APPLICATION_UPDATED))
+                        .equalsIgnoreCase(APPEAL_APPLICATION_UPDATED))
                 .findFirst()
-                .orElseGet(()->JsonPath.from("{}"));
+                .orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_UPDATED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -515,7 +515,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 3);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
 
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
@@ -534,7 +534,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DEFENDANT_ADDRESS), is(DEFENDANT_ADDRESS_VALUE));
         assertThat(jsonResponse.getString(DEFENDANT_CONTACT_NUMBER), is(DEFENDANT_CONTACT_NUMBER_VALUE));
 
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("APPEAL WITHDRAWN")).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("APPEAL WITHDRAWN")).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("APPEAL WITHDRAWN"));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -544,7 +544,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(DATE_DECISION_MADE), is("01/01/2021"));
         assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
-        Map impositionOffenceDetails =  (Map)jsonResponse.getList(IMPOSITION_OFFENCE_DETAILS).get(0);
+        Map impositionOffenceDetails = (Map) jsonResponse.getList(IMPOSITION_OFFENCE_DETAILS).get(0);
         assertThat(impositionOffenceDetails.get("details"), is(nullValue()));
         assertThat(impositionOffenceDetails.get("title"), is("Title 1"));
     }
@@ -597,11 +597,10 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString("impositionOffenceDetails[1].details"), is("Amount of surcharge: £200"));
 
 
-
     }
 
     @Test
-    public void shouldSendNcesEmailWhenResultAmendedWithDeemedServed(){
+    public void shouldSendNcesEmailWhenResultAmendedWithDeemedServed() {
         final String masterDefendantId = randomUUID().toString();
         final String accountCorrelationId1 = randomUUID().toString();
         final String accountCorrelationId2 = randomUUID().toString();
@@ -621,15 +620,15 @@ public class StagingEnforcementIT {
         assertThat(subject1, is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
 
         //Financial + Deemed served result amended to Financial + Deemed served -> Two Nces Email
-        whenResultAmended(masterDefendantId, accountCorrelationId2, divisionCode2,true, true, hearingId);
+        whenResultAmended(masterDefendantId, accountCorrelationId2, divisionCode2, true, true, hearingId);
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId2, accountNumber2);
 
         final List<JsonPath> responses = validateTwoEmailNotificationRequested();
-        JsonPath writeOffOneDayDeemedServed = null;
-        JsonPath amendResultInputError = null;
+        JsonPath writeOffOneDayDeemedServed;
+        JsonPath amendResultInputError;
 
         final String subject = responses.get(0).getString(SUBJECT);
-        if (subject.equals(WRITE_OFF_ONE_DAY_DEEMED_SERVED)){
+        if (subject.equals(WRITE_OFF_ONE_DAY_DEEMED_SERVED)) {
             writeOffOneDayDeemedServed = responses.get(0);
             amendResultInputError = responses.get(1);
         } else {
@@ -655,7 +654,7 @@ public class StagingEnforcementIT {
         assertThat(writeOffOneDayDeemedServed.getString(DIVISION_CODE), is(divisionCode2));
 
         //Financial + Deemed served result amended to Financial result -> One Nces Email
-        whenResultAmended(masterDefendantId, accountCorrelationId3, divisionCode3,false, true, hearingId);
+        whenResultAmended(masterDefendantId, accountCorrelationId3, divisionCode3, false, true, hearingId);
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId3, accountNumber3);
 
         final JsonPath jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
@@ -672,7 +671,7 @@ public class StagingEnforcementIT {
 
 
     @Test
-    public void shouldSendNcesEmailWhenFinancialResultAmendedWithFinancial(){
+    public void shouldSendNcesEmailWhenFinancialResultAmendedWithFinancial() {
         final String masterDefendantId = randomUUID().toString();
         final String accountCorrelationId1 = randomUUID().toString();
         final String accountCorrelationId2 = randomUUID().toString();
@@ -711,11 +710,11 @@ public class StagingEnforcementIT {
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId3, accountNumber3);
 
         final List<JsonPath> responses = validateTwoEmailNotificationRequested();
-        JsonPath writeOffOneDayDeemedServed = null;
-        JsonPath amendResultInputError = null;
+        JsonPath writeOffOneDayDeemedServed;
+        JsonPath amendResultInputError;
 
         final String subject = responses.get(0).getString(SUBJECT);
-        if (subject.equals(WRITE_OFF_ONE_DAY_DEEMED_SERVED)){
+        if (subject.equals(WRITE_OFF_ONE_DAY_DEEMED_SERVED)) {
             writeOffOneDayDeemedServed = responses.get(0);
             amendResultInputError = responses.get(1);
         } else {
@@ -742,7 +741,7 @@ public class StagingEnforcementIT {
 
     @SuppressWarnings("java:S5961")
     @Test
-    public void shouldSendNcesEmailWhenAccountNumberReceivedUnordered(){
+    public void shouldSendNcesEmailWhenAccountNumberReceivedUnordered() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId1 = randomUUID().toString();
@@ -751,7 +750,6 @@ public class StagingEnforcementIT {
         final String accountNumber1 = "AER123451";
         final String accountNumber2 = "AER123452";
         final String accountNumber3 = "AER123453";
-        final String divisionCode1 = "DIV01";
         final String divisionCode2 = "DIV02";
         final String divisionCode3 = "DIV03";
 
@@ -763,7 +761,6 @@ public class StagingEnforcementIT {
 
         //Financial Result amended to Financial + Deemed Served -> Two Nces Email
         whenResultAmended(masterDefendantId, accountCorrelationId3, divisionCode3, true, true, hearingId);
-
 
 
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId3, accountNumber3);
@@ -798,7 +795,7 @@ public class StagingEnforcementIT {
 
     }
 
-    private List<JsonPath> validateTwoEmailNotificationRequested(){
+    private List<JsonPath> validateTwoEmailNotificationRequested() {
         JsonPath response1 = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
         String subject1 = response1.getString(SUBJECT);
         assertThat(subject1, anyOf(is(AMEND_AND_RESHARE), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED)));
@@ -812,14 +809,14 @@ public class StagingEnforcementIT {
     }
 
 
-    private void initiateResultBeforeAmendment(String payloadFilname, final String masterDefendantId, final String correlationId, final Boolean deemedServed, final Boolean financial, final String hearingId){
+    private void initiateResultBeforeAmendment(String payloadFilname, final String masterDefendantId, final String correlationId, final Boolean deemedServed, final Boolean financial, final String hearingId) {
         final String tracePayload = getPayload(payloadFilname).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", correlationId)
                 .replaceAll("ACON", "CODE01")
                 .replaceAll("DEEMED_SERVED", deemedServed.toString())
                 .replaceAll("FINANCIAL", financial.toString())
                 .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
                 .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
                 .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
                 .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
@@ -833,7 +830,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
     }
 
-    private void whenAccountNumberRetrieved(final String masterDefendantId, final String correlationId, final String accountNumber){
+    private void whenAccountNumberRetrieved(final String masterDefendantId, final String correlationId, final String accountNumber) {
         JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, correlationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
@@ -849,7 +846,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
     }
 
-    private void  whenResultAmended(final String masterDefendantId, final String correlationId, final String divisionCode, final Boolean deemedServed, final Boolean financial, final String hearingId){
+    private void whenResultAmended(final String masterDefendantId, final String correlationId, final String divisionCode, final Boolean deemedServed, final Boolean financial, final String hearingId) {
 
         final String amendedTracePayload = getPayload(TRACE_AMENDED_RESULT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", correlationId)
@@ -857,7 +854,7 @@ public class StagingEnforcementIT {
                 .replaceAll("DEEMED_SERVED", deemedServed.toString())
                 .replaceAll("FINANCIAL", financial.toString())
                 .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
                 .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
                 .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
                 .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
@@ -871,7 +868,7 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    public void shouldRaiseEmailForDeemedServed(){
+    public void shouldRaiseEmailForDeemedServed() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -897,7 +894,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
 
 
-         JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
+        JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
                 .add(UPDATED, "2019-12-01T10:00:00Z")
@@ -912,7 +909,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
 
         List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -931,15 +928,15 @@ public class StagingEnforcementIT {
 
         payload = getPayload(TRACE_RESULT_AMENDMENT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId)
-               .replaceAll("FINANCIAL", "false")
+                .replaceAll("FINANCIAL", "false")
                 .replaceAll("DEEMED_SERVED", "false")
                 .replaceAll("AMENDMENT_REASON", "Amendment1")
-               .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-               .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
-               .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
-               .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
-               .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
-               .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE);
+                .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
+                .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
+                .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
+                .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
+                .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE);
 
         whenResultsAreTraced(payload);
 
@@ -967,7 +964,7 @@ public class StagingEnforcementIT {
                 .replaceAll("FINANCIAL", "true")
                 .replaceAll("AMENDMENT_REASON", "Amendment2")
                 .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
                 .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
                 .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
                 .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
@@ -994,7 +991,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber2));
 
         messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED)).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));

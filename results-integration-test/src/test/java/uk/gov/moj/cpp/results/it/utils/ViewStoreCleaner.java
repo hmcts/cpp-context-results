@@ -9,9 +9,4 @@ public class ViewStoreCleaner {
         databaseCleaner.cleanViewStoreTables("results",
                 "defendant_tracking_status");
     }
-
-    public static void cleanEventStoreTables() {
-        final DatabaseCleaner databaseCleaner = new DatabaseCleaner();
-        databaseCleaner.cleanEventStoreTables("results");
-    }
 }

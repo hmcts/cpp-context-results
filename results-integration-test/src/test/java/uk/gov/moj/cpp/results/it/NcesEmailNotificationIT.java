@@ -10,12 +10,11 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
-import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getEmailNotificationDetails;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubDocGeneratorEndPoint;
-import static uk.gov.moj.cpp.results.it.stub.NotificationServiceStub.verifyEmailNotificationIsRaised;
+import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.verifyEmailNotificationIsRaised;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
@@ -30,7 +29,7 @@ import uk.gov.justice.services.messaging.JsonMetadata;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
-import uk.gov.moj.cpp.results.it.stub.NotificationServiceStub;
+import uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +53,6 @@ public class NcesEmailNotificationIT {
 
     private static final String MATERIAL_ID = "materialId";
     private static final String MATERIAL_MATERIAL_ADDED = "material.material-added";
-    private static final String DOCUMENT_TEXT = STRING.next();
     private static final String RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED = "results.event.nces-email-notification-requested";
     private static final String SOURCE = "originator-nces";
     private static final String ORIGINATOR_VALUE = "nces";
@@ -66,18 +64,21 @@ public class NcesEmailNotificationIT {
     private MessageConsumer messagePrivateConsumer;
     private UUID userId;
 
+    private NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
+
     @BeforeAll
     public static void setupStubs() {
         setupUsersGroupQueryStub();
         stubGetProgressionCaseExistsByUrn("CaseReference",  randomUUID());
         stubDocGeneratorEndPoint();
-        NotificationServiceStub.setUp();
+        NotificationNotifyServiceStub.setupNotificationNotifyStubs();
         stubMaterialUploadFile();
     }
 
     @BeforeEach
     public void setup() {
         userId = getUserId();
+        ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
 
         messageProducerClientPrivate = privateEvents.createProducer();
         messageProducerClientPublic = publicEvents.createPublicProducer();
@@ -89,14 +90,15 @@ public class NcesEmailNotificationIT {
     public void tearDown() throws JMSException {
         messageProducerClientPrivate.close();
         messageProducerClientPublic.close();
+        messagePrivateConsumer.close();
+        ncesNotificationRequestDocumentRequestHelper.closeMessageConsumers();
+
     }
 
     @Test
     public void shouldSendNcesNotificationRequestedAndCreateDocumentWithAsynchronousFlow() {
 
         final UUID USER_ID_VALUE_AS_ADMIN = randomUUID();
-
-        NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
 
         final NcesEmailNotificationRequested ncesEmailNotificationRequested = generateNcesNotificationRequested();
 
@@ -125,8 +127,6 @@ public class NcesEmailNotificationIT {
     @Test
     public void shouldNotSendNcesNotificationRequestedForNonNcesOriginator() {
         final UUID USER_ID_VALUE_AS_ADMIN = randomUUID();
-
-        NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
 
         final NcesEmailNotificationRequested ncesEmailNotificationRequested = generateNcesNotificationRequested();
 
@@ -209,7 +209,7 @@ public class NcesEmailNotificationIT {
                 .build()).build();
     }
 
-    private static void verifyNcesEmailNotificationDetails(final UUID userId, NcesEmailNotificationRequested ncesEmailNotificationRequested) {
+    private void verifyNcesEmailNotificationDetails(final UUID userId, NcesEmailNotificationRequested ncesEmailNotificationRequested) {
 
         final Matcher[] matcher = {
                 withJsonPath("$.id", notNullValue()),

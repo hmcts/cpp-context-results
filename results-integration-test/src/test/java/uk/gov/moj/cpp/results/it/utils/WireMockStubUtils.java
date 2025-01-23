@@ -51,6 +51,7 @@ public class WireMockStubUtils {
     private static final String CONTENT_TYPE_QUERY_GROUPS = "application/vnd.usersgroups.groups+json";
     public static final String MATERIAL_UPLOAD_COMMAND_TYPE = "material.command.upload-file";
     public static final String UPLOAD_MATERIAL_COMMAND = "/material-service/command/api/rest/material/material";
+
     static {
         configureFor(HOST, 8080);
         reset();
@@ -144,7 +145,11 @@ public class WireMockStubUtils {
 
     public static void waitForPostStubToBeReady(final String resource, final String mediaType, final Response.Status expectedStatus) {
         final RestClient restClient = new RestClient();
-        waitAtMost(TEN_SECONDS).until(() -> restClient.postCommand(getBaseUri() + resource, mediaType, "").getStatus() == expectedStatus.getStatusCode());
+        waitAtMost(TEN_SECONDS).until(() -> {
+            try (Response response = restClient.postCommand(getBaseUri() + resource, mediaType, "")) {
+                return response.getStatus() == expectedStatus.getStatusCode();
+            }
+        });
     }
 
     public static void stubNotificationNotifyEndPoint() {

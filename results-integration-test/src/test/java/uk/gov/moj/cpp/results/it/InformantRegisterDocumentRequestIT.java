@@ -13,7 +13,6 @@ import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestH
 import static uk.gov.moj.cpp.results.it.helper.RestHelper.postCommand;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryGroupMemberCases;
-import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
 
@@ -24,17 +23,12 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-
 import io.restassured.response.Response;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class InformantRegisterDocumentRequestIT {
-    private MessageProducer producer;
     private InformantRegisterDocumentRequestHelper helper;
     private static final UUID GROUP_ID = randomUUID();
 
@@ -48,13 +42,6 @@ public class InformantRegisterDocumentRequestIT {
     @BeforeEach
     public void setup() {
         helper = new InformantRegisterDocumentRequestHelper();
-        producer = publicEvents.createProducer();
-    }
-
-    @AfterEach
-    public void tearDown() throws JMSException {
-        producer.close();
-        helper.closeMessageConsumers();
     }
 
     @Test
@@ -67,11 +54,9 @@ public class InformantRegisterDocumentRequestIT {
 
         final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate, hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request.json");
         assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
-        helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
 
         generateInformantRegister();
-        helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
     }
 
@@ -86,11 +71,9 @@ public class InformantRegisterDocumentRequestIT {
         final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, randomAlphanumeric(7), registerDate,
                 hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-with-groupId.json", GROUP_ID);
         assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
-        helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId, true, 3);
 
         generateInformantRegister();
-        helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
     }
 
@@ -135,9 +118,7 @@ public class InformantRegisterDocumentRequestIT {
 
         generateInformantRegister();
 
-        helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
-
 
         final ZonedDateTime registerDate5 = now(UTC).minusMinutes(3);
 
@@ -150,9 +131,7 @@ public class InformantRegisterDocumentRequestIT {
         helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
         generateInformantRegister();
 
-        helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
-
     }
 
     @Test
@@ -205,55 +184,14 @@ public class InformantRegisterDocumentRequestIT {
         final InformantRegisterDocumentRequestHelper helper = new InformantRegisterDocumentRequestHelper();
 
         recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate, hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request.json");
-        helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
-
         helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
 
         generateInformantRegister();
-        helper.verifyInformantRegisterDocumentRequestNotifiedPrivateTopic(prosecutionAuthorityId.toString());
+        helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
 
         generateInformantRegisterByDate(registerDate.toLocalDate());
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
     }
-
-    @Test
-    public void shouldNotSendInformantRegistersNotificationWithoutRecipients() throws IOException {
-        final UUID prosecutionAuthorityId = randomUUID();
-        final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
-        final String prosecutionAuthorityCode = STRING.next();
-
-        final InformantRegisterDocumentRequestHelper helper = new InformantRegisterDocumentRequestHelper();
-
-        recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate, hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-without-recipients.json");
-        helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
-
-        helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
-
-        generateInformantRegister();
-        helper.verifyInformantRegisterNotificationIgnoredPrivateTopic(prosecutionAuthorityId.toString());
-    }
-
-    @Test
-    public void shouldNotSendInformantRegistersNotificationWithoutMatchingTemplate() throws IOException {
-        final UUID prosecutionAuthorityId = randomUUID();
-        final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
-        final String prosecutionAuthorityCode = STRING.next();
-
-        final InformantRegisterDocumentRequestHelper helper = new InformantRegisterDocumentRequestHelper();
-
-        recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate, hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-without-matching-template.json");
-        helper.verifyInformantRegisterDocumentRequestRecordedPrivateTopic(prosecutionAuthorityId.toString());
-
-        helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
-
-        generateInformantRegister();
-        helper.verifyInformantRegisterNotificationIgnoredPrivateTopic(prosecutionAuthorityId.toString());
-    }
-
 
     private void generateInformantRegister() throws IOException {
         final Response generateRegisterResponse = postCommand(

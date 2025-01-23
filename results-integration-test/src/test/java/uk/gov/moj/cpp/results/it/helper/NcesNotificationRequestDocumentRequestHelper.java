@@ -1,44 +1,33 @@
 package uk.gov.moj.cpp.results.it.helper;
 
 import static java.util.UUID.randomUUID;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.sendMessage;
-import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.retrieveMessage;
 
 import uk.gov.justice.services.common.http.HeaderConstants;
 import uk.gov.justice.services.messaging.Metadata;
-import uk.gov.moj.cpp.results.it.utils.QueueUtil;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import javax.jms.MessageConsumer;
+import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import io.restassured.path.json.JsonPath;
-
 
 public class NcesNotificationRequestDocumentRequestHelper {
 
-    private String EVENT_SELECTOR_NCES_NOTIFICATION_REQUEST_DOCUMENT_REQUEST = "results.event.nces-email-notification";
-    private String EVENT_SELECTOR_NCES_NOTIFICATION_REQUEST_DOCUMENT_REQUESTED = "results.event.nces-email-notification-requested";
-
     private static final String ORIGINATOR = "NCES_EMAIL_NOTIFICATION_REQUEST";
-
-    protected MessageConsumer privateEventsConsumer;
 
     protected MessageProducer publicMessageProducer;
 
     public NcesNotificationRequestDocumentRequestHelper() {
-        privateEventsConsumer = QueueUtil.privateEvents.createPrivateConsumer(EVENT_SELECTOR_NCES_NOTIFICATION_REQUEST_DOCUMENT_REQUEST);
-        publicMessageProducer = QueueUtil.publicEvents.createPublicProducer();
+        publicMessageProducer = publicEvents.createPublicProducer();
     }
 
     public void sendSystemDocGeneratorPublicEvent(final UUID userId, final UUID materialId, final UUID payloadFileServiceId, final UUID documentFileServiceId) {
@@ -89,8 +78,7 @@ public class NcesNotificationRequestDocumentRequestHelper {
                 .build()).build();
     }
 
-    public void verifyNcesDocumentRequestRecordedPrivateTopic(final String materialId) {
-        final JsonPath jsonResponse = retrieveMessage(privateEventsConsumer);
-        assertThat(jsonResponse.get("materialId"), is(materialId));
+    public void closeMessageConsumers() throws JMSException {
+        publicMessageProducer.close();
     }
 }
