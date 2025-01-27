@@ -301,6 +301,19 @@ public class TestTemplates {
         return publicHearingResulted;
     }
 
+    public static PublicHearingResulted basicShareResultsV2TemplateWithTwoOffences(final JurisdictionType jurisdictionType) {
+
+        final UUID hearingId = randomUUID();
+
+        return PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplate(hearingId,
+                        singletonList(createCaseWithDefendantAndOffenceLevelJudicialResults(buildJudicialResultList())), jurisdictionType, false))
+                .setIsReshare(Optional.of(false))
+                .setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+
+    }
+
     public static PublicHearingResulted basicShareResultsV2TemplateForIndicatedPlea(final JurisdictionType jurisdictionType) {
         final PublicHearingResulted publicHearingResulted = basicShareResultsTemplateForIndicatedPlea(jurisdictionType, false, false);
         publicHearingResulted.setIsReshare(Optional.of(false));
@@ -342,10 +355,6 @@ public class TestTemplates {
         return basicShareResultsTemplate(jurisdictionType, false, isSJPHearing);
     }
 
-    public static PublicHearingResulted basicShareResultsWithVerdictTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict) {
-        return basicShareResultsTemplate(jurisdictionType, isWithVerdict);
-    }
-
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing) {
 
         final UUID hearingId = randomUUID();
@@ -381,31 +390,6 @@ public class TestTemplates {
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), false), createProsecutionCase2(buildJudicialResultList(), false)), JurisdictionType.MAGISTRATES, false))
                 .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")))
                 .setShadowListedOffences(singletonList(UUID.randomUUID()));
-    }
-
-    public static PublicHearingResulted basicShareResultsTemplateWithoutResult(final JurisdictionType jurisdictionType) {
-
-        final UUID hearingId = randomUUID();
-
-        return PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)), jurisdictionType, false))
-                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-
-    }
-
-    public static PublicHearingResulted basicShareResultsV2TemplateWithoutResult(final JurisdictionType jurisdictionType) {
-
-        final UUID hearingId = randomUUID();
-
-        final PublicHearingResulted publicHearingResulted = PublicHearingResulted.publicHearingResulted()
-                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)), jurisdictionType, false))
-                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
-
-        publicHearingResulted.setIsReshare(Optional.of(false));
-        publicHearingResulted.setHearingDay(Optional.of(LocalDate.now()));
-
-        return publicHearingResulted;
-
     }
 
     private static ProsecutionCase createProsecutionCase1(final List<JudicialResult> judicialResults, final boolean isWithVerdict) {
@@ -600,7 +584,7 @@ public class TestTemplates {
                     .build());
         }
 
-        if(isIndicatedPlea){
+        if (isIndicatedPlea) {
             builder.withIndicatedPlea(IndicatedPlea.indicatedPlea()
                     .withOffenceId(ID)
                     .withIndicatedPleaDate(LocalDate.now())

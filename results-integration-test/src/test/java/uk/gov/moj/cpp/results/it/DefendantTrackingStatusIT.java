@@ -9,11 +9,9 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.not;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.setLoggedInUserAsCourtAdmin;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyQueryDefendantTrackingStatus;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
@@ -27,7 +25,7 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.RESULT_DEFINITION_GROUP_
 import static uk.gov.moj.cpp.results.test.TestTemplates.RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE;
 import static uk.gov.moj.cpp.results.test.TestTemplates.RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF;
 import static uk.gov.moj.cpp.results.test.TestTemplates.RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplate;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template;
 
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
@@ -38,7 +36,6 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -47,12 +44,10 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.UUID;
 
-import javax.jms.JMSException;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matcher;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,25 +78,19 @@ public class DefendantTrackingStatusIT {
         stubGetOrgainsationUnit();
         stubJudicialResults();
         stubModeOfTrialReasons();
-    }
-
-    @AfterEach
-    public void teardown() throws JMSException {
-        closeMessageConsumers();
+        setLoggedInUserAsCourtAdmin(getUserId());
+        stubSpiOutFlag(true, true);
     }
 
     @BeforeEach
     public void setUp() {
         cleanViewStoreTables();
-        stubSpiOutFlag(true, true);
-        createMessageConsumers();
-        setField(this.jsonToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
     }
 
     @Test
     public void shouldUpdateDefendantTrackingStatusWhenElectronicMonitoringResultsSharedInNextHearing() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -112,9 +101,7 @@ public class DefendantTrackingStatusIT {
         // update template with ELMON result code before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE, DEFENDANT_ID_VALUE2)),
                 withJsonPath("$.defendants[?(@.defendantId=='" + DEFENDANT_ID_VALUE + "')].trackingStatus[*].offenceId", hasItem(offence1.getId().toString())),
@@ -130,24 +117,24 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // create a second hearing with all 4 defendants, def 1 and def 2 having offences from previous hearing, def 3 and def 4 having new offences
         final PublicHearingResulted secondHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        hearingResultsHaveBeenShared(secondHearing);
+        hearingResultsHaveBeenSharedV2(secondHearing, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(0))
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldUpdateDefendantTrackingStatusWhenWoAResultsSharedInNextHearing() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -158,9 +145,7 @@ public class DefendantTrackingStatusIT {
         // update template with "Warrants of arrest" result code before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE, DEFENDANT_ID_VALUE2)),
                 withJsonPath("$.defendants[?(@.defendantId=='" + DEFENDANT_ID_VALUE + "')].trackingStatus[*].offenceId", hasItem(offence1.getId().toString())),
@@ -176,24 +161,24 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // create a second hearing with all 4 defendants, def 1 and def 2 having offences from previous hearing, def 3 and def 4 having new offences
         final PublicHearingResulted secondHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        hearingResultsHaveBeenShared(secondHearing);
+        hearingResultsHaveBeenSharedV2(secondHearing, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(0))
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldUpdateDefendantTrackingStatusWhenElectronicMonitoringResultsReSharedAtALaterDate() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -204,9 +189,7 @@ public class DefendantTrackingStatusIT {
         // update template with ELMON result code before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants", hasSize(2)),
                 withJsonPath("$.defendants[*].defendantId", not(hasItems(DEFENDANT_ID_VALUE3, DEFENDANT_ID_VALUE4))),
@@ -224,24 +207,24 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // update the same hearing for def 1 and def 2 for a re-share
         final PublicHearingResulted firstHearingReshare = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2), Optional.of(hearing.getId()));
 
-        hearingResultsHaveBeenShared(firstHearingReshare);
+        hearingResultsHaveBeenSharedV2(firstHearingReshare, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(0))
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldUpdateDefendantTrackingStatusWhenWoAResultsReSharedAtALaterDate() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -252,9 +235,7 @@ public class DefendantTrackingStatusIT {
         // update template with "Warrants of arrest" result code before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants", hasSize(2)),
                 withJsonPath("$.defendants[*].defendantId", not(hasItems(DEFENDANT_ID_VALUE3, DEFENDANT_ID_VALUE4))),
@@ -272,24 +253,24 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // update the same hearing for def 1 and def 2 for a re-share
         final PublicHearingResulted secondHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2), Optional.of(hearing.getId()));
 
-        hearingResultsHaveBeenShared(secondHearing);
+        hearingResultsHaveBeenSharedV2(secondHearing, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(0))
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldNotUpdateDefendantTrackingStatusWhenElectronicMonitoringResultsReSharedAfterANewHearing() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -300,9 +281,7 @@ public class DefendantTrackingStatusIT {
         // update template with ELMON result code before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE, DEFENDANT_ID_VALUE2)),
                 withJsonPath("$.defendants[?(@.defendantId=='" + DEFENDANT_ID_VALUE + "')].trackingStatus[*].offenceId", hasItem(offence1.getId().toString())),
@@ -317,12 +296,12 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // create a second hearing with all 4 defendants, def 1 and def 2 having offences from previous hearing, def 3 and def 4 having new offences, EM status EXTENDED
         final PublicHearingResulted newHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        hearingResultsHaveBeenShared(newHearing);
+        hearingResultsHaveBeenSharedV2(newHearing, false);
 
         final Matcher[] matcherAfterAmend = {
                 withJsonPath("$.defendants", hasSize(2)),
@@ -338,12 +317,12 @@ public class DefendantTrackingStatusIT {
 
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterAmend);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterAmend);
 
         // amend and re-share first hearing on a later date, but it will be ignored because we have a newer order date from the previous hearing
         final PublicHearingResulted amendedHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), Optional.of(hearing.getId()));
 
-        hearingResultsHaveBeenShared(amendedHearing);
+        hearingResultsHaveBeenSharedV2(amendedHearing, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(2)),
@@ -358,13 +337,13 @@ public class DefendantTrackingStatusIT {
 
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldNotUpdateDefendantTrackingStatusWhenWoAResultsReSharedAfterANewHearing() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -375,9 +354,7 @@ public class DefendantTrackingStatusIT {
         // update template with "Warrants of arrest" result code before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE, DEFENDANT_ID_VALUE2)),
                 withJsonPath("$.defendants[?(@.defendantId=='" + DEFENDANT_ID_VALUE + "')].trackingStatus[*].offenceId", hasItem(offence1.getId().toString())),
@@ -392,12 +369,12 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // create a second hearing with all 4 defendants, def 1 and def 2 having offences from previous hearing, def 3 and def 4 having new offences, Warrant of Arrest status EXTENDED
         final PublicHearingResulted newHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2), empty());
 
-        hearingResultsHaveBeenShared(newHearing);
+        hearingResultsHaveBeenSharedV2(newHearing, false);
 
         final Matcher[] matcherAfterAmend = {
                 withJsonPath("$.defendants", hasSize(2)),
@@ -413,12 +390,12 @@ public class DefendantTrackingStatusIT {
 
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterAmend);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterAmend);
 
         // amend and re-share first hearing on a later date, but it will be ignored because we have a newer order date from the previous hearing
         final PublicHearingResulted amendedHearing = updateHearingTemplateWithResultDefinitionGroup(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2), Optional.of(hearing.getId()));
 
-        hearingResultsHaveBeenShared(amendedHearing);
+        hearingResultsHaveBeenSharedV2(amendedHearing, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(2)),
@@ -434,13 +411,13 @@ public class DefendantTrackingStatusIT {
 
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldUpdateDefendantTrackingStatusWhenBothElectronicMonitoringAndWoAResultsSharedInNextHearing() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -451,9 +428,7 @@ public class DefendantTrackingStatusIT {
         // update template with "Warrants of arrest" result code for defendant1 and "ELMON" for defendant2 before sharing results
         final PublicHearingResulted firstHearing = updateHearingTemplateWithDifferentResultDefinitionGroupsForMultipleDefendants(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2));
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE, DEFENDANT_ID_VALUE2)),
                 withJsonPath("$.defendants[?(@.defendantId=='" + DEFENDANT_ID_VALUE + "')].trackingStatus[*].offenceId", hasItem(offence1.getId().toString())),
@@ -470,24 +445,24 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // create a second hearing with all 4 defendants, def 1 and def 2 having offences from previous hearing, def 3 and def 4 having new offences
         final PublicHearingResulted secondHearing = updateHearingTemplateWithDifferentResultDefinitionGroupsForMultipleDefendants(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF, RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE, LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2));
 
-        hearingResultsHaveBeenShared(secondHearing);
+        hearingResultsHaveBeenSharedV2(secondHearing, false);
 
         final Matcher[] matcherAfterDeactivation = {
                 withJsonPath("$.defendants", hasSize(0))
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherAfterDeactivation);
     }
 
     @Test
     public void shouldUpdateDefendantTrackingStatusWhenBothElectronicMonitoringAndWoAResultsSharedForSameDefendant() {
 
-        final PublicHearingResulted template = basicShareResultsTemplate(MAGISTRATES);
+        final PublicHearingResulted template = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearing = template.getHearing();
         final Defendant defendant1 = hearing.getProsecutionCases().get(0).getDefendants().stream().filter(d -> d.getId().toString().equals(DEFENDANT_ID_VALUE)).findFirst().get();
@@ -498,9 +473,7 @@ public class DefendantTrackingStatusIT {
         // update template with both "Warrants of arrest" and "ELMON" result codes for defendant1
         final PublicHearingResulted firstHearing = updateHearingTemplateWithDifferentResultDefinitionGroupsForMultipleDefendants(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON + "," + RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, "", LAST_MODIFIED_TIME_LAST_WEEK_LOCALDATE, Optional.of(offence1), Optional.of(offence2));
 
-        setLoggedInUserAsCourtAdmin(getUserId());
-
-        hearingResultsHaveBeenShared(firstHearing);
+        hearingResultsHaveBeenSharedV2(firstHearing, false);
         final Matcher[] matcher = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE)),
                 withJsonPath("$.defendants[*].defendantId", not(hasItems(DEFENDANT_ID_VALUE2))),
@@ -517,12 +490,12 @@ public class DefendantTrackingStatusIT {
                 .add(DEFENDANT_ID_VALUE3)
                 .add(DEFENDANT_ID_VALUE4);
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcher);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcher);
 
         // create a second hearing with defendant1's WoA and ELMON extended, def2, def3 and def4 remains the same
         final PublicHearingResulted secondHearing = updateHearingTemplateWithDifferentResultDefinitionGroupsForMultipleDefendants(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_ON + "," + RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_ACTIVATE, "", LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2));
 
-        hearingResultsHaveBeenShared(secondHearing);
+        hearingResultsHaveBeenSharedV2(secondHearing, false);
 
         final Matcher[] matcherForExtended = {
                 withJsonPath("$.defendants[*].defendantId", hasItems(DEFENDANT_ID_VALUE)),
@@ -534,17 +507,17 @@ public class DefendantTrackingStatusIT {
                 withJsonPath("$.defendants[?(@.defendantId=='" + DEFENDANT_ID_VALUE + "')].trackingStatus[*].emLastModifiedTime", hasItem(LAST_MODIFIED_TIME_TODAY)),
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherForExtended);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherForExtended);
 
         // create a third hearing with defendant1's WoA and ELMON ended, def2, def3 and def4 remains the same
         final PublicHearingResulted thirdHearing = updateHearingTemplateWithDifferentResultDefinitionGroupsForMultipleDefendants(template, RESULT_DEFINITION_GROUP_WARRANT_OF_ARREST_OFF + "," + RESULT_DEFINITION_GROUP_ELECTRONIC_MONITORING_DEACTIVATE, "", LAST_MODIFIED_TIME_TODAY_LOCALDATE, Optional.of(offence1), Optional.of(offence2));
 
-        hearingResultsHaveBeenShared(thirdHearing);
+        hearingResultsHaveBeenSharedV2(thirdHearing, false);
         final Matcher[] matcherForWoaAndELMONEnded = {
                 withJsonPath("$.defendants[*]", hasSize(0))
         };
 
-        ResultsStepDefinitions.getDefendantTrackingStatus(defendantIds.toString(), matcherForWoaAndELMONEnded);
+        verifyQueryDefendantTrackingStatus(defendantIds.toString(), matcherForWoaAndELMONEnded);
 
     }
 

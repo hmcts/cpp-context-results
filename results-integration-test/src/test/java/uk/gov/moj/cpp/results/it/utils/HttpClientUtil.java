@@ -24,7 +24,6 @@ public class HttpClientUtil {
     private static final String WRITE_BASE_URL = "/results-service/command/api/rest/results";
     private static final String BASE_URI = format("http://%s:%s", HOST, PORT);
     private static final String GENERATE_POLICE_RESULTS_MEDIA_TYPE = "application/vnd.results.command.generate-police-results-for-a-defendant+json";
-    private static final String CREATE_RESULTS_MEDIA_TYPE = "application/vnd.results.api.create-results+json";
     private static final String TRACK_RESULTS_MEDIA_TYPE = "application/vnd.results.api.track-results+json";
     private static final RestClient restClient = new RestClient();
 
@@ -32,24 +31,18 @@ public class HttpClientUtil {
         final String writeUrl = format("/results/%s/", jsonObject.getString("sessionId"));
         final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         headers.putSingle(USER_ID, getUserId());
-        final Response response = restClient.postCommand(getWriteUrl(writeUrl), GENERATE_POLICE_RESULTS_MEDIA_TYPE, jsonObject.toString(), headers);
-        assertThat(response.getStatus(), is(ACCEPTED.getStatusCode()));
-    }
-
-    public static void createResultsCommand(final String payload) {
-        final String writeUrl = "/create-results";
-        final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
-        headers.putSingle(USER_ID, getUserId());
-        final Response response = restClient.postCommand(getWriteUrl(writeUrl), CREATE_RESULTS_MEDIA_TYPE, payload, headers);
-        assertThat(response.getStatus(), is(ACCEPTED.getStatusCode()));
+        try (Response response = restClient.postCommand(getWriteUrl(writeUrl), GENERATE_POLICE_RESULTS_MEDIA_TYPE, jsonObject.toString(), headers)) {
+            assertThat(response.getStatus(), is(ACCEPTED.getStatusCode()));
+        }
     }
 
     public static void trackResultsCommand(final String payload) {
         final String writeUrl = "/track-results";
         final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         headers.putSingle(USER_ID, getUserId());
-        final Response response = restClient.postCommand(getWriteUrl(writeUrl), TRACK_RESULTS_MEDIA_TYPE, payload, headers);
-        assertThat(response.getStatus(), is(ACCEPTED.getStatusCode()));
+        try (Response response = restClient.postCommand(getWriteUrl(writeUrl), TRACK_RESULTS_MEDIA_TYPE, payload, headers)) {
+            assertThat(response.getStatus(), is(ACCEPTED.getStatusCode()));
+        }
     }
 
     private static String getWriteUrl(final String resource) {

@@ -2,9 +2,7 @@ package uk.gov.moj.cpp.results.it.steps;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
-import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
-import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.Response.Status.OK;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.hamcrest.CoreMatchers.not;
@@ -12,7 +10,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.AllOf.allOf;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
@@ -20,21 +17,15 @@ import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.CIVIL_OFFENCE;
-import static uk.gov.moj.cpp.domains.SchemaVariableConstants.GROUP_ID;
-import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MASTER;
-import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MEMBER;
+import static uk.gov.moj.cpp.results.it.helper.RestPollerHelper.pollWithDefaults;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
-import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
-import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.createResultsCommand;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.trackResultsCommand;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.RETRIEVE_TIMEOUT;
-import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupAsSystemUser;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsCourtAdminGroup;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
@@ -42,24 +33,17 @@ import uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.domain.event.JudicialResultDetails;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.test.matchers.MapJsonObjectToTypeMatcher;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
@@ -73,61 +57,23 @@ import org.json.JSONObject;
 
 public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
-    private static final String CREATE_RESULTS_TEMPLATE_PAYLOAD = "json/results.api.create-results.json";
-
     private static final String CONTENT_TYPE_HEARING_DETAILS = "application/vnd.results.hearing-details+json";
     private static final String CONTENT_TYPE_HEARING_INFORMATION_DETAILS = "application/vnd.results.hearing-information-details+json";
     private static final String CONTENT_TYPE_HEARING_DETAILS_INTERNAL = "application/vnd.results.hearing-details-internal+json";
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
     private static final String CONTENT_TYPE_DEFENDANT_TRACKING_STATUS = "application/vnd.results.get-defendants-tracking-status+json";
     private static final String CONTENT_TYPE_NCES_EMAIL_NOTIFICATION_DETAILS = "application/vnd.results.query.nces-email-notification-details+json";
-    private static final String RESULTS_EVENT_SESSION_ADDED_EVENT = "results.event.session-added-event";
-    private static final String RESULTS_EVENT_CASE_REJECTED_EVENT = "results.event.sjp-case-rejected-event";
-    private static final String RESULTS_EVENT_CASE_ADDED_EVENT = "results.event.case-added-event";
-    private static final String RESULTS_EVENT_DEFENDANT_ADDED_EVENT = "results.event.defendant-added-event";
-    private static final String RESULTS_EVENT_DEFENDANT_UPDATED_EVENT = "results.event.defendant-updated-event";
-    private static final String RESULTS_EVENT_DEFENDANT_REJECTED_EVENT = "results.event.defendant-rejected-event";
-    private static final String RESULTS_EVENT_POLICE_RESULT_GENERATED = "results.event.police-result-generated";
-    private static final String RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED = "results.event.police-notification-requested";
-    private static final String RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED_V2 = "results.event.police-notification-requested-v2";
-    private static final String RESULTS_EVENT_POLICE_NOTIFICATION_FAILED = "results.event.email-notification-failed";
 
-    private static final String PUBLIC_EVENT_HEARING_RESULTED = "public.hearing.resulted";
     private static final String PUBLIC_EVENT_HEARING_RESULTED_V2 = "public.events.hearing.hearing-resulted";
 
     private static final String GET_RESULTS_SUMMARY = "results.get-results-summary";
 
-    private static MessageConsumer privateSessionAddedEventConsumer;
-    private static MessageConsumer privateCaseRejectedEventConsumer;
-    private static MessageConsumer privateCaseAddedEventConsumer;
-    private static MessageConsumer privateDefendantAddedEventConsumer;
-    private static MessageConsumer privateDefendantUpdatedEventConsumer;
-    private static MessageConsumer privateDefendantRejectedEventConsumer;
-    private static MessageConsumer privatePoliceResultGeneratedConsumer;
-    private static MessageConsumer privatePoliceNotificationRequestedConsumer;
-    private static MessageConsumer privatePoliceNotificationRequestedConsumerV2;
-    private static MessageConsumer privatePoliceNotificationFailedConsumer;
-    private static MessageConsumerClient publicMessageConsumer;
+    private static MessageConsumerClient publicMessageConsumerPoliceResultsGenerated;
 
 
     public static void createMessageConsumers() {
-        privateSessionAddedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_SESSION_ADDED_EVENT);
-        privateCaseRejectedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_CASE_REJECTED_EVENT);
-        privateCaseAddedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_CASE_ADDED_EVENT);
-        privateDefendantAddedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_ADDED_EVENT);
-        privateDefendantUpdatedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_UPDATED_EVENT);
-        privateDefendantRejectedEventConsumer = privateEvents.createConsumer(RESULTS_EVENT_DEFENDANT_REJECTED_EVENT);
-        privatePoliceResultGeneratedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_RESULT_GENERATED);
-        privatePoliceNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED);
-        privatePoliceNotificationRequestedConsumerV2 = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_REQUESTED_V2);
-        privatePoliceNotificationFailedConsumer = privateEvents.createConsumer(RESULTS_EVENT_POLICE_NOTIFICATION_FAILED);
-        publicMessageConsumer = new MessageConsumerClient();
+        publicMessageConsumerPoliceResultsGenerated = new MessageConsumerClient();
     }
-
-    public static void createMessageConsumerForPublicMessage() {
-        publicMessageConsumer = new MessageConsumerClient();
-    }
-
 
     public static void whenPrisonAdminTriesToViewResultsForThePerson(final UUID userId) {
         setupUserAsPrisonAdminGroup(userId);
@@ -145,7 +91,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
                 CONTENT_TYPE_RESULTS_SUMMARY)
                 .withHeader(USER_ID, getLoggedInUser());
 
-        final ResponseData resultsSummaryResponse = poll(resultsSummaryRequest)
+        final ResponseData resultsSummaryResponse = pollWithDefaults(resultsSummaryRequest.build())
                 .until(
                         status().is(OK)
                 );
@@ -156,8 +102,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         return new BaseMatcher<ResponseData>() {
             @Override
             public boolean matches(final Object o) {
-                if (o instanceof ResponseData) {
-                    final ResponseData responseData = (ResponseData) o;
+                if (o instanceof final ResponseData responseData) {
                     if (responseData.getPayload() != null) {
                         final T object = MapJsonObjectToTypeMatcher.convert(theClass, responseData.getPayload());
                         return matcher.matches(object);
@@ -188,14 +133,14 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
         final Matcher<ResponseData> responseDataMatcher = jsonPayloadMatcher(HearingResultsAdded.class, matcher);
 
-        poll(requestParams(personHearingResultDetailsUrl, CONTENT_TYPE_HEARING_DETAILS).withHeader(USER_ID, getLoggedInUser())).until(
-                print(),
-                status().is(OK),
-                payload().isJson(allOf(
-                        withJsonPath("$.hearing.id", equalTo(hearingId.toString()))
-                )),
-                responseDataMatcher
-        );
+        pollWithDefaults(requestParams(personHearingResultDetailsUrl, CONTENT_TYPE_HEARING_DETAILS).withHeader(USER_ID, getLoggedInUser()).build())
+                .until(
+                        status().is(OK),
+                        payload().isJson(allOf(
+                                withJsonPath("$.hearing.id", equalTo(hearingId.toString()))
+                        )),
+                        responseDataMatcher
+                );
 
     }
 
@@ -223,12 +168,14 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     }
 
-    public static void getDefendantTrackingStatus(final String defendantIds, final Matcher... matcher) {
+    public static void verifyQueryDefendantTrackingStatus(final String defendantIds, final Matcher... matchers) {
         final String trackingStatusResultUrl = format("%s%s", BASE_URI,
                 getProperty("results.get-defendants-tracking-status", defendantIds));
 
-        poll(requestParams(trackingStatusResultUrl, CONTENT_TYPE_DEFENDANT_TRACKING_STATUS).withHeader(USER_ID, getLoggedInUser()))
-                .until(print(), status().is(OK), payload().isJson(allOf(matcher))
+        pollWithDefaults(requestParams(trackingStatusResultUrl, CONTENT_TYPE_DEFENDANT_TRACKING_STATUS).withHeader(USER_ID, getLoggedInUser()).build())
+                .until(
+                        status().is(OK),
+                        payload().isJson(allOf(matchers))
                 );
 
     }
@@ -260,39 +207,25 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         }
     }
 
-    public static void hearingResultsHaveBeenShared(final PublicHearingResulted shareResultsMessage) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
-        try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
-            messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
-
-            final JsonObject payload = convertToJsonObject(shareResultsMessage);
-
-            messageProducer.sendMessage(PUBLIC_EVENT_HEARING_RESULTED, payload);
-        }
+    public static void hearingResultsHaveBeenSharedV2(final PublicHearingResulted shareResultsMessage) {
+        hearingResultsHaveBeenSharedV2(shareResultsMessage, true);
     }
 
-    public static void hearingResultsHaveBeenSharedV2(final PublicHearingResulted shareResultsMessage) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
+    public static void hearingResultsHaveBeenSharedV2(final PublicHearingResulted shareResultsMessage, final boolean listenToPublicEventPoliceResultGenerated) {
+        if (listenToPublicEventPoliceResultGenerated) {
+            startListeningToPublicEventPoliceResultsGenerated();
+        }
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 
             final JsonObject payload = convertToJsonObject(shareResultsMessage);
 
             messageProducer.sendMessage(PUBLIC_EVENT_HEARING_RESULTED_V2, payload);
-        }
-    }
-
-    public static void hearingResultsHaveBeenShared(final JsonObject payload) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
-        try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
-            messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
-
-            messageProducer.sendMessage(PUBLIC_EVENT_HEARING_RESULTED, payload);
         }
     }
 
     public static void hearingResultsHaveBeenSharedV2(final JsonObject payload) {
-        publicMessageConsumer.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
+        startListeningToPublicEventPoliceResultsGenerated();
         try (final MessageProducerClient messageProducer = new MessageProducerClient()) {
             messageProducer.startProducer(PUBLIC_EVENT_TOPIC);
 
@@ -300,184 +233,56 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         }
     }
 
-
-
-    public static void verifyPrivateEventsForPoliceGenerateResultsForDefendant() throws JMSException {
-        verifyPrivateEventsForPoliceGenerateResultsForDefendant(true);
+    public static void verifyPublicEventForPoliceResultsGenerated() throws JMSException {
+        verifyPublicEventForPoliceResultsGenerated(true);
     }
 
-    public static void verifyPrivateEventsForPoliceGenerateResultsForDefendant(final boolean eventExpected) throws JMSException {
-        final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
+    public static void verifyPublicEventForPoliceResultsGenerated(final boolean eventExpected) throws JMSException {
+        final Optional<String> policeResultGenerated = publicMessageConsumerPoliceResultsGenerated.retrieveMessage();
 
         if (eventExpected) {
-            assertThat(policeResultGenerated, notNullValue());
+            assertThat(policeResultGenerated, not(empty()));
         } else {
-            assertThat(policeResultGenerated, nullValue());
+            assertThat(policeResultGenerated, is(empty()));
         }
     }
 
-    public static void verifyPrivateEventsWithPoliceResultGenerated() throws JMSException {
-        verifyPrivateEventsWithPoliceResultGenerated(Boolean.FALSE, null, null, null);
+    public static void verifyPublicEventPoliceResultsGenerated() throws JMSException {
+        verifyPublicEventPoliceResultsGenerated(Boolean.FALSE, null, null, null);
     }
 
-    public static void verifyPrivateEventsWithPoliceResultGenerated(final Boolean isGroupProceedings, final String groupId,
-                                                                    final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
-        verifyPrivateEventsWithPoliceResultGenerated(true, isGroupProceedings, groupId, isGroupMember, isGroupMaster);
+    public static void verifyPublicEventPoliceResultsGenerated(final Boolean isGroupProceedings, final String groupId,
+                                                               final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
+        verifyPublicEventPoliceResultsGenerated(true, isGroupProceedings, groupId, isGroupMember, isGroupMaster);
     }
 
-    public static void verifyPrivateEventsWithPoliceResultGeneratedForDay(final LocalDate hearingDay) throws JMSException {
-        verifyPrivateEventsWithPoliceResultGeneratedForDay(true, hearingDay);
+    public static void verifyPublicEventPoliceResultsGenerated(final boolean includePoliceResults) throws JMSException {
+        verifyPublicEventPoliceResultsGenerated(includePoliceResults, Boolean.FALSE, null, null, null);
     }
 
-    public static void verifyPrivateEventsWithPoliceResultGenerated(final boolean includePoliceResults) throws JMSException {
-        verifyPrivateEventsWithPoliceResultGenerated(includePoliceResults, Boolean.FALSE, null, null, null);
-    }
-
-    public static void verifyPrivateEventsWithPoliceResultGenerated(final boolean includePoliceResults, final Boolean isGroupProceedings, final String groupId,
-                                                                    final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
-        verifyPrivateEvents(isGroupProceedings, groupId, isGroupMember, isGroupMaster);
-
+    public static void verifyPublicEventPoliceResultsGenerated(final boolean includePoliceResults, final Boolean isGroupProceedings, final String groupId,
+                                                               final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) {
         if (includePoliceResults) {
             if (isGroupProceedings) {
                 for (int i = 0; i < isGroupMember.size(); i++) {
-                    final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
-                    assertThat(policeResultGenerated.getBody(String.class).contains(CIVIL_OFFENCE), is(true));
+                    final Optional<String> response = publicMessageConsumerPoliceResultsGenerated.retrieveMessage();
+                    assertThat(response, not(empty()));
+                    assertThat(response.get().contains(CIVIL_OFFENCE), is(true));
                 }
             } else {
-                final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
-                assertThat(policeResultGenerated, notNullValue());
+                final Optional<String> response = publicMessageConsumerPoliceResultsGenerated.retrieveMessage();
+                assertThat(response, not(empty()));
             }
         }
     }
 
-    private static void verifyPrivateEvents(final Boolean isGroupProceedings, final String groupId,
-                                            final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
-        final Message sessionAdded = privateSessionAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(sessionAdded, notNullValue());
-
-        if (isGroupProceedings) {
-            for (int i = 0; i < isGroupMember.size(); i++) {
-                final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-                assertThat(caseAdded.getBody(String.class).contains("\"" + GROUP_ID + "\":\"" + groupId + "\""), is(true));
-                if (nonNull(isGroupMember.get(i))) {
-                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MEMBER + "\":" + isGroupMember.get(i).booleanValue()), is(true));
-                } else {
-                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MEMBER + "\""), is(false));
-                }
-                if (nonNull(isGroupMaster.get(i))) {
-                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MASTER + "\":" + isGroupMaster.get(i).booleanValue()), is(true));
-                } else {
-                    assertThat(caseAdded.getBody(String.class).contains("\"" + IS_GROUP_MASTER + "\""), is(false));
-                }
-            }
-        } else {
-            final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-            assertThat(caseAdded, notNullValue());
-        }
-
-        if (isGroupProceedings) {
-            for (int i = 0; i < isGroupMember.size(); i++) {
-                final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-                assertThat(defendantAdded.getBody(String.class).contains(CIVIL_OFFENCE), is(true));
-            }
-        } else {
-            final Message defendantAdded = privateDefendantAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-            assertThat(defendantAdded, notNullValue());
-        }
+    public static Optional<String> verifyPublicEventPoliceResultGeneratedAndReturnPayload() {
+        return publicMessageConsumerPoliceResultsGenerated.retrieveMessage();
     }
 
-    public static void verifyPrivateEventsWithPoliceResultGeneratedForDay(final boolean includePoliceResults, final LocalDate hearingDay) throws JMSException {
-        verifyPrivateEvents(Boolean.FALSE, null, null, null);
+    public static void verifyPublicEventPoliceResultGeneratedMessage(final String expectedFindingValue) {
 
-        if (includePoliceResults) {
-            final Message policeResultGenerated = privatePoliceResultGeneratedConsumer.receive(RETRIEVE_TIMEOUT);
-
-            assertThat(policeResultGenerated, notNullValue());
-            final JSONObject event = new JSONObject(policeResultGenerated.getBody(String.class));
-            final ZonedDateTime expectedSittingDay = ZonedDateTime.of(hearingDay, LocalTime.MIDNIGHT, ZoneId.of("UTC"));
-            assertThat(event.getJSONArray("sessionDays")
-                    .getJSONObject(0)
-                    .getString("sittingDay"), is(ZonedDateTimes.toString(expectedSittingDay)));
-        }
-    }
-
-    public static void verifyPrivateEventsWithPoliceNotificationFailed() throws JMSException {
-        verifyPrivateEvents(Boolean.FALSE, null, null, null);
-
-        final Message policeNotificationFailedGenerated = privatePoliceNotificationFailedConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(policeNotificationFailedGenerated, notNullValue());
-    }
-
-
-    public static void verifyPrivateEventsWithPoliceNotificationRequested(final String expectedEmail) throws JMSException {
-        verifyPrivateEvents(Boolean.FALSE, null, null, null);
-
-        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(policeNotificationRequestedGenerated, notNullValue());
-        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
-        assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
-    }
-
-    public static void verifyPrivateEventsWithPoliceNotificationRequestedV2(final String expectedEmail) throws JMSException {
-        verifyPrivateEvents(Boolean.FALSE, null, null, null);
-
-        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumerV2.receive(RETRIEVE_TIMEOUT);
-        assertThat(policeNotificationRequestedGenerated, notNullValue());
-        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
-        assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
-    }
-
-    public static void verifyPrivateEventsForAmendment(final String expectedEmail, final JudicialResultDetails amendedResultDetail) throws JMSException {
-        final Message defendantAdded = privateDefendantUpdatedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(defendantAdded, notNullValue());
-
-        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumerV2.receive(RETRIEVE_TIMEOUT);
-        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
-        assertThat(event.getString("policeEmailAddress"), is(expectedEmail));
-        final JSONObject judicialResult = event.getJSONObject("caseResultDetails")
-                .getJSONArray("defendantResultDetails").getJSONObject(0)
-                .getJSONArray("offenceResultDetails").getJSONObject(0)
-                .getJSONArray("judicialResultDetails").getJSONObject(0);
-
-        assertThat(judicialResult.getString("resultTitle"), is(amendedResultDetail.getResultTitle()));
-        assertThat(judicialResult.getString("amendmentType"), is(amendedResultDetail.getAmendmentType().name()));
-    }
-
-    public static void verifyPrivateEventsPoliceNotificationRequestedGeneratedV2(final Map<String,String> matchingValuesMap) throws JMSException {
-        final Message policeNotificationRequestedGenerated = privatePoliceNotificationRequestedConsumerV2.receive(RETRIEVE_TIMEOUT);
-        final JSONObject event = new JSONObject(policeNotificationRequestedGenerated.getBody(String.class));
-        matchingValuesMap.forEach((key, value) -> {
-            if (event.has(key)) {
-                assertThat(event.get(key), is(value));
-            }
-        });
-    }
-
-    public static void verifyPrivateEventsForRejected() throws JMSException {
-        final Message sessionAdded = privateSessionAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(sessionAdded, notNullValue());
-
-        final Message caseAdded = privateCaseAddedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(caseAdded, notNullValue());
-
-        final Message defendantRejected = privateDefendantRejectedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(defendantRejected, notNullValue());
-    }
-
-    public static void verifyPrivateEventsForCaseRejectedSjp() throws JMSException {
-        final Message caseRejected = privateCaseRejectedEventConsumer.receive(RETRIEVE_TIMEOUT);
-        assertThat(caseRejected, notNullValue());
-    }
-
-    public static Optional<String> verifyInPublicTopic() {
-        final Optional<String> response = publicMessageConsumer.retrieveMessage();
-        assertThat(response, not(empty()));
-        return response;
-    }
-
-    public static void verifyInPublicPoliceResultGeneratedMessage(final String expectedFindingValue) {
-
-        final String eventStr = publicMessageConsumer.retrieveMessage().orElse(null);
+        final String eventStr = publicMessageConsumerPoliceResultsGenerated.retrieveMessage().orElse(null);
         assertThat(eventStr, notNullValue());
 
         final JSONObject event = new JSONObject(eventStr);
@@ -485,22 +290,13 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     }
 
-    public static void verifyNotInPublicTopic() {
-        final Optional<String> response = publicMessageConsumer.retrieveMessage(RETRIEVE_TIMEOUT);
+    public static void verifyPublicEventPoliceResultGeneratedNotRaised() {
+        final Optional<String> response = publicMessageConsumerPoliceResultsGenerated.retrieveMessage(RETRIEVE_TIMEOUT);
         assertThat(response, is(empty()));
     }
 
-    public static void closeMessageConsumers() throws JMSException {
-        privateSessionAddedEventConsumer.close();
-        privateCaseAddedEventConsumer.close();
-        privateDefendantAddedEventConsumer.close();
-        privatePoliceResultGeneratedConsumer.close();
-        privateDefendantRejectedEventConsumer.close();
-        privateDefendantUpdatedEventConsumer.close();
-        privateCaseRejectedEventConsumer.close();
-        privatePoliceNotificationRequestedConsumer.close();
-        privatePoliceNotificationFailedConsumer.close();
-        publicMessageConsumer.close();
+    public static void closeMessageConsumers() {
+        publicMessageConsumerPoliceResultsGenerated.close();
     }
 
     public static void getInternalHearingDetailsForHearingId(final UUID hearingId, final Matcher... matchers) {
@@ -508,17 +304,12 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         final String url = format("%s%s", BASE_URI,
                 getProperty("results.get-hearing-details-internal", hearingId));
 
-        poll(requestParams(url, CONTENT_TYPE_HEARING_DETAILS_INTERNAL).withHeader(USER_ID, getLoggedInUser())).until(
-                print(),
-                status().is(OK),
-                payload().isJson(allOf(matchers))
-        );
+        pollWithDefaults(requestParams(url, CONTENT_TYPE_HEARING_DETAILS_INTERNAL).withHeader(USER_ID, getLoggedInUser()).build())
+                .until(
+                        status().is(OK),
+                        payload().isJson(allOf(matchers))
+                );
 
-    }
-
-    public static void whenResultsAreCreatedBySystemAdmin() {
-        setupAsSystemUser(getUserId());
-        createResultsCommand(getPayload(CREATE_RESULTS_TEMPLATE_PAYLOAD).replace("SESSION_ID", randomUUID().toString()));
     }
 
     public static void whenResultsAreTraced(final String payload) {
@@ -531,11 +322,15 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         final String url = format("%s%s", BASE_URI,
                 getProperty("results.get-email-notification-details", materialId));
 
-        poll(requestParams(url, CONTENT_TYPE_NCES_EMAIL_NOTIFICATION_DETAILS).withHeader(USER_ID, userId)).until(
-                print(),
-                status().is(OK),
-                payload().isJson(allOf(matchers))
-        );
-
+        pollWithDefaults(requestParams(url, CONTENT_TYPE_NCES_EMAIL_NOTIFICATION_DETAILS).withHeader(USER_ID, userId).build())
+                .until(
+                        status().is(OK),
+                        payload().isJson(allOf(matchers))
+                );
     }
+
+    private static void startListeningToPublicEventPoliceResultsGenerated() {
+        publicMessageConsumerPoliceResultsGenerated.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
+    }
+
 }

@@ -63,9 +63,8 @@ public class ReferenceDataServiceStub {
         stubSpiOutFlag(spiOutFlag, policeFlag, null);
     }
 
-    public static void stubSpiOutFlag(final boolean spiOutFlag, final boolean policeFlag, final String email) {
+    public static void stubSpiOutFlag(final boolean spiOutFlag, final boolean policeFlag, final String policeEmailAddress) {
         stubPingFor("referencedata-service");
-
 
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
 
@@ -73,9 +72,9 @@ public class ReferenceDataServiceStub {
         prosecutorBodyBuilder
                 .add("spiOutFlag", spiOutFlag)
                 .add("policeFlag", policeFlag);
-        if (nonNull(email)) {
-            prosecutorBodyBuilder.add("contactEmailAddress", email)
-                                 .add("mcContactEmailAddress", email);
+        if (nonNull(policeEmailAddress)) {
+            prosecutorBodyBuilder.add("contactEmailAddress", policeEmailAddress)
+                                 .add("mcContactEmailAddress", policeEmailAddress);
         }
 
         final JsonObject response = prosecutorBodyBuilder.build();
@@ -90,8 +89,8 @@ public class ReferenceDataServiceStub {
         prosecutorBodyBuilder
                 .add("spiOutFlag", false)
                 .add("policeFlag", false);
-        if (nonNull(email)) {
-            prosecutorBodyBuilder.add("contactEmailAddress", email);
+        if (nonNull(policeEmailAddress)) {
+            prosecutorBodyBuilder.add("contactEmailAddress", policeEmailAddress);
         }
 
         final JsonObject responseFalse = prosecutorBodyBuilder.build();

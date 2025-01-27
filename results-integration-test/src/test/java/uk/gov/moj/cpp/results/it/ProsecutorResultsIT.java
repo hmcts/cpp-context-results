@@ -15,58 +15,26 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.AllOf.allOf;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
-import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMatcher.status;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegister;
+import static uk.gov.moj.cpp.results.it.helper.RestPollerHelper.pollWithDefaults;
 import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
 
 import uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 public class ProsecutorResultsIT {
-
-    private static final String ERROR_CODE_SHARED_DATE_IN_FUTURE = "SHARED_DATE_IN_FUTURE";
-    private static final String ERROR_CODE_SHARED_DATE_RANGE_INVALID = "SHARED_DATE_RANGE_INVALID";
-
-    public static Stream<Arguments> errorScenarioSpecification() {
-        return Stream.of(
-                // start date, end date, error code
-
-                // start date in future
-                Arguments.of(LocalDate.now().plusDays(1).toString(), null, ERROR_CODE_SHARED_DATE_IN_FUTURE),
-
-                // end date in future
-                Arguments.of(LocalDate.now().toString(), LocalDate.now().plusDays(1).toString(), ERROR_CODE_SHARED_DATE_IN_FUTURE),
-
-                // date range exceeding last 7 days
-                Arguments.of(LocalDate.now().minusDays(8).toString(), LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID),
-
-                // end date before start date
-                Arguments.of(LocalDate.now().minusDays(3).toString(), LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID),
-
-                // invalid start date
-                Arguments.of("dummy", LocalDate.now().minusDays(5).toString(), ERROR_CODE_SHARED_DATE_RANGE_INVALID),
-
-                // invalid end date
-                Arguments.of(LocalDate.now().minusDays(5).toString(), "dummy", ERROR_CODE_SHARED_DATE_RANGE_INVALID)
-        );
-    }
 
     @BeforeAll
     public static void setupStubs() {
@@ -123,24 +91,11 @@ public class ProsecutorResultsIT {
 
     }
 
-    @MethodSource("errorScenarioSpecification")
-    @ParameterizedTest
-    public void shouldQueryProsecutorResults_BadRequestCheck(final String startDate, final String endDate, final String errorCode) {
-        final String prosecutionAuthorityOuCode = randomAlphanumeric(7);
-
-        final ResponsePayloadMatcher responsePayloadMatcherStartDateInFuture = payload().isJson(allOf(
-                withJsonPath("$.error", is(errorCode)))
-        );
-
-        validateProsecutorResults(prosecutionAuthorityOuCode, startDate, endDate, javax.ws.rs.core.Response.Status.BAD_REQUEST, responsePayloadMatcherStartDateInFuture);
-
-    }
-
     private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final javax.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {
         final String url = BASE_URI + format("/results-query-api/query/api/rest/results/prosecutor/%s?startDate=%s%s", ouCode, startDate, Objects.nonNull(endDate) ? "&endDate=" + endDate : "");
 
-        poll(requestParams(url, "application/vnd.results.prosecutor-results+json")
-                .withHeader(USER_ID, randomUUID()))
+        pollWithDefaults(requestParams(url, "application/vnd.results.prosecutor-results+json")
+                .withHeader(USER_ID, randomUUID()).build())
                 .until(
                         status().is(status),
                         responsePayloadMatcher

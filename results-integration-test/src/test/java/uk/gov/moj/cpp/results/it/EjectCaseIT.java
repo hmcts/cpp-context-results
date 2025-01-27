@@ -2,24 +2,27 @@ package uk.gov.moj.cpp.results.it;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
+import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudicialResults;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.it.utils.QueueUtil;
-import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.util.UUID;
 
@@ -48,17 +51,20 @@ public class EjectCaseIT {
     @BeforeEach
     public void setUp() {
         setupUserAsPrisonAdminGroup(getUserId());
+        stubEventGridEndpoint();
+        stubJudicialResults();
+        stubSpiOutFlag(true, true);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         stubGetOrgainsationUnit();
-        hearingCaseEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-case-ejected");
-        hearingApplicationEjectedConsumer = QueueUtil.privateEvents.createConsumer("results.hearing-application-ejected");
+        hearingCaseEjectedConsumer = privateEvents.createConsumer("results.hearing-case-ejected");
+        hearingApplicationEjectedConsumer = privateEvents.createConsumer("results.hearing-application-ejected");
         createMessageConsumers();
 
     }
 
     @Test
     public void shouldEjectCaseWithCaseIdInPayload() {
-        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -67,7 +73,7 @@ public class EjectCaseIT {
 
 
         //share results
-        hearingResultsHaveBeenShared(resultsMessage);
+        hearingResultsHaveBeenSharedV2(resultsMessage);
 
         //matcher to check details results
         final Matcher<HearingResultsAdded> hearingResultsAddedMatcher = isBean(HearingResultsAdded.class)
@@ -99,7 +105,7 @@ public class EjectCaseIT {
     @Test
     public void shouldEjectApplicationWithApplicationIdInPayload() {
 
-        final PublicHearingResulted resultsMessage = TestTemplates.basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
 
         final Hearing hearingIn = resultsMessage.getHearing();
 
@@ -108,7 +114,7 @@ public class EjectCaseIT {
 
 
         //share results
-        hearingResultsHaveBeenShared(resultsMessage);
+        hearingResultsHaveBeenSharedV2(resultsMessage);
 
         //matcher to check details results
         final Matcher<HearingResultsAdded> hearingResultsAddedMatcher = isBean(HearingResultsAdded.class)

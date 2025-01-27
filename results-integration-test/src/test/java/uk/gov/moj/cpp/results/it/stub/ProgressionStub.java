@@ -5,7 +5,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static java.nio.charset.Charset.defaultCharset;
 import static java.text.MessageFormat.format;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
@@ -19,8 +18,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.json.Json;
-
-import org.apache.commons.io.IOUtils;
 
 public class ProgressionStub {
 

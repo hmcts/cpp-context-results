@@ -1,12 +1,12 @@
 package uk.gov.moj.cpp.results.it;
 
 import static java.time.LocalDate.of;
+import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummariesByDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenShared;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyInPublicTopic;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPrivateEventsWithPoliceResultGenerated;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultsGenerated;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
@@ -16,9 +16,8 @@ import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudic
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeOfTrialReasons;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
-import static uk.gov.moj.cpp.results.test.TestTemplates.sharedResultTemplateWithTwoOffences;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2TemplateWithTwoOffences;
 
-import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.time.LocalDate;
@@ -51,17 +50,15 @@ public class MoveDefendantLevelResultsIT {
     @Test
     public void shouldMoveJudicialResultsToOffenceLevelAndRaisePublicEvent() throws JMSException {
 
-        final PublicHearingResulted resultsMessage = sharedResultTemplateWithTwoOffences(JurisdictionType.MAGISTRATES);
+        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithTwoOffences(MAGISTRATES);
 
-        hearingResultsHaveBeenShared(resultsMessage);
+        hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
         LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
         startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
 
         getSummariesByDate(startDate);
-        verifyPrivateEventsWithPoliceResultGenerated();
-        verifyInPublicTopic();
-
+        verifyPublicEventPoliceResultsGenerated();
     }
 }
