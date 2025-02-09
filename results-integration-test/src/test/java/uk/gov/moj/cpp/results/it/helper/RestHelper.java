@@ -5,8 +5,6 @@ import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 
-import java.io.IOException;
-
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

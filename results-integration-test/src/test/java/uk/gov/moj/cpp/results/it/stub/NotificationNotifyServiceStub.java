@@ -13,7 +13,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.Response.Status.ACCEPTED;
 import static org.awaitility.Awaitility.await;
-import static uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils.stubPingFor;
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 
 import java.util.List;
@@ -28,7 +27,6 @@ public class NotificationNotifyServiceStub {
 
 
     public static void setupNotificationNotifyStubs() {
-        stubPingFor("notificationnotify-service");
         stubFor(post(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
                 .withHeader(CONTENT_TYPE, equalTo(NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON))
                 .willReturn(aResponse()

@@ -8,7 +8,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
-import static uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils.stubPingFor;
 
 import uk.gov.justice.services.common.http.HeaderConstants;
 
@@ -28,8 +27,6 @@ public class DocumentGeneratorStub {
     }
 
     public static void stubDocGeneratorEndPoint() {
-        stubPingFor("systemdocgenerator-service");
-
         stubFor(post(urlPathMatching(SYS_DOC_GENERATOR_URL))
                 .withHeader(CONTENT_TYPE, equalTo(GENERATE_DOCUMENT_MEDIA_TYPE))
                 .willReturn(aResponse().withStatus(SC_ACCEPTED)

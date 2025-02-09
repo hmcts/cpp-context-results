@@ -1,9 +1,11 @@
 package uk.gov.moj.cpp.results.it.utils;
 
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
@@ -11,18 +13,17 @@ import static javax.json.Json.createObjectBuilder;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.http.HttpStatus.SC_OK;
-import static uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils.stubPingFor;
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.getJsonResponse;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.waitForStubToBeReady;
+
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 public class ReferenceDataServiceStub {
 
     public static final String PROSECUTOR_WITH_SPI_OUT_FALSE = "prosecutorWithSpiOutFalse";
 
     public static void stubCountryNationalities() {
-        stubPingFor("referencedata-service");
-
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/country-nationality";
 
         stubFor(get(urlPathEqualTo(urlPath))
@@ -30,12 +31,9 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.query.country-nationality.json"))));
-        waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.country-nationality+json");
     }
 
     public static void stubGetOrgainsationUnit() {
-        stubPingFor("referencedata-service");
-
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/organisation-units/";
 
         stubFor(get(urlPathMatching(urlPath + ".*"))
@@ -43,12 +41,9 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.query.organisation-unit-v2.json"))));
-        waitForStubToBeReady(urlPath + "f8254db1-1683-483e-afb3-b87fde5a0a26", "application/vnd.referencedata.query.organisation-unit.v2+json");
     }
 
     public static void stubJudicialResults() {
-        stubPingFor("referencedata-service");
-
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/result-definitions";
 
         stubFor(get(urlPathEqualTo(urlPath))
@@ -56,7 +51,6 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.result-definitions.json"))));
-        waitForStubToBeReady(urlPath, "application/vnd.referencedata.get-all-result-definitions+json");
     }
 
     public static void stubSpiOutFlag(final boolean spiOutFlag, final boolean policeFlag) {
@@ -64,8 +58,6 @@ public class ReferenceDataServiceStub {
     }
 
     public static void stubSpiOutFlag(final boolean spiOutFlag, final boolean policeFlag, final String policeEmailAddress) {
-        stubPingFor("referencedata-service");
-
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
 
         JsonObjectBuilder prosecutorBodyBuilder = createObjectBuilder();
@@ -74,7 +66,7 @@ public class ReferenceDataServiceStub {
                 .add("policeFlag", policeFlag);
         if (nonNull(policeEmailAddress)) {
             prosecutorBodyBuilder.add("contactEmailAddress", policeEmailAddress)
-                                 .add("mcContactEmailAddress", policeEmailAddress);
+                    .add("mcContactEmailAddress", policeEmailAddress);
         }
 
         final JsonObject response = prosecutorBodyBuilder.build();
@@ -108,9 +100,6 @@ public class ReferenceDataServiceStub {
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(responseFalse.toString())));
 
-        waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.get.prosecutor+json");
-        waitForStubToBeReady(urlPath + "?oucode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
-
         stubFor(get(urlPathEqualTo(urlPath))
                 .withQueryParam("prosecutorCode", equalTo("prosecutorWithSpiOutFalse"))
                 .willReturn(aResponse().withStatus(SC_OK)
@@ -118,20 +107,15 @@ public class ReferenceDataServiceStub {
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(prosecutorCodeResponse.toString())));
 
-        waitForStubToBeReady(urlPath, "application/vnd.referencedata.query.get.prosecutor+json");
-        waitForStubToBeReady(urlPath + "?prosecutorCode=prosecutorWithSpiOutFalse", "application/vnd.referencedata.query.get.prosecutor+json");
-
         stubFor(get(urlPathEqualTo(urlPath))
                 .withQueryParam("prosecutorCode", equalTo("CITYPF"))
                 .willReturn(aResponse().withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(prosecutorCodeResponse.toString())));
-        waitForStubToBeReady(urlPath + "?prosecutorCode=CITYPF", "application/vnd.referencedata.query.get.prosecutor+json");
     }
 
     public static void stubPoliceFlag(final String originatingOrganisation, final String prosecutionAuthority) {
-        stubPingFor("referencedata-service");
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
 
         stubFor(get(urlPathEqualTo(urlPath))
@@ -140,7 +124,6 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.query.organisation-unit-prosecution-authority.json"))));
-        waitForStubToBeReady(urlPath + "?oucode=" + originatingOrganisation, "application/vnd.referencedata.query.get.prosecutor.by.oucode+json");
 
         stubFor(get(urlPathEqualTo(urlPath))
                 .withQueryParam("prosecutorCode", equalTo(prosecutionAuthority))
@@ -148,12 +131,9 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.query.organisation-unit-prosecution-authority.json"))));
-        waitForStubToBeReady(urlPath + "?prosecutorCode=" + prosecutionAuthority, "application/vnd.referencedata.query.get.prosecutor+json");
     }
 
     public static void stubBailStatuses() {
-        stubPingFor("referencedata-service");
-
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/bail-statuses";
 
         stubFor(get(urlPathEqualTo(urlPath))
@@ -161,12 +141,9 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.bail-statuses.json"))));
-        waitForStubToBeReady(urlPath, "application/vnd.referencedata.bail-statuses+json");
     }
 
     public static void stubModeOfTrialReasons() {
-        stubPingFor("referencedata-service");
-
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/mode-of-trial-reasons";
 
         stubFor(get(urlPathEqualTo(urlPath))
@@ -174,6 +151,5 @@ public class ReferenceDataServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)
                         .withBody(getJsonResponse("stub-data/referencedata.mode-of-trial-reasons.json"))));
-        waitForStubToBeReady(urlPath, "application/vnd.referencedata.mode-of-trial-reasons+json");
     }
 }

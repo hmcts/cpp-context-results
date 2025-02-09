@@ -193,7 +193,7 @@ public class InformantRegisterDocumentRequestIT {
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
     }
 
-    private void generateInformantRegister() throws IOException {
+    private void generateInformantRegister() {
         final Response generateRegisterResponse = postCommand(
                 getWriteUrl("/informant-register/generate"),
                 "application/vnd.results.generate-informant-register+json",
@@ -201,7 +201,7 @@ public class InformantRegisterDocumentRequestIT {
         assertThat(generateRegisterResponse.getStatusCode(), equalTo(SC_ACCEPTED));
     }
 
-    private void generateInformantRegisterByDate(final LocalDate registerDate) throws IOException {
+    private void generateInformantRegisterByDate(final LocalDate registerDate) {
         final String generateCommandBody = getPayload("json/informant-register/results.generate-informant-register-by-date.json")
                 .replaceAll("%REGISTER_DATE%", registerDate.toString());
 

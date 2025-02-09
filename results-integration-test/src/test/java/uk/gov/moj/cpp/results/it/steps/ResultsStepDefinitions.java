@@ -99,7 +99,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     }
 
     public static <T> Matcher<ResponseData> jsonPayloadMatcher(final Class<T> theClass, final Matcher<T> matcher) {
-        return new BaseMatcher<ResponseData>() {
+        return new BaseMatcher<>() {
             @Override
             public boolean matches(final Object o) {
                 if (o instanceof final ResponseData responseData) {
@@ -233,10 +233,6 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         }
     }
 
-    public static void verifyPublicEventForPoliceResultsGenerated() throws JMSException {
-        verifyPublicEventForPoliceResultsGenerated(true);
-    }
-
     public static void verifyPublicEventForPoliceResultsGenerated(final boolean eventExpected) throws JMSException {
         final Optional<String> policeResultGenerated = publicMessageConsumerPoliceResultsGenerated.retrieveMessage();
 
@@ -254,10 +250,6 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     public static void verifyPublicEventPoliceResultsGenerated(final Boolean isGroupProceedings, final String groupId,
                                                                final List<Boolean> isGroupMember, final List<Boolean> isGroupMaster) throws JMSException {
         verifyPublicEventPoliceResultsGenerated(true, isGroupProceedings, groupId, isGroupMember, isGroupMaster);
-    }
-
-    public static void verifyPublicEventPoliceResultsGenerated(final boolean includePoliceResults) throws JMSException {
-        verifyPublicEventPoliceResultsGenerated(includePoliceResults, Boolean.FALSE, null, null, null);
     }
 
     public static void verifyPublicEventPoliceResultsGenerated(final boolean includePoliceResults, final Boolean isGroupProceedings, final String groupId,

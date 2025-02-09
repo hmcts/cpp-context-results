@@ -1,11 +1,5 @@
 package uk.gov.moj.cpp.results.it.stub;
 
-import org.apache.http.HttpHeaders;
-import uk.gov.justice.service.wiremock.testutil.InternalEndpointMockUtils;
-
-import javax.json.Json;
-import java.util.UUID;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -15,7 +9,12 @@ import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.SC_OK;
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.waitForStubToBeReady;
+
+import java.util.UUID;
+
+import javax.json.Json;
+
+import org.apache.http.HttpHeaders;
 
 
 public class SjpStub {
@@ -24,8 +23,6 @@ public class SjpStub {
     private static final String SJP_CASE_QUERY_URL = "/sjp-service/query/api/rest/sjp/cases";
 
     public static void setupSjpQueryStub(final String caseUrn, final UUID caseId) {
-
-        InternalEndpointMockUtils.stubPingFor("sjp-service");
 
         final String payload = Json.createObjectBuilder()
                 .add("id", caseId.toString())
@@ -39,7 +36,5 @@ public class SjpStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(HttpHeaders.CONTENT_TYPE, SJP_CASE_URN_MEDIA_TYPE)
                         .withBody(payload)));
-
-        waitForStubToBeReady(stringUrl+"?urn="+caseUrn, SJP_CASE_URN_MEDIA_TYPE);
     }
 }

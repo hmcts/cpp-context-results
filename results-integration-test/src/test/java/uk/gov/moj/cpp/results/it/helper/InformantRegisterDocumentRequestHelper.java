@@ -64,12 +64,12 @@ public class InformantRegisterDocumentRequestHelper {
         if (isGroup) {
             final int multiple = countMatches(payload, "groupId");
             for (int i = 0; i < defCount; i++) {
-                assertThat(countMatches(payload, ("person" + i + "Address1")), is(1 * multiple));
+                assertThat(countMatches(payload, ("person" + i + "Address1")), is(multiple));
                 assertThat(countMatches(payload, ("person" + i + "FirstName")), is(2 * multiple));
                 assertThat(countMatches(payload, ("person" + i + "LastName")), is(2 * multiple));
             }
 
-            assertThat(countMatches(payload, "MASTER_CASE_ASN"), is(1 * multiple));
+            assertThat(countMatches(payload, "MASTER_CASE_ASN"), is(multiple));
             assertThat(countMatches(payload, "MASTER_CASE_OFFENCE_CODE"), is(defCount * multiple));
             assertThat(countMatches(payload, "MASTER_CASE_RESULT_TEXT"), is(defCount * multiple));
             assertThat(countMatches(payload, "MASTER_CASE_OFFENCE_RESULT_TEXT"), is(defCount * multiple));
@@ -103,7 +103,7 @@ public class InformantRegisterDocumentRequestHelper {
         return recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, prosecutionAuthorityOuCode, registerDate, hearingId, hearingDate, fileName, null);
     }
 
-    public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final String prosecutionAuthorityOuCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName, final UUID groupId) throws IOException {
+    public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final String prosecutionAuthorityOuCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName, final UUID groupId) {
         final String body = getPayload(fileName)
                 .replaceAll("%PROSECUTION_AUTHORITY_ID%", prosecutionAuthorityId.toString())
                 .replaceAll("%PROSECUTION_AUTHORITY_CODE%", prosecutionAuthorityCode)
