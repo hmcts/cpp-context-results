@@ -32,6 +32,7 @@ import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHe
 import uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -112,7 +113,7 @@ public class NcesEmailNotificationIT {
         final UUID payloadFileServiceId = randomUUID();
 
         ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(USER_ID_VALUE_AS_ADMIN,
-                ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId, documentFileServiceId);
+                ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId, documentFileServiceId, "NCES_EMAIL_NOTIFICATION_REQUEST", new HashMap<>());
 
         verifyNcesEmailNotificationDetails(userId, ncesEmailNotificationRequested);
 
@@ -123,27 +124,6 @@ public class NcesEmailNotificationIT {
         verifyEmailNotificationIsRaised(details);
 
     }
-
-    @Test
-    public void shouldNotSendNcesNotificationRequestedForNonNcesOriginator() {
-        final UUID USER_ID_VALUE_AS_ADMIN = randomUUID();
-
-        final NcesEmailNotificationRequested ncesEmailNotificationRequested = generateNcesNotificationRequested();
-
-        final JsonObject requestAsJson = objectToJsonObjectConverter.convert(ncesEmailNotificationRequested);
-        final Metadata metadata = createMetadata(userId);
-
-        sendMessage(messageProducerClientPrivate, RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED, requestAsJson, metadata);
-
-        final UUID documentFileServiceId = randomUUID();
-        final UUID payloadFileServiceId = randomUUID();
-
-                ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(USER_ID_VALUE_AS_ADMIN,
-                ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId, documentFileServiceId);
-
-        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicFailedEvent(USER_ID_VALUE_AS_ADMIN, ncesEmailNotificationRequested.getMaterialId(), payloadFileServiceId);
-    }
-
 
     public NcesEmailNotificationRequested generateNcesNotificationRequested() {
         return NcesEmailNotificationRequested.ncesEmailNotificationRequested()

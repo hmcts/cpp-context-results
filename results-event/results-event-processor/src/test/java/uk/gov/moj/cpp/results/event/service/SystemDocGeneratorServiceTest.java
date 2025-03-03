@@ -44,7 +44,8 @@ public class SystemDocGeneratorServiceTest {
                 TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
                 ConversionFormat.PDF,
                 sourceCorrelationId,
-                payloadFileServiceId
+                payloadFileServiceId,
+                null
         );
 
         systemDocGenerator.generateDocument(request, envelope());

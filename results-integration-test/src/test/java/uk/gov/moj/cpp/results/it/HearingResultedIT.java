@@ -59,6 +59,8 @@ import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeO
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubPoliceFlag;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithCustomApplication;
@@ -86,6 +88,7 @@ import uk.gov.justice.core.courts.external.ApiCourtCentre;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 import uk.gov.moj.cpp.results.test.TestTemplates;
@@ -97,6 +100,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -143,6 +147,8 @@ public class HearingResultedIT {
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
 
     private final String policeEmailAddress = randomAlphabetic(10) + "@email.com";
+    private NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
+
 
     @BeforeAll
     public static void setUpClass() {
@@ -156,6 +162,8 @@ public class HearingResultedIT {
         stubPoliceFlag(OU_CODE, PROSECUTION_AUTHORITY);
         stubNotificationNotifyEndPoint();
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        stubDocGeneratorEndPoint();
+        stubMaterialUploadFile();
 
     }
 
@@ -168,6 +176,8 @@ public class HearingResultedIT {
     public void setUp() {
         stubSpiOutFlag(true, true);
         createMessageConsumers();
+        ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
+
     }
 
     @Test
@@ -279,6 +289,14 @@ public class HearingResultedIT {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
 
         getSummariesByDate(startDate);
+        final HashMap additionalInformation = new HashMap();
+        additionalInformation.put(policeEmailAddress, "Imprisonment");
+        additionalInformation.put("notificationId", randomUUID().toString());
+        additionalInformation.put("emailTemplateId", randomUUID().toString());
+
+        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(getUserId(),
+                randomUUID(), randomUUID(), randomUUID(), "POLICE_NOTIFICATION_HEARING_RESULTS", additionalInformation);
+
         verifyEmailNotificationIsRaised(List.of(policeEmailAddress, "Imprisonment"));
     }
 
@@ -740,6 +758,15 @@ public class HearingResultedIT {
 
         final PublicHearingResulted resultsMessage1 = jsonObjectToObjectConverter.convert(getPayload(HEARING_RESULT_RESHARE_APPLICATION_ONLY_JURISDICTION_CROWN, hearingId), PublicHearingResulted.class);
         hearingResultsHaveBeenSharedV2(resultsMessage1);
+        final HashMap additionalInformation = new HashMap();
+        additionalInformation.put(policeEmailAddress, "TestArmand1 TestKrajcik1");
+        additionalInformation.put("notificationId", randomUUID().toString());
+        additionalInformation.put("emailTemplateId", randomUUID().toString());
+
+        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(getUserId(),
+                randomUUID(), randomUUID(), randomUUID(), "POLICE_NOTIFICATION_HEARING_RESULTS", additionalInformation);
+
+
         verifyEmailNotificationIsRaised(List.of(policeEmailAddress, "TestArmand1 TestKrajcik1"));
     }
 

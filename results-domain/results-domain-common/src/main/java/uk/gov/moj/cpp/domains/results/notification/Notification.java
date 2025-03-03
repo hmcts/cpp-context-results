@@ -9,12 +9,26 @@ public class Notification {
     private final UUID templateId;
     private final String sendToAddress;
     private final Map<String, String> personalisation;
+    private final String materialUrl;
 
     public Notification(final UUID notificationId, final UUID templateId, final String sendToAddress, final Map<String, String> personalisation) {
         this.notificationId = notificationId;
         this.templateId = templateId;
         this.sendToAddress = sendToAddress;
         this.personalisation = personalisation;
+        this.materialUrl = null;
+    }
+
+    public Notification(final UUID notificationId, final UUID templateId, final String sendToAddress, final Map<String, String> personalisation, final String materialUrl) {
+        this.notificationId = notificationId;
+        this.templateId = templateId;
+        this.sendToAddress = sendToAddress;
+        this.personalisation = personalisation;
+        this.materialUrl = materialUrl;
+    }
+
+    public String getMaterialUrl() {
+        return materialUrl;
     }
 
     public UUID getTemplateId() {

@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static java.lang.Boolean.TRUE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
@@ -18,6 +17,7 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
+import static uk.gov.moj.cpp.results.event.service.TemplateIdentifier.POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE;
 
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
@@ -63,8 +63,7 @@ import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
-import uk.gov.moj.cpp.results.event.service.SystemDocGeneratorService;
-import uk.gov.moj.cpp.results.event.service.TemplateIdentifier;
+import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -125,19 +124,24 @@ public class ResultsEventProcessor {
     private static final String COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
     public static final String PROSECUTION_CASEFILE_CASE_AT_A_GLANCE = "prosecution-casefile/case-at-a-glance/";
     public static final String SPC = " ";
-    private static final String MATERIAL_ID = "materialId" ;
-    private static final String COURT_DOCUMENT = "courtDocument" ;
-    private static final String PROGRESSION_ADD_COURT_DOCUMENT = "progression.add-court-document" ;
-    private static final String CASE_REFERENCES = "caseReferences" ;
-    private static final String DOCUMENT_TYPE_DESCRIPTION = "Electronic Notifications" ;
-    private static final String SJP_DOCUMENT_TYPE_OTHER = "OTHER" ;
+    private static final String MATERIAL_ID = "materialId";
+    private static final String COURT_DOCUMENT = "courtDocument";
+    private static final String PROGRESSION_ADD_COURT_DOCUMENT = "progression.add-court-document";
+    private static final String CASE_REFERENCES = "caseReferences";
+    private static final String DOCUMENT_TYPE_DESCRIPTION = "Electronic Notifications";
+    private static final String SJP_DOCUMENT_TYPE_OTHER = "OTHER";
     private static final UUID CASE_DOCUMENT_TYPE_ID = fromString("f471eb51-614c-4447-bd8d-28f9c2815c9e");
     private static final String APPLICATION_PDF = "application/pdf";
     private static final String SJP_UPLOAD_CASE_DOCUMENT = "sjp.upload-case-document";
     public static final String IS_RESHARE = "isReshare";
 
-    private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-    private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
+    private static final String POLICE_NOTIFICATION_HEARING_RESULTS = "POLICE_NOTIFICATION_HEARING_RESULTS";
+    private static final String APPLICATIONS_POLICE_NOTIFICATION_TEMPLATE = "applications";
+    private static final String DEFENDANTS_POLICE_NOTIFICATION_TEMPLATE = "defendants";
+    private static final String AMEND_RESHARE_POLICE_NOTIFICATION_TEMPLATE = "amendReshare";
+    private static final String NOTIFICATION_ID = "notificationId";
+    private static final String EMAIL_TEMPLATE_ID = "emailTemplateId";
+    private static final String SEND_TO_ADDRESS = "sendToAddress";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -187,7 +191,7 @@ public class ResultsEventProcessor {
     private FileService fileService;
 
     @Inject
-    private SystemDocGeneratorService systemDocGeneratorService;
+    private SystemDocGenerator systemDocGenerator;
 
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
 
@@ -425,8 +429,43 @@ public class ResultsEventProcessor {
     @Handles("results.event.police-notification-requested-v2")
     public void handlePoliceNotificationRequestedV2(final JsonEnvelope envelope) {
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = this.jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), PoliceNotificationRequestedV2.class);
-        final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(buildPoliceNotificationV2(policeNotificationRequestedV2));
-        notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
+        final Map<String, String> additionalInformation = buildPoliceNotificationV2(policeNotificationRequestedV2);
+        generatePoliceNotificationHearingResult(envelope, policeNotificationRequestedV2, additionalInformation);
+    }
+
+    private void generatePoliceNotificationHearingResult(final JsonEnvelope envelope, final PoliceNotificationRequestedV2 policeNotificationRequestedV2, final Map<String, String> additionalInformation) {
+        if (additionalInformation.get(AMEND_RESHARE).equalsIgnoreCase(NO)) {
+            final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+            final Notification notification = new Notification(notificationId,
+                    fromString(additionalInformation.get(EMAIL_TEMPLATE_ID)),
+                    policeNotificationRequestedV2.getPoliceEmailAddress(),
+                    additionalInformation);
+            final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(notification);
+            LOGGER.info("Sending initial police email notification for hearing result share, notificationId: {}", notificationId);
+            notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
+        } else {
+            final JsonObjectBuilder payload = createObjectBuilder()
+                    .add(URN, additionalInformation.get(URN))
+                    .add(DEFENDANTS_POLICE_NOTIFICATION_TEMPLATE, additionalInformation.get(DEFENDANTS))
+                    .add(AMEND_RESHARE_POLICE_NOTIFICATION_TEMPLATE, additionalInformation.get(AMEND_RESHARE));
+            if (additionalInformation.containsKey(APPLICATIONS)) {
+                payload.add(APPLICATIONS_POLICE_NOTIFICATION_TEMPLATE, additionalInformation.get(APPLICATIONS));
+            }
+
+            final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+            final String fileName = POLICE_NOTIFICATION_HEARING_RESULTS + notificationId + ".html";
+            final UUID fileId = fileService.storePayload(payload.build(), fileName, POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue(), ConversionFormat.THYMELEAF);
+            final DocumentGenerationRequest documentGenerationRequest = new DocumentGenerationRequest(
+                    POLICE_NOTIFICATION_HEARING_RESULTS,
+                    POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE,
+                    ConversionFormat.THYMELEAF,
+                    notificationId.toString(),
+                    fileId,
+                    additionalInformation);
+
+            LOGGER.info("Generating document for police notification of hearing amend and re-share result. Notification ID: {}, File ID: {}", notificationId, fileId);
+            systemDocGenerator.generateDocument(documentGenerationRequest, envelope);
+        }
     }
 
     private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, final String eventType) {
@@ -525,7 +564,8 @@ public class ResultsEventProcessor {
         return new Notification(policeNotificationRequested.getNotificationId(), fromString(applicationParameters.getEmailTemplateId()), policeNotificationRequested.getPoliceEmailAddress(), personalisationProperties);
     }
 
-    private Notification buildPoliceNotificationV2(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
+
+    private Map<String, String> buildPoliceNotificationV2(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
         final Map<String, String> personalisationProperties = new HashMap<>();
         String emailTemplateId = applicationParameters.getEmailTemplateId();
         personalisationProperties.put(URN, policeNotificationRequestedV2.getUrn());
@@ -560,9 +600,10 @@ public class ResultsEventProcessor {
             personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
         }
 
-        return new Notification(policeNotificationRequestedV2.getNotificationId(),
-                fromString(emailTemplateId),
-                policeNotificationRequestedV2.getPoliceEmailAddress(), personalisationProperties);
+        personalisationProperties.put(NOTIFICATION_ID, policeNotificationRequestedV2.getNotificationId().toString());
+        personalisationProperties.put(EMAIL_TEMPLATE_ID, emailTemplateId);
+        personalisationProperties.put(SEND_TO_ADDRESS, policeNotificationRequestedV2.getPoliceEmailAddress());
+        return personalisationProperties;
     }
 
     private String buildApplicationProp(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
@@ -574,7 +615,7 @@ public class ResultsEventProcessor {
             return null;
         }
 
-        if (!resultsAmended){
+        if (!resultsAmended) {
             return caseApplication;
         }
 
@@ -654,15 +695,14 @@ public class ResultsEventProcessor {
     }
 
     private String getPoliceEmailTemplate(final Boolean includeApplications, final Boolean includeResultsAmended) {
-        if (TRUE.equals(includeApplications)) {
-            if (TRUE.equals(includeResultsAmended)) {
-                return applicationParameters.getPoliceEmailHearingResultsAmendedWithApplicationTemplateId();
-            }
-            return applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId();
-        } else if (TRUE.equals(includeResultsAmended)) {
-            return applicationParameters.getPoliceEmailHearingResultsAmendedTemplateId();
+        if (Boolean.TRUE.equals(includeApplications)) {
+            return Boolean.TRUE.equals(includeResultsAmended)
+                    ? applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()
+                    : applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId();
         }
-        return applicationParameters.getPoliceEmailHearingResultsTemplateId();
+        return Boolean.TRUE.equals(includeResultsAmended)
+                ? applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()
+                : applicationParameters.getPoliceEmailHearingResultsTemplateId();
     }
 
     private String dateTimeFormat(final String hearingDate) {
@@ -678,7 +718,7 @@ public class ResultsEventProcessor {
                 .map(IndividualDefendant::getPerson)
                 .map(individual -> individual.getFirstName().concat(" ")
                         .concat(individual.getLastName()))
-                .collect(Collectors.joining(amended ? "<br />": ", "));
+                .collect(Collectors.joining(", "));
     }
 
     private void raiseHandlerEvent(final JsonEnvelope envelope, final JsonObject commandPayload) {
@@ -686,17 +726,6 @@ public class ResultsEventProcessor {
                 .withName(RESULTS_COMMAND_HANDLER_CASE_OR_APPLICATION_EJECTED)
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
-    }
-
-    private void sendRequestToGenerateDocumentAsynchronous(final JsonEnvelope envelope, final String materialId, final UUID fileId) {
-        final DocumentGenerationRequest documentGenerationRequest = new DocumentGenerationRequest(
-                NCES_EMAIL_NOTIFICATION_REQUEST,
-                TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
-                ConversionFormat.PDF,
-                materialId,
-                fileId);
-
-        systemDocGeneratorService.generateDocument(documentGenerationRequest, envelope);
     }
 
 }

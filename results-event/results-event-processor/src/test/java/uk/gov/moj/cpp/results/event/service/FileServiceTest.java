@@ -48,7 +48,7 @@ public class FileServiceTest {
 
         when(fileStorer.store(any(JsonObject.class), any(InputStream.class))).thenReturn(fileId);
 
-        final UUID exceptedFileId = fileService.storePayload(createObjectBuilder().build(), fileName, templateName);
+        final UUID exceptedFileId = fileService.storePayload(createObjectBuilder().build(), fileName, templateName, ConversionFormat.PDF);
 
         assertThat(exceptedFileId, equalTo(fileId));
     }
@@ -63,7 +63,7 @@ public class FileServiceTest {
         when(fileStorer.store(any(JsonObject.class), any(InputStream.class))).thenThrow(FileServiceException.class);
 
         assertThrows(RuntimeException.class, () -> {
-            fileService.storePayload(createObjectBuilder().build(), fileName, templateName);
+            fileService.storePayload(createObjectBuilder().build(), fileName, templateName, ConversionFormat.PDF);
         });
     }
 

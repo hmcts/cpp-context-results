@@ -31,10 +31,13 @@ import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudic
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeOfTrialReasons;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
 
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
 
 import java.io.InputStream;
 import java.io.StringReader;
@@ -70,6 +73,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
     private static final String IS_AMEND_RESHARE_YES = "yes";
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
+    private NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
 
     private final String policeEmailAddress = randomAlphabetic(15) + "@email.com";
 
@@ -84,6 +88,8 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         stubModeOfTrialReasons();
         setupNotificationNotifyStubs();
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+        stubDocGeneratorEndPoint();
+        stubMaterialUploadFile();
     }
 
     @AfterAll
@@ -95,6 +101,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
     public void setUp() {
         stubSpiOutFlag(true, true, policeEmailAddress);
         createMessageConsumers();
+        ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
     }
 
     @Test
@@ -122,12 +129,6 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         final JsonObject resharePayload = getPayload("json/public-hearing-results-shared/reshare-onecase-onedefendant-oneoffence.json", caseId, caseUrn, hearingId);
         final PublicHearingResulted resharedPublicHearingResulted = jsonToObjectConverter.convert(resharePayload, PublicHearingResulted.class);
         hearingResultsHaveBeenSharedV2(resharedPublicHearingResulted);
-
-        verifyEmailNotificationIsRaised(List.of(policeEmailAddress));
-
-        //Verifying below all the details should be present in the email sent to prosecutors.
-        List<String> expectedDetailsPresentInEmailFormat = asList(TEMPLATE_ID, SEND_TO_ADDRESS, SUBJECT, caseUrn, policeEmailAddress, GOV_EMAIL_TEMPLATE_ID_FOR_POLICE_NOTIFICATION_AMEND_RESHARE_NO_APPLICATION, IS_AMEND_RESHARE_YES);
-
         final String expectedDefendantName = "JohnYYYB8 Bot6651";
         final String firstOffenceWithNumber = "Offence number: 1";
         final String firstOffenceLabel = "Theft from a shop";
@@ -137,6 +138,25 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
 
         final String application = "Applications";
         List<String> detailsShouldNotBePresentInEmail = asList(application);
+        final HashMap additionalInformation = new HashMap();
+        additionalInformation.put(policeEmailAddress, policeEmailAddress);
+        additionalInformation.put("notificationId", randomUUID().toString());
+        additionalInformation.put("emailTemplateId", GOV_EMAIL_TEMPLATE_ID_FOR_POLICE_NOTIFICATION_AMEND_RESHARE_NO_APPLICATION);
+        additionalInformation.put("amendReshare", IS_AMEND_RESHARE_YES);
+        additionalInformation.put("URN", caseUrn);
+        additionalInformation.put("Defendants", String.join("  ", expectedDetailsPresentInDefendantHtmlSection));
+        additionalInformation.put("Applications", application);
+        additionalInformation.put(SUBJECT, SUBJECT);
+        additionalInformation.put(SEND_TO_ADDRESS, SEND_TO_ADDRESS);
+
+        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(getUserId(),
+                randomUUID(), randomUUID(), randomUUID(), "POLICE_NOTIFICATION_HEARING_RESULTS", additionalInformation);
+
+
+        verifyEmailNotificationIsRaised(List.of(policeEmailAddress));
+
+        //Verifying below all the details should be present in the email sent to prosecutors.
+        List<String> expectedDetailsPresentInEmailFormat = asList(TEMPLATE_ID, SEND_TO_ADDRESS, SUBJECT, caseUrn, policeEmailAddress, GOV_EMAIL_TEMPLATE_ID_FOR_POLICE_NOTIFICATION_AMEND_RESHARE_NO_APPLICATION, IS_AMEND_RESHARE_YES);
 
         final List<String> allExpectedDetailsPresentInEmail = Stream.of(expectedDetailsPresentInEmailFormat, expectedDetailsPresentInDefendantHtmlSection)
                 .flatMap(Collection::stream)
@@ -231,6 +251,21 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         final List<String> allExpectedDetailsPresentInEmail = Stream.of(expectedDetailsPresentInEmailFormat, expectedDetailsPresentInForDefendantOneInHtmlSection, expectedDetailsPresentInForDefendantTwoInHtmlSection).
                 flatMap(Collection::stream)
                 .collect(toList());
+        final HashMap additionalInformation = new HashMap();
+        additionalInformation.put(policeEmailAddress, policeEmailAddress);
+        additionalInformation.put("notificationId", randomUUID().toString());
+        additionalInformation.put("emailTemplateId", GOV_EMAIL_TEMPLATE_ID_FOR_POLICE_NOTIFICATION_AMEND_RESHARE_NO_APPLICATION);
+        additionalInformation.put("amendReshare", IS_AMEND_RESHARE_YES);
+        additionalInformation.put("URN", caseUrn1);
+        additionalInformation.put("Defendants", String.join("  ", expectedDetailsPresentInForDefendantOneInHtmlSection) + " "+String.join("  ", expectedDetailsPresentInForDefendantTwoInHtmlSection) );
+        additionalInformation.put("Applications", application);
+        additionalInformation.put(SUBJECT, SUBJECT);
+        additionalInformation.put(SEND_TO_ADDRESS, SEND_TO_ADDRESS);
+
+        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(getUserId(),
+                randomUUID(), randomUUID(), randomUUID(), "POLICE_NOTIFICATION_HEARING_RESULTS", additionalInformation);
+
+
         verifyEmailNotificationIsRaised(allExpectedDetailsPresentInEmail, detailsShouldNotBePresentInEmail);
     }
 

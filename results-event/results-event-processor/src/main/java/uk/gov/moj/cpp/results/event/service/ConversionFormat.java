@@ -2,7 +2,8 @@ package uk.gov.moj.cpp.results.event.service;
 
 public enum ConversionFormat {
 
-    PDF("pdf");
+    PDF("pdf"),
+    THYMELEAF("thymeleaf");
 
     private final String value;
 

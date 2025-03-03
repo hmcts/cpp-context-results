@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.event.service;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
@@ -12,8 +13,11 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
@@ -46,7 +50,8 @@ public class SystemDocGeneratorTest {
                 TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
                 ConversionFormat.PDF,
                 sourceCorrelationId,
-                payloadFileServiceId
+                payloadFileServiceId,
+                null
         );
 
         systemDocGenerator.generateDocument(request, envelope());
@@ -58,6 +63,42 @@ public class SystemDocGeneratorTest {
         assertThat(actual.payload().getString("conversionFormat"), equalTo("pdf"));
         assertThat(actual.payload().getString("sourceCorrelationId"), equalTo(sourceCorrelationId));
         assertThat(actual.payload().getString("payloadFileServiceId"), equalTo(payloadFileServiceId.toString()));
+    }
+
+    @Test
+    public void shouldGenerateDocumentWithAdditionalInformation() {
+        final String sourceCorrelationId = randomUUID().toString();
+        final UUID payloadFileServiceId = randomUUID();
+        Map<String, String> map = new HashMap<>();
+        map.put("key1", "value1");
+        map.put("key2", "value2");
+        final DocumentGenerationRequest request = new DocumentGenerationRequest(
+                NCES_EMAIL_NOTIFICATION_REQUEST,
+                TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
+                ConversionFormat.PDF,
+                sourceCorrelationId,
+                payloadFileServiceId,
+                map
+        );
+
+        systemDocGenerator.generateDocument(request, envelope());
+
+        verify(sender).sendAsAdmin(argumentCaptor.capture());
+        final Envelope<JsonObject> actual = argumentCaptor.getValue();
+        assertThat(actual.metadata().name(), equalTo("systemdocgenerator.generate-document"));
+        final JsonObject payload = actual.payload();
+        assertThat(payload.getString("templateIdentifier"), equalTo("NCESNotification"));
+        assertThat(payload.getString("conversionFormat"), equalTo("pdf"));
+        assertThat(payload.getString("sourceCorrelationId"), equalTo(sourceCorrelationId));
+        assertThat(payload.getString("payloadFileServiceId"), equalTo(payloadFileServiceId.toString()));
+
+        JsonArray additionalInformation = payload.getJsonArray("additionalInformation");
+        assertThat(additionalInformation.size(), is(2));
+        assertThat(additionalInformation.getJsonObject(0).getString("propertyName"), is("key1"));
+        assertThat(additionalInformation.getJsonObject(0).getString("propertyValue"), is("value1"));
+        assertThat(additionalInformation.getJsonObject(1).getString("propertyName"), is("key2"));
+        assertThat(additionalInformation.getJsonObject(1).getString("propertyValue"), is("value2"));
+
     }
 
     private JsonEnvelope envelope() {

@@ -161,7 +161,8 @@ public class NotificationNotifyService {
                 TemplateIdentifier.NCES_EMAIL_NOTIFICATION_TEMPLATE_ID,
                 PDF,
                 sourceCorrelationId,
-                fileId
+                fileId,
+                null
         );
         systemDocGenerator.generateDocument(request, envelope);
     }

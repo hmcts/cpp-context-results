@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,16 +15,24 @@ public class DocumentGenerationRequest {
     private final UUID payloadFileServiceId;
     private final String originatingSource;
 
+    private final Map<String, String> additionalInformation;
+
     public DocumentGenerationRequest(final String originatingSource,
                                      final TemplateIdentifier templateIdentifier,
                                      final ConversionFormat conversionFormat,
                                      final String sourceCorrelationId,
-                                     final UUID payloadFileServiceId) {
+                                     final UUID payloadFileServiceId,
+                                     final Map<String, String> additionalInformation) {
         this.originatingSource = originatingSource;
         this.templateIdentifier = templateIdentifier;
         this.conversionFormat = conversionFormat;
         this.sourceCorrelationId = sourceCorrelationId;
         this.payloadFileServiceId = payloadFileServiceId;
+        this.additionalInformation = additionalInformation;
+    }
+
+    public Map<String, String> getAdditionalInformation() {
+        return additionalInformation;
     }
 
     public String getOriginatingSource() {
