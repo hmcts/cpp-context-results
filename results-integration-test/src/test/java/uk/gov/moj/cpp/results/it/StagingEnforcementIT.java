@@ -946,17 +946,7 @@ public class StagingEnforcementIT {
 
 
         jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
-        assertThat(jsonResponse.getString(SUBJECT), is(AMEND_AND_RESHARE));
-        assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
-        assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
-        assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber));
-        assertThat(jsonResponse.getString(CASE_REFERENCE), is("REF1,REF2"));
-        assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
-        assertThat(jsonResponse.getString("amendmentReason"), is("Amendment1"));
-        assertThat(jsonResponse.getString("amendmentDate"), is("01/01/2021"));
-        assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
+        assertThat(jsonResponse, is(nullValue()));
 
         payload = getPayload(TRACE_RESULT_AMENDMENT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId2)

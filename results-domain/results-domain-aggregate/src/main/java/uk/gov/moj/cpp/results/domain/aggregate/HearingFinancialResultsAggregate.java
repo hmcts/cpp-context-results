@@ -12,6 +12,7 @@ import static java.util.stream.Stream.empty;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.collections.CollectionUtils.isEqualCollection;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
+import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.HearingFinancialResultsUpdated.hearingFinancialResultsUpdated;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoNothing;
@@ -20,6 +21,8 @@ import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResults
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
 import static uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested.ncesEmailNotificationRequested;
 import static uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound.sendNcesEmailNotFound;
+
+import org.slf4j.Logger;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.CorrelationIdHistoryItem;
@@ -59,11 +62,13 @@ import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize","java:S107","java:S6204"})
 public class HearingFinancialResultsAggregate implements Aggregate {
 
     private static final long serialVersionUID = 7715225910142528288L;
     private static final String HEARING_SITTING_DAY_PATTERN = "yyyy-MM-dd";
+
+    private static final Logger LOGGER = getLogger(HearingFinancialResultsAggregate.class);
 
     public static final String STAT_DEC = "STAT_DEC";
     public static final String REOPEN = "REOPEN";
@@ -275,13 +280,32 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(event -> Objects.isNull(event.getOldAccountCorrelationId()) == Objects.isNull(event.getOldGobAccountNumber()))
                 .collect(toList())
                 .forEach(e -> {
-                    builder.add(buildNcesApplicationMail(e));
+                    boolean isSubjectAmendAndReShare = AMEND_AND_RESHARE.equals(e.getSubject());
+                    boolean hasFinancialAmendments = isNotEmpty(hearingFinancialResultRequest.getOffenceResults()
+                            .stream()
+                            .filter(OffenceResults::getIsFinancial)
+                            .filter(offenceResult -> offenceResult.getAmendmentDate() != null && offenceResult.getAmendmentReason() != null)
+                            .toList());
+
+                    LOGGER.info("isSubjectAmendAndReShare {} hasFinancialAmendments {} for hearing id: {}", isSubjectAmendAndReShare, hasFinancialAmendments, hearingFinancialResultRequest.getHearingId());
+                    if (shouldSendNcesEmailForAmendment(isSubjectAmendAndReShare, hasFinancialAmendments)) {
+                        builder.add(buildNcesApplicationMail(e));
+                    } else {
+                        LOGGER.info("Not Sending NCES Email as no financial results amended for hearing id: {}", hearingFinancialResultRequest.getHearingId());
+                    }
                     markedEvents.remove(e);
                 });
 
         markedEvents.forEach(builder::add);
 
         return apply(builder.build());
+    }
+
+    private boolean shouldSendNcesEmailForAmendment(final boolean isSubjectAmendAndReShare, final boolean hasFinancialAmendments) {
+        if (isSubjectAmendAndReShare) {
+                return hasFinancialAmendments;
+        }
+        return true;
     }
 
     private boolean hasCorrelationId(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -397,7 +421,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(o -> !o.getIsFinancial())
                 .filter(offenceFromRequest -> ofNullable(offenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .collect(toList());
+                .toList();
         if (!impositionOffenceDetailsForNonFinancial.isEmpty()) {
             if (!impositionOffenceDetailsForFinancial.isEmpty()) {
                 impositionOffenceDetailsForFinancial.addAll(impositionOffenceDetailsForNonFinancial);
@@ -416,7 +440,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(OffenceResults::getIsDeemedServed)
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .collect(toList());
+                .toList();
         if (!impositionOffenceDetailsForDeemed.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed));
         }
@@ -427,7 +451,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(offence -> ACON.equals(offence.getResultCode()))
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .collect(toList());
+                .toList();
         if (!impositionOffenceDetailsForACON.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, ACON_EMAIL_SUBJECT, impositionOffenceDetailsForACON));
         }
@@ -439,7 +463,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsDeemedServed)
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .collect(toList());
+                .toList();
         if (!impositionOffenceDetailsForDeemed.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed));
         }
@@ -452,7 +476,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(OffenceResults::getIsFinancial)
                 .filter(offence -> ACON.equals(offence.getResultCode()))
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .collect(toList());
+                .toList();
         if (!impositionOffenceDetailsForAcon.isEmpty()) {
             markedEvents.add(buildMarkedAggregateWithoutOlds(hearingFinancialResultRequest, ACON_EMAIL_SUBJECT, impositionOffenceDetailsForAcon));
         }
@@ -631,7 +655,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .filter(Objects::nonNull)
                     .filter(OffenceResultsDetails::getIsFinancial)
                     .map(offenceResults -> this.buildImpositionOffenceDetailsFromAggregate(offenceResults, offenceDateMap)).distinct()
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
                 return Optional.of(buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
@@ -665,7 +689,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .filter(Objects::nonNull)
                     .filter(OffenceResultsDetails::getIsFinancial)
                     .map(offenceResults -> this.buildImpositionOffenceDetailsFromAggregate(offenceResults, offenceDateMap)).distinct()
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
                 return Optional.of(buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,

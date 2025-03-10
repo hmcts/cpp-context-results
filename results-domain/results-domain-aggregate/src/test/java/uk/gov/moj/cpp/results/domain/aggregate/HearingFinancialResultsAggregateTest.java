@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate.APPLICATION_UPDATED_SUBJECT;
 
+import uk.gov.justice.core.courts.HearingFinancialResultsUpdated;
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.Offence;
 import org.apache.commons.io.IOUtils;
@@ -278,6 +279,25 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getDefendantContactNumber(), is(defendantContactNumber));
     }
 
+    private void assertOffenceResultsDetails(HearingFinancialResultsAggregate aggregate,UUID resultId,UUID offenceId3) {
+        assertThat(aggregate.getOffenceResultsDetails().size(), is(3));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1), is(notNullValue()));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getResultCode(), is("rc1"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getAmendmentReason(), is("AmendmentReason"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getAmendmentDate(), is("AmendmentDate"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getDateOfResult(), is("24/05/2024"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getImpositionOffenceDetails(), is("impositionDetails"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getOffenceTitle(), is("offenceTitle"));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getIsDeemedServed(), is(true));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getResultId(), is(resultId));
+
+
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getOffenceId(), is(notNullValue()));
+        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getDateOfResult(), is("24/05/2024"));
+        assertThat(aggregate.getOffenceResultsDetails().get(offenceId3).getOffenceId(), is(notNullValue()));
+        assertThat(aggregate.getOffenceResultsDetails().get(offenceId3).getDateOfResult(), is("24/05/2024"));
+    }
+
     @Test
     public void testNcesEmailNotAvailable() {
         final String caseReference = "caseReference";
@@ -375,22 +395,8 @@ public class HearingFinancialResultsAggregateTest {
         aggregate.updateFinancialResults(newInput, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
         assertThat(aggregate.getDefendantName(), is("name"));
         assertAdditionalData(aggregate);
-        assertThat(aggregate.getOffenceResultsDetails().size(), is(3));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1), is(notNullValue()));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getResultCode(), is("rc1"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getAmendmentReason(), is("AmendmentReason"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getAmendmentDate(), is("AmendmentDate"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getDateOfResult(), is("24/05/2024"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getImpositionOffenceDetails(), is("impositionDetails"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getOffenceTitle(), is("offenceTitle"));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getIsDeemedServed(), is(true));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_1).getResultId(), is(resultId));
+        assertOffenceResultsDetails(aggregate, resultId, offenceId3);
 
-
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getOffenceId(), is(notNullValue()));
-        assertThat(aggregate.getOffenceResultsDetails().get(OFFENCE_ID_2).getDateOfResult(), is("24/05/2024"));
-        assertThat(aggregate.getOffenceResultsDetails().get(offenceId3).getOffenceId(), is(notNullValue()));
-        assertThat(aggregate.getOffenceResultsDetails().get(offenceId3).getDateOfResult(), is("24/05/2024"));
 
         verifyHistory();
     }
@@ -1425,17 +1431,29 @@ public class HearingFinancialResultsAggregateTest {
         final UUID accountCorrelationId2 = randomUUID();
         final UUID offenceIdA = randomUUID();
 
-        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId), singletonList(offenceIdA), singletonList(true), singletonList(true));
-
-        updateGobAccounts(singletonList(accountCorrelationId));
-
-        List<Object> events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
+        List<Object> events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId), singletonList(offenceIdA), singletonList(true), singletonList(true));
         assertThat(events.size(), is(2));
 
-        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
+        Optional.of(events.get(1)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
+                verifyMarkedAggregate(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2"));
 
-        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), singletonList(offenceIdA), singletonList(true), singletonList(true), singletonList("changed"));
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+        assertThat(events.size(), is(3));
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("")));
+
+        events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
+        assertThat(events.size(), is(1));
+
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsTracked) o).ifPresent(event -> {
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getIsFinancial(), is(false));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentReason(), is(notNullValue()));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentDate(), is(notNullValue()));
+        });
+
+        events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), singletonList(offenceIdA), singletonList(true), singletonList(true), singletonList("changed"));
+        assertThat(events.size(), is(2));
+
         events = updateGobAccounts(singletonList(accountCorrelationId2));
         assertThat(events.size(), is(3));
 
@@ -1600,22 +1618,23 @@ public class HearingFinancialResultsAggregateTest {
     }
 
     @Test
-    public void shouldRaiseEmailForAmendmentWhenFinancialToNonFinancial() {
+    public void shouldNotRaiseEmailForAmendmentWhenFinancialToNonFinancial() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
         final UUID offenceIdA = randomUUID();
 
-        updateFinancialResult(singletonList(accountCorrelationId1), singletonList(offenceIdA));
-        List<Object> events = updateGobAccounts(singletonList(accountCorrelationId1));
+        List<Object> events = updateFinancialResult(singletonList(accountCorrelationId1), singletonList(offenceIdA));
+        events = updateGobAccounts(singletonList(accountCorrelationId1));
         assertThat(events.size(), is(1));
 
         events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
 
-        assertThat(events.size(), is(2));
-        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
-
-
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsTracked) o).ifPresent(event -> {
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getIsFinancial(), is(false));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentReason(), is(notNullValue()));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentDate(), is(notNullValue()));
+        });
     }
 
     @Test
@@ -1673,13 +1692,11 @@ public class HearingFinancialResultsAggregateTest {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID offenceIdA = randomUUID();
 
-        updateFinancialResult(singletonList(accountCorrelationId1), singletonList(offenceIdA));
-        updateGobAccounts(singletonList(accountCorrelationId1));
+        List<Object> events = updateFinancialResult(singletonList(accountCorrelationId1), singletonList(offenceIdA));
+        events = updateGobAccounts(singletonList(accountCorrelationId1));
 
-        List<Object> events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
-        assertThat(events.size(), is(2));
-        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
+        events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
+        assertThat(events.size(), is(1));
 
         events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
         assertThat(events.size(), is(1));
@@ -1816,6 +1833,142 @@ public class HearingFinancialResultsAggregateTest {
 
     }
 
+    @Test
+    public void shouldIncludeAmendedFinancialResultsInNCESEmail() {
+        final UUID accountCorrelationId = randomUUID();
+        final UUID offenceIdA = randomUUID();
+
+        //1.share: Financial and Non Financial results are merged into one result and marked as Financial
+        List<Object> events = updateFinancialResult(singletonList(accountCorrelationId), List.of(offenceIdA), List.of(true));
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsTracked) o).ifPresent(event -> {
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getIsFinancial(), is(true));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentReason(), is(nullValue()));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentDate(), is(nullValue()));
+        });
+
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+
+        //2.share: only financial result is amended
+        events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId), List.of(offenceIdA, offenceIdA), List.of(false, true), List.of(false, false),
+                List.of("NonFinancial-unchanged-but-coming-as-amended", "Financial-changed"));
+        assertThat(events.size(), is(2));
+        Optional.of(events.get(1)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
+                verifyMarkedAggregateWithSuffix(AMEND_AND_RESHARE, accountCorrelationId, asList(offenceIdA, offenceIdA), event, "Ref1,Ref2",
+                        List.of( "Financial-changed","NonFinancial-unchanged-but-coming-as-amended")));
+
+
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+        //should send nces email
+        assertThat(events.size(), is(3));
+
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithOlds( List.of(accountCorrelationId,accountCorrelationId), List.of(offenceIdA,offenceIdA), event,
+                        List.of( "Financial-changed","NonFinancial-unchanged-but-coming-as-amended")));
+    }
+
+
+    @Test
+    public void shouldNotSendEmailWhenOnlyNonFinancialResultIsAmended() {
+        final UUID accountCorrelationId = randomUUID();
+        final UUID offenceIdA = randomUUID();
+
+        //1.share: Financial and Non Financial results are merged into one result and marked as Financial
+        List<Object> events = updateFinancialResult(singletonList(accountCorrelationId), List.of(offenceIdA), List.of(true));
+        assertThat(events.size(), is(1));
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+        assertThat(events.size(), is(1));
+
+        //2.share: only non-financial result is amended
+        events = updateFinancialResultWithDeemedServed(singletonList(null), List.of(offenceIdA), List.of(false), List.of(false), List.of("NonFinancial-changed"));
+          assertThat(events.size(), is(1));
+
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsTracked) o).ifPresent(event -> {
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getIsFinancial(), is(false));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentReason(), is(notNullValue()));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentDate(), is(notNullValue()));
+        });
+
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+
+        //should not send nces email
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsUpdated) o).ifPresent(event -> {
+            assertThat(event.getAccountNumber(), is(notNullValue()));
+            assertThat(event.getCorrelationId(), is(notNullValue()));
+        });
+
+    }
+
+    @Test
+    public void shouldNotSendEmailWhenOnlyFinancialSharedAndThanNonFinancialAdded() {
+        final UUID accountCorrelationId = randomUUID();
+        final UUID offenceIdA = randomUUID();
+
+        //1.share: Financial result is shared
+        List<Object> events = updateFinancialResult(singletonList(accountCorrelationId), List.of(offenceIdA), List.of(true));
+        assertThat(events.size(), is(1));
+
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+        assertThat(events.size(), is(1));
+
+        //2.share: non-financial result is added
+        events = updateFinancialResultWithDeemedServed(singletonList(null), List.of(offenceIdA), List.of(false), List.of(false), List.of("NonFinancial-added"));
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsTracked) o).ifPresent(event -> {
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getIsFinancial(), is(false));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentReason(), is(notNullValue()));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentDate(), is(notNullValue()));
+        });
+
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+
+        //should not send nces email
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsUpdated) o).ifPresent(event -> {
+            assertThat(event.getAccountNumber(), is(notNullValue()));
+            assertThat(event.getCorrelationId(), is(notNullValue()));
+        });
+    }
+
+
+
+
+    @Test
+    public void shouldNotSendAmendmentEmailWhenNonFinancialResultIsAmendedForPreviouslyDeemedResult() {
+        final UUID accountCorrelationId = randomUUID();
+        final UUID offenceIdA = randomUUID();
+
+        //1.share: Financial deemed result is shared
+        List<Object> events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId), List.of(offenceIdA), List.of(true), List.of(true), List.of(""));
+        assertThat(events.size(), is(2));
+
+        //should send deemed email
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+        assertThat(events.size(), is(3));
+
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2", asList("", "", "")));
+
+        //2.share: non-financial result is amended
+        events = updateFinancialResultWithDeemedServed(singletonList(null), List.of(offenceIdA,offenceIdA), List.of(false,false), List.of(false,true), List.of("NonFinancial-amended",""));
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsTracked) o).ifPresent(event -> {
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getIsFinancial(), is(false));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentReason(), is(notNullValue()));
+            assertThat(event.getHearingFinancialResultRequest().getOffenceResults().get(0).getAmendmentDate(), is(notNullValue()));
+        });
+
+        events = updateGobAccounts(singletonList(accountCorrelationId));
+
+        //should not send amendment email
+        assertThat(events.size(), is(1));
+        Optional.of(events.get(0)).map(o -> (HearingFinancialResultsUpdated) o).ifPresent(event -> {
+            assertThat(event.getAccountNumber(), is(notNullValue()));
+            assertThat(event.getCorrelationId(), is(notNullValue()));
+        });
+    }
+
     private void verifyUnMarkSendMailWhenAccountReceived(final UUID markedAggregateSendEmailWhenAccountReceivedId, final UnmarkedAggregateSendEmailWhenAccountReceived unmarkedAggregateSendEmailWhenAccountReceived) {
         assertThat(unmarkedAggregateSendEmailWhenAccountReceived.getId(), is(markedAggregateSendEmailWhenAccountReceivedId));
 
@@ -1842,12 +1995,12 @@ public class HearingFinancialResultsAggregateTest {
         return events;
     }
 
-    private void updateFinancialResult(final List<UUID> accountCorrelationIds, final List<UUID> offenceIds) {
-        updateFinancialResultWithDeemedServed(accountCorrelationIds, offenceIds, offenceIds.stream().map(i -> true).collect(toList()), offenceIds.stream().map(i -> false).collect(toList()));
+    private List<Object> updateFinancialResult(final List<UUID> accountCorrelationIds, final List<UUID> offenceIds) {
+        return updateFinancialResultWithDeemedServed(accountCorrelationIds, offenceIds, offenceIds.stream().map(i -> true).collect(toList()), offenceIds.stream().map(i -> false).collect(toList()));
     }
 
-    private void updateFinancialResult(final List<UUID> accountCorrelationIds, final List<UUID> offenceIds, final List<Boolean> isFinancial) {
-        updateFinancialResultWithDeemedServed(accountCorrelationIds, offenceIds, isFinancial, offenceIds.stream().map(i -> false).collect(toList()));
+    private List<Object> updateFinancialResult(final List<UUID> accountCorrelationIds, final List<UUID> offenceIds, final List<Boolean> isFinancial) {
+        return updateFinancialResultWithDeemedServed(accountCorrelationIds, offenceIds, isFinancial, offenceIds.stream().map(i -> false).collect(toList()));
     }
 
     private List<Object> updateFinancialResultWithDeemedServed(final List<UUID> accountCorrelationIds, final List<UUID> offenceIds, final List<Boolean> isFinancial, final List<Boolean> isDeemedServers) {
@@ -1975,6 +2128,24 @@ public class HearingFinancialResultsAggregateTest {
                     is(offenceIds.get(i).toString() + " ImpositionOffenceDetails".concat(isApplication ? " Application" : "")));
             assertThat(event.getImpositionOffenceDetails().get(i).getTitle(),
                     is(offenceIds.get(i).toString() + " offenceTitle".concat(isApplication ? " Application" : "")));
+        }
+    }
+
+    private void verifyMarkedAggregateWithSuffix(final String subject, final UUID accountCorrelationId,
+                                       final List<UUID> offenceIds, final MarkedAggregateSendEmailWhenAccountReceived event,
+                                       final String caseUrn, List<String> suffixes) {
+        assertThat(event.getAccountCorrelationId(), is(accountCorrelationId));
+        assertThat(event.getSubject(), is(subject));
+        assertThat(event.getHearingCourtCentreName(), is(hearingCourtCentreName));
+        assertThat(event.getDivisionCode(), is(accountCorrelationId.toString() + "DIVCODE"));
+        assertThat(event.getCaseReferences(), is(caseUrn));
+        assertThat(Objects.nonNull(event.getDateDecisionMade()) ? event.getDateDecisionMade() : event.getAmendmentDate(), is("01/02/2021"));
+        assertThat(event.getDefendantName(), is("John Doe"));
+        assertThat(event.getSendTo(), is(ncesEMail));
+        assertThat(event.getImpositionOffenceDetails().size(), is(offenceIds.size()));
+        for (int i = 0; i < offenceIds.size(); i++) {
+            assertThat(event.getImpositionOffenceDetails().get(i).getDetails(), is(offenceIds.get(i).toString() + " ImpositionOffenceDetails" + suffixes.get(i)));
+            assertThat(event.getImpositionOffenceDetails().get(i).getTitle(), is(offenceIds.get(i).toString() + " offenceTitle" + suffixes.get(i)));
         }
     }
 
