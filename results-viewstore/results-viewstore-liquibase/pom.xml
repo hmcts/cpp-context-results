@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-viewstore</artifactId>
-        <version>17.0.42</version>
+        <version>17.0.43-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-viewstore-liquibase</artifactId>
