@@ -579,16 +579,12 @@ public class ResultsEventProcessorTest {
 
     @Test
     public void shouldNotGenerateDetailedDefendantListForFirstReshare() {
-        ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestArgumentCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
-        ArgumentCaptor<JsonObject> fileJsonObjectArgumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
         List<String> policeSubjectLineTitle = asList("final sentence", "");
         List<String> resultText = asList("Jorunal", "Fine paid");
         List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
                 buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false);
-        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
-        final UUID payloadFileId = randomUUID();
 
         final Metadata metadata = Envelope.metadataBuilder()
                 .withId(randomUUID())
@@ -600,7 +596,6 @@ public class ResultsEventProcessorTest {
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_AMENDED_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
-        //when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
@@ -613,6 +608,35 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_APPLICATIONS), is("Application to Vary bail"));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+    }
+
+    @Test
+    public void shouldSendEmailWhenNoCaseDefendantsAndOnlyApplicationResults() {
+        List<CaseDefendant> caseDefendants = Collections.emptyList();
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false);
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getEmailTemplateId()).thenReturn(POLICE_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is("no"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).containsKey(DEFENDANTS), is(false));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).containsKey(FIELD_APPLICATIONS), is(false));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL), is(COMMON_PLATFORM_URL));
     }
 
     @Test
