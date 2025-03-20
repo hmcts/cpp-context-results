@@ -570,6 +570,7 @@ public class ResultsEventProcessor {
         String emailTemplateId = applicationParameters.getEmailTemplateId();
         personalisationProperties.put(URN, policeNotificationRequestedV2.getUrn());
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
+        personalisationProperties.put(AMEND_RESHARE, NO);
 
         if (isNotEmpty(policeNotificationRequestedV2.getCaseDefendants())) {
             final boolean resultsAmended = !policeNotificationRequestedV2.getAmendReshare().isEmpty();
