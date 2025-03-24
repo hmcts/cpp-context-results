@@ -27,6 +27,8 @@ subscriptions_descriptor:
           schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
         - name: results.event.informant-register-notified
           schema_uri: http://justice.gov.uk/results/courts/informant-register-notified.json
+        - name: results.event.appeal-update-notification-requested
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/results.event.appeal-update-notification-requested.json
 
       event_source_name: results
 

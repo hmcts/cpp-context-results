@@ -58,7 +58,7 @@ public class NotificationNotifyService {
                 .withMetadataFrom(event);
         sender.sendAsAdmin(jsonObjectEnvelope);
 
-    }
+        }
 
     public void sendNcesEmail(final EmailNotification emailNotification, final JsonEnvelope envelope) {
         final JsonObjectBuilder payload = createObjectBuilder()

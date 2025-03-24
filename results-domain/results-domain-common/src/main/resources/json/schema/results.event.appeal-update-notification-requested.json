@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/results.event.appeal-update-notification-requested.json",
+  "type": "object",
+  "properties": {
+    "notificationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "applicationId": {
+      "type": "string"
+    },
+    "emailAddress": {
+      "type": "string",
+      "format": "email"
+    },
+    "urn": {
+      "type": "string"
+    },
+    "defendant": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "notificationId",
+    "subject",
+    "applicationId",
+    "emailAddress",
+    "urn",
+    "defendant"
+  ],
+  "additionalProperties": false
+}

@@ -73,6 +73,7 @@ import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.AmendmentType;
+import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.DefendantResultDetails;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 
@@ -83,6 +84,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 
@@ -861,6 +863,19 @@ public class ResultsAggregateTest {
         assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
         assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("123"));
         assertEquals(LocalDate.now(), policeResultGenerated.getSessionDays().get(0).getSittingDay().toLocalDate());
+    }
+
+    @Test
+    public void shouldGenerateHandleApplicationUpdateNotificationEvent(){
+        final Stream<Object> objectList = resultsAggregate.handleApplicationUpdateNotification("emailAddress", UUID.fromString("5a783b97-0203-4bd7-9f57-90008364eb35"),
+                "urn", "defendant");
+        final AppealUpdateNotificationRequested appealUpdateNotificationRequested = (AppealUpdateNotificationRequested) objectList.findFirst().get();
+        assertNotNull(appealUpdateNotificationRequested.getNotificationId());
+        assertEquals(appealUpdateNotificationRequested.getSubject(), "Appeal Update");
+        assertEquals(appealUpdateNotificationRequested.getApplicationId(), "5a783b97-0203-4bd7-9f57-90008364eb35");
+        assertEquals(appealUpdateNotificationRequested.getEmailAddress(), "emailAddress");
+        assertEquals(appealUpdateNotificationRequested.getUrn(), "urn");
+        assertEquals(appealUpdateNotificationRequested.getDefendant(), "defendant");
     }
 
     private Hearing createHearing(UUID caseId, UUID defendantId, UUID offenceId, JudicialResult judicialResult) {

@@ -20,14 +20,29 @@ import static uk.gov.justice.services.test.utils.core.matchers.ResponseStatusMat
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegister;
 import static uk.gov.moj.cpp.results.it.helper.RestPollerHelper.pollWithDefaults;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2WithoutPoliceResultGenerated;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyAppealUpdateEmail;
+import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.NOTIFICATION_NOTIFY_ENDPOINT;
+import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.setupNotificationNotifyStubs;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubPoliceFlag;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplateWithAppealFlag;
 
+import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import io.restassured.response.Response;
@@ -89,6 +104,25 @@ public class ProsecutorResultsIT {
         );
         validateProsecutorResults(randomAlphanumeric(7), registerDate.toLocalDate().toString(), null, javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForUnknownOuCode);
 
+    }
+
+    @Test
+    public void testAppealApplicationEmailNotificationSuccess() {
+        stubGetOrgainsationUnit();
+        createMessageConsumers();
+        setupNotificationNotifyStubs();
+        ReferenceDataServiceStub.stubCountryNationalities();
+
+        final PublicHearingResulted resultsMessage = basicShareResultsTemplateWithAppealFlag(JurisdictionType.CROWN, true);
+        resultsMessage.setIsReshare(Optional.of(Boolean.FALSE));
+        resultsMessage.setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        resultsMessage.setHearingDay(Optional.of(LocalDate.now()));
+
+        stubSpiOutFlag(true, true, "CCSU@derbyshire.pnn.police.uk");
+        stubPoliceFlag("DERPF", "DERPF");
+        hearingResultsHaveBeenSharedV2WithoutPoliceResultGenerated(resultsMessage);
+
+        verifyAppealUpdateEmail(NOTIFICATION_NOTIFY_ENDPOINT);
     }
 
     private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final javax.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {

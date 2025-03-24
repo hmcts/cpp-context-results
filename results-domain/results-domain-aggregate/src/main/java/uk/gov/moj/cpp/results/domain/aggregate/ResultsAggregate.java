@@ -29,6 +29,7 @@ import static uk.gov.moj.cpp.domains.results.structure.Offence.offence;
 import static uk.gov.moj.cpp.domains.results.structure.Person.person;
 import static uk.gov.moj.cpp.domains.results.structure.Result.result;
 import static uk.gov.moj.cpp.results.domain.aggregate.ResultReshareHelper.hasResults;
+import static uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested.appealUpdateNotificationRequested;
 
 import com.google.common.base.Functions;
 import org.apache.commons.collections.map.HashedMap;
@@ -409,6 +410,17 @@ public class ResultsAggregate implements Aggregate {
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
         aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre,isReshare));
         return apply(builder.build());
+    }
+
+    public Stream<Object> handleApplicationUpdateNotification(final String emailAddress, final UUID applicationId, final String urn, final String defendant){
+        return apply(of(appealUpdateNotificationRequested()
+                .withEmailAddress(emailAddress)
+                .withNotificationId(randomUUID())
+                .withSubject("Appeal Update")
+                .withApplicationId(applicationId.toString())
+                .withUrn(urn)
+                .withDefendant(defendant)
+                .build()));
     }
 
     @SuppressWarnings("java:S3776")

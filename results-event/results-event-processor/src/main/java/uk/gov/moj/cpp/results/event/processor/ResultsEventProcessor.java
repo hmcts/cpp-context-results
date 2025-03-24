@@ -42,6 +42,7 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.CaseResultDetails;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
@@ -122,7 +123,9 @@ public class ResultsEventProcessor {
     private static final String AMEND_RESHARE = "Amend_Reshare";
     private static final String COMMON_PLATFORM_URL = "common_platform_url";
     private static final String COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
+    private static final String COMMON_PLATFORM_URL_AAAG = "common_platform_url_aaag";
     public static final String PROSECUTION_CASEFILE_CASE_AT_A_GLANCE = "prosecution-casefile/case-at-a-glance/";
+    public static final String PROSECUTION_CASEFILE_APPLICATION_AT_A_GLANCE = "prosecution-casefile/application-at-a-glance/";
     public static final String SPC = " ";
     private static final String MATERIAL_ID = "materialId";
     private static final String COURT_DOCUMENT = "courtDocument";
@@ -468,6 +471,13 @@ public class ResultsEventProcessor {
         }
     }
 
+    @Handles("results.event.appeal-update-notification-requested")
+    public void handleAppealUpdateNotificationRequested(final JsonEnvelope envelope) {
+        final AppealUpdateNotificationRequested appealUpdateNotificationRequested = this.jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), AppealUpdateNotificationRequested.class);
+        final JsonObject notificationPayload = this.objectToJsonObjectConverter.convert(buildAppealUpdateNotification(appealUpdateNotificationRequested));
+        notificationNotifyService.sendEmailNotification(envelope, notificationPayload);
+    }
+
     private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, final String eventType) {
         final Optional<String> userId = envelope.metadata().userId();
         try {
@@ -605,6 +615,27 @@ public class ResultsEventProcessor {
         personalisationProperties.put(EMAIL_TEMPLATE_ID, emailTemplateId);
         personalisationProperties.put(SEND_TO_ADDRESS, policeNotificationRequestedV2.getPoliceEmailAddress());
         return personalisationProperties;
+    }
+
+    private Notification buildAppealUpdateNotification(final AppealUpdateNotificationRequested appealUpdateNotificationRequested){
+        final Map<String, String> personalisationProperties = new HashMap<>();
+        String commonPlatformUrl = applicationParameters.getCommonPlatformUrl();
+
+        if (!commonPlatformUrl.endsWith("/")) {
+            commonPlatformUrl = commonPlatformUrl + "/";
+        }
+
+        personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
+        personalisationProperties.put(COMMON_PLATFORM_URL_AAAG, commonPlatformUrl
+                .concat(PROSECUTION_CASEFILE_APPLICATION_AT_A_GLANCE).concat(appealUpdateNotificationRequested.getApplicationId()));
+
+        personalisationProperties.put(SUBJECT, appealUpdateNotificationRequested.getSubject());
+        personalisationProperties.put(URN, appealUpdateNotificationRequested.getUrn());
+        personalisationProperties.put(DEFENDANTS, appealUpdateNotificationRequested.getDefendant());
+
+        return new Notification(appealUpdateNotificationRequested.getNotificationId(),
+                fromString(applicationParameters.getAppealUpdateNotificationTemplateId()),
+                appealUpdateNotificationRequested.getEmailAddress(), personalisationProperties);
     }
 
     private String buildApplicationProp(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {

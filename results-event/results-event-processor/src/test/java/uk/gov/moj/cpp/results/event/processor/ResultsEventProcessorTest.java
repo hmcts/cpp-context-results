@@ -11,6 +11,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -36,6 +37,7 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.event.service.TemplateIdentifier.POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE;
 
+import com.google.common.io.Resources;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.justice.core.courts.Address;
@@ -60,6 +62,7 @@ import uk.gov.justice.services.test.utils.framework.api.JsonObjectConvertersFact
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
+import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.ApplicationResultDetails;
 import uk.gov.moj.cpp.results.domain.event.CaseResultDetails;
 import uk.gov.moj.cpp.results.domain.event.DefendantResultDetails;
@@ -86,6 +89,8 @@ import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 import uk.gov.moj.cpp.results.event.service.SjpService;
 
+import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
@@ -97,6 +102,7 @@ import java.util.UUID;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.json.JsonValue;
 
 import org.mockito.ArgumentCaptor;
@@ -133,12 +139,15 @@ public class ResultsEventProcessorTest {
 
     private static final String POLICE_EMAIL_HEARING_RESULTS_AMENDED_WITH_APPLICATIONS_TEMPLATE_ID = "f3359bce-8cfb-454f-a504-aa916ea9e9e9";
 
+    private static final String APPEAL_UPDATED_TEMPLATE_ID = "a316a21e-1911-4b77-97fc-ee0118d533af";
+
     private static final String CASE_ID = "b45b1b7d-ee42-4d02-94d4-41877873bb71";
     private static final String FIELD_SEND_TO_ADDRESS = "sendToAddress";
     private static final String FIELD_PERSONALISATION = "personalisation";
     private static final String FIELD_URN = "URN";
     private static final String FIELD_COMMON_PLATFORM_URL = "common_platform_url";
     private static final String FIELD_COMMON_PLATFORM_URL_CAAG = "common_platform_url_caag";
+    private static final String FIELD_COMMON_PLATFORM_URL_AAAG = "common_platform_url_aaag";
     private static final String FIELD_TEMPLATE_ID = "templateId";
     private static final String FIELD_NOTIFICATION_ID = "notificationId";
     public static final String DEFENDANTS = "Jack Smith, Henry Cole";
@@ -376,6 +385,32 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.defendantId", is(DEFAULT_DEFENDANT_ID.toString()))
 
                         ))));
+    }
+
+    @Test
+    public void shouldCreateResultCommandForApplicationsWhenHearingResultedForDay() {
+        final JsonObject payload = getPayload("results.events.hearing-results-added-for-day.json");
+
+        final PublicHearingResulted publicHearingResulted = jsonObjectToObjectConverter.convert(payload, PublicHearingResulted.class);
+
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.events.hearing-results-added-for-day"),
+                objectToJsonObjectConverter.convert(publicHearingResulted));
+
+        resultsEventProcessor.hearingResultAddedForDay(envelope);
+
+        verify(sender, times(1)).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
+
+        final JsonEnvelope createResultsForDayRequestPayload = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
+
+        assertThat(createResultsForDayRequestPayload,
+                jsonEnvelope(
+                        metadata().withName("results.command.create-results-for-day"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.courtApplications.[0].type.appealFlag", is(true))
+                                )
+                        )));
     }
 
     @Test
@@ -834,6 +869,46 @@ public class ResultsEventProcessorTest {
         assertThat(fileJsonObject.getString("defendants"), is(AMENDED_DEFENDANTS));
         assertThat(fileJsonObject.getString("applications"), is(AMENDED_APPLICATIONS));
 
+    }
+
+    @Test
+    public void shouldSendAppealUpdateNotification() {
+        final UUID notificationId = randomUUID();
+
+        final AppealUpdateNotificationRequested appealUpdateNotificationRequested = AppealUpdateNotificationRequested
+                .appealUpdateNotificationRequested()
+                .withDefendant("defendant")
+                .withUrn("urn")
+                .withSubject("subject")
+                .withNotificationId(notificationId)
+                .withEmailAddress("emailAddress")
+                .withApplicationId("applicationId")
+                .build();
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(appealUpdateNotificationRequested));
+
+        when(applicationParameters.getAppealUpdateNotificationTemplateId()).thenReturn(APPEAL_UPDATED_TEMPLATE_ID);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+
+        resultsEventProcessor.handleAppealUpdateNotificationRequested(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(
+                Mockito.eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is("emailAddress"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getString("notificationId"), is(notificationId.toString()));
+        assertThat(jsonObjectArgumentCaptor.getValue().getString("templateId"), is("a316a21e-1911-4b77-97fc-ee0118d533af"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is("urn"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is("defendant"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL), is("http://xxx.xx.com/"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("subject"));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_AAAG),
+                is("http://xxx.xx.com/prosecution-casefile/application-at-a-glance/applicationId"));
     }
 
     @Test
@@ -1428,5 +1503,19 @@ public class ResultsEventProcessorTest {
                         .withRole("role").build()))
                 .build();
         return asList(caseDefendant1, caseDefendant2);
+    }
+
+    private static JsonObject getPayload(final String path) {
+        String request = null;
+        try {
+            request = Resources.toString(
+                    Resources.getResource(path),
+                    Charset.defaultCharset()
+            );
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = Json.createReader(new StringReader(request));
+        return reader.readObject();
     }
 }

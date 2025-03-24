@@ -23,9 +23,11 @@ import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.Offence;
+import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
@@ -53,10 +55,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -91,6 +95,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     public static final String SUSSEX_POLICE_CPS_ORGANISATION = "A47AA00";
     private static final String A_4 = "A4";
     private static final String ZERO_FOUR = "04";
+    private static final String CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
 
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -191,6 +196,8 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             courtApplicationList.add(courtApplication);
         }
 
+        sendAppealUpdateNotification(commandEnvelope, jurisdictionType, courtApplicationList);
+
         for (final JsonObject c : cases) {
 
             final CaseDetails caseDetails = jsonObjectToObjectConverter.convert(c, CaseDetails.class);
@@ -231,6 +238,69 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                         commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase, courtCentre.getCourtCentre().getName(), isReshare));
             }
         }
+    }
+
+    private void sendAppealUpdateNotification(final JsonEnvelope commandEnvelope, final Optional<JurisdictionType> jurisdictionType, final List<CourtApplication> courtApplicationList){
+        for(final CourtApplication courtApplication : courtApplicationList){
+            if(courtApplication.getType().getAppealFlag() == Boolean.TRUE && isEmailRequiredForApplicationResult(courtApplication)) {
+
+                final String prosecutingAuthority = courtApplication.getCourtApplicationCases() != null ? courtApplication.getCourtApplicationCases().get(0)
+                        .getProsecutionCaseIdentifier().getProsecutionAuthorityCode() : null;
+
+                final String prosecutor = courtApplication.getRespondents() != null ?
+                        courtApplication.getRespondents().get(0).getProsecutingAuthority().getProsecutionAuthorityCode() : null;
+
+                final Person person = getDefendantPerson(courtApplication);
+
+                if(person != null) {
+                    createAppealUpdateEmail(commandEnvelope, jurisdictionType, courtApplication, prosecutingAuthority, prosecutor, person);
+                } else {
+                    LOGGER.info("The defendant details is empty so appeal update email is not sent for application id {}.", courtApplication.getId());
+                }
+            }
+        }
+    }
+
+    private static Person getDefendantPerson(final CourtApplication courtApplication) {
+        final Person person = courtApplication.getApplicant().getMasterDefendant().getPersonDefendant() != null ?
+        courtApplication.getApplicant().getMasterDefendant().getPersonDefendant().getPersonDetails() : null;
+        return person;
+    }
+
+    private static boolean isEmailRequiredForApplicationResult(final CourtApplication courtApplication) {
+        return courtApplication.getJudicialResults()
+                .stream()
+                .anyMatch(judicialResult -> JudicialResultCategory.FINAL.equals(judicialResult.getCategory()) ||
+                        JudicialResultCategory.INTERMEDIARY.equals(judicialResult.getCategory()));
+    }
+
+    private void createAppealUpdateEmail(final JsonEnvelope commandEnvelope, final Optional<JurisdictionType> jurisdictionType, final CourtApplication courtApplication, final String prosecutingAuthority, final String prosecutor, final Person person) {
+        final Set<String> prosecutorCodesSet = new HashSet<>();
+        prosecutorCodesSet.add(prosecutor);
+        prosecutorCodesSet.add(prosecutingAuthority);
+
+        prosecutorCodesSet.stream().filter(prosecutorCode -> prosecutorCode != null).forEach(prosecutorCode -> {
+            final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(prosecutorCode);
+            final String[] emailAddress = new String[1];
+
+            refDataProsecutorJson.ifPresent(prosecutorJson ->
+                    emailAddress[0] = getEmailAddress(prosecutorJson, jurisdictionType)
+            );
+
+            if (emailAddress[0] != null && !emailAddress[0].isBlank()) {
+                try {
+                    aggregate(ResultsAggregate.class, courtApplication.getId(),
+                            commandEnvelope, a -> a.handleApplicationUpdateNotification(emailAddress[0],
+                                    courtApplication.getId(),
+                                    courtApplication.getApplicationReference(),
+                                    person.getFirstName() + " " + person.getLastName()));
+                } catch (EventStreamException e) {
+                    LOGGER.error("Error in creating results.event.appeal-update-notification-requested event for application id {} ", courtApplication.getId());
+                }
+            }else {
+                LOGGER.info("Email address cannot be found for results.event.appeal-update-notification-requested event for application id {} ", courtApplication.getId());
+            }
+        });
     }
 
 
@@ -480,10 +550,14 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private String getEmailAddress(final JsonObject prosecutorJson, final Optional<JurisdictionType> jurisdictionType) {
-        if (isCrownCourt(jurisdictionType) && prosecutorJson.containsKey("contactEmailAddress")) {
-            return prosecutorJson.getString("contactEmailAddress");
+        if (isCrownCourt(jurisdictionType) && prosecutorJson.containsKey(CONTACT_EMAIL_ADDRESS)) {
+            return prosecutorJson.getString(CONTACT_EMAIL_ADDRESS);
         } else if (isMagsCourt(jurisdictionType) && prosecutorJson.containsKey("mcContactEmailAddress")) {
             return prosecutorJson.getString("mcContactEmailAddress");
+        } else if (prosecutorJson.containsKey(CONTACT_EMAIL_ADDRESS)) {
+            return prosecutorJson.getString(CONTACT_EMAIL_ADDRESS);
+        } else if (prosecutorJson.containsKey("informantEmailAddress")) {
+            return prosecutorJson.getString("informantEmailAddress");
         }
 
         return "";

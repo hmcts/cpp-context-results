@@ -30,6 +30,10 @@ public class ApplicationParameters {
     private String ncesEmailNotificationTemplateId;
 
     @Inject
+    @Value(key = "appeal_update_notification_template_id", defaultValue = "a316a21e-1911-4b77-97fc-ee0118d533af")
+    private String appealUpdateNotificationTemplateId;
+
+    @Inject
     @Value(key = "common.platform.url", defaultValue = "http://steccm12wrpxy01.cpp.nonlive/")
     private String commonPlatformUrl;
 
@@ -75,6 +79,10 @@ public class ApplicationParameters {
 
     public String getPoliceEmailHearingResultsWithApplicationTemplateId() {
         return policeEmailHearingResultsWithApplicationTemplateId;
+    }
+
+    public String getAppealUpdateNotificationTemplateId() {
+        return appealUpdateNotificationTemplateId;
     }
 
     public String getEmailTemplateId(final String templateName) {

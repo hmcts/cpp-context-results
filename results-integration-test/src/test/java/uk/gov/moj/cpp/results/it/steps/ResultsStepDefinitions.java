@@ -1,10 +1,16 @@
 package uk.gov.moj.cpp.results.it.steps;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static javax.ws.rs.core.Response.Status.OK;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,6 +45,7 @@ import uk.gov.moj.cpp.results.test.matchers.MapJsonObjectToTypeMatcher;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,6 +56,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
@@ -63,11 +71,8 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String CONTENT_TYPE_RESULTS_SUMMARY = "application/vnd.results.results-summary+json";
     private static final String CONTENT_TYPE_DEFENDANT_TRACKING_STATUS = "application/vnd.results.get-defendants-tracking-status+json";
     private static final String CONTENT_TYPE_NCES_EMAIL_NOTIFICATION_DETAILS = "application/vnd.results.query.nces-email-notification-details+json";
-
     private static final String PUBLIC_EVENT_HEARING_RESULTED_V2 = "public.events.hearing.hearing-resulted";
-
     private static final String GET_RESULTS_SUMMARY = "results.get-results-summary";
-
     private static MessageConsumerClient publicMessageConsumerPoliceResultsGenerated;
 
 
@@ -211,6 +216,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         hearingResultsHaveBeenSharedV2(shareResultsMessage, true);
     }
 
+    public static void hearingResultsHaveBeenSharedV2WithoutPoliceResultGenerated(final PublicHearingResulted shareResultsMessage) {
+        hearingResultsHaveBeenSharedV2(shareResultsMessage, false);
+    }
+
     public static void hearingResultsHaveBeenSharedV2(final PublicHearingResulted shareResultsMessage, final boolean listenToPublicEventPoliceResultGenerated) {
         if (listenToPublicEventPoliceResultGenerated) {
             startListeningToPublicEventPoliceResultsGenerated();
@@ -285,6 +294,17 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     public static void verifyPublicEventPoliceResultGeneratedNotRaised() {
         final Optional<String> response = publicMessageConsumerPoliceResultsGenerated.retrieveMessage(RETRIEVE_TIMEOUT);
         assertThat(response, is(empty()));
+    }
+
+    public static void verifyAppealUpdateEmail(final String url){
+        await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
+            final RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(url));
+            Arrays.asList("Appeal Update").forEach(
+                    expectedValue -> requestPatternBuilder.withRequestBody(containing(expectedValue))
+            );
+            verify(requestPatternBuilder);
+            return true;
+        });
     }
 
     public static void closeMessageConsumers() {

@@ -11,6 +11,7 @@ import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -64,7 +65,6 @@ import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.SjpCaseRejectedEvent;
-import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.justice.results.courts.DefendantTrackingStatusUpdated;
@@ -84,6 +84,7 @@ import uk.gov.moj.cpp.results.command.handler.utils.FileUtil;
 import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
+import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
@@ -154,7 +155,10 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF_TRUE_WITH_OFFENCE_IS_NULL_AND_JUDICIAL_PROMPT_IS_NULL = "json/results.events.hearing-results-added-for-day_financialPenaltiesToBeWrittenOff_true_with_juducial_promt_is_null.json";
     private static final String TEMPLATE_PAYLOAD_11 = "json/results.create-results-court-application.json";
     private static final String PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION = "json/results.create-results-magistrates-example_with_originating_organisation.json";
+    private static final String TEMPLATE_PAYLOAD_APPLICATION_RESULTED = "json/results.create-results-for-day-court-application.json";
     private static final String EMAIL = "mail@mail.com";
+
+    private static final String EMAIL2 = "mail2@mail2.com";
     private static UUID metadataId;
     public static final String SURREY_POLICE_CPS_ORGANISATION = "A45AA00";
     public static final String SURREY_POLICE_ORIG_ORGANISATION = "045AA00";
@@ -179,7 +183,8 @@ public class ResultsCommandHandlerTest {
             HearingFinancialResultsTracked.class,
             MarkedAggregateSendEmailWhenAccountReceived.class,
             NcesEmailNotificationRequested.class,
-            DefendantTrackingStatusUpdated.class
+            DefendantTrackingStatusUpdated.class,
+            AppealUpdateNotificationRequested.class
     );
 
     @Captor
@@ -1342,6 +1347,74 @@ public class ResultsCommandHandlerTest {
                         ))
         ));
 
+    }
+
+    @Test
+    public void shouldCreateAppealUpdateEvent() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder1 = createObjectBuilder();
+        jsonProsecutorBuilder1
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        final JsonObjectBuilder jsonProsecutorBuilder2 = createObjectBuilder();
+        jsonProsecutorBuilder2
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("informantEmailAddress", EMAIL2);
+
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any()))
+                .thenReturn(of(jsonProsecutorBuilder1.build()))
+                .thenReturn(of(jsonProsecutorBuilder2.build()));
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_APPLICATION_RESULTED);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(enveloper, Mockito.times(3)).withMetadataFrom(envelope);
+        verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.id", notNullValue()),
+                                        withJsonPath("$.courtCentreWithLJA", notNullValue()),
+                                        withJsonPath("$.sessionDays", notNullValue())
+                                )
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.applicationId", notNullValue()),
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.defendant", is("Korbin Ismael")),
+                                        withJsonPath("$.urn", is("20NX8422480")),
+                                        withJsonPath("$.notificationId", notNullValue()),
+                                        withJsonPath("$.emailAddress", is(EMAIL))
+                                )
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.applicationId", notNullValue()),
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.defendant", is("Korbin Ismael")),
+                                        withJsonPath("$.urn", is("20NX8422480")),
+                                        withJsonPath("$.notificationId", notNullValue()),
+                                        withJsonPath("$.emailAddress", is(EMAIL2))
+                                )
+                        ))
+        ));
     }
 
     private List<JsonEnvelope> convertStreamToEventList(final List<Stream<JsonEnvelope>> listOfStreams) {

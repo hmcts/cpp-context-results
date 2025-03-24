@@ -1,9 +1,9 @@
 package uk.gov.moj.cpp.results.test;
 
-import static com.google.common.collect.ImmutableList.of;
 import static java.time.LocalDate.now;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.List.of;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.core.courts.AllocationDecision.allocationDecision;
@@ -28,6 +28,7 @@ import uk.gov.justice.core.courts.AllocationDecision;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.BreachType;
+import uk.gov.justice.core.courts.ContactNumber;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtApplicationParty;
@@ -73,8 +74,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.google.common.collect.ImmutableList;
-
 public class TestTemplates {
 
     private static final UUID DEFAULT_DEFENDANT_ID1 = fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");
@@ -100,6 +99,8 @@ public class TestTemplates {
     private static final String LINKED_CASE_ID = "cccc1111-1e20-4c21-916a-81a6c90239e5";
     private static final String ACTIVE = "ACTIVE";
     private static final String AUTHORITY_REFERENCE = "authorityReference";
+    private static final String TRIAL = "Trial";
+    private static final String COURT_NAME = "courtName";
     private static final ZonedDateTime FIXED_UTC_TIME = ZonedDateTime.of(2021, 6, 15, 10, 35, 10, 0, ZoneId.of("UTC"));
 
 
@@ -128,7 +129,7 @@ public class TestTemplates {
                 .withId(hearingId)
                 .withType(HearingType.hearingType()
                         .withId(randomUUID())
-                        .withDescription("Trial")
+                        .withDescription(TRIAL)
                         .build())
                 .withCourtApplications(courtApplications)
                 .withProsecutionCases(asList(createProsecutionCase1(null, false)))
@@ -136,7 +137,7 @@ public class TestTemplates {
                 .withHearingDays(hearingDays)
                 .withCourtCentre(CourtCentre.courtCentre()
                         .withId(randomUUID())
-                        .withName("courtName")
+                        .withName(COURT_NAME)
                         .withRoomId(randomUUID())
                         .withRoomName(STRING.next())
                         .withWelshName(STRING.next())
@@ -163,7 +164,7 @@ public class TestTemplates {
                 .withIsSJPHearing(isSJPHearing)
                 .withType(HearingType.hearingType()
                         .withId(randomUUID())
-                        .withDescription("Trial")
+                        .withDescription(TRIAL)
                         .build())
                 .withCourtApplications(asList(CourtApplication.courtApplication()
                         .withId(randomUUID())
@@ -208,7 +209,116 @@ public class TestTemplates {
                 .withHearingDays(hearingDays)
                 .withCourtCentre(CourtCentre.courtCentre()
                         .withId(randomUUID())
-                        .withName("courtName")
+                        .withName(COURT_NAME)
+                        .withRoomId(randomUUID())
+                        .withRoomName(STRING.next())
+                        .withWelshName(STRING.next())
+                        .withWelshRoomName(STRING.next())
+                        .withAddress(address())
+                        .build())
+                .withProsecutionCases(asList(createProsecutionCase1(null, false), createProsecutionCase2(null, false)))
+                .withProsecutionCases(prosecutionCases)
+                .withDefendantJudicialResults(asList(DefendantJudicialResult.defendantJudicialResult()
+                        .withMasterDefendantId(randomUUID())
+                        .withJudicialResult(judicialResult()
+                                .withJudicialResultId(randomUUID())
+                                .withCategory(JudicialResultCategory.FINAL)
+                                .withCjsCode(CJS_CODE)
+                                .withIsAdjournmentResult(false)
+                                .withIsAvailableForCourtExtract(false)
+                                .withIsConvictedResult(false)
+                                .withIsFinancialResult(false)
+                                .withLabel(HEARING_LABEL)
+                                .withOrderedHearingId(ID)
+                                .withOrderedDate(now())
+                                .withRank(BigDecimal.ZERO)
+                                .withWelshLabel(WELSH_LABEL)
+                                .withResultText(RESULT_TEXT)
+                                .withLifeDuration(false)
+                                .withTerminatesOffenceProceedings(Boolean.FALSE)
+                                .withLifeDuration(false)
+                                .withPublishedAsAPrompt(false)
+                                .withExcludedFromResults(false)
+                                .withAlwaysPublished(false)
+                                .withUrgent(false)
+                                .withD20(false)
+                                .withPublishedForNows(false)
+                                .withRollUpPrompts(false)
+                                .withJudicialResultTypeId(randomUUID())
+                                .withJudicialResultPrompts(singletonList(JudicialResultPrompt.judicialResultPrompt()
+                                        .withIsFinancialImposition(true)
+                                        .withJudicialResultPromptTypeId(randomUUID())
+                                        .withCourtExtract("Y")
+                                        .withLabel(LABEL)
+                                        .withValue("value")
+                                        .withTotalPenaltyPoints(BigDecimal.TEN)
+                                        .build()))
+                                .build())
+                        .build()))
+                .build();
+    }
+
+    public static Hearing basicShareHearingTemplateWithAppealType(final UUID hearingId, final List<ProsecutionCase> prosecutionCases, final JurisdictionType jurisdictionType, final boolean isSJPHearing,
+                                                    final boolean appealType) {
+        final List<HearingDay> hearingDays = buildHearingDays();
+
+        return Hearing.hearing()
+                .withId(hearingId)
+                .withIsSJPHearing(isSJPHearing)
+                .withType(HearingType.hearingType()
+                        .withId(randomUUID())
+                        .withDescription(TRIAL)
+                        .build())
+                .withCourtApplications(asList(CourtApplication.courtApplication()
+                        .withId(randomUUID())
+                        .withApplicationReference(STRING.next())
+                        .withType(courtApplicationTypeTemplatesWithAppealType(appealType))
+                        .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                        .withApplicant(courtApplicationPartyTemplates())
+                        .withApplicationStatus(ApplicationStatus.DRAFT)
+                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode("DERPF")))
+                        .withJudicialResults(buildJudicialResultList())
+                        .build()))
+                .withDefendantAttendance(of(
+                        defendantAttendance()
+                                .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2018, 5, 2)).withAttendanceType(AttendanceType.IN_PERSON).build()))
+                                .withDefendantId(DEFAULT_DEFENDANT_ID1)
+                                .build(),
+                        defendantAttendance()
+                                .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2019, 1, 2)).withAttendanceType(AttendanceType.NOT_PRESENT).build()))
+                                .withDefendantId(DEFAULT_DEFENDANT_ID2)
+                                .build(),
+                        defendantAttendance()
+                                .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2018, 5, 2)).withAttendanceType(AttendanceType.NOT_PRESENT).build()))
+                                .withDefendantId(DEFAULT_DEFENDANT_ID3)
+                                .build(),
+                        defendantAttendance()
+                                .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2018, 5, 2)).withAttendanceType(AttendanceType.IN_PERSON).build()))
+                                .withDefendantId(DEFAULT_DEFENDANT_ID4)
+                                .build()
+                ))
+                .withDefenceCounsels(of(defenceCounsel().withId(randomUUID()).withAttendanceDays(of(now())).withDefendants(of(randomUUID(), randomUUID(), DEFAULT_DEFENDANT_ID1)).build(),
+                        defenceCounsel().withId(randomUUID()).withAttendanceDays(of(LocalDate.of(2018, 5, 2))).withDefendants(of(randomUUID(), DEFAULT_DEFENDANT_ID3, randomUUID())).build()))
+                .withJurisdictionType(jurisdictionType)
+                .withJudiciary(singletonList(JudicialRole.judicialRole()
+                        .withJudicialId(randomUUID())
+                        .withJudicialRoleType(circuitJudge())
+                        .build()))
+                .withCourtApplications(asList(CourtApplication.courtApplication()
+                        .withId(randomUUID())
+                        .withApplicationReference(STRING.next())
+                        .withType(courtApplicationTypeTemplatesWithAppealType(appealType))
+                        .withSubject(courtApplicationPartyTemplates())
+                        .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                        .withApplicant(courtApplicationPartyTemplates())
+                        .withApplicationStatus(ApplicationStatus.DRAFT)
+                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode("DERPF")))
+                        .withJudicialResults(buildJudicialResultList())
+                        .build()))
+                .withHearingDays(hearingDays)
+                .withCourtCentre(CourtCentre.courtCentre()
+                        .withId(randomUUID())
+                        .withName(COURT_NAME)
                         .withRoomId(randomUUID())
                         .withRoomName(STRING.next())
                         .withWelshName(STRING.next())
@@ -351,6 +461,10 @@ public class TestTemplates {
         return basicShareResultsTemplate(jurisdictionType, false, false);
     }
 
+    public static PublicHearingResulted basicShareResultsTemplateWithAppealFlag(final JurisdictionType jurisdictionType, final boolean appealFlag) {
+        return basicShareResultsTemplateWithAppealType(jurisdictionType, false, false, appealFlag);
+    }
+
     public static PublicHearingResulted basicShareResultsTemplate(final JurisdictionType jurisdictionType, final boolean isSJPHearing) {
         return basicShareResultsTemplate(jurisdictionType, false, isSJPHearing);
     }
@@ -361,6 +475,17 @@ public class TestTemplates {
 
         return PublicHearingResulted.publicHearingResulted()
                 .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), isWithVerdict), createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType, isSJPHearing))
+                .setSharedTime(FIXED_UTC_TIME);
+    }
+
+    public static PublicHearingResulted basicShareResultsTemplateWithAppealType(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing,
+                                                                                final boolean appealType) {
+
+        final UUID hearingId = randomUUID();
+
+        return PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplateWithAppealType(hearingId, asList(createProsecutionCase1(buildJudicialResultList(), isWithVerdict),
+                        createProsecutionCase2(buildJudicialResultList(), isWithVerdict)), jurisdictionType, isSJPHearing, appealType))
                 .setSharedTime(FIXED_UTC_TIME);
     }
 
@@ -436,6 +561,32 @@ public class TestTemplates {
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
                         .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
+                        .build())
+                .withOffences(getOffenceList(buildJudicialResultList(), true, null, false))
+                .build();
+    }
+
+    public static CourtApplicationCase createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode(final String prosecutionAuthorityCode) {
+        return courtApplicationCase()
+                .withCaseStatus(ACTIVE)
+                .withIsSJP(false)
+                .withProsecutionCaseId(fromString(LINKED_CASE_ID))
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
+                        .withProsecutionAuthorityId(randomUUID())
+                        .withProsecutionAuthorityCode(prosecutionAuthorityCode)
+                        .withCaseURN(STRING.next())
+                        .withContact(ContactNumber.contactNumber().withPrimaryEmail("criminaldataderbyshire@derbyshire.police.uk").build())
+                        .withAddress(Address.address()
+                                .withAddress1("Criminal Justice Department")
+                                .withAddress2("Derbyshire Constabulary")
+                                .withAddress3("Butterley Hall")
+                                .withAddress4("Ripley")
+                                .withAddress5("Derby")
+                                .withPostcode("DE5 3RS")
+                                .build())
+                        .withProsecutionAuthorityOUCode("0300000")
+                        .withMajorCreditorCode("PO30")
+                        .withProsecutionAuthorityName("Derbyshire Police")
                         .build())
                 .withOffences(getOffenceList(buildJudicialResultList(), true, null, false))
                 .build();
@@ -670,6 +821,29 @@ public class TestTemplates {
                 .build();
     }
 
+    public static CourtApplicationType courtApplicationTypeTemplatesWithAppealType(final boolean appealType) {
+        return CourtApplicationType.courtApplicationType()
+                .withId(randomUUID())
+                .withCode(STRING.next())
+                .withType(STRING.next())
+                .withLegislation(STRING.next())
+                .withCategoryCode(STRING.next())
+                .withLinkType(LinkType.LINKED)
+                .withJurisdiction(Jurisdiction.CROWN)
+                .withSummonsTemplateType(SummonsTemplateType.BREACH)
+                .withBreachType(BreachType.GENERIC_BREACH)
+                .withAppealFlag(appealType)
+                .withApplicantAppellantFlag(false)
+                .withPleaApplicableFlag(false)
+                .withCommrOfOathFlag(false)
+                .withCourtOfAppealFlag(false)
+                .withCourtExtractAvlFlag(false)
+                .withProsecutorThirdPartyFlag(false)
+                .withSpiOutApplicableFlag(true)
+                .withOffenceActiveOrder(OffenceActiveOrder.OFFENCE)
+                .build();
+    }
+
     public static CourtApplicationParty courtApplicationPartyTemplates() {
         return CourtApplicationParty.courtApplicationParty()
                 .withId(randomUUID())
@@ -804,7 +978,7 @@ public class TestTemplates {
                 .build();
     }
 
-    private static ImmutableList<JudicialResult> offenceLevelJudicialResults() {
+    private static List<JudicialResult> offenceLevelJudicialResults() {
         return of(judicialResult()
                 .withJudicialResultId(randomUUID())
                 .withCategory(JudicialResultCategory.INTERMEDIARY)
