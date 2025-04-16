@@ -111,7 +111,7 @@ public class InformantRegisterHandler {
                 .getValuesAs(JsonObject.class)
                 .stream()
                 .map(pc -> jsonObjectToObjectConverter.convert(pc, ProsecutionCase.class))
-                .collect(Collectors.toList());
+                .toList();
 
         inflateInformantRegister(informantRegisterDocumentRequest, prosecutionCases);
     }
@@ -161,7 +161,7 @@ public class InformantRegisterHandler {
             final EventStream eventStream = eventSource.getStreamById(informantRegisterId);
             final List<InformantRegisterDocumentRequest> informantRegisterDocumentRequests = informantRegisterRequest.stream().map(informantRegister -> stringToJsonObjectConverter.convert(informantRegister.getString((FIELD_PAYLOAD))))
                     .map(informantRegister -> jsonObjectToObjectConverter.convert(informantRegister, InformantRegisterDocumentRequest.class))
-                    .collect(Collectors.toList());
+                    .toList();
 
             final Stream<Object> events = Stream.of(InformantRegisterGenerated.informantRegisterGenerated()
                     .withInformantRegisterDocumentRequests(informantRegisterDocumentRequests)

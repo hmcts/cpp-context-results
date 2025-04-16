@@ -82,7 +82,7 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
                     .withProsecutionAuthorityCode(prosecutionAuthorityCode)
                     .withOriginatingOrganisation(originatingOrganisation)
                     .build();
-        }).collect(toList());
+        }).toList();
 
         ofNullable(prosecutionCaseCaseDetails).filter(CollectionUtils::isNotEmpty).ifPresent(caseDetailsList::addAll);
 
