@@ -478,6 +478,15 @@ public class TestTemplates {
                 .setSharedTime(FIXED_UTC_TIME);
     }
 
+    public static PublicHearingResulted basicShareResultsTemplateWithOneCaseOneDefendant(final UUID hearingId, final JurisdictionType jurisdictionType, final boolean isReshare, final LocalDate hearingDay) {
+
+        return PublicHearingResulted.publicHearingResulted()
+                .setIsReshare(Optional.of(isReshare))
+                .setHearingDay(Optional.of(hearingDay))
+                .setHearing(basicShareHearingTemplate(hearingId, asList(createProsecutionCaseForIndicatesPlea(buildJudicialResultList(), false)), jurisdictionType, false))
+                .setSharedTime(FIXED_UTC_TIME);
+    }
+
     public static PublicHearingResulted basicShareResultsTemplateWithAppealType(final JurisdictionType jurisdictionType, final boolean isWithVerdict, final boolean isSJPHearing,
                                                                                 final boolean appealType) {
 
@@ -646,7 +655,7 @@ public class TestTemplates {
                 .withCourtProceedingsInitiated(new UtcClock().now())
                 .withMasterDefendantId(UUID.fromString(defendantId))
                 .withId(fromString(defendantId))
-                .withProsecutionCaseId(randomUUID())
+                .withProsecutionCaseId(fromString(LINKED_CASE_ID))
                 .withProsecutionAuthorityReference(prosecutionAuthorityReference)
                 .withPncId("pncId")
                 .withPersonDefendant(PersonDefendant.personDefendant()

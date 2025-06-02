@@ -9,6 +9,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Stream.builder;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.CaseAddedEvent.caseAddedEvent;
@@ -84,7 +85,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.json.JsonObject;
-import org.slf4j.Logger;
 
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class ResultsAggregate implements Aggregate {
@@ -434,13 +434,18 @@ public class ResultsAggregate implements Aggregate {
         final CaseResultDetails caseResultDetails = caseResultAmendmentDetailsList.get(caseDetailsFromRequest.getCaseId());
 
         defendants = new ArrayList<>();
-        final boolean isResultReshared = nonNull(caseResultDetails) ? caseResultDetails.isThisCaseReshared(): isReshare.orElse(false);
+        boolean isResultReshared = false;
+        if (hearing != null && isNotEmpty(hearing.getHearingDays()) && hearing.getHearingDays().size() > 1) {
+            isResultReshared = isReshare.orElse(false);
+        } else {
+            isResultReshared = nonNull(caseResultDetails) ? caseResultDetails.isThisCaseReshared() : isReshare.orElse(false);
+        }
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
             if (defendantOptional.isEmpty()) {
                 buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay, isResultReshared);
             } else {
-                updateDefendant(caseDetailsFromRequest, builder, defendantFromRequest, isResultReshared);
+                updateDefendant(hearing, hearingDay, caseDetailsFromRequest, builder, defendantFromRequest, isResultReshared, sendSpiOut, jurisdictionType);
             }
         }
 
@@ -506,13 +511,29 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
-    private void updateDefendant(final CaseDetails casesDetailsFromRequest,
+    private void updateDefendant(final Hearing hearing, final Optional<LocalDate> hearingDay, final CaseDetails casesDetailsFromRequest,
                                  final Stream.Builder<Object> builder,
                                  final CaseDefendant defendantFromRequest,
-                                 final boolean isResultReshared) {
+                                 final boolean isResultReshared, boolean sendSpiOut, Optional<JurisdictionType> jurisdictionType) {
+
         if (isResultReshared) {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             defendants.add(defendantFromRequest);
+        } else {
+            if (isResultPresent(defendantFromRequest) && isNotEmpty(hearing.getHearingDays()) && hearing.getHearingDays().size() > 1) {
+                final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
+                if (sendSpiOut) {
+                    defendants.add(defendantFromRequest);
+                    if (!isCrownCourt(jurisdictionType) && !isResultReshared) {
+                        builder.add(
+                                buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
+                        );
+                    }
+                }
+            } else {
+                builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
+                defendants.add(defendantFromRequest);
+            }
         }
     }
 

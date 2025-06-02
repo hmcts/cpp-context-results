@@ -1,5 +1,39 @@
 package uk.gov.moj.cpp.results.it;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
+import org.hamcrest.core.IsNull;
+import org.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import uk.gov.justice.core.courts.*;
+import uk.gov.justice.core.courts.external.ApiAddress;
+import uk.gov.justice.core.courts.external.ApiCourtCentre;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
+import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
+import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
+import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
+import uk.gov.moj.cpp.results.test.TestTemplates;
+import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
+
+import javax.jms.JMSException;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.time.LocalDate.now;
@@ -12,9 +46,7 @@ import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createReader;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -28,21 +60,7 @@ import static uk.gov.justice.core.courts.external.ApiCourtCentre.apiCourtCentre;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted.publicHearingResulted;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetailsForHearingId;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetailsForHearingIdAndHearingDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getInternalHearingDetailsForHearingId;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummariesByDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.thenReturnsBadRequestForResultsSummaryWithoutFromDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventForPoliceResultsGenerated;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedAndReturnPayload;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedMessage;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedNotRaised;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultsGenerated;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.*;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.verifyEmailNotificationIsRaised;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
@@ -50,77 +68,10 @@ import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionP
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
 import static uk.gov.moj.cpp.results.it.utils.Queries.pollForMatch;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.PROSECUTOR_WITH_SPI_OUT_FALSE;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudicialResults;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeOfTrialReasons;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubPoliceFlag;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
-import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithCustomApplication;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2TemplateForIndicatedPlea;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2TemplateWithHearingDay;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2WithMagistratesAlongWithOffenceDateCodeTemplate;
-import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2WithVerdictTemplate;
-import static uk.gov.moj.cpp.results.test.TestTemplates.buildJudicialResultList;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.*;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.*;
+import static uk.gov.moj.cpp.results.test.TestTemplates.*;
 import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
-
-import uk.gov.justice.core.courts.Address;
-import uk.gov.justice.core.courts.ApplicationStatus;
-import uk.gov.justice.core.courts.CourtApplicationCase;
-import uk.gov.justice.core.courts.CourtCentre;
-import uk.gov.justice.core.courts.Hearing;
-import uk.gov.justice.core.courts.HearingResultsAdded;
-import uk.gov.justice.core.courts.IndicatedPleaValue;
-import uk.gov.justice.core.courts.JurisdictionType;
-import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.Verdict;
-import uk.gov.justice.core.courts.VerdictType;
-import uk.gov.justice.core.courts.external.ApiAddress;
-import uk.gov.justice.core.courts.external.ApiCourtCentre;
-import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
-import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
-import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
-import uk.gov.moj.cpp.results.test.TestTemplates;
-import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
-
-import java.io.InputStream;
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.jms.JMSException;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.IsNull;
-import org.json.JSONObject;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607"})
 public class HearingResultedIT {
@@ -791,6 +742,44 @@ public class HearingResultedIT {
         Optional<String> response = verifyPublicEventPoliceResultGeneratedAndReturnPayload();
         final JSONObject jsonObject = new JSONObject(response.get());
         assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
+    }
+
+
+
+    @Test
+    public void shouldSendSpiOutAndPoliceNotificationForMultiDayHearingResultedOnHearingDayAndReshare() {
+        final UUID  hearingId = randomUUID();
+        stubSpiOutFlag(true, true, policeEmailAddress);
+        PublicHearingResulted resultsMessage = basicShareResultsTemplateWithOneCaseOneDefendant(hearingId, MAGISTRATES, false, of(2018, 4, 3));
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+
+        Optional<String> response = verifyPublicEventPoliceResultGeneratedAndReturnPayload();
+        JSONObject firstOffence = new JSONObject(response.get()).getJSONArray("sessionDays").getJSONObject(0);
+        assertThat(ZonedDateTime.parse(firstOffence.getString("sittingDay")).toLocalDate(), is(LocalDate.of(2018, 4, 3)));
+
+        resultsMessage = basicShareResultsTemplateWithOneCaseOneDefendant(hearingId, MAGISTRATES, true, of(2018, 4, 3));
+
+        resultsMessage.getHearing();
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+        final HashMap additionalInformation = new HashMap();
+        additionalInformation.put(policeEmailAddress, "TestArmand1 TestKrajcik1");
+        additionalInformation.put("notificationId", randomUUID().toString());
+        additionalInformation.put("emailTemplateId", randomUUID().toString());
+        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(getUserId(),
+                randomUUID(), randomUUID(), randomUUID(), "POLICE_NOTIFICATION_HEARING_RESULTS", additionalInformation);
+
+        verifyEmailNotificationIsRaised(List.of(policeEmailAddress));
+
+        resultsMessage = basicShareResultsTemplateWithOneCaseOneDefendant(hearingId, MAGISTRATES, false, of(2018, 5, 2));
+
+        resultsMessage.getHearing();
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+
+        response = verifyPublicEventPoliceResultGeneratedAndReturnPayload();
+        firstOffence = new JSONObject(response.get()).getJSONArray("sessionDays").getJSONObject(0);
+        assertThat(ZonedDateTime.parse(firstOffence.getString("sittingDay")).toLocalDate(), is(LocalDate.of(2018, 5, 2)));
+
     }
 
     private void setOuCodeAndProsecutorAuthority(final PublicHearingResulted resultsMessage) {
