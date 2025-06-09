@@ -1,0 +1,43 @@
+{
+  "hearingId": "HEARING_ID",
+  "masterDefendantId": "MASTER_DEFENDANT_ID",
+  "defendantName": "John Doe",
+  "accountCorrelationId": "CORRELATION_ID",
+  "accountDivisionCode": "DIV02",
+  "hearingSittingDay": "HEARING_SITTING_DAY",
+  "hearingCourtCentreName": "HEARING_COURT_CENTRE_NAME",
+  "defendantDateOfBirth": "DEFENDANT_DATE_OF_BIRTH",
+  "defendantAddress": "DEFENDANT_ADDRESS",
+  "defendantEmail": "DEFENDANT_EMAIL",
+  "defendantContactNumber": "DEFENDANT_CONTACT_NUMBER",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationId": "APPLICATION_ID",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G",
+      "isParentFlag": true
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "32DN1212262"
+  ]
+}

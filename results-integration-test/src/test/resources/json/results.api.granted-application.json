@@ -33,7 +33,7 @@
       "offenceTitle": "Title 3",
       "resultCode": "ACON",
       "dateOfResult": "01/01/2021",
-      "impositionOffenceDetails": "Amount of surcharge: £200",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/12/2023.",
       "isFinancial" : FINANCIAL,
       "isDeemedServed" : DEEMED_SERVED
     }

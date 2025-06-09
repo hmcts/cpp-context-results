@@ -1,0 +1,44 @@
+{
+  "hearingId": "46803672-79b4-4d10-b05c-bfeba5c3c9fe",
+  "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+  "defendantName": "Hermina Armstrong",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantAddress": "n Fisher Tunnel1912790 South Lillie Avon DA6 7ND",
+  "defendantEmail": "firstName.lastName1070802@gmail.com",
+  "defendantContactNumber": "987-204-0324",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI1912790"
+  ],
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-03-12T10:00:00.000Z",
+  "offenceResults": [
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Abandoned",
+      "offenceId": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
+      "offenceTitle": "Robbery",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationId": "37ccc1c4-db1f-4ae5-985e-96aca95cffeb",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "APA",
+      "isDeemedServed": false,
+      "isFinancial": false
+    },
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Abandoned",
+      "offenceId": "2f98bfeb-26c3-4b52-b7eb-daea9bb02df7",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationId": "37ccc1c4-db1f-4ae5-985e-96aca95cffeb",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "APA",
+      "isDeemedServed": false,
+      "isFinancial": false
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203594554",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3594554@gmail.com",
+  "defendantName": "Kavon Mueller",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "87bdb4dc-1f90-415b-9446-7b8c792c9176",
+  "hearingSittingDay": "2025-02-20T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "13b35ecb-7104-46bf-b416-4bd230550e3a",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "01d1e130-7201-427e-8ac4-77a8d7084326",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-20",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "7ef5907d-5a67-449a-972a-08da379d204e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-02-20",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationResultType": "Absolute discharge",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "AD - Absolute discharge",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "7ef5907d-5a67-449a-972a-08da379d204e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3594554"
+  ]
+}

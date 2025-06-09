@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28NS2172608",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202172608",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2172608@gmail.com",
+  "defendantName": "Adolph Berge",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-14",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £30.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "eefd3f79-66eb-4e2b-bca2-9e6f9cdc00b7",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "0effc607-e232-4654-81f5-3f506100a92b",
+  "materialId": "b7aff675-778e-4644-8434-4e564025fcff",
+  "notificationId": "80ca4501-3a06-40ac-a9e0-504d8bf65b81",
+  "originalDateOfSentence": "14/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

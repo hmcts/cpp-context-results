@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28DI3937798",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203937798",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3937798@gmail.com",
+  "defendantName": "William Kessler",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-02-24",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £700.00.\nFO - Fine\nFined £400.00\nFVS - Surcharge\nTo pay a surcharge of £300.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "f6592175-2619-4eb8-89f0-42900faa2320",
+  "materialId": "db4933b2-8516-4543-b74b-b392ed769022",
+  "notificationId": "acb5696b-9f71-4972-a129-e5cf5a9a1a00",
+  "originalDateOfSentence": "24/02/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

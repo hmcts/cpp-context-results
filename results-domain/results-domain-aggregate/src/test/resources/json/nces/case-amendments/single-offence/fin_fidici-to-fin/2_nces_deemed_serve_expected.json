@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28NS8524614",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208524614",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8524614@gmail.com",
+  "defendantName": "Lonzo Mertz",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-14",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bf729897-9588-4c1a-a18e-fd4106434f8d",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "5de763e9-8b4d-4e94-a980-45de4cb680d6",
+  "materialId": "34475b7b-148d-42d0-b51d-558a76246267",
+  "notificationId": "451a9a3f-3833-4968-9a92-395ccc6667c0",
+  "originalDateOfSentence": "14/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

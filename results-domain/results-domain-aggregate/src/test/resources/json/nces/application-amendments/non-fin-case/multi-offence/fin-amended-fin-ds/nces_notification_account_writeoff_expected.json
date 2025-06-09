@@ -1,0 +1,47 @@
+{
+  "amendmentDate": "2025-03-05",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "38DI4515073",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantName": "Waldo Abshire",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "6a113ed7-9274-41ff-8e02-b1f02d370bc4",
+  "materialId": "995a89ae-74e6-40e6-8fa4-e1ca0e5d260d",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £2222.00.\nFO - Fine\nFined £100.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "notificationId": "6aeeeb05-afec-4396-a09f-d548fe71afcc",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

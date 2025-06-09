@@ -1,0 +1,30 @@
+{
+  "caseReferences": "28NS5751349",
+  "dateDecisionMade": "2025-03-05",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205751349",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5751349@gmail.com",
+  "defendantName": "Benny Dickens",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1578c199-34f0-43ba-ad00-fbd3faf31611",
+      "title": "Theft from a shop"
+    }
+  ],
+  "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
+  "materialId": "1a85cc9d-53c6-43eb-ab54-c56df114eebb",
+  "notificationId": "ffe0765e-0746-4aaa-910b-0d00884e759f",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN REFUSED"
+}

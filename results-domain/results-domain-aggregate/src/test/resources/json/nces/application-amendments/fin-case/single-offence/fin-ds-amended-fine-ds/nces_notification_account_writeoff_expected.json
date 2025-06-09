@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-03-03",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI7587940",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Lorenz Metz",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £400.00\nFO - Fine\nFined £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+  "materialId": "a50417ec-7b7b-4169-90ba-b2ff82dee761",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £444.00\nFO - Fine\nFined £40.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "bbfbcd26-a34b-4e85-8e27-fe947d566537",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

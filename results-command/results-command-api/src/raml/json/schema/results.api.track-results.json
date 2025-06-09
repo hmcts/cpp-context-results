@@ -97,6 +97,15 @@
         },
         "applicationResultType": {
           "type": "string"
+        },
+        "isParentFlag": {
+          "type": "boolean"
+        },
+        "applicationId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "applicationTitle": {
+          "type": "string"
         }
       }
     }

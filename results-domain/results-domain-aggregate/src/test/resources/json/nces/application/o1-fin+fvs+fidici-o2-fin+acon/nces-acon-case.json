@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI2324843",
+  "dateDecisionMade": "2025-03-20",
+  "defendantName": "Eusebio Kautzer",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00, FVS - Surcharge\nTo pay a surcharge of £50.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "title": "Robbery"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
+  "materialId": "c8b791ab-0a52-49a8-9c8a-83eabcc381cf",
+  "notificationId": "5a9dfe65-0191-4c63-b4b5-b72d30b61974",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

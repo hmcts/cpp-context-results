@@ -1,0 +1,43 @@
+{
+  "hearingId": "e6b9e289-75ed-4771-8b3b-c0b62d48e223",
+  "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
+  "defendantName": "Woodrow Block",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantEmail": "firstName.lastName5174320@gmail.com",
+  "defendantContactNumber": "0205174320",
+  "accountDivisionCode": "47",
+  "ncesEmail": "ljae@xyz.com",
+  "prosecutionCaseReferences": [
+    "28NS5174320"
+  ],
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-03-11T10:00:00.000Z",
+  "offenceResults": [
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Dismissed",
+      "offenceId": "fc2c2255-c564-42e4-9b8b-2c6d8ec48278",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationId": "7e8aa3f7-22e2-4538-9395-233c001e627a",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-11",
+      "resultCode": "AASD",
+      "isDeemedServed": false,
+      "isFinancial": false
+    },
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Driving disqualification stands",
+      "offenceId": "fc2c2255-c564-42e4-9b8b-2c6d8ec48278",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationId": "7e8aa3f7-22e2-4538-9395-233c001e627a",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-11",
+      "isDeemedServed": false,
+      "isFinancial": false
+    }
+  ]
+}

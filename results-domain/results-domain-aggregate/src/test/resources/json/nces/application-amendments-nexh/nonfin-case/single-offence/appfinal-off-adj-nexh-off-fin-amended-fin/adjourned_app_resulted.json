@@ -1,0 +1,31 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0201211751",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName1211751@gmail.com",
+  "defendantName": "Allene Halvorson",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "5d74ec0f-9ef5-4266-895a-54cd280cfd2c",
+  "hearingSittingDay": "2025-05-16T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "7134cd80-4934-4e96-b2e5-a7322309f579",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-05-16",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9a4b002d-d742-4dc5-8050-b1c5d982fd8c",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS1211751"
+  ]
+}

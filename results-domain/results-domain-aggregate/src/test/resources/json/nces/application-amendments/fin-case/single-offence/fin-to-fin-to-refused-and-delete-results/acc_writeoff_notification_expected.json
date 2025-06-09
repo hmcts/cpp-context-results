@@ -1,0 +1,35 @@
+{
+  "amendmentDate": "2025-03-05",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28NS3495440",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Janice Turner",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "67757b68-bf40-4728-8cb1-d40f0c0d2180",
+      "title": "Theft from a shop"
+    }
+  ],
+  "masterDefendantId": "792ff18d-696f-4141-8637-2852e87b8509",
+  "materialId": "c0e64489-5b59-4d28-8128-8a962482a3a5",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [],
+  "notificationId": "a663f34c-5a5d-4ca6-a166-166a3a650644",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

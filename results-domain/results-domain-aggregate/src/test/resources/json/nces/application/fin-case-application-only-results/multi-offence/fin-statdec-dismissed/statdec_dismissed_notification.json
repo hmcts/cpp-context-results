@@ -1,0 +1,35 @@
+{
+  "caseReferences": "28DI6412553",
+  "dateDecisionMade": "2025-03-12",
+  "defendantAddress": "n Fisher Tunnel6412553 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Emelia Donnelly",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c784a6ca-5bc0-453a-af44-0c4a4d2eea65",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "caf796a1-8fe0-4896-8b12-de51fa2bd867",
+      "title": "Theft from a shop"
+    }
+  ],
+  "masterDefendantId": "78e56abe-7c3a-4329-b4a4-e99a3184b6b6",
+  "materialId": "78a2203d-75a1-4396-af80-bcfadb158e4c",
+  "notificationId": "e0e31c47-a530-4777-b43d-661f1242756e",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION DISMISSED"
+}

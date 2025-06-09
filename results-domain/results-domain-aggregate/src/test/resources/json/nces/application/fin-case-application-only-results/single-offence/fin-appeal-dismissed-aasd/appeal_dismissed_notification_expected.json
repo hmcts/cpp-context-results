@@ -1,0 +1,31 @@
+{
+  "caseReferences": "28NS5174320",
+  "dateDecisionMade": "2025-03-11",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205174320",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5174320@gmail.com",
+  "defendantName": "Woodrow Block",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "fc2c2255-c564-42e4-9b8b-2c6d8ec48278",
+      "title": "Theft from a shop"
+    }
+  ],
+  "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
+  "materialId": "0b1f5211-d5fd-4b0d-b756-864bdcbc2012",
+  "notificationId": "9c5abcd2-ac93-4837-bfba-93ac46be9762",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed",
+      "Driving disqualification stands"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPEAL DISMISSED"
+}

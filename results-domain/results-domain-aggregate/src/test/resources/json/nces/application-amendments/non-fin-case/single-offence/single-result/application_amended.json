@@ -1,0 +1,57 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "DIVCODE",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0207717124",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName7717124@gmail.com",
+  "defendantName": "John Doe",
+  "hearingCourtCentreName": "Croydon Crown Court",
+  "hearingId": "24551b19-b024-4874-8d50-1a151da00bf9",
+  "hearingSittingDay": "2025-01-29T10:00:00.000Z",
+  "masterDefendantId": "adfed0bc-9c36-47f4-af27-e25203990880",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £555.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/05/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £555.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Payment terms - on release",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "PTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/05/2025",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7717124"
+  ]
+}

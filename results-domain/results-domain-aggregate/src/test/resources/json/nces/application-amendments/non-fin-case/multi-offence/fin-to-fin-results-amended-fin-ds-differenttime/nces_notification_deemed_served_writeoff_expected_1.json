@@ -1,0 +1,25 @@
+{
+  "caseReferences": "28DI7239222",
+  "defendantAddress": "n Fisher Tunnel7239222 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Edmund Ebert",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-06",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £240.00 to Person Tom \nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 11:11. Total amount enforced: £1000.00\nFO - Fine\nFined £54.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £10.00 to be paid monthly. Instalment start date: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "title": "Robbery"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "a8995c85-1766-4e5e-9c4d-5034c37b0d49",
+  "materialId": "fe3711d0-718f-4f57-8458-80e7a23783a6",
+  "notificationId": "a81ea12d-06cf-4526-8f0f-f6fcd5d68c08",
+  "originalDateOfSentence": "06/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-02-19",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI2136471",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Jaylin Conroy",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "2ee5bf29-d1b6-4d99-b767-45febc762803",
+  "materialId": "4ca3a233-5e07-4e86-a54e-be96b652702a",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £55.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "040ef6ba-35d5-4075-b842-375f145235d2",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

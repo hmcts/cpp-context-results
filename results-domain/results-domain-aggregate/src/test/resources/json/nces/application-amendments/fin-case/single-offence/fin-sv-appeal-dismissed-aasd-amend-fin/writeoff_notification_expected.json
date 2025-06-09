@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-03-13",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI3110385",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Kira Powlowski",
+  "divisionCode": "47",
+  "gobAccountNumber": "3c339541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £299.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nAppeal heard on: 11/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "854235dc-70bc-449d-9672-275fcc56051d",
+  "materialId": "ca81e68d-2f2e-4993-83c0-a4e6d33faf73",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Dismissed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £200.00 to test org\nFO - Fine\nFined £599.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nAppeal heard on: 11/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "193bbabe-99ec-42ba-8955-08be3124c23c",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

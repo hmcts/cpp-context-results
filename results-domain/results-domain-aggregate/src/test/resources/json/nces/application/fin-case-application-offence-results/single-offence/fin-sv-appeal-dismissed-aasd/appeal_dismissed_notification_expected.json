@@ -1,0 +1,40 @@
+{
+  "caseReferences": "28DI8313659",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208313659",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8313659@gmail.com",
+  "defendantName": "Dasia Parisian",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "95fef862-72e1-450b-92ad-d2fdb18152d4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "db0d8be5-91d0-42ff-a371-3ffff7b5b1a8",
+  "materialId": "81c78267-1a18-4740-8140-cbfddc7245ab",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £100.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nAppeal heard on: 11/11/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "95fef862-72e1-450b-92ad-d2fdb18152d4",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "c73a5752-053d-4f0d-9a62-1fbe6d8d29ba",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPEAL DISMISSED"
+}

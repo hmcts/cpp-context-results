@@ -1,0 +1,25 @@
+{
+  "caseReferences": "28DI8365860",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208365860",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8365860@gmail.com",
+  "defendantName": "Elroy Muller",
+  "divisionCode": "47",
+  "hearingSittingDay": "2025-03-21",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse deemed served by reason of time already spent in custody. Total amount enforced £35.00.\nFO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2015.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "916f1f10-c645-402d-934b-90f832118f59",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
+  "materialId": "96535740-a588-477b-9838-a562c1d64619",
+  "notificationId": "43f55e6b-055e-43e4-a9f0-6073a6c44dbb",
+  "originalDateOfSentence": "21/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

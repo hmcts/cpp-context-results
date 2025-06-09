@@ -23,6 +23,7 @@ public class ProgressionService {
 
     private static final String PROGRESSION_QUERY_CASE_EXISTS_BY_CASEURN = "progression.query.case-exist-by-caseurn";
     private static final String PROGRESSION_CASE_DETAILS = "progression.query.prosecutioncase";
+    private static final String PROGRESSION_QUERY_APPLICATION = "progression.query.application-only";
     public static final String CASE_ID = "caseId";
 
     @Inject
@@ -54,7 +55,7 @@ public class ProgressionService {
                 .withName(PROGRESSION_QUERY_CASE_EXISTS_BY_CASEURN)
                 .build();
         final Envelope<JsonObject> envelope = envelopeFrom(metadata, payload);
-        final Envelope<JsonObject> response = requester.requestAsAdmin(envelope,JsonObject.class);
+        final Envelope<JsonObject> response = requester.requestAsAdmin(envelope, JsonObject.class);
         return Optional.of(response.payload());
     }
 
@@ -74,5 +75,23 @@ public class ProgressionService {
         return requester.requestAsAdmin(envelope, JsonObject.class).payload();
     }
 
-
+    /**
+     * This method is used to get the application details for a given application ID.
+     *
+     * @param applicationId The UUID of the application.
+     * @return An Optional containing the JsonObject with application details, or empty if not found.
+     */
+    public Optional<JsonObject> getApplicationDetails(UUID applicationId) {
+        final JsonObject payload = createObjectBuilder()
+                .add("applicationId", applicationId.toString())
+                .build();
+        final Envelope<JsonObject> envelope = envelopeFrom(
+                metadataBuilder()
+                        .createdAt(utcClock.now())
+                        .withName(PROGRESSION_QUERY_APPLICATION)
+                        .withId(randomUUID())
+                        .build(),
+                payload);
+        return Optional.ofNullable(requester.requestAsAdmin(envelope, JsonObject.class).payload());
+    }
 }

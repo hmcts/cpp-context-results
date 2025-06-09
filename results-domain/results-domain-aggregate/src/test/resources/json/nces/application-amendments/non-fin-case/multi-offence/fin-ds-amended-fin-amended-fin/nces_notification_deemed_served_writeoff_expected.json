@@ -1,0 +1,31 @@
+{
+  "caseReferences": "28DI7477225",
+  "defendantAddress": "n Fisher Tunnel7477225 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jessyca Beier",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-05",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £111.00\nFO - Fine\nFined £100.00\nAEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within lump sum 14 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "title": "Robbery"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 11:11. Total amount enforced £222.00.\nFO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "8a175f38-8d9c-4593-835c-d9c0459d8e0d",
+  "materialId": "7264b4cc-f9ce-4f9d-a734-1562c06686ba",
+  "notificationId": "e917dcdb-7d03-4076-b8cd-43791ef31164",
+  "originalDateOfSentence": "05/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

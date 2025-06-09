@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI9935678",
+  "dateDecisionMade": "2025-03-07",
+  "defendantName": "Maximilian Maggio",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nACON - Account Consolidated\nAccount to be consolidated with existing account number 30688211A. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "139aafbb-60aa-45e8-aa45-b24be7c8a2c4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "31b29644-10c8-4d51-aead-9c74d8b68f0f",
+  "materialId": "c50266ab-3354-4fce-a673-404d9cde78bb",
+  "notificationId": "7446f360-349b-446d-a25d-3ae820ccb10c",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

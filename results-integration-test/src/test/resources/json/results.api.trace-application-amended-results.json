@@ -1,0 +1,26 @@
+{
+  "accountDivisionCode": "DIVISION_CODE",
+  "defendantAddress": "DEFENDANT_ADDRESS",
+  "defendantContactNumber": "DEFENDANT_CONTACT_NUMBER",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "DEFENDANT_EMAIL",
+  "defendantName": "John Doe",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "HEARING_ID",
+  "hearingSittingDay": "2024-12-30T10:00:00.000Z",
+  "masterDefendantId": "MASTER_DEFENDANT_ID",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationResultType": "Refused",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2024-12-30",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "a166f4ce-b92b-4df0-8d38-3f932bdebccc",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "RFSD"
+    }
+  ],
+  "prosecutionCaseReferences" : ["REF1","REF2"]
+}

@@ -1,0 +1,31 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205174320",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5174320@gmail.com",
+  "defendantName": "Woodrow Block",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "a7ed6de1-03bb-4ad5-8495-dc0e35da9d74",
+  "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+  "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "bc8a8dc5-63c7-4508-9233-9def061f37b1",
+      "applicationResultType": "Appeal against conviction dismissed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "fc2c2255-c564-42e4-9b8b-2c6d8ec48278",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "AACD"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS5174320"
+  ]
+}

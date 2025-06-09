@@ -100,6 +100,9 @@
         },
         "applicationResultType": {
           "type": "string"
+        },
+        "isParentFlag": {
+          "type": "boolean"
         }
       }
     }

@@ -314,7 +314,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 .forEach(courtApplicationList::add);
 
         courtApplications.stream()
-                .filter(courtApplication -> nonNull(courtApplication.getCourtOrder()) &&  nonNull(courtApplication.getCourtOrder().getCourtOrderOffences()))
+                .filter(courtApplication -> nonNull(courtApplication.getCourtOrder()) && nonNull(courtApplication.getCourtOrder().getCourtOrderOffences()))
                 .forEach(courtApplicationList::add);
 
         return courtApplicationList.stream()
@@ -357,7 +357,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     public void trackResult(final JsonEnvelope envelope) throws EventStreamException {
         HearingFinancialResultRequest hearingFinancialResultRequest = jsonObjectToObjectConverter.convert(envelope.payloadAsJsonObject(), HearingFinancialResultRequest.class);
         LOGGER.info("masterDefendantId: {}, HearingFinancialResultRequest.getHearingId: {}", hearingFinancialResultRequest.getMasterDefendantId(), hearingFinancialResultRequest.getHearingId());
-
         final EventStream eventStream = eventSource.getStreamById(hearingFinancialResultRequest.getMasterDefendantId());
         final HearingFinancialResultsAggregate aggregate = aggregateService.get(eventStream, HearingFinancialResultsAggregate.class);
 
@@ -365,7 +364,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final ResultsAggregate resultsAggregate = aggregateService.get(eventStreamForHearing, ResultsAggregate.class);
 
         final String isWrittenOffExists = isFinancialPenaltiesToBeWrittenOff(resultsAggregate);
-
         LOGGER.info("ResultsAggregate HearingId: {},  HearingFinancialResultsAggregate MasterDefendantId: {} ",
                 nonNull(resultsAggregate.getHearing()) ? resultsAggregate.getHearing().getId() : null,
                 aggregate.getMasterDefendantId());
@@ -377,7 +375,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         hearingFinancialResultRequest = HearingFinancialResultRequest.hearingFinancialResultRequest()
                 .withValuesFrom(hearingFinancialResultRequest)
                 .withIsSJPHearing(getIsSJPHearingFlag(resultsAggregate)).build();
-
 
         final Stream<Object> updateEvents = aggregate.updateFinancialResults(hearingFinancialResultRequest, isWrittenOffExists, originalDateOfOffenceList,
                 originalDateOfSentenceList, newResultByOffenceList, applicationResult, offenceDateMap);
@@ -473,8 +470,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             final List<OffenceResults> originalOffences = new ArrayList<>(hearingFinancialResultRequest.getOffenceResults());
 
             final List<Offence> filteredOffences = allOffences.stream()
-                    .filter(allOffence -> originalOffences.stream().anyMatch(orgOffence -> orgOffence.getOffenceId().equals(allOffence.getId())))
-                    .collect(toList());
+                    .filter(allOffence -> originalOffences.stream()
+                            .filter(orgOffence -> nonNull(orgOffence.getOffenceId()))
+                            .anyMatch(orgOffence -> orgOffence.getOffenceId().equals(allOffence.getId())))
+                    .toList();
 
             final List<LocalDate> listOfDates = filteredOffences.stream()
                     .filter(offence -> Objects.nonNull(offence.getJudicialResults()))
@@ -495,6 +494,9 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         return null;
     }
 
+    /*
+     * This method is to get Application Results that are used by NCES Updated Notification on back of Fine Case.
+     */
     private List<NewOffenceByResult> getNewResultByOffence(ResultsAggregate resultsAggregate) {
         final List<NewOffenceByResult> result = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.fromString;
@@ -155,6 +156,12 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF_TRUE_WITH_OFFENCE_IS_NULL_AND_JUDICIAL_PROMPT_IS_NULL = "json/results.events.hearing-results-added-for-day_financialPenaltiesToBeWrittenOff_true_with_juducial_promt_is_null.json";
     private static final String TEMPLATE_PAYLOAD_11 = "json/results.create-results-court-application.json";
     private static final String PAYLOAD_FOR_POLICE_WITH_ORIGINATING_ORGANISATION = "json/results.create-results-magistrates-example_with_originating_organisation.json";
+    private static final String TEMPLATE_PAYLOAD_12 = "json/case-amended.json";
+    private static final String RESULTS_PAYLOAD_12 = "json/results-added-for-case-amendement.json";
+    private static final String TEMPLATE_PAYLOAD_13 = "json/application-amended.json";
+    private static final String RESULTS_PAYLOAD_13 = "json/results-added-for-application-amendement.json";
+
+
     private static final String TEMPLATE_PAYLOAD_APPLICATION_RESULTED = "json/results.create-results-for-day-court-application.json";
     private static final String EMAIL = "mail@mail.com";
 
@@ -988,7 +995,7 @@ public class ResultsCommandHandlerTest {
         assertThat(jsonEnvelopeList.size(), is(2));
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
 
-        String s = "\"details\":\"ImpositionOffenceDetails\",\"offenceDate\":\"2022-12-12\",\"title\":\"OffenceTitle\"";
+        String s = "\"details\":\"ImpositionOffenceDetails\",\"offenceDate\":\"2022-12-12\",\"offenceId\":\"eb4146cb-39f9-4ed3-ba86-088d2954a937\",\"title\":\"OffenceTitle\"";
         assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.nces-email-notification-requested"));
         assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("subject"), is("STATUTORY DECLARATION GRANTED"));
         assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("dateDecisionMade"), is("2024-08-17"));
@@ -1348,6 +1355,66 @@ public class ResultsCommandHandlerTest {
         ));
 
     }
+
+    @Test
+    public void shouldTrackResultForAmendedCasesForNewOffenceResults() throws EventStreamException {
+
+        final String offenceId = "2c1394a1-5dfc-49d1-a6c0-ef6f2df55423";
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_12);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.track-results"), payload);
+        final JsonObject hearingPayload = getPayload(RESULTS_PAYLOAD_12);
+        Hearing hearingObject = jsonObjectToObjectConverter.convert((JsonObject) hearingPayload.get("hearing"), Hearing.class);
+        when(this.resultsAggregateSpy.getHearing()).thenReturn(hearingObject);
+        Map<UUID, OffenceResultsDetails> offenceResultsDetails = new HashMap<UUID, OffenceResultsDetails>();
+        offenceResultsDetails.put(fromString(offenceId), OffenceResultsDetails.offenceResultsDetails()
+                .withOffenceId(fromString(offenceId))
+                .withImpositionOffenceDetails("FO 500 Pay By date 15/04/2025").build());
+        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.resultsAggregateSpy, "hearing", hearingObject);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
+        resultsCommandHandler.trackResult(envelope);
+        verify(eventStream).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+        assertThat(jsonEnvelopeList.size(), is(1));
+        assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
+
+    }
+
+    @Test
+    public void shouldTrackResultForAmendedCasesForNewOffenceAndApplicationResults() throws EventStreamException {
+
+        final String offenceId = "2c1394a1-5dfc-49d1-a6c0-ef6f2df55423";
+        final String applicationId = "3c1394a1-5dfc-49d1-a6c0-ef6f2df55423";
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_13);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.track-results"), payload);
+        final JsonObject hearingPayload = getPayload(RESULTS_PAYLOAD_13);
+        Hearing hearingObject = jsonObjectToObjectConverter.convert((JsonObject) hearingPayload.get("hearing"), Hearing.class);
+        when(this.resultsAggregateSpy.getHearing()).thenReturn(hearingObject);
+        Map<UUID, OffenceResultsDetails> offenceResultsDetails = new HashMap<UUID, OffenceResultsDetails>();
+        Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails = new HashMap<>();
+        offenceResultsDetails.put(fromString(offenceId), OffenceResultsDetails.offenceResultsDetails()
+                .withOffenceId(fromString(offenceId))
+                .withImpositionOffenceDetails("FO 500 Pay By date 15/04/2025").build());
+        applicationResultsDetails.put(UUID.fromString(applicationId), singletonList(OffenceResultsDetails.offenceResultsDetails()
+                .withOffenceId(fromString(applicationId))
+                .withApplicationTitle("Application title")
+                .withApplicationResultType("G").build()));
+        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "applicationResultsDetails", applicationResultsDetails);
+        setField(this.resultsAggregateSpy, "hearing", hearingObject);
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
+        when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
+        resultsCommandHandler.trackResult(envelope);
+        verify(eventStream).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+        assertThat(jsonEnvelopeList.size(), is(1));
+        assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
+
+    }
+
 
     @Test
     public void shouldCreateAppealUpdateEvent() throws EventStreamException {

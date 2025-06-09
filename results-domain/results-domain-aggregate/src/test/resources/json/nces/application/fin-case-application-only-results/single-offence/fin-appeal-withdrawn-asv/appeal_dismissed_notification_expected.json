@@ -1,0 +1,31 @@
+{
+  "caseReferences": "28NS5174320",
+  "dateDecisionMade": "2025-03-10",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205174320",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5174320@gmail.com",
+  "defendantName": "Woodrow Block",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £300.00, FVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "706e046b-559b-4814-a95f-0cbabf366add",
+      "title": "Theft from a shop"
+    }
+  ],
+  "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
+  "materialId": "0d482f04-8de0-4dc9-8982-74abe782bcc3",
+  "notificationId": "546a5fa7-488d-4a4f-9fa9-bf7d9b362dac",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied",
+      "Driving disqualification stands"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPEAL DISMISSED SENTENCE VARIED"
+}

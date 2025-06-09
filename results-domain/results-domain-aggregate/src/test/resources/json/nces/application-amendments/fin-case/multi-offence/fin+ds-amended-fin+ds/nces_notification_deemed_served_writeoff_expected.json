@@ -1,0 +1,31 @@
+{
+  "caseReferences": "28DI9291625",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Nedra Koepp",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-04-25",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "6a9ceab0-928b-4096-b450-063e717e5761",
+  "materialId": "9c6ebfc4-9e82-432e-9535-99a36951115e",
+  "notificationId": "b448443c-ba7c-47fa-9f9b-37aa46076c2e",
+  "originalDateOfSentence": "25/04/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

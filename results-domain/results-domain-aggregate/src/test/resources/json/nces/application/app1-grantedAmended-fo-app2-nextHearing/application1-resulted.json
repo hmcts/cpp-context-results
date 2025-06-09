@@ -1,0 +1,44 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+    "defendantContactNumber": "015325443756",
+    "defendantDateOfBirth": "1991-02-18",
+    "defendantName": "Monte Yundt",
+    "hearingCourtCentreName": "City of London Magistrates' Court",
+    "hearingId": "a3dc38fa-f977-4946-9dde-c76168e35177",
+    "hearingSittingDay": "2025-04-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "a25666da-81d7-4e25-b57f-541389f18149",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+      {
+        "applicationId": "f97441ce-e88d-47a0-8b33-8ad25c4b630e",
+        "applicationResultType": "Granted",
+        "applicationTitle": "Application to reopen case",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-04-07",
+        "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": true,
+        "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
+        "offenceTitle": "Theft of motor vehicle",
+        "resultCode": "G"
+      },
+      {
+        "applicationResultType": "Fine",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-04-07",
+        "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
+        "offenceTitle": "Theft of motor vehicle"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI7253928"
+    ]
+}

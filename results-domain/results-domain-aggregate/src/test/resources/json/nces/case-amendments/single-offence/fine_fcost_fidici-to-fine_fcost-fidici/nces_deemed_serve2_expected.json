@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28NS4545133",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0204545133",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName4545133@gmail.com",
+  "defendantName": "Pink Schuster",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £30.00 to Abellio Greater Anglia Ltd, FO - Fine\nFined £102.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £22.00. Reason for decision: fidici2.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6be574bb-baa4-442b-bc6d-486b321722c4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "c184d1a6-daeb-43e3-85fb-d18679e813c7",
+  "materialId": "640265e0-da48-4b20-a69b-e6a4c7115033",
+  "notificationId": "1fce2c70-57b7-46d4-8e1c-92dd77909585",
+  "originalDateOfSentence": "18/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

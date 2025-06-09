@@ -1,0 +1,38 @@
+{
+  "caseReferences": "38DI5815875",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0205815875",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST015815875@gmail.com",
+  "defendantName": "Florencio Klocko",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-04",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5e9da120-8a29-499f-aab0-c9393c5c4f4a",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £200.00.\nFO - Fine\nFined £20.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a534f85e-6185-4b35-9617-78e5f989ed9d",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £300.00\nFO - Fine\nFined £30.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "276f2ba8-cf57-4796-bef5-176c87db5868",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "caa158bf-5b03-4ac6-8446-bc03794fe0aa",
+  "materialId": "271b8d2b-cbf1-44fd-8899-9cde85dcaebd",
+  "notificationId": "65bb6695-2a35-453b-a8fd-b2d858501f50",
+  "originalDateOfSentence": "04/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

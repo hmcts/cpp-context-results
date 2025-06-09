@@ -1,0 +1,36 @@
+{
+  "amendmentDate": "2025-04-28",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI6645638",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Madge Skiles",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c0a78476-b4e3-4614-a491-ff928f6986e9",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "4c54d419-b0ac-4958-b246-a463029a3437",
+  "materialId": "185dcabf-5601-4f8f-a988-78ca6c80f5c0",
+  "newApplicationResults": {
+    "applicationResult": []
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £50.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c0a78476-b4e3-4614-a491-ff928f6986e9",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "notificationId": "8cd73490-20c7-4b50-b3d8-a728afe62283",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

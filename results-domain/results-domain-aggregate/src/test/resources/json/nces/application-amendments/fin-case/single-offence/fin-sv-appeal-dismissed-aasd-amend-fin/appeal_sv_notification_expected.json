@@ -1,0 +1,40 @@
+{
+  "caseReferences": "28DI3110385",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203110385",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3110385@gmail.com",
+  "defendantName": "Kira Powlowski",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "854235dc-70bc-449d-9672-275fcc56051d",
+  "materialId": "dd144306-788d-48c6-8294-5e1a98635bba",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £299.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nAppeal heard on: 11/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "aa9f657f-fda3-437c-9fb3-ce234cadef78",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPEAL DISMISSED"
+}

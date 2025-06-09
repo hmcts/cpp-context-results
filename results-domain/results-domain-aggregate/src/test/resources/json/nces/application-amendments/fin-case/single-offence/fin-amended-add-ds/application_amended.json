@@ -1,0 +1,86 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Christina Feest",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "8e670776-cdaa-4123-9c20-9064d8b4b5e5",
+  "hearingSittingDay": "2025-04-15T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "8e5f6779-795a-4893-b056-aee4134213ed",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-04-15",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-15",
+      "impositionOffenceDetails": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 00:45. Total amount enforced £120.00.\nFO - Fine\nFined £200.00\nPDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "2c7cc1f9-fc39-442f-acf2-28a8534207de",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationId": "79efd7a0-cfcd-4900-adf1-9761834f4415",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-15",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "2c7cc1f9-fc39-442f-acf2-28a8534207de",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "79efd7a0-cfcd-4900-adf1-9761834f4415",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £250.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "21541103-1872-427a-8fca-735a863d5568",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "79efd7a0-cfcd-4900-adf1-9761834f4415",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "326bba91-abd3-4afc-a7a7-ea43f7d652fe",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-04-15",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fined and detained in default of payment until time",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-15",
+      "impositionOffenceDetails": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 00:45. Total amount enforced £120.00.",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "2c7cc1f9-fc39-442f-acf2-28a8534207de",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "FIDICTI"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7698340"
+  ]
+}

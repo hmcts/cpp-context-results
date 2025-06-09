@@ -1,0 +1,26 @@
+{
+  "caseReferences": "38DI4515073",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0204515073",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST014515073@gmail.com",
+  "defendantName": "Waldo Abshire",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-05",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £3339.00.\nFO - Fine\nFined £333.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ef473c48-7ef0-4e9a-8eac-f04ee8f3005c",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "6a113ed7-9274-41ff-8e02-b1f02d370bc4",
+  "materialId": "4a023438-b38b-412b-b331-124987fc8ec3",
+  "notificationId": "8a6ef48c-230c-4298-a61e-a36e5a2d401e",
+  "originalDateOfSentence": "05/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28DI9390803",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0209390803",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName9390803@gmail.com",
+  "defendantName": "Cade Hermiston",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-02-21",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.\nFO - Fine\nFined £550.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "e746903e-f717-42b0-86d5-4b9eceb251a0",
+  "materialId": "65e2e920-28fe-4806-9018-ed86ca10834c",
+  "notificationId": "f87b4420-53e9-4e56-84bd-3c03500efef8",
+  "originalDateOfSentence": "21/02/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

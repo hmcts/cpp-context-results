@@ -1,0 +1,52 @@
+{
+  "caseReferences": "28DI9990059",
+  "defendantAddress": "n Fisher Tunnel9990059 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jamarcus Steuber",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00, FVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "08d0cb04-5cd8-4631-9c78-053b3885f2ba",
+  "materialId": "795578ca-e3f1-4dac-9e03-5d000363a93f",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £1000.00\nAppeal heard on: 11/04/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "title": "Robbery\nSentence varied"
+    },
+    {
+      "details": "IMP - Imprisonment\nCommitted to prison for 4 Years. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 22. Total custodial period: 3 Years.\n \n \nAppeal heard on: 11/11/2025\nFVS - Surcharge\nTo pay a surcharge of £400.00\nTotal custodial period: 3 Years.\nvulnerability - Risk or vulnerability factors",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "67ca1101-b347-46c7-83ba-76822428451a",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal withdrawn",
+      "Driving disqualification stands"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL WITHDRAWN"
+}

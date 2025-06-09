@@ -1,0 +1,91 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel9990059 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jamarcus Steuber",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "d85afdab-4f1a-4686-9a73-fcd12eb0da10",
+  "hearingSittingDay": "2025-03-11T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "08d0cb04-5cd8-4631-9c78-053b3885f2ba",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "e57e0529-bb03-4ea6-992e-79a3fa446d45",
+      "applicationResultType": "Abandoned",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £50.00 to minor test\nFO - Fine\nFined £100.00\nSV - Sentence varied\nAppeal heard on: 14/05/2025\nAEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £10.00 to be paid monthly from 11/04/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "offenceTitle": "Robbery",
+      "resultCode": "APA"
+    },
+    {
+      "applicationId": "e57e0529-bb03-4ea6-992e-79a3fa446d45",
+      "applicationResultType": "Abandoned",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nSV - Sentence varied\nAppeal heard on: 03/05/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "APA"
+    },
+    {
+      "applicationResultType": "Costs",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £50.00 to minor test",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Attachment of earnings order",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "AEOC - Attachment of earnings order\nAttachment of Earnings Order made.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9990059"
+  ]
+}

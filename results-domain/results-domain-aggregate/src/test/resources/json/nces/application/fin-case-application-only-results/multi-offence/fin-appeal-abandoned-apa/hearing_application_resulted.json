@@ -1,0 +1,323 @@
+{
+  "hearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "2a3d17e5-3649-488d-b028-095513eb6931",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "c33f9460-9de8-4125-9ad0-c30b4a19a2c0",
+                "caseReference": "28DI1912790",
+                "defendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1"
+              }
+            ],
+            "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+            "personDefendant": {
+              "arrestSummonsNumber": "E28GC01123537140",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "CRIME709136TC8GZ",
+              "personDetails": {
+                "address": {
+                  "address1": "n",
+                  "address2": "Fisher Tunnel1912790",
+                  "address3": "South Lillie",
+                  "address4": "Avon",
+                  "postcode": "DA6 7ND"
+                },
+                "contact": {
+                  "home": "987-204-0324"
+                },
+                "dateOfBirth": "1981-10-02",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Hermina",
+                "gender": "FEMALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Armstrong",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2025-03-12",
+        "applicationReference": "28DI1912790",
+        "applicationStatus": "UN_ALLOCATED",
+        "commissionerOfOath": false,
+        "courtApplicationCases": [
+          {
+            "caseStatus": "INACTIVE",
+            "isSJP": false,
+            "offences": [
+              {
+                "arrestDate": "2019-12-01",
+                "chargeDate": "2019-12-02",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
+                "isDisposed": false,
+                "listingNumber": 1,
+                "maxPenalty": "Indictable only",
+                "modeOfTrial": "Indictable",
+                "offenceCode": "TH68023",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "6795cbe7-3e0f-3f6a-b59d-29a87a9d6f8d",
+                "offenceLegislation": "Contrary to section 8(1) of the Theft Act 1968.",
+                "offenceLegislationWelsh": "Yn groes i adran 8(1) Deddf Dwyn 1968.",
+                "offenceTitle": "Robbery",
+                "offenceTitleWelsh": "Ysbeilio/Lladrad",
+                "orderIndex": 1,
+                "proceedingsConcluded": true,
+                "startDate": "2019-11-28",
+                "wording": "From 13th November 2018, an aggravated version of this offence applies where the offence is committed against an emergency worker acting in the exercise of his / her functions as such a worker, as per section 1 of the Assaults on emergency Workers (Offences) Act 2018; see offence wording document H19568."
+              },
+              {
+                "arrestDate": "2019-12-01",
+                "chargeDate": "2019-12-02",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "2f98bfeb-26c3-4b52-b7eb-daea9bb02df7",
+                "isDisposed": false,
+                "listingNumber": 1,
+                "maxPenalty": "EW:6M &/or Ultd Fine",
+                "modeOfTrial": "Either Way",
+                "offenceCode": "TH68010",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "c8b42f54-833a-37de-982e-e62fca7540dd",
+                "offenceLegislation": "Contrary to section 1(1) and 7 of the Theft    Act 1968.",
+                "offenceLegislationWelsh": "Yn groes i adran 1(1) a 7 Deddf Dwyn 1968.",
+                "offenceTitle": "Theft from a shop",
+                "offenceTitleWelsh": "Dwyn o siop - siop-ladrad",
+                "orderIndex": 2,
+                "proceedingsConcluded": true,
+                "startDate": "2019-11-28",
+                "wording": "From 13th November 2018, an aggravated version of this offence applies where the offence is committed against an emergency worker acting in the exercise of his / her functions as such a worker, as per section 1 of the Assaults on emergency Workers (Offences) Act 2018; see offence wording document H19568."
+              }
+            ],
+            "prosecutionCaseId": "c33f9460-9de8-4125-9ad0-c30b4a19a2c0",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "Criminal Justice Department",
+                "address2": "Derbyshire Constabulary",
+                "address3": "Butterley Hall",
+                "address4": "Ripley",
+                "address5": "Derby",
+                "postcode": "DE5 3RS"
+              },
+              "contact": {
+                "primaryEmail": "criminaldataderbyshire@derbyshire.police.uk"
+              },
+              "majorCreditorCode": "PO30",
+              "prosecutionAuthorityCode": "DERPF",
+              "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+              "prosecutionAuthorityName": "Derbyshire Police",
+              "prosecutionAuthorityOUCode": "0300000",
+              "caseURN": "28DI1912790"
+            }
+          }
+        ],
+        "id": "37ccc1c4-db1f-4ae5-985e-96aca95cffeb",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "fbe1db7d-860d-4966-8fec-0efc11bb59ba",
+            "judicialResultTypeId": "48b8ff83-2d5d-4891-bab1-b0f5edcd3822",
+            "label": "Appeal abandoned",
+            "lastSharedDateTime": "2025-03-12",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2025-03-12",
+            "orderedHearingId": "46803672-79b4-4d10-b05c-bfeba5c3c9fe",
+            "postHearingCustodyStatus": "A",
+            "preserveActiveOrder": false,
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 77100,
+            "resultText": "APA - Appeal abandoned\n ",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "fbe1db7d-860d-4966-8fec-0efc11bb59ba",
+            "rootJudicialResultTypeId": "48b8ff83-2d5d-4891-bab1-b0f5edcd3822",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "subject": {
+          "id": "2a3d17e5-3649-488d-b028-095513eb6931",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "c33f9460-9de8-4125-9ad0-c30b4a19a2c0",
+                "caseReference": "28DI1912790",
+                "defendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1"
+              }
+            ],
+            "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+            "personDefendant": {
+              "arrestSummonsNumber": "E28GC01123537140",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "CRIME709136TC8GZ",
+              "personDetails": {
+                "address": {
+                  "address1": "n",
+                  "address2": "Fisher Tunnel1912790",
+                  "address3": "South Lillie",
+                  "address4": "Avon",
+                  "postcode": "DA6 7ND"
+                },
+                "contact": {
+                  "home": "987-204-0324"
+                },
+                "dateOfBirth": "1981-10-02",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Hermina",
+                "gender": "FEMALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Armstrong",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "type": {
+          "appealFlag": true,
+          "applicantAppellantFlag": true,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CC",
+          "code": "MC80802",
+          "commrOfOathFlag": false,
+          "contestedFeeApplicable": false,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "exParte": false,
+          "hearingCode": "APL",
+          "id": "57810183-a5c2-3195-8748-c6b97eda1ebd",
+          "initialFeeApplicable": false,
+          "jurisdiction": "CROWN",
+          "lastModified": "2022-03-15T15:16:56.219Z",
+          "legislation": "section 108 of the Magistrates Courts Act 1980",
+          "legislationWelsh": "adran 108 Deddf Llysoedd Ynadon 1980",
+          "linkType": "SJP",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": false,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+          "typeWelsh": "Apelio i Lys y Goron yn erbyn euogfarn gan Lys Ynadon"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "Norwich Place",
+        "address2": "Bexleyheath",
+        "address3": "Kent",
+        "address4": "",
+        "address5": "",
+        "postcode": "DA6 7ND"
+      },
+      "code": "B01BH00",
+      "courtHearingLocation": "B01BH01",
+      "id": "7e967376-eacf-4fca-9b30-21b0c5aad427",
+      "lja": {
+        "ljaCode": "2575",
+        "ljaName": "South East London Magistrates' Court"
+      },
+      "name": "Bexley Magistrates' Court",
+      "roomId": "8e912353-3b5d-36c3-953e-ad3b94b19de3",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2025-03-12"
+          }
+        ],
+        "defendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "7e967376-eacf-4fca-9b30-21b0c5aad427",
+        "courtRoomId": "8e912353-3b5d-36c3-953e-ad3b94b19de3",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2025-03-12T10:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "46803672-79b4-4d10-b05c-bfeba5c3c9fe",
+    "jurisdictionType": "MAGISTRATES",
+    "shadowListedOffences": [],
+    "type": {
+      "description": "Appeal",
+      "id": "bd30a723-a375-3ae9-9332-871724cd8edd"
+    }
+  },
+  "hearingDay": "2025-03-12",
+  "isReshare": false,
+  "sharedTime": "2025-03-12T12:16:42.393Z"
+}

@@ -1,0 +1,25 @@
+{
+  "caseReferences": "28DI6329491",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Madisen Cummerata",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-04-16",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £11.00.\nFO - Fine\nFined £100.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "424c21fb-0c91-4b85-9d10-2d430755a660",
+  "materialId": "c8dfc265-49c4-49d4-b6e4-55fa4f85dc85",
+  "notificationId": "fb496861-1965-43fb-8cea-ab01c651b7d9",
+  "originalDateOfSentence": "16/04/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

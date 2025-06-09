@@ -1,0 +1,57 @@
+{
+  "amendmentDate": "2025-03-20",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI2324843",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eusebio Kautzer",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £111.00\nFVS - Surcharge\nTo pay a surcharge of £45.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "title": "Robbery"
+    },
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £50.00.\nFO - Fine\nFined £222.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
+  "materialId": "80a0c873-cff0-4ed5-8720-a1e7bc44fb75",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £1119.00\nFVS - Surcharge\nTo pay a surcharge of £45.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "title": "Robbery"
+    },
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £50.00.\nFO - Fine\nFined £222.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "62a33ba7-e25f-4958-ab0e-95ba93c66bee",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

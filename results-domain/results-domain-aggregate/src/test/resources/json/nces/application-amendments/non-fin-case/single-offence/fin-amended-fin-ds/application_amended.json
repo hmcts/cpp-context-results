@@ -1,0 +1,99 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0209835087",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName9835087@gmail.com",
+    "defendantName": "Alisa Jaskolski",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "16c38c18-f03d-4c45-b717-46bf7695cceb",
+    "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "b0a3ecae-02f5-46d4-ae68-384eef12197d",
+    "ncesEmail": "av.qet@justice.gov.uk",
+    "offenceResults": [
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £200.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+        "isDeemedServed": true,
+        "isFinancial": true,
+        "isParentFlag": true,
+        "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "FIDICI"
+      },
+      {
+        "applicationId": "079b8a3a-edac-47bd-b37f-39bb9ac65394",
+        "applicationResultType": "Granted",
+        "applicationTitle": "Application to reopen case",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-03-05",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "G"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+        "applicationResultType": "Fined and detained in default of payment until court rises",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.",
+        "isDeemedServed": true,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "FIDICI"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+        "applicationResultType": "Fine",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+        "offenceTitle": "Theft from a shop"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+        "applicationResultType": "Surcharge",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £50.00",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+        "offenceTitle": "Theft from a shop"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+        "applicationResultType": "Pay by date",
+        "applicationType": "REOPEN",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+        "offenceTitle": "Theft from a shop"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI9835087"
+    ]
+}

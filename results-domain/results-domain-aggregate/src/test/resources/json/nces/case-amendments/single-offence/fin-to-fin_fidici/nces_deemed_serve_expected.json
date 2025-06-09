@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28NS8153675",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208153675",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8153675@gmail.com",
+  "defendantName": "Marian Beer",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £102.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £20.00. Reason for decision: fidici added.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ac5faf6-52ee-4b47-95ce-bd1ca2c3927a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "a3387f19-990f-4144-82a5-9d367ff69ec6",
+  "materialId": "19ab5425-f341-4971-a5e7-90e4a592e8e6",
+  "notificationId": "8c614118-a028-456c-8ca8-b1194e410492",
+  "originalDateOfSentence": "18/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

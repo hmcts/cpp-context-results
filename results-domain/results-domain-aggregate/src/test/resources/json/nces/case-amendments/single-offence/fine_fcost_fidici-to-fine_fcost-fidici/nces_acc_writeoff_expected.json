@@ -1,0 +1,32 @@
+{
+  "amendmentDate": "2025-03-18",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28NS4545133",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Pink Schuster",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £30.00 to Abellio Greater Anglia Ltd, FO - Fine\nFined £100.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £20.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "c184d1a6-daeb-43e3-85fb-d18679e813c7",
+  "materialId": "dc0a136b-a70e-4bc8-a382-4edc0f2f5e6a",
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £30.00 to Abellio Greater Anglia Ltd, FO - Fine\nFined £102.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £22.00. Reason for decision: fidici2.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6be574bb-baa4-442b-bc6d-486b321722c4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "77eb5807-a672-410a-8e13-957309afe1a0",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

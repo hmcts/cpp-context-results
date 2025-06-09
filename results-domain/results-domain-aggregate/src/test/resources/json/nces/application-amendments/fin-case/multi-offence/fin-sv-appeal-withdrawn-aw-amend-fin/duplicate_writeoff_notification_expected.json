@@ -1,0 +1,57 @@
+{
+  "amendmentDate": "2025-03-13",
+  "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+  "caseReferences": "28DI5296047",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Alicia Sporer",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £99.00\nAppeal heard on: 02/04/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "title": "Robbery\nSentence varied"
+    },
+    {
+      "details": "FO - Fine\nFined £199.00\nAppeal heard on: 05/05/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
+  "materialId": "cea81643-602f-4adf-ad1f-a99aa8af78a2",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Appeal withdrawn"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £99.00\nAppeal heard on: 02/04/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "title": "Robbery\nSentence varied"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £400.00 to Org test\nFO - Fine\nFined £199.00\nAppeal heard on: 05/05/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "e1d508b1-754f-4b9b-b1f9-a11f543eff80",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal withdrawn"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

@@ -1,0 +1,57 @@
+{
+  "amendmentDate": "2025-03-03",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "29NS5752669",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Simone Kertzmann",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8a69876d-6f3a-4cfa-9ec1-2439793c730a",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c51e0fd6-f310-4fe9-92f2-ad3333c79267",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "8d7f5c76-4f74-43cf-ad96-a397fc3f6203",
+  "materialId": "2b23bf23-acd7-4dad-a753-55b21839f8c2",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £101.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8a69876d-6f3a-4cfa-9ec1-2439793c730a",
+      "title": "Robbery"
+    },
+    {
+      "details": "DLDIS - Driving licence disposal\nDriving licence sent to DVLA.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c51e0fd6-f310-4fe9-92f2-ad3333c79267",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "cddd1cb7-97e7-404a-9ba2-4b3b4f22aca1",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

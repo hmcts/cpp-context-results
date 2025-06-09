@@ -1,0 +1,58 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0207587940",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName7587940@gmail.com",
+  "defendantName": "Lorenz Metz",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ae2abbfc-a788-4612-823a-ba6a4e1150da",
+  "hearingSittingDay": "2025-03-03T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "73d51107-3258-465f-af66-0df296632ac9",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-03",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "73d51107-3258-465f-af66-0df296632ac9",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-03",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "STDEC"
+    },
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Absolute discharge",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "AD - Absolute discharge",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7587940"
+  ]
+}

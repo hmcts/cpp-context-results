@@ -22,7 +22,8 @@
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
       "resultCode": "G",
       "dateOfResult": "01/01/2021",
-      "impositionOffenceDetails": "Amount of fine: £155",
+      "isParentFlag": true,
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/12/2023.",
       "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
       "isFinancial": true,
       "isDeemedServed": false

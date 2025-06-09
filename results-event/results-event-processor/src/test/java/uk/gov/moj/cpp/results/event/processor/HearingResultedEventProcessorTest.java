@@ -7,6 +7,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -24,6 +25,7 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.HearingHelper;
+import uk.gov.moj.cpp.results.event.helper.ApplicationFinalResultsEnricher;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
@@ -71,6 +73,9 @@ public class HearingResultedEventProcessorTest {
     @Mock
     private ReferenceDataService referenceDataService;
 
+    @Mock
+    private ApplicationFinalResultsEnricher applicationResultsEnricher;
+
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> envelopeArgumentCaptor;
 
@@ -92,6 +97,7 @@ public class HearingResultedEventProcessorTest {
         final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -139,6 +145,7 @@ public class HearingResultedEventProcessorTest {
         prosecutionIdsForCPS.add("mock1");
         prosecutionIdsForCPS.add("mock2");
         when(referenceDataService.getProsecutorIdForCPSFlagTrue()).thenReturn(prosecutionIdsForCPS);
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         eventProcessor.handleHearingResultedPublicEvent(event);
 
         verify(cacheService).add(eq("SJP_" + hearingId + "_2021-03-15_result_"), anyString());
@@ -164,6 +171,7 @@ public class HearingResultedEventProcessorTest {
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(cacheService.add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString())).thenThrow(new RuntimeException("Error"));
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -190,6 +198,7 @@ public class HearingResultedEventProcessorTest {
         final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -347,6 +356,7 @@ public class HearingResultedEventProcessorTest {
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(hearing);
         when(referenceDataService.getPoliceFlag(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 

@@ -1,0 +1,31 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Euna Rutherford",
+  "hearingCourtCentreName": "City of London Magistrates' Court",
+  "hearingId": "701a0374-a41e-48e5-badb-e89935ee0291",
+  "hearingSittingDay": "2025-04-04T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "b7ea5d56-7942-479a-9bc2-6b5d3f4b3e4a",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "1f8b7291-a72d-495a-8057-f77659d1125c",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-04",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "G"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6565771"
+  ]
+}

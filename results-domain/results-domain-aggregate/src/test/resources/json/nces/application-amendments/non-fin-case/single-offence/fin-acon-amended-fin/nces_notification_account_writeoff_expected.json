@@ -1,0 +1,47 @@
+{
+  "amendmentDate": "2025-03-06",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI7208379",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Margret Waelchi",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "cc577858-c539-4496-87c6-4cf18bc3896f",
+  "materialId": "3b70a4a3-7f94-43f5-a887-da7e7300aabf",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £1500.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "b4e5708c-7f18-449b-9dda-06a750befd94",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "583f00ca-af6f-41d5-ba05-e0fd1e0eb73e",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203594554",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3594554@gmail.com",
+  "defendantName": "Kavon Mueller",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d902864a-9f38-4449-b0bd-039700711b85",
+  "hearingSittingDay": "2025-02-20T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "13b35ecb-7104-46bf-b416-4bd230550e3a",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "7ef5907d-5a67-449a-972a-08da379d204e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3594554"
+  ]
+}

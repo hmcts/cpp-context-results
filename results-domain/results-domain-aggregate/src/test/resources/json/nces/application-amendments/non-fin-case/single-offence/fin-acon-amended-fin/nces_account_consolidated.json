@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI7208379",
+  "dateDecisionMade": "2025-03-06",
+  "defendantName": "Margret Waelchi",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £1500.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "cc577858-c539-4496-87c6-4cf18bc3896f",
+  "materialId": "2ede319f-fa2d-4cc3-a282-7d2b0e6e2a6c",
+  "notificationId": "be08f141-a4fe-4d90-b050-ca91ed9dbaa8",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

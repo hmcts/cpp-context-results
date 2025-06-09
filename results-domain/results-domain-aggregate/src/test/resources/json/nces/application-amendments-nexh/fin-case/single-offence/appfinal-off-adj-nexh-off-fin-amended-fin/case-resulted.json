@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202911105",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2911105@gmail.com",
+  "defendantName": "Bennett Brown",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "0d0bed87-c20f-4e08-9051-59a10f459076",
+  "hearingSittingDay": "2025-05-15T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e391646d-d6ce-4df4-a974-84cc76d01faa",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-05-16",
+      "impositionOffenceDetails": "FO - Fine\nFined £45.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2911105"
+  ]
+}

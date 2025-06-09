@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-02-24",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI3937798",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "William Kessler",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £700.00.\nFO - Fine\nFined £400.00\nFVS - Surcharge\nTo pay a surcharge of £300.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "f6592175-2619-4eb8-89f0-42900faa2320",
+  "materialId": "5003c0a7-4f90-42de-87e3-7436117b5e0c",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £350.00 to test test\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £700.00.\nFO - Fine\nFined £400.00\nFVS - Surcharge\nTo pay a surcharge of £300.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "b2fefb2d-1758-4d9a-a26d-7cecafbee1f7",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

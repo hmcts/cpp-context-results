@@ -1,0 +1,43 @@
+{
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
+      "offenceTitle": "Theft from a shop",
+      "impositionOffenceDetails": "FO - Fine\nFined £45.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "6ad6a4c2-bc31-4389-9342-569f4fab439f",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-05-15",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-05-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £45.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    }
+  ],
+  "hearingId": "1f4dcd20-45bc-4090-b3bd-3199d2eeb655",
+  "masterDefendantId": "e391646d-d6ce-4df4-a974-84cc76d01faa",
+  "defendantName": "Bennett Brown",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantEmail": "firstName.lastName2911105@gmail.com",
+  "defendantContactNumber": "0202911105",
+  "accountDivisionCode": "10",
+  "ncesEmail": "postcode@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI2911105"
+  ],
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-05-15T09:00:00.000Z"
+}

@@ -1,0 +1,26 @@
+{
+  "caseReferences": "28NS1495389",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0201495389",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName1495389@gmail.com",
+  "defendantName": "Arno Brown",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-14",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £200.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b025ce42-389c-44c0-9c01-1cef66b2041b",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "9a3acce1-9e9a-49a1-b6b6-7e4dfa4e048e",
+  "materialId": "66d95b63-f4c0-4656-9fc4-2341d1f9cc4d",
+  "notificationId": "3a217e0d-a528-4a9e-adbf-df58cbc14bde",
+  "originalDateOfSentence": "14/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205751349",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5751349@gmail.com",
+  "defendantName": "Benny Dickens",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "bb5e5e3e-8cf9-4d92-b04f-f111b7c4eac0",
+  "hearingSittingDay": "2025-03-05T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "1578c199-34f0-43ba-ad00-fbd3faf31611",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS5751349"
+  ]
+}

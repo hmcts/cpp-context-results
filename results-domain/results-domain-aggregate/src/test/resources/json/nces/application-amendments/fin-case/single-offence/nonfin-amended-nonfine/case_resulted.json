@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202136471",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2136471@gmail.com",
+  "defendantName": "Jaylin Conroy",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "bd6fc66d-05e3-4a4d-8698-2bea97471aca",
+  "hearingSittingDay": "2025-02-19T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "2ee5bf29-d1b6-4d99-b767-45febc762803",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-02-19",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £45.00 to test test, FO - Fine\nFined £30.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2136471"
+  ]
+}

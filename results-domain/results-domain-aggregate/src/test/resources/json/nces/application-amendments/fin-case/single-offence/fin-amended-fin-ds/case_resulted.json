@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0209390803",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName9390803@gmail.com",
+  "defendantName": "Cade Hermiston",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "287c9588-845e-4471-b21a-e26066f4c664",
+  "hearingSittingDay": "2025-02-20T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e746903e-f717-42b0-86d5-4b9eceb251a0",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9390803"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "amendmentDate": "2025-03-06",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI7239222",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Edmund Ebert",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £54.00\nFVS - Surcharge\nTo pay a surcharge of £12.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £10.00 to be paid monthly. Instalment start date: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £64.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6c46c6c8-6deb-41ff-b389-61e983bb315e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "a8995c85-1766-4e5e-9c4d-5034c37b0d49",
+  "materialId": "87ae0f01-9527-4115-8314-66316f9e0a75",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £240.00 to Person Tom \nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 11:11. Total amount enforced: £1000.00\nFO - Fine\nFined £54.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £10.00 to be paid monthly. Instalment start date: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £64.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6c46c6c8-6deb-41ff-b389-61e983bb315e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "bb058fb6-808f-46e3-a851-ae6edcaf0c7a",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

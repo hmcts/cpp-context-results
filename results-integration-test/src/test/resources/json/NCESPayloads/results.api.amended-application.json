@@ -1,0 +1,57 @@
+{
+  "hearingId": "HEARING_ID",
+  "masterDefendantId": "MASTER_DEFENDANT_ID",
+  "defendantName": "John Doe",
+  "accountCorrelationId": "CORRELATION_ID",
+  "accountDivisionCode": "DIV03",
+  "hearingSittingDay": "HEARING_SITTING_DAY",
+  "hearingCourtCentreName": "HEARING_COURT_CENTRE_NAME",
+  "defendantDateOfBirth": "DEFENDANT_DATE_OF_BIRTH",
+  "defendantAddress": "DEFENDANT_ADDRESS",
+  "defendantEmail": "DEFENDANT_EMAIL",
+  "defendantContactNumber": "DEFENDANT_CONTACT_NUMBER",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationId": "APPLICATION_ID",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "FO - Fine\nFined £700.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G",
+      "isParentFlag": true
+    },
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "FO - Fine\nFined £550.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 20/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "32DN1212262"
+  ]
+}

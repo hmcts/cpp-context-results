@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "f7d77e2a-9b27-40fe-ba3c-1dbb7860056b",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Euna Rutherford",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ecd3ac7c-a8a7-4d42-aa1c-e9a76fa10235",
+  "hearingSittingDay": "2025-04-05T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "b7ea5d56-7942-479a-9bc2-6b5d3f4b3e4a",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "1f8b7291-a72d-495a-8057-f77659d1125c",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £10.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
+      "offenceTitle": "Theft of motor vehicle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6565771"
+  ]
+}

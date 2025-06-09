@@ -78,7 +78,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     }
 
     @Handles("public.hearing.nces-email-notification-for-application")
-    public void processSendNcesMailForNewApplication(final JsonEnvelope event){
+    public void processSendNcesMailForNewApplication(final JsonEnvelope event){ //Analyse for CCT-2266
         final Envelope<JsonObject> envelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
         this.sender.sendAsAdmin(envelope);
     }

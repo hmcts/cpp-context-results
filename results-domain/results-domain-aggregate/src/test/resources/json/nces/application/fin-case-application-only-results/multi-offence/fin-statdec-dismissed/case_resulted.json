@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel6412553 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Emelia Donnelly",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "28b87e55-85be-4a3a-b9d9-f263a1a63224",
+  "hearingSittingDay": "2025-03-12T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "78e56abe-7c3a-4329-b4a4-e99a3184b6b6",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-12",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "c784a6ca-5bc0-453a-af44-0c4a4d2eea65",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-03-12",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "caf796a1-8fe0-4896-8b12-de51fa2bd867",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6412553"
+  ]
+}

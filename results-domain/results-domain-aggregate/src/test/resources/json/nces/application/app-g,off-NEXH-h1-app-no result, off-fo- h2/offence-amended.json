@@ -1,0 +1,45 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Madge Skiles",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "2239ed42-d851-45b2-a94d-71cdf836fa63",
+  "hearingSittingDay": "2025-04-28T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4c54d419-b0ac-4958-b246-a463029a3437",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-04-28",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-28",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "c0a78476-b4e3-4614-a491-ff928f6986e9",
+      "offenceTitle": "Theft of motor vehicle"
+    },
+    {
+      "amendmentDate": "2025-04-28",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-28",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "c0a78476-b4e3-4614-a491-ff928f6986e9",
+      "offenceTitle": "Theft of motor vehicle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6645638"
+  ]
+}

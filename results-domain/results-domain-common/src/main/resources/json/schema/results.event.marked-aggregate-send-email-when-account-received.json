@@ -73,36 +73,20 @@
     "impositionOffenceDetails": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "offenceDate": {
-            "type": "string"
-          },
-          "details": {
-            "type": "string"
-          }
-        }
+        "$ref": "#/definitions/offenceResults"
       }
     },
     "newOffenceByResult": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "offenceDate": {
-            "type": "string"
-          },
-          "details": {
-            "type": "string"
-          }
-        }
+        "$ref": "#/definitions/offenceResults"
       }
+    },
+    "originalApplicationResults": {
+      "$ref": "#/definitions/applicationResults"
+    },
+    "newApplicationResults": {
+      "$ref": "#/definitions/applicationResults"
     },
     "subject": {
       "type": "string"
@@ -123,6 +107,41 @@
     "amendmentDate": {
       "type": "string",
       "description": "This will passed only for when there is amend and re-share"
+    }
+  },
+  "definitions": {
+    "offenceResults": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "offenceId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "offenceDate": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "applicationResults": {
+      "type": "object",
+      "properties": {
+        "applicationTitle": {
+          "type": "string"
+        },
+        "applicationResult": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "required": [

@@ -1,0 +1,38 @@
+{
+  "caseReferences": "28DI1070802",
+  "dateDecisionMade": "2025-02-19",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0201070802",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName1070802@gmail.com",
+  "defendantName": "Tre Spinka",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-02-19",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f4f9782c-75d7-4835-b726-0a22f5e628b6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "masterDefendantId": "f0702610-5670-4a14-ac58-732648008970",
+  "materialId": "3efaa3d9-a0bd-4800-85df-316581ab9e91",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £32.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f4f9782c-75d7-4835-b726-0a22f5e628b6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "abc0712e-aa8e-49b2-84f1-a0f8031fa5e2",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

@@ -1,0 +1,70 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5296047 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "07983211256",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantEmail": "defendant@test.com",
+  "defendantName": "Alicia Sporer",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "4f16e91b-4007-4d65-a284-0627cfbf125d",
+  "hearingSittingDay": "2025-03-13T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "1ff8a41c-f619-46e4-9a76-bfb10acb44c2",
+      "applicationResultType": "Abandoned",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nSV - Sentence varied\nAppeal heard on: 11/11/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "offenceTitle": "Robbery",
+      "resultCode": "APA"
+    },
+    {
+      "applicationId": "1ff8a41c-f619-46e4-9a76-bfb10acb44c2",
+      "applicationResultType": "Abandoned",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nSV - Sentence varied\nAppeal heard on: 10/12/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "APA"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5296047"
+  ]
+}

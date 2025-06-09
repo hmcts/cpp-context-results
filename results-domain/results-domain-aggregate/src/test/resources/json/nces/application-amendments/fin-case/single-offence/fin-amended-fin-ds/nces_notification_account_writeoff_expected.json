@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-02-20",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI9390803",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Cade Hermiston",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "e746903e-f717-42b0-86d5-4b9eceb251a0",
+  "materialId": "ab2c445f-c35f-4c0c-841a-e0d31c82a855",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.\nFO - Fine\nFined £550.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 16/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "aef1bcee-4d05-447a-bc14-c23ef4d30188",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

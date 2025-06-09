@@ -1,0 +1,30 @@
+{
+  "caseReferences": "28DI1912790",
+  "dateDecisionMade": "2025-03-12",
+  "defendantAddress": "n Fisher Tunnel1912790 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantEmail": "firstName.lastName1070802@gmail.com",
+  "defendantName": "Hermina Armstrong",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
+      "title": "Robbery"
+    }
+  ],
+  "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+  "materialId": "147b8b44-e815-44c1-a2de-2ed156709765",
+  "notificationId": "c8253797-67c1-4d96-8952-d2371baec5a1",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Abandoned"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ABANDONED"
+}

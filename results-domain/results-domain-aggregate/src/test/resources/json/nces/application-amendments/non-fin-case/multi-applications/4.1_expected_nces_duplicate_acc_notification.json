@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-02-17",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI1070802",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Tre Spinka",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £32.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f4f9782c-75d7-4835-b726-0a22f5e628b6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "f0702610-5670-4a14-ac58-732648008970",
+  "materialId": "7c2ea733-4e6f-4031-b78c-86ca0c4e777c",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £320.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f4f9782c-75d7-4835-b726-0a22f5e628b6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "678ec1c4-6c62-48f3-80d9-07015a1b7317",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

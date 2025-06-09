@@ -13,6 +13,7 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.HearingHelper;
+import uk.gov.moj.cpp.results.event.helper.ApplicationFinalResultsEnricher;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
@@ -67,6 +68,9 @@ public class HearingResultedEventProcessor {
     @Inject
     private ReferenceDataService referenceDataService;
 
+    @Inject
+    private ApplicationFinalResultsEnricher applicationResultsEnricher;
+
     @Handles("public.events.hearing.hearing-resulted")
     @SuppressWarnings({"squid:S2221"})
     public void handleHearingResultedPublicEvent(final JsonEnvelope envelope) {
@@ -78,8 +82,8 @@ public class HearingResultedEventProcessor {
         final JsonObject hearingPayload = envelope.payloadAsJsonObject();
         final JsonString sharedTime = hearingPayload.getJsonString(SHARED_TIME);
         final String hearingDay = hearingPayload.getString(HEARING_DAY);
-        final JsonObject incomingHearing = hearingPayload.getJsonObject(HEARING);
-        final JsonObject transformedHearing = hearingHelper.transformedHearing(incomingHearing);
+        final JsonObject transformedHearing = hearingHelper.transformedHearing(hearingPayload.getJsonObject(HEARING));
+        final JsonObject internalHearingPayload = applicationResultsEnricher.enrichIfApplicationResultsMissing(hearingPayload);
 
 
         final JsonObject externalPayload = createObjectBuilder()
@@ -96,7 +100,7 @@ public class HearingResultedEventProcessor {
 
             try {
                 LOGGER.info("Adding external JSON document for hearing {} with sjp key {} to Redis Cache", hearingId, cacheKeySjp);
-                cacheService.add(cacheKeySjp, hearingPayload.toString());
+                cacheService.add(cacheKeySjp, internalHearingPayload.toString());
             } catch (Exception e) {
                 LOGGER.error("Exception caught while attempting to connect to cache service: {} with sjp key {}", e, cacheKeySjp);
             }
@@ -111,7 +115,7 @@ public class HearingResultedEventProcessor {
 
                 LOGGER.info("Adding internal JSON document for hearing {}, hearingDay {} to Redis Cache", hearingId, hearingDay);
                 final String cacheKeyInternal = CACHE_KEY_INTERNAL_PREFIX + hearingId + "_" + hearingDay + CACHE_KEY_SUFFIX;
-                cacheService.add(cacheKeyInternal, hearingPayload.toString());
+                cacheService.add(cacheKeyInternal, internalHearingPayload.toString());
             } catch (Exception e) {
                 LOGGER.error("Exception caught while attempting to connect to cache service: ", e);
             }
@@ -120,7 +124,7 @@ public class HearingResultedEventProcessor {
         }
 
         final JsonObjectBuilder commandPayloadBuilder = createObjectBuilder()
-                .add(HEARING, incomingHearing)
+                .add(HEARING, internalHearingPayload.getJsonObject(HEARING))
                 .add(SHARED_TIME, sharedTime)
                 .add(IS_RESHARE, hearingPayload.getBoolean(IS_RESHARE))
                 .add(HEARING_DAY, hearingDay);

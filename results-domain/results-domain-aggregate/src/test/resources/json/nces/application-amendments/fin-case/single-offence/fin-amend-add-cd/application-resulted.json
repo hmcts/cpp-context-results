@@ -1,0 +1,45 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208365860",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8365860@gmail.com",
+  "defendantName": "Elroy Muller",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "7b343e87-3d07-4535-995b-3e636674f057",
+  "hearingSittingDay": "2025-03-21T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "1ec418e7-9818-42cf-8929-4284e82e11c3",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "916f1f10-c645-402d-934b-90f832118f59",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "916f1f10-c645-402d-934b-90f832118f59",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8365860"
+  ]
+}

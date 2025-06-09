@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-03-05",
+  "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+  "caseReferences": "28DI9835087",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Alisa Jaskolski",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "b0a3ecae-02f5-46d4-ae68-384eef12197d",
+  "materialId": "92d594b3-61b0-497e-b805-501cd0fc081d",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £200.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "c2e56782-9fe1-4e18-a774-e4b988347282",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

@@ -1,0 +1,59 @@
+{
+  "amendmentDate": "2025-04-24",
+  "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+  "caseReferences": "GD39876942",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Hilario Hirthe",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £10.00 to Aldi Stores\nFO - Fine\nFined £1111.09\nFVS - Surcharge\nTo pay a surcharge of £100.00\nAppeal heard on: 11/07/2024\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003\nSentence varied"
+    },
+    {
+      "details": "FO - Fine\nFined £1111.09\nAppeal heard on: 11/07/2024",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "title": "Provide money / property for use in acts of terrorism\nSentence varied"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
+  "materialId": "ca28ef4a-b3e8-4ec2-998f-55d4eca17d24",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Dismissed",
+      "Driving disqualification stands"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £10.00 to Aldi Stores\nFO - Fine\nFined £1111.09\nFVS - Surcharge\nTo pay a surcharge of £100.00\nAppeal heard on: 11/07/2024\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003\nSentence varied"
+    },
+    {
+      "details": "FO - Fine\nFined £1112.09\nAppeal heard on: 11/07/2024",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "title": "Provide money / property for use in acts of terrorism\nSentence varied"
+    }
+  ],
+  "notificationId": "04dacbed-feab-47c5-8997-4cc98f81150e",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed",
+      "Driving disqualification stands"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

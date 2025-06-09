@@ -74,6 +74,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableList;
+
+@SuppressWarnings({"java:S4738"})
 public class TestTemplates {
 
     private static final UUID DEFAULT_DEFENDANT_ID1 = fromString("dddd1111-1e20-4c21-916a-81a6c90239e5");

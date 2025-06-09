@@ -1,0 +1,25 @@
+{
+  "caseReferences": "28DI2324843",
+  "defendantAddress": "n Fisher Tunnel2324843 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eusebio Kautzer",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-20",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £50.00.\nFO - Fine\nFined £222.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
+  "materialId": "6975ab0b-603b-4841-9224-5d39d199c0c2",
+  "notificationId": "c52630be-2d3b-4178-bca0-10e6f3bd0e79",
+  "originalDateOfSentence": "20/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

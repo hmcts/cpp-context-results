@@ -1,0 +1,26 @@
+{
+  "caseReferences": "38DI4515073",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0204515073",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST014515073@gmail.com",
+  "defendantName": "Waldo Abshire",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-05",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £2222.00.\nFO - Fine\nFined £100.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "6a113ed7-9274-41ff-8e02-b1f02d370bc4",
+  "materialId": "fbefccdd-9957-4a2b-acda-b02d7cd1b330",
+  "notificationId": "0de08cba-8cce-4e94-8e80-f934b371a71e",
+  "originalDateOfSentence": "05/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}
