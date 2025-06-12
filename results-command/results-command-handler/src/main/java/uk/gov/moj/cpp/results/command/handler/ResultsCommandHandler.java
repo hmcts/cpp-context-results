@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static java.lang.Boolean.FALSE;
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
@@ -53,7 +54,6 @@ import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -177,7 +177,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final List<SessionDay> sessionDays = (List<SessionDay>) session.get("sessionDays");
         final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
         final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications"))
-                .orElse(Collections.emptyList());
+                .orElse(emptyList());
         final Optional<Boolean> isReshare = payload.containsKey("isReshare") ? Optional.of(payload.getBoolean("isReshare")) : Optional.empty();
 
 
@@ -268,7 +268,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private static boolean isEmailRequiredForApplicationResult(final CourtApplication courtApplication) {
-        return courtApplication.getJudicialResults()
+        return ofNullable(courtApplication.getJudicialResults()).orElse(emptyList())
                 .stream()
                 .anyMatch(judicialResult -> JudicialResultCategory.FINAL.equals(judicialResult.getCategory()) ||
                         JudicialResultCategory.INTERMEDIARY.equals(judicialResult.getCategory()));

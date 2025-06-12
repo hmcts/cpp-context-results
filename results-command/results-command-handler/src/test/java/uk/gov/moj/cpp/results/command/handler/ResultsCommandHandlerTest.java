@@ -163,6 +163,7 @@ public class ResultsCommandHandlerTest {
 
 
     private static final String TEMPLATE_PAYLOAD_APPLICATION_RESULTED = "json/results.create-results-for-day-court-application.json";
+    private static final String TEMPLATE_PAYLOAD_APPLICATION_RESULTED_WITHOUT_APPLICATION_LEVEL_RESULTS = "json/results.create-results-for-day-court-application-without-results.json";
     private static final String EMAIL = "mail@mail.com";
 
     private static final String EMAIL2 = "mail2@mail2.com";
@@ -1833,6 +1834,46 @@ public class ResultsCommandHandlerTest {
                                 .collect(toList())
                 )
                 .build();
+    }
+
+    @Test
+    public void shouldNotCreateAppealUpdateEventWhenNoResultForApplication() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder1 = createObjectBuilder();
+        jsonProsecutorBuilder1
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        final JsonObjectBuilder jsonProsecutorBuilder2 = createObjectBuilder();
+        jsonProsecutorBuilder2
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("informantEmailAddress", EMAIL2);
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_APPLICATION_RESULTED_WITHOUT_APPLICATION_LEVEL_RESULTS);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(enveloper, Mockito.times(1)).withMetadataFrom(envelope);
+        verify(eventStream, Mockito.times(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.id", notNullValue()),
+                                        withJsonPath("$.courtCentreWithLJA", notNullValue()),
+                                        withJsonPath("$.sessionDays", notNullValue())
+                                )
+                        ))
+        ));
     }
 
 }

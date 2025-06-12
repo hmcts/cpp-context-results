@@ -74,8 +74,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.google.common.collect.ImmutableList;
-
 @SuppressWarnings({"java:S4738"})
 public class TestTemplates {
 
