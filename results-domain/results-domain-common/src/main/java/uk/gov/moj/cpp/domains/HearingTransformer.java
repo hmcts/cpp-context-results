@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.domains;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import uk.gov.justice.core.courts.Address;
@@ -27,6 +28,7 @@ import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.CrackedIneffectiveTrial;
 import uk.gov.justice.core.courts.CustodyTimeLimit;
 import uk.gov.justice.core.courts.DefenceCounsel;
+import uk.gov.justice.core.courts.DefenceOrganisation;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantAlias;
 import uk.gov.justice.core.courts.DefendantAttendance;
@@ -95,6 +97,7 @@ import uk.gov.justice.core.courts.external.ApiCourtOrderOffence;
 import uk.gov.justice.core.courts.external.ApiCrackedIneffectiveTrial;
 import uk.gov.justice.core.courts.external.ApiCustodyTimeLimit;
 import uk.gov.justice.core.courts.external.ApiDefenceCounsel;
+import uk.gov.justice.core.courts.external.ApiDefenceOrganisation;
 import uk.gov.justice.core.courts.external.ApiDefendant;
 import uk.gov.justice.core.courts.external.ApiDefendantAlias;
 import uk.gov.justice.core.courts.external.ApiDefendantAttendance;
@@ -570,6 +573,9 @@ public class HearingTransformer {
         if (courtApplicationParty.getRepresentationOrganisation() != null) {
             apiCourtApplicationParty.withRepresentationOrganisation(organisation(courtApplicationParty.getOrganisation()).build());
         }
+        if(nonNull(courtApplicationParty.getAssociatedDefenceOrganisation())){
+            apiCourtApplicationParty.withAssociatedDefenceOrganisation(associatedDefenceOrganisationForLaa(courtApplicationParty.getAssociatedDefenceOrganisation()).build());
+        }
         return apiCourtApplicationParty.withId(courtApplicationParty.getId())
                 .withOrganisationPersons(courtApplicationParty.getOrganisationPersons() == null ? Collections.emptyList() :
                         courtApplicationParty.getOrganisationPersons().stream().map(op -> associatedPerson(op).build()).collect(Collectors.toList()))
@@ -671,6 +677,50 @@ public class HearingTransformer {
                 .withIsAssociatedByLAA(associatedDefenceOrganisation.getIsAssociatedByLAA())
                 .withAssociationEndDate(associatedDefenceOrganisation.getAssociationEndDate())
                 .withAssociationStartDate(associatedDefenceOrganisation.getAssociationStartDate());
+    }
+
+    private ApiAssociatedDefenceOrganisation.Builder associatedDefenceOrganisationForLaa(final AssociatedDefenceOrganisation associatedDefenceOrganisation) {
+        final ApiAssociatedDefenceOrganisation.Builder apiAssociatedDefenceOrganisation = ApiAssociatedDefenceOrganisation.apiAssociatedDefenceOrganisation();
+        apiAssociatedDefenceOrganisation.withDefenceOrganisation(transformDefenceOrganisation(associatedDefenceOrganisation.getDefenceOrganisation()));
+        if (associatedDefenceOrganisation.getFundingType() != null) {
+            final String fundingTypeString = associatedDefenceOrganisation.getFundingType().toString();
+            final Optional<uk.gov.justice.core.courts.external.FundingType> fundingTypeOptional
+                    = uk.gov.justice.core.courts.external.FundingType.valueFor(fundingTypeString);
+            final uk.gov.justice.core.courts.external.FundingType fundingType =
+                    fundingTypeOptional.orElse(null);
+            apiAssociatedDefenceOrganisation.withFundingType(fundingType);
+        }
+        return apiAssociatedDefenceOrganisation
+                .withApplicationReference(associatedDefenceOrganisation.getApplicationReference())
+                .withIsAssociatedByLAA(associatedDefenceOrganisation.getIsAssociatedByLAA())
+                .withAssociationEndDate(associatedDefenceOrganisation.getAssociationEndDate())
+                .withAssociationStartDate(associatedDefenceOrganisation.getAssociationStartDate());
+
+    }
+
+    private ApiDefenceOrganisation transformDefenceOrganisation(final DefenceOrganisation defenceOrganisation) {
+        if(isNull(defenceOrganisation)){
+            return null;
+        }
+        return ApiDefenceOrganisation.apiDefenceOrganisation()
+                .withLaaContractNumber(defenceOrganisation.getLaaContractNumber())
+                .withOrganisation(transformOrganisation(defenceOrganisation.getOrganisation()))
+                .build();
+    }
+
+    private ApiOrganisation transformOrganisation(final Organisation organisation) {
+        if(isNull(organisation)){
+            return null;
+        }
+        return ApiOrganisation.apiOrganisation()
+                .withAddress(address(organisation.getAddress()).build())
+                .withContact(contactNumber(organisation.getContact()).build())
+                .withName(organisation.getName())
+                .withId(organisation.getId())
+                .withIncorporationNumber(organisation.getIncorporationNumber())
+                .withIsProbationBreach(organisation.getIsProbationBreach())
+                .withRegisteredCharityNumber(organisation.getRegisteredCharityNumber())
+                .build();
     }
 
     private ApiPersonDefendant.Builder personDefendant(final PersonDefendant personDefendant) {

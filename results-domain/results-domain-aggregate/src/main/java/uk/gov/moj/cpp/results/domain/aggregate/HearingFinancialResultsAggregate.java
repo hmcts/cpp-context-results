@@ -79,7 +79,7 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 
 
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize","java:S107","java:S6204"})
 public class HearingFinancialResultsAggregate implements Aggregate {
 
     private static final Logger LOGGER = getLogger(HearingFinancialResultsAggregate.class);

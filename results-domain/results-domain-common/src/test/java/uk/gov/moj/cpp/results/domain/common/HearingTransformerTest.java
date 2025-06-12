@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
@@ -95,6 +96,16 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getPersonDetails().getLastName(), is("Smith"));
         assertThat(apiHearing.getCourtApplications().get(0).getSubject().getPersonDetails().getFirstName(), is("John"));
         assertThat(apiHearing.getCourtApplications().get(0).getSubject().getPersonDetails().getLastName(), is("Beard"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getAssociationStartDate().toString(), is("2019-09-12"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getAssociationEndDate().toString(), is("2019-12-12"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getFundingType().toString(), is("REPRESENTATION_ORDER"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getIsAssociatedByLAA(), is(true));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getDefenceOrganisation().getLaaContractNumber(), is("LAA44569"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getDefenceOrganisation().getOrganisation().getName(), is("Test"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getDefenceOrganisation().getOrganisation().getIncorporationNumber(), is("cegH7rIgdX"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getDefenceOrganisation().getOrganisation().getRegisteredCharityNumber(), is("TestCharity"));
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getDefenceOrganisation().getOrganisation().getAddress(), notNullValue());
+        assertThat(apiHearing.getCourtApplications().get(0).getSubject().getAssociatedDefenceOrganisation().getDefenceOrganisation().getOrganisation().getContact(), notNullValue());
         
         assertThat(apiHearing.getCourtApplications().get(0).getType().getId().toString(), is("c10e3b71-6a6d-45ef-9b62-34df4d54972b"));
         assertThat(apiHearing.getCourtApplications().get(0).getType().getCategoryCode(), is("App category code"));
