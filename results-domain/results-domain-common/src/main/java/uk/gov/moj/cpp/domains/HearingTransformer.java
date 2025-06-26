@@ -175,7 +175,7 @@ public class HearingTransformer {
         final ApiHearing.Builder result = ApiHearing.apiHearing();
 
         return result
-                .withCourtCentre(hearing.getCourtCentre() == null ? null : courtCentre(hearing.getCourtCentre()).build())
+                .withCourtCentre(hearing.getCourtCentre() == null ? null : courtCentre(hearing.getCourtCentre()))
                 .withJurisdictionType(hearing.getJurisdictionType() == null ? null : JurisdictionType.valueOf(hearing.getJurisdictionType().name()))
                 .withType(hearing.getType() == null ? null : hearingType(hearing.getType()).build())
                 .withCrackedIneffectiveTrial(hearing.getCrackedIneffectiveTrial() == null ? null : crackedIneffectiveTrial(hearing.getCrackedIneffectiveTrial()).build())
@@ -409,28 +409,34 @@ public class HearingTransformer {
                 .withAttendanceType(attendanceDay.getAttendanceType() != null ? uk.gov.justice.core.courts.external.AttendanceType.valueOf(attendanceDay.getAttendanceType().name()) : null);
     }
 
-    private ApiCourtCentre.Builder courtCentre(final CourtCentre courtCentre) {
-        final ApiCourtCentre.Builder apiCourtCentre = ApiCourtCentre.apiCourtCentre();
-        if (courtCentre.getAddress() != null) {
-            apiCourtCentre.withAddress(address(courtCentre.getAddress()).build());
+    private ApiCourtCentre courtCentre(final CourtCentre courtCentre) {
+        if(isNull(courtCentre)){
+            return null;
         }
-        return apiCourtCentre
+        return ApiCourtCentre.apiCourtCentre()
+                .withAddress(address(courtCentre.getAddress()))
                 .withCode(courtCentre.getCode())
                 .withId(courtCentre.getId())
                 .withName(courtCentre.getName())
                 .withRoomId(courtCentre.getRoomId())
                 .withRoomName(courtCentre.getRoomName())
                 .withWelshName(courtCentre.getWelshName())
-                .withWelshRoomName(courtCentre.getWelshRoomName());
+                .withWelshRoomName(courtCentre.getWelshRoomName())
+                .build();
     }
 
-    private ApiAddress.Builder address(final Address address) {
-        return ApiAddress.apiAddress().withAddress1(address.getAddress1())
+    private ApiAddress address(final Address address) {
+        if(isNull(address)){
+            return null;
+        }
+        return ApiAddress.apiAddress()
+                .withAddress1(address.getAddress1())
                 .withAddress2(address.getAddress2())
                 .withAddress3(address.getAddress3())
                 .withAddress4(address.getAddress4())
                 .withAddress5(address.getAddress5())
-                .withPostcode(address.getPostcode());
+                .withPostcode(address.getPostcode())
+                .build();
     }
 
     private ApiCourtApplication.Builder courtApplication(final CourtApplication courtApplication) {
@@ -503,7 +509,7 @@ public class HearingTransformer {
                 .withLabel(courtOrder.getLabel())
                 .withMasterDefendantId(courtOrder.getMasterDefendantId())
                 .withOrderDate(courtOrder.getOrderDate())
-                .withOrderingCourt(courtOrder.getOrderingCourt() == null ? null : courtCentre(courtOrder.getOrderingCourt()).build())
+                .withOrderingCourt(courtOrder.getOrderingCourt() == null ? null : courtCentre(courtOrder.getOrderingCourt()))
                 .withOrderingHearingId(courtOrder.getOrderingHearingId())
                 .withStartDate(courtOrder.getStartDate());
     }
@@ -568,7 +574,7 @@ public class HearingTransformer {
             apiCourtApplicationParty.withPersonDetails(person(courtApplicationParty.getPersonDetails()).build());
         }
         if (courtApplicationParty.getProsecutingAuthority() != null) {
-            apiCourtApplicationParty.withProsecutingAuthority(prosecutingAuthority(courtApplicationParty.getProsecutingAuthority()).build());
+            apiCourtApplicationParty.withProsecutingAuthority(prosecutingAuthority(courtApplicationParty.getProsecutingAuthority()));
         }
         if (courtApplicationParty.getRepresentationOrganisation() != null) {
             apiCourtApplicationParty.withRepresentationOrganisation(organisation(courtApplicationParty.getOrganisation()).build());
@@ -582,22 +588,18 @@ public class HearingTransformer {
                 .withSynonym(courtApplicationParty.getSynonym());
     }
 
-    private ApiProsecutingAuthority.Builder prosecutingAuthority(final ProsecutingAuthority prosecutingAuthority) {
-        final ApiProsecutingAuthority.Builder apiProsecutingAuthority = ApiProsecutingAuthority.apiProsecutingAuthority();
-        if (prosecutingAuthority.getAddress() != null) {
-            apiProsecutingAuthority.withAddress(address(prosecutingAuthority.getAddress()).build());
-        }
-        if (prosecutingAuthority.getContact() != null) {
-            apiProsecutingAuthority.withContact(contactNumber(prosecutingAuthority.getContact()).build());
-        }
-        return apiProsecutingAuthority.withAccountCode(prosecutingAuthority.getAccountCode())
+    private ApiProsecutingAuthority prosecutingAuthority(final ProsecutingAuthority prosecutingAuthority) {
+        return ApiProsecutingAuthority.apiProsecutingAuthority().withAccountCode(prosecutingAuthority.getAccountCode())
+                .withContact(contactNumber(prosecutingAuthority.getContact()))
+                .withAddress(address(prosecutingAuthority.getAddress()))
                 .withName(prosecutingAuthority.getName())
                 .withFirstName(prosecutingAuthority.getFirstName())
                 .withMiddleName(prosecutingAuthority.getMiddleName())
                 .withLastName(prosecutingAuthority.getLastName())
                 .withProsecutorCategory(prosecutingAuthority.getProsecutorCategory())
                 .withProsecutionAuthorityCode(prosecutingAuthority.getProsecutionAuthorityCode())
-                .withProsecutionAuthorityId(prosecutingAuthority.getProsecutionAuthorityId());
+                .withProsecutionAuthorityId(prosecutingAuthority.getProsecutionAuthorityId())
+                .build();
     }
 
     private ApiDefendant.Builder defendant(final Defendant defendant) {
@@ -713,8 +715,8 @@ public class HearingTransformer {
             return null;
         }
         return ApiOrganisation.apiOrganisation()
-                .withAddress(address(organisation.getAddress()).build())
-                .withContact(contactNumber(organisation.getContact()).build())
+                .withAddress(address(organisation.getAddress()))
+                .withContact(contactNumber(organisation.getContact()))
                 .withName(organisation.getName())
                 .withId(organisation.getId())
                 .withIncorporationNumber(organisation.getIncorporationNumber())
@@ -955,9 +957,9 @@ public class HearingTransformer {
     private ApiOrganisation.Builder organisation(final Organisation organisation) {
         final ApiOrganisation.Builder apiOrganisation = ApiOrganisation.apiOrganisation();
         if (organisation.getContact() != null) {
-            apiOrganisation.withContact(contactNumber(organisation.getContact()).build());
+            apiOrganisation.withContact(contactNumber(organisation.getContact()));
         }
-        return apiOrganisation.withAddress(address(organisation.getAddress()).build())
+        return apiOrganisation.withAddress(address(organisation.getAddress()))
                 .withIncorporationNumber(organisation.getIncorporationNumber())
                 .withName(organisation.getName())
                 .withRegisteredCharityNumber(organisation.getRegisteredCharityNumber());
@@ -1005,7 +1007,7 @@ public class HearingTransformer {
 
     private ApiNextHearing.Builder nextHearing(final NextHearing nextHearing) {
         final ApiNextHearing.Builder builder = ApiNextHearing.apiNextHearing();
-        builder.withCourtCentre(courtCentre(nextHearing.getCourtCentre()).build())
+        builder.withCourtCentre(courtCentre(nextHearing.getCourtCentre()))
                 .withEstimatedMinutes(nextHearing.getEstimatedMinutes())
                 .withJudiciary(nextHearing.getJudiciary() == null ? Collections.emptyList() :
                         nextHearing.getJudiciary().stream().map(jr -> judicialRole(jr).build()).collect(Collectors.toList()))
@@ -1106,13 +1108,13 @@ public class HearingTransformer {
     private ApiPerson.Builder person(final Person person) {
         final ApiPerson.Builder apiPerson = ApiPerson.apiPerson();
         if (person.getAddress() != null) {
-            apiPerson.withAddress(address(person.getAddress()).build());
+            apiPerson.withAddress(address(person.getAddress()));
         }
         if (person.getEthnicity() != null) {
             apiPerson.withEthnicity(ethnicity(person.getEthnicity()).build());
         }
         if (person.getContact() != null) {
-            apiPerson.withContact(contactNumber(person.getContact()).build());
+            apiPerson.withContact(contactNumber(person.getContact()));
         }
         if (person.getDocumentationLanguageNeeds() != null) {
             apiPerson.withDocumentationLanguageNeeds(DocumentationLanguageNeeds.valueOf(person.getDocumentationLanguageNeeds().name()));
@@ -1149,13 +1151,18 @@ public class HearingTransformer {
                 .withSelfDefinedEthnicityId(ethnicity.getSelfDefinedEthnicityId());
     }
 
-    private ApiContactNumber.Builder contactNumber(final ContactNumber contactNumber) {
-        return ApiContactNumber.apiContactNumber().withFax(contactNumber.getFax())
+    private ApiContactNumber contactNumber(final ContactNumber contactNumber) {
+        if(isNull(contactNumber)){
+            return null;
+        }
+        return ApiContactNumber.apiContactNumber()
+                .withFax(contactNumber.getFax())
                 .withHome(contactNumber.getHome())
                 .withMobile(contactNumber.getMobile())
                 .withPrimaryEmail(contactNumber.getPrimaryEmail())
                 .withSecondaryEmail(contactNumber.getSecondaryEmail())
-                .withWork(contactNumber.getWork());
+                .withWork(contactNumber.getWork())
+                .build();
     }
 
     private List<ApiJudicialResult> filterJudicialResults(final List<JudicialResult> judicialResults) {
