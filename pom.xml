@@ -38,10 +38,10 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>17.101.7</coredomain.version>
-        <referencedata.version>17.0.96</referencedata.version>
+        <referencedata.version>17.0.99</referencedata.version>
         <notification.notify.version>17.0.24</notification.notify.version>
         <systemdocgenerator.version>17.0.64</systemdocgenerator.version>
-        <progression.version>17.0.129</progression.version>
+        <progression.version>17.0.133</progression.version>
         <material.version>17.0.57</material.version>
         <usersgroups.version>17.0.33</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
