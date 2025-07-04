@@ -562,7 +562,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             buildDefendantParameters(ncesNotification, marked);
             ncesNotification.withApplicationResult(marked.getApplicationResult());
             ncesNotification.withImpositionOffenceDetails(null);
-        } else if (AMEND_AND_RESHARE.equals(marked.getSubject())) {//srivani
+        } else if (AMEND_AND_RESHARE.equals(marked.getSubject())) {
             ncesNotification.withAmendmentReason(marked.getAmendmentReason() != null ? marked.getAmendmentReason() : AMENDMENT_REASON);
             ncesNotification.withDefendantDateOfBirth(marked.getDefendantDateOfBirth());
             ncesNotification.withNewOffenceByResult(groupedByOffenceId(marked.getNewOffenceByResult()));
