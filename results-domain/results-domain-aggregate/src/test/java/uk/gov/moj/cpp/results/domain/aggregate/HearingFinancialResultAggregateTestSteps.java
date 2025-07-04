@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.frequency;
 import static java.util.Collections.nCopies;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -248,7 +249,7 @@ class HearingFinancialResultAggregateTestSteps {
         @Override
         public Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
             logger.info("Executing NcesEmailForNewApplicationStep");
-            final Stream<Object> eventStream = aggregate.sendNcesEmailForNewApplication(applicationType, "2021-21-21", List.of("caseUrn1", "caseUrn2"), "hearingCourtCentreName");
+            final Stream<Object> eventStream = aggregate.sendNcesEmailForNewApplication(applicationType, "2021-21-21", List.of("caseUrn1", "caseUrn2"), "hearingCourtCentreName", emptyList());
             return eventStream
                     .peek(e -> logEvent("new application", e))
                     .collect(Collectors.groupingBy(

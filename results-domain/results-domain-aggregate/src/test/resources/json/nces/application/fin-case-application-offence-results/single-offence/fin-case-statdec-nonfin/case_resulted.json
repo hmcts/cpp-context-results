@@ -1,0 +1,29 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+    "defendantContactNumber": "015325443756",
+    "defendantDateOfBirth": "1991-02-18",
+    "defendantName": "Ova Macejkovic",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "8439849f-b30f-47d4-970a-2ce5d9e9d9ef",
+    "hearingSittingDay": "2025-06-17T22:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "55d3997d-a22a-4e25-a162-803845eed9aa",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+      {
+        "amendmentDate": "2025-06-17",
+        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+        "dateOfResult": "2025-06-17",
+        "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £10.00\nIMP - Imprisonment\nCommitted to prison for 6 Months. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 10. Total custodial period: 5 Months.\n \n \nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2028.\nTotal custodial period: 5 Months.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "offenceId": "d7b96b42-2609-4c80-a1e0-2c667991fc20",
+        "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI8816809"
+    ]
+}

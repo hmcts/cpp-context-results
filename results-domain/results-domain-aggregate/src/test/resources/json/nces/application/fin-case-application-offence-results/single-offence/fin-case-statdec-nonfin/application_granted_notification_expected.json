@@ -1,0 +1,36 @@
+{
+  "caseReferences": "28DI8816809",
+  "dateDecisionMade": "2025-06-16",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Ova Macejkovic",
+  "divisionCode": "77",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-16",
+  "impositionOffenceDetails": [
+    {
+      "details": "FVS - Surcharge\nTo pay a surcharge of £10.00\nIMP - Imprisonment\nCommitted to prison for 6 Months. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 10. Total custodial period: 5 Months.\n \n \nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2028.\nTotal custodial period: 5 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d7b96b42-2609-4c80-a1e0-2c667991fc20",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "masterDefendantId": "55d3997d-a22a-4e25-a162-803845eed9aa",
+  "materialId": "5d6a1244-c943-4d05-965d-aea21ee1590f",
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7636b680-ffa5-4286-b986-4565799f18db",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "notificationId": "9248a95e-7618-4f38-91dc-16a1ed2cfdb9",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

@@ -1,0 +1,45 @@
+{
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "d7b96b42-2609-4c80-a1e0-2c667991fc20",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Months.",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "82729d25-5b58-421f-89af-aacb04f1a7bd",
+      "isParentFlag": false,
+      "isFinancial": true,
+      "dateOfResult": "2025-06-16",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "7636b680-ffa5-4286-b986-4565799f18db",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "82729d25-5b58-421f-89af-aacb04f1a7bd",
+      "isParentFlag": true,
+      "isFinancial": false,
+      "dateOfResult": "2025-06-16",
+      "resultCode": "G",
+      "isDeemedServed": false
+    }
+  ],
+  "hearingId": "820239cd-517f-4c6c-a575-9ef2102c52f7",
+  "masterDefendantId": "55d3997d-a22a-4e25-a162-803845eed9aa",
+  "defendantName": "Ova Macejkovic",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "accountDivisionCode": "10",
+  "ncesEmail": "postcode@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI8816809"
+  ],
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-16T09:00:00.000Z"
+}

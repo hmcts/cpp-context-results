@@ -7,11 +7,11 @@ import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import java.util.Map;
 import java.util.UUID;
 
-class ImpositionOffenceDetailsBuilder {
+public class ImpositionOffenceDetailsBuilder {
     private ImpositionOffenceDetailsBuilder() {
     }
 
-    static ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
+    public static ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
                 .withOffenceId(offencesFromRequest.getOffenceId())
                 .withDetails(offencesFromRequest.getImpositionOffenceDetails())
@@ -20,7 +20,7 @@ class ImpositionOffenceDetailsBuilder {
                 .build();
     }
 
-    static ImpositionOffenceDetails buildImpositionOffenceDetailsFromAggregate(final OffenceResultsDetails offencesFromAggregate, final Map<UUID, String> offenceDateMap) {
+    public static ImpositionOffenceDetails buildImpositionOffenceDetailsFromAggregate(final OffenceResultsDetails offencesFromAggregate, final Map<UUID, String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
                 .withOffenceId(offencesFromAggregate.getOffenceId())
                 .withDetails(offencesFromAggregate.getImpositionOffenceDetails())

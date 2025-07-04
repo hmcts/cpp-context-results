@@ -42,55 +42,17 @@ public class NCESDecisionConstants  implements Serializable {
     public static final String APPLICATION_TO_REOPEN_UPDATED  = "APPLICATION TO REOPEN UPDATED" ;
     public static final String APPEAL_APPLICATION_UPDATED  = "APPEAL APPLICATION UPDATED";
     public static final String AMEND_AND_RESHARE = "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED";
-    private static final String FIDICI = "FIDICI";
-    private static final String FIDICI_VALUE = "Fined and detained in default of payment until court rises";
-    private static final String FIDICTI = "FIDICTI";
-    private static final String FIDICTI_VALUE = "Fined and detained in default of payment until time";
-    private static final String FIDIPI = "FIDIPI";
-    private static final String FIDIPI_VALUE = "Fined and detained in default of payment in police station";
     public static final String STDEC = "STDEC";
-    private static final String STDEC_VALUE = "Statutory Declaration";
     public static final String AACA = "AACA";
-    private static final String AACA_VALUE = "Appeal against conviction allowed ";
     public static final String AASA = "AASA";
-    private static final String AASA_VALUE = "Appeal against sentence allowed";
     public static final String AACD = "AACD";
-    private static final String AACD_VALUE = "Appeal against conviction dismissed";
     public static final String AASD = "AASD";
-    private static final String AASD_VALUE = "Appeal against sentence dismissed";
     public static final String ACSD = "ACSD";
-    private static final String ACSD_VALUE = "Appeal against conviction and sentence dismissed";
     public static final String ASV = "ASV";
-    private static final String ASV_VALUE = "Appeal against conviction dismissed and sentence varied";
     public static final String APA = "APA";
-    private static final String APA_VALUE = "Appeal abandoned";
-    private static final String G_VALUE = "Granted";
-    private static final String ROPENED_VALUE = "Case reopened";
-    private static final String RFSD_VALUE = "Application refused";
-    private static final String WDRN_VALUE = "Withdrawn";
-    private static final String ACON_VALUE = "Account Consolidated";
     public static final String AW = "AW";
     public static final String SV_SENTENCE_VARIED = "\nSV - Sentence varied";
     public static final String SENTENCE_VARIED = "\nSentence varied";
-
-    public static final Map<String, String> resultCodeToString = ImmutableMap.<String, String>builder()
-            .put(FIDICI, FIDICI_VALUE)
-            .put(FIDICTI, FIDICTI_VALUE)
-            .put(FIDIPI, FIDIPI_VALUE)
-            .put(G, G_VALUE)
-            .put(STDEC, STDEC_VALUE)
-            .put(ROPENED, ROPENED_VALUE)
-            .put(AACA, AACA_VALUE)
-            .put(AASA, AASA_VALUE)
-            .put(RFSD, RFSD_VALUE)
-            .put(WDRN, WDRN_VALUE)
-            .put(AACD, AACD_VALUE)
-            .put(AASD, AASD_VALUE)
-            .put(ACSD, ACSD_VALUE)
-            .put(ASV, ASV_VALUE)
-            .put(APA, APA_VALUE)
-            .put(ACON, ACON_VALUE)
-            .build();
 
     public static final Map<String, String> APPLICATION_TYPES = ImmutableMap.<String, String>builder()
             .put(STAT_DEC, "APPLICATION FOR A STATUTORY DECLARATION RECEIVED")

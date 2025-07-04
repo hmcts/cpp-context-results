@@ -99,7 +99,7 @@ public class NCESDecisionHelper {
         return applicationResults;
     }
 
-    public static List<NewOffenceByResult> buildNewApplicationOffenceResultsFromTrackRequest(final List<OffenceResults> offenceResultsDetails, final Map<UUID, String> offenceDateMap) {
+    public static List<NewOffenceByResult> buildNewOffenceResultsFromTrackRequest(final List<OffenceResults> offenceResultsDetails, final Map<UUID, String> offenceDateMap) {
         List<NewOffenceByResult> newImpositionOffenceDetails;
 
         newImpositionOffenceDetails = offenceResultsDetails.stream()
@@ -118,44 +118,11 @@ public class NCESDecisionHelper {
         return newImpositionOffenceDetails;
     }
 
-    public static boolean isNewApplication(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest.getOffenceResults().stream().noneMatch(offence -> nonNull(offence.getAmendmentDate()));
-    }
-
-    public static boolean hasCorrelationId(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return nonNull(hearingFinancialResultRequest.getAccountCorrelationId());
-    }
-
     public static boolean hasNoCorrelationIdForAmendedApplication(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         return isNull(hearingFinancialResultRequest.getAccountCorrelationId()) && (hearingFinancialResultRequest
                 .getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType()))
                 .anyMatch(offence -> nonNull(offence.getAmendmentDate())));
-    }
-
-    public static boolean hasApplicationResult(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .anyMatch(offence -> nonNull(offence.getApplicationType()));
-    }
-
-    public static boolean hasResultOtherThanApplication(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .anyMatch(offence -> isNull(offence.getApplicationType()));
-    }
-
-    public static boolean hasAmendmentDate(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .anyMatch(o -> nonNull(o.getAmendmentDate()));
-    }
-
-    public static boolean hasApplicationAmendmentDate(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .filter(o -> nonNull(o.getApplicationType()))
-                .anyMatch(o -> nonNull(o.getAmendmentDate()));
     }
 
 }
