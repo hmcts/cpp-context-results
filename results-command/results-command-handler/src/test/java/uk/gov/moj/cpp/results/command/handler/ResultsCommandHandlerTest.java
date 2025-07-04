@@ -782,7 +782,7 @@ public class ResultsCommandHandlerTest {
 
         Map<UUID, OffenceResultsDetails> offenceResultsDetails = Collections.singletonMap(UUID.randomUUID(), OffenceResultsDetails.offenceResultsDetails()
                 .withOffenceId(fromString(offenceId)).build());
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
@@ -824,7 +824,7 @@ public class ResultsCommandHandlerTest {
         LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
         list.add(correlationIdHistoryItem);
 
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
         setField(this.hearingFinancialResultsAggregateSpy, "hearingId", randomUUID());
 
@@ -875,7 +875,7 @@ public class ResultsCommandHandlerTest {
         LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
         list.add(correlationIdHistoryItem);
 
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
         setField(this.hearingFinancialResultsAggregateSpy, "hearingId", randomUUID());
 
@@ -931,7 +931,7 @@ public class ResultsCommandHandlerTest {
         LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
         list.add(correlationIdHistoryItem);
 
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
@@ -982,7 +982,7 @@ public class ResultsCommandHandlerTest {
         LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
         list.add(correlationIdHistoryItem);
 
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
 
@@ -1060,7 +1060,7 @@ public class ResultsCommandHandlerTest {
                 .map(CourtApplicationCase::getOffences).flatMap(List::stream).collect(toList()).get(0);
         Map<UUID, OffenceResultsDetails> offenceResultsDetails = Collections.singletonMap(UUID.randomUUID(), OffenceResultsDetails.offenceResultsDetails()
                 .withOffenceId(offence.getId()).build());
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
 
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
         when(this.aggregateService.get(any(), eq(ResultsAggregate.class))).thenReturn(resultsAggregateSpy);
@@ -1370,7 +1370,7 @@ public class ResultsCommandHandlerTest {
         offenceResultsDetails.put(fromString(offenceId), OffenceResultsDetails.offenceResultsDetails()
                 .withOffenceId(fromString(offenceId))
                 .withImpositionOffenceDetails("FO 500 Pay By date 15/04/2025").build());
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
@@ -1402,7 +1402,7 @@ public class ResultsCommandHandlerTest {
                 .withOffenceId(fromString(applicationId))
                 .withApplicationTitle("Application title")
                 .withApplicationResultType("G").build()));
-        setField(this.hearingFinancialResultsAggregateSpy, "offenceResultsDetails", offenceResultsDetails);
+        setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
         setField(this.hearingFinancialResultsAggregateSpy, "applicationResultsDetails", applicationResultsDetails);
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
         when(eventSource.getStreamById(any())).thenReturn(eventStream);

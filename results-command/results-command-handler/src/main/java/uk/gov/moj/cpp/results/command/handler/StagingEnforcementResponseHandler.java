@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.command.handler;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 
@@ -21,6 +22,7 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,6 +48,7 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
     public static final String HEARING_COURT_CENTRE_NAME = "hearingCourtCentreName";
     public static final String LISTING_DATE = "listingDate";
     public static final String CASE_URNS = "caseUrns";
+    public static final String CASE_OFFENCE_ID_LIST = "caseOffenceIdList";
     public static final String IN_FORMAT = "dd/MM/yyyy";
     public static final String EMPTY_STRING = "";
 
@@ -107,11 +110,14 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE),DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
+        final List<String> caseOffenceIdList = envelope.payloadAsJsonObject().containsKey(CASE_OFFENCE_ID_LIST)
+                ? envelope.payloadAsJsonObject().getJsonArray(CASE_OFFENCE_ID_LIST).stream().map(i -> ((JsonString) i).getString()).toList()
+                : emptyList();
         final String hearingCourtCentreName = envelope.payloadAsJsonObject().containsKey(HEARING_COURT_CENTRE_NAME)
                 ? envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME)
                 : EMPTY_STRING;
         final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
-                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns,hearingCourtCentreName));
+                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, caseOffenceIdList));
 
         LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefandantId);
     }

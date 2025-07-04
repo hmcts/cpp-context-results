@@ -420,6 +420,21 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                ),
+                Arguments.of("Case > offence > FO,IMP > Statdec > offence non fin (DD-39431)",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/single-offence/fin-case-statdec-nonfin/case_resulted.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("app withdrawn")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/single-offence/fin-case-statdec-nonfin/application_resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-offence-results/single-offence/fin-case-statdec-nonfin/application_granted_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 )
         );
     }

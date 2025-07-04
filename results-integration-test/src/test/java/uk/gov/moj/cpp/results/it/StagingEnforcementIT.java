@@ -245,7 +245,7 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGranted() {
+    public void shouldSendNcesEmailForNewApplicationThatWasGranted(){
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
@@ -294,7 +294,7 @@ public class StagingEnforcementIT {
 
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGrantedWhenSjpCase() {
+    public void shouldSendNcesEmailForNewApplicationThatWasGrantedWhenSjpCase(){
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();

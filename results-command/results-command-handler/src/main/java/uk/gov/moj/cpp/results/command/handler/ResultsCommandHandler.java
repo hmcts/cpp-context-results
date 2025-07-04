@@ -367,6 +367,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         LOGGER.info("ResultsAggregate HearingId: {},  HearingFinancialResultsAggregate MasterDefendantId: {} ",
                 nonNull(resultsAggregate.getHearing()) ? resultsAggregate.getHearing().getId() : null,
                 aggregate.getMasterDefendantId());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Hearing  : {} ResultsAggregate: {}  HearingFinancialResultsAggregate:{} ", resultsAggregate.getHearing(), objectToJsonObjectConverter.convert(resultsAggregate),
+                    objectToJsonObjectConverter.convert(aggregate));
+        }
         final String originalDateOfOffenceList = getOriginalDateOfOffence(resultsAggregate);
         final String originalDateOfSentenceList = getOriginalDateOfSentence(aggregate, hearingFinancialResultRequest);
         final List<NewOffenceByResult> newResultByOffenceList = getNewResultByOffence(resultsAggregate);

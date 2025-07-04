@@ -18,19 +18,7 @@
   "materialId": "d33cd97b-c43a-4522-8b9a-a9421f02ff14",
   "newOffenceByResult": [
     {
-      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. ",
-      "offenceDate": "2019-11-28",
-      "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
-      "title": "Theft from a shop"
-    },
-    {
-      "details": "ACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.",
-      "offenceDate": "2019-11-28",
-      "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
-      "title": "Theft from a shop"
-    },
-    {
-      "details": "FO - Fine\nFined £10.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/10/2025.",
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.\nFO - Fine\nFined £10.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/10/2025.",
       "offenceDate": "2019-11-28",
       "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
       "title": "Theft from a shop"
