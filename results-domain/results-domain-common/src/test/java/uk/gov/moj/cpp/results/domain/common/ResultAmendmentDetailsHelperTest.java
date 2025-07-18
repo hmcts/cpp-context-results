@@ -392,8 +392,8 @@ public class ResultAmendmentDetailsHelperTest {
                                         offence(offenceId4, null))
                         )),
                 Arrays.asList(
-                        new DefendantJudicialResult(judicialResult(judicialResultIdInCase2, offenceId1, true), defendantId1),
-                        new DefendantJudicialResult(judicialResult(judicialResultIdInCase3, offenceId2, true), defendantId2)
+                        new DefendantJudicialResult(defendantId1, judicialResult(judicialResultIdInCase2, offenceId1, true), defendantId1),
+                        new DefendantJudicialResult(defendantId2, judicialResult(judicialResultIdInCase3, offenceId2, true), defendantId2)
                 ),
                 singletonList(
                         application(applicationId, caseId,
