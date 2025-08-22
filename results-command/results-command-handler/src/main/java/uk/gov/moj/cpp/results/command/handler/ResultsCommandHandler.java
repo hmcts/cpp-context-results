@@ -31,6 +31,10 @@ import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionDay;
+import uk.gov.justice.core.courts.CourtApplicationParty;
+import uk.gov.justice.core.courts.MasterDefendant;
+import uk.gov.justice.core.courts.PersonDefendant;
+import uk.gov.justice.core.courts.ProsecutingAuthority;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -241,14 +245,18 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private void sendAppealUpdateNotification(final JsonEnvelope commandEnvelope, final Optional<JurisdictionType> jurisdictionType, final List<CourtApplication> courtApplicationList){
-        for(final CourtApplication courtApplication : courtApplicationList){
+        for(final CourtApplication courtApplication : courtApplicationList) {
             if(courtApplication.getType().getAppealFlag() == Boolean.TRUE && isEmailRequiredForApplicationResult(courtApplication)) {
 
                 final String prosecutingAuthority = courtApplication.getCourtApplicationCases() != null ? courtApplication.getCourtApplicationCases().get(0)
                         .getProsecutionCaseIdentifier().getProsecutionAuthorityCode() : null;
 
-                final String prosecutor = courtApplication.getRespondents() != null ?
-                        courtApplication.getRespondents().get(0).getProsecutingAuthority().getProsecutionAuthorityCode() : null;
+                String prosecutor = ofNullable(courtApplication.getRespondents())
+                        .filter(list -> !list.isEmpty())
+                        .map(list -> list.get(0))
+                        .map(CourtApplicationParty::getProsecutingAuthority)
+                        .map(ProsecutingAuthority::getProsecutionAuthorityCode)
+                        .orElse(null);
 
                 final Person person = getDefendantPerson(courtApplication);
 
@@ -262,9 +270,12 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private static Person getDefendantPerson(final CourtApplication courtApplication) {
-        final Person person = courtApplication.getApplicant().getMasterDefendant().getPersonDefendant() != null ?
-        courtApplication.getApplicant().getMasterDefendant().getPersonDefendant().getPersonDetails() : null;
-        return person;
+        return ofNullable(courtApplication)
+                .map(CourtApplication::getApplicant)
+                .map(CourtApplicationParty::getMasterDefendant)
+                .map(MasterDefendant::getPersonDefendant)
+                .map(PersonDefendant::getPersonDetails)
+                .orElse(null);
     }
 
     private static boolean isEmailRequiredForApplicationResult(final CourtApplication courtApplication) {

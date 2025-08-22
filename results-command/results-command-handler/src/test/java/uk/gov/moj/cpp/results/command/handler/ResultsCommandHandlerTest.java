@@ -150,8 +150,11 @@ public class ResultsCommandHandlerTest {
     private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_FOR_SJP = "json/results.events.hearing-results-added-for-day_financialPenalties_for_sjp.json";
     private static final String TEMPLATE_RESULT_AGGREGATE_OFFENCES_ARE_EMPTY = "json/result-aggregate-offences-are-empty.json";
     private static final String TEMPLATE_RESULT_AGGREGATE_FOR_NEXH_WITH_LINE_FEED = "json/result-aggregate-offences-for-nexh-with-line-feed.json";
+    private static final String TEMPLATE_RESULT_AGGREGATE_FOR_PROSECUTOR_WITH_LINE_FEED = "json/result-command-handler-get-prosecutor-from-court-applications.json";
+    private static final String TEMPLATE_RESULT_AGGREGATE_FOR_PROSECUTOR_WITH_LINE_FEED_NULL_MASTER_DEFENDANT = "json/result-command-handler-get-prosecutor-from-court-applications-withMasterDefendant_isNull.json";
     private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF_TRUE_NULL = "json/results.events.hearing-results-added-for-day_financialPenaltiesToBeWrittenOff_trueWithNullOrderedDate.json";
 
+    private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_RESPONDS_EMPTY ="json/results.create-results-for-day-court-application-without-responds.json";
     private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF_TRUE_WITH_OFFENCE_IS_NULL_AND_JUDICIAL_RESULT_IS_NULL = "json/results.events.hearing-results-added-for-day_financialPenaltiesToBeWrittenOff_true_with_juducial_result_and_offence_is_null.json";
     private static final String TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF_TRUE_WITH_OFFENCE_IS_NULL_AND_JUDICIAL_PROMPT_IS_NULL = "json/results.events.hearing-results-added-for-day_financialPenaltiesToBeWrittenOff_true_with_juducial_promt_is_null.json";
     private static final String TEMPLATE_PAYLOAD_11 = "json/results.create-results-court-application.json";
@@ -1873,6 +1876,129 @@ public class ResultsCommandHandlerTest {
                                         withJsonPath("$.sessionDays", notNullValue())
                                 )
                         ))
+        ));
+    }
+
+    @Test
+    public void shouldSendAppealStatusFinalUpdateNotification() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder1 = createObjectBuilder();
+        jsonProsecutorBuilder1
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        final JsonObjectBuilder jsonProsecutorBuilder2 = createObjectBuilder();
+        jsonProsecutorBuilder2
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("informantEmailAddress", EMAIL2);
+
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any()))
+                .thenReturn(of(jsonProsecutorBuilder1.build()))
+                .thenReturn(of(jsonProsecutorBuilder2.build()));
+
+        final JsonObject payload = getPayload(TEMPLATE_RESULT_AGGREGATE_FOR_PROSECUTOR_WITH_LINE_FEED);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(enveloper, Mockito.times(2)).withMetadataFrom(envelope);
+        verify(eventStream, Mockito.times(2)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.id", notNullValue()),
+                                        withJsonPath("$.courtCentreWithLJA", notNullValue()),
+                                        withJsonPath("$.sessionDays", notNullValue())))),
+                jsonEnvelope(withMetadataEnvelopedFrom(envelope).withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.applicationId", notNullValue()),
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.defendant", is("Korbin Ismael")),
+                                        withJsonPath("$.urn", is("20NX8422480")),
+                                        withJsonPath("$.notificationId", notNullValue()),
+                                        withJsonPath("$.emailAddress", is(EMAIL)))))
+        ));
+    }
+
+    @Test
+    public void shouldSendAppealStatusFinalUpdateWhenMasterDefendantIsNullNotification() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder1 = createObjectBuilder();
+        jsonProsecutorBuilder1
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        final JsonObjectBuilder jsonProsecutorBuilder2 = createObjectBuilder();
+        jsonProsecutorBuilder2
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("informantEmailAddress", EMAIL2);
+
+        final JsonObject payload = getPayload(TEMPLATE_RESULT_AGGREGATE_FOR_PROSECUTOR_WITH_LINE_FEED_NULL_MASTER_DEFENDANT);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(enveloper, Mockito.times(1)).withMetadataFrom(envelope);
+        verify(eventStream, Mockito.times(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.id", notNullValue()),
+                                withJsonPath("$.courtCentreWithLJA", notNullValue()),
+                                withJsonPath("$.sessionDays", notNullValue()))))
+               ));
+    }
+
+    @Test
+    public void shouldSendAppealStatusFinalUpdateWhenRespondedntAreEmptyNotification() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        final JsonObjectBuilder jsonProsecutorBuilder1 = createObjectBuilder();
+        jsonProsecutorBuilder1
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("mcContactEmailAddress", EMAIL);
+
+        final JsonObjectBuilder jsonProsecutorBuilder2 = createObjectBuilder();
+        jsonProsecutorBuilder2
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("informantEmailAddress", EMAIL2);
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_FINANCIAL_PENALTIES_TO_BE_RESPONDS_EMPTY);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(enveloper, Mockito.times(1)).withMetadataFrom(envelope);
+        verify(eventStream, Mockito.times(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.id", notNullValue()),
+                                withJsonPath("$.courtCentreWithLJA", notNullValue()),
+                                withJsonPath("$.sessionDays", notNullValue()))))
         ));
     }
 
