@@ -504,34 +504,32 @@ public class ResultsEventProcessor {
         final List<CourtApplication> courtApplications = publicHearingResulted.getHearing().getCourtApplications();
         final List<CaseDetails> caseDetails = new CasesConverter(referenceCache, referenceDataService, progressionService).convert(publicHearingResulted);
 
+        publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
+        final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
         if (isNotEmpty(caseDetails)) {
-            publicHearingResulted.getHearing().getHearingDays().sort(comparing(HearingDay::getSittingDay).reversed());
-            final JsonArrayBuilder caseDetailsJsonArrayBuilder = createArrayBuilder();
             caseDetails.forEach(c -> caseDetailsJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
-
-            final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
-            resultJsonPayload.add("session", objectToJsonObjectConverter.convert(new BaseStructureConverter(referenceDataService).convert(publicHearingResulted)));
-            resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
-            resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
-
-            hearingDay.ifPresent(localDate -> resultJsonPayload.add("hearingDay", localDate.toString()));
-            if (isNotEmpty(courtApplications)) {
-                final JsonArrayBuilder courtApplicationJsonArrayBuilder = createArrayBuilder();
-                courtApplications.forEach(c -> courtApplicationJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
-                resultJsonPayload.add("courtApplications", courtApplicationJsonArrayBuilder.build());
-            }
-
-            if (hearingResultPayload.containsKey(IS_RESHARE)) {
-                resultJsonPayload.add(IS_RESHARE, hearingResultPayload.getBoolean(IS_RESHARE));
-            }
-
-
-            final Metadata metadata = metadataFrom(envelope.metadata())
-                    .withName(commandName)
-                    .build();
-            final JsonObject payload = resultJsonPayload.build();
-            sender.sendAsAdmin(envelopeFrom(metadata, payload));
         }
+        final JsonObjectBuilder resultJsonPayload = createObjectBuilder();
+        resultJsonPayload.add("session", objectToJsonObjectConverter.convert(new BaseStructureConverter(referenceDataService).convert(publicHearingResulted)));
+        resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
+        resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
+
+        hearingDay.ifPresent(localDate -> resultJsonPayload.add("hearingDay", localDate.toString()));
+        if (isNotEmpty(courtApplications)) {
+            final JsonArrayBuilder courtApplicationJsonArrayBuilder = createArrayBuilder();
+            courtApplications.forEach(c -> courtApplicationJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
+            resultJsonPayload.add("courtApplications", courtApplicationJsonArrayBuilder.build());
+        }
+
+        if (hearingResultPayload.containsKey(IS_RESHARE)) {
+            resultJsonPayload.add(IS_RESHARE, hearingResultPayload.getBoolean(IS_RESHARE));
+        }
+
+        final Metadata metadata = metadataFrom(envelope.metadata())
+                .withName(commandName)
+                .build();
+        final JsonObject payload = resultJsonPayload.build();
+        sender.sendAsAdmin(envelopeFrom(metadata, payload));
     }
 
     /**

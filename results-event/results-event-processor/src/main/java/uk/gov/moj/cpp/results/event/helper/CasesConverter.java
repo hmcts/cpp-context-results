@@ -1,13 +1,13 @@
 package uk.gov.moj.cpp.results.event.helper;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.core.courts.CaseDetails.caseDetails;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.checkURNValidity;
 import static uk.gov.moj.cpp.results.event.helper.results.CommonMethods.getUrn;
 
@@ -140,13 +140,15 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
     private void addCaseDetailsFromApplicationOnly(final PublicHearingResulted source, final CourtApplication courtApplication, final JsonObject caseIdJsonObject, final List<CaseDetails> internalApplicationCaseDetails) {
         final UUID caseId = fromString(caseIdJsonObject.getString("caseId"));
         final JsonObject prosecutionCaseJsonObject = progressionService.getProsecutionCaseDetails(caseId);
-        final ProsecutionCase prosecutionCase = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper()).convert(prosecutionCaseJsonObject.getJsonObject("prosecutionCase"), ProsecutionCase.class);
-        final String prosecutionAuthorityCode = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
-        final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(null, prosecutionAuthorityCode);
-        final boolean isURNValid = checkURNValidity(courtApplication.getApplicationReference());
-        final boolean isSjp = InitiationCode.J.equals(prosecutionCase.getInitiationCode());
-        final CourtApplicationCase courtApplicationCase = new CourtApplicationCase(prosecutionCase.getCaseStatus(), isSjp, new ArrayList<>(), caseId, prosecutionCase.getProsecutionCaseIdentifier());
-        internalApplicationCaseDetails.add(buildCaseDetails(source, courtApplication, isPoliceProsecutor, isURNValid).apply(courtApplicationCase));
+        if (nonNull(prosecutionCaseJsonObject) && !prosecutionCaseJsonObject.isEmpty()) {
+            final ProsecutionCase prosecutionCase = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper()).convert(prosecutionCaseJsonObject.getJsonObject("prosecutionCase"), ProsecutionCase.class);
+            final String prosecutionAuthorityCode = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
+            final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(null, prosecutionAuthorityCode);
+            final boolean isURNValid = checkURNValidity(courtApplication.getApplicationReference());
+            final boolean isSjp = InitiationCode.J.equals(prosecutionCase.getInitiationCode());
+            final CourtApplicationCase courtApplicationCase = new CourtApplicationCase(prosecutionCase.getCaseStatus(), isSjp, new ArrayList<>(), caseId, prosecutionCase.getProsecutionCaseIdentifier());
+            internalApplicationCaseDetails.add(buildCaseDetails(source, courtApplication, isPoliceProsecutor, isURNValid).apply(courtApplicationCase));
+        }
     }
 
     private  boolean hasJudicialResultsForCourtOrderOffence(final CourtOrderOffence co) {

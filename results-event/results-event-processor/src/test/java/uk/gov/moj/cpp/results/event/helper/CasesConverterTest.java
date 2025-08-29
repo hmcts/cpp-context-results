@@ -68,7 +68,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -82,7 +81,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -368,6 +366,41 @@ public class CasesConverterTest {
         final Optional<CourtOrderOffence> courtOrderOffence = courtOrder.getCourtOrderOffences().stream().filter(orderOffence -> orderOffence.getProsecutionCaseId().equals(caseDetailsList.get(0).getCaseId())).findFirst();
         assertThat(courtOrderOffence.isPresent(), is(true));
         assertThat(caseDetailsList.get(0).getUrn(), is(publicHearingResulted.getHearing().getCourtApplications().get(0).getApplicationReference()));
+    }
+
+    @Test
+    void convertStandaloneApplicationWithNoProsecutionCaseDetailsShouldReturnEmptyCaseDetailsList() {
+        when(progressionService.caseExistsByCaseUrn(anyString()))
+                .thenReturn(Optional.of(Json.createObjectBuilder()
+                        .add("caseId", randomUUID().toString())
+                        .build()));
+        when(progressionService.getProsecutionCaseDetails(any()))
+                .thenReturn(Json.createObjectBuilder().build());
+
+        final CourtApplication courtApplication = CourtApplication.courtApplication()
+                .withId(randomUUID())
+                .withType(courtApplicationTypeTemplates())
+                .withApplicationReference("APPREF")
+                .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                .withApplicant(courtApplicationPartyTemplates())
+                .withApplicationStatus(ApplicationStatus.DRAFT)
+                .withSubject(courtApplicationPartyTemplates())
+                .withCourtApplicationCases(null)
+                .withJudicialResults(TestTemplates.buildJudicialResultList())
+                .build();
+
+        final PublicHearingResulted shareResultsMessage = publicHearingResulted()
+                .setHearing(
+                        hearing()
+                                .withProsecutionCases(null)
+                                .withCourtApplications(singletonList(courtApplication))
+                                .build()
+                )
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+
+        final List<CaseDetails> caseDetailsList = casesConverter.convert(shareResultsMessage);
+
+        assertThat(caseDetailsList, hasSize(0));
     }
 
     private void assertDefendantsWithJudicialResultsAndNoCaseJudicialResults(final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing) {
