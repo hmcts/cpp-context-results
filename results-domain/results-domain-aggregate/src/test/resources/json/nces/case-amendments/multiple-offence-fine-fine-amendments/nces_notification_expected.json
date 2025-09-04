@@ -14,8 +14,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "adfed0bc-9c36-47f4-af27-e25203990880",
-  "materialId": "b6b710b0-1432-4308-9e6c-e0c6022ffa57",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. ",
@@ -33,7 +34,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "9239e5c9-0314-480e-9937-5b02853f31c2",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "47",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "sendTo": "av.qet@justice.gov.uk",

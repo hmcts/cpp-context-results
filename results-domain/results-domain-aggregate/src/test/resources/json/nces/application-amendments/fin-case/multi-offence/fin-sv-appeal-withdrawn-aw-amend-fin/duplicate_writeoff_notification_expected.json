@@ -21,8 +21,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
-  "materialId": "cea81643-602f-4adf-ad1f-a99aa8af78a2",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Appeal withdrawn"
@@ -43,7 +44,7 @@
       "title": "Theft from a shop\nSentence varied"
     }
   ],
-  "notificationId": "e1d508b1-754f-4b9b-b1f9-a11f543eff80",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

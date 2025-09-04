@@ -1,0 +1,75 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3744431 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Fiona Gorczany",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "d615c506-faac-4f30-b5c5-4587472c45e4",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "27a8300d-cbf6-4ed5-aed8-0d33da90247e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "26a0ad1e-22e3-4850-9711-96c6c7d3df2d",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "26a0ad1e-22e3-4850-9711-96c6c7d3df2d",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "26a0ad1e-22e3-4850-9711-96c6c7d3df2d",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "26a0ad1e-22e3-4850-9711-96c6c7d3df2d",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3744431"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

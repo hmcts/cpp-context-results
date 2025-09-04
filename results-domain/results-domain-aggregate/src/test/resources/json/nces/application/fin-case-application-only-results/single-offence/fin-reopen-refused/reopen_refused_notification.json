@@ -16,9 +16,10 @@
       "title": "Robbery"
     }
   ],
+  "isWriteOff": false,
   "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
-  "materialId": "5376b9cd-d15b-4bbd-a7c1-64800bf03fdb",
-  "notificationId": "a9319573-57da-4546-9772-b13402335d26",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Refused"

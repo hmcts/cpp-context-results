@@ -32,8 +32,16 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "fe80b111-16cd-4cf1-85ec-fb127acb2d7b",
-  "materialId": "9218a8d6-2cba-48d2-8d0f-41eabfd615af",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
   "newOffenceByResult": [
     {
       "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 12:22. Total amount enforced £111.00.\nFO - Fine\nFined £22.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/12/2025.",
@@ -54,7 +62,9 @@
       "title": "Possess / control TV set with intent another use install without a licence"
     }
   ],
-  "notificationId": "cdca1955-d6bb-4229-9f90-3e7116824084",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

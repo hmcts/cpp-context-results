@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI7664890",
+  "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Ena Pouros",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+  "materialId": "3f220b99-c603-4ae3-9331-c6e24e4631b9",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "27/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

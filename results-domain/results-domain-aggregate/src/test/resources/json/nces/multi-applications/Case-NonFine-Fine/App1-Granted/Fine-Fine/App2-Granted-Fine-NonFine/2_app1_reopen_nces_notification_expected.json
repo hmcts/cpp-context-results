@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI3358350",
+  "dateDecisionMade": "2025-07-08",
+  "defendantAddress": "n Fisher Tunnel3358350 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Cristopher Rempel",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "SUSPS - Suspended sentence order - imprisonment\nCommitted to prison for 8 Years suspended for 3 Years. Reason: failure to comply with a pre-sentence drug testing order. The defendant must comply with the requirements within the supervision period.  In the event of activation of sentence: 45 bail remand days to count. Total custodial period 6 Years. Supervision period: 2 Years.\nACR - Attendance centre\nAttendance Centre Requirement: Attend for 5 Hours.\nTotal custodial period 6 Years. Supervision period: 2 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £4554.00. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 05/01/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "95d70a5b-0fc9-432a-bae9-c665111413c8",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £6787.00\nIMP - Imprisonment\nCommitted to prison for 6 Years Concurrent Consecutive to offence Consecutive to offence. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property, because the number and nature of the offences shows that the defendant is operating as a professional criminal, because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence, other reasons. Bail remand days to count (Tagged Days): 56. Number of days in custody in foreign jurisdiction to count: 45. Total custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.\n \n \nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nFVS - Surcharge\nTo pay a surcharge of £43.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/12/2026\nTotal custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

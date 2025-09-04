@@ -1,0 +1,47 @@
+{
+  "caseReferences": "28DI2136471",
+  "dateDecisionMade": "2025-02-20",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202136471",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2136471@gmail.com",
+  "defendantName": "Jaylin Conroy",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-02-20",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £45.00 to test test, FO - Fine\nFined £30.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "2ee5bf29-d1b6-4d99-b767-45febc762803",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "e71d78a2-7a99-410a-b51c-1a2827388e36",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

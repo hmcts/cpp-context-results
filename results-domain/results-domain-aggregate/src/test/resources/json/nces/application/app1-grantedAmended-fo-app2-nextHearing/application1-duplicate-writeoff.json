@@ -15,8 +15,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "a25666da-81d7-4e25-b57f-541389f18149",
-  "materialId": "d6191b92-728e-4263-8d42-71c6be0639df",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted"
@@ -31,7 +32,7 @@
       "title": "Theft of motor vehicle"
     }
   ],
-  "notificationId": "e4797be0-1617-4484-8e11-e55b4bea62a5",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

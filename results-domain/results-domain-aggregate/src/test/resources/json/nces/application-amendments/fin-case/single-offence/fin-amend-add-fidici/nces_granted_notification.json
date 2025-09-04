@@ -20,8 +20,15 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
-  "materialId": "a35a1a60-5950-4ce6-9328-35e91e6ed9d6",
+  "materialId": "2eab17cf-5e63-47cb-bf2e-4a56314592c2",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2015.",
@@ -30,7 +37,9 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "ade80523-e98d-4257-a668-9cf2a24322df",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "av.qet@justice.gov.uk",

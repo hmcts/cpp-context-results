@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI3594325",
+  "defendantAddress": "n Fisher Tunnel3594325 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eden Von",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "17a4833a-7daa-425f-b579-f425ee75453f",
+  "materialId": "3416161a-71ae-4d9d-beec-ccdd110a63b1",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "27/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

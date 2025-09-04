@@ -14,8 +14,9 @@
       "title": "Theft from a shop"
     }
   ],
+  "isWriteOff": true,
   "masterDefendantId": "adfed0bc-9c36-47f4-af27-e25203990880",
-  "materialId": "574fa024-3e30-481e-863d-8734cea0ca52",
+  "materialId": "9ff799a8-3a8f-4c03-b7b9-79b660c8ed18",
   "newApplicationResults": {
     "applicationResult": []
   },
@@ -27,7 +28,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "aeb5b228-5373-49a9-9033-6a3e7a4e48d2",
+  "notificationId": "a054fab9-868d-475c-a53e-142cf28a5a72",
   "oldDivisionCode": "DIVCODE",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "sendTo": "John.Doe@xxx.com",

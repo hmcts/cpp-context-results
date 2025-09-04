@@ -1,0 +1,87 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "5",
+  "defendantAddress": "1 High Street High Street Cambridge Cambridgeshire CB2 1TN",
+  "defendantContactNumber": "0338137227",
+  "defendantDateOfBirth": "1969-09-01",
+  "defendantEmail": "daina.gutkowski@example.com",
+  "defendantName": "Daina Gutkowski",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "128b4eb1-828d-4fcb-85eb-24c619854653",
+  "hearingSittingDay": "2025-09-02T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "098698ad-4d30-4b72-89c0-aa427fcb4d62",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "4ec6b56e-c2f8-461a-9da3-38fd3e358231",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FO - Fine\nFined £800.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "4ec6b56e-c2f8-461a-9da3-38fd3e358231",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 23/07/2026. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 2 Hours.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "5d228682-2dda-4545-98d6-9890f3dafe7c",
+      "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "4ec6b56e-c2f8-461a-9da3-38fd3e358231",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FO - Fine\nFined £800.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationId": "4ec6b56e-c2f8-461a-9da3-38fd3e358231",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 23/07/2026. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 2 Hours.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "5d228682-2dda-4545-98d6-9890f3dafe7c",
+      "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FO - Fine\nFined £800.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "RQ121236318"
+  ]
+}

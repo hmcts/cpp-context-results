@@ -1,0 +1,80 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel2179703 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Alivia Klein",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "ea9f5886-5d09-4114-bf1c-3441b2eea90e",
+    "hearingSittingDay": "2025-07-01T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "5a6b2295-e9b6-4048-ab9e-21e6073843d5",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £300.00\nFO - Fine\nFined £4500.00\nFVS - Surcharge\nTo pay a surcharge of £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "d296fd74-bbc8-4b61-9a14-3464a52fbd3e",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-01",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £300.00\nFO - Fine\nFined £4500.00\nFVS - Surcharge\nTo pay a surcharge of £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "d296fd74-bbc8-4b61-9a14-3464a52fbd3e",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-01",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Excise penalty",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-01",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £300.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-01",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £4500.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-01",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £1000.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI2179703"
+    ]
+}

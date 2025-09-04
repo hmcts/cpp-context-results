@@ -1,0 +1,69 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3216769 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Trystan Rice",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "f11e5fcb-ffbf-40d8-a363-2a8e18863a69",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "85ca22d6-2b74-4347-8bed-fc99c3b036f4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £875.00 to first name last\nFO - Fine\nFined £75.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £800.00. Instalment amount: £90.00 to be paid monthly from 13/04/2026. Parent / Guardian to pay. Number of days in default: 56. Payment card required.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "9b3eecf1-7008-459c-9324-847a5f1f4263",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "9b3eecf1-7008-459c-9324-847a5f1f4263",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "isFinancial": false,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Vehicle Excise Back Duty",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+            "isFinancial": false,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3216769"
+    ]
+}

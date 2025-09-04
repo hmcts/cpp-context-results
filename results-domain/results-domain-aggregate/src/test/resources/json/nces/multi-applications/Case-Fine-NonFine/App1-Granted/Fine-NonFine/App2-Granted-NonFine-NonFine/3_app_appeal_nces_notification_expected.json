@@ -1,0 +1,46 @@
+{
+  "caseReferences": "28DI3216769",
+  "dateDecisionMade": "2025-07-07",
+  "defendantAddress": "n Fisher Tunnel3216769 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Trystan Rice",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £875.00 to first name last\nFO - Fine\nFined £75.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £800.00. Instalment amount: £90.00 to be paid monthly from 13/04/2026. Parent / Guardian to pay. Number of days in default: 56. Payment card required.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+      "title": "Robbery"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "85ca22d6-2b74-4347-8bed-fc99c3b036f4",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+      "title": "Robbery"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}

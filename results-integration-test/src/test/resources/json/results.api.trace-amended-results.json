@@ -18,10 +18,10 @@
     "isFinancial" : FINANCIAL,
     "resultId" : "a02df768-a722-4b0e-b851-7496e13b82d7",
     "offenceId" : "a02df768-a722-4b0e-b851-7496e13b82d8",
+    "offenceTitle": "Offence Title",
     "resultCode" : "CODE01",
     "dateOfResult" : "01-01-2021",
     "amendmentDate" : "01-01-2021",
-    "offenceTitle": "Offence Title",
     "impositionOffenceDetails": "Imposition Offence Details"
   }]
 }

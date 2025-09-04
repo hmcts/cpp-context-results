@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel8266932 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Osborne Rolfson",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "995bf1de-baa7-43f7-ad9c-0b8fbfaf0e96",
+  "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e40c5c67-22ca-4118-b24e-592aa3da4507",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "offenceId": "9a713ac5-73db-4428-bebd-7c7dcc8dc869",
+      "offenceTitle": "Theft from a shop",
+      "isFinancial": true,
+      "impositionOffenceDetails": "FO - Fine\nFined £432.00, FVS - Surcharge\nTo pay a surcharge of £5433.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/08/2025.",
+      "dateOfResult": "2025-06-27",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "443d9eef-6587-4647-83ef-73e85418c197",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-06-27",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "isFinancial": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8266932"
+  ]
+}

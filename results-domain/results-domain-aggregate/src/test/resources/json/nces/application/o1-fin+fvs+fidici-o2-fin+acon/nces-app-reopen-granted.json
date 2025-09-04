@@ -25,8 +25,15 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
-  "materialId": "d56b5a68-79fa-4ffb-aacf-560bcc2469d3",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
   "newOffenceByResult": [
     {
       "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse deemed served by reason of time already spent in custody. Total amount enforced £400.00.\nFO - Fine\nFined £300.00\nFVS - Surcharge\nTo pay a surcharge of £4000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
@@ -41,7 +48,9 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "017ca237-8d0e-4186-bfbb-562c06fd8ea8",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

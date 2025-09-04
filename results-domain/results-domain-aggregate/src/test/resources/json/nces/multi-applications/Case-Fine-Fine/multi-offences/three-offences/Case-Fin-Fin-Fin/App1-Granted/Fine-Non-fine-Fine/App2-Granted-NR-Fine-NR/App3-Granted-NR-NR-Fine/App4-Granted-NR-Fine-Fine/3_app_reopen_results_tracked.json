@@ -1,0 +1,70 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "130",
+    "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+    "defendantContactNumber": "0162245826",
+    "defendantDateOfBirth": "1968-07-15",
+    "defendantEmail": "robieshalanda.botsleffler@example.com",
+    "defendantName": "RobieShalanda BotsLeffler",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "396ce39a-2a08-46ee-ab03-81ab78277e14",
+    "hearingSittingDay": "2025-07-15T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "67e6baf5-eea3-48bc-9f29-028336f750d5",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "1c9d86f8-3611-4226-ab56-f9ce0b36b7b1",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FO - Fine\nFined £2000.00\nFVS - Surcharge\nTo pay a surcharge of £500.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £400.00 to be paid monthly. Instalment start date: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "1c9d86f8-3611-4226-ab56-f9ce0b36b7b1",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FO - Fine\nFined £2000.00\nFVS - Surcharge\nTo pay a surcharge of £500.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £400.00 to be paid monthly. Instalment start date: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FO - Fine\nFined £2000.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £500.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ699722881"
+    ]
+}

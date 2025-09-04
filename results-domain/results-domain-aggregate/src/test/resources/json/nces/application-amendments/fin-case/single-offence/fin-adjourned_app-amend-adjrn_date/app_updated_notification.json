@@ -8,11 +8,12 @@
   "defendantEmail": "firstName.lastName3726212@gmail.com",
   "defendantName": "Janis Nikolaus",
   "divisionCode": "47",
-  "gobAccountNumber": "{{gobAccountNumber}}",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "isWriteOff": false,
   "masterDefendantId": "93cb9ee4-0eae-41fe-b58b-384447979185",
-  "materialId": "0fefb98b-91da-46d0-b792-c1e17eb68d22",
-  "notificationId": "0a5ceeeb-e6a2-4ab0-ab5b-985a4613056c",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "av.qet@justice.gov.uk",
   "subject": "APPLICATION TO REOPEN UPDATED"
 }

@@ -1,0 +1,75 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7582313 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Regan Bashirian",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "d921abbc-6c6a-48fe-a36e-4ded67c29167",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "d2d54c40-64c6-4450-b09f-cca97daec791",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £2500.00\nFVS - Surcharge\nTo pay a surcharge of £550.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £500.00. Instalment amount: £200.00 to be paid monthly from 11/07/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FO - Fine\nFined £3500.00\nFVS - Surcharge\nTo pay a surcharge of £450.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £2000.00. Instalment amount: £100.00 to be paid monthly from 11/07/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £2500.00\nFVS - Surcharge\nTo pay a surcharge of £550.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £500.00. Instalment amount: £200.00 to be paid monthly from 11/07/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FO - Fine\nFined £3500.00\nFVS - Surcharge\nTo pay a surcharge of £450.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £2000.00. Instalment amount: £100.00 to be paid monthly from 11/07/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7582313"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

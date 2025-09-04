@@ -1,0 +1,36 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel4199070 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Herminia Casper",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "5ab0050c-ed83-4740-8026-4efd9a0b577a",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "48e36bad-9eeb-4b24-a085-f9293a72041a",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+            "offenceTitle": "Theft from a shop",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FO - Fine\nFined £5676.00, FVS - Surcharge\nTo pay a surcharge of £432.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £433.00. Reason for decision: Reason for decision\nReason for decision\nReason for decision\nReason for decision.\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £455.00 to be paid fortnightly. Instalment start date: 11/11/2025.",
+            "dateOfResult": "2025-06-27",
+            "resultCode": "FIDICI",
+            "isDeemedServed": true
+        },
+        {
+            "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+            "isFinancial": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI4199070"
+    ]
+}

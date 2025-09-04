@@ -1,0 +1,86 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5651663 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Toni Parisian",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "2b3d4b7f-a94b-4cf0-b7b4-23687324f423",
+  "hearingSittingDay": "2025-08-19T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "327e9b92-1df4-4eeb-b21f-777a8590914c",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "349b7aca-3763-4b60-b619-f53dcf475c0b",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £8777.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery",
+      "resultCode": "AASA"
+    },
+    {
+      "applicationId": "349b7aca-3763-4b60-b619-f53dcf475c0b",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £9994.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "AASA"
+    },
+    {
+      "amendmentDate": "2025-08-18",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £8777.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "amendmentDate": "2025-08-18",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "amendmentDate": "2025-08-18",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £9994.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5651663"
+  ]
+}

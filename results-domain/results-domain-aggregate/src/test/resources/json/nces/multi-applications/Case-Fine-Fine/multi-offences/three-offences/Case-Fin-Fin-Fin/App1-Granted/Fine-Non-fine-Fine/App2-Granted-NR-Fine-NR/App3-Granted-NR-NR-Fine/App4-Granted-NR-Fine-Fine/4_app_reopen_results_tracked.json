@@ -1,0 +1,70 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "130",
+    "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+    "defendantContactNumber": "0162245826",
+    "defendantDateOfBirth": "1968-07-15",
+    "defendantEmail": "robieshalanda.botsleffler@example.com",
+    "defendantName": "RobieShalanda BotsLeffler",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "4e8bb4b2-aedc-4f3d-8aa8-9a176ec976ef",
+    "hearingSittingDay": "2025-07-15T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "67e6baf5-eea3-48bc-9f29-028336f750d5",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "214d29a9-7dfb-49c6-828f-69e1faccff28",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £4400.00. \nFO - Fine\nFined £5000.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £500.00 to be paid monthly from 11/12/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "214d29a9-7dfb-49c6-828f-69e1faccff28",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £4400.00. \nFO - Fine\nFined £5000.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £500.00 to be paid monthly from 11/12/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £4400.00. ",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FO - Fine\nFined £5000.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ699722881"
+    ]
+}

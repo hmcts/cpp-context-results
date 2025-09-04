@@ -31,8 +31,15 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "6a9ceab0-928b-4096-b450-063e717e5761",
-  "materialId": "e210aab3-04b6-4b64-bb58-6515f29d297e",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
   "newOffenceByResult": [
     {
       "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
@@ -53,7 +60,9 @@
       "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
     }
   ],
-  "notificationId": "af68ec04-a8d9-48b3-805d-90912a748795",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

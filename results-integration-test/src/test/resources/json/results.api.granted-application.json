@@ -16,6 +16,7 @@
   "ncesEmail": "John.Doe@xxx.com",
   "offenceResults": [
     {
+      "applicationId": "902df768-a722-4b0e-b851-7496e13b82d8",
       "applicationType": "APPEAL",
       "applicationResultType": "Granted",
       "resultId": "a02df768-a722-4b0e-b851-7496e13b82d8",
@@ -24,18 +25,21 @@
       "dateOfResult": "01/01/2021",
       "impositionOffenceDetails": "Amount of fine: £155",
       "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+      "isParentFlag": true,
       "isFinancial": true,
       "isDeemedServed": false
     },
     {
       "resultId": "a02df768-a722-4b0e-b851-7496e13b82f7",
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
+      "applicationType": "APPEAL",
       "offenceTitle": "Title 3",
       "resultCode": "ACON",
       "dateOfResult": "01/01/2021",
       "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/12/2023.",
       "isFinancial" : FINANCIAL,
-      "isDeemedServed" : DEEMED_SERVED
+      "isDeemedServed" : DEEMED_SERVED,
+      "isParentFlag": true
     }
   ]
 }

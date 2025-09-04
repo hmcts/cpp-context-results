@@ -1,0 +1,48 @@
+{
+  "caseReferences": "RQ699722881",
+  "dateDecisionMade": "2025-07-15",
+  "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+  "defendantContactNumber": "0162245826",
+  "defendantDateOfBirth": "1968-07-15",
+  "defendantEmail": "robieshalanda.botsleffler@example.com",
+  "defendantName": "RobieShalanda BotsLeffler",
+  "divisionCode": "130",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-15",
+  "impositionOffenceDetails": [
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £300.00\nFO - Fine\nFined £5500.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £300.00 to be paid monthly. Instalment start date: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+      "title": "Drive whilst unfit through drink"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "67e6baf5-eea3-48bc-9f29-028336f750d5",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £4400.00. \nFO - Fine\nFined £5000.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £500.00 to be paid monthly from 11/12/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+      "title": "Drive whilst unfit through drink"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "130",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

@@ -1,0 +1,59 @@
+{
+  "caseReferences": "RQ126157841",
+  "dateDecisionMade": "2025-07-17",
+  "defendantAddress": "1, Strand Test Street Test Locality Test Town Test Area TA1 1AT",
+  "defendantContactNumber": "0821292179",
+  "defendantDateOfBirth": "1994-07-17",
+  "defendantEmail": "katia.tremblay@example.com",
+  "defendantName": "Katia Tremblay",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-17",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £30000.00\nFVS - Surcharge\nTo pay a surcharge of £5676.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 14/05/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+      "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £8888.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "e0bcb42a-25a4-449f-914f-f171d3e70fed",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00\nFO - Fine\nFined £8765.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £876.00 to be paid monthly from 12/11/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+      "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 7 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

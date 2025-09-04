@@ -15,6 +15,7 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "7134cd80-4934-4e96-b2e5-a7322309f579",
   "materialId": "cc88fce3-d3f7-4383-9b81-7808ed2b5c8b",
   "newApplicationResults": {

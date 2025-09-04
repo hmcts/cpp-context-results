@@ -1,0 +1,34 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "defendantAddress": "40 Market Place Market Place Bristol BS1 1AA",
+  "defendantContactNumber": "0939137252",
+  "defendantDateOfBirth": "1998-08-08",
+  "defendantEmail": "carrol.gerlach@example.com",
+  "defendantName": "Carrol Gerlach",
+  "hearingCourtCentreName": "City of London Magistrates' Court",
+  "hearingId": "f772e41a-bb15-4eaa-8e78-d3087cb17e1a",
+  "hearingSittingDay": "2025-08-08T09:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "45533349-6528-4692-ab97-00bc767938de",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-08-08",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 19/08/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "25b3a10b-68a4-4c74-a6c0-5b3d9099fa14",
+      "offenceTitle": "Drive whilst unfit through drink"
+    },
+    {
+      "dateOfResult": "2025-08-08",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "b757a3a7-a938-4b26-ab5f-ece92e55ef20",
+      "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "RQ123835335"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3720936 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Dasia Kihn",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "be33be94-a808-49b4-a063-5deb426ac063",
+    "hearingSittingDay": "2025-06-27T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "fbcd16f9-881c-4b51-898b-ef2a7ba107d6",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "5b2bb1dd-0001-40c7-a421-cf63e93ba711",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £3450.00\nFVS - Surcharge\nTo pay a surcharge of £452.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2026.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "841dcc44-a5b6-4ef6-b778-3faa26247fe8",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-27",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "590c310e-cfd9-4c12-a5c9-f358195718b6",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "841dcc44-a5b6-4ef6-b778-3faa26247fe8",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-27",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "5b2bb1dd-0001-40c7-a421-cf63e93ba711",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £3450.00\nFVS - Surcharge\nTo pay a surcharge of £452.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2026.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "841dcc44-a5b6-4ef6-b778-3faa26247fe8",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-27",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "590c310e-cfd9-4c12-a5c9-f358195718b6",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "841dcc44-a5b6-4ef6-b778-3faa26247fe8",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-27",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "5b2bb1dd-0001-40c7-a421-cf63e93ba711",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £3450.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "5b2bb1dd-0001-40c7-a421-cf63e93ba711",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £452.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3720936"
+    ]
+}

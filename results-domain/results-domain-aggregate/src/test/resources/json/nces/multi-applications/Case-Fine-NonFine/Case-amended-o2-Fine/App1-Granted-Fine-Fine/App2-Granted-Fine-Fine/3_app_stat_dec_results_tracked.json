@@ -1,0 +1,119 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel8919760 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Easton Hickle",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "23b79006-9791-4683-b169-69c13db3aa51",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "dc28b3e8-fe2b-4925-a3c3-f54a660b7423",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98765.00\nSATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £34521.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98762.00\nFVS - Surcharge\nTo pay a surcharge of £3444.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98765.00\nSATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £34521.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98762.00\nFVS - Surcharge\nTo pay a surcharge of £3444.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98765.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Slavery and Trafficking Reparation Order",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "SATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £34521.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98762.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £3444.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI8919760"
+    ]
+}

@@ -1,0 +1,69 @@
+{
+  "caseReferences": "48DI4492996",
+  "dateDecisionMade": "2025-07-15",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "30",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-15",
+  "impositionOffenceDetails": [
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4563.00, FO - Fine\nFined £100000.00, FVS - Surcharge\nTo pay a surcharge of £34567.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/06/2027",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £456.00\nIMP - Imprisonment\nCommitted to prison for 9 Years. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nFVS - Surcharge\nTo pay a surcharge of £4332.00\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £43.00 to be paid monthly from 11/11/2025\nTotal custodial period is life.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00\nFO - Fine\nFined £6544.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £454.00 to be paid monthly. Instalment start date: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isWriteOff": false,
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £3000.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £234.00\nFO - Fine\nFined £3453.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/02/2025. \nRR - Residence\nResidence Requirement: Live at address for 5 Years.\nNORDRC - Notification of electronic monitoring order (requirement)",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "ljae@xyz.com",
+  "subject": "APPEAL ALLOWED"
+}

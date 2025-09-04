@@ -110,14 +110,14 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE),DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
-        final List<String> caseOffenceIdList = envelope.payloadAsJsonObject().containsKey(CASE_OFFENCE_ID_LIST)
+        final List<String> clonedOffenceIdList = envelope.payloadAsJsonObject().containsKey(CASE_OFFENCE_ID_LIST)
                 ? envelope.payloadAsJsonObject().getJsonArray(CASE_OFFENCE_ID_LIST).stream().map(i -> ((JsonString) i).getString()).toList()
                 : emptyList();
         final String hearingCourtCentreName = envelope.payloadAsJsonObject().containsKey(HEARING_COURT_CENTRE_NAME)
                 ? envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME)
                 : EMPTY_STRING;
         final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
-                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, caseOffenceIdList));
+                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList));
 
         LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefandantId);
     }

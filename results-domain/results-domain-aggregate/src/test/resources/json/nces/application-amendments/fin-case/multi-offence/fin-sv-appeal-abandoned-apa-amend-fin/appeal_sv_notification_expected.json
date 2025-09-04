@@ -22,8 +22,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
-  "materialId": "1317d654-742f-4488-97bd-67bb1c5d44fd",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £100.00\nAppeal heard on: 11/11/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2025.",
@@ -38,7 +39,7 @@
       "title": "Theft from a shop\nSentence varied"
     }
   ],
-  "notificationId": "47cf4f1e-5c13-4dc0-8be3-bd30fe041bea",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

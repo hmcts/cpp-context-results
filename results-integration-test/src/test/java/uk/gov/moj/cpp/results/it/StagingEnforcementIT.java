@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.it;
 
+import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
@@ -7,6 +8,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -14,6 +16,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getEmailNotificationDetails;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResultsAreTraced;
@@ -31,18 +34,23 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUplo
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
 
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
+import uk.gov.moj.cpp.results.it.helper.NcesNotificationRequestDocumentRequestHelper;
 import uk.gov.moj.cpp.results.it.utils.QueueUtil;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,6 +129,9 @@ public class StagingEnforcementIT {
     static MessageConsumer hearingFinancialResultsUpdatedConsumer;
     static MessageConsumer sjpUploadCaseDocumentConsumer;
     static MessageConsumer ncesEmailEventConsumer;
+    static NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
+
+    private UUID userId;
 
     @BeforeAll
     public static void beforeClass() {
@@ -130,7 +141,7 @@ public class StagingEnforcementIT {
         stubDocumentCreateWithStatusOk(STRING.next());
         stubMaterialUploadFile();
         setupSjpQueryStub("caseUrn1", randomUUID());
-        stubGetProgressionCaseExistsByUrn("32DN1212262",  randomUUID());
+        stubGetProgressionCaseExistsByUrn("32DN1212262", randomUUID());
         correlationIdAndMasterDefendantIdAddedConsumer = privateEvents.createConsumer(CORRELATION_ID_AND_MASTERDEFENDANT_ADDED);
         hearingFinancialResultsUpdatedConsumer = privateEvents.createConsumer(HEARING_FINANCIAL_RESULT_UPDATED);
         sjpUploadCaseDocumentConsumer = privateEvents.createConsumer(SJP_UPLOAD_CASE_DOCUMENT);
@@ -245,11 +256,13 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGranted(){
+    public void shouldSendNcesEmailForNewApplicationThatWasGranted() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
+        final String accountCorrelationId2 = randomUUID().toString();
         final String accountNumber = "AER123451";
+        final String accountNumber2 = "AER123452";
 
         final JsonObject payloadJson = convertStringToJson(getPayload(TEMPLATE_PAYLOAD_FOR_STAGING)
                 .replaceAll("HEARING_ID", hearingId)
@@ -260,16 +273,21 @@ public class StagingEnforcementIT {
 
         initiateResultBeforeAmendment(TRACE_RESULT, masterDefendantId, accountCorrelationId, false, true, hearingId);
 
-        initiateResultForGranted(TRACE_RESULT_GRANTED, masterDefendantId, hearingId, accountCorrelationId);
+        initiateResultForGranted(TRACE_RESULT_GRANTED, masterDefendantId, hearingId, accountCorrelationId2);
 
-        final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
+        raisePublicEventForAcknowledgement(createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
                 .add(UPDATED, "2019-12-01T10:00:00Z")
                 .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber).build())
-                .build();
+                .build(), PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
-        raisePublicEventForAcknowledgement(stagingEnforcementAckPayload, PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
+        raisePublicEventForAcknowledgement(createObjectBuilder().add("originator", "courts")
+                .add(REQUEST_ID, accountCorrelationId2)
+                .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
+                .add(UPDATED, "2019-12-01T11:00:00Z")
+                .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber2).build())
+                .build(), PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
         JsonPath jsonResponse = QueueUtil.retrieveMessage(hearingFinancialResultsUpdatedConsumer);
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
@@ -282,7 +300,8 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_GRANTED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber));
+        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber2));
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("caseUrn1"));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
@@ -294,11 +313,13 @@ public class StagingEnforcementIT {
 
 
     @Test
-    public void shouldSendNcesEmailForNewApplicationThatWasGrantedWhenSjpCase(){
+    public void shouldSendNcesEmailForNewApplicationThatWasGrantedWhenSjpCase() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
+        final String accountCorrelationId2 = randomUUID().toString();
         final String accountNumber = "AER123451";
+        final String accountNumber2 = "AER123452";
 
         final JsonObject payloadJson = convertStringToJson(getPayload(TEMPLATE_PAYLOAD_FOR_STAGING)
                 .replaceAll("HEARING_ID", hearingId)
@@ -309,16 +330,20 @@ public class StagingEnforcementIT {
 
         initiateResultBeforeAmendment(TRACE_RESULT_SJP, masterDefendantId, accountCorrelationId, false, true, hearingId);
 
-        initiateResultForGranted(TRACE_RESULT_GRANTED_SJP, masterDefendantId, hearingId, accountCorrelationId);
-
-        final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
+        initiateResultForGranted(TRACE_RESULT_GRANTED_SJP, masterDefendantId, hearingId, accountCorrelationId2);
+        raisePublicEventForAcknowledgement(createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
                 .add(UPDATED, "2019-12-01T10:00:00Z")
                 .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber).build())
-                .build();
+                .build(), PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
-        raisePublicEventForAcknowledgement(stagingEnforcementAckPayload, PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
+        raisePublicEventForAcknowledgement(createObjectBuilder().add("originator", "courts")
+                .add(REQUEST_ID, accountCorrelationId2)
+                .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
+                .add(UPDATED, "2019-12-01T11:00:00Z")
+                .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber2).build())
+                .build(), PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
         JsonPath jsonResponse = QueueUtil.retrieveMessage(hearingFinancialResultsUpdatedConsumer);
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
@@ -331,7 +356,8 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_GRANTED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber));
+        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber2));
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("caseUrn1"));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
@@ -345,10 +371,15 @@ public class StagingEnforcementIT {
 
     @Test
     public void shouldSendNcesEmailForNewApplicationThatWasGrantedForSJP() {
+        final UUID USER_ID_VALUE_AS_ADMIN = randomUUID();
+        ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
+        userId = getUserId();
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
+        final String accountCorrelationId2 = randomUUID().toString();
         final String accountNumber = "AER123451";
+        final String accountNumber2 = "AER123452";
 
         final JsonObject payloadJson = convertStringToJson(getPayload(TEMPLATE_PAYLOAD_FOR_STAGING_FOR_SJP)
                 .replaceAll("HEARING_ID", hearingId)
@@ -359,16 +390,21 @@ public class StagingEnforcementIT {
 
         initiateResultBeforeAmendment(TRACE_RESULT, masterDefendantId, accountCorrelationId, false, true, hearingId);
 
-        initiateResultForGranted(TRACE_RESULT_APPLICATION_TO_REOPEN_GRANTED, masterDefendantId, hearingId, accountCorrelationId);
+        initiateResultForGranted(TRACE_RESULT_APPLICATION_TO_REOPEN_GRANTED, masterDefendantId, hearingId, accountCorrelationId2);
 
-        final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
+        raisePublicEventForAcknowledgement(createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
                 .add(UPDATED, "2019-12-01T10:00:00Z")
                 .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber).build())
-                .build();
+                .build(), PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
-        raisePublicEventForAcknowledgement(stagingEnforcementAckPayload, PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
+        raisePublicEventForAcknowledgement(createObjectBuilder().add("originator", "courts")
+                .add(REQUEST_ID, accountCorrelationId2)
+                .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
+                .add(UPDATED, "2019-12-01T11:00:00Z")
+                .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber2).build())
+                .build(), PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
         JsonPath jsonResponse = QueueUtil.retrieveMessage(hearingFinancialResultsUpdatedConsumer);
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
@@ -381,13 +417,21 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(SUBJECT), is(APPLICATION_TO_REOPEN_GRANTED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber));
+        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber2));
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("caseUrn1"));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
         assertThat(jsonResponse.getString("originalDateOfSentence"), is("03/05/2024"));
         assertThat(jsonResponse.getString("originalDateOfOffence"), is(nullValue()));
+
+        final NcesEmailNotificationRequested ncesEmailNotificationRequested = generateNcesNotificationRequested(jsonResponse);
+
+        ncesNotificationRequestDocumentRequestHelper.sendSystemDocGeneratorPublicEvent(USER_ID_VALUE_AS_ADMIN,
+                ncesEmailNotificationRequested.getMaterialId(), randomUUID(), randomUUID(), "NCES_EMAIL_NOTIFICATION_REQUEST", new HashMap<>());
+
+        verifyNcesEmailNotificationDetails(userId, ncesEmailNotificationRequested);
     }
 
     @Test
@@ -442,7 +486,7 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    public void shouldSendNcesEmailsForNewApplicationThatWasGrantedAndAmendedWithOriginalAndNewResults(){
+    public void shouldSendNcesEmailsForNewApplicationThatWasGrantedAndAmendedWithOriginalAndNewResults() {
         final String TEMPLATE_PAYLOAD = "json/NCESPayloads/application-resulted.json";
         final String TEMPLATE_AMENDED_PAYLOAD = "json/NCESPayloads/application-amended.json";
         final String TRACE_RESULT_CASE = "json/NCESPayloads/results.api.trace-results.json";
@@ -472,7 +516,7 @@ public class StagingEnforcementIT {
         final JsonObject applicationResultedPayload = convertStringToJson(getPayload(TEMPLATE_PAYLOAD)
                 .replaceAll("HEARING_ID", hearingId)
                 .replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
-                .replaceAll("APPLICATION_ID", applicationId.toString()));
+                .replaceAll("APPLICATION_ID", applicationId));
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId1, accountNumber1);
 
         hearingResultsHaveBeenSharedV2(applicationResultedPayload);
@@ -486,7 +530,6 @@ public class StagingEnforcementIT {
                 .add(UPDATED, "2019-12-01T10:00:00Z")
                 .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber2).build())
                 .build();
-
         raisePublicEventForAcknowledgement(stagingEnforcementAckPayload, PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
 
         JsonPath jsonResponse = QueueUtil.retrieveMessage(hearingFinancialResultsUpdatedConsumer);
@@ -495,21 +538,23 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber2));
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("STATUTORY DECLARATION GRANTED")).findFirst().orElseGet(()->JsonPath.from("{}"));
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("STATUTORY DECLARATION GRANTED")).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("STATUTORY DECLARATION GRANTED"));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber1));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber1));
+        assertThat(jsonResponse.getString(GOB_ACCOUNT_NUMBER), is(accountNumber2));
         assertThat(jsonResponse.getString(CASE_REFERENCE), is("32DN1212262"));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV01"));
+        assertThat(jsonResponse.getString(OLD_DIVISION_CODE), is("DIV01"));
+        assertThat(jsonResponse.getString(DIVISION_CODE), is("DIV02"));
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
         assertThat(jsonResponse.getString("originalDateOfSentence"), is(nullValue()));
         assertThat(jsonResponse.getString("impositionOffenceDetails"), containsString("FO - Fine\n" +
                 "Fined £50.00\n" +
                 "PDATE - Pay by date\n" +
                 "Pay by date. Date to pay in full by: 15/03/2025"));
-        assertThat(jsonResponse.getString("newOffenceByResult"), containsString ("FO - Fine\n" +
+        assertThat(jsonResponse.getString("newOffenceByResult"), containsString("FO - Fine\n" +
                 "Fined £500.00\n" +
                 "PDATE - Pay by date\n" +
                 "Pay by date. Date to pay in full by: 15/03/2025"));
@@ -523,7 +568,7 @@ public class StagingEnforcementIT {
         hearingResultsHaveBeenSharedV2(applicationAmendedPayload);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         //PAAS request to results API after application amendment  with fine
-        whenApplicationResultAmended(TRACE_AMENDED_RESULTs, masterDefendantId, accountCorrelationId3, divisionCode3,true, true, hearingId, offenceId, applicationId);
+        whenApplicationResultAmended(TRACE_AMENDED_RESULTs, masterDefendantId, accountCorrelationId3, divisionCode3, true, true, hearingId, offenceId, applicationId);
 
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId3, accountNumber3);
 
@@ -535,6 +580,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse1.getString(CASE_REFERENCE), is("32DN1212262"));
         assertThat(jsonResponse1.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse1.getString(DIVISION_CODE), is(divisionCode3));
+        assertThat(jsonResponse1.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber2));
         assertThat(jsonResponse1.getString(GOB_ACCOUNT_NUMBER), is(accountNumber3));
         assertThat(jsonResponse1.getString(OLD_DIVISION_CODE), is(divisionCode2));
         assertThat(jsonResponse1.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber2));
@@ -542,12 +588,48 @@ public class StagingEnforcementIT {
                 "Fined £500.00\n" +
                 "PDATE - Pay by date\n" +
                 "Pay by date. Date to pay in full by: 15/03/2025"));
-        assertThat(jsonResponse1.getString("newOffenceByResult"), containsString ("FO - Fine\n" +
+        assertThat(jsonResponse1.getString("newOffenceByResult"), containsString("FO - Fine\n" +
                 "Fined £700.00\n" +
                 "PDATE - Pay by date\n" +
                 "Pay by date. Date to pay in full by: 20/03/2025"));
         assertThat(jsonResponse1.get("originalApplicationResults"), notNullValue());
         assertThat(jsonResponse1.get("newApplicationResults"), notNullValue());
+    }
+
+
+
+
+    public NcesEmailNotificationRequested generateNcesNotificationRequested(final JsonPath jsonResponse) {
+        return NcesEmailNotificationRequested.ncesEmailNotificationRequested()
+                .withNotificationId(UUID.fromString(jsonResponse.getString("notificationId")))
+                .withCaseReferences(jsonResponse.getString(CASE_REFERENCE))
+                .withDateDecisionMade(jsonResponse.getString(DATE_DECISION_MADE))
+                .withDefendantName(jsonResponse.getString(DEFENDANT_NAME))
+                .withDivisionCode(jsonResponse.getString(DIVISION_CODE))
+                .withGobAccountNumber(jsonResponse.getString(GOB_ACCOUNT_NUMBER))
+                .withListedDate(jsonResponse.getString(LISTED_DATE))
+                .withMasterDefendantId(UUID.fromString(jsonResponse.getString(MASTER_DEFENDANT_ID)))
+                .withMaterialId(UUID.fromString(jsonResponse.getString(MATERIAL_ID)))
+                .withOldGobAccountNumber(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER))
+                .withSubject(jsonResponse.getString(SUBJECT))
+                .withSendTo(jsonResponse.getString(SEND_TO))
+                .withOldDivisionCode(jsonResponse.getString(OLD_DIVISION_CODE)).build();
+    }
+
+
+    private void verifyNcesEmailNotificationDetails(final UUID userId, NcesEmailNotificationRequested ncesEmailNotificationRequested) {
+
+        final Matcher[] matcher = {
+                withJsonPath("$.id", notNullValue()),
+                withJsonPath("$.materialId", equalTo(ncesEmailNotificationRequested.getMaterialId().toString())),
+                withJsonPath("$.notificationId", equalTo(ncesEmailNotificationRequested.getNotificationId().toString())),
+                withJsonPath("$.masterDefendantId", equalTo(ncesEmailNotificationRequested.getMasterDefendantId().toString())),
+                withJsonPath("$.sendTo", equalTo(ncesEmailNotificationRequested.getSendTo())),
+                withJsonPath("$.subject", equalTo(ncesEmailNotificationRequested.getSubject()))
+        };
+
+        getEmailNotificationDetails(userId, ncesEmailNotificationRequested.getMaterialId(), matcher);
+
     }
 
     private void initiateResultForGranted(final String traceResultType, final String masterDefendantId, final String hearingId, final String accountCorrelationId) {
@@ -800,7 +882,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(jsonResponse.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber2));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
     }
 
 
@@ -864,7 +946,7 @@ public class StagingEnforcementIT {
         assertThat(amendResultInputError.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(amendResultInputError.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(amendResultInputError.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is(accountNumber2));
+        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
         assertThat(writeOffOneDayDeemedServed.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(writeOffOneDayDeemedServed.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(writeOffOneDayDeemedServed.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -964,14 +1046,14 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
     }
 
-    private void initiateResultBeforeApplication(String payloadFilname, final String masterDefendantId, final String correlationId, final Boolean deemedServed, final Boolean financial, final String hearingId, final String offenceId){
+    private void initiateResultBeforeApplication(String payloadFilname, final String masterDefendantId, final String correlationId, final Boolean deemedServed, final Boolean financial, final String hearingId, final String offenceId) {
         final String tracePayload = getPayload(payloadFilname).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", correlationId)
                 .replaceAll("ACON", "CODE01")
                 .replaceAll("DEEMED_SERVED", deemedServed.toString())
                 .replaceAll("FINANCIAL", financial.toString())
                 .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
                 .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
                 .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
                 .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
@@ -1023,28 +1105,28 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
     }
 
-   private void  whenApplicationResultAmended(final String payload, final String masterDefendantId, final String correlationId, final String divisionCode, final Boolean deemedServed,
-                                              final Boolean financial, final String hearingId, final String offenceId, final String applicationId){
+    private void whenApplicationResultAmended(final String payload, final String masterDefendantId, final String correlationId, final String divisionCode, final Boolean deemedServed,
+                                              final Boolean financial, final String hearingId, final String offenceId, final String applicationId) {
 
-       final String amendedTracePayload = getPayload(payload).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
-               .replaceAll("CORRELATION_ID", correlationId)
-               .replaceAll("DIVISION_CODE", divisionCode)
-               .replaceAll("DEEMED_SERVED", deemedServed.toString())
-               .replaceAll("FINANCIAL", financial.toString())
-               .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
-               .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE )
-               .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
-               .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
-               .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
-               .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE)
-               .replaceAll("HEARING_ID", hearingId)
-               .replaceAll("OFFENCE_RESULTS_ID", offenceId)
-               .replaceAll("APPLICATION_ID", applicationId);
-       whenResultsAreTraced(amendedTracePayload);
+        final String amendedTracePayload = getPayload(payload).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
+                .replaceAll("CORRELATION_ID", correlationId)
+                .replaceAll("DIVISION_CODE", divisionCode)
+                .replaceAll("DEEMED_SERVED", deemedServed.toString())
+                .replaceAll("FINANCIAL", financial.toString())
+                .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
+                .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
+                .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
+                .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
+                .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE)
+                .replaceAll("HEARING_ID", hearingId)
+                .replaceAll("OFFENCE_RESULTS_ID", offenceId)
+                .replaceAll("APPLICATION_ID", applicationId);
+        whenResultsAreTraced(amendedTracePayload);
 
-       JsonPath jsonResponse = QueueUtil.retrieveMessage(correlationIdAndMasterDefendantIdAddedConsumer);
-       assertThat(jsonResponse.getString(CORRELATION_ID), is(correlationId));
-       assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+        JsonPath jsonResponse = QueueUtil.retrieveMessage(correlationIdAndMasterDefendantIdAddedConsumer);
+        assertThat(jsonResponse.getString(CORRELATION_ID), is(correlationId));
+        assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
     }
 
     @Test

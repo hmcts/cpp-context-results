@@ -1,0 +1,45 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Ena Pouros",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "07b73d34-780f-4716-be66-ce6b5d503f1e",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "Nonfinacial Impositions",
+            "dateOfResult": "2025-06-30",
+            "isFinancial": false,
+            "resultCode": "G",
+            "isParentFlag": true
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "offenceTitle": "Theft",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "65f35f24-71ae-4bd0-b033-e0ac7cab3446",
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00\nFVS - Surcharge\nTo pay a surcharge of £888.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/05/2025.",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        }
+
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7664890"
+    ]
+}

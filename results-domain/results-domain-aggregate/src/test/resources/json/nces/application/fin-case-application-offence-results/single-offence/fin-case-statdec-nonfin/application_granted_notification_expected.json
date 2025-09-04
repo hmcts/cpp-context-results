@@ -5,8 +5,8 @@
   "defendantContactNumber": "015325443756",
   "defendantDateOfBirth": "1991-02-18",
   "defendantName": "Ova Macejkovic",
-  "divisionCode": "77",
-  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "divisionCode": "10",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "hearingSittingDay": "2025-06-16",
   "impositionOffenceDetails": [
@@ -18,8 +18,15 @@
     }
   ],
   "isFinancialPenaltiesWrittenOff": "false",
+  "isWriteOff": false,
   "masterDefendantId": "55d3997d-a22a-4e25-a162-803845eed9aa",
-  "materialId": "5d6a1244-c943-4d05-965d-aea21ee1590f",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
   "newOffenceByResult": [
     {
       "details": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
@@ -28,7 +35,8 @@
       "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
     }
   ],
-  "notificationId": "9248a95e-7618-4f38-91dc-16a1ed2cfdb9",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

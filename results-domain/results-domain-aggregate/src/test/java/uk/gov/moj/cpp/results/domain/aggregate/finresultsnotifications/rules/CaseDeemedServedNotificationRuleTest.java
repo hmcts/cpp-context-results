@@ -9,6 +9,7 @@ import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearin
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
 
 import uk.gov.justice.hearing.courts.OffenceResults;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.caseresult.CaseDeemedServedNotificationRule;
 
 import java.util.List;
 

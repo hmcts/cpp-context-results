@@ -87,7 +87,6 @@ public class QueueUtil {
 
     public static List<JsonPath> retrieveMessages(final MessageConsumer consumer, final int expectedNumberOfMessages) {
         final List<JsonPath> messages = new ArrayList<>(expectedNumberOfMessages);
-
         for (int i = 0; i < expectedNumberOfMessages; i++) {
             messages.add(retrieveMessage(consumer));
         }

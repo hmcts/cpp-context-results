@@ -21,8 +21,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "08d0cb04-5cd8-4631-9c78-053b3885f2ba",
-  "materialId": "a3db3307-5703-4fa0-bd22-3a4918bfcbf9",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "FCOST - Costs\nTo pay costs of £50.00 to minor test\nFO - Fine\nFined £100.00\nAppeal heard on: 14/05/2025\nAEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £10.00 to be paid monthly from 11/04/2025",
@@ -37,7 +38,7 @@
       "title": "Theft from a shop\nSentence varied"
     }
   ],
-  "notificationId": "1693f103-330b-445a-aca8-1c51105080c5",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

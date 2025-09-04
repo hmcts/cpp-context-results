@@ -1,0 +1,70 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1978-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "677d7dd8-4137-4007-832e-087d5ce74157",
+    "hearingSittingDay": "2025-07-18T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "6ba90451-90fd-44f6-803a-3613784d05ed",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "resultCode": "G"
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "DISM - Dismissed",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "DISM"
+        },
+        {
+            "applicationId": "6ba90451-90fd-44f6-803a-3613784d05ed",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "G - Granted",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Dismissed",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "DISM - Dismissed",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "DISM"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI6925261"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

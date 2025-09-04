@@ -36,7 +36,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "OFFENCE_RESULTS_ID",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "isParentFlag": true
     },
     {
       "amendmentDate": "01/02/2024",
@@ -48,7 +49,8 @@
       "isDeemedServed": false,
       "isFinancial": false,
       "offenceId": "OFFENCE_RESULTS_ID",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "isParentFlag": true
     }
   ],
   "prosecutionCaseReferences": [

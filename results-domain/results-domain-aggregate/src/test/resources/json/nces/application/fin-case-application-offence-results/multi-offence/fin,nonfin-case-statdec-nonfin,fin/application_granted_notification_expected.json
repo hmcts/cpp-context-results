@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI8266932",
+  "dateDecisionMade": "2025-07-11",
+  "defendantAddress": "n Fisher Tunnel8266932 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Osborne Rolfson",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-11",
+  "impositionOffenceDetails": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "443d9eef-6587-4647-83ef-73e85418c197",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £432.00, FVS - Surcharge\nTo pay a surcharge of £5433.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/08/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9a713ac5-73db-4428-bebd-7c7dcc8dc869",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "e40c5c67-22ca-4118-b24e-592aa3da4507",
+  "materialId": "10a75315-8c3c-4b4b-91fe-2eb72d3690b3",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £8888.00\nFVS - Surcharge\nTo pay a surcharge of £567.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "443d9eef-6587-4647-83ef-73e85418c197",
+      "title": "Robbery"
+    },
+    {
+      "details": "AD - Absolute discharge",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9a713ac5-73db-4428-bebd-7c7dcc8dc869",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "b09837e5-5d33-4694-bb0f-f2ad4f914069",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

@@ -6,7 +6,7 @@
   "defendantDateOfBirth": "1978-11-11",
   "defendantName": "Mariane Smitham",
   "divisionCode": "77",
-  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "City of London Magistrates' Court",
   "hearingSittingDay": "2025-04-24",
   "impositionOffenceDetails": [
@@ -37,8 +37,16 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "c5b31a5e-c951-4f2a-b08a-d123882f85ef",
-  "materialId": "e0484b39-2982-4fa6-b270-66d96ab9c631",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
   "newOffenceByResult": [
     {
       "details": "FCOST - Costs\nTo pay costs of £101.11 to Aldi Stores\nFO - Fine\nFined £101.23\nFVS - Surcharge\nTo pay a surcharge of £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
@@ -65,7 +73,9 @@
       "title": "Provide money / property for use in acts of terrorism"
     }
   ],
-  "notificationId": "f17dacf1-9d65-4544-89c7-2ea7cf6784b2",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

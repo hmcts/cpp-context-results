@@ -5,6 +5,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.frequency;
 import static java.util.Collections.nCopies;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.json.JsonObject;
+import javax.json.JsonString;
 
 import org.hamcrest.Matchers;
 import org.slf4j.Logger;
@@ -52,15 +54,22 @@ class HearingFinancialResultAggregateTestSteps {
      * Each scenario consists of a sequence of result tracked steps, a step is started by newResultTrackedStep and finished by finishStep.
      */
     static class Scenario {
-        List<StepDef> resultTrackedSteps = new ArrayList<>();
+        List<StepDef> steps = new ArrayList<>();
 
         static Scenario newScenario() {
             return new Scenario();
         }
 
         Scenario newStep(StepDef step) {
-            resultTrackedSteps.add(step);
+            steps.add(step);
             return this;
+        }
+
+        void run(final String name, final HearingFinancialResultsAggregate aggregate) {
+            logger.info("Running Scenario {}", name);
+            for (StepDef step : steps) {
+                step.run(aggregate);
+            }
         }
     }
 
@@ -75,6 +84,17 @@ class HearingFinancialResultAggregateTestSteps {
         private final Comparison defaultComparison = Comparison.comparison();
         Map<String, Comparison> comparisonMap = new HashMap<>();
         String name;
+
+        /**
+         * Executes the step and asserts the expected events
+         */
+        void run(final HearingFinancialResultsAggregate aggregate) {
+            final String stepName = this.getClass().getSimpleName();
+            logger.info("Executing Step {}(\"{}\")", stepName, name);
+            final Map<String, List<Object>> actualEvents = execute(aggregate);
+            assertExpectedEvents(actualEvents);
+            logger.info("Finished Step {}(\"{}\")", stepName, name);
+        }
 
         abstract Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate);
 
@@ -196,7 +216,6 @@ class HearingFinancialResultAggregateTestSteps {
         }
 
         public Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
-            logger.info("Executing ResultTrackedStep: {}", name);
             String accountCorrelationId = "";
             if (accountInfo.isPresent()) {
                 accountCorrelationId = accountInfo.get().accountCorrelationId.toString();
@@ -238,23 +257,75 @@ class HearingFinancialResultAggregateTestSteps {
      * Builder for defining a step that sends an email for a new application.
      */
     static class NcesEmailForNewApplicationStep extends StepDef {
-        String applicationType = "REOPEN";
+        String applicationType;
+        String listingDate;
+        List<String> caseUrns;
+        String courtCenterName;
+        List<String> clonedOffenceIdList;
 
         static NcesEmailForNewApplicationStep newNcesEmailForNewApplicationStep(String name) {
             final NcesEmailForNewApplicationStep step = new NcesEmailForNewApplicationStep();
             step.name = name;
+            step.applicationType = "REOPEN";
+            step.listingDate = "2021-21-21";
+            step.caseUrns = List.of("caseUrn1", "caseUrn2");
+            step.courtCenterName = "hearingCourtCentreName";
+            step.clonedOffenceIdList = emptyList();
+            return step;
+        }
+
+        static NcesEmailForNewApplicationStep newNcesEmailForNewApplicationStep(String name, String payload) {
+            final JsonObject sendNcesNotificationRequest = stringToJsonObject(payloadAsString(payload));
+
+            final NcesEmailForNewApplicationStep step = new NcesEmailForNewApplicationStep();
+            step.name = name;
+            step.applicationType = sendNcesNotificationRequest.getString("applicationType");
+            step.listingDate = sendNcesNotificationRequest.getString("listingDate");
+            step.caseUrns = sendNcesNotificationRequest.getJsonArray("caseUrns").stream().map(jv -> ((JsonString) jv).getString()).collect(toList());
+            step.courtCenterName = sendNcesNotificationRequest.getString("hearingCourtCentreName");
+            step.clonedOffenceIdList = sendNcesNotificationRequest.getJsonArray("caseOffenceIdList").stream().map(jv -> ((JsonString) jv).getString()).collect(toList());
             return step;
         }
 
         @Override
         public Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
-            logger.info("Executing NcesEmailForNewApplicationStep");
-            final Stream<Object> eventStream = aggregate.sendNcesEmailForNewApplication(applicationType, "2021-21-21", List.of("caseUrn1", "caseUrn2"), "hearingCourtCentreName", emptyList());
+            final Stream<Object> eventStream = aggregate.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, courtCenterName, clonedOffenceIdList);
             return eventStream
-                    .peek(e -> logEvent("new application", e))
+                    .peek(e -> logEvent(name, e))
                     .collect(Collectors.groupingBy(
                             e -> e.getClass().getSimpleName()
                     ));
+        }
+    }
+
+    /**
+     * Step which composes other steps for reusability.
+     */
+    static class CompositeStep extends StepDef {
+        List<StepDef> steps = new ArrayList<>();
+
+        static CompositeStep newCompositeStep(String name) {
+            final CompositeStep compositeStep = new CompositeStep();
+            compositeStep.name = name;
+            return compositeStep;
+        }
+
+        CompositeStep andThen(final StepDef step) {
+            steps.add(step);
+            return this;
+        }
+
+        void run(final HearingFinancialResultsAggregate aggregate) {
+            logger.info("Executing CompositeStep(\"{}\")", name);
+            for (StepDef step : steps) {
+                step.run(aggregate);
+            }
+            logger.info("Finished CompositeStep(\"{}\")", name);
+        }
+
+        @Override
+        Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
+            return Map.of();
         }
     }
 
@@ -305,6 +376,6 @@ class HearingFinancialResultAggregateTestSteps {
     }
 
     private static void logEvent(final String context, final Object obj) {
-        logger.info("[{}] {} = {}", context, obj.getClass().getSimpleName(), objectToJsonObjectConverter.convert(obj));
+        logger.info("[event] [{}] {} = {}", context, obj.getClass().getSimpleName(), objectToJsonObjectConverter.convert(obj));
     }
 }

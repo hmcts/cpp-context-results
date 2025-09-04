@@ -17,8 +17,9 @@
   "offenceResults": [
     {
       "applicationType": "APPEAL",
+      "applicationId": "b02df768-a722-4b0e-b851-7496e13b82d8",
       "applicationResultType": "Granted",
-      "resultId": "a02df768-a722-4b0e-b851-7496e13b82d8",
+      "resultId": "902df768-a722-4b0e-b851-7496e13b82d8",
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
       "resultCode": "G",
       "dateOfResult": "01/01/2021",

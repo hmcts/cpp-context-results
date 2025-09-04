@@ -1,0 +1,477 @@
+{
+    "hearing": {
+        "courtApplications": [
+            {
+                "applicant": {
+                    "id": "723ee2bc-e24e-4a8d-b715-f3fb79f32fa4",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "c61e0bae-10d4-445f-bb2a-acd8afd9b504",
+                                "caseReference": "48DI6925261",
+                                "defendantId": "542f15e5-d905-4170-8a7f-d435de2ab001"
+                            }
+                        ],
+                        "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "D28GC01123537140",
+                            "bailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            },
+                            "driverNumber": "CRIME709136TC9GZ",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "9999A9999AAAA",
+                                    "address2": "Hettinger Mount",
+                                    "address3": "Parisianmouth",
+                                    "address4": "Avon",
+                                    "postcode": "DA6 7ND"
+                                },
+                                "contact": {
+                                    "home": "786-722-4140"
+                                },
+                                "dateOfBirth": "1978-11-11",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "ethnicity": {
+                                    "observedEthnicityCode": "1",
+                                    "observedEthnicityDescription": "1",
+                                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                    "selfDefinedEthnicityCode": "W1",
+                                    "selfDefinedEthnicityDescription": "British",
+                                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                },
+                                "firstName": "Cordia",
+                                "gender": "FEMALE",
+                                "hearingLanguageNeeds": "ENGLISH",
+                                "lastName": "Feeney",
+                                "title": "Mr"
+                            },
+                            "policeBailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "applicationReceivedDate": "2025-07-18",
+                "applicationReference": "48DI6925261",
+                "applicationStatus": "UN_ALLOCATED",
+                "commissionerOfOath": false,
+                "courtApplicationCases": [
+                    {
+                        "caseStatus": "INACTIVE",
+                        "isSJP": false,
+                        "offences": [
+                            {
+                                "arrestDate": "2019-12-01",
+                                "chargeDate": "2019-12-02",
+                                "count": 0,
+                                "dvlaOffenceCode": "TS10",
+                                "endorsableFlag": true,
+                                "id": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
+                                "isDisposed": true,
+                                "judicialResults": [
+                                    {
+                                        "alwaysPublished": false,
+                                        "canBeSubjectOfBreach": false,
+                                        "canBeSubjectOfVariation": false,
+                                        "canExtendActiveOrder": false,
+                                        "category": "FINAL",
+                                        "cjsCode": "2006",
+                                        "courtClerk": {
+                                            "firstName": "Emma",
+                                            "lastName": "Cleaner",
+                                            "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                                        },
+                                        "d20": false,
+                                        "excludedFromResults": false,
+                                        "isAdjournmentResult": false,
+                                        "isAvailableForCourtExtract": true,
+                                        "isConvictedResult": false,
+                                        "isDeleted": false,
+                                        "isFinancialResult": false,
+                                        "isNewAmendment": true,
+                                        "isUnscheduled": false,
+                                        "judicialResultId": "784681d5-6756-4423-b064-36bf2046a090",
+                                        "judicialResultTypeId": "14d66587-8fbe-424f-a369-b1144f1684e3",
+                                        "label": "Dismissed",
+                                        "lastSharedDateTime": "2025-07-18",
+                                        "level": "O",
+                                        "lifeDuration": false,
+                                        "orderedDate": "2025-07-19",
+                                        "orderedHearingId": "f7cc9820-8d5a-450b-8732-f9147a88b8f7",
+                                        "policeSubjectLineTitle": "Final Sentence",
+                                        "postHearingCustodyStatus": "A",
+                                        "preserveActiveOrder": true,
+                                        "publishedAsAPrompt": false,
+                                        "publishedForNows": false,
+                                        "rank": 74200,
+                                        "resultText": "DISM - Dismissed",
+                                        "rollUpPrompts": true,
+                                        "rootJudicialResultId": "784681d5-6756-4423-b064-36bf2046a090",
+                                        "rootJudicialResultTypeId": "14d66587-8fbe-424f-a369-b1144f1684e3",
+                                        "terminatesOffenceProceedings": true,
+                                        "urgent": false,
+                                        "usergroups": []
+                                    }
+                                ],
+                                "listingNumber": 1,
+                                "maxPenalty": "S:L3 LE 3pp",
+                                "modeOfTrial": "Summary",
+                                "offenceCode": "RT88972",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "3bba7c55-0cf7-34de-8945-c841a707487f",
+                                "offenceLegislation": "Contrary to section 36(1) of the Road Traffic Act 1988, the Traffic Signs Regulations and General Directions 2016 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                                "offenceLegislationWelsh": "Yn groes i adran 36(1) Deddf Traffig Ffyrdd 1988, Rheoliadau a Chyfarwyddiadau Cyffredinol Arwyddion Traffig 2016 ac Atodlen 2 Deddf Troseddwyr Traffig Ffyrdd 1988.",
+                                "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+                                "offenceTitleWelsh": "Gyrru c / m a methu â chydymffurfio ag arwyddion golau - saeth goch / saeth werdd / lonydd ar gau – cyfarpar awtomatig",
+                                "orderIndex": 3,
+                                "proceedingsConcluded": true,
+                                "startDate": "2019-11-28",
+                                "wording": "Use a motor vehicle without third party insurance."
+                            },
+                            {
+                                "arrestDate": "2019-12-01",
+                                "chargeDate": "2019-12-02",
+                                "count": 0,
+                                "dvlaOffenceCode": "TS10",
+                                "endorsableFlag": true,
+                                "id": "90184e70-550e-4710-9b3a-d0e12fc17666",
+                                "isDisposed": true,
+                                "judicialResults": [
+                                    {
+                                        "alwaysPublished": false,
+                                        "canBeSubjectOfBreach": true,
+                                        "canBeSubjectOfVariation": false,
+                                        "canExtendActiveOrder": false,
+                                        "category": "FINAL",
+                                        "cjsCode": "1018",
+                                        "courtClerk": {
+                                            "firstName": "Emma",
+                                            "lastName": "Cleaner",
+                                            "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                                        },
+                                        "d20": false,
+                                        "durationElement": {
+                                            "primaryDurationUnit": "Y",
+                                            "primaryDurationValue": 6
+                                        },
+                                        "dvlaCode": "E",
+                                        "excludedFromResults": false,
+                                        "isAdjournmentResult": false,
+                                        "isAvailableForCourtExtract": true,
+                                        "isConvictedResult": true,
+                                        "isDeleted": false,
+                                        "isFinancialResult": false,
+                                        "isNewAmendment": true,
+                                        "isUnscheduled": false,
+                                        "judicialResultId": "ebd20b53-3332-4baf-8adb-5a30f548bc18",
+                                        "judicialResultPrompts": [
+                                            {
+                                                "courtExtract": "Y",
+                                                "durationSequence": 1,
+                                                "isFinancialImposition": false,
+                                                "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                                                "label": "Period of conditional discharge",
+                                                "promptReference": "periodofConditionalDischarge",
+                                                "promptSequence": 100,
+                                                "type": "INT",
+                                                "usergroups": [],
+                                                "value": "6 Years",
+                                                "welshLabel": "Cyfnod o ryddhad amodol",
+                                                "welshValue": "6 Years"
+                                            }
+                                        ],
+                                        "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                                        "label": "Conditional discharge",
+                                        "lastSharedDateTime": "2025-07-18",
+                                        "level": "O",
+                                        "lifeDuration": false,
+                                        "orderedDate": "2025-07-19",
+                                        "orderedHearingId": "f7cc9820-8d5a-450b-8732-f9147a88b8f7",
+                                        "policeSubjectLineTitle": "Final Sentence",
+                                        "postHearingCustodyStatus": "A",
+                                        "preserveActiveOrder": false,
+                                        "publishedAsAPrompt": false,
+                                        "publishedForNows": false,
+                                        "rank": 73800,
+                                        "resultText": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+                                        "rollUpPrompts": true,
+                                        "rootJudicialResultId": "ebd20b53-3332-4baf-8adb-5a30f548bc18",
+                                        "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                                        "terminatesOffenceProceedings": false,
+                                        "urgent": false,
+                                        "usergroups": [],
+                                        "welshLabel": "Rhyddhad Amodol"
+                                    }
+                                ],
+                                "listingNumber": 1,
+                                "maxPenalty": "S:L3 LE 3pp",
+                                "modeOfTrial": "Summary",
+                                "offenceCode": "RT88972",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "3bba7c55-0cf7-34de-8945-c841a707487f",
+                                "offenceLegislation": "Contrary to section 36(1) of the Road Traffic Act 1988, the Traffic Signs Regulations and General Directions 2016 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                                "offenceLegislationWelsh": "Yn groes i adran 36(1) Deddf Traffig Ffyrdd 1988, Rheoliadau a Chyfarwyddiadau Cyffredinol Arwyddion Traffig 2016 ac Atodlen 2 Deddf Troseddwyr Traffig Ffyrdd 1988.",
+                                "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+                                "offenceTitleWelsh": "Gyrru c / m a methu â chydymffurfio ag arwyddion golau - saeth goch / saeth werdd / lonydd ar gau – cyfarpar awtomatig",
+                                "orderIndex": 4,
+                                "proceedingsConcluded": true,
+                                "startDate": "2019-11-28",
+                                "wording": "Aggravated vehicle taking - ( driver did not take ) and vehicle damage of £5000 or over."
+                            }
+                        ],
+                        "prosecutionCaseId": "c61e0bae-10d4-445f-bb2a-acd8afd9b504",
+                        "prosecutionCaseIdentifier": {
+                            "address": {
+                                "address1": "Surrey Police",
+                                "address2": "Mount Browne",
+                                "address3": "Sandy Lane",
+                                "address4": "Guildford",
+                                "postcode": "GU3 1HG"
+                            },
+                            "contact": {
+                                "primaryEmail": "mail_data_bureau_res@surrey.police.uk"
+                            },
+                            "majorCreditorCode": "PO45",
+                            "prosecutionAuthorityCode": "SURRPF",
+                            "prosecutionAuthorityId": "764bff92-a135-34cb-b858-8bb6b4b66301",
+                            "prosecutionAuthorityName": "Surrey Police",
+                            "prosecutionAuthorityOUCode": "0450000",
+                            "caseURN": "48DI6925261"
+                        }
+                    }
+                ],
+                "id": "0456c2d4-573a-4d02-af7d-48eb35b69b26",
+                "judicialResults": [
+                    {
+                        "alwaysPublished": false,
+                        "canBeSubjectOfBreach": false,
+                        "canBeSubjectOfVariation": false,
+                        "canExtendActiveOrder": false,
+                        "category": "FINAL",
+                        "courtClerk": {
+                            "firstName": "Emma",
+                            "lastName": "Cleaner",
+                            "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                        },
+                        "d20": false,
+                        "excludedFromResults": false,
+                        "isAdjournmentResult": false,
+                        "isAvailableForCourtExtract": true,
+                        "isConvictedResult": false,
+                        "isDeleted": false,
+                        "isFinancialResult": false,
+                        "isNewAmendment": true,
+                        "isUnscheduled": false,
+                        "judicialResultId": "1c65f660-ff2e-4e3b-84e7-aa02af407882",
+                        "judicialResultPrompts": [
+                            {
+                                "courtExtract": "N",
+                                "isFinancialImposition": false,
+                                "judicialResultPromptTypeId": "c10b4c83-1856-4ca9-9592-d8b8183a0324",
+                                "label": "Reasons",
+                                "promptReference": "reasons",
+                                "promptSequence": 200,
+                                "type": "TXT",
+                                "usergroups": [
+                                    "CPS",
+                                    "Defence",
+                                    "Judiciary",
+                                    "NCES",
+                                    "Probation",
+                                    "Prosecuting Authorities",
+                                    "YOTs"
+                                ],
+                                "value": "Reasons",
+                                "welshValue": "Reasons"
+                            },
+                            {
+                                "courtExtract": "Y",
+                                "isFinancialImposition": false,
+                                "judicialResultPromptTypeId": "e3764c59-4e25-4864-a3af-1c2e3390af99",
+                                "label": "Date of conviction",
+                                "promptReference": "dateOfConviction",
+                                "promptSequence": 300,
+                                "type": "DATE",
+                                "usergroups": [],
+                                "value": "11/11/2025",
+                                "welshValue": "11/11/2025"
+                            }
+                        ],
+                        "judicialResultTypeId": "177f29cd-49e9-41d1-aafb-5730d7414dd4",
+                        "label": "Appeal against conviction allowed ",
+                        "lastSharedDateTime": "2025-07-18",
+                        "level": "O",
+                        "lifeDuration": false,
+                        "orderedDate": "2025-07-19",
+                        "orderedHearingId": "f7cc9820-8d5a-450b-8732-f9147a88b8f7",
+                        "postHearingCustodyStatus": "A",
+                        "preserveActiveOrder": false,
+                        "publishedAsAPrompt": false,
+                        "publishedForNows": false,
+                        "rank": 86700,
+                        "resultText": "AACA - Appeal against conviction allowed \nDate of Conviction 11/11/2025.",
+                        "resultWording": "",
+                        "rollUpPrompts": true,
+                        "rootJudicialResultId": "1c65f660-ff2e-4e3b-84e7-aa02af407882",
+                        "rootJudicialResultTypeId": "177f29cd-49e9-41d1-aafb-5730d7414dd4",
+                        "terminatesOffenceProceedings": false,
+                        "urgent": false,
+                        "usergroups": []
+                    }
+                ],
+                "subject": {
+                    "id": "723ee2bc-e24e-4a8d-b715-f3fb79f32fa4",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "c61e0bae-10d4-445f-bb2a-acd8afd9b504",
+                                "caseReference": "48DI6925261",
+                                "defendantId": "542f15e5-d905-4170-8a7f-d435de2ab001"
+                            }
+                        ],
+                        "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "D28GC01123537140",
+                            "bailConditions": "",
+                            "bailStatus": {
+                                "code": "A",
+                                "description": "Not applicable",
+                                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                            },
+                            "driverNumber": "CRIME709136TC9GZ",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "9999A9999AAAA",
+                                    "address2": "Hettinger Mount",
+                                    "address3": "Parisianmouth",
+                                    "address4": "Avon",
+                                    "postcode": "DA6 7ND"
+                                },
+                                "contact": {
+                                    "home": "786-722-4140"
+                                },
+                                "dateOfBirth": "1978-11-11",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "ethnicity": {
+                                    "observedEthnicityCode": "1",
+                                    "observedEthnicityDescription": "1",
+                                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                    "selfDefinedEthnicityCode": "W1",
+                                    "selfDefinedEthnicityDescription": "British",
+                                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                },
+                                "firstName": "Cordia",
+                                "gender": "FEMALE",
+                                "hearingLanguageNeeds": "ENGLISH",
+                                "lastName": "Feeney",
+                                "title": "Mr"
+                            },
+                            "policeBailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "type": {
+                    "appealFlag": true,
+                    "applicantAppellantFlag": true,
+                    "applicationWording": "Appeal against conviction and sentence by a Magistrates' Court on {1} at {2} to the Crown Court",
+                    "boxworkNotifTemplate": "NOT_APPLICABLE",
+                    "breachType": "NOT_APPLICABLE",
+                    "categoryCode": "CR",
+                    "changeDate": "2022-10-09T14:12:09",
+                    "code": "MC80801",
+                    "commrOfOathFlag": false,
+                    "contestedFeeApplicable": false,
+                    "courtExtractAvlFlag": true,
+                    "courtOfAppealFlag": false,
+                    "exParte": false,
+                    "hearingCode": "APL",
+                    "id": "abc05494-05d7-4289-b4bc-a92726257a4b",
+                    "initialFeeApplicable": false,
+                    "jurisdiction": "CROWN",
+                    "lastModified": "2025-02-24T18:19:04.969Z",
+                    "legislation": "In accordance with section 108 of the Magistrates' Courts Act 1980.",
+                    "legislationWelsh": "adran 108 Deddf Llysoedd Ynadon 1980",
+                    "linkType": "SJP",
+                    "listingNotifTemplate": "POSTAL_NOTIFICATION",
+                    "offenceActiveOrder": "OFFENCE",
+                    "pleaApplicableFlag": false,
+                    "prosecutorThirdPartyFlag": false,
+                    "pssId": 587539,
+                    "sowRef": "APPS",
+                    "spiOutApplicableFlag": true,
+                    "summonsTemplateType": "NOT_APPLICABLE",
+                    "type": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+                    "typeWelsh": "Apelio i Lys y Goron yn erbyn euogfarn a dedfryd gan Lys Ynadon",
+                    "validFrom": "1980-01-01"
+                }
+            }
+        ],
+        "courtCentre": {
+            "address": {
+                "address1": "176A Lavender Hill",
+                "address2": "London",
+                "address3": "",
+                "address4": "",
+                "address5": "",
+                "postcode": "SW11 1JU"
+            },
+            "code": "B01LY00",
+            "courtHearingLocation": "B01LY03",
+            "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+            "lja": {
+                "ljaCode": "2577",
+                "ljaName": "South West London Magistrates' Court"
+            },
+            "name": "Lavender Hill Magistrates' Court",
+            "roomId": "f1ead1d2-4b26-3230-b781-508d6aaafd26",
+            "roomName": "Courtroom 03"
+        },
+        "defendantAttendance": [
+            {
+                "attendanceDays": [
+                    {
+                        "attendanceType": "IN_PERSON",
+                        "day": "2025-07-19"
+                    }
+                ],
+                "defendantId": "542f15e5-d905-4170-8a7f-d435de2ab001"
+            }
+        ],
+        "hasSharedResults": true,
+        "hearingDays": [
+            {
+                "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+                "courtRoomId": "f1ead1d2-4b26-3230-b781-508d6aaafd26",
+                "hasSharedResults": true,
+                "isCancelled": false,
+                "listedDurationMinutes": 1,
+                "listingSequence": 0,
+                "sittingDay": "2025-07-19T09:00:00.000Z"
+            }
+        ],
+        "hearingLanguage": "ENGLISH",
+        "id": "f7cc9820-8d5a-450b-8732-f9147a88b8f7",
+        "jurisdictionType": "MAGISTRATES",
+        "shadowListedOffences": [],
+        "type": {
+            "description": "Appeal",
+            "id": "bd30a723-a375-3ae9-9332-871724cd8edd"
+        }
+    },
+    "hearingDay": "2025-07-19",
+    "isReshare": false,
+    "sharedTime": "2025-07-18T15:05:32.994Z"
+}

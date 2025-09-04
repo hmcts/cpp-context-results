@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI6224082",
+  "dateDecisionMade": "2025-07-31",
+  "defendantAddress": "n Fisher Tunnel6224082 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Verdie Wyman",
+  "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-31",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £3333.00, FVS - Surcharge\nTo pay a surcharge of £3456.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "title": "Robbery"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £2345.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "5b9d35fc-3521-4dc9-915b-230cdd766a07",
+  "materialId": "83bac031-b07a-4aff-8c7f-c5ae9ae0db85",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £543222.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £4321.00\nFVS - Surcharge\nTo pay a surcharge of £3456.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "be749238-69ce-4064-ad2d-a27540704530",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

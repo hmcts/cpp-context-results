@@ -19,6 +19,7 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "f6592175-2619-4eb8-89f0-42900faa2320",
   "materialId": "8e988dac-e3d2-4e11-8c74-8e003878aea4",
   "newOffenceByResult": [
@@ -32,7 +33,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "b202c848-a52c-492a-a837-d5b51e870279",
+  "notificationId": "{{notificationId}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "av.qet@justice.gov.uk",

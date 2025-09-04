@@ -1,0 +1,80 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3955007 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "6c4ca34a-da30-48d7-b167-368c1b2bf7e2",
+  "hearingSittingDay": "2025-08-14T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "fc087c20-ccf4-480a-8661-bf08742396c8",
+      "applicationResultType": "Appeal withdrawn",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "AW - Appeal withdrawn\n Original driving disqualification stands",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery",
+      "resultCode": "AW"
+    },
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "fc087c20-ccf4-480a-8661-bf08742396c8",
+      "applicationResultType": "Appeal withdrawn",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "AW - Appeal withdrawn\n Original driving disqualification stands",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "AW"
+    },
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "fc087c20-ccf4-480a-8661-bf08742396c8",
+      "applicationResultType": "Original driving disqualification stands",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "Original driving disqualification stands",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "fc087c20-ccf4-480a-8661-bf08742396c8",
+      "applicationResultType": "Original driving disqualification stands",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "Original driving disqualification stands",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3955007"
+  ]
+}

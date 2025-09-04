@@ -1,0 +1,30 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1979-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "4de83f89-afad-4c5f-bd23-2d8746b0f01e",
+    "hearingSittingDay": "2025-07-15T15:15:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "amendmentDate": "2025-07-15",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £321455.00 to Person first name last name, FO - Fine\nFined £8765.00\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £5678.00",
+            "isDeemedServed": true,
+            "isFinancial": true,
+            "offenceId": "842d8777-fc3d-4662-9fe8-ef0ef45ea4bf",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "FIDIPI"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI4492996"
+    ]
+}

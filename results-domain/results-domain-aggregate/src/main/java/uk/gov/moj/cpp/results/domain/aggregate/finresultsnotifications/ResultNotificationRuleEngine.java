@@ -1,16 +1,18 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications;
 
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ApplicationACONNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ApplicationAmendmentACONNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ApplicationAmendmentAccWriteOffNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ApplicationDeemedServedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.CaseACONNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.CaseAmendmentACONNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.CaseAmendmentAccWriteOffNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.CaseAmendmentDeemedServedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.CaseDeemedServedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.NewApplicationResultedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.NewApplicationUpdatedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewAppGrantedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewAppealAppDeniedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewNonAppealAppsDeniedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseACONNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationACONNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentACONNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentAccWriteOffNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationDeemedServedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.caseresult.CaseDeemedServedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationUpdatedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentAccWriteOffNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentDeemedServedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.util.ArrayList;
@@ -26,7 +28,9 @@ public class ResultNotificationRuleEngine {
 
     private ResultNotificationRuleEngine() {
         this.rules = new ArrayList<>();
-        rules.add(new NewApplicationResultedNotificationRule());
+        rules.add(new NewAppealAppDeniedNotificationRule());
+        rules.add(new NewAppGrantedNotificationRule());
+        rules.add(new NewNonAppealAppsDeniedNotificationRule());
         rules.add(new NewApplicationUpdatedNotificationRule());
         rules.add(new ApplicationDeemedServedNotificationRule());
         rules.add(new ApplicationACONNotificationRule());

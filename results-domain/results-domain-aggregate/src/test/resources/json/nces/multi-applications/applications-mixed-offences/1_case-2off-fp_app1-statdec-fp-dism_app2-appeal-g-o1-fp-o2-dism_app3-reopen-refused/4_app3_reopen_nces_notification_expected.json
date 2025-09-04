@@ -1,0 +1,31 @@
+{
+  "caseReferences": "28DI4306863",
+  "dateDecisionMade": "2025-06-27",
+  "defendantAddress": "n Fisher Tunnel4306863 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Vida Cormier",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.00\nFVS - Surcharge\nTo pay a surcharge of £56.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "title": "Robbery"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN REFUSED"
+}

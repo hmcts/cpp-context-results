@@ -13,9 +13,10 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "31b29644-10c8-4d51-aead-9c74d8b68f0f",
-  "materialId": "c50266ab-3354-4fce-a673-404d9cde78bb",
-  "notificationId": "7446f360-349b-446d-a25d-3ae820ccb10c",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "av.qet@justice.gov.uk",
   "subject": "ACCOUNTS TO BE CONSOLIDATED"
 }

@@ -72,6 +72,10 @@
         },
         "applicationResultType": {
           "type": "string"
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     }

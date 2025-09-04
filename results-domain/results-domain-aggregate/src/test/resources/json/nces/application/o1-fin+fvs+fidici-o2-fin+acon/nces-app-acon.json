@@ -13,9 +13,10 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
-  "materialId": "aeb722fb-601a-4a1d-b4b6-c71482e0d7c1",
-  "notificationId": "3465d7dc-cd55-4bd9-9bb0-5bc8a0be30a8",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "ACCOUNTS TO BE CONSOLIDATED"
 }

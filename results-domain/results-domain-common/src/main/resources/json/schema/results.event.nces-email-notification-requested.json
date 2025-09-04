@@ -104,6 +104,9 @@
     },
     "sendTo": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/email"
+    },
+    "isWriteOff": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,

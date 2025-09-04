@@ -8,12 +8,16 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
 
-import uk.gov.justice.core.courts.CorrelationIdHistoryItem;
+import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentAccWriteOffNotificationRule;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,31 +26,46 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
 
     @Test
     void shouldGenerateAccWriteOffNotificationForFinToFinAmendment() {
+        final UUID applicationId = randomUUID();
+        final UUID currentCorrelationId = randomUUID();
+        final UUID offenceId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
+                .withAccountCorrelationId(currentCorrelationId)
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
+                                .withApplicationId(applicationId)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
-                                .withOffenceId(randomUUID())
+                                .withOffenceId(offenceId)
                                 .withIsFinancial(true)
                                 .withAmendmentDate("2023-01-01")
                                 .build()))
                 .withAccountCorrelationId(randomUUID())
                 .build();
+
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevApplicationOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
-                        offenceResultsDetails()
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withIsFinancial(true)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .build()))
-                .withCorrelationIdHistoryItemList(
-                        List.of(CorrelationIdHistoryItem.correlationIdHistoryItem()
-                                .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
-                                .withAccountNumber("AC123456789")
-                                .build()))
+                                .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                        .withAccountCorrelationId(randomUUID())
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
+                                        .withAccountNumber("AC123456789OLD")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
+                                        .build(),
+                                correlationItem()
+                                        .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withAccountNumber("AC123456789")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
+                                        .build()))
                 .build();
 
         assertThat("Rule should apply for Acc Write Off", rule.appliesTo(input));
@@ -60,10 +79,12 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
 
     @Test
     void shouldGenerateAccWriteOffNotificationForFinToNonFinAmendment() {
+        final UUID applicationId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
+                                .withApplicationId(applicationId)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .withOffenceId(randomUUID())
                                 .withIsFinancial(false)
@@ -72,15 +93,16 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
                 .build();
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevApplicationOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
-                        offenceResultsDetails()
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withIsFinancial(true)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .build()))
-                .withCorrelationIdHistoryItemList(
-                        List.of(CorrelationIdHistoryItem.correlationIdHistoryItem()
+                                .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
                                 .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
                                 .withAccountNumber("AC123456789")
                                 .build()))
@@ -97,10 +119,12 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
 
     @Test
     void shouldGenerateAccWriteOffNotificationForFinToNonFinAmendmentMultiOffences() {
+        final UUID applicationId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
+                                .withApplicationId(applicationId)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .withOffenceId(randomUUID())
                                 .withIsFinancial(true)
@@ -115,21 +139,22 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
                 .build();
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevApplicationOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
-                        offenceResultsDetails()
-                                .withIsFinancial(true)
-                                .withApplicationType(NCESDecisionConstants.REOPEN)
-                                .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .build(),
-                        trackRequest.getOffenceResults().get(1).getOffenceId(),
-                        offenceResultsDetails()
-                                .withIsFinancial(true)
-                                .withApplicationType(NCESDecisionConstants.REOPEN)
-                                .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .build()))
-                .withCorrelationIdHistoryItemList(
-                        List.of(CorrelationIdHistoryItem.correlationIdHistoryItem()
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                        .withOffenceId(trackRequest.getOffenceResults().get(1).getOffenceId())
+                                        .withIsFinancial(true)
+                                        .withApplicationType(NCESDecisionConstants.REOPEN)
+                                        .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
+                                        .build(),
+                                offenceResultsDetails()
+                                        .withOffenceId(trackRequest.getOffenceResults().get(1).getOffenceId())
+                                        .withIsFinancial(true)
+                                        .withApplicationType(NCESDecisionConstants.REOPEN)
+                                        .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
+                                        .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
                                 .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
                                 .withAccountNumber("AC123456789")
                                 .build()))
@@ -146,13 +171,19 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
 
     @Test
     void shouldGenerateAccWriteOffNotificationForSentenceVariedAmendment() {
+        final UUID applicationId = randomUUID();
+        final UUID currentCorrelationId = randomUUID();
+        final UUID offenceId = randomUUID();
+
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withAccountCorrelationId(currentCorrelationId)
                 .withOffenceResults(List.of(
                         offenceResults()
+                                .withApplicationId(applicationId)
                                 .withApplicationType(NCESDecisionConstants.APPEAL)
                                 .withImpositionOffenceDetails(NCESDecisionConstants.SV_SENTENCE_VARIED)
-                                .withOffenceId(randomUUID())
+                                .withOffenceId(offenceId)
                                 .withIsFinancial(true)
                                 .withIsParentFlag(true)
                                 .withAmendmentDate("2023-01-01")
@@ -160,18 +191,27 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
                 .build();
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevApplicationOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
-                        offenceResultsDetails()
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withIsFinancial(true)
                                 .withApplicationType(NCESDecisionConstants.APPEAL)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .build()))
-                .withCorrelationIdHistoryItemList(
-                        List.of(CorrelationIdHistoryItem.correlationIdHistoryItem()
-                                .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
-                                .withAccountNumber("AC123456789")
-                                .build()))
+                                .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                        .withAccountCorrelationId(randomUUID())
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
+                                        .withAccountNumber("AC123456789OLD")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
+                                        .build(),
+                                correlationItem()
+                                        .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withAccountNumber("AC123456789NEW")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
+                                        .build()))
                 .build();
 
         assertThat("Rule should apply for Acc Write Off", rule.appliesTo(input));
@@ -181,8 +221,8 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
             assertThat("subject should match", notification.getSubject(), is(NCESDecisionConstants.AMEND_AND_RESHARE));
             assertThat("There should be one imposition offence detail for Acc Write Off", notification.getImpositionOffenceDetails().size(), is(1));
             assertThat("Imposition offence details should contain SV_SENTENCE_VARIED",
-                       notification.getNewOffenceByResult().get(0).getTitle(),
-                       containsString(NCESDecisionConstants.SENTENCE_VARIED));
+                    notification.getNewOffenceByResult().get(0).getTitle(),
+                    containsString(NCESDecisionConstants.SENTENCE_VARIED));
         }, () -> fail("Expected Acc Write Off notification to be present"));
     }
 
@@ -197,17 +237,19 @@ class ApplicationAmendmentAccWriteOffNotificationRuleTest {
                                 .withIsFinancial(true)
                                 .build()))
                 .build();
+        final UUID applicationId = randomUUID();
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevApplicationOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
-                        offenceResultsDetails()
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withIsFinancial(true)
                                 .withApplicationType(NCESDecisionConstants.APPEAL)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .build()))
-                .withCorrelationIdHistoryItemList(
-                        List.of(CorrelationIdHistoryItem.correlationIdHistoryItem()
+                                .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
                                 .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
                                 .withAccountNumber("AC123456789")
                                 .build()))

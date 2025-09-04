@@ -14,8 +14,9 @@
       "title": "Theft from a shop"
     }
   ],
+  "isWriteOff": true,
   "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
-  "materialId": "7a7757c4-72f1-4e6c-8f62-4bc603e7b36c",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Refused"
@@ -23,7 +24,7 @@
     "applicationTitle": "applicationTitle"
   },
   "newOffenceByResult": [],
-  "notificationId": "cd940872-93ba-46e4-886d-64ab58623e45",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Granted"

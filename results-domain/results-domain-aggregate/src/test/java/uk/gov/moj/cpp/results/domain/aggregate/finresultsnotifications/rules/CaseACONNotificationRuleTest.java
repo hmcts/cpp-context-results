@@ -10,13 +10,15 @@ import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ru
 
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseACONNotificationRule;
+;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 class CaseACONNotificationRuleTest {
-    private final CaseACONNotificationRule rule = new CaseACONNotificationRule();
+    CaseACONNotificationRule rule = new CaseACONNotificationRule();
 
     @Test
     void shouldGenerateACONNotification() {

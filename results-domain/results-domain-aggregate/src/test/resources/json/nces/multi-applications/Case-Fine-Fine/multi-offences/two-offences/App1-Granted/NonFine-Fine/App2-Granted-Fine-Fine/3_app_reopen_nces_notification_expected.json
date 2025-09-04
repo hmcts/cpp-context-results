@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI9463535",
+  "dateDecisionMade": "2025-07-07",
+  "defendantAddress": "n Fisher Tunnel9463535 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Winifred Kuvalis",
+  "divisionCode": "77",
+  "gobAccountNumber": "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "79e80fda-1faa-49f6-8e38-cddd82e39e7c",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £2000.00\nFVS - Surcharge\nTo pay a surcharge of £550.00\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 15/07/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "81cc1a1f-c45c-4dbf-8b46-ec8e457c8860",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "373515e0-14d9-4008-b208-51c0db064fb2",
+  "materialId": "2fcf00ee-df63-4c20-98d2-fcfdeff95a14",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £300.00\nFVS - Surcharge\nTo pay a surcharge of £600.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 05/01/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "79e80fda-1faa-49f6-8e38-cddd82e39e7c",
+      "title": "Robbery"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £2999.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "81cc1a1f-c45c-4dbf-8b46-ec8e457c8860",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "7aed0518-08a7-4f61-8997-ab8c1e4e40f4",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI9631765",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0209631765",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST019631765@gmail.com",
+  "defendantName": "Ocie Halvorson",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "27/06/2025",
+  "masterDefendantId": "b10732fe-dcb8-4209-b661-6d7b225d845a",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "27/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

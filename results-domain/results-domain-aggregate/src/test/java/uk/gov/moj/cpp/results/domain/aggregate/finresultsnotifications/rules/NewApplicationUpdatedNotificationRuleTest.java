@@ -4,12 +4,14 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.justice.core.courts.CorrelationIdHistoryItem.correlationIdHistoryItem;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
+
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationUpdatedNotificationRule;
 
 import java.util.List;
 import java.util.Map;
@@ -42,8 +44,8 @@ class NewApplicationUpdatedNotificationRuleTest {
                                 .withImpositionOffenceDetails("Previous Offence details")
                                 .build()))
                 .withPrevApplicationResultsDetails(Map.of())
-                .withCorrelationIdHistoryItemList(
-                        List.of(correlationIdHistoryItem()
+                .withCorrelationItemList(
+                        List.of(correlationItem()
                                 .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
                                 .withAccountNumber("AC123456789")
                                 .build()))
@@ -80,8 +82,8 @@ class NewApplicationUpdatedNotificationRuleTest {
                                 .withImpositionOffenceDetails("Previous Offence details")
                                 .build()))
                 .withPrevApplicationResultsDetails(Map.of())
-                .withCorrelationIdHistoryItemList(
-                        List.of(correlationIdHistoryItem()
+                .withCorrelationItemList(
+                        List.of(correlationItem()
                                 .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
                                 .withAccountNumber("AC123456789")
                                 .build()))

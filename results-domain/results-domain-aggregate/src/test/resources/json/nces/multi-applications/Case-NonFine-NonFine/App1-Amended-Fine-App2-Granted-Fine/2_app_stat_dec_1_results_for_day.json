@@ -1,0 +1,589 @@
+{
+    "hearing": {
+        "courtApplications": [
+            {
+                "applicant": {
+                    "id": "a62a6691-e652-405c-a24d-85bb9faa7613",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "b7f2ac03-651a-4a17-99c6-b4db0827a65c",
+                                "caseReference": "28DI3954642",
+                                "defendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4"
+                            }
+                        ],
+                        "masterDefendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "D28GC01123954642",
+                            "bailStatus": {
+                                "code": "A",
+                                "description": "Not applicable",
+                                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                            },
+                            "driverNumber": "VANFL002222OW9PH",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "9999A9899AAAA",
+                                    "address2": "Woodlane4",
+                                    "address3": "addressline 3",
+                                    "address4": "Bristol",
+                                    "address5": "Avon",
+                                    "postcode": "BS1 1JQ"
+                                },
+                                "contact": {
+                                    "home": "0203954642",
+                                    "mobile": "07773954642",
+                                    "primaryEmail": "firstName.lastName3954642@gmail.com"
+                                },
+                                "dateOfBirth": "1972-11-01",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "ethnicity": {
+                                    "observedEthnicityCode": "1",
+                                    "observedEthnicityDescription": "White",
+                                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                    "selfDefinedEthnicityCode": "W1",
+                                    "selfDefinedEthnicityDescription": "British",
+                                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                },
+                                "firstName": "Melyna",
+                                "gender": "MALE",
+                                "hearingLanguageNeeds": "ENGLISH",
+                                "lastName": "Klein",
+                                "title": "Mr"
+                            },
+                            "policeBailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "applicationReceivedDate": "2025-07-16",
+                "applicationReference": "28DI3954642",
+                "applicationStatus": "UN_ALLOCATED",
+                "commissionerOfOath": false,
+                "courtApplicationCases": [
+                    {
+                        "caseStatus": "INACTIVE",
+                        "isSJP": false,
+                        "offences": [
+                            {
+                                "arrestDate": "2021-01-01",
+                                "chargeDate": "2020-12-28",
+                                "count": 0,
+                                "endorsableFlag": false,
+                                "id": "875410e5-1024-4be4-83d3-35df6c27e47a",
+                                "isDisposed": true,
+                                "judicialResults": [
+                                    {
+                                        "alwaysPublished": false,
+                                        "amendmentDate": "2025-07-16",
+                                        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                                        "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                                        "canBeSubjectOfBreach": false,
+                                        "canBeSubjectOfVariation": false,
+                                        "canExtendActiveOrder": false,
+                                        "category": "FINAL",
+                                        "cjsCode": "1119",
+                                        "courtClerk": {
+                                            "firstName": "Emma",
+                                            "lastName": "Cleaner",
+                                            "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                                        },
+                                        "d20": false,
+                                        "excludedFromResults": false,
+                                        "isAdjournmentResult": false,
+                                        "isAvailableForCourtExtract": true,
+                                        "isConvictedResult": true,
+                                        "isDeleted": false,
+                                        "isFinancialResult": true,
+                                        "isNewAmendment": true,
+                                        "isUnscheduled": false,
+                                        "judicialResultId": "9eca26a1-4d0e-40aa-99f7-e4786969fadf",
+                                        "judicialResultPrompts": [
+                                            {
+                                                "courtExtract": "Y",
+                                                "isFinancialImposition": true,
+                                                "judicialResultPromptTypeId": "b3dfed9a-efba-4126-a08d-cf37d18b4563",
+                                                "label": "Amount of excise penalty",
+                                                "promptReference": "AOF",
+                                                "promptSequence": 100,
+                                                "type": "CURR",
+                                                "usergroups": [],
+                                                "value": "£433.00",
+                                                "welshLabel": "Swm y gosb ecséis",
+                                                "welshValue": "£433.00"
+                                            }
+                                        ],
+                                        "judicialResultTypeId": "fcb26a5f-28cc-483e-b430-d823fac808df",
+                                        "label": "Excise penalty",
+                                        "lastSharedDateTime": "2025-07-16",
+                                        "level": "O",
+                                        "lifeDuration": false,
+                                        "orderedDate": "2025-07-16",
+                                        "orderedHearingId": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+                                        "policeSubjectLineTitle": "Final Sentence",
+                                        "postHearingCustodyStatus": "A",
+                                        "preserveActiveOrder": false,
+                                        "publishedAsAPrompt": false,
+                                        "publishedForNows": false,
+                                        "rank": 209800,
+                                        "resultDefinitionGroup": "Imposition",
+                                        "resultText": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £433.00",
+                                        "rollUpPrompts": true,
+                                        "rootJudicialResultId": "9eca26a1-4d0e-40aa-99f7-e4786969fadf",
+                                        "rootJudicialResultTypeId": "fcb26a5f-28cc-483e-b430-d823fac808df",
+                                        "terminatesOffenceProceedings": false,
+                                        "urgent": false,
+                                        "usergroups": [],
+                                        "welshLabel": "Cosb ecséis"
+                                    },
+                                    {
+                                        "alwaysPublished": false,
+                                        "amendmentDate": "2025-07-16",
+                                        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                                        "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                                        "canBeSubjectOfBreach": false,
+                                        "canBeSubjectOfVariation": false,
+                                        "canExtendActiveOrder": false,
+                                        "category": "FINAL",
+                                        "cjsCode": "1015",
+                                        "courtClerk": {
+                                            "firstName": "Erica",
+                                            "lastName": "Wilson",
+                                            "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                                        },
+                                        "d20": false,
+                                        "excludedFromResults": false,
+                                        "isAdjournmentResult": false,
+                                        "isAvailableForCourtExtract": true,
+                                        "isConvictedResult": true,
+                                        "isDeleted": false,
+                                        "isFinancialResult": true,
+                                        "isNewAmendment": true,
+                                        "isUnscheduled": false,
+                                        "judicialResultId": "2320df51-71bf-4591-ad52-dc16efa44777",
+                                        "judicialResultPrompts": [
+                                            {
+                                                "courtExtract": "Y",
+                                                "isFinancialImposition": true,
+                                                "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                                                "label": "Amount of fine",
+                                                "promptReference": "AOF",
+                                                "promptSequence": 100,
+                                                "type": "CURR",
+                                                "usergroups": [],
+                                                "value": "£500078.00",
+                                                "welshLabel": "Swm y ddirwy",
+                                                "welshValue": "£500078.00"
+                                            }
+                                        ],
+                                        "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                                        "label": "Fine",
+                                        "lastSharedDateTime": "2025-07-16",
+                                        "level": "O",
+                                        "lifeDuration": false,
+                                        "orderedDate": "2025-07-16",
+                                        "orderedHearingId": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+                                        "policeSubjectLineTitle": "Final Sentence",
+                                        "postHearingCustodyStatus": "A",
+                                        "preserveActiveOrder": false,
+                                        "publishedAsAPrompt": false,
+                                        "publishedForNows": false,
+                                        "rank": 72100,
+                                        "resultDefinitionGroup": "Imposition",
+                                        "resultText": "FO - Fine\nFined £500078.00",
+                                        "rollUpPrompts": true,
+                                        "rootJudicialResultId": "2320df51-71bf-4591-ad52-dc16efa44777",
+                                        "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                                        "terminatesOffenceProceedings": false,
+                                        "urgent": false,
+                                        "usergroups": [],
+                                        "welshLabel": "Dirwy"
+                                    },
+                                    {
+                                        "alwaysPublished": true,
+                                        "canBeSubjectOfBreach": false,
+                                        "canBeSubjectOfVariation": false,
+                                        "canExtendActiveOrder": false,
+                                        "category": "ANCILLARY",
+                                        "cjsCode": "3117",
+                                        "courtClerk": {
+                                            "firstName": "Erica",
+                                            "lastName": "Wilson",
+                                            "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                                        },
+                                        "d20": false,
+                                        "excludedFromResults": false,
+                                        "isAdjournmentResult": false,
+                                        "isAvailableForCourtExtract": true,
+                                        "isConvictedResult": true,
+                                        "isDeleted": false,
+                                        "isFinancialResult": true,
+                                        "isNewAmendment": false,
+                                        "isUnscheduled": false,
+                                        "judicialResultId": "30cb2e29-f879-4e3a-8e8a-d98c02650724",
+                                        "judicialResultPrompts": [
+                                            {
+                                                "courtExtract": "Y",
+                                                "isFinancialImposition": true,
+                                                "judicialResultPromptTypeId": "629a971e-9d7a-4526-838d-0a4cb922b5cb",
+                                                "label": "Amount of surcharge",
+                                                "promptReference": "AOS",
+                                                "promptSequence": 100,
+                                                "type": "CURR",
+                                                "usergroups": [],
+                                                "value": "£400.00",
+                                                "welshLabel": "Swm y gordal",
+                                                "welshValue": "£400.00"
+                                            }
+                                        ],
+                                        "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                                        "label": "Surcharge",
+                                        "lastSharedDateTime": "2025-07-16",
+                                        "level": "D",
+                                        "lifeDuration": false,
+                                        "orderedDate": "2025-07-16",
+                                        "orderedHearingId": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+                                        "postHearingCustodyStatus": "A",
+                                        "preserveActiveOrder": false,
+                                        "publishedAsAPrompt": false,
+                                        "publishedForNows": false,
+                                        "rank": 1100,
+                                        "resultDefinitionGroup": "Imposition",
+                                        "resultText": "FVS - Surcharge\nTo pay a surcharge of £400.00",
+                                        "rollUpPrompts": false,
+                                        "rootJudicialResultId": "30cb2e29-f879-4e3a-8e8a-d98c02650724",
+                                        "rootJudicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                                        "terminatesOffenceProceedings": false,
+                                        "urgent": false,
+                                        "usergroups": [],
+                                        "welshLabel": "Gordal"
+                                    },
+                                    {
+                                        "alwaysPublished": true,
+                                        "amendmentDate": "2025-07-16",
+                                        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                                        "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                                        "canBeSubjectOfBreach": false,
+                                        "canBeSubjectOfVariation": false,
+                                        "canExtendActiveOrder": false,
+                                        "category": "FINAL",
+                                        "courtClerk": {
+                                            "firstName": "Erica",
+                                            "lastName": "Wilson",
+                                            "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                                        },
+                                        "d20": false,
+                                        "excludedFromResults": false,
+                                        "isAdjournmentResult": false,
+                                        "isAvailableForCourtExtract": true,
+                                        "isConvictedResult": false,
+                                        "isDeleted": false,
+                                        "isFinancialResult": false,
+                                        "isNewAmendment": true,
+                                        "isUnscheduled": false,
+                                        "judicialResultId": "f90861c5-c4d6-47f5-b902-aad6545cc420",
+                                        "judicialResultPrompts": [
+                                            {
+                                                "courtExtract": "Y",
+                                                "isFinancialImposition": false,
+                                                "judicialResultPromptTypeId": "ee7d253a-c629-11e8-a355-529269fb1459",
+                                                "label": "Date to pay in full by",
+                                                "promptReference": "PBD",
+                                                "promptSequence": 100,
+                                                "type": "DATE",
+                                                "usergroups": [],
+                                                "value": "11/11/2025",
+                                                "welshLabel": "Dyddiad terfyn ar gyfer talu'r swm llawn",
+                                                "welshValue": "11/11/2025"
+                                            }
+                                        ],
+                                        "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
+                                        "label": "Pay by date",
+                                        "lastSharedDateTime": "2025-07-16",
+                                        "level": "D",
+                                        "lifeDuration": false,
+                                        "orderedDate": "2025-07-16",
+                                        "orderedHearingId": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+                                        "parentJudicialResultId": "b1299325-0658-4bab-be6a-c13d43693e18",
+                                        "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+                                        "postHearingCustodyStatus": "A",
+                                        "preserveActiveOrder": false,
+                                        "publishedAsAPrompt": false,
+                                        "publishedForNows": false,
+                                        "rank": 120500,
+                                        "resultDefinitionGroup": "Payment terms",
+                                        "resultText": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+                                        "rollUpPrompts": false,
+                                        "rootJudicialResultId": "2320df51-71bf-4591-ad52-dc16efa44777",
+                                        "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                                        "terminatesOffenceProceedings": false,
+                                        "urgent": false,
+                                        "usergroups": [],
+                                        "welshLabel": "Dyddiad terfyn ar gyfer talu"
+                                    }
+                                ],
+                                "listingNumber": 1,
+                                "maxPenalty": "EW:6M &/or Ultd Fine",
+                                "modeOfTrial": "Either Way",
+                                "offenceCode": "TH68010",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "c8b42f54-833a-37de-982e-e62fca7540dd",
+                                "offenceLegislation": "Contrary to section 1(1) and 7 of the Theft    Act 1968.",
+                                "offenceLegislationWelsh": "Yn groes i adran 1(1) a 7 Deddf Dwyn 1968.",
+                                "offenceTitle": "Theft from a shop",
+                                "offenceTitleWelsh": "Dwyn o siop - siop-ladrad",
+                                "orderIndex": 1,
+                                "proceedingsConcluded": true,
+                                "startDate": "2019-11-28",
+                                "wording": "Theft of pedal cycle."
+                            }
+                        ],
+                        "prosecutionCaseId": "b7f2ac03-651a-4a17-99c6-b4db0827a65c",
+                        "prosecutionCaseIdentifier": {
+                            "address": {
+                                "address1": "Finance Operations",
+                                "address2": "C3 East",
+                                "address3": "DVLA",
+                                "address4": "Longview Road",
+                                "address5": "Swansea",
+                                "postcode": "SA6 7JL"
+                            },
+                            "contact": {
+                                "primaryEmail": "sjp@dvla.gov.uk"
+                            },
+                            "majorCreditorCode": "DVL2",
+                            "prosecutionAuthorityCode": "DVLA",
+                            "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+                            "prosecutionAuthorityName": "Driver and Vehicle Licensing Agency",
+                            "prosecutionAuthorityOUCode": "G94DV00",
+                            "caseURN": "28DI3954642"
+                        }
+                    }
+                ],
+                "id": "161d0ba2-a2fc-4a21-b510-30427b747dd8",
+                "judicialResults": [
+                    {
+                        "alwaysPublished": false,
+                        "canBeSubjectOfBreach": false,
+                        "canBeSubjectOfVariation": false,
+                        "canExtendActiveOrder": false,
+                        "category": "FINAL",
+                        "courtClerk": {
+                            "firstName": "Erica",
+                            "lastName": "Wilson",
+                            "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                        },
+                        "d20": false,
+                        "excludedFromResults": false,
+                        "isAdjournmentResult": false,
+                        "isAvailableForCourtExtract": true,
+                        "isConvictedResult": false,
+                        "isDeleted": false,
+                        "isFinancialResult": false,
+                        "isNewAmendment": false,
+                        "isUnscheduled": false,
+                        "judicialResultId": "85359f27-7892-4864-9baf-3d1dc0250e3e",
+                        "judicialResultTypeId": "2b3f7c20-8fc1-4fad-9076-df196c24b27e",
+                        "label": "Granted",
+                        "lastSharedDateTime": "2025-07-16",
+                        "level": "O",
+                        "lifeDuration": false,
+                        "orderedDate": "2025-07-16",
+                        "orderedHearingId": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+                        "postHearingCustodyStatus": "A",
+                        "preserveActiveOrder": false,
+                        "publishedAsAPrompt": false,
+                        "publishedForNows": false,
+                        "rank": 98500,
+                        "resultText": "G - Granted",
+                        "rollUpPrompts": true,
+                        "rootJudicialResultId": "85359f27-7892-4864-9baf-3d1dc0250e3e",
+                        "rootJudicialResultTypeId": "2b3f7c20-8fc1-4fad-9076-df196c24b27e",
+                        "terminatesOffenceProceedings": false,
+                        "urgent": false,
+                        "usergroups": []
+                    }
+                ],
+                "subject": {
+                    "id": "a62a6691-e652-405c-a24d-85bb9faa7613",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "b7f2ac03-651a-4a17-99c6-b4db0827a65c",
+                                "caseReference": "28DI3954642",
+                                "defendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4"
+                            }
+                        ],
+                        "masterDefendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "D28GC01123954642",
+                            "bailConditions": "",
+                            "bailStatus": {
+                                "code": "A",
+                                "description": "Not applicable",
+                                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                            },
+                            "driverNumber": "VANFL002222OW9PH",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "9999A9899AAAA",
+                                    "address2": "Woodlane4",
+                                    "address3": "addressline 3",
+                                    "address4": "Bristol",
+                                    "address5": "Avon",
+                                    "postcode": "BS1 1JQ"
+                                },
+                                "contact": {
+                                    "home": "0203954642",
+                                    "mobile": "07773954642",
+                                    "primaryEmail": "firstName.lastName3954642@gmail.com"
+                                },
+                                "dateOfBirth": "1972-11-01",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "ethnicity": {
+                                    "observedEthnicityCode": "1",
+                                    "observedEthnicityDescription": "White",
+                                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                    "selfDefinedEthnicityCode": "W1",
+                                    "selfDefinedEthnicityDescription": "British",
+                                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                },
+                                "firstName": "Melyna",
+                                "gender": "MALE",
+                                "hearingLanguageNeeds": "ENGLISH",
+                                "lastName": "Klein",
+                                "title": "Mr"
+                            },
+                            "policeBailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "thirdParties": [
+                    {
+                        "id": "50d89d8e-1ba8-4dd1-b44f-f88abeee6971",
+                        "notificationRequired": true,
+                        "prosecutingAuthority": {
+                            "address": {
+                                "address1": "Finance Operations",
+                                "address2": "C3 East",
+                                "address3": "DVLA",
+                                "address4": "Longview Road",
+                                "address5": "Swansea",
+                                "postcode": "SA6 7JL"
+                            },
+                            "contact": {
+                                "primaryEmail": "sjp@dvla.gov.uk"
+                            },
+                            "majorCreditorCode": "DVL2",
+                            "name": "Driver and Vehicle Licensing Agency",
+                            "prosecutionAuthorityCode": "DVLA",
+                            "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+                            "prosecutionAuthorityOUCode": "G94DV00"
+                        },
+                        "summonsRequired": true
+                    }
+                ],
+                "type": {
+                    "appealFlag": false,
+                    "applicantAppellantFlag": false,
+                    "applicationWording": "Appears before the court in order to make a statutory declaration following conviction {1} by {2} on {3}. Original case number: {4}",
+                    "applicationWordingWelsh": "Yn ymddangos gerbron y llys er mwyn gwneud datganiad statudol yn dilyn euogfarn <[am y trosedd <Original Offence>][am y troseddau <Original Offences>]> gan <Court name> ar <Date of hearing>. Rhif yr Achos Gwreiddiol: <Original case number>",
+                    "boxworkNotifTemplate": "NOT_APPLICABLE",
+                    "breachType": "NOT_APPLICABLE",
+                    "categoryCode": "CR",
+                    "changeDate": "2025-03-17T10:29:09",
+                    "code": "MC80527",
+                    "commrOfOathFlag": true,
+                    "contestedFeeApplicable": false,
+                    "courtExtractAvlFlag": true,
+                    "courtOfAppealFlag": false,
+                    "exParte": false,
+                    "hearingCode": "APN",
+                    "id": "a6663f2a-c900-4bb4-a7d7-4be34cb2f1f7",
+                    "initialFeeApplicable": false,
+                    "jurisdiction": "MAGISTRATES",
+                    "lastModified": "2025-03-17T14:00:40.437Z",
+                    "legislation": "In accordance with section 14 of the Magistrates' Courts Act 1980.",
+                    "legislationWelsh": "Yn unol ag adran 14 Deddf Llysoedd Ynadon 1980.",
+                    "linkType": "LINKED",
+                    "listingNotifTemplate": "POSTAL_NOTIFICATION",
+                    "offenceActiveOrder": "OFFENCE",
+                    "pleaApplicableFlag": true,
+                    "prosecutorThirdPartyFlag": true,
+                    "pssId": 601795,
+                    "sowRef": "APPS",
+                    "spiOutApplicableFlag": true,
+                    "summonsTemplateType": "NOT_APPLICABLE",
+                    "type": "Appearance to make statutory declaration (other than SJP)",
+                    "typeWelsh": "Ymddangosiad i wneud datganiad statudol",
+                    "validFrom": "2000-01-05"
+                }
+            }
+        ],
+        "courtCentre": {
+            "address": {
+                "address1": "176A Lavender Hill",
+                "address2": "London",
+                "address3": "",
+                "address4": "",
+                "address5": "",
+                "postcode": "SW11 1JU"
+            },
+            "code": "B01LY00",
+            "courtHearingLocation": "B01LY02",
+            "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+            "lja": {
+                "ljaCode": "2577",
+                "ljaName": "South West London Magistrates' Court"
+            },
+            "name": "Lavender Hill Magistrates' Court",
+            "roomId": "b4562684-9209-3ec4-a544-7f80dabd94d8",
+            "roomName": "Courtroom 02"
+        },
+        "defendantAttendance": [
+            {
+                "attendanceDays": [
+                    {
+                        "attendanceType": "IN_PERSON",
+                        "day": "2025-07-16"
+                    }
+                ],
+                "defendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4"
+            }
+        ],
+        "hasSharedResults": true,
+        "hearingDays": [
+            {
+                "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+                "courtRoomId": "b4562684-9209-3ec4-a544-7f80dabd94d8",
+                "hasSharedResults": true,
+                "isCancelled": false,
+                "listedDurationMinutes": 1,
+                "listingSequence": 0,
+                "sittingDay": "2025-07-16T09:00:00.000Z"
+            }
+        ],
+        "hearingLanguage": "ENGLISH",
+        "id": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+        "jurisdictionType": "MAGISTRATES",
+        "shadowListedOffences": [],
+        "type": {
+            "description": "Application",
+            "id": "3449743b-95d6-4836-8941-57f588b52068"
+        }
+    },
+    "hearingDay": "2025-07-16",
+    "isReshare": true,
+    "sharedTime": "2025-07-16T10:31:06.513Z"
+}

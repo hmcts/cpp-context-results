@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel8919760 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Easton Hickle",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "14c9da80-b682-4476-9b86-8842d46fe5b0",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "dc28b3e8-fe2b-4925-a3c3-f54a660b7423",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "FO - Fine\nFined £43211.00, FVS - Surcharge\nTo pay a surcharge of £3456.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/05/2026.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 24/05/2025.\nERPEM - Exclusion not to enter for a period with electronic monitoring\nExclusion Requirement with Electronic Monitoring: Not to enter oxford. This exclusion with electronic monitoring lasts for 5 Years. Start date 11/11/2025. Start time 10:00. End date 11/01/2026. End time 12:00.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI8919760"
+    ]
+}

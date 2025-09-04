@@ -1,0 +1,119 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel2179703 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Alivia Klein",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "36936407-2a32-4c65-a6e5-fa4c03d0b60c",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "5a6b2295-e9b6-4048-ab9e-21e6073843d5",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £500.00\nFVS - Surcharge\nTo pay a surcharge of £59.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 23/06/2026.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "96a032ec-2072-4615-aecf-f146b800813e",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £560.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "96a032ec-2072-4615-aecf-f146b800813e",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £500.00\nFVS - Surcharge\nTo pay a surcharge of £59.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 23/06/2026.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "96a032ec-2072-4615-aecf-f146b800813e",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £560.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "96a032ec-2072-4615-aecf-f146b800813e",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £59.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Excise penalty",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £560.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Vehicle Excise Back Duty",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI2179703"
+    ]
+}

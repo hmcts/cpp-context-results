@@ -15,8 +15,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
-  "materialId": "4bb0a67b-44bf-4e5d-b4aa-98303d27ce6d",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted"
@@ -31,7 +32,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "781e6add-a13c-4265-9f2e-7858042a4b88",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Granted"

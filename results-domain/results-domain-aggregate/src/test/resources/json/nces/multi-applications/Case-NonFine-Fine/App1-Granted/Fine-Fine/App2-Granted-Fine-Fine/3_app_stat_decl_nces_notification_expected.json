@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI3358350",
+  "dateDecisionMade": "2025-07-08",
+  "defendantAddress": "n Fisher Tunnel3358350 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Cristopher Rempel",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £6787.00\nIMP - Imprisonment\nCommitted to prison for 6 Years Concurrent Consecutive to offence Consecutive to offence. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property, because the number and nature of the offences shows that the defendant is operating as a professional criminal, because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence, other reasons. Bail remand days to count (Tagged Days): 56. Number of days in custody in foreign jurisdiction to count: 45. Total custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.\n \n \nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nFVS - Surcharge\nTo pay a surcharge of £43.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/12/2026\nTotal custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "95d70a5b-0fc9-432a-bae9-c665111413c8",
+  "materialId": "05d0b33f-5800-4935-a42d-0eaf2d6115d6",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £7898.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence\nFVS - Surcharge\nTo pay a surcharge of £300.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nCOLLO - Collection order\nCollection order made. Deductions from benefit. Reason for not making an attachment of earnings order or deduction from benefit application: test reasons. Reason for making an attachment of earnings order: compensation ordered, defendant is a known defaulter, defendant requested this. Reason for making an application for deductions from benefit: compensation ordered, defendant is a known defaulter, defendant requested this.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons test Additional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons test.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £400.00 to be paid weekly from 12/12/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "title": "Robbery"
+    },
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £450.00. Reason for decision: Reason for decision test Reason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision testReason for decision test.\nFO - Fine\nFined £5000.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "38b61666-767d-44cd-923d-389732f6d6a6",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

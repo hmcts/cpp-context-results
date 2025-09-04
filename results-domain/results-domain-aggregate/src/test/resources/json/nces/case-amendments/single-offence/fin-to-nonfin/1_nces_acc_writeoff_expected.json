@@ -10,12 +10,14 @@
     {
       "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
       "offenceDate": "2019-11-28",
+      "offenceId": "54a88be2-572f-452a-bbce-a5d2b7c4564f",
       "title": "Theft from a shop"
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "97200696-c989-4c3b-bced-465ad086abd2",
-  "materialId": "7c2c3ee1-e202-40b2-81d5-e507b9712b49",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "CD - Conditional discharge\nDischarged conditionally for 6 Months.",
@@ -24,7 +26,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "854c96f0-e228-4e6d-a2ca-4eabbcece935",
+  "notificationId": "{{notificationId}}",
   "sendTo": "av.qet@justice.gov.uk",
   "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
 }

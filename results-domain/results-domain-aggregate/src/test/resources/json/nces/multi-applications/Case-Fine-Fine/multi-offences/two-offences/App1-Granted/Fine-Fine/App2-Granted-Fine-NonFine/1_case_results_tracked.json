@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Ena Pouros",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "af60b8af-9c36-4373-aefa-032baf742fb0",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FO - Fine\nFined £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 29/12/2026.",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-27",
+            "isFinancial": true,
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £2000.00, FVS - Surcharge\nTo pay a surcharge of £199.00"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7664890"
+    ]
+}
