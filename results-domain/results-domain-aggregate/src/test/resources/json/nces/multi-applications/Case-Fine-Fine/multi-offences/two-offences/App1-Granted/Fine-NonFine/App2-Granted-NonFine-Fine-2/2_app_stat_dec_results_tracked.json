@@ -1,0 +1,120 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Robyn Street Danbury Avon DA61 7ND",
+  "defendantContactNumber": "686-933-4091",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Brandon Abbott",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ff2c6ba6-8ba4-422a-9099-4124479a9c1c",
+  "hearingSittingDay": "2025-07-24T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "954b1808-2803-461c-96c8-a52922cd30d3",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £450.50\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "DISM - Dismissed",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "DISM"
+    },
+    {
+      "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "G - Granted",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £450.50\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "DISM - Dismissed",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "DISM"
+    },
+    {
+      "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 16E of the Magistrates' Courts Act 1980. ",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £450.50",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "applicationResultType": "Dismissed",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "DISM - Dismissed",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "DISM"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD61903271"
+  ]
+}

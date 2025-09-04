@@ -6,8 +6,8 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 
-import uk.gov.justice.core.courts.CorrelationIdHistoryItem;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
@@ -55,8 +55,8 @@ public interface ResultNotificationRule {
                      String ncesEmail,
                      Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
-                     Map<UUID, OffenceResultsDetails> prevApplicationOffenceResultsDetails,
-                     LinkedList<CorrelationIdHistoryItem> correlationIdHistoryItemList) {
+                     Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
+                     LinkedList<CorrelationItem> correlationItemList) {
 
         public boolean hasAnyApplicationType() {
             return request.getOffenceResults().stream().anyMatch(offence -> nonNull(offence.getApplicationType()));

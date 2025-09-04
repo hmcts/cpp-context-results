@@ -10,9 +10,10 @@
   "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingCourtCentreName": "City of London Magistrates' Court",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "a25666da-81d7-4e25-b57f-541389f18149",
-  "materialId": "54c98eb7-4dde-4a10-95fb-b72eead86a72",
-  "notificationId": "c1538306-e552-4231-9a0f-81fd822028c0",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "STATUTORY DECLARATION UPDATED"
 }

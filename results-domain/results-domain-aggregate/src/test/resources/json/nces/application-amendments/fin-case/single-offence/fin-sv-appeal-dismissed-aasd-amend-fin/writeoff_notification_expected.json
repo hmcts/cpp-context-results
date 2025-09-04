@@ -5,7 +5,7 @@
   "defendantDateOfBirth": "1972-11-01",
   "defendantName": "Kira Powlowski",
   "divisionCode": "47",
-  "gobAccountNumber": "3c339541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
       "details": "FO - Fine\nFined £299.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nAppeal heard on: 11/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
@@ -15,8 +15,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "854235dc-70bc-449d-9672-275fcc56051d",
-  "materialId": "ca81e68d-2f2e-4993-83c0-a4e6d33faf73",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Dismissed"
@@ -31,9 +32,9 @@
       "title": "Theft from a shop\nSentence varied"
     }
   ],
-  "notificationId": "193bbabe-99ec-42ba-8955-08be3124c23c",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "47",
-  "oldGobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Dismissed"

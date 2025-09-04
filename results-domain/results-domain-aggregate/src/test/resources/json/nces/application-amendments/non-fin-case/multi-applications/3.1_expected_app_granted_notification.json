@@ -20,8 +20,15 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "f0702610-5670-4a14-ac58-732648008970",
-  "materialId": "3efaa3d9-a0bd-4800-85df-316581ab9e91",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £32.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
@@ -30,7 +37,9 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "abc0712e-aa8e-49b2-84f1-a0f8031fa5e2",
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "av.qet@justice.gov.uk",

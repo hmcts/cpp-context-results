@@ -1,0 +1,80 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5651663 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Toni Parisian",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e67eec80-3962-4de9-9e69-029f90c2c1a9",
+  "hearingSittingDay": "2025-08-18T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "327e9b92-1df4-4eeb-b21f-777a8590914c",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "eefdba79-3aeb-4077-88dc-eebf019b0c94",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "eefdba79-3aeb-4077-88dc-eebf019b0c94",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nFVS - Surcharge\nTo pay a surcharge of £35.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £35.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5651663"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel1978850 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Brooklyn McLaughlin",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "a51a030d-482f-47f6-83b6-477d6dda9791",
+    "hearingSittingDay": "2025-07-16T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "1fbca355-115c-4052-9781-07e053e78528",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £3456.00, FVS - Surcharge\nTo pay a surcharge of £543.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "4d2f56c7-6f2d-4e7d-b2f6-cf94edb0a6a9",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £8765.00, FO - Fine\nFined £3456.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "0a19084d-36cb-4032-803b-c1e6e89c52ee",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI1978850"
+    ]
+}

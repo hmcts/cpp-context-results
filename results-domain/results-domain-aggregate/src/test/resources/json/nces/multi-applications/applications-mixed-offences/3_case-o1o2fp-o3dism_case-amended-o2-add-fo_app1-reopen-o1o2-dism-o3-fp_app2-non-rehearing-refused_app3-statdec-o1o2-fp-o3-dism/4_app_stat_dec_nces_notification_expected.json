@@ -1,0 +1,72 @@
+{
+  "caseReferences": "28DI9631765",
+  "dateDecisionMade": "2025-06-27",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0209631765",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST019631765@gmail.com",
+  "defendantName": "Ocie Halvorson",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "impositionOffenceDetails": [
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0fdab706-19e2-463a-9e4b-ba9baa0d9c86",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "453be853-e9ff-441c-938b-8087320d98aa",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £454.00 to Person first name last name\nFO - Fine\nFined £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 05/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "fcf0daa3-5453-468f-9d90-ee654a0904c3",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "b10732fe-dcb8-4209-b661-6d7b225d845a",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £666.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0fdab706-19e2-463a-9e4b-ba9baa0d9c86",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £432.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "453be853-e9ff-441c-938b-8087320d98aa",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "fcf0daa3-5453-468f-9d90-ee654a0904c3",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

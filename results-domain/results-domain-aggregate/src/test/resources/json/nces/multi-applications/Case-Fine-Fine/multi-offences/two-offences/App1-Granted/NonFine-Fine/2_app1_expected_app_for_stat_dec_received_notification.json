@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI9463535",
+  "defendantAddress": "n Fisher Tunnel9463535 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Winifred Kuvalis",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "07/07/2025",
+  "masterDefendantId": "373515e0-14d9-4008-b208-51c0db064fb2",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "27/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

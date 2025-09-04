@@ -1,0 +1,51 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1978-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "bc1d2310-01a9-4a6a-ab26-1aaa6c481e76",
+    "hearingSittingDay": "2025-07-18T15:15:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £43222.00. , FO - Fine\nFined £999999.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £7654.00.\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 14 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+        },
+        {
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £873222.00. , FO - Fine\nFined £889999.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £7665.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+        },
+        {
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £48229.00. , FO - Fine\nFined £9987599.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £8654.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+        },
+        {
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £43222.00. , FO - Fine\nFined £999998.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £76577.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI6925261"
+    ]
+}

@@ -8,14 +8,16 @@
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
+      "offenceId": "af82882b-de9c-466e-a8d5-5168f1b5af53",
       "details": "FO - Fine\nFined £100.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £99.00. Reason for decision: fidici.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
       "offenceDate": "2019-11-28",
       "title": "Theft from a shop"
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "79cdef69-6c35-462b-8532-e53a169929e6",
-  "materialId": "e2258091-0106-4164-b37b-09d315c98d97",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £200.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £199.00. Reason for decision: fidici 2.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
@@ -24,7 +26,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "7472423d-f758-451c-99c9-dc59439c00a6",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "47",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "sendTo": "av.qet@justice.gov.uk",

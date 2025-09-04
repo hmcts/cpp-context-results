@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI3216769",
+  "dateDecisionMade": "2025-07-07",
+  "defendantAddress": "n Fisher Tunnel3216769 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Trystan Rice",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £7878.00, FVS - Surcharge\nTo pay a surcharge of £5444.00\nIMP - Imprisonment\nCommitted to prison for 9 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2026.\nTotal custodial period is life.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+      "title": "Robbery"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "85ca22d6-2b74-4347-8bed-fc99c3b036f4",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £9999.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £6666.00.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/05/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

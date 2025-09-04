@@ -1,0 +1,21 @@
+{
+  "caseReferences": "RQ126157841",
+  "defendantAddress": "50 Main Street Main Street Liverpool Merseyside L1 1AA",
+  "defendantContactNumber": "0821292179",
+  "defendantDateOfBirth": "1994-07-17",
+  "defendantEmail": "katia.tremblay@example.com",
+  "defendantName": "Katia Tremblay",
+  "divisionCode": "105",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-17",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "17/07/2025",
+  "masterDefendantId": "e0bcb42a-25a4-449f-914f-f171d3e70fed",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "17/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

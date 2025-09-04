@@ -1,0 +1,46 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel4306863 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Vida Cormier",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "44bf3cbd-b786-4cbd-977b-d0121906daee",
+  "hearingSittingDay": "2025-06-27T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Refused",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceTitle": "Robbery",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "72f8d2ac-1e9f-4999-8f1c-f958e09a0d9e",
+      "isParentFlag": false,
+      "dateOfResult": "2025-06-27",
+      "resultCode": "RFSD",
+      "isDeemedServed": false,
+      "isFinancial": false
+    },
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Refused",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceTitle": "Theft from a shop",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "72f8d2ac-1e9f-4999-8f1c-f958e09a0d9e",
+      "isParentFlag": false,
+      "dateOfResult": "2025-06-27",
+      "resultCode": "RFSD",
+      "isDeemedServed": false,
+      "isFinancial": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI4306863"
+  ]
+}

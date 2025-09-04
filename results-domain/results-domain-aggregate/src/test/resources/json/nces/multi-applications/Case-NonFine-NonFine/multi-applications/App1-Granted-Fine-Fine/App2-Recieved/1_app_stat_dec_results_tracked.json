@@ -1,0 +1,70 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0207135464",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName7135464@gmail.com",
+    "defendantName": "Celine Friesen",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "a48b0bb6-52c9-4265-8f94-6b80bfce56af",
+    "hearingSittingDay": "2025-07-16T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "08009c7f-2261-49e1-8029-04389314713e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "db9c7603-9aab-4db3-8baf-b8b26e253929",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £23456.00\nFVS - Surcharge\nTo pay a surcharge of £4567.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £333.00 to be paid monthly from 12/02/2026",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "be5d9eaa-9674-4897-b542-eebe57caf4e3",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "db9c7603-9aab-4db3-8baf-b8b26e253929",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £23456.00\nFVS - Surcharge\nTo pay a surcharge of £4567.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £333.00 to be paid monthly from 12/02/2026",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "be5d9eaa-9674-4897-b542-eebe57caf4e3",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £23456.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "be5d9eaa-9674-4897-b542-eebe57caf4e3",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £4567.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "be5d9eaa-9674-4897-b542-eebe57caf4e3",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7135464"
+    ]
+}

@@ -1,0 +1,80 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Ena Pouros",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "e840169d-ea08-479c-be25-a755ad02b5ee",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "29b639ff-aaf8-44ff-9bdd-01b49061d03a",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "SATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £9999.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "29b639ff-aaf8-44ff-9bdd-01b49061d03a",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FO - Fine\nFined £8888.00\nFVS - Surcharge\nTo pay a surcharge of £777.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Slavery and Trafficking Reparation Order",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "SATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £9999.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FO - Fine\nFined £8888.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £777.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7664890"
+    ]
+}

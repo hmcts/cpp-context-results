@@ -8,7 +8,7 @@
   "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "impositionOffenceDetails": [],
   "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
-  "materialId": "904ff63c-001b-437b-9667-75293b140a77",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Withdrawn"
@@ -16,7 +16,7 @@
     "applicationTitle": "Application to reopen case"
   },
   "newOffenceByResult": [],
-  "notificationId": "54cf6a42-4363-4da0-8e09-45306340a1dd",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Refused"

@@ -21,8 +21,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
-  "materialId": "ca28ef4a-b3e8-4ec2-998f-55d4eca17d24",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Dismissed",
@@ -44,7 +45,7 @@
       "title": "Provide money / property for use in acts of terrorism\nSentence varied"
     }
   ],
-  "notificationId": "04dacbed-feab-47c5-8997-4cc98f81150e",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

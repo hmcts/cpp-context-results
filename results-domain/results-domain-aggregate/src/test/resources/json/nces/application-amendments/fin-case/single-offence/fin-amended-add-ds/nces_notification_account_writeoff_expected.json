@@ -27,8 +27,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "8e5f6779-795a-4893-b056-aee4134213ed",
-  "materialId": "2a6bcb94-aea2-45b6-9fa5-fb016f70db72",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted"
@@ -55,7 +56,7 @@
       "title": "Robbery"
     }
   ],
-  "notificationId": "07335214-082e-4da2-b949-5980067fd00d",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "originalApplicationResults": {
     "applicationResult": [

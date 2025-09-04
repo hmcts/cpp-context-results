@@ -16,9 +16,10 @@
       "title": "Theft from a shop"
     }
   ],
+  "isWriteOff": false,
   "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
-  "materialId": "0b1f5211-d5fd-4b0d-b756-864bdcbc2012",
-  "notificationId": "9c5abcd2-ac93-4837-bfba-93ac46be9762",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Dismissed",

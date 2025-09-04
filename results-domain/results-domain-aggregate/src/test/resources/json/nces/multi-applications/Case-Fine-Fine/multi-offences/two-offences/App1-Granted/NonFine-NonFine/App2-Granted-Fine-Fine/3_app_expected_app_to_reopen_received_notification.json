@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI3744431",
+  "defendantAddress": "n Fisher Tunnel3744431 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Fiona Gorczany",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-07",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "07/07/2025",
+  "masterDefendantId": "27a8300d-cbf6-4ed5-aed8-0d33da90247e",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "07/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

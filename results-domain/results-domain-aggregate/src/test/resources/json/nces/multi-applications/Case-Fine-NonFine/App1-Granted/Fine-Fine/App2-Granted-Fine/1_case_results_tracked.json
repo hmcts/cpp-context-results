@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2179703 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Alivia Klein",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "df84987d-b5df-43d1-8d0a-1ee9c6eb16d6",
+  "hearingSittingDay": "2025-06-30T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5a6b2295-e9b6-4048-ab9e-21e6073843d5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+      "offenceTitle": "Robbery",
+      "isFinancial": true,
+      "impositionOffenceDetails": "FO - Fine\nFined £5000.00, FVS - Surcharge\nTo pay a surcharge of £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "dateOfResult": "2025-06-30",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-06-30",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "isFinancial": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2179703"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI4306863",
+  "dateDecisionMade": "2025-06-27",
+  "defendantAddress": "n Fisher Tunnel4306863 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Vida Cormier",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/10/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "title": "Robbery"
+    },
+    {
+      "details": "FVS - Surcharge\nTo pay a surcharge of £50.00\nIMP - Imprisonment\nCommitted to prison for 6 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nTotal custodial period is life.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £333.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "title": "Robbery"
+    },
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

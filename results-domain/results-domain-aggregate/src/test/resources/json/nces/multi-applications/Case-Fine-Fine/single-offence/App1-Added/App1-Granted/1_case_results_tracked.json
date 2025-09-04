@@ -1,0 +1,27 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Curtis Boehm",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b0a55fec-3fb0-4d8a-bd48-558c72a1ce7e",
+  "hearingSittingDay": "2025-07-24T22:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4719bbe0-f2dd-4ed5-9f72-e030181b5c29",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-07-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "08219bb8-511a-49f7-b130-47cd937897cd",
+      "offenceTitle": "Theft of motor vehicle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7570780"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel8919760 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Easton Hickle",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "14c9da80-b682-4476-9b86-8842d46fe5b0",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "dc28b3e8-fe2b-4925-a3c3-f54a660b7423",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "amendmentDate": "2025-07-17",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4443.00, FO - Fine\nFined £43221.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 24/05/2025. \nERPEM - Exclusion not to enter for a period with electronic monitoring\nExclusion Requirement with Electronic Monitoring: Not to enter oxford. This exclusion with electronic monitoring lasts for 5 Years. Start date 11/11/2025. Start time 10:00. End date 11/01/2026. End time 12:00. ",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI8919760"
+    ]
+}

@@ -379,6 +379,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 nonNull(resultsAggregate.getHearing()) ? resultsAggregate.getHearing().getId() : null,
                 aggregate.getMasterDefendantId());
         if (LOGGER.isDebugEnabled()) {
+
             LOGGER.debug("Hearing  : {} ResultsAggregate: {}  HearingFinancialResultsAggregate:{} ", resultsAggregate.getHearing(), objectToJsonObjectConverter.convert(resultsAggregate),
                     objectToJsonObjectConverter.convert(aggregate));
         }

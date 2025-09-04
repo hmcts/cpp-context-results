@@ -2,11 +2,11 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules;
 
 import static java.util.stream.Collectors.toMap;
 
-import uk.gov.justice.core.courts.CorrelationIdHistoryItem;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.util.LinkedList;
@@ -25,8 +25,8 @@ public class ResultNotificationRuleInputBuilder {
     private String ncesEmail;
     private Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails;
-    private Map<UUID, OffenceResultsDetails> prevApplicationOffenceResultsDetails;
-    private LinkedList<CorrelationIdHistoryItem> correlationIdHistoryItemList;
+    private Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap;
+    private LinkedList<CorrelationItem> correlationItemList;
 
     private ResultNotificationRuleInputBuilder() {
     }
@@ -42,8 +42,8 @@ public class ResultNotificationRuleInputBuilder {
         builder.ncesEmail = "nces@test.com";
         builder.prevOffenceResultsDetails = Map.of();
         builder.prevApplicationResultsDetails = Map.of();
-        builder.prevApplicationOffenceResultsDetails = Map.of();
-        builder.correlationIdHistoryItemList = new LinkedList<>();
+        builder.prevApplicationOffenceResultsMap = Map.of();
+        builder.correlationItemList = new LinkedList<>();
         return builder;
     }
 
@@ -62,24 +62,24 @@ public class ResultNotificationRuleInputBuilder {
         return this;
     }
 
-    public ResultNotificationRuleInputBuilder withPrevApplicationOffenceResultsDetails(final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
-        this.prevApplicationOffenceResultsDetails = prevOffenceResultsDetails;
+    public ResultNotificationRuleInputBuilder withPrevApplicationResultsDetails(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
+        this.prevApplicationResultsDetails = prevApplicationResultsDetails;
         return this;
     }
 
-    public ResultNotificationRuleInputBuilder withPrevApplicationResultsDetails(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-        this.prevApplicationResultsDetails = prevApplicationResultsDetails;
+    public ResultNotificationRuleInputBuilder withPrevApplicationOffenceResultsMap(final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+        this.prevApplicationOffenceResultsMap = prevApplicationOffenceResultsMap;
         return this;
     }
 
     public ResultNotificationRule.RuleInput build() {
         return new ResultNotificationRule.RuleInput(request, isWrittenOffExists, originalDateOfOffenceList, originalDateOfSentenceList,
                 newOffenceResultsFromHearing, applicationResult, offenceDateMap, ncesEmail, prevOffenceResultsDetails,
-                prevApplicationResultsDetails, prevApplicationOffenceResultsDetails, correlationIdHistoryItemList);
+                prevApplicationResultsDetails, prevApplicationOffenceResultsMap, correlationItemList);
     }
 
-    public ResultNotificationRuleInputBuilder withCorrelationIdHistoryItemList(final List<CorrelationIdHistoryItem> items) {
-        this.correlationIdHistoryItemList = new LinkedList<>(items);
+    public ResultNotificationRuleInputBuilder withCorrelationItemList(final List<CorrelationItem> items) {
+        this.correlationItemList = new LinkedList<>(items);
         return this;
     }
 }

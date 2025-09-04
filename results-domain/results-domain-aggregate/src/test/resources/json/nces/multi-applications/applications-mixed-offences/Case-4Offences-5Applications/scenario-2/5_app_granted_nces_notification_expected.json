@@ -1,0 +1,57 @@
+{
+  "caseReferences": "48DI9761991",
+  "dateDecisionMade": "2025-07-18",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £76543.00\nFVS - Surcharge\nTo pay a surcharge of £7654.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nACON - Account Consolidated\nAccount to be consolidated with existing accounts.  Additional information: Additional information\nAdditional information\nAdditional information\nAdditional information\nAdditional information\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4332.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £8765.00.\nFO - Fine\nFined £66666.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £2345.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 04/04/2025. \nERBD - Exclusion not to enter with between dates\nExclusion Requirement: Not to enter Place / area test between 10/10/2025 and 10/11/2026. This exclusion requirement lasts until 10/10/2027. ",
+      "offenceDate": "2019-11-28",
+      "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "IMP - Imprisonment\nCommitted to prison for 6 Years. Reason: failure to comply with requirements of post custodial sentence supervision because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence. Bail remand days to count (Tagged Days): 44. Total custodial period: 6 Years.\n \n \nNOVS - No surcharge\nReason: No reasons\nTotal custodial period: 6 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}

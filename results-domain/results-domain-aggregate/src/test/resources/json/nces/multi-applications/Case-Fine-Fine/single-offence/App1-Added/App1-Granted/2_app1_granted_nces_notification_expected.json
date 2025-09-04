@@ -1,0 +1,45 @@
+{
+  "caseReferences": "28DI7570780",
+  "dateDecisionMade": "2025-07-24",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Curtis Boehm",
+  "divisionCode": "77",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-24",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "08219bb8-511a-49f7-b130-47cd937897cd",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "4719bbe0-f2dd-4ed5-9f72-e030181b5c29",
+  "materialId": "8b4175e4-18b6-4290-ab9e-38d111b720c0",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £90.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "08219bb8-511a-49f7-b130-47cd937897cd",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "notificationId": "755ad46d-4c65-430e-968b-c369af5a00ed",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

@@ -1,0 +1,59 @@
+{
+  "caseReferences": "GD61903271",
+  "dateDecisionMade": "2025-07-24",
+  "defendantAddress": "9999A9999AAAA Robyn Street Danbury Avon DA61 7ND",
+  "defendantContactNumber": "686-933-4091",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Brandon Abbott",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-24",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £435.45\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUMI - Reserve Terms Lump sum plus instalments\nReserve Terms Lump sum plus instalments. Lump sum amount: £100.00. Instalment amount: £12.00 to be paid monthly from 11/08/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £100.10",
+      "offenceDate": "2019-11-28",
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "954b1808-2803-461c-96c8-a52922cd30d3",
+  "materialId": "53dc0250-a0c6-4ef1-b0db-fbfb8122b5cd",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £450.50\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "91a0904f-1c18-4917-bd68-74c7fcc1af21",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

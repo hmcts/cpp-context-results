@@ -21,8 +21,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
-  "materialId": "de436305-b8b5-4b8c-91c3-953d74e667b3",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £100.00\nAppeal heard on: 11/08/2024\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid fortnightly. Instalment start date: 11/09/2025.",
@@ -37,7 +38,7 @@
       "title": "Provide money / property for use in acts of terrorism\nSentence varied"
     }
   ],
-  "notificationId": "f7b7f776-a5bf-4c24-b9e4-884e4f6080f6",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "originalApplicationResults": {

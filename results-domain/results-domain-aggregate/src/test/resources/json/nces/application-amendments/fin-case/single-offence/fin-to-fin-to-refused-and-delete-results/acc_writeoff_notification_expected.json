@@ -14,8 +14,9 @@
       "title": "Theft from a shop"
     }
   ],
+  "isWriteOff": true,
   "masterDefendantId": "792ff18d-696f-4141-8637-2852e87b8509",
-  "materialId": "c0e64489-5b59-4d28-8128-8a962482a3a5",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Refused"
@@ -23,7 +24,7 @@
     "applicationTitle": "Appearance to make statutory declaration"
   },
   "newOffenceByResult": [],
-  "notificationId": "a663f34c-5a5d-4ca6-a166-166a3a650644",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Granted"

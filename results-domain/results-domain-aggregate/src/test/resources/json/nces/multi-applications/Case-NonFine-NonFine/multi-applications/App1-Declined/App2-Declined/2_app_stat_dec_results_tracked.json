@@ -1,0 +1,46 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel6224082 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Verdie Wyman",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "f26ab2f4-dcd2-4003-a2f0-e9d01fb0d8b0",
+  "hearingSittingDay": "2025-07-31T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5b9d35fc-3521-4dc9-915b-230cdd766a07",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "2f21f7fa-7d9a-4741-96f9-d502f63f7d70",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "offenceTitle": "Robbery",
+      "resultCode": "RFSD"
+    },
+    {
+      "applicationId": "2f21f7fa-7d9a-4741-96f9-d502f63f7d70",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "RFSD"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6224082"
+  ]
+}

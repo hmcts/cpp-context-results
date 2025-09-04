@@ -13,6 +13,7 @@
   "ncesEmail": "John.Doe@xxx.com",
   "offenceResults": [
     {
+      "applicationId": "72d25ccc-3306-4e49-aae7-1370cc316a65",
       "applicationResultType": "Granted",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-01-29",

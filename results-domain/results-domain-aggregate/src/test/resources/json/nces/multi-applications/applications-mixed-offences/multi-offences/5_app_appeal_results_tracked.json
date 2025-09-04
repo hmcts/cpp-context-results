@@ -1,0 +1,104 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "hearingId": "22e3074f-a78d-4782-b2cb-85835a1655df",
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "defendantName": "Cordia Feeney",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-15T09:00:00.000Z",
+  "offenceResults": [
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Allowed",
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "impositionOffenceDetails": "FO - Fine\nFined £3000.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationId": "fb81aed8-3853-4b68-8bb2-98e44e402228",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-15",
+      "resultCode": "AACA",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Allowed",
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £234.00\nFO - Fine\nFined £3453.00",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationId": "fb81aed8-3853-4b68-8bb2-98e44e402228",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-15",
+      "resultCode": "AACA",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Allowed",
+      "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/02/2025. \nRR - Residence\nResidence Requirement: Live at address for 5 Years.\nNORDRC - Notification of electronic monitoring order (requirement)",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationId": "fb81aed8-3853-4b68-8bb2-98e44e402228",
+      "isFinancial": false,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-15",
+      "resultCode": "AACA",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £3000.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Surcharge",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £432.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Excise penalty",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £234.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £3453.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "48DI4492996"
+  ]
+}

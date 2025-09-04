@@ -20,8 +20,15 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "032ac212-e6b4-4bca-bbac-60469c0a26c2",
-  "materialId": "7372991e-42a1-4cb4-9d33-777d423206bf",
+  "materialId": "95f7ad5f-a4f4-4ff9-8216-34abec35acc2",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £444.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 29/06/2025.",
@@ -30,7 +37,9 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "10ee4290-0679-4f70-9d04-6af91fab381c",
+  "notificationId": "e38816fe-8ab8-4ce4-ac77-cffcfc207a54",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

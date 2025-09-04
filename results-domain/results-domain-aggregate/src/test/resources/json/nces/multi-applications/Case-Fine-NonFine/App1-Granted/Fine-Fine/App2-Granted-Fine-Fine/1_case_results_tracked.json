@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7582313 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Regan Bashirian",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "75f0c672-216a-43e0-a5c6-96a98a823a0f",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "d2d54c40-64c6-4450-b09f-cca97daec791",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FCPC - Costs to Crown Prosecution Service\nTo pay costs of £8787.00 to the Crown Prosecution Service, FO - Fine\nFined £9999.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 14/05/2026",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "AD - Absolute discharge",
+            "isFinancial": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7582313"
+    ]
+}

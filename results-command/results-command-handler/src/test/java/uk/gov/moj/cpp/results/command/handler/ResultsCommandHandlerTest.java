@@ -24,8 +24,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -39,12 +39,8 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeStrea
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataOf;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.justice.core.courts.CaseAddedEvent;
 import uk.gov.justice.core.courts.CaseDetails;
-import uk.gov.justice.core.courts.CorrelationIdHistoryItem;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
@@ -85,6 +81,7 @@ import uk.gov.moj.cpp.results.command.handler.utils.FileUtil;
 import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
@@ -114,6 +111,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;
@@ -121,7 +119,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -800,7 +800,7 @@ public class ResultsCommandHandlerTest {
     }
 
     @Test
-    public void shouldTrackResultWhenApplicationIsGranted() throws Exception {
+    public void shouldTrackResultWhenApplicationIsGrantedWithNoOffenceResults() throws Exception {
         final String offenceId = "66ab677a-722d-418a-a670-507512e2b88d";
 
         final String payload = FileUtil.getPayload(TEMPLATE_PAYLOAD_9_WITH_GRANTED_APPLICATION);
@@ -820,15 +820,15 @@ public class ResultsCommandHandlerTest {
                         .withOffenceTitle("OffenceTitle")
                         .withIsFinancial(true).build());
 
-        CorrelationIdHistoryItem correlationIdHistoryItem = CorrelationIdHistoryItem.correlationIdHistoryItem()
+        CorrelationItem correlationItem = CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
                 .withAccountNumber("AccountNumber")
                 .withAccountDivisionCode("Code").build();
-        LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
-        list.add(correlationIdHistoryItem);
+        LinkedList<CorrelationItem> list = new LinkedList<>();
+        list.add(correlationItem);
 
         setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
-        setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
+        setField(this.hearingFinancialResultsAggregateSpy, "correlationItemList", list);
         setField(this.hearingFinancialResultsAggregateSpy, "hearingId", randomUUID());
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
@@ -840,19 +840,15 @@ public class ResultsCommandHandlerTest {
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
         final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
-        assertThat(jsonEnvelopeList.size(), is(2));
+        assertThat(jsonEnvelopeList.size(), is(1));
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
 
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
         assertThat(jsonEnvelopeList.get(0).payloadAsJsonObject().getJsonObject("hearingFinancialResultRequest").getJsonArray("offenceResults").size(), is(2));
-        assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.nces-email-notification-requested"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("subject"), is("STATUTORY DECLARATION GRANTED"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("dateDecisionMade"), is("2024-08-17"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("defendantName"), is("Jerel Gonzalo"));
     }
 
     @Test
-    public void shouldTrackResultWhenApplicationIsSJPGranted() throws Exception {
+    public void shouldTrackResultWhenApplicationIsSJPGrantedWithNoOffenceResults() throws Exception {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         final String offenceId1 = "eb4146cb-39f9-4ed3-ba86-088d2954a937";
         final String payload = FileUtil.getPayload(TEMPLATE_PAYLOAD_9_WITH_GRANTED_APPLICATION);
@@ -871,15 +867,15 @@ public class ResultsCommandHandlerTest {
                         .withOffenceTitle("OffenceTitle")
                         .withIsFinancial(true).build());
 
-        CorrelationIdHistoryItem correlationIdHistoryItem = CorrelationIdHistoryItem.correlationIdHistoryItem()
+        CorrelationItem correlationItem = CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
                 .withAccountNumber("AccountNumber")
                 .withAccountDivisionCode("Code").build();
-        LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
-        list.add(correlationIdHistoryItem);
+        LinkedList<CorrelationItem> list = new LinkedList<>();
+        list.add(correlationItem);
 
         setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
-        setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
+        setField(this.hearingFinancialResultsAggregateSpy, "correlationItemList", list);
         setField(this.hearingFinancialResultsAggregateSpy, "hearingId", randomUUID());
 
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
@@ -890,16 +886,8 @@ public class ResultsCommandHandlerTest {
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
         final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
-        assertThat(jsonEnvelopeList.size(), is(2));
-        assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.nces-email-notification-requested"));
-
-        String s = "Statutory declaration made under Section 14 of the Magistrates' Courts Act 1980. ";
-        assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.nces-email-notification-requested"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("subject"), is("STATUTORY DECLARATION GRANTED"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("dateDecisionMade"), is("2024-08-17"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("defendantName"), is("Jerel Gonzalo"));
-        assertFalse(jsonEnvelopeList.get(0).payloadAsJsonObject().containsKey("originalDateOfOffence"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getJsonArray("impositionOffenceDetails").getJsonObject(0).getString("offenceDate"), is("2018-05-04"));
+        assertThat(jsonEnvelopeList.size(), is(1));
+        assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
     }
 
     @Test
@@ -927,15 +915,15 @@ public class ResultsCommandHandlerTest {
                         .withOffenceTitle("OffenceTitle")
                         .withIsFinancial(true).build());
 
-        CorrelationIdHistoryItem correlationIdHistoryItem = CorrelationIdHistoryItem.correlationIdHistoryItem()
+        CorrelationItem correlationItem = CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
                 .withAccountNumber("AccountNumber")
                 .withAccountDivisionCode("Code").build();
-        LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
-        list.add(correlationIdHistoryItem);
+        LinkedList<CorrelationItem> list = new LinkedList<>();
+        list.add(correlationItem);
 
         setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
-        setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
+        setField(this.hearingFinancialResultsAggregateSpy, "correlationItemList", list);
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(this.aggregateService.get(any(), eq(HearingFinancialResultsAggregate.class))).thenReturn(hearingFinancialResultsAggregateSpy);
@@ -978,15 +966,15 @@ public class ResultsCommandHandlerTest {
                         .withOffenceTitle("OffenceTitle")
                         .withIsFinancial(true).build());
 
-        CorrelationIdHistoryItem correlationIdHistoryItem = CorrelationIdHistoryItem.correlationIdHistoryItem()
+        CorrelationItem correlationItem = CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
                 .withAccountNumber("AccountNumber")
                 .withAccountDivisionCode("Code").build();
-        LinkedList<CorrelationIdHistoryItem> list = new LinkedList<>();
-        list.add(correlationIdHistoryItem);
+        LinkedList<CorrelationItem> list = new LinkedList<>();
+        list.add(correlationItem);
 
         setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
-        setField(this.hearingFinancialResultsAggregateSpy, "correlationIdHistoryItemList", list);
+        setField(this.hearingFinancialResultsAggregateSpy, "correlationItemList", list);
         setField(this.resultsAggregateSpy, "hearing", hearingObject);
 
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
@@ -996,15 +984,8 @@ public class ResultsCommandHandlerTest {
         resultsCommandHandler.trackResult(envelope);
         verify(eventStream).append(streamArgumentCaptor.capture());
         final List<JsonEnvelope> jsonEnvelopeList = convertStreamToEventList(streamArgumentCaptor.getAllValues());
-        assertThat(jsonEnvelopeList.size(), is(2));
+        assertThat(jsonEnvelopeList.size(), is(1));
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
-
-        String s = "\"details\":\"ImpositionOffenceDetails\",\"offenceDate\":\"2022-12-12\",\"offenceId\":\"eb4146cb-39f9-4ed3-ba86-088d2954a937\",\"title\":\"OffenceTitle\"";
-        assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.nces-email-notification-requested"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("subject"), is("STATUTORY DECLARATION GRANTED"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("dateDecisionMade"), is("2024-08-17"));
-        assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("defendantName"), is("Jerel Gonzalo"));
-        assertTrue(jsonEnvelopeList.get(1).payloadAsJsonObject().get("impositionOffenceDetails").toString().contains(s));
     }
 
     @Test
@@ -1270,7 +1251,7 @@ public class ResultsCommandHandlerTest {
 
         final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
         final Optional<JsonEnvelope> policeNotificationEnv1 = allValues.stream().filter(json -> json.metadata().name().equals("results.event.police-notification-requested-v2")
-                && json.payloadAsJsonObject().getJsonString("caseId").getString().equals("bfd697f8-31ae-4e25-8654-4a10b812f5dd"))
+                        && json.payloadAsJsonObject().getJsonString("caseId").getString().equals("bfd697f8-31ae-4e25-8654-4a10b812f5dd"))
                 .findFirst();
 
         assertThat(policeNotificationEnv1.isPresent(), is(true));
@@ -1601,10 +1582,9 @@ public class ResultsCommandHandlerTest {
     }
 
 
-
     /**
-     *  Create command handler for test cases where we expect PoliceResultGeneration and PoliceNotification events
-     *  and one PoliceNotificationEvent are raised.
+     * Create command handler for test cases where we expect PoliceResultGeneration and PoliceNotification events
+     * and one PoliceNotificationEvent are raised.
      *
      * @throws EventStreamException
      * @throws IOException
@@ -1661,6 +1641,7 @@ public class ResultsCommandHandlerTest {
      * arg 0: payload
      * arg 1: policeResultGeneratedEventCount
      * arg 2: policeNotificationEventCount
+     *
      * @return
      */
     public static Stream<Arguments> createResultTestCasesParams() {
@@ -1741,7 +1722,7 @@ public class ResultsCommandHandlerTest {
                         "Multiple case with multiple defendant and multiple offences, result NOT entered on 1 case, later amended and added result in Mags court",
                         "json/multi-case-when-case-resulted-second-share/"
                 ), 2, 0)
-            );
+        );
     }
 
     private Object[] expectedPoliceResultGeneratedEvents(final String resourceRoot, int count) {

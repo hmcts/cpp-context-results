@@ -17,9 +17,10 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "b0a3ecae-02f5-46d4-ae68-384eef12197d",
-  "materialId": "5d888b55-d53b-4f2a-90d7-1cd24824a621",
-  "notificationId": "c1e9c1fb-395f-4ee8-bdb7-e6d4b82e7723",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "originalDateOfSentence": "05/03/2025",
   "sendTo": "av.qet@justice.gov.uk",
   "subject": "WRITE OFF ONE DAY DEEMED SERVED"

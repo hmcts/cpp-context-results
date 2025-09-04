@@ -18,12 +18,14 @@
     {
       "applicationType": "REOPEN",
       "applicationResultType": "Granted",
+      "applicationId": "902df768-a722-4b0e-b851-7496e13b82d8",
       "resultId": "a02df768-a722-4b0e-b851-7496e13b82d8",
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82e8",
       "resultCode": "G",
       "dateOfResult": "01/01/2021",
       "impositionOffenceDetails": "Amount of fine: £155",
       "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+      "isParentFlag": true,
       "isFinancial": true,
       "isDeemedServed": false
     },

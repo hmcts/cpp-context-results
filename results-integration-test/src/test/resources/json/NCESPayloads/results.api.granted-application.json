@@ -34,7 +34,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "OFFENCE_RESULTS_ID",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "isParentFlag": true
     }
   ],
   "prosecutionCaseReferences": [

@@ -15,8 +15,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "6a113ed7-9274-41ff-8e02-b1f02d370bc4",
-  "materialId": "995a89ae-74e6-40e6-8fa4-e1ca0e5d260d",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted",
@@ -32,7 +33,7 @@
       "title": "Possess / control TV set with intent another use install without a licence"
     }
   ],
-  "notificationId": "6aeeeb05-afec-4396-a09f-d548fe71afcc",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

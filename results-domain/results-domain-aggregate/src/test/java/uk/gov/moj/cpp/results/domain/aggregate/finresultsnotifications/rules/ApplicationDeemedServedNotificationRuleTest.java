@@ -10,6 +10,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ru
 
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationDeemedServedNotificationRule;
 
 import java.util.List;
 

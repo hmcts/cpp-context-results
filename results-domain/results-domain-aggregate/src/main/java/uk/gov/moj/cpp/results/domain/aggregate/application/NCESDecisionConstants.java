@@ -1,25 +1,9 @@
 package uk.gov.moj.cpp.results.domain.aggregate.application;
 
-import static java.util.Arrays.asList;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
-
-import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
-import uk.gov.justice.hearing.courts.OffenceResults;
-import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
-
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -53,6 +37,8 @@ public class NCESDecisionConstants  implements Serializable {
     public static final String AW = "AW";
     public static final String SV_SENTENCE_VARIED = "\nSV - Sentence varied";
     public static final String SENTENCE_VARIED = "\nSentence varied";
+    public static final String APPEAL_WITHDRAWN = "APPEAL WITHDRAWN";
+    public static final String APPEAL_ALLOWED = "APPEAL ALLOWED";
 
     public static final Map<String, String> APPLICATION_TYPES = ImmutableMap.<String, String>builder()
             .put(STAT_DEC, "APPLICATION FOR A STATUTORY DECLARATION RECEIVED")
@@ -81,12 +67,14 @@ public class NCESDecisionConstants  implements Serializable {
                     .put(ACSD, APPEAL_DISMISSED)
                     .put(ASV, "APPEAL DISMISSED SENTENCE VARIED")
                     .put(APA, "APPEAL ABANDONED")
-                    .put(WDRN, "APPEAL WITHDRAWN")
-                    .put(AACA, "APPEAL ALLOWED")
-                    .put(AW, "APPEAL WITHDRAWN")
-                    .put(AASA, "APPEAL ALLOWED")
+                    .put(WDRN, APPEAL_WITHDRAWN)
+                    .put(AACA, APPEAL_ALLOWED)
+                    .put(AW, APPEAL_WITHDRAWN)
+                    .put(AASA, APPEAL_ALLOWED)
                     .put(G, "APPEAL GRANTED")
                     .put(ROPENED, "APPEAL ROPENED")
+                    .put(RFSD, "APPEAL REFUSED")
+                    .put(DISM, APPEAL_DISMISSED)
                     .build())
             .build();
 
@@ -109,8 +97,10 @@ public class NCESDecisionConstants  implements Serializable {
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AW),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.APA),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACD),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.ACSD)
-        );
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.ACSD),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.DISM),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.RFSD)
+                );
     }
 
     public static List<String> getApplicationGrantedSubjects() {

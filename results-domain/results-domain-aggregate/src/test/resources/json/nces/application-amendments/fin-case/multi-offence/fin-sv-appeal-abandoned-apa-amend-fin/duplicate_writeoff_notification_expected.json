@@ -21,8 +21,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
-  "materialId": "27d74030-e2ab-402e-b7e2-887255a82bb9",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Abandoned"
@@ -43,7 +44,7 @@
       "title": "Theft from a shop\nSentence varied"
     }
   ],
-  "notificationId": "d5f27326-289a-4f6a-aa17-efcf2d9037de",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

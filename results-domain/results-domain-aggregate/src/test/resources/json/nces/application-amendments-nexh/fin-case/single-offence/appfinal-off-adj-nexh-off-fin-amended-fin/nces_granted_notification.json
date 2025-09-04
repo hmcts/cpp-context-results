@@ -20,6 +20,7 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "e391646d-d6ce-4df4-a974-84cc76d01faa",
   "materialId": "b8f7c2a0-da48-4ecb-a534-b316937c1957",
   "newOffenceByResult": [],

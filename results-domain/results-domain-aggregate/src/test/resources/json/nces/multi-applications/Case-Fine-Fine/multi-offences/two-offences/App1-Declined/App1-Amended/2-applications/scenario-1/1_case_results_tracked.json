@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3955007 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "291939cd-d222-4676-ac98-1cf5c31e39b1",
+  "hearingSittingDay": "2025-08-14T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £4444.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £55555.00, FVS - Surcharge\nTo pay a surcharge of £222.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3955007"
+  ]
+}

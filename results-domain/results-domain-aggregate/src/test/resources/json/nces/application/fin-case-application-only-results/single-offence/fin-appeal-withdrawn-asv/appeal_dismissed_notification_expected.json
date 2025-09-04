@@ -16,9 +16,10 @@
       "title": "Theft from a shop"
     }
   ],
+  "isWriteOff": false,
   "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
-  "materialId": "0d482f04-8de0-4dc9-8982-74abe782bcc3",
-  "notificationId": "546a5fa7-488d-4a4f-9fa9-bf7d9b362dac",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
       "Appeal against conviction dismissed and sentence varied",

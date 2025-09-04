@@ -1,0 +1,31 @@
+{
+  "caseReferences": "28DI1480609",
+  "dateDecisionMade": "2025-07-29",
+  "defendantAddress": "n Fisher Tunnel1480609 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Chaya Waelchi",
+  "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £87653.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £876.00.\nFVS - Surcharge\nTo pay a surcharge of £999.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUMI - Reserve Terms Lump sum plus instalments\nReserve Terms Lump sum plus instalments. Lump sum amount: £343.00. Instalment amount: £322.00 to be paid fortnightly from 11/11/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+      "title": "Robbery"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "bcba026b-2be8-4692-8138-9e3a754d4e05",
+  "materialId": "038126ba-c188-4b5b-a324-1c2ff52e727a",
+  "notificationId": "5ab6d3d5-ddf4-4e08-bb1b-a08947941c86",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Abandoned"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ABANDONED"
+}

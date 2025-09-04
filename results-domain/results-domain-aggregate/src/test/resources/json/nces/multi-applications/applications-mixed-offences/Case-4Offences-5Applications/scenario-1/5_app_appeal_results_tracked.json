@@ -1,0 +1,70 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1978-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "f7cc9820-8d5a-450b-8732-f9147a88b8f7",
+    "hearingSittingDay": "2025-07-19T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-19",
+            "impositionOffenceDetails": "DISM - Dismissed",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "DISM"
+        },
+        {
+            "applicationId": "0456c2d4-573a-4d02-af7d-48eb35b69b26",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-19",
+            "impositionOffenceDetails": "AACA - Appeal against conviction allowed \nDate of Conviction 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationId": "0456c2d4-573a-4d02-af7d-48eb35b69b26",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-19",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationResultType": "Dismissed",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-19",
+            "impositionOffenceDetails": "DISM - Dismissed",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "DISM"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI6925261"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

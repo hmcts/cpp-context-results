@@ -16,8 +16,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "db0d8be5-91d0-42ff-a371-3ffff7b5b1a8",
-  "materialId": "81c78267-1a18-4740-8140-cbfddc7245ab",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £100.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nAppeal heard on: 11/11/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
@@ -26,7 +27,7 @@
       "title": "Theft from a shop\nSentence varied"
     }
   ],
-  "notificationId": "c73a5752-053d-4f0d-9a62-1fbe6d8d29ba",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "47",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

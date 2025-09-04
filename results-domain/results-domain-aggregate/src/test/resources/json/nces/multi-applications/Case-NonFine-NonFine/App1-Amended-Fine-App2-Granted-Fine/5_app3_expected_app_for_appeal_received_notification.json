@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI3954642",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon NE29 1DZ",
+  "defendantContactNumber": "0203954642",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3954642@gmail.com",
+  "defendantName": "Melyna Klein",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-16",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "16/07/2025",
+  "masterDefendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "16/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

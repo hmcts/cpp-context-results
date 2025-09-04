@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI7658121",
+  "dateDecisionMade": "2025-07-18",
+  "defendantAddress": "n Fisher Tunnel7658121 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Clotilde Gusikowski",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £543.00 to Org name\nFO - Fine\nFined £23456.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
+      "title": "Robbery"
+    },
+    {
+      "details": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £222.00.\nFVS - Surcharge\nTo pay a surcharge of £5678.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "9cdc9818-ad55-42ef-a351-1ba337d0b886",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £3456.00\nIMP - Imprisonment\nCommitted to prison for 6 Years Concurrent Consecutive to offence Consecutive to offence. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property. Bail remand days to count (Tagged Days): 45. Number of days in custody in foreign jurisdiction to count: 45. Total custodial period is life.\n \n \nFVS - Surcharge\nTo pay a surcharge of £56789.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £567.00. Instalment amount: £432.00 to be paid monthly from 11/11/2026.\nTotal custodial period is life.\nvulnerability - Risk or vulnerability factors",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £4321.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £54678.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

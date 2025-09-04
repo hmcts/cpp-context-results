@@ -21,8 +21,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "8a175f38-8d9c-4593-835c-d9c0459d8e0d",
-  "materialId": "06acc3d5-8b09-4a7c-9fde-e904a26bafc4",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted",
@@ -44,7 +45,7 @@
       "title": "Theft from a shop"
     }
   ],
-  "notificationId": "bc8df9e2-92cd-4cf8-a63a-fd49ae8557db",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

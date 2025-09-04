@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3744431 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Fiona Gorczany",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "868da06e-089c-4415-b497-32e0e5e1d07c",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "27a8300d-cbf6-4ed5-aed8-0d33da90247e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £200.00. , FO - Fine\nFined £2000.00, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £100.00 to be paid monthly from 11/01/2026",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £2000.00",
+            "isFinancial": true
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3744431"
+    ]
+}

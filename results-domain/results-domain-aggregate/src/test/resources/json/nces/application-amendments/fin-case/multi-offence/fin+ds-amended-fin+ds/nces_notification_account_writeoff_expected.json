@@ -27,8 +27,9 @@
     }
   ],
   "isSJPHearing": false,
+  "isWriteOff": true,
   "masterDefendantId": "6a9ceab0-928b-4096-b450-063e717e5761",
-  "materialId": "7c4bd954-0cf2-4607-9979-db2964d2caad",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted"
@@ -55,7 +56,7 @@
       "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
     }
   ],
-  "notificationId": "d3eebf1c-f5ad-4490-9422-f5a69b4c3036",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalApplicationResults": {

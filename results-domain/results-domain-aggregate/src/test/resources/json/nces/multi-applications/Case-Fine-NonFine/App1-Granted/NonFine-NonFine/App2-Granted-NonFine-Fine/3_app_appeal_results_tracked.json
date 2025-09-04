@@ -1,0 +1,80 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7582313 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Regan Bashirian",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "7a5565e5-78d2-45a5-9b9a-7737d862823d",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "d2d54c40-64c6-4450-b09f-cca97daec791",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "APPEAL",
+            "applicationResultType": "Allowed",
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationId": "1e6b0332-f038-41b9-b985-e86ca15cd27a",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "AACA",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "APPEAL",
+            "applicationResultType": "Allowed",
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £899.00",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationId": "1e6b0332-f038-41b9-b985-e86ca15cd27a",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "AACA",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "applicationType": "APPEAL",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "AD - Absolute discharge",
+            "isFinancial": false,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "applicationType": "APPEAL",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "AD - Absolute discharge",
+            "isFinancial": false,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "applicationType": "APPEAL",
+            "applicationResultType": "Excise penalty",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £899.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7582313"
+    ]
+}
