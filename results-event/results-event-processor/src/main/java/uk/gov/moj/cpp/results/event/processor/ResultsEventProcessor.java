@@ -276,27 +276,43 @@ public class ResultsEventProcessor {
     @Handles("results.event.nces-email-notification-requested")
     public void handleNcesEmailNotificationRequested(final JsonEnvelope envelope) {
         final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
-        boolean isSJPHearing = false ;
+        boolean isSJPHearing = false;
 
-        if(envelope.payloadAsJsonObject().containsKey(IS_SJP_HEARING)){
-            isSJPHearing = envelope.payloadAsJsonObject().getBoolean(IS_SJP_HEARING) ;
+        if (envelope.payloadAsJsonObject().containsKey(IS_SJP_HEARING)) {
+            isSJPHearing = envelope.payloadAsJsonObject().getBoolean(IS_SJP_HEARING);
         }
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
-        final String caseUrn = envelope.payloadAsJsonObject().getString(CASE_REFERENCES);
+        final List<String> caseUrns = extractCaseUrns(envelope.payloadAsJsonObject().getString(CASE_REFERENCES));
         final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
 
-        if (isSJPHearing) {
-            getSjpCaseUUID(caseUrn).ifPresent(caseUUID -> {
-                LOGGER.info("In SJP case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
-                addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
-            });
-        } else {
-            getCcCaseUUID(caseUrn).ifPresent(caseUUID -> {
-                LOGGER.info("In CC case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
-                addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
-            } );
+        for (final String caseUrn : caseUrns) {
+            if (isSJPHearing) {
+                getSjpCaseUUID(caseUrn).ifPresentOrElse(
+                    caseUUID -> {
+                        LOGGER.info("In SJP case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
+                        addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
+                    },
+                    () -> LOGGER.warn("No SJP case UUID found for caseUrn: {}", caseUrn)
+                );
+            } else {
+                getCcCaseUUID(caseUrn).ifPresentOrElse(
+                    caseUUID -> {
+                        LOGGER.info("In CC case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
+                        addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
+                    },
+                    () -> LOGGER.warn("No CC case UUID found for caseUrn: {}", caseUrn)
+                );
+            }
         }
+    }
+
+    private static List<String> extractCaseUrns(final String caseReferences) {
+        return Stream.of(caseReferences.split(DELIMITER))
+                .map(String::trim)
+                .filter(StringUtils::isNotEmpty)
+                .distinct()
+                .toList();
     }
 
     private void addCourtDocumentForSjpCase(final JsonEnvelope envelope, final UUID caseUUID, final String fileName, final UUID fileId) {
@@ -757,5 +773,4 @@ public class ResultsEventProcessor {
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
     }
-
 }
