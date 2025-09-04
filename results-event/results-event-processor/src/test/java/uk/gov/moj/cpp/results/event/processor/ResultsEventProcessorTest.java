@@ -1518,4 +1518,185 @@ public class ResultsEventProcessorTest {
         final JsonReader reader = Json.createReader(new StringReader(request));
         return reader.readObject();
     }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithMultipleCaseUrns() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseUrn1 = "caseUrn1";
+        final String caseUrn2 = "caseUrn2";
+        final String caseUrn3 = "caseUrn3";
+        final String caseReferences = caseUrn1 + "," + caseUrn2 + ", " + caseUrn3; // includes whitespace
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        // Should call progressionService for each caseUrn
+        verify(progressionService, times(3)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithMultipleSjpCaseUrns() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseUrn1 = "sjpUrn1";
+        final String caseUrn2 = "sjpUrn2";
+        final String caseUrn3 = "sjpUrn3";
+        final String caseReferences = caseUrn1 + "," + caseUrn2 + ", " + caseUrn3;
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(true, "isSJPHearing")
+                .build();
+
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(sjpService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("id", randomUUID().toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(sjpService, times(3)).caseExistsByCaseUrn(any());
+        verify(progressionService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithSingleCaseUrn() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseUrn = "singleUrn";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseUrn, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(1)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithEmptyCaseReferences() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseReferences = "   ";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+
+        verify(documentGeneratorService, times(1)).generateNcesDocument(
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(0)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithOnlyCommasAndWhitespace() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseReferences = ", , ,";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(0)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithDuplicateCaseUrns() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseUrn1 = "urn1";
+        final String caseUrn2 = "urn2";
+        final String caseReferences = caseUrn1 + "," + caseUrn1 + "," + caseUrn2;
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(progressionService, times(2)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithLeadingAndTrailingCommas() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseUrn1 = "urn1";
+        final String caseUrn2 = "urn2";
+        final String caseReferences = "," + caseUrn1 + "," + caseUrn2 + ",";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        // Should call for each valid urn (2 times)
+        verify(progressionService, times(2)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldHandleTheNcesEmailNotificationRequestedWithMixedEmptyWhitespaceAndValidUrns() {
+        when(fileService.storePayload(any(), anyString(), anyString(), any())).thenReturn(randomUUID());
+        final String materialId = randomUUID().toString();
+        final String caseUrn1 = "urn1";
+        final String caseUrn2 = "urn2";
+        final String caseReferences = " , ," + caseUrn1 + ", ," + caseUrn2  + ",, ";
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf(materialId, "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(false, "isSJPHearing")
+                .build();
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+        resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        // Should call for each valid urn (2 times)
+        verify(progressionService, times(2)).caseExistsByCaseUrn(any());
+        verify(sjpService, times(0)).caseExistsByCaseUrn(any());
+    }
 }
