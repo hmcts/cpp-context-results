@@ -60,7 +60,7 @@ class HearingFinancialResultsUpdatedListenerTest {
     public void shouldHandleEmailToNcesNotificationRequested() {
         HearingFinancialResultsUpdated hearingFinancialResultsUpdated = hearingFinancialResultsUpdated();
         JsonEnvelope jsonEnvelope = createJsonEnvelope(hearingFinancialResultsUpdated);
-        hearingFinancialResultsUpdatedListener.handleHearingFinancialResultsUpdated(jsonEnvelope);
+        hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(jsonEnvelope);
 
         verify(defendantGobAccountsRepository).save(this.hearingFinancialDetailsEntityArgumentCaptor.capture());
 

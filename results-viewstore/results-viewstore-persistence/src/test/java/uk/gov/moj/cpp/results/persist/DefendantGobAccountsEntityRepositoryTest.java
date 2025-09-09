@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(CdiTestRunner.class)
-class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Test {
+public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Test {
 
     @Inject
     private DefendantGobAccountsRepository defendantGobAccountsRepository;
@@ -38,7 +38,7 @@ class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Te
     }
 
     @Test
-    public void shouldFindTheHearingFinancialDetailsByAccountNumber() {
+    public void shouldFindByAccountNumber() {
         final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findByAccountNumber(hearingFinancialDetails.getMasterDefendantId(), hearingFinancialDetails.getCaseReferences());
         assertThat(defendantGobAccountsEntity, is(notNullValue()));
         assertThat(defendantGobAccountsEntity.getId(), is(hearingFinancialDetails.getId()));
@@ -49,7 +49,7 @@ class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Te
     }
 
     @Test
-    public void shouldReturnLatestHearingFinancialDetailsWhenMultipleRecordsExist() {
+    public void shouldReturnLatestGobAccountWhenMultipleAccountsExist() {
         // Create multiple records with same masterDefendantId and caseReferences but different createdDateTime
         final UUID masterDefendantId = randomUUID();
         final String caseReferences = "case ref1, case ref2";
@@ -83,7 +83,7 @@ class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Te
     }
 
     @Test
-    public void shouldFindRecordWhenQueryingWithPartialCaseReferences() {
+    public void shouldFindAccountWithPartialCaseReferences() {
         // Create a record with multiple case references
         final UUID masterDefendantId = randomUUID();
         final String storedCaseReferences = "case ref1, case ref2, case ref3";
@@ -106,7 +106,7 @@ class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Te
     }
 
     @Test
-    public void shouldFindRecordWhenQueryingWithSingleCaseReference() {
+    public void shouldAccountForSingleCaseReference() {
         // Create a record with single case reference
         final UUID masterDefendantId = randomUUID();
         final String storedCaseReferences = "case ref1";
@@ -129,7 +129,7 @@ class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Te
     }
 
     @Test
-    public void shouldFindRecordWhenQueryingWithSubsetOfCaseReferences() {
+    public void shouldFindRAccountWithSubsetOfCaseReferences() {
         // Create a record with multiple case references
         final UUID masterDefendantId = randomUUID();
         final String storedCaseReferences = "case ref1, case ref2, case ref3";
@@ -152,7 +152,7 @@ class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJunit4Te
     }
 
     @Test
-    public void shouldFindRecordWhenQueryingWithMoreCaseReferencesThanStored() {
+    public void shouldFindAccountWithMoreCaseReferencesThanStored() {
         // Create a record with fewer case references
         final UUID masterDefendantId = randomUUID();
         final String storedCaseReferences = "case ref1, case ref2";

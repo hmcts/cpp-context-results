@@ -30,20 +30,20 @@ public class HearingFinancialResultsUpdatedListener {
     private DefendantGobAccountsRepository defendantGobAccountsRepository;
 
     @Handles("results.event.hearing-financial-results-updated")
-    public void handleHearingFinancialResultsUpdated(final JsonEnvelope event) {
+    public void handleDefendantGobAccounts(final JsonEnvelope event) {
         final JsonObject requestJson = event.payloadAsJsonObject();
         final HearingFinancialResultsUpdated hearingFinancialResultsUpdated = jsonObjectToObjectConverter.convert(requestJson, HearingFinancialResultsUpdated.class);
-        saveHearingFinancialResultsDetails(hearingFinancialResultsUpdated);
+        saveDefendantGobAccounts(hearingFinancialResultsUpdated);
     }
 
-    private void saveHearingFinancialResultsDetails(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
+    private void saveDefendantGobAccounts(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
         final UUID masterDefendantId = hearingFinancialResultsUpdated.getMasterDefendantId();
         final UUID correlationId = hearingFinancialResultsUpdated.getCorrelationId();
-        defendantGobAccountsRepository.save(createHearingFinancialnDetailsEntity(hearingFinancialResultsUpdated));
+        defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsUpdated));
         LOGGER.info("GOB account Details are saved successfully stored for masterDefendantId id & correlationId id : {} & {}", masterDefendantId, correlationId);
     }
 
-    private DefendantGobAccountsEntity createHearingFinancialnDetailsEntity(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
+    private DefendantGobAccountsEntity createDefendantGobAccountsEntity(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
         final DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity();
         defendantGobAccountsEntity.setId(randomUUID());
         defendantGobAccountsEntity.setMasterDefendantId(hearingFinancialResultsUpdated.getMasterDefendantId());
