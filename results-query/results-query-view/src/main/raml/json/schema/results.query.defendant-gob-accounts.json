@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/results/courts/nces-email-notification/nces-email-notification-details.json",
+  "id": "http://justice.gov.uk/results/courts/defendant-gob-accounts/defendant-gob-accounts.json",
   "type": "object",
   "properties": {
     "id": {

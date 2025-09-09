@@ -598,20 +598,16 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse1.get("originalApplicationResults"), notNullValue());
         assertThat(jsonResponse1.get("newApplicationResults"), notNullValue());
 
-        // Query API calls to verify defendant GOB accounts can be retrieved
-        // Wait for processing to complete
-        try {
-            Thread.sleep(3000); // Wait 3 seconds for processing
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
         // Query for the latest account (accountNumber3) with case reference
+        getDefendantAccountNumber(masterDefendantId, accountCorrelationId3, accountNumber3, "32DN1212262");
+    }
+
+    private void getDefendantAccountNumber(final String masterDefendantId, final String accountCorrelationId3, final String accountNumber3, final String caseReferences) {
         given()
                 .baseUri(BASE_URI)
                 .header("Content-Type", "application/vnd.results.query.defendant-gob-accounts+json")
                 .header("Accept", "application/vnd.results.query.defendant-gob-accounts+json")
-                .header(USER_ID, randomUUID().toString())
+                .header(USER_ID, getUserId())
                 .when()
                 .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&caseReferences={caseReferences}",
                         masterDefendantId, "32DN1212262")
@@ -624,8 +620,6 @@ public class StagingEnforcementIT {
                 .body("caseReferences", containsString("32DN1212262"))
                 .body("createdDateTime", notNullValue());
     }
-
-
 
 
     public NcesEmailNotificationRequested generateNcesNotificationRequested(final JsonPath jsonResponse) {

@@ -3,6 +3,6 @@
     "masterDefendantId": "a73646c9-739a-40a4-a6b0-c69902ba1360",
     "correlationId": "c93646c9-739a-40a4-a6b0-c69902ba1360",
     "accountNumber": "ACC123456789",
-    "caseReferences": "caseRef1, caseRef2",
+    "caseReferences": "[caseRef1, caseRef2]",
     "createdDateTime": "2023-12-01T10:30:00Z"
 }

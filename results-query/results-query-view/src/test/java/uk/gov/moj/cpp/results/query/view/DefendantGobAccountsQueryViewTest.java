@@ -54,7 +54,7 @@ public class DefendantGobAccountsQueryViewTest {
         when(envelope.payloadAsJsonObject()).thenReturn(payload);
         when(payload.getString("masterDefendantId")).thenReturn(masterDefendantId.toString());
         when(payload.getString("caseReferences")).thenReturn(caseReferences);
-        when(defendantGobAccountsRepository.findByAccountNumber(masterDefendantId, caseReferences)).thenReturn(entity);
+        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, caseReferences)).thenReturn(entity);
         when(objectToJsonObjectConverter.convert(entity)).thenReturn(jsonObject);
 
         final JsonEnvelope result = defendantGobAccountsQueryView.getDefendantGobAccounts(envelope);

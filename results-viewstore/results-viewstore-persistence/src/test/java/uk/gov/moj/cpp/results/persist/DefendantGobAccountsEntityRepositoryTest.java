@@ -39,7 +39,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
 
     @Test
     public void shouldFindByAccountNumber() {
-        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findByAccountNumber(hearingFinancialDetails.getMasterDefendantId(), hearingFinancialDetails.getCaseReferences());
+        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(hearingFinancialDetails.getMasterDefendantId(), hearingFinancialDetails.getCaseReferences());
         assertThat(defendantGobAccountsEntity, is(notNullValue()));
         assertThat(defendantGobAccountsEntity.getId(), is(hearingFinancialDetails.getId()));
         assertThat(defendantGobAccountsEntity.getMasterDefendantId(), is(hearingFinancialDetails.getMasterDefendantId()));
@@ -75,7 +75,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsRepository.save(newerEntity);
         
         // Query should return only the latest record
-        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findByAccountNumber(masterDefendantId, caseReferences);
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, caseReferences);
         
         assertThat(result, is(notNullValue()));
         assertThat(result.getAccountNumber(), is("newerAccountNumber"));
@@ -98,7 +98,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsRepository.save(entity);
         
         // Query with partial case references should find the record
-        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findByAccountNumber(masterDefendantId, "case ref1, case ref2");
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, "case ref1, case ref2");
         
         assertThat(result, is(notNullValue()));
         assertThat(result.getAccountNumber(), is("accountNumber"));
@@ -121,7 +121,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsRepository.save(entity);
         
         // Query with exact single case reference should find the record
-        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findByAccountNumber(masterDefendantId, "case ref1");
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, "case ref1");
         
         assertThat(result, is(notNullValue()));
         assertThat(result.getAccountNumber(), is("accountNumber"));
@@ -144,7 +144,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsRepository.save(entity);
         
         // Query with a subset of case references should find the record
-        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findByAccountNumber(masterDefendantId, "case ref2");
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, "case ref2");
         
         assertThat(result, is(notNullValue()));
         assertThat(result.getAccountNumber(), is("accountNumber"));
@@ -167,7 +167,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsRepository.save(entity);
         
         // Query with more case references should find the record if stored references are subset
-        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findByAccountNumber(masterDefendantId, "case ref1, case ref2, case ref3");
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, "case ref1, case ref2, case ref3");
         
         assertThat(result, is(notNullValue()));
         assertThat(result.getAccountNumber(), is("accountNumber"));

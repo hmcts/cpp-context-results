@@ -83,7 +83,7 @@ import org.slf4j.Logger;
 public class HearingFinancialResultsAggregate implements Aggregate {
 
     private static final Logger LOGGER = getLogger(HearingFinancialResultsAggregate.class);
-    private static final long serialVersionUID = -7417688645983920689L;
+    private static final long serialVersionUID = 1691228462960025057L;
     private static final String HEARING_SITTING_DAY_PATTERN = "yyyy-MM-dd";
     public static final String EMPTY_STRING = "";
     public static final String BRITISH_DATE_FORMAT = "dd/MM/yyyy";

@@ -34,7 +34,7 @@ public class DefendantGobAccountsQueryView {
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("masterDefendantId"));
         final String caseReferences = envelope.payloadAsJsonObject().getString("caseReferences");
 
-        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findByAccountNumber(materialId, caseReferences);
+        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(materialId, caseReferences);
         
         if (defendantGobAccountsEntity == null) {
             LOGGER.warn("No defendant GOB accounts found for masterDefendantId: {} and caseReferences: {}", materialId, caseReferences);

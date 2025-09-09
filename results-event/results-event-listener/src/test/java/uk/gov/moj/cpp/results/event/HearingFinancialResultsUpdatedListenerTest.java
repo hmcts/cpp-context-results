@@ -57,7 +57,7 @@ class HearingFinancialResultsUpdatedListenerTest {
     }
 
     @Test
-    public void shouldHandleEmailToNcesNotificationRequested() {
+    public void shouldHandleDefendantGOBAccounts() {
         HearingFinancialResultsUpdated hearingFinancialResultsUpdated = hearingFinancialResultsUpdated();
         JsonEnvelope jsonEnvelope = createJsonEnvelope(hearingFinancialResultsUpdated);
         hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(jsonEnvelope);
