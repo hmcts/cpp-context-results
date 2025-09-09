@@ -52,6 +52,7 @@ public class HearingResultedEventProcessor {
     private static final String PROSECUTOR_CODE = "prosecutionAuthorityId";
 
     private static final String CPS_PROSECUTOR_IDS = "cpsProsecutorIds";
+    static final String DELETED_JUDICIAL_RESULTS = "deletedJudicialResults";
 
     @Inject
     private Sender sender;
@@ -131,6 +132,10 @@ public class HearingResultedEventProcessor {
 
         if (hearingPayload.containsKey(SHADOW_LISTED_OFFENCES)) {
             commandPayloadBuilder.add(SHADOW_LISTED_OFFENCES, hearingPayload.getJsonArray(SHADOW_LISTED_OFFENCES));
+        }
+
+        if (hearingPayload.containsKey(DELETED_JUDICIAL_RESULTS)) {
+            commandPayloadBuilder.add(DELETED_JUDICIAL_RESULTS, hearingPayload.getJsonArray(DELETED_JUDICIAL_RESULTS));
         }
 
         final Envelope<JsonObject> jsonObjectEnvelope = envelop(commandPayloadBuilder.build())

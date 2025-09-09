@@ -21,6 +21,12 @@
     },
     "isReshare": {
       "type": "boolean"
+    },
+    "deletedJudicialResults": {
+      "type": "array",
+      "items": {
+        "$ref": "http://justice.gov.uk/core/courts/deletedJudicialResult.json"
+      }
     }
   },
   "required": [
