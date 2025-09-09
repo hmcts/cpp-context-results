@@ -32,6 +32,9 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGenerator
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocumentCreate;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
+import static io.restassured.RestAssured.given;
+import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
+import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
@@ -594,6 +597,32 @@ public class StagingEnforcementIT {
                 "Pay by date. Date to pay in full by: 20/03/2025"));
         assertThat(jsonResponse1.get("originalApplicationResults"), notNullValue());
         assertThat(jsonResponse1.get("newApplicationResults"), notNullValue());
+
+        // Query API calls to verify defendant GOB accounts can be retrieved
+        // Wait for processing to complete
+        try {
+            Thread.sleep(3000); // Wait 3 seconds for processing
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        // Query for the latest account (accountNumber3) with case reference
+        given()
+                .baseUri(BASE_URI)
+                .header("Content-Type", "application/vnd.results.query.defendant-gob-accounts+json")
+                .header("Accept", "application/vnd.results.query.defendant-gob-accounts+json")
+                .header(USER_ID, randomUUID().toString())
+                .when()
+                .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&caseReferences={caseReferences}",
+                        masterDefendantId, "32DN1212262")
+                .then()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("masterDefendantId", equalTo(masterDefendantId))
+                .body("correlationId", equalTo(accountCorrelationId3))
+                .body("accountNumber", equalTo(accountNumber3))
+                .body("caseReferences", containsString("32DN1212262"))
+                .body("createdDateTime", notNullValue());
     }
 
 
