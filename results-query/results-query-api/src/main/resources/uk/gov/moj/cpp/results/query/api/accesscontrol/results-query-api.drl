@@ -119,3 +119,12 @@ rule "Query - API - results.query.nces-email-notification-details"
   then
     $outcome.setSuccess(true);
 end
+
+rule "Query - API - results.query.defendant-gob-accounts"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.query.defendant-gob-accounts");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "System Users"));
+  then
+    $outcome.setSuccess(true);
+end

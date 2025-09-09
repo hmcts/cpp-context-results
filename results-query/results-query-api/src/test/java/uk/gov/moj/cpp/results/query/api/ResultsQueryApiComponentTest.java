@@ -10,6 +10,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.HandlerClassMatch
 import static uk.gov.justice.services.test.utils.core.matchers.HandlerMethodMatcher.method;
 
 import uk.gov.justice.services.core.annotation.Handles;
+import uk.gov.moj.cpp.results.query.api.DefendantGobAccountsQueryApi;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,6 +64,13 @@ public class ResultsQueryApiComponentTest {
                 assertThat(ResultsQueryApi.class, isHandlerClass(QUERY_API)
                         .with(method(key)
                                 .thatHandles(value))));
+    }
+
+    @Test
+    public void testHearingFinancialDetailsQueryApiHandler() {
+        assertThat(DefendantGobAccountsQueryApi.class, isHandlerClass(QUERY_API)
+                .with(method("getDefendantGobAccounts")
+                        .thatHandles("results.query.defendant-gob-accounts")));
     }
 
 }

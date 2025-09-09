@@ -56,7 +56,7 @@ public class ProgressionService {
                 .build();
         final Envelope<JsonObject> envelope = envelopeFrom(metadata, payload);
         final Envelope<JsonObject> response = requester.requestAsAdmin(envelope, JsonObject.class);
-        return Optional.of(response.payload());
+        return Optional.ofNullable(response.payload());
     }
 
     public JsonObject getProsecutionCaseDetails(final UUID caseId) {

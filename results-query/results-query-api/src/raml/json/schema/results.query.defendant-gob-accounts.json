@@ -1,8 +1,11 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/hearing-financial-results-updated.json",
+  "id": "http://justice.gov.uk/results/courts/nces-email-notification/nces-email-notification-details.json",
   "type": "object",
   "properties": {
+    "id": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
     "masterDefendantId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
@@ -13,22 +16,19 @@
       "type": "string"
     },
     "caseReferences": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+      "type": "string"
     },
     "createdDateTime": {
-      "type": "string",
       "format": "date-time"
     }
   },
+  "additionalProperties": false,
   "required": [
+    "id",
     "masterDefendantId",
     "correlationId",
     "accountNumber",
     "caseReferences",
     "createdDateTime"
-  ],
-  "additionalProperties": false
+  ]
 }

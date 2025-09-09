@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
+import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
@@ -356,6 +357,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withAccountNumber(accountNumber)
                 .withMasterDefendantId(masterDefendantId)
                 .withCorrelationId(correlationId)
+                .withCaseReferences(prosecutionCaseReferences)
+                .withCreatedDateTime(now())
                 .build();
         return apply(builder().add(hearingFinancialResultsUpdated).build());
     }
