@@ -286,30 +286,23 @@ public class ResultsEventProcessor {
         final List<String> caseUrns = extractCaseUrns(envelope.payloadAsJsonObject().getString(CASE_REFERENCES));
         final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
 
-        LOGGER.info("Processing {} case URNs for NCES email notification: {}", caseUrns.size(), caseUrns);
-        
         for (final String caseUrn : caseUrns) {
-            try {
-                if (isSJPHearing) {
-                    getSjpCaseUUID(caseUrn).ifPresentOrElse(
-                        caseUUID -> {
-                            LOGGER.info("In SJP case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
-                            addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
-                        },
-                        () -> LOGGER.warn("No SJP case UUID found for caseUrn: {}", caseUrn)
-                    );
-                } else {
-                    getCcCaseUUID(caseUrn).ifPresentOrElse(
-                        caseUUID -> {
-                            LOGGER.info("In CC case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
-                            addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
-                        },
-                        () -> LOGGER.warn("No CC case UUID found for caseUrn: {}", caseUrn)
-                    );
-                }
-            } catch (Exception e) {
-                LOGGER.error("Error processing case URN: {} - {}", caseUrn, e.getMessage(), e);
-                // Continue processing other case URNs even if one fails
+            if (isSJPHearing) {
+                getSjpCaseUUID(caseUrn).ifPresentOrElse(
+                    caseUUID -> {
+                        LOGGER.info("In SJP case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
+                        addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
+                    },
+                    () -> LOGGER.warn("No SJP case UUID found for caseUrn: {}", caseUrn)
+                );
+            } else {
+                getCcCaseUUID(caseUrn).ifPresentOrElse(
+                    caseUUID -> {
+                        LOGGER.info("In CC case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
+                        addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
+                    },
+                    () -> LOGGER.warn("No CC case UUID found for caseUrn: {}", caseUrn)
+                );
             }
         }
     }
@@ -374,34 +367,19 @@ public class ResultsEventProcessor {
     }
 
     private Optional<UUID> getCcCaseUUID(final String caseUrn) {
-        try {
-            final Optional<JsonObject> caseIdJsonObject = progressionService.caseExistsByCaseUrn(caseUrn);
-            if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(CASE_ID)){
-                final String caseIdString = caseIdJsonObject.get().getString(CASE_ID);
-                if (caseIdString != null && !caseIdString.trim().isEmpty()) {
-                    return Optional.of(fromString(caseIdString));
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error retrieving CC case UUID for caseUrn: {} - {}", caseUrn, e.getMessage(), e);
+        final Optional<JsonObject> caseIdJsonObject = progressionService.caseExistsByCaseUrn(caseUrn);
+        if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(CASE_ID)){
+            return Optional.of(fromString(caseIdJsonObject.get().getString(CASE_ID)));
         }
-        return Optional.empty();
+        return Optional.empty() ;
     }
 
-
     private Optional<UUID> getSjpCaseUUID(final String caseUrn) {
-        try {
-            final Optional<JsonObject> caseIdJsonObject = sjpService.caseExistsByCaseUrn(caseUrn);
-            if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(SJP_CASE_ID)){
-                final String caseIdString = caseIdJsonObject.get().getString(SJP_CASE_ID);
-                if (caseIdString != null && !caseIdString.trim().isEmpty()) {
-                    return Optional.of(fromString(caseIdString));
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error retrieving SJP case UUID for caseUrn: {} - {}", caseUrn, e.getMessage(), e);
+        final Optional<JsonObject> caseIdJsonObject = sjpService.caseExistsByCaseUrn(caseUrn);
+        if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(SJP_CASE_ID)){
+            return Optional.of(fromString(caseIdJsonObject.get().getString(SJP_CASE_ID)));
         }
-        return Optional.empty();
+        return Optional.empty() ;
     }
 
     @Handles("results.event.nces-email-notification")
