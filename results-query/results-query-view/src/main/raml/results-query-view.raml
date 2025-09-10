@@ -95,7 +95,7 @@ protocols: [ HTTP, HTTPS ]
 /defendant-gob-accounts:
    get:
          description: |
-           Return latest account number by master defendant id & case reference(s)
+           Return latest account number by master defendant id & hearing Id
            ...
            (mapping):
                responseType: application/vnd.results.query.defendant-gob-accounts+json
@@ -106,7 +106,7 @@ protocols: [ HTTP, HTTPS ]
                description: masterDefendantId
                type: string
                required: true
-             caseReferences:
+             hearingId:
                 description: comma separated list of case reference(s)
                 type: string
                 required: true

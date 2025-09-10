@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.persist;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -10,12 +11,15 @@ import org.apache.deltaspike.data.api.Repository;
 @Repository
 public interface DefendantGobAccountsRepository extends EntityRepository<DefendantGobAccountsEntity, UUID> {
 
-    @Query("SELECT d FROM DefendantGobAccountsEntity d WHERE d.masterDefendantId = :masterDefendantId AND" +
-            " (d.caseReferences = :caseReferences OR d.caseReferences LIKE CONCAT('%', :caseReferences, '%') OR" +
-            " :caseReferences LIKE CONCAT('%', d.caseReferences, '%')) AND" +
-            " d.createdDateTime = (SELECT MAX(d2.createdDateTime) FROM DefendantGobAccountsEntity d2 WHERE" +
-            " d2.masterDefendantId = :masterDefendantId AND" +
-            " (d2.caseReferences = :caseReferences OR d2.caseReferences LIKE CONCAT('%', :caseReferences, '%') OR" +
-            " :caseReferences LIKE CONCAT('%', d2.caseReferences, '%')))")
-    DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndCaseReference(@QueryParam("masterDefendantId") final UUID masterDefendantId, @QueryParam("caseReferences") final String caseReferences);
+    @Query(value = """
+            SELECT * 
+            FROM defendant_gob_accounts dga 
+            WHERE dga.master_defendant_id = :masterDefendantId 
+              AND dga.hearing_id = :hearingId
+            ORDER BY dga.account_request_time DESC
+            LIMIT 1
+            """, isNative = true)
+    DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndHearingId(@QueryParam("masterDefendantId") final UUID masterDefendantId,
+                                                                                 @QueryParam("hearingId") final UUID hearingId);
+
 }

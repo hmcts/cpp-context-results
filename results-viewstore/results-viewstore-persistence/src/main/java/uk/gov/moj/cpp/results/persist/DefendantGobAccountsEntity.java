@@ -19,23 +19,45 @@ public class DefendantGobAccountsEntity {
     @Column(name = "master_defendant_id", nullable = false)
     private UUID masterDefendantId;
 
+    @Column(name = "hearing_id", nullable = false)
+    private UUID hearingId;
+
     @Column(name = "correlation_id", nullable = false)
     private UUID correlationId;
 
     @Column(name = "account_number", nullable = false)
     private String accountNumber;
 
-    @Column(name = "case_references")
+    @Column(name = "case_references", nullable = false)
     private String caseReferences;
 
-    @Column(name = "created_date_time")
-    private ZonedDateTime createdDateTime;
+    @Column(name = "account_request_time", nullable = false)
+    private ZonedDateTime accountRequestTime;
+
+    @Column(name = "created_time", nullable = false)
+    private ZonedDateTime createdTime;
 
     public DefendantGobAccountsEntity() {
     }
 
     public DefendantGobAccountsEntity(final UUID id) {
         this.id = id;
+    }
+
+    public UUID getHearingId() {
+        return hearingId;
+    }
+
+    public void setHearingId(final UUID hearingId) {
+        this.hearingId = hearingId;
+    }
+
+    public ZonedDateTime getAccountRequestTime() {
+        return accountRequestTime;
+    }
+
+    public void setAccountRequestTime(final ZonedDateTime accountRequestTime) {
+        this.accountRequestTime = accountRequestTime;
     }
 
     public UUID getId() {
@@ -78,11 +100,11 @@ public class DefendantGobAccountsEntity {
         this.caseReferences = caseReferences;
     }
 
-    public ZonedDateTime getCreatedDateTime() {
-        return createdDateTime;
+    public ZonedDateTime getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreatedDateTime(final ZonedDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public void setCreatedTime(final ZonedDateTime createdTime) {
+        this.createdTime = createdTime;
     }
 }

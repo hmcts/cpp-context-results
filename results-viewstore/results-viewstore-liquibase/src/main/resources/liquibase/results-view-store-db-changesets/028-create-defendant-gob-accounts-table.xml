@@ -4,25 +4,40 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="1" author="cpp.context.results" logicalFilePath="028-create-defendant-gob-accounts-table.xml">
+    <changeSet id="1" author="cpp.context.results"
+               logicalFilePath="028-create-defendant-gob-accounts-table.xml">
         <createTable tableName="defendant_gob_accounts">
-            <column name="id" type="uuid"/>
-            <column name="master_defendant_id" type="uuid"/>
-            <column name="correlation_id" type="uuid"/>
-            <column name="account_number" type="text"/>
-            <column name="case_references" type="text"/>
-            <column name="created_date_time" type="DATETIME"/>
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="master_defendant_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hearing_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correlation_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_number" type="text" />
+            <column name="case_references" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_request_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="2" author="cpp.context.results" logicalFilePath="028-create-defendant-gob-accounts-table.xml">
-        <addPrimaryKey tableName="defendant_gob_accounts" columnNames="id"
-                       constraintName="defendant_gob_accounts_pk"/>
-    </changeSet>
-
-    <changeSet id="3" author="cpp.context.results" logicalFilePath="028-create-defendant-gob-accounts-table.xml">
+    <changeSet id="add-index-master-defendant-id" author="cpp.context.results"
+               logicalFilePath="028-create-defendant-gob-accounts-table.xml">
         <sql>
-            CREATE INDEX IF NOT EXISTS defendant_gob_accounts_master_defendant_id_idx ON defendant_gob_accounts (master_defendant_id);
+            CREATE INDEX IF NOT EXISTS defendant_gob_accounts_master_defendant_id_idx ON
+            defendant_gob_accounts (master_defendant_id);
         </sql>
     </changeSet>
+
 </databaseChangeLog>

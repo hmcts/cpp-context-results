@@ -353,12 +353,26 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> updateAccountNumber(final String accountNumber, final UUID correlationId) {
+        final List<String> caseReferences = correlationItemList.stream()
+                .filter(correlationItem -> correlationId.equals(correlationItem.getAccountCorrelationId()))
+                .findFirst()
+                .map(CorrelationItem::getProsecutionCaseReferences)
+                .orElse(null);
+
+        final  ZonedDateTime accountRequestTime = correlationItemList.stream()
+                .filter(correlationItem -> correlationId.equals(correlationItem.getAccountCorrelationId()))
+                .findFirst()
+                .map(CorrelationItem::getCreatedTime)
+                .orElse(null);
+
         final HearingFinancialResultsUpdated hearingFinancialResultsUpdated = hearingFinancialResultsUpdated()
                 .withAccountNumber(accountNumber)
                 .withMasterDefendantId(masterDefendantId)
+                .withHearingId(hearingId)
                 .withCorrelationId(correlationId)
-                .withCaseReferences(prosecutionCaseReferences)
-                .withCreatedDateTime(now())
+                .withCaseReferences(caseReferences)
+                .withAccountRequestTime(accountRequestTime)
+                .withCreatedTime(now())
                 .build();
         return apply(builder().add(hearingFinancialResultsUpdated).build());
     }

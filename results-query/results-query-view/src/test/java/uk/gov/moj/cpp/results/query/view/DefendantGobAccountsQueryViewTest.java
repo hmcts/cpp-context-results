@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -38,12 +37,14 @@ public class DefendantGobAccountsQueryViewTest {
     @Test
     public void shouldGetDefendantGobAccounts() throws Exception {
         final UUID masterDefendantId = randomUUID();
-        final String caseReferences = "caseRef1, caseRef2";
+        final UUID hearingId = randomUUID();
+        final String storedCaseReferences = "[\"caseRef1\", \"caseRef2\"]"; // JSON array stored in entity
         final DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
         entity.setId(randomUUID());
         entity.setMasterDefendantId(masterDefendantId);
+        entity.setHearingId(hearingId);
         entity.setAccountNumber("ACC123456789");
-        entity.setCaseReferences(caseReferences);
+        entity.setCaseReferences(storedCaseReferences);
 
         final JsonObject jsonObject = mock(JsonObject.class);
         final Metadata metadata = mock(Metadata.class);
@@ -53,8 +54,8 @@ public class DefendantGobAccountsQueryViewTest {
         when(envelope.metadata()).thenReturn(metadata);
         when(envelope.payloadAsJsonObject()).thenReturn(payload);
         when(payload.getString("masterDefendantId")).thenReturn(masterDefendantId.toString());
-        when(payload.getString("caseReferences")).thenReturn(caseReferences);
-        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(masterDefendantId, caseReferences)).thenReturn(entity);
+        when(payload.getString("hearingId")).thenReturn(hearingId.toString());
+        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId)).thenReturn((entity));
         when(objectToJsonObjectConverter.convert(entity)).thenReturn(jsonObject);
 
         final JsonEnvelope result = defendantGobAccountsQueryView.getDefendantGobAccounts(envelope);

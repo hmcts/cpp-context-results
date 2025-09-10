@@ -31,16 +31,16 @@ public class DefendantGobAccountsQueryView {
     @Handles("results.query.defendant-gob-accounts")
     public JsonEnvelope getDefendantGobAccounts(final JsonEnvelope envelope) {
         LOGGER.info("Received getDefendantGobAccounts view {}", envelope.toObfuscatedDebugString());
-        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("masterDefendantId"));
-        final String caseReferences = envelope.payloadAsJsonObject().getString("caseReferences");
+        final UUID masterDefendantId = UUID.fromString(envelope.payloadAsJsonObject().getString("masterDefendantId"));
+        final UUID hearingId = UUID.fromString(envelope.payloadAsJsonObject().getString("hearingId"));
 
-        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(materialId, caseReferences);
-        
+        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
+
         if (defendantGobAccountsEntity == null) {
-            LOGGER.warn("No defendant GOB accounts found for masterDefendantId: {} and caseReferences: {}", materialId, caseReferences);
+            LOGGER.warn("No defendant GOB accounts found for masterDefendantId: {} and hearingId: {}", masterDefendantId, hearingId);
             return envelopeFrom(envelope.metadata(), null);
         }
-        
+
         final JsonObject jsonObject = objectToJsonObjectConverter.convert(defendantGobAccountsEntity);
         return envelopeFrom(envelope.metadata(), jsonObject);
     }

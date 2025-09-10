@@ -598,19 +598,19 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse1.get("originalApplicationResults"), notNullValue());
         assertThat(jsonResponse1.get("newApplicationResults"), notNullValue());
 
-        // Query for the latest account (accountNumber3) with case reference
-        getDefendantAccountNumber(masterDefendantId, accountCorrelationId3, accountNumber3, "32DN1212262");
+        // Query for the latest account (accountNumber3) with hearingId
+        getDefendantAccountNumber(masterDefendantId, accountCorrelationId3, accountNumber3, hearingId);
     }
 
-    private void getDefendantAccountNumber(final String masterDefendantId, final String accountCorrelationId3, final String accountNumber3, final String caseReferences) {
+    private void getDefendantAccountNumber(final String masterDefendantId, final String accountCorrelationId3, final String accountNumber3, final String hearingId) {
         given()
                 .baseUri(BASE_URI)
                 .header("Content-Type", "application/vnd.results.query.defendant-gob-accounts+json")
                 .header("Accept", "application/vnd.results.query.defendant-gob-accounts+json")
                 .header(USER_ID, getUserId())
                 .when()
-                .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&caseReferences={caseReferences}",
-                        masterDefendantId, "32DN1212262")
+                .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&hearingId={hearingId}",
+                        masterDefendantId, hearingId)
                 .then()
                 .statusCode(200)
                 .body("id", notNullValue())
@@ -618,7 +618,10 @@ public class StagingEnforcementIT {
                 .body("correlationId", equalTo(accountCorrelationId3))
                 .body("accountNumber", equalTo(accountNumber3))
                 .body("caseReferences", containsString("32DN1212262"))
-                .body("createdDateTime", notNullValue());
+                .body("createdTime", notNullValue())
+                .body("accountRequestTime", notNullValue())
+                .body("hearingId", equalTo(hearingId));
+
     }
 
 

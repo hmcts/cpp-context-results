@@ -1685,7 +1685,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
-                Arguments.of("Next Hearing>> fin case > app > finalised, offence adj > NextHearing : offence Fine",
+                Arguments.of("TBD-OUTDated:Need to change ** app resulted: Granted and offence adjourned payload***:: Next Hearing>> fin case > app > finalised, offence adj > NextHearing : offence Fine",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application-amendments-nexh/fin-case/single-offence/appfinal-off-adj-nexh-off-fin-amended-fin/case-resulted.json",
@@ -1699,11 +1699,12 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("adj app resulted: fine")
                                         .withResultTrackedEvent("json/nces/application-amendments-nexh/fin-case/single-offence/appfinal-off-adj-nexh-off-fin-amended-fin/app-resulted-hearing2.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested")
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived",  "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments-nexh/fin-case/single-offence/appfinal-off-adj-nexh-off-fin-amended-fin/nces_granted_offence_resulted_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 )
         );

@@ -14,7 +14,11 @@ import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+
+import static javax.json.Json.createArrayBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +43,9 @@ public class HearingFinancialResultsUpdatedListener {
     private void saveDefendantGobAccounts(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
         final UUID masterDefendantId = hearingFinancialResultsUpdated.getMasterDefendantId();
         final UUID correlationId = hearingFinancialResultsUpdated.getCorrelationId();
+        final UUID hearingId = hearingFinancialResultsUpdated.getHearingId();
         defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsUpdated));
-        LOGGER.info("GOB account Details are saved successfully stored for masterDefendantId id & correlationId id : {} & {}", masterDefendantId, correlationId);
+        LOGGER.info("GOB account Details are saved successfully stored for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
     }
 
     private DefendantGobAccountsEntity createDefendantGobAccountsEntity(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
@@ -49,8 +54,18 @@ public class HearingFinancialResultsUpdatedListener {
         defendantGobAccountsEntity.setMasterDefendantId(hearingFinancialResultsUpdated.getMasterDefendantId());
         defendantGobAccountsEntity.setCorrelationId(hearingFinancialResultsUpdated.getCorrelationId());
         defendantGobAccountsEntity.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber());
-        defendantGobAccountsEntity.setCaseReferences(hearingFinancialResultsUpdated.getCaseReferences().toString());
-        defendantGobAccountsEntity.setCreatedDateTime(hearingFinancialResultsUpdated.getCreatedDateTime());
+        defendantGobAccountsEntity.setCaseReferences(convertCaseReferencesToJsonArray(hearingFinancialResultsUpdated.getCaseReferences()).toString());
+        defendantGobAccountsEntity.setCreatedTime(hearingFinancialResultsUpdated.getCreatedTime());
+        defendantGobAccountsEntity.setAccountRequestTime(hearingFinancialResultsUpdated.getAccountRequestTime());
+        defendantGobAccountsEntity.setHearingId(hearingFinancialResultsUpdated.getHearingId());
         return defendantGobAccountsEntity;
+    }
+
+    private JsonArray convertCaseReferencesToJsonArray(final java.util.List<String> caseReferences) {
+        final JsonArrayBuilder arrayBuilder = createArrayBuilder();
+        if (caseReferences != null) {
+            caseReferences.forEach(arrayBuilder::add);
+        }
+        return arrayBuilder.build();
     }
 }

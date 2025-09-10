@@ -22,7 +22,7 @@ public class DefendantGobAccountsQueryApi {
 
     @Handles("results.query.defendant-gob-accounts")
     public JsonEnvelope getDefendantGobAccounts(final JsonEnvelope envelope) {
-        LOGGER.info("Received getNcesEmailNotificationDetails api {}", envelope.toObfuscatedDebugString());
+        LOGGER.info("Received getDefendantGobAccounts api {}", envelope.toObfuscatedDebugString());
         return defendantGobAccountsQueryView.getDefendantGobAccounts(envelope);
     }
 }

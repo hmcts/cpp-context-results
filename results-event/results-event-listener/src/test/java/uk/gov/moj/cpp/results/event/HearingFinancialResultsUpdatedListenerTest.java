@@ -20,7 +20,7 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,9 +69,12 @@ class HearingFinancialResultsUpdatedListenerTest {
         assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getId(), is(notNullValue()));
         assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getMasterDefendantId(), is(hearingFinancialResultsUpdated.getMasterDefendantId()));
         assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCorrelationId(), is(hearingFinancialResultsUpdated.getCorrelationId()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCaseReferences(), is(hearingFinancialResultsUpdated.getCaseReferences().toString()));
+        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCaseReferences(), is(notNullValue()));
+        String storedCaseReferences = hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCaseReferences();
+        assertThat(storedCaseReferences.startsWith("["), is(true));
+        assertThat(storedCaseReferences.endsWith("]"), is(true));
         assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getAccountNumber(), is(hearingFinancialResultsUpdated.getAccountNumber()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCreatedDateTime(), is(notNullValue()));
+        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCreatedTime(), is(notNullValue()));
 
     }
 
@@ -80,8 +83,8 @@ class HearingFinancialResultsUpdatedListenerTest {
                 .withCorrelationId(randomUUID())
                 .withMasterDefendantId(randomUUID())
                 .withAccountNumber("accountNumber1")
-                .withCaseReferences(Collections.singletonList("caseRef1, caseRef2"))
-                .withCreatedDateTime(now(UTC))
+                .withCaseReferences(Arrays.asList("caseRef1", "caseRef2"))
+                .withCreatedTime(now(UTC))
                 .build();
     }
 

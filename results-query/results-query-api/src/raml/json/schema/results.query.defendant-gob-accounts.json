@@ -9,6 +9,9 @@
     "masterDefendantId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
+    "hearingId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
     "correlationId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
@@ -18,7 +21,12 @@
     "caseReferences": {
       "type": "string"
     },
-    "createdDateTime": {
+    "accountRequestTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "createdTime": {
+      "type": "string",
       "format": "date-time"
     }
   },
@@ -26,9 +34,11 @@
   "required": [
     "id",
     "masterDefendantId",
+    "hearingId",
     "correlationId",
     "accountNumber",
     "caseReferences",
-    "createdDateTime"
+    "accountRequestTime",
+    "createdTime"
   ]
 }
