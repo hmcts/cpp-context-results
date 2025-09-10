@@ -10,7 +10,6 @@ import static uk.gov.justice.services.test.utils.core.matchers.HandlerClassMatch
 import static uk.gov.justice.services.test.utils.core.matchers.HandlerMethodMatcher.method;
 
 import uk.gov.justice.services.core.annotation.Handles;
-import uk.gov.moj.cpp.results.query.api.DefendantGobAccountsQueryApi;
 
 import java.io.File;
 import java.io.IOException;

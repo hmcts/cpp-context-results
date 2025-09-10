@@ -38,7 +38,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
     }
 
     @Test
-    public void shouldFindByAccountNumber() {
+    public void shouldFindAccountNumber() {
         final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndCaseReference(hearingFinancialDetails.getMasterDefendantId(), hearingFinancialDetails.getCaseReferences());
         assertThat(defendantGobAccountsEntity, is(notNullValue()));
         assertThat(defendantGobAccountsEntity.getId(), is(hearingFinancialDetails.getId()));
