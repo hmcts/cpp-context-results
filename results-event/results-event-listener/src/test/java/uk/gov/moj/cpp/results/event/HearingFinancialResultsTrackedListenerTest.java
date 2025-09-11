@@ -6,6 +6,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
@@ -100,6 +101,16 @@ class HearingFinancialResultsTrackedListenerTest {
         assertThat(capturedEntity.getCaseReferences(), is("[]"));
     }
 
+    @Test
+    public void shouldNotSaveWhenNoCorrelationId() {
+        HearingFinancialResultsTracked hearingFinancialResultsTracked = hearingFinancialResultsTrackedWithNullCorrelationId();
+        JsonEnvelope jsonEnvelope = createJsonEnvelope(hearingFinancialResultsTracked);
+        hearingFinancialResultsTrackedListener.processDefendantGobAccounts(jsonEnvelope);
+
+        // Verify that save was never called when correlationId is null
+        verify(defendantGobAccountsRepository, never()).save(this.defendantGobAccountsEntityArgumentCaptor.capture());
+    }
+
     private HearingFinancialResultsTracked hearingFinancialResultsTracked() {
         List<String> caseReferences = Arrays.asList("caseRef1", "caseRef2");
         
@@ -122,6 +133,22 @@ class HearingFinancialResultsTrackedListenerTest {
                 .withAccountCorrelationId(randomUUID())
                 .withHearingId(randomUUID())
                 .withProsecutionCaseReferences(null)
+                .build();
+
+        return HearingFinancialResultsTracked.hearingFinancialResultsTracked()
+                .withHearingFinancialResultRequest(request)
+                .withCreatedTime(now(UTC))
+                .build();
+    }
+
+    private HearingFinancialResultsTracked hearingFinancialResultsTrackedWithNullCorrelationId() {
+        List<String> caseReferences = Arrays.asList("caseRef1", "caseRef2");
+        
+        HearingFinancialResultRequest request = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withMasterDefendantId(randomUUID())
+                .withAccountCorrelationId(null) // No correlationId
+                .withHearingId(randomUUID())
+                .withProsecutionCaseReferences(caseReferences)
                 .build();
 
         return HearingFinancialResultsTracked.hearingFinancialResultsTracked()

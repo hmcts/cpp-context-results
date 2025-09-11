@@ -45,8 +45,14 @@ public class HearingFinancialResultsTrackedListener {
         final UUID masterDefendantId = hearingFinancialResultRequest.getMasterDefendantId();
         final UUID correlationId = hearingFinancialResultRequest.getAccountCorrelationId();
         final UUID hearingId = hearingFinancialResultRequest.getHearingId();
-        defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsTracked));
-        LOGGER.info("GOB account Details are saved successfully stored for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+        
+        // Only save if correlationId is present
+        if (correlationId != null) {
+            defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsTracked));
+            LOGGER.info("Correlation details are saved successfully stored for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+        } else {
+            LOGGER.info("Skipping Correlation details save - no correlationId present for masterDefendantId id & hearingId : {} & {}", masterDefendantId, hearingId);
+        }
     }
 
     private DefendantGobAccountsEntity createDefendantGobAccountsEntity(HearingFinancialResultsTracked hearingFinancialResultsTracked) {
