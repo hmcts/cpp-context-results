@@ -1,44 +1,34 @@
 package uk.gov.moj.cpp.results.event;
 
-import static java.time.ZonedDateTime.now;
-import static java.time.ZoneOffset.UTC;
 import static java.util.UUID.randomUUID;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
-import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
-import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static org.mockito.Mockito.when;
 
 import uk.gov.justice.core.courts.HearingFinancialResultsUpdated;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
-import java.util.Arrays;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
+import javax.json.Json;
+import javax.json.JsonObject;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class HearingFinancialResultsUpdatedListenerTest {
 
-    @Spy
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
-
-    @Spy
+    @Mock
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
     @Mock
@@ -47,54 +37,86 @@ class HearingFinancialResultsUpdatedListenerTest {
     @InjectMocks
     private HearingFinancialResultsUpdatedListener hearingFinancialResultsUpdatedListener;
 
-    @Captor
-    private ArgumentCaptor<DefendantGobAccountsEntity> hearingFinancialDetailsEntityArgumentCaptor;
-
-    @BeforeEach
-    public void setup() {
-        setField(this.objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
-        setField(this.jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
+    @Test
+    public void shouldHandleDefendantGOBAccounts() throws Exception {
+        // Create test data
+        UUID masterDefendantId = randomUUID();
+        UUID correlationId = randomUUID();
+        UUID hearingId = randomUUID();
+        String accountNumber = "TEST123";
+        ZonedDateTime accountRequestTime = ZonedDateTime.now();
+        
+        // Create mock JsonEnvelope
+        JsonEnvelope mockEnvelope = mock(JsonEnvelope.class);
+        JsonObject mockPayload = mock(JsonObject.class);
+        when(mockEnvelope.payloadAsJsonObject()).thenReturn(mockPayload);
+        
+        // Create mock HearingFinancialResultsUpdated
+        HearingFinancialResultsUpdated mockHearingFinancialResultsUpdated = mock(HearingFinancialResultsUpdated.class);
+        when(mockHearingFinancialResultsUpdated.getMasterDefendantId()).thenReturn(masterDefendantId);
+        when(mockHearingFinancialResultsUpdated.getCorrelationId()).thenReturn(correlationId);
+        when(mockHearingFinancialResultsUpdated.getHearingId()).thenReturn(hearingId);
+        when(mockHearingFinancialResultsUpdated.getAccountNumber()).thenReturn(accountNumber);
+        when(mockHearingFinancialResultsUpdated.getAccountRequestTime()).thenReturn(accountRequestTime);
+        
+        // Mock the converter
+        when(jsonObjectToObjectConverter.convert(mockPayload, HearingFinancialResultsUpdated.class))
+                .thenReturn(mockHearingFinancialResultsUpdated);
+        
+        // Mock the repository to return an existing entity
+        DefendantGobAccountsEntity existingEntity = new DefendantGobAccountsEntity();
+        existingEntity.setId(randomUUID());
+        existingEntity.setMasterDefendantId(masterDefendantId);
+        existingEntity.setCorrelationId(correlationId);
+        existingEntity.setHearingId(hearingId);
+        
+        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(
+                masterDefendantId, hearingId, correlationId)).thenReturn(existingEntity);
+        
+        // Call the public method
+        hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(mockEnvelope);
+        
+        // Verify that the repository save method was called with the existing entity
+        verify(defendantGobAccountsRepository).save(existingEntity);
+        
+        // Verify that the entity was updated with the correct values
+        assert existingEntity.getAccountNumber().equals(accountNumber);
+        assert existingEntity.getAccountRequestTime().equals(accountRequestTime);
+        assert existingEntity.getUpdateTime() != null;
     }
 
     @Test
-    public void shouldHandleDefendantGOBAccounts() {
-        HearingFinancialResultsUpdated hearingFinancialResultsUpdated = hearingFinancialResultsUpdated();
-        JsonEnvelope jsonEnvelope = createJsonEnvelope(hearingFinancialResultsUpdated);
-        hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(jsonEnvelope);
-
-        verify(defendantGobAccountsRepository).save(this.hearingFinancialDetailsEntityArgumentCaptor.capture());
-
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues(), is(notNullValue()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().size(), is(1));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getId(), is(notNullValue()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getMasterDefendantId(), is(hearingFinancialResultsUpdated.getMasterDefendantId()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCorrelationId(), is(hearingFinancialResultsUpdated.getCorrelationId()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCaseReferences(), is(notNullValue()));
-        String storedCaseReferences = hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCaseReferences();
-        assertThat(storedCaseReferences.startsWith("["), is(true));
-        assertThat(storedCaseReferences.endsWith("]"), is(true));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getAccountNumber(), is(hearingFinancialResultsUpdated.getAccountNumber()));
-        assertThat(hearingFinancialDetailsEntityArgumentCaptor.getAllValues().get(0).getCreatedTime(), is(notNullValue()));
-
-    }
-
-    private HearingFinancialResultsUpdated hearingFinancialResultsUpdated() {
-        return HearingFinancialResultsUpdated.hearingFinancialResultsUpdated()
-                .withCorrelationId(randomUUID())
-                .withMasterDefendantId(randomUUID())
-                .withAccountNumber("accountNumber1")
-                .withCaseReferences(Arrays.asList("caseRef1", "caseRef2"))
-                .withCreatedTime(now(UTC))
-                .build();
-    }
-
-    private JsonEnvelope createJsonEnvelope(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
-        final Metadata metadata = metadataBuilder()
-                .withId(randomUUID())
-                .withName("results.event.hearing-financial-results-updated")
-                .build();
-
-        return envelopeFrom(metadata,
-                objectToJsonObjectConverter.convert(hearingFinancialResultsUpdated));
+    public void shouldNotSaveWhenNoExistingEntityFound() throws Exception {
+        // Create test data
+        UUID masterDefendantId = randomUUID();
+        UUID correlationId = randomUUID();
+        UUID hearingId = randomUUID();
+        String accountNumber = "TEST123";
+        ZonedDateTime accountRequestTime = ZonedDateTime.now();
+        
+        // Create mock JsonEnvelope
+        JsonEnvelope mockEnvelope = mock(JsonEnvelope.class);
+        JsonObject mockPayload = mock(JsonObject.class);
+        when(mockEnvelope.payloadAsJsonObject()).thenReturn(mockPayload);
+        
+        // Create mock HearingFinancialResultsUpdated
+        HearingFinancialResultsUpdated mockHearingFinancialResultsUpdated = mock(HearingFinancialResultsUpdated.class);
+        when(mockHearingFinancialResultsUpdated.getMasterDefendantId()).thenReturn(masterDefendantId);
+        when(mockHearingFinancialResultsUpdated.getCorrelationId()).thenReturn(correlationId);
+        when(mockHearingFinancialResultsUpdated.getHearingId()).thenReturn(hearingId);
+        
+        // Mock the converter
+        when(jsonObjectToObjectConverter.convert(mockPayload, HearingFinancialResultsUpdated.class))
+                .thenReturn(mockHearingFinancialResultsUpdated);
+        
+        // Mock the repository to return null (no existing entity)
+        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(
+                masterDefendantId, hearingId, correlationId)).thenReturn(null);
+        
+        // Call the public method
+        hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(mockEnvelope);
+        
+        // Verify that the repository save method was NOT called
+        verify(defendantGobAccountsRepository, never()).save(any(DefendantGobAccountsEntity.class));
     }
 }

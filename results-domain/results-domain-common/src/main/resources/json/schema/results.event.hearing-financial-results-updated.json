@@ -15,18 +15,11 @@
     "accountNumber": {
       "type": "string"
     },
-    "caseReferences": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "string"
-      }
-    },
     "accountRequestTime": {
       "type": "string",
       "format": "date-time"
     },
-    "createdTime": {
+    "updatedTime": {
       "type": "string",
       "format": "date-time"
     }
@@ -36,9 +29,8 @@
     "correlationId",
     "hearingId",
     "accountNumber",
-    "caseReferences",
     "accountRequestTime",
-    "createdTime"
+    "updatedTime"
   ],
   "additionalProperties": false
 }

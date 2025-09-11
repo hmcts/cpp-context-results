@@ -22,4 +22,15 @@ public interface DefendantGobAccountsRepository extends EntityRepository<Defenda
     DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndHearingId(@QueryParam("masterDefendantId") final UUID masterDefendantId,
                                                                                  @QueryParam("hearingId") final UUID hearingId);
 
+    @Query(value = """
+            SELECT * 
+            FROM defendant_gob_accounts dga 
+            WHERE dga.master_defendant_id = :masterDefendantId 
+              AND dga.hearing_id = :hearingId
+              AND dga.correlationId = :correlationId
+            """, isNative = true)
+    DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(@QueryParam("masterDefendantId") final UUID masterDefendantId,
+                                                                                @QueryParam("hearingId") final UUID hearingId,
+                                                                                @QueryParam("correlationId") final UUID correlationId);
+
 }

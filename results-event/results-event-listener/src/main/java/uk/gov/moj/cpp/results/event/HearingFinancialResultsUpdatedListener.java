@@ -11,6 +11,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -37,25 +38,52 @@ public class HearingFinancialResultsUpdatedListener {
     public void handleDefendantGobAccounts(final JsonEnvelope event) {
         final JsonObject requestJson = event.payloadAsJsonObject();
         final HearingFinancialResultsUpdated hearingFinancialResultsUpdated = jsonObjectToObjectConverter.convert(requestJson, HearingFinancialResultsUpdated.class);
-        saveDefendantGobAccounts(hearingFinancialResultsUpdated);
-    }
-
-    private void saveDefendantGobAccounts(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
+        //updateDefendantGobAccounts(hearingFinancialResultsUpdated);
         final UUID masterDefendantId = hearingFinancialResultsUpdated.getMasterDefendantId();
         final UUID correlationId = hearingFinancialResultsUpdated.getCorrelationId();
         final UUID hearingId = hearingFinancialResultsUpdated.getHearingId();
-        defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsUpdated));
-        LOGGER.info("GOB account Details are saved successfully stored for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+
+        // Find existing record to update with account_number
+        final DefendantGobAccountsEntity existingEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(masterDefendantId, hearingId, correlationId);
+
+        if (existingEntity != null) {
+            // Update existing record with account_number and account_request_time
+            existingEntity.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber());
+            existingEntity.setAccountRequestTime(hearingFinancialResultsUpdated.getAccountRequestTime());
+            existingEntity.setUpdateTime(ZonedDateTime.now());
+            defendantGobAccountsRepository.save(existingEntity);
+            LOGGER.info("GOB account Details updated with account_number for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+        }
     }
 
-    private DefendantGobAccountsEntity createDefendantGobAccountsEntity(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
+    private void updateDefendantGobAccounts(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
+        final UUID masterDefendantId = hearingFinancialResultsUpdated.getMasterDefendantId();
+        final UUID correlationId = hearingFinancialResultsUpdated.getCorrelationId();
+        final UUID hearingId = hearingFinancialResultsUpdated.getHearingId();
+        
+        // Find existing record to update with account_number
+        final DefendantGobAccountsEntity existingEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(masterDefendantId, hearingId, correlationId);
+        
+        if (existingEntity != null) {
+            // Update existing record with account_number and account_request_time
+            existingEntity.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber());
+            existingEntity.setAccountRequestTime(hearingFinancialResultsUpdated.getAccountRequestTime());
+            existingEntity.setUpdateTime(ZonedDateTime.now());
+            defendantGobAccountsRepository.save(existingEntity);
+            LOGGER.info("GOB account Details updated with account_number for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+        } /*else {
+            // Fallback: create new record if none exists (shouldn't happen in normal flow)
+            defendantGobAccountsRepository.save(updateDefendantGobAccountsEntity(hearingFinancialResultsUpdated));
+            LOGGER.warn("No existing GOB account record found, created new one for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+        }*/
+    }
+
+    /*private DefendantGobAccountsEntity updateDefendantGobAccountsEntity(HearingFinancialResultsUpdated hearingFinancialResultsUpdated) {
         final DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity();
         defendantGobAccountsEntity.setId(randomUUID());
         defendantGobAccountsEntity.setMasterDefendantId(hearingFinancialResultsUpdated.getMasterDefendantId());
         defendantGobAccountsEntity.setCorrelationId(hearingFinancialResultsUpdated.getCorrelationId());
         defendantGobAccountsEntity.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber());
-        defendantGobAccountsEntity.setCaseReferences(convertCaseReferencesToJsonArray(hearingFinancialResultsUpdated.getCaseReferences()).toString());
-        defendantGobAccountsEntity.setCreatedTime(hearingFinancialResultsUpdated.getCreatedTime());
         defendantGobAccountsEntity.setAccountRequestTime(hearingFinancialResultsUpdated.getAccountRequestTime());
         defendantGobAccountsEntity.setHearingId(hearingFinancialResultsUpdated.getHearingId());
         return defendantGobAccountsEntity;
@@ -67,5 +95,5 @@ public class HearingFinancialResultsUpdatedListener {
             caseReferences.forEach(arrayBuilder::add);
         }
         return arrayBuilder.build();
-    }
+    }*/
 }

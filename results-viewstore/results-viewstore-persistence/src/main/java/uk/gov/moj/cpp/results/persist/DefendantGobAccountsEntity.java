@@ -25,17 +25,20 @@ public class DefendantGobAccountsEntity {
     @Column(name = "correlation_id", nullable = false)
     private UUID correlationId;
 
-    @Column(name = "account_number", nullable = false)
+    @Column(name = "account_number")
     private String accountNumber;
 
     @Column(name = "case_references", nullable = false)
     private String caseReferences;
 
-    @Column(name = "account_request_time", nullable = false)
+    @Column(name = "account_request_time")
     private ZonedDateTime accountRequestTime;
 
     @Column(name = "created_time", nullable = false)
     private ZonedDateTime createdTime;
+
+    @Column(name = "updated_time")
+    private ZonedDateTime updateTime;
 
     public DefendantGobAccountsEntity() {
     }
@@ -106,5 +109,13 @@ public class DefendantGobAccountsEntity {
 
     public void setCreatedTime(final ZonedDateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public ZonedDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(final ZonedDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }
