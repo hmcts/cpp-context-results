@@ -514,6 +514,7 @@ public class StagingEnforcementIT {
 
         //PAAS request to result API after case resulted with fine
         initiateResultBeforeApplication(TRACE_RESULT_CASE, masterDefendantId, accountCorrelationId1, false, true, hearingId, offenceId);
+        //whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId1, accountNumber1);
 
         //Create Application and result with Granted and Fine
         final JsonObject applicationResultedPayload = convertStringToJson(getPayload(TEMPLATE_PAYLOAD)
@@ -527,7 +528,9 @@ public class StagingEnforcementIT {
 
         //PAAS request to results API after application resulted with fine
         initiateResultForApplicationGranted(TRACE_RESULT_GRANTED, masterDefendantId, hearingId, accountCorrelationId2, offenceId, applicationId);
-        final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
+        whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId2, accountNumber2);
+
+      /*  final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId2)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
                 .add(UPDATED, "2019-12-01T10:00:00Z")
@@ -538,10 +541,10 @@ public class StagingEnforcementIT {
         JsonPath jsonResponse = QueueUtil.retrieveMessage(hearingFinancialResultsUpdatedConsumer);
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId2));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber2));
+        assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber2));*/
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("STATUTORY DECLARATION GRANTED")).findFirst().orElseGet(() -> JsonPath.from("{}"));
+        JsonPath jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("STATUTORY DECLARATION GRANTED")).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("STATUTORY DECLARATION GRANTED"));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));

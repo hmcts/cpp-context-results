@@ -61,11 +61,11 @@ public class HearingFinancialResultsTrackedListener {
         defendantGobAccountsEntity.setId(randomUUID());
         defendantGobAccountsEntity.setMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId());
         defendantGobAccountsEntity.setCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId());
-        // account_number is not set here as it's not available during the tracked event
+        // account_number is not set here as it may not be available if GOB happens in one go after multiple amendments
         defendantGobAccountsEntity.setCaseReferences(convertCaseReferencesToJsonArray(hearingFinancialResultRequest.getProsecutionCaseReferences()).toString());
-        defendantGobAccountsEntity.setCreatedTime(ZonedDateTime.now());
-        //defendantGobAccountsEntity.setAccountRequestTime(hearingFinancialResultsTracked.getCreatedTime()); // Use created time as account request time
+        defendantGobAccountsEntity.setCreatedTime(hearingFinancialResultsTracked.getCreatedTime());
         defendantGobAccountsEntity.setHearingId(hearingFinancialResultRequest.getHearingId());
+        defendantGobAccountsEntity.setUpdatedTime(ZonedDateTime.now());
         return defendantGobAccountsEntity;
     }
 

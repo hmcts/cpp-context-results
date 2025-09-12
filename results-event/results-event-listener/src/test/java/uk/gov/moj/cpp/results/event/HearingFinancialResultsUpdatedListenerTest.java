@@ -16,7 +16,6 @@ import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
@@ -46,12 +45,10 @@ class HearingFinancialResultsUpdatedListenerTest {
         String accountNumber = "TEST123";
         ZonedDateTime accountRequestTime = ZonedDateTime.now();
         
-        // Create mock JsonEnvelope
         JsonEnvelope mockEnvelope = mock(JsonEnvelope.class);
         JsonObject mockPayload = mock(JsonObject.class);
         when(mockEnvelope.payloadAsJsonObject()).thenReturn(mockPayload);
         
-        // Create mock HearingFinancialResultsUpdated
         HearingFinancialResultsUpdated mockHearingFinancialResultsUpdated = mock(HearingFinancialResultsUpdated.class);
         when(mockHearingFinancialResultsUpdated.getMasterDefendantId()).thenReturn(masterDefendantId);
         when(mockHearingFinancialResultsUpdated.getCorrelationId()).thenReturn(correlationId);
@@ -59,30 +56,25 @@ class HearingFinancialResultsUpdatedListenerTest {
         when(mockHearingFinancialResultsUpdated.getAccountNumber()).thenReturn(accountNumber);
         when(mockHearingFinancialResultsUpdated.getAccountRequestTime()).thenReturn(accountRequestTime);
         
-        // Mock the converter
         when(jsonObjectToObjectConverter.convert(mockPayload, HearingFinancialResultsUpdated.class))
                 .thenReturn(mockHearingFinancialResultsUpdated);
         
-        // Mock the repository to return an existing entity
         DefendantGobAccountsEntity existingEntity = new DefendantGobAccountsEntity();
         existingEntity.setId(randomUUID());
         existingEntity.setMasterDefendantId(masterDefendantId);
         existingEntity.setCorrelationId(correlationId);
         existingEntity.setHearingId(hearingId);
         
-        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(
+        when(defendantGobAccountsRepository.findByMasterDefendantIdAndHearingIdAndCorrelationId(
                 masterDefendantId, hearingId, correlationId)).thenReturn(existingEntity);
         
-        // Call the public method
         hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(mockEnvelope);
-        
-        // Verify that the repository save method was called with the existing entity
+
         verify(defendantGobAccountsRepository).save(existingEntity);
         
-        // Verify that the entity was updated with the correct values
         assert existingEntity.getAccountNumber().equals(accountNumber);
         assert existingEntity.getAccountRequestTime().equals(accountRequestTime);
-        assert existingEntity.getUpdateTime() != null;
+        assert existingEntity.getUpdatedTime() != null;
     }
 
     @Test
@@ -94,29 +86,23 @@ class HearingFinancialResultsUpdatedListenerTest {
         String accountNumber = "TEST123";
         ZonedDateTime accountRequestTime = ZonedDateTime.now();
         
-        // Create mock JsonEnvelope
         JsonEnvelope mockEnvelope = mock(JsonEnvelope.class);
         JsonObject mockPayload = mock(JsonObject.class);
         when(mockEnvelope.payloadAsJsonObject()).thenReturn(mockPayload);
         
-        // Create mock HearingFinancialResultsUpdated
         HearingFinancialResultsUpdated mockHearingFinancialResultsUpdated = mock(HearingFinancialResultsUpdated.class);
         when(mockHearingFinancialResultsUpdated.getMasterDefendantId()).thenReturn(masterDefendantId);
         when(mockHearingFinancialResultsUpdated.getCorrelationId()).thenReturn(correlationId);
         when(mockHearingFinancialResultsUpdated.getHearingId()).thenReturn(hearingId);
         
-        // Mock the converter
         when(jsonObjectToObjectConverter.convert(mockPayload, HearingFinancialResultsUpdated.class))
                 .thenReturn(mockHearingFinancialResultsUpdated);
         
-        // Mock the repository to return null (no existing entity)
-        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(
+        when(defendantGobAccountsRepository.findByMasterDefendantIdAndHearingIdAndCorrelationId(
                 masterDefendantId, hearingId, correlationId)).thenReturn(null);
         
-        // Call the public method
         hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(mockEnvelope);
         
-        // Verify that the repository save method was NOT called
         verify(defendantGobAccountsRepository, never()).save(any(DefendantGobAccountsEntity.class));
     }
 }

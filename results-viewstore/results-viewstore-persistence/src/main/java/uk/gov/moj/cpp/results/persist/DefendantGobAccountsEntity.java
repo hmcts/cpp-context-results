@@ -37,8 +37,8 @@ public class DefendantGobAccountsEntity {
     @Column(name = "created_time", nullable = false)
     private ZonedDateTime createdTime;
 
-    @Column(name = "updated_time")
-    private ZonedDateTime updateTime;
+    @Column(name = "updated_time", nullable = false)
+    private ZonedDateTime updatedTime;
 
     public DefendantGobAccountsEntity() {
     }
@@ -111,11 +111,11 @@ public class DefendantGobAccountsEntity {
         this.createdTime = createdTime;
     }
 
-    public ZonedDateTime getUpdateTime() {
-        return updateTime;
+    public ZonedDateTime getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setUpdateTime(final ZonedDateTime updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdatedTime(final ZonedDateTime updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }

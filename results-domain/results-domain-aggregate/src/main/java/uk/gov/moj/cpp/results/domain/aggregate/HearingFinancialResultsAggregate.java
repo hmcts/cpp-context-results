@@ -372,6 +372,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withCorrelationId(correlationId)
                 //.withCaseReferences(caseReferences)
                 .withAccountRequestTime(accountRequestTime)
+                .withUpdatedTime(now())
                 //.withCreatedTime(now())
                 .build();
         return apply(builder().add(hearingFinancialResultsUpdated).build());

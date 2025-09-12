@@ -28,6 +28,10 @@
     "createdTime": {
       "type": "string",
       "format": "date-time"
+    },
+    "updatedTime": {
+      "type": "string",
+      "format": "date-time"
     }
   },
   "additionalProperties": false,
@@ -39,6 +43,7 @@
     "accountNumber",
     "caseReferences",
     "accountRequestTime",
-    "createdTime"
+    "createdTime",
+    "updatedTime"
   ]
 }

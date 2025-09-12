@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.persist;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.deltaspike.data.api.EntityRepository;
@@ -27,10 +26,10 @@ public interface DefendantGobAccountsRepository extends EntityRepository<Defenda
             FROM defendant_gob_accounts dga 
             WHERE dga.master_defendant_id = :masterDefendantId 
               AND dga.hearing_id = :hearingId
-              AND dga.correlationId = :correlationId
+              AND dga.correlation_id = :correlationId
             """, isNative = true)
-    DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(@QueryParam("masterDefendantId") final UUID masterDefendantId,
-                                                                                @QueryParam("hearingId") final UUID hearingId,
-                                                                                @QueryParam("correlationId") final UUID correlationId);
+    DefendantGobAccountsEntity findByMasterDefendantIdAndHearingIdAndCorrelationId(@QueryParam("masterDefendantId") final UUID masterDefendantId,
+                                                                                   @QueryParam("hearingId") final UUID hearingId,
+                                                                                   @QueryParam("correlationId") final UUID correlationId);
 
 }

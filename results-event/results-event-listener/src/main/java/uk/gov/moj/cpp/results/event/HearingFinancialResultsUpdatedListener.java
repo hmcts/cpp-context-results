@@ -38,13 +38,13 @@ public class HearingFinancialResultsUpdatedListener {
         final UUID hearingId = hearingFinancialResultsUpdated.getHearingId();
 
         // Find existing record to update with account_number
-        final DefendantGobAccountsEntity existingEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingIdAndCorrelationId(masterDefendantId, hearingId, correlationId);
+        final DefendantGobAccountsEntity existingEntity = defendantGobAccountsRepository.findByMasterDefendantIdAndHearingIdAndCorrelationId(masterDefendantId, hearingId, correlationId);
 
         if (existingEntity != null) {
             // Update existing record with account_number and account_request_time
             existingEntity.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber());
             existingEntity.setAccountRequestTime(hearingFinancialResultsUpdated.getAccountRequestTime());
-            existingEntity.setUpdateTime(ZonedDateTime.now());
+            existingEntity.setUpdatedTime(ZonedDateTime.now());
             defendantGobAccountsRepository.save(existingEntity);
             LOGGER.info("GOB account Details updated with account_number for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
         }

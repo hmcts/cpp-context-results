@@ -20,14 +20,16 @@
                 <constraints nullable="false"/>
             </column>
             <column name="account_number" type="text" />
+            <column name="account_request_time" type="TIMESTAMP"/>
             <column name="case_references" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="account_request_time" type="TIMESTAMP"/>
             <column name="created_time" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_time" type="TIMESTAMP"/>
+            <column name="updated_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

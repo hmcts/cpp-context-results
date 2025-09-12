@@ -77,6 +77,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         olderEntity.setCaseReferences(caseReferences);
         olderEntity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         olderEntity.setCreatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+        olderEntity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+
         defendantGobAccountsRepository.save(olderEntity);
         
         // Create newer record
@@ -89,6 +91,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         newerEntity.setCaseReferences(caseReferences);
         newerEntity.setAccountRequestTime(ZonedDateTime.parse("2023-01-02T10:00:00Z"));
         newerEntity.setCreatedTime(ZonedDateTime.parse("2023-01-02T10:00:00Z"));
+        newerEntity.setUpdatedTime(ZonedDateTime.parse("2023-01-02T10:00:00Z"));
         defendantGobAccountsRepository.save(newerEntity);
         
         // Query should return only the latest record based on accountCreatedTime
@@ -115,6 +118,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         entity.setCreatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+        entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+
         defendantGobAccountsRepository.save(entity);
         
         // Query with matching masterDefendantId and hearingId should find the record
@@ -141,6 +146,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         entity.setCreatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+        entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+
         defendantGobAccountsRepository.save(entity);
         
         // Query with matching masterDefendantId and hearingId should find the record
@@ -167,6 +174,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         entity.setCreatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+        entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+
         defendantGobAccountsRepository.save(entity);
         
         // Query with matching masterDefendantId and hearingId should find the record
@@ -193,6 +202,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         entity.setCreatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+        entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+
         defendantGobAccountsRepository.save(entity);
         
         // Query with non-existent hearingId should not find the record
@@ -210,6 +221,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsEntity.setCaseReferences(createJsonArrayFromStrings("case ref1", "case ref2").toString());
         defendantGobAccountsEntity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         defendantGobAccountsEntity.setCreatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+        defendantGobAccountsEntity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
+
 
         return defendantGobAccountsEntity;
     }
