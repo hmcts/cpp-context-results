@@ -82,16 +82,6 @@ public interface ResultNotificationRule {
                     .anyMatch(offence -> APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()));
         }
 
-        public boolean isApplicationAlreadyResulted() {
-            return request.getOffenceResults().stream()
-                    .filter(result -> nonNull(result.getApplicationId()))
-                    .map(offenceFromRequest -> prevApplicationResultsDetails.get(offenceFromRequest.getApplicationId()))
-                    .filter(Objects::nonNull)
-                    .flatMap(Collection::stream)
-                    .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
-                    .anyMatch(offence -> APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()));
-        }
-
         public boolean isCaseAmendmentProcess() {
             return isCaseAmendment() || isDeemedServedChangedForCase();
         }

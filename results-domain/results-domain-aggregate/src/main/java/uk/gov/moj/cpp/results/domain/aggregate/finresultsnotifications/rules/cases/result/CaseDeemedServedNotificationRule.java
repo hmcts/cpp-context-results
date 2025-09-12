@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.caseresult;
+package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result;
 
 import static java.util.Objects.isNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
@@ -26,7 +26,7 @@ public class CaseDeemedServedNotificationRule extends AbstractCaseResultNotifica
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
-        final HearingFinancialResultRequest request = getFilteredCaseResults(input.request());
+        final HearingFinancialResultRequest request = filteredCaseResults(input.request());
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsDeemedServed)

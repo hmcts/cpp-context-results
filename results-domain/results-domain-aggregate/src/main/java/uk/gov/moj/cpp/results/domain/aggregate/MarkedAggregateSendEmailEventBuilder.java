@@ -174,7 +174,8 @@ public class MarkedAggregateSendEmailEventBuilder {
         return builder.build();
     }
 
-    public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOlds(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject, final List<ImpositionOffenceDetails> impositionOffenceDetails, final Boolean includeOlds) {
+    public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOlds(final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                                                                       final String subject, final List<ImpositionOffenceDetails> impositionOffenceDetails, final Boolean includeOldAccountInfoIfAvailable) {
 
         final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(),
                 hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList());
@@ -196,7 +197,7 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
                 .withImpositionOffenceDetails(impositionOffenceDetails);
 
-        if (Boolean.TRUE.equals(includeOlds) && previousItem != null) {
+        if (Boolean.TRUE.equals(includeOldAccountInfoIfAvailable) && previousItem != null) {
             builder.withGobAccountNumber(previousItem.getAccountNumber())
                     .withAccountCorrelationId(previousItem.getAccountCorrelationId());
         }

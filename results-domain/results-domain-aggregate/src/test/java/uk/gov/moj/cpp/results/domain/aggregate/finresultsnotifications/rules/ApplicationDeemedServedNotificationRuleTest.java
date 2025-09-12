@@ -1,9 +1,9 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules;
 
 import static java.util.UUID.randomUUID;
-import static liquibase.util.Validate.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
@@ -14,6 +14,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.app
 
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ApplicationDeemedServedNotificationRuleTest {
