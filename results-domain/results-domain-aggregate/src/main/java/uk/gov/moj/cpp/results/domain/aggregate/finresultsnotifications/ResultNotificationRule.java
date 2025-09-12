@@ -6,10 +6,11 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 
+import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
-import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.util.Collection;
@@ -97,12 +98,11 @@ public interface ResultNotificationRule {
         }
 
         private boolean isDeemedServedChangedForCase() {
-            final boolean deemedServeChanged = request.getOffenceResults().stream()
+            return request.getOffenceResults().stream()
                     .anyMatch(offenceResult ->
                             ofNullable(prevOffenceResultsDetails.get(offenceResult.getOffenceId()))
                                     .map(prevOffenceResult -> !Objects.equals(prevOffenceResult.getIsDeemedServed(), offenceResult.getIsDeemedServed()))
                                     .orElse(false));
-            return !hasAnyApplicationType() && deemedServeChanged;
         }
     }
 }
