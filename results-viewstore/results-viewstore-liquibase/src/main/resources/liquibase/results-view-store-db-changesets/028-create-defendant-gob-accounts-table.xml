@@ -36,8 +36,8 @@
     <changeSet id="add-index-master-defendant-id" author="cpp.context.results"
                logicalFilePath="028-create-defendant-gob-accounts-table.xml">
         <sql>
-            CREATE INDEX IF NOT EXISTS defendant_gob_accounts_master_defendant_id_idx ON
-            defendant_gob_accounts (master_defendant_id);
+            CREATE INDEX IF NOT EXISTS defendant_gob_accounts_master_defendant_id_hearing_id_idx ON
+            defendant_gob_accounts (master_defendant_id, hearing_id);
         </sql>
     </changeSet>
 
