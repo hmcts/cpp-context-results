@@ -32,6 +32,9 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGenerator
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocumentCreate;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
+import static io.restassured.RestAssured.given;
+import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
+import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
 
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
@@ -524,21 +527,10 @@ public class StagingEnforcementIT {
 
         //PAAS request to results API after application resulted with fine
         initiateResultForApplicationGranted(TRACE_RESULT_GRANTED, masterDefendantId, hearingId, accountCorrelationId2, offenceId, applicationId);
-        final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
-                .add(REQUEST_ID, accountCorrelationId2)
-                .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
-                .add(UPDATED, "2019-12-01T10:00:00Z")
-                .add(ACKNOWLEDGEMENT, createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber2).build())
-                .build();
-        raisePublicEventForAcknowledgement(stagingEnforcementAckPayload, PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT);
-
-        JsonPath jsonResponse = QueueUtil.retrieveMessage(hearingFinancialResultsUpdatedConsumer);
-        assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId2));
-        assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber2));
+        whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId2, accountNumber2);
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("STATUTORY DECLARATION GRANTED")).findFirst().orElseGet(() -> JsonPath.from("{}"));
+        JsonPath jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("STATUTORY DECLARATION GRANTED")).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("STATUTORY DECLARATION GRANTED"));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -594,9 +586,32 @@ public class StagingEnforcementIT {
                 "Pay by date. Date to pay in full by: 20/03/2025"));
         assertThat(jsonResponse1.get("originalApplicationResults"), notNullValue());
         assertThat(jsonResponse1.get("newApplicationResults"), notNullValue());
+
+        // Query for the latest account (accountNumber3) with hearingId
+        getDefendantAccountNumber(masterDefendantId, accountCorrelationId3, accountNumber3, hearingId);
     }
 
+    private void getDefendantAccountNumber(final String masterDefendantId, final String accountCorrelationId3, final String accountNumber3, final String hearingId) {
+        given()
+                .baseUri(BASE_URI)
+                .header("Content-Type", "application/vnd.results.query.defendant-gob-accounts+json")
+                .header("Accept", "application/vnd.results.query.defendant-gob-accounts+json")
+                .header(USER_ID, getUserId())
+                .when()
+                .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&hearingId={hearingId}",
+                        masterDefendantId, hearingId)
+                .then()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("masterDefendantId", equalTo(masterDefendantId))
+                .body("correlationId", equalTo(accountCorrelationId3))
+                .body("accountNumber", equalTo(accountNumber3))
+                .body("caseReferences", containsString("32DN1212262"))
+                .body("createdTime", notNullValue())
+                .body("accountRequestTime", notNullValue())
+                .body("hearingId", equalTo(hearingId));
 
+    }
 
 
     public NcesEmailNotificationRequested generateNcesNotificationRequested(final JsonPath jsonResponse) {

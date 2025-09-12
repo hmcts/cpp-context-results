@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
+import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Arrays.asList;
 import static java.util.Comparator.comparing;
@@ -82,7 +83,7 @@ import org.slf4j.Logger;
 public class HearingFinancialResultsAggregate implements Aggregate {
 
     private static final Logger LOGGER = getLogger(HearingFinancialResultsAggregate.class);
-    private static final long serialVersionUID = -7417688645983920689L;
+    private static final long serialVersionUID = 1691228462960025057L;
     private static final String HEARING_SITTING_DAY_PATTERN = "yyyy-MM-dd";
     public static final String EMPTY_STRING = "";
     public static final String BRITISH_DATE_FORMAT = "dd/MM/yyyy";
@@ -352,10 +353,20 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> updateAccountNumber(final String accountNumber, final UUID correlationId) {
+
+        final  ZonedDateTime accountRequestTime = correlationItemList.stream()
+                .filter(correlationItem -> correlationId.equals(correlationItem.getAccountCorrelationId()))
+                .findFirst()
+                .map(CorrelationItem::getCreatedTime)
+                .orElse(null);
+
         final HearingFinancialResultsUpdated hearingFinancialResultsUpdated = hearingFinancialResultsUpdated()
                 .withAccountNumber(accountNumber)
                 .withMasterDefendantId(masterDefendantId)
+                .withHearingId(hearingId)
                 .withCorrelationId(correlationId)
+                .withAccountRequestTime(accountRequestTime)
+                .withUpdatedTime(now())
                 .build();
         return apply(builder().add(hearingFinancialResultsUpdated).build());
     }
