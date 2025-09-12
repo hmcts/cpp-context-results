@@ -3,26 +3,34 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ap
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
+import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromRequest;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getPreviousOffenceResultsDetails;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelper;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
+import uk.gov.moj.cpp.results.domain.event.OriginalApplicationResults;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * Base class for application result notification rules.
  */
 public abstract class AbstractApplicationResultNotificationRule implements ResultNotificationRule {
+    private static final Predicate<OffenceResults> isApplicationAmended = o -> nonNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
 
-    protected HearingFinancialResultRequest getFilteredApplicationResults(HearingFinancialResultRequest request) {
+    protected HearingFinancialResultRequest filteredApplicationResults(HearingFinancialResultRequest request) {
         final HearingFinancialResultRequest filtered = HearingFinancialResultRequest.hearingFinancialResultRequest()
                 .withValuesFrom(request)
                 .withOffenceResults(new ArrayList<>(request.getOffenceResults())).build();
@@ -70,5 +78,35 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
         allOffenceResults.sort(comparing(OffenceResultsDetails::getCreatedTime).reversed());
 
         return !allOffenceResults.isEmpty() ? allOffenceResults.get(0) : null;
+    }
+
+    protected Optional<OriginalApplicationResults> getOriginalApplicationResults(final HearingFinancialResultRequest request, final Map<UUID, List<OffenceResultsDetails>> prevAppResultDetails) {
+        // Get original application results from the aggregate.
+        return request.getOffenceResults().stream()
+                .filter(result -> Objects.nonNull(result.getApplicationId()))
+                .map(offenceFromRequest -> prevAppResultDetails.get(offenceFromRequest.getApplicationId()))
+                .filter(Objects::nonNull)
+                .map(ApplicationNCESEventsHelper::buildOriginalApplicationResultsFromAggregate)
+                .findFirst();
+    }
+
+    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFineToFine(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
+        return request.getOffenceResults().stream()
+                .filter(isApplicationAmended)
+                .filter(OffenceResults::getIsFinancial)
+                .filter(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
+                        .map(OffenceResultsDetails::getIsFinancial).orElse(false))
+                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
+                .toList();
+    }
+
+    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFineToNonFine(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
+        return request.getOffenceResults().stream()
+                .filter(isApplicationAmended)
+                .filter(o -> !o.getIsFinancial())
+                .filter(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
+                        .map(OffenceResultsDetails::getIsFinancial).orElse(false))
+                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
+                .toList();
     }
 }

@@ -27,7 +27,7 @@ public class ApplicationAmendmentACONNotificationRule extends AbstractApplicatio
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
-        final HearingFinancialResultRequest request = getFilteredApplicationResults(input.request());
+        final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
 
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForACON = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))

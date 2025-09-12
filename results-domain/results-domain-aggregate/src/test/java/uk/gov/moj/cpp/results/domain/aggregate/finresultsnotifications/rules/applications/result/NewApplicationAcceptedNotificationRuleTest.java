@@ -26,8 +26,8 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-class NewAppGrantedNotificationRuleTest {
-    private final NewAppGrantedNotificationRule rule = new NewAppGrantedNotificationRule();
+class NewApplicationAcceptedNotificationRuleTest {
+    private final NewApplicationAcceptedNotificationRule rule = new NewApplicationAcceptedNotificationRule();
 
     @Test
     void shouldGenerateStatutoryDeclarationGrantedNotification() {

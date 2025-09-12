@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ap
 import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.hasNoCorrelationIdForAmendedApplication;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
@@ -12,8 +11,12 @@ import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Rule for handling NCES notifications for applications that has offences resulted in deemed served.
+ */
 public class ApplicationDeemedServedNotificationRule extends AbstractApplicationResultNotificationRule {
 
     @Override
@@ -23,7 +26,7 @@ public class ApplicationDeemedServedNotificationRule extends AbstractApplication
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
-        final HearingFinancialResultRequest request = getFilteredApplicationResults(input.request());
+        final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))
                 .filter(o -> nonNull(o.getIsParentFlag()) && o.getIsParentFlag())
@@ -32,21 +35,13 @@ public class ApplicationDeemedServedNotificationRule extends AbstractApplication
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
         if (!impositionOffenceDetailsForDeemed.isEmpty()) {
-            if (hasNoCorrelationIdForAmendedApplication(request)) {
-                return Optional.of(
-                        markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                                .buildMarkedAggregateWithoutOlds(request,
-                                        NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED,
-                                        impositionOffenceDetailsForDeemed,
-                                        Boolean.TRUE));
-            } else {
-                return Optional.of(
-                        markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                                .buildMarkedAggregateWithoutOlds(request,
-                                        NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED,
-                                        impositionOffenceDetailsForDeemed,
-                                        Boolean.FALSE));
-            }
+            final boolean noNewGobAccRequested = Objects.isNull(request.getAccountCorrelationId()) && input.isAmendmentFlow();
+            return Optional.of(
+                    markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
+                            .buildMarkedAggregateWithoutOlds(request,
+                                    NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED,
+                                    impositionOffenceDetailsForDeemed,
+                                    noNewGobAccRequested));
         }
         return Optional.empty();
     }
