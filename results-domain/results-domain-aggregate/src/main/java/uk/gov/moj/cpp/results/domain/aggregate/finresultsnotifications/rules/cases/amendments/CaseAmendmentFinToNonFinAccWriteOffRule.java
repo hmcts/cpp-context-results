@@ -1,7 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
@@ -9,7 +7,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolv
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsCaseAmendment;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule;
@@ -21,15 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 /**
  * This class implements a notification rule for case amendments with financial imposition changes. If there are
  * financial imposition changes, it builds a notification event with the updated imposition details.
  */
 public class CaseAmendmentFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificationRule {
-
-    private static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
 
     @Override
     public boolean appliesTo(RuleInput input) {

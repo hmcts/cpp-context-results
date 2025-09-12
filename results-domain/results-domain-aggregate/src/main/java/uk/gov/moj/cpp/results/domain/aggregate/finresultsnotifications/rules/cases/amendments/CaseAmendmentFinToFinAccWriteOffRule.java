@@ -7,7 +7,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolv
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsCaseAmendment;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -30,24 +29,21 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
+
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
-
-        final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails = input.prevOffenceResultsDetails();
         final Map<UUID, String> offenceDateMap = input.offenceDateMap();
-
         final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults()).stream()
                 .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                 .distinct().toList();
 
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsFinToFin = getImpositionOffenceDetailsFinToFin(request, prevOffenceResultsDetails, offenceDateMap);
-
         final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsCaseAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails()).stream()
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap)).distinct()
                 .toList();
+        final List<ImpositionOffenceDetails> impositionOffenceDetailsFinToFin = getImpositionOffenceDetailsFinToFin(request, input.prevOffenceResultsDetails(), offenceDateMap);
 
         //newOffenceResults will be empty when no financial change from previous to new offence  - no marked event required
         //previous nonFine to new Fine - no marked event required
-        if (newOffenceResults.isEmpty() || isNonFinToFinImposition(request, prevOffenceResultsDetails, offenceDateMap)) {
+        if (newOffenceResults.isEmpty() || isNonFinToFinImposition(request, input.prevOffenceResultsDetails(), offenceDateMap)) {
             return Optional.empty();
         }
 
