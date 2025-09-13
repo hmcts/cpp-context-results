@@ -32,7 +32,7 @@ import java.util.UUID;
  * Rule to handle notifications for approved result codes of STATDEC/REOPEN/APPEAL that have been processed.
  * This rule checks if the application is a new application with a valid application type and result code
  */
-public class NewAppGrantedNotificationRule extends AbstractApplicationResultNotificationRule {
+public class NewApplicationAcceptedNotificationRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(RuleInput input) {

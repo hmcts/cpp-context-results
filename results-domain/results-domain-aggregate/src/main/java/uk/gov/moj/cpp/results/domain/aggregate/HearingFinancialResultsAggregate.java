@@ -193,7 +193,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                         caseOffenceResultsDetails,
                         applicationResultsDetails,
                         applicationOffenceResultsDetails,
-                        correlationItemList));
+                        new LinkedList<>(correlationItemList)));
 
         processTrackedEvent(hearingFinancialResultRequest, builder);
 

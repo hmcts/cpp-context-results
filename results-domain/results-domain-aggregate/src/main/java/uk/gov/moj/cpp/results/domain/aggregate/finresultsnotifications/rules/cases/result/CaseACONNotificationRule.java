@@ -26,7 +26,7 @@ public class CaseACONNotificationRule extends AbstractCaseResultNotificationRule
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
-        final HearingFinancialResultRequest request = getFilteredCaseResults(input.request());
+        final HearingFinancialResultRequest request = filteredCaseResults(input.request());
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForAcon = request.getOffenceResults().stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .filter(OffenceResults::getIsFinancial)

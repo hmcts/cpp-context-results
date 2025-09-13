@@ -1,9 +1,10 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.AccountInfo.accountInfo;
+import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.AccountInfo.emptyAccountInfo;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.Comparison.comparison;
+import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.GobAccountUpdateStep.newGobAccountUpdateStep;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.NcesEmailForNewApplicationStep.newNcesEmailForNewApplicationStep;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.ResultTrackedStep.newResultTrackedStep;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.Scenario.newScenario;
@@ -32,8 +33,11 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/1_case_results_tracked.json",
-                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", ""))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                .newStep(newGobAccountUpdateStep("GOB export")
+                                        .withAccountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                        .withExpectedEventNames("HearingFinancialResultsUpdated"))
                                 .newStep(newNcesEmailForNewApplicationStep("app1 statdec received", "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/2_app_stat_dec_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION FOR A STATUTORY DECLARATION RECEIVED\".*")
@@ -43,7 +47,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app1 statdec resulted")
-                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/2_app_stat_dec_results_tracked.json", empty())
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/2_app_stat_dec_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/2_app_granted_nces_notification_expected.json",
                                                 comparison()
@@ -97,7 +101,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app4 appeal resulted")
-                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/5_app_appeal_results_tracked.json", empty())
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/5_app_appeal_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/5_app_granted_nces_notification_expected.json",
                                                 comparison()
@@ -138,7 +142,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app1 statdec resulted")
-                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/2_app_stat_dec_results_tracked.json", empty())
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/2_app_stat_dec_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/2_app_granted_nces_notification_expected.json",
                                                 comparison()
@@ -173,7 +177,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app3 reopen resulted")
-                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/4_app_reopen_results_tracked.json", empty())
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/4_app_reopen_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/4_app_granted_nces_notification_expected.json",
                                                 comparison()
@@ -190,7 +194,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app4 appeal resulted")
-                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/5_app_appeal_results_tracked.json", empty())
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/5_app_appeal_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/5_app_granted_nces_notification_expected.json",
                                                 comparison()
