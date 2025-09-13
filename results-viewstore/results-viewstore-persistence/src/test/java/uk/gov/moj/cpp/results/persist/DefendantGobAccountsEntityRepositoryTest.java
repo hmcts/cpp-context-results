@@ -69,7 +69,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
 
         // Create older record
         DefendantGobAccountsEntity olderEntity = new DefendantGobAccountsEntity();
-        olderEntity.setId(randomUUID());
         olderEntity.setMasterDefendantId(masterDefendantId);
         olderEntity.setHearingId(hearingId);
         olderEntity.setCorrelationId(randomUUID());
@@ -83,7 +82,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         
         // Create newer record
         DefendantGobAccountsEntity newerEntity = new DefendantGobAccountsEntity();
-        newerEntity.setId(randomUUID());
         newerEntity.setMasterDefendantId(masterDefendantId);
         newerEntity.setHearingId(hearingId);
         newerEntity.setCorrelationId(randomUUID());
@@ -110,7 +108,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1", "case ref2", "case ref3").toString();
         
         DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
         entity.setMasterDefendantId(masterDefendantId);
         entity.setHearingId(hearingId);
         entity.setCorrelationId(randomUUID());
@@ -138,7 +135,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1").toString();
         
         DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
         entity.setMasterDefendantId(masterDefendantId);
         entity.setHearingId(hearingId);
         entity.setCorrelationId(randomUUID());
@@ -166,7 +162,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1", "case ref2", "case ref3").toString();
         
         DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
         entity.setMasterDefendantId(masterDefendantId);
         entity.setHearingId(hearingId);
         entity.setCorrelationId(randomUUID());
@@ -194,7 +189,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1", "case ref2").toString();
         
         DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
         entity.setMasterDefendantId(masterDefendantId);
         entity.setHearingId(hearingId);
         entity.setCorrelationId(randomUUID());
@@ -213,7 +207,6 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
 
     private DefendantGobAccountsEntity createdHearingFinancialDetailsEntity() {
         DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity();
-        defendantGobAccountsEntity.setId(randomUUID());
         defendantGobAccountsEntity.setMasterDefendantId(randomUUID());
         defendantGobAccountsEntity.setHearingId(testHearingId);
         defendantGobAccountsEntity.setCorrelationId(randomUUID());

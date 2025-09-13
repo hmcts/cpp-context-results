@@ -60,7 +60,6 @@ class HearingFinancialResultsUpdatedListenerTest {
                 .thenReturn(mockHearingFinancialResultsUpdated);
         
         DefendantGobAccountsEntity existingEntity = new DefendantGobAccountsEntity();
-        existingEntity.setId(randomUUID());
         existingEntity.setMasterDefendantId(masterDefendantId);
         existingEntity.setCorrelationId(correlationId);
         existingEntity.setHearingId(hearingId);
