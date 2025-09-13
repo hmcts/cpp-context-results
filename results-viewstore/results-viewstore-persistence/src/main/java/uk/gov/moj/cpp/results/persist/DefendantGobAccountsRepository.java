@@ -8,7 +8,7 @@ import org.apache.deltaspike.data.api.QueryParam;
 import org.apache.deltaspike.data.api.Repository;
 
 @Repository
-public interface DefendantGobAccountsRepository extends EntityRepository<DefendantGobAccountsEntity, UUID> {
+public interface DefendantGobAccountsRepository extends EntityRepository<DefendantGobAccountsEntity, DefendantGobAccountsId> {
 
     @Query(value = """
             SELECT * 

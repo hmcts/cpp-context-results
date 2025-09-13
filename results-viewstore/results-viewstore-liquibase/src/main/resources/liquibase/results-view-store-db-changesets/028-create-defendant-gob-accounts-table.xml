@@ -7,9 +7,6 @@
     <changeSet id="1" author="cpp.context.results"
                logicalFilePath="028-create-defendant-gob-accounts-table.xml">
         <createTable tableName="defendant_gob_accounts">
-            <column name="id" type="uuid">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="master_defendant_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
@@ -30,6 +27,9 @@
             <column name="updated_time" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
+            <constraints>
+                <primaryKey columnNames="master_defendant_id,correlation_id"/>
+            </constraints>
         </createTable>
     </changeSet>
 

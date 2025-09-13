@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event;
 
-import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 
@@ -58,7 +57,6 @@ public class HearingFinancialResultsTrackedListener {
     private DefendantGobAccountsEntity createDefendantGobAccountsEntity(HearingFinancialResultsTracked hearingFinancialResultsTracked) {
         final var hearingFinancialResultRequest = hearingFinancialResultsTracked.getHearingFinancialResultRequest();
         final DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity();
-        defendantGobAccountsEntity.setId(randomUUID());
         defendantGobAccountsEntity.setMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId());
         defendantGobAccountsEntity.setCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId());
         // account_number is not set here as it may not be available if GOB happens in one go after multiple amendments
