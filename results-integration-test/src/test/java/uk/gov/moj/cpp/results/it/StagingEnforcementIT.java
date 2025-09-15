@@ -594,11 +594,11 @@ public class StagingEnforcementIT {
     private void getDefendantAccountNumber(final String masterDefendantId, final String accountCorrelationId3, final String accountNumber3, final String hearingId) {
         given()
                 .baseUri(BASE_URI)
-                .header("Content-Type", "application/vnd.results.query.defendant-gob-accounts+json")
-                .header("Accept", "application/vnd.results.query.defendant-gob-accounts+json")
+                .header("Content-Type", "application/vnd.results.query.defendant-gob-account+json")
+                .header("Accept", "application/vnd.results.query.defendant-gob-account+json")
                 .header(USER_ID, getUserId())
                 .when()
-                .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&hearingId={hearingId}",
+                .get("/results-query-api/query/api/rest/results/defendant-gob-account?masterDefendantId={masterDefendantId}&hearingId={hearingId}",
                         masterDefendantId, hearingId)
                 .then()
                 .statusCode(200)
