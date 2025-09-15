@@ -75,15 +75,15 @@ public class DefendantGobAccountsEntity {
         id.setMasterDefendantId(masterDefendantId);
     }
 
-    public UUID getCorrelationId() {
+    public UUID getAccountCorrelationId() {
         return id != null ? id.getAccountCorrelationId() : null;
     }
 
-    public void setCorrelationId(final UUID correlationId) {
+    public void setCorrelationId(final UUID accountCorrelationId) {
         if (id == null) {
             id = new DefendantGobAccountsId();
         }
-        id.setAccountCorrelationId(correlationId);
+        id.setAccountCorrelationId(accountCorrelationId);
     }
 
     public String getAccountNumber() {

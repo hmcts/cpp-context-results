@@ -55,7 +55,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         assertThat(defendantGobAccountsEntity.getId(), is(hearingFinancialDetails.getId()));
         assertThat(defendantGobAccountsEntity.getMasterDefendantId(), is(hearingFinancialDetails.getMasterDefendantId()));
         assertThat(defendantGobAccountsEntity.getHearingId(), is(hearingFinancialDetails.getHearingId()));
-        assertThat(defendantGobAccountsEntity.getCorrelationId(), is(hearingFinancialDetails.getCorrelationId()));
+        assertThat(defendantGobAccountsEntity.getAccountCorrelationId(), is(hearingFinancialDetails.getAccountCorrelationId()));
         assertThat(defendantGobAccountsEntity.getAccountNumber(), is(hearingFinancialDetails.getAccountNumber()));
         assertThat(defendantGobAccountsEntity.getCaseReferences(), is(hearingFinancialDetails.getCaseReferences()));
     }
