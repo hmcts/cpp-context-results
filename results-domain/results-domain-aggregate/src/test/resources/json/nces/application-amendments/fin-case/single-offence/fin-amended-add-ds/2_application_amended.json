@@ -1,0 +1,31 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Christina Feest",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "8e670776-cdaa-4123-9c20-9064d8b4b5e5",
+  "hearingSittingDay": "2025-04-15T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "8e5f6779-795a-4893-b056-aee4134213ed",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "79efd7a0-cfcd-4900-adf1-9761834f4415",
+      "amendmentDate": "2025-04-16",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-04-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "2c7cc1f9-fc39-442f-acf2-28a8534207de",
+      "offenceTitle": "Theft of motor vehicle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7698340"
+  ]
+}

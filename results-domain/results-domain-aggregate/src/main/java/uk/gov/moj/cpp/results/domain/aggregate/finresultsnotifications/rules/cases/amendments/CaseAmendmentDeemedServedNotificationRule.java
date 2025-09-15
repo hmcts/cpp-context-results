@@ -40,7 +40,7 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
         final List<ImpositionOffenceDetails> impositionOffenceDetailsDeemedServedRemoved = request.getOffenceResults().stream()
                 .filter(or -> !or.getIsDeemedServed() && isPrevOffenceResultDeemedServed(or.getOffenceId(), input.prevOffenceResultsDetails()))
                 .filter(or -> Objects.nonNull(or.getAmendmentDate()))
-                .map(or -> this.buildImpositionOffenceDetailsFromRequest(or, input.offenceDateMap()))
+                .map(or -> this.buildImpositionOffenceDetailsFromRequest(or, input.offenceDateMap())).distinct()
                 .toList();
 
         final boolean isDeemedServedAddedOrAmended = !impositionOffenceDetailsForDeemed.isEmpty();
@@ -53,10 +53,9 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
             );
         }
         if (isDeemedServedRemoved) {
-            final boolean includeOldAccount = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED, impositionOffenceDetailsDeemedServedRemoved, includeOldAccount)
+                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED, impositionOffenceDetailsDeemedServedRemoved, Boolean.TRUE)
             );
         }
         return Optional.empty();
