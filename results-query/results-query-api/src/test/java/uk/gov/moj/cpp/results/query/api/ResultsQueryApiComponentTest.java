@@ -69,7 +69,7 @@ public class ResultsQueryApiComponentTest {
     public void testHearingFinancialDetailsQueryApiHandler() {
         assertThat(DefendantGobAccountsQueryApi.class, isHandlerClass(QUERY_API)
                 .with(method("getDefendantGobAccounts")
-                        .thatHandles("results.query.defendant-gob-accounts")));
+                        .thatHandles("results.query.defendant-gob-account")));
     }
 
 }

@@ -28,7 +28,7 @@ public class DefendantGobAccountsQueryView {
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
-    @Handles("results.query.defendant-gob-accounts")
+    @Handles("results.query.defendant-gob-account")
     public JsonEnvelope getDefendantGobAccounts(final JsonEnvelope envelope) {
         LOGGER.info("Received getDefendantGobAccounts view {}", envelope.toObfuscatedDebugString());
         final UUID masterDefendantId = UUID.fromString(envelope.payloadAsJsonObject().getString("masterDefendantId"));
