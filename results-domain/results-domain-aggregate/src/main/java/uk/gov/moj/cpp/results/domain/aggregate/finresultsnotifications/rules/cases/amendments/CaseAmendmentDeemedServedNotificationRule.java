@@ -53,9 +53,10 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
             );
         }
         if (isDeemedServedRemoved) {
+            final boolean includeOldAccount = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED, impositionOffenceDetailsDeemedServedRemoved, Boolean.FALSE)
+                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED, impositionOffenceDetailsDeemedServedRemoved, includeOldAccount)
             );
         }
         return Optional.empty();

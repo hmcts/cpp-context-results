@@ -1,5 +1,6 @@
-package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
+package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
@@ -13,11 +14,11 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 import java.util.List;
 import java.util.Optional;
 
-public class ApplicationDeemedServedNotificationRule extends AbstractApplicationResultNotificationRule {
+public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isNewApplication();
+        return input.hasValidApplicationType() && input.isAmendmentFlow();
     }
 
     @Override
@@ -31,12 +32,13 @@ public class ApplicationDeemedServedNotificationRule extends AbstractApplication
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
         if (!impositionOffenceDetailsForDeemed.isEmpty()) {
+            final Boolean includeOlds = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED,
                                     impositionOffenceDetailsForDeemed,
-                                    Boolean.FALSE));
+                                    includeOlds));
         }
         return Optional.empty();
     }

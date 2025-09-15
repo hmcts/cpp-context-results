@@ -5,7 +5,10 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ACON_EMAIL_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealAllowedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
@@ -175,7 +178,8 @@ public class MarkedAggregateSendEmailEventBuilder {
     }
 
     public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOlds(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                                                                       final String subject, final List<ImpositionOffenceDetails> impositionOffenceDetails, final Boolean includeOldAccountInfoIfAvailable) {
+                                                                                       final String subject, final List<ImpositionOffenceDetails> impositionOffenceDetails,
+                                                                                       final Boolean includeOldAccountInfoIfAvailable) {
 
         final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(),
                 hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList());
@@ -205,7 +209,7 @@ public class MarkedAggregateSendEmailEventBuilder {
         ofNullable(hearingFinancialResultRequest.getHearingSittingDay())
                 .ifPresent(a -> builder.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
 
-        if (NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED.equals(subject) || NCESDecisionConstants.ACON_EMAIL_SUBJECT.equals(subject)) {
+        if (WRITE_OFF_ONE_DAY_DEEMED_SERVED.equals(subject) || ACON_EMAIL_SUBJECT.equals(subject)) {
             hearingFinancialResultRequest.getOffenceResults().stream()
                     .filter(offence -> nonNull(offence.getDateOfResult()))
                     .findFirst()
