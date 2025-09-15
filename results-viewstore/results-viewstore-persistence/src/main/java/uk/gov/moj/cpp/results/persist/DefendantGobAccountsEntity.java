@@ -36,8 +36,8 @@ public class DefendantGobAccountsEntity {
     public DefendantGobAccountsEntity() {
     }
 
-    public DefendantGobAccountsEntity(final DefendantGobAccountsId id) {
-        this.id = id;
+    public DefendantGobAccountsEntity(final UUID masterDefendantId, final UUID accountCorrelationId) {
+        this.id = new DefendantGobAccountsId(masterDefendantId, accountCorrelationId);
     }
 
     public UUID getHearingId() {
@@ -76,14 +76,14 @@ public class DefendantGobAccountsEntity {
     }
 
     public UUID getCorrelationId() {
-        return id != null ? id.getCorrelationId() : null;
+        return id != null ? id.getAccountCorrelationId() : null;
     }
 
     public void setCorrelationId(final UUID correlationId) {
         if (id == null) {
             id = new DefendantGobAccountsId();
         }
-        id.setCorrelationId(correlationId);
+        id.setAccountCorrelationId(correlationId);
     }
 
     public String getAccountNumber() {

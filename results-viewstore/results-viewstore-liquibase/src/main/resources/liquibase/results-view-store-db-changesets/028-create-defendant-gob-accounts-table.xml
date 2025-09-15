@@ -13,7 +13,7 @@
             <column name="hearing_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
-            <column name="correlation_id" type="uuid">
+            <column name="account_correlation_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
             <column name="account_number" type="text" />
@@ -27,10 +27,11 @@
             <column name="updated_time" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <constraints>
-                <primaryKey columnNames="master_defendant_id,correlation_id"/>
-            </constraints>
         </createTable>
+        
+        <addPrimaryKey tableName="defendant_gob_accounts" 
+                       columnNames="master_defendant_id,account_correlation_id" 
+                       constraintName="defendant_gob_accounts_pk"/>
     </changeSet>
 
     <changeSet id="add-index-master-defendant-id" author="cpp.context.results"

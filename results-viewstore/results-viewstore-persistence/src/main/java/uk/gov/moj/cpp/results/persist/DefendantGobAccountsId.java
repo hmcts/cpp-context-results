@@ -13,15 +13,15 @@ public class DefendantGobAccountsId implements Serializable {
     @Column(name = "master_defendant_id", nullable = false)
     private UUID masterDefendantId;
 
-    @Column(name = "correlation_id", nullable = false)
-    private UUID correlationId;
+    @Column(name = "account_correlation_id", nullable = false)
+    private UUID accountCorrelationId;
 
     public DefendantGobAccountsId() {
     }
 
-    public DefendantGobAccountsId(final UUID masterDefendantId, final UUID correlationId) {
+    public DefendantGobAccountsId(final UUID masterDefendantId, final UUID accountCorrelationId) {
         this.masterDefendantId = masterDefendantId;
-        this.correlationId = correlationId;
+        this.accountCorrelationId = accountCorrelationId;
     }
 
     public UUID getMasterDefendantId() {
@@ -32,12 +32,12 @@ public class DefendantGobAccountsId implements Serializable {
         this.masterDefendantId = masterDefendantId;
     }
 
-    public UUID getCorrelationId() {
-        return correlationId;
+    public UUID getAccountCorrelationId() {
+        return accountCorrelationId;
     }
 
-    public void setCorrelationId(final UUID correlationId) {
-        this.correlationId = correlationId;
+    public void setAccountCorrelationId(final UUID accountCorrelationId) {
+        this.accountCorrelationId = accountCorrelationId;
     }
 
     @Override
@@ -46,11 +46,11 @@ public class DefendantGobAccountsId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         final DefendantGobAccountsId that = (DefendantGobAccountsId) o;
         return Objects.equals(masterDefendantId, that.masterDefendantId) &&
-               Objects.equals(correlationId, that.correlationId);
+               Objects.equals(accountCorrelationId, that.accountCorrelationId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(masterDefendantId, correlationId);
+        return Objects.hash(masterDefendantId, accountCorrelationId);
     }
 }

@@ -602,12 +602,10 @@ public class StagingEnforcementIT {
                         masterDefendantId, hearingId)
                 .then()
                 .statusCode(200)
-                .body("id", notNullValue())
                 .body("masterDefendantId", equalTo(masterDefendantId))
-                .body("correlationId", equalTo(accountCorrelationId3))
+                .body("accountCorrelationId", equalTo(accountCorrelationId3))
                 .body("accountNumber", equalTo(accountNumber3))
                 .body("caseReferences", containsString("32DN1212262"))
-                .body("createdTime", notNullValue())
                 .body("accountRequestTime", notNullValue())
                 .body("hearingId", equalTo(hearingId));
 

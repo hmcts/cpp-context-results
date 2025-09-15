@@ -39,8 +39,7 @@ public class DefendantGobAccountsQueryViewTest {
         final UUID masterDefendantId = randomUUID();
         final UUID hearingId = randomUUID();
         final String storedCaseReferences = "[\"caseRef1\", \"caseRef2\"]"; // JSON array stored in entity
-        final DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setMasterDefendantId(masterDefendantId);
+        final DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         entity.setHearingId(hearingId);
         entity.setAccountNumber("ACC123456789");
         entity.setCaseReferences(storedCaseReferences);
