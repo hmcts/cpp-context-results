@@ -69,6 +69,6 @@ public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractAp
 
     private boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
         return prevApplicationOffenceResultsMap.containsKey(applicationId)
-                && prevApplicationOffenceResultsMap.get(applicationId).stream().anyMatch(or -> offenceId.equals(or.getOffenceId()));
+                && prevApplicationOffenceResultsMap.get(applicationId).stream().filter(or -> offenceId.equals(or.getOffenceId())).anyMatch(OffenceResultsDetails::getIsDeemedServed);
     }
 }
