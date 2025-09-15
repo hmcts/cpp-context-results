@@ -38,10 +38,6 @@ public class HearingFinancialResultsTrackedListener {
         final HearingFinancialResultsTracked hearingFinancialResultsTracked = jsonObjectToObjectConverter.convert(requestJson, HearingFinancialResultsTracked.class);
         if (hearingFinancialResultsTracked.getHearingFinancialResultRequest().getAccountCorrelationId() != null) {
             defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsTracked));
-            LOGGER.info("Correlation details are saved successfully stored for masterDefendantId id & correlationId id & hearingId : {} & {} & {}",
-                    hearingFinancialResultsTracked.getHearingFinancialResultRequest().getMasterDefendantId(),
-                    hearingFinancialResultsTracked.getHearingFinancialResultRequest().getAccountCorrelationId(),
-                    hearingFinancialResultsTracked.getHearingFinancialResultRequest().getHearingId());
         } else {
             LOGGER.info("Skipping Correlation details save - no correlationId present for masterDefendantId id & hearingId : {} & {}",
                     hearingFinancialResultsTracked.getHearingFinancialResultRequest().getMasterDefendantId(),
