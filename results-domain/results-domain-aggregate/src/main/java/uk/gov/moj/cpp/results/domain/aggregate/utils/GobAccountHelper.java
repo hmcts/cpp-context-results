@@ -1,8 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.utils;
 
 import static java.util.Comparator.comparing;
-import static java.util.Objects.nonNull;
-import static org.apache.commons.collections.MapUtils.isNotEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -37,7 +35,7 @@ public class GobAccountHelper {
                     final UUID applicationId = correlationItem.getOffenceResultsDetailsList().stream()
                             .map(OffenceResultsDetails::getApplicationId)
                             .filter(Objects::nonNull).findFirst().orElse(null);
-                     return !isApplicationDenied(applicationResultsDetails.get(applicationId));
+                    return !isApplicationDenied(applicationResultsDetails.get(applicationId));
                 })
                 .filter(correlationItem -> correlationItem.getOffenceResultsDetailsList().stream().anyMatch(o -> o.getOffenceId().equals(offenceId)))
                 .findFirst()
@@ -53,6 +51,7 @@ public class GobAccountHelper {
     }
 
     public static CorrelationItem getOldCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final List<UUID> currentOffenceIdList) {
+        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         return currentOffenceIdList.stream()
                 .map(offenceId -> getOldCorrelation(correlationItemList, currentCorrelationId, offenceId))
                 .filter(Objects::nonNull)
@@ -60,8 +59,6 @@ public class GobAccountHelper {
     }
 
     private static CorrelationItem getOldCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final UUID offenceId) {
-        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-
         return correlationItemList.stream()
                 .filter(correlationItem -> !correlationItem.getAccountCorrelationId().equals(currentCorrelationId))
                 .filter(correlationItem ->
