@@ -4,26 +4,19 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "defendant_gob_accounts")
 public class DefendantGobAccountsEntity {
 
-    @Id
-    @Column(name = "id")
-    private UUID id;
-
-    @Column(name = "master_defendant_id", nullable = false)
-    private UUID masterDefendantId;
+    @EmbeddedId
+    private DefendantGobAccountsId id;
 
     @Column(name = "hearing_id", nullable = false)
     private UUID hearingId;
-
-    @Column(name = "correlation_id", nullable = false)
-    private UUID correlationId;
 
     @Column(name = "account_number")
     private String accountNumber;
@@ -43,8 +36,8 @@ public class DefendantGobAccountsEntity {
     public DefendantGobAccountsEntity() {
     }
 
-    public DefendantGobAccountsEntity(final UUID id) {
-        this.id = id;
+    public DefendantGobAccountsEntity(final UUID masterDefendantId, final UUID accountCorrelationId) {
+        this.id = new DefendantGobAccountsId(masterDefendantId, accountCorrelationId);
     }
 
     public UUID getHearingId() {
@@ -63,28 +56,34 @@ public class DefendantGobAccountsEntity {
         this.accountRequestTime = accountRequestTime;
     }
 
-    public UUID getId() {
+    public DefendantGobAccountsId getId() {
         return id;
     }
 
-    public void setId(final UUID id) {
+    public void setId(final DefendantGobAccountsId id) {
         this.id = id;
     }
 
     public UUID getMasterDefendantId() {
-        return masterDefendantId;
+        return id != null ? id.getMasterDefendantId() : null;
     }
 
     public void setMasterDefendantId(final UUID masterDefendantId) {
-        this.masterDefendantId = masterDefendantId;
+        if (id == null) {
+            id = new DefendantGobAccountsId();
+        }
+        id.setMasterDefendantId(masterDefendantId);
     }
 
-    public UUID getCorrelationId() {
-        return correlationId;
+    public UUID getAccountCorrelationId() {
+        return id != null ? id.getAccountCorrelationId() : null;
     }
 
-    public void setCorrelationId(final UUID correlationId) {
-        this.correlationId = correlationId;
+    public void setCorrelationId(final UUID accountCorrelationId) {
+        if (id == null) {
+            id = new DefendantGobAccountsId();
+        }
+        id.setAccountCorrelationId(accountCorrelationId);
     }
 
     public String getAccountNumber() {

@@ -7,16 +7,13 @@
     <changeSet id="1" author="cpp.context.results"
                logicalFilePath="028-create-defendant-gob-accounts-table.xml">
         <createTable tableName="defendant_gob_accounts">
-            <column name="id" type="uuid">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="master_defendant_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
             <column name="hearing_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
-            <column name="correlation_id" type="uuid">
+            <column name="account_correlation_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
             <column name="account_number" type="text" />
@@ -31,6 +28,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        
+        <addPrimaryKey tableName="defendant_gob_accounts" 
+                       columnNames="master_defendant_id,account_correlation_id" 
+                       constraintName="defendant_gob_accounts_pk"/>
     </changeSet>
 
     <changeSet id="add-index-master-defendant-id" author="cpp.context.results"

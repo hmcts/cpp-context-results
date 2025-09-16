@@ -8,6 +8,7 @@ import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
+import uk.gov.moj.cpp.results.persist.DefendantGobAccountsId;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
 import java.time.ZonedDateTime;
@@ -34,19 +35,17 @@ public class HearingFinancialResultsUpdatedListener {
         final JsonObject requestJson = event.payloadAsJsonObject();
         final HearingFinancialResultsUpdated hearingFinancialResultsUpdated = jsonObjectToObjectConverter.convert(requestJson, HearingFinancialResultsUpdated.class);
         final UUID masterDefendantId = hearingFinancialResultsUpdated.getMasterDefendantId();
-        final UUID correlationId = hearingFinancialResultsUpdated.getCorrelationId();
-        final UUID hearingId = hearingFinancialResultsUpdated.getHearingId();
+        final UUID accountCorrelationId = hearingFinancialResultsUpdated.getCorrelationId();
 
         // Find existing record to update with account_number
-        final DefendantGobAccountsEntity existingEntity = defendantGobAccountsRepository.findByMasterDefendantIdAndHearingIdAndCorrelationId(masterDefendantId, hearingId, correlationId);
+        final DefendantGobAccountsEntity existingEntity = defendantGobAccountsRepository.findBy(new DefendantGobAccountsId(masterDefendantId, accountCorrelationId));
 
         if (existingEntity != null) {
             // Update existing record with account_number and account_request_time
             existingEntity.setAccountNumber(hearingFinancialResultsUpdated.getAccountNumber());
-            existingEntity.setAccountRequestTime(hearingFinancialResultsUpdated.getAccountRequestTime());
             existingEntity.setUpdatedTime(ZonedDateTime.now());
             defendantGobAccountsRepository.save(existingEntity);
-            LOGGER.info("GOB account Details updated with account_number for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
+            LOGGER.info("GOB account Details updated with account_number for masterDefendantId id & correlationId id  : {} & {} ", masterDefendantId, accountCorrelationId);
         }
     }
 }

@@ -1,15 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/results/courts/defendant-gob-accounts/defendant-gob-accounts.json",
+  "id": "http://justice.gov.uk/results/courts/defendant-gob-account/defendant-gob-account.json",
   "type": "object",
   "properties": {
-    "id": {
-      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
-    },
     "masterDefendantId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
-    "correlationId": {
+    "accountCorrelationId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
     "hearingId": {
@@ -24,26 +21,14 @@
     "accountRequestTime": {
       "type": "string",
       "format": "date-time"
-    },
-    "createdTime": {
-      "type": "string",
-      "format": "date-time"
-    },
-    "updatedTime": {
-      "type": "string",
-      "format": "date-time"
     }
   },
   "additionalProperties": false,
   "required": [
-    "id",
     "masterDefendantId",
+    "accountCorrelationId",
     "hearingId",
-    "correlationId",
-    "accountNumber",
     "caseReferences",
-    "accountCreatedTime",
-    "createdTime",
-    "updatedTime"
+    "accountRequestTime"
   ]
 }

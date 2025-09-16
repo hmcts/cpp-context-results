@@ -55,7 +55,7 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         assertThat(defendantGobAccountsEntity.getId(), is(hearingFinancialDetails.getId()));
         assertThat(defendantGobAccountsEntity.getMasterDefendantId(), is(hearingFinancialDetails.getMasterDefendantId()));
         assertThat(defendantGobAccountsEntity.getHearingId(), is(hearingFinancialDetails.getHearingId()));
-        assertThat(defendantGobAccountsEntity.getCorrelationId(), is(hearingFinancialDetails.getCorrelationId()));
+        assertThat(defendantGobAccountsEntity.getAccountCorrelationId(), is(hearingFinancialDetails.getAccountCorrelationId()));
         assertThat(defendantGobAccountsEntity.getAccountNumber(), is(hearingFinancialDetails.getAccountNumber()));
         assertThat(defendantGobAccountsEntity.getCaseReferences(), is(hearingFinancialDetails.getCaseReferences()));
     }
@@ -68,11 +68,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final String caseReferences = createJsonArrayFromStrings("case ref1", "case ref2").toString();
 
         // Create older record
-        DefendantGobAccountsEntity olderEntity = new DefendantGobAccountsEntity();
-        olderEntity.setId(randomUUID());
-        olderEntity.setMasterDefendantId(masterDefendantId);
+        DefendantGobAccountsEntity olderEntity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         olderEntity.setHearingId(hearingId);
-        olderEntity.setCorrelationId(randomUUID());
         olderEntity.setAccountNumber("olderAccountNumber");
         olderEntity.setCaseReferences(caseReferences);
         olderEntity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
@@ -82,11 +79,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         defendantGobAccountsRepository.save(olderEntity);
         
         // Create newer record
-        DefendantGobAccountsEntity newerEntity = new DefendantGobAccountsEntity();
-        newerEntity.setId(randomUUID());
-        newerEntity.setMasterDefendantId(masterDefendantId);
+        DefendantGobAccountsEntity newerEntity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         newerEntity.setHearingId(hearingId);
-        newerEntity.setCorrelationId(randomUUID());
         newerEntity.setAccountNumber("newerAccountNumber");
         newerEntity.setCaseReferences(caseReferences);
         newerEntity.setAccountRequestTime(ZonedDateTime.parse("2023-01-02T10:00:00Z"));
@@ -109,11 +103,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final UUID hearingId = randomUUID();
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1", "case ref2", "case ref3").toString();
         
-        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
-        entity.setMasterDefendantId(masterDefendantId);
+        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         entity.setHearingId(hearingId);
-        entity.setCorrelationId(randomUUID());
         entity.setAccountNumber("accountNumber");
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
@@ -137,11 +128,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final UUID hearingId = randomUUID();
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1").toString();
         
-        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
-        entity.setMasterDefendantId(masterDefendantId);
+        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         entity.setHearingId(hearingId);
-        entity.setCorrelationId(randomUUID());
         entity.setAccountNumber("accountNumber");
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
@@ -165,11 +153,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final UUID hearingId = randomUUID();
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1", "case ref2", "case ref3").toString();
         
-        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
-        entity.setMasterDefendantId(masterDefendantId);
+        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         entity.setHearingId(hearingId);
-        entity.setCorrelationId(randomUUID());
         entity.setAccountNumber("accountNumber");
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
@@ -193,11 +178,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
         final UUID hearingId = randomUUID();
         final String storedCaseReferences = createJsonArrayFromStrings("case ref1", "case ref2").toString();
         
-        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity();
-        entity.setId(randomUUID());
-        entity.setMasterDefendantId(masterDefendantId);
+        DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity(masterDefendantId, randomUUID());
         entity.setHearingId(hearingId);
-        entity.setCorrelationId(randomUUID());
         entity.setAccountNumber("accountNumber");
         entity.setCaseReferences(storedCaseReferences);
         entity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
@@ -212,11 +194,8 @@ public class DefendantGobAccountsEntityRepositoryTest extends BaseTransactionalJ
     }
 
     private DefendantGobAccountsEntity createdHearingFinancialDetailsEntity() {
-        DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity();
-        defendantGobAccountsEntity.setId(randomUUID());
-        defendantGobAccountsEntity.setMasterDefendantId(randomUUID());
+        DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity(randomUUID(), randomUUID());
         defendantGobAccountsEntity.setHearingId(testHearingId);
-        defendantGobAccountsEntity.setCorrelationId(randomUUID());
         defendantGobAccountsEntity.setAccountNumber("accountNumber");
         defendantGobAccountsEntity.setCaseReferences(createJsonArrayFromStrings("case ref1", "case ref2").toString());
         defendantGobAccountsEntity.setAccountRequestTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));

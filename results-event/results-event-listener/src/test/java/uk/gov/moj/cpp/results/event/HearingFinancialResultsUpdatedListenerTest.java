@@ -52,28 +52,21 @@ class HearingFinancialResultsUpdatedListenerTest {
         HearingFinancialResultsUpdated mockHearingFinancialResultsUpdated = mock(HearingFinancialResultsUpdated.class);
         when(mockHearingFinancialResultsUpdated.getMasterDefendantId()).thenReturn(masterDefendantId);
         when(mockHearingFinancialResultsUpdated.getCorrelationId()).thenReturn(correlationId);
-        when(mockHearingFinancialResultsUpdated.getHearingId()).thenReturn(hearingId);
         when(mockHearingFinancialResultsUpdated.getAccountNumber()).thenReturn(accountNumber);
-        when(mockHearingFinancialResultsUpdated.getAccountRequestTime()).thenReturn(accountRequestTime);
-        
+
         when(jsonObjectToObjectConverter.convert(mockPayload, HearingFinancialResultsUpdated.class))
                 .thenReturn(mockHearingFinancialResultsUpdated);
         
-        DefendantGobAccountsEntity existingEntity = new DefendantGobAccountsEntity();
-        existingEntity.setId(randomUUID());
-        existingEntity.setMasterDefendantId(masterDefendantId);
-        existingEntity.setCorrelationId(correlationId);
+        DefendantGobAccountsEntity existingEntity = new DefendantGobAccountsEntity(masterDefendantId, correlationId);
         existingEntity.setHearingId(hearingId);
         
-        when(defendantGobAccountsRepository.findByMasterDefendantIdAndHearingIdAndCorrelationId(
-                masterDefendantId, hearingId, correlationId)).thenReturn(existingEntity);
+        when(defendantGobAccountsRepository.findBy(any())).thenReturn(existingEntity);
         
         hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(mockEnvelope);
 
         verify(defendantGobAccountsRepository).save(existingEntity);
         
         assert existingEntity.getAccountNumber().equals(accountNumber);
-        assert existingEntity.getAccountRequestTime().equals(accountRequestTime);
         assert existingEntity.getUpdatedTime() != null;
     }
 
@@ -82,7 +75,6 @@ class HearingFinancialResultsUpdatedListenerTest {
         // Create test data
         UUID masterDefendantId = randomUUID();
         UUID correlationId = randomUUID();
-        UUID hearingId = randomUUID();
         String accountNumber = "TEST123";
         ZonedDateTime accountRequestTime = ZonedDateTime.now();
         
@@ -93,13 +85,11 @@ class HearingFinancialResultsUpdatedListenerTest {
         HearingFinancialResultsUpdated mockHearingFinancialResultsUpdated = mock(HearingFinancialResultsUpdated.class);
         when(mockHearingFinancialResultsUpdated.getMasterDefendantId()).thenReturn(masterDefendantId);
         when(mockHearingFinancialResultsUpdated.getCorrelationId()).thenReturn(correlationId);
-        when(mockHearingFinancialResultsUpdated.getHearingId()).thenReturn(hearingId);
-        
+
         when(jsonObjectToObjectConverter.convert(mockPayload, HearingFinancialResultsUpdated.class))
                 .thenReturn(mockHearingFinancialResultsUpdated);
         
-        when(defendantGobAccountsRepository.findByMasterDefendantIdAndHearingIdAndCorrelationId(
-                masterDefendantId, hearingId, correlationId)).thenReturn(null);
+        when(defendantGobAccountsRepository.findBy(any())).thenReturn(null);
         
         hearingFinancialResultsUpdatedListener.handleDefendantGobAccounts(mockEnvelope);
         

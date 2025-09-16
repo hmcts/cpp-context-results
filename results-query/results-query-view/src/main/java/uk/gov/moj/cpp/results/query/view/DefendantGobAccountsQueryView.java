@@ -2,8 +2,8 @@ package uk.gov.moj.cpp.results.query.view;
 
 import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static javax.json.Json.createObjectBuilder;
 
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -25,10 +25,8 @@ public class DefendantGobAccountsQueryView {
     @Inject
     private DefendantGobAccountsRepository defendantGobAccountsRepository;
 
-    @Inject
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
-    @Handles("results.query.defendant-gob-accounts")
+    @Handles("results.query.defendant-gob-account")
     public JsonEnvelope getDefendantGobAccounts(final JsonEnvelope envelope) {
         LOGGER.info("Received getDefendantGobAccounts view {}", envelope.toObfuscatedDebugString());
         final UUID masterDefendantId = UUID.fromString(envelope.payloadAsJsonObject().getString("masterDefendantId"));
@@ -41,7 +39,14 @@ public class DefendantGobAccountsQueryView {
             return envelopeFrom(envelope.metadata(), null);
         }
 
-        final JsonObject jsonObject = objectToJsonObjectConverter.convert(defendantGobAccountsEntity);
+        final JsonObject jsonObject = createObjectBuilder()
+                .add("masterDefendantId", defendantGobAccountsEntity.getMasterDefendantId().toString())
+                .add("accountCorrelationId", defendantGobAccountsEntity.getAccountCorrelationId().toString())
+                .add("hearingId", defendantGobAccountsEntity.getHearingId().toString())
+                .add("accountNumber", defendantGobAccountsEntity.getAccountNumber() != null ? defendantGobAccountsEntity.getAccountNumber() : "")
+                .add("caseReferences", defendantGobAccountsEntity.getCaseReferences())
+                .add("accountRequestTime", defendantGobAccountsEntity.getAccountRequestTime().toString())
+                .build();
         return envelopeFrom(envelope.metadata(), jsonObject);
     }
 }

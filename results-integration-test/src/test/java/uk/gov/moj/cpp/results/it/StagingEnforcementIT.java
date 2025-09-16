@@ -28,6 +28,8 @@ import static uk.gov.moj.cpp.results.it.utils.FileUtil.convertStringToJson;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.removeMessagesFromQueue;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
+
+import java.util.concurrent.TimeUnit;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocumentCreate;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubMaterialUploadFile;
@@ -587,6 +589,13 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse1.get("originalApplicationResults"), notNullValue());
         assertThat(jsonResponse1.get("newApplicationResults"), notNullValue());
 
+        // Wait for the data to be available in the query store
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         // Query for the latest account (accountNumber3) with hearingId
         getDefendantAccountNumber(masterDefendantId, accountCorrelationId3, accountNumber3, hearingId);
     }
@@ -594,20 +603,18 @@ public class StagingEnforcementIT {
     private void getDefendantAccountNumber(final String masterDefendantId, final String accountCorrelationId3, final String accountNumber3, final String hearingId) {
         given()
                 .baseUri(BASE_URI)
-                .header("Content-Type", "application/vnd.results.query.defendant-gob-accounts+json")
-                .header("Accept", "application/vnd.results.query.defendant-gob-accounts+json")
+                .header("Content-Type", "application/vnd.results.query.defendant-gob-account+json")
+                .header("Accept", "application/vnd.results.query.defendant-gob-account+json")
                 .header(USER_ID, getUserId())
                 .when()
-                .get("/results-query-api/query/api/rest/results/defendant-gob-accounts?masterDefendantId={masterDefendantId}&hearingId={hearingId}",
+                .get("/results-query-api/query/api/rest/results/defendant-gob-account?masterDefendantId={masterDefendantId}&hearingId={hearingId}",
                         masterDefendantId, hearingId)
                 .then()
                 .statusCode(200)
-                .body("id", notNullValue())
                 .body("masterDefendantId", equalTo(masterDefendantId))
-                .body("correlationId", equalTo(accountCorrelationId3))
+                .body("accountCorrelationId", equalTo(accountCorrelationId3))
                 .body("accountNumber", equalTo(accountNumber3))
                 .body("caseReferences", containsString("32DN1212262"))
-                .body("createdTime", notNullValue())
                 .body("accountRequestTime", notNullValue())
                 .body("hearingId", equalTo(hearingId));
 

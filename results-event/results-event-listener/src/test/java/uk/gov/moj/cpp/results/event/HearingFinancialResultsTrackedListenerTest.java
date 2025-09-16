@@ -72,9 +72,8 @@ class HearingFinancialResultsTrackedListenerTest {
         
         DefendantGobAccountsEntity capturedEntity = defendantGobAccountsEntityArgumentCaptor.getAllValues().get(0);
         
-        assertThat(capturedEntity.getId(), is(notNullValue()));
         assertThat(capturedEntity.getMasterDefendantId(), is(hearingFinancialResultsTracked.getHearingFinancialResultRequest().getMasterDefendantId()));
-        assertThat(capturedEntity.getCorrelationId(), is(hearingFinancialResultsTracked.getHearingFinancialResultRequest().getAccountCorrelationId()));
+        assertThat(capturedEntity.getAccountCorrelationId(), is(hearingFinancialResultsTracked.getHearingFinancialResultRequest().getAccountCorrelationId()));
         assertThat(capturedEntity.getHearingId(), is(hearingFinancialResultsTracked.getHearingFinancialResultRequest().getHearingId()));
         assertThat(capturedEntity.getCaseReferences(), is(notNullValue()));
         assertThat(capturedEntity.getCreatedTime(), is(notNullValue()));

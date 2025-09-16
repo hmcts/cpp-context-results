@@ -20,7 +20,7 @@ public class DefendantGobAccountsQueryApi {
     @Inject
     private DefendantGobAccountsQueryView defendantGobAccountsQueryView;
 
-    @Handles("results.query.defendant-gob-accounts")
+    @Handles("results.query.defendant-gob-account")
     public JsonEnvelope getDefendantGobAccounts(final JsonEnvelope envelope) {
         LOGGER.info("Received getDefendantGobAccounts api {}", envelope.toObfuscatedDebugString());
         return defendantGobAccountsQueryView.getDefendantGobAccounts(envelope);

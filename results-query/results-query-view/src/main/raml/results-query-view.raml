@@ -92,14 +92,14 @@ protocols: [ HTTP, HTTPS ]
                     example:  !include json/results.query.nces-email-notification-details.json
                     schema:  !include json/schema/results.query.nces-email-notification-details.json
 
-/defendant-gob-accounts:
+/defendant-gob-account:
    get:
          description: |
            Return latest account number by master defendant id & hearing Id
            ...
            (mapping):
-               responseType: application/vnd.results.query.defendant-gob-accounts+json
-               name: results.query.defendant-gob-accounts
+               responseType: application/vnd.results.query.defendant-gob-account+json
+               name: results.query.defendant-gob-account
            ...
          queryParameters:
              masterDefendantId:
@@ -114,6 +114,6 @@ protocols: [ HTTP, HTTPS ]
                200:
                    description: OK
                    body:
-                     application/vnd.results.query.defendant-gob-accounts+json
-                       example:  !include json/results.query.defendant-gob-accounts.json
-                       schema:  !include json/schema/results.query.defendant-gob-accounts.json
+                     application/vnd.results.query.defendant-gob-account+json
+                       example:  !include json/results.query.defendant-gob-account.json
+                       schema:  !include json/schema/results.query.defendant-gob-account.json

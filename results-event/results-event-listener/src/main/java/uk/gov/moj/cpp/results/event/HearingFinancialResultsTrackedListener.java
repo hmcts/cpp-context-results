@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event;
 
-import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 
@@ -37,32 +36,24 @@ public class HearingFinancialResultsTrackedListener {
     public void processDefendantGobAccounts(final JsonEnvelope event) {
         final JsonObject requestJson = event.payloadAsJsonObject();
         final HearingFinancialResultsTracked hearingFinancialResultsTracked = jsonObjectToObjectConverter.convert(requestJson, HearingFinancialResultsTracked.class);
-        saveDefendantGobAccounts(hearingFinancialResultsTracked);
-    }
-
-    private void saveDefendantGobAccounts(HearingFinancialResultsTracked hearingFinancialResultsTracked) {
-        final var hearingFinancialResultRequest = hearingFinancialResultsTracked.getHearingFinancialResultRequest();
-        final UUID masterDefendantId = hearingFinancialResultRequest.getMasterDefendantId();
-        final UUID correlationId = hearingFinancialResultRequest.getAccountCorrelationId();
-        final UUID hearingId = hearingFinancialResultRequest.getHearingId();
-        
-        // Only save if correlationId is present
-        if (correlationId != null) {
+        if (hearingFinancialResultsTracked.getHearingFinancialResultRequest().getAccountCorrelationId() != null) {
             defendantGobAccountsRepository.save(createDefendantGobAccountsEntity(hearingFinancialResultsTracked));
-            LOGGER.info("Correlation details are saved successfully stored for masterDefendantId id & correlationId id & hearingId : {} & {} & {}", masterDefendantId, correlationId, hearingId);
         } else {
-            LOGGER.info("Skipping Correlation details save - no correlationId present for masterDefendantId id & hearingId : {} & {}", masterDefendantId, hearingId);
+            LOGGER.info("Skipping Correlation details save - no correlationId present for masterDefendantId id & hearingId : {} & {}",
+                    hearingFinancialResultsTracked.getHearingFinancialResultRequest().getMasterDefendantId(),
+                    hearingFinancialResultsTracked.getHearingFinancialResultRequest().getHearingId());
         }
     }
 
     private DefendantGobAccountsEntity createDefendantGobAccountsEntity(HearingFinancialResultsTracked hearingFinancialResultsTracked) {
         final var hearingFinancialResultRequest = hearingFinancialResultsTracked.getHearingFinancialResultRequest();
-        final DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity();
-        defendantGobAccountsEntity.setId(randomUUID());
-        defendantGobAccountsEntity.setMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId());
-        defendantGobAccountsEntity.setCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId());
+        final DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity(
+            hearingFinancialResultRequest.getMasterDefendantId(),
+            hearingFinancialResultRequest.getAccountCorrelationId()
+        );
         // account_number is not set here as it may not be available if GOB happens in one go after multiple amendments
         defendantGobAccountsEntity.setCaseReferences(convertCaseReferencesToJsonArray(hearingFinancialResultRequest.getProsecutionCaseReferences()).toString());
+        defendantGobAccountsEntity.setAccountRequestTime(hearingFinancialResultsTracked.getCreatedTime());
         defendantGobAccountsEntity.setCreatedTime(ZonedDateTime.now());
         defendantGobAccountsEntity.setHearingId(hearingFinancialResultRequest.getHearingId());
         defendantGobAccountsEntity.setUpdatedTime(ZonedDateTime.now());
