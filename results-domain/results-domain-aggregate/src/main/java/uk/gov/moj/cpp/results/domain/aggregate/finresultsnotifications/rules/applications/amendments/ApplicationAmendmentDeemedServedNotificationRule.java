@@ -29,7 +29,7 @@ public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractAp
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
-        final HearingFinancialResultRequest request = getFilteredApplicationResults(input.request());
+        final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))
                 .filter(o -> nonNull(o.getIsParentFlag()) && o.getIsParentFlag())
