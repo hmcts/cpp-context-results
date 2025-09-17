@@ -705,11 +705,11 @@ public class HearingFinancialResultsAggregateTest {
         final List<Object> eventsApp1 =
                 raiseEventsForApplicationResult(singletonList(accountCorrelationId),
                         asList(offenceIdA, offenceIdA),
-                        asList(false, true),
+                        asList(true, true),
                         asList("caseUrn1"),
                         APPEAL,
                         asList(ASV, FIDICI),
-                        asList(Boolean.FALSE, Boolean.TRUE),
+                        asList(Boolean.TRUE, Boolean.TRUE),
                         null);
 
         assertThat(eventsApp1.size(), is(3));
@@ -860,7 +860,7 @@ public class HearingFinancialResultsAggregateTest {
         updateGobAccounts(singletonList(accountCorrelationId));
 
         List<Object> events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
-        assertThat(events.size(), is(2));
+        assertThat(events.size(), is(3));
 
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
                 verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
@@ -1061,9 +1061,8 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId1, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2"));
 
         events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), asList(offenceIdA, offenceIdB, offenceIdC), asList(false, true, true), asList(false, true, true), asList("changed", "", ""));
-        assertThat(events.size(), is(2));
+        assertThat(events.size(), is(3));
 
-        assertThat(events.size(), is(2));
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
                 verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2"));
 

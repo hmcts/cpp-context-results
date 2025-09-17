@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications;
 
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToNonFinAccWriteOffRule;
@@ -35,6 +36,7 @@ public class ResultNotificationRuleEngine {
         rules.add(new NewNonAppealAppsDeniedNotificationRule());
         rules.add(new NewApplicationUpdatedNotificationRule());
         rules.add(new ApplicationDeemedServedNotificationRule());
+        rules.add(new ApplicationAmendmentDeemedServedNotificationRule());
         rules.add(new ApplicationACONNotificationRule());
         rules.add(new ApplicationAmendmentACONNotificationRule());
         rules.add(new ApplicationAmendmentFinToFinAccWriteOffRule());

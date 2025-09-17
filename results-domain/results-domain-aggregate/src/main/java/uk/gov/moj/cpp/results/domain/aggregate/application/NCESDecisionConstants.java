@@ -22,6 +22,7 @@ public class NCESDecisionConstants  implements Serializable {
     public static final String COMMA = ",";
     public static final String ROPENED = "ROPENED";
     public static final String WRITE_OFF_ONE_DAY_DEEMED_SERVED = "WRITE OFF ONE DAY DEEMED SERVED";
+    public static final String WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED = "WRITE OFF ONE DAY DEEMED SERVED REMOVED";
     public static final String STATUTORY_DECLARATION_UPDATED  = "STATUTORY DECLARATION UPDATED" ;
     public static final String APPLICATION_TO_REOPEN_UPDATED  = "APPLICATION TO REOPEN UPDATED" ;
     public static final String APPEAL_APPLICATION_UPDATED  = "APPEAL APPLICATION UPDATED";

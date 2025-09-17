@@ -1,21 +1,21 @@
 {
   "amendmentDate": "2025-03-14",
   "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
-  "caseReferences": "28NS8524614",
-  "defendantName": "Lonzo Mertz",
+  "caseReferences": "28NS2172608",
+  "defendantName": "Adolph Berge",
   "divisionCode": "47",
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
-      "details": "FO - Fine\nFined £101.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "details": "CD - Conditional discharge\nDischarged conditionally for 5 Months.",
       "offenceDate": "2019-11-28",
-      "offenceId": "bf729897-9588-4c1a-a18e-fd4106434f8d",
+      "offenceId": "eefd3f79-66eb-4e2b-bca2-9e6f9cdc00b7",
       "title": "Theft from a shop"
     }
   ],
   "isSJPHearing": false,
   "isWriteOff": false,
-  "masterDefendantId": "5de763e9-8b4d-4e94-a980-45de4cb680d6",
+  "masterDefendantId": "0effc607-e232-4654-81f5-3f506100a92b",
   "materialId": "{{materialId}}",
   "notificationId": "{{notificationId}}",
   "sendTo": "av.qet@justice.gov.uk",
