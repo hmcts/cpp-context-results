@@ -4,7 +4,7 @@
     <parent>
         <artifactId>results-parent</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>17.0.73-CCT-2390-SNAPSHOT</version>
+        <version>17.0.74-CCT-2390-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-viewstore</artifactId>
