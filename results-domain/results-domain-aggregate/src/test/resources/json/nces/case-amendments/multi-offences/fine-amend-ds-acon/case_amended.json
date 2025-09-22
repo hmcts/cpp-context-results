@@ -1,0 +1,29 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2269882 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Enos Purdy",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d8fbd66e-7b28-403f-8788-d67427c17890",
+  "hearingSittingDay": "2025-09-18T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "fa17411a-3d23-496b-9fdc-8f78b32c5278",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-09-18",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-09-18",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
+      "offenceTitle": "Robbery",
+      "resultCode": "ACON"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2269882"
+  ]
+}

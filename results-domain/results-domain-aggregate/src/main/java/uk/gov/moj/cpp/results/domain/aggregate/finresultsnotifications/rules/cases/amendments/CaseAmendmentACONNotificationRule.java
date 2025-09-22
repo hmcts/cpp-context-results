@@ -37,12 +37,13 @@ public class CaseAmendmentACONNotificationRule extends AbstractCaseResultNotific
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
                 .toList();
         if (!impositionOffenceDetailsForAcon.isEmpty()) {
+            final boolean includeOlds = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.ACON_EMAIL_SUBJECT,
                                     impositionOffenceDetailsForAcon,
-                                    Boolean.FALSE)
+                                    includeOlds)
             );
         }
         return Optional.empty();
