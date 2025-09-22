@@ -389,12 +389,14 @@ public class HearingResultedIT {
     }
 
     @Test
+    @SuppressWarnings("java:S2699")
     public void getHearingDetails_shouldReturnBadRequestForResultsSummaryWithoutFromDate() {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         thenReturnsBadRequestForResultsSummaryWithoutFromDate();
     }
 
     @Test
+    @SuppressWarnings("java:S2699")
     public void testJourneyHearingToDisplayAllDetailsInResults() {
         PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
         setOuCodeAndProsecutorAuthority(resultsMessage);
@@ -437,6 +439,7 @@ public class HearingResultedIT {
     }
 
     @Test
+    @SuppressWarnings("java:S2699")
     public void testJourneyHearingToDisplayAllDetailsInResultsWithHearingDate() {
         PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithHearingDay(MAGISTRATES, LocalDate.of(2018, 5, 2));
 
@@ -485,6 +488,7 @@ public class HearingResultedIT {
     }
 
     @Test
+    @SuppressWarnings("java:S2699")
     public void shouldDisplayAllInternalDetailsInHearingResults() {
         PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
         setOuCodeAndProsecutorAuthority(resultsMessage);

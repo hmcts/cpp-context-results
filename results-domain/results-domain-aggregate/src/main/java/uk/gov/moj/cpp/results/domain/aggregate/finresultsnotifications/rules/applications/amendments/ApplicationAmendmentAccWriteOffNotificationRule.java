@@ -78,6 +78,17 @@ public class ApplicationAmendmentAccWriteOffNotificationRule extends AbstractApp
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
                 .toList();
 
+        // Get imposition offence details for non-financial offences corresponding to original non-financial offences
+        final List<ImpositionOffenceDetails> impositionOffenceDetailsNonFineToNonFine = request.getOffenceResults().stream()
+                .filter(isApplicationAmended)
+                .filter(o -> !o.getIsFinancial())
+                .filter(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
+                        .map(OffenceResultsDetails::getIsFinancial)
+                        .map(isFinancial -> !isFinancial)
+                        .orElse(true))
+                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
+                .toList();
+
         // Get original application results from the aggregate.
         final Optional<OriginalApplicationResults> originalResultsByApplication = request.getOffenceResults().stream()
                 .filter(result -> Objects.nonNull(result.getApplicationId()))
@@ -94,7 +105,7 @@ public class ApplicationAmendmentAccWriteOffNotificationRule extends AbstractApp
         final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
 
         //Application only result amendment
-        if (originalResultsByApplication.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty()) {
+        if (originalResultsByApplication.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty() && impositionOffenceDetailsNonFineToNonFine.isEmpty()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder
                             .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
