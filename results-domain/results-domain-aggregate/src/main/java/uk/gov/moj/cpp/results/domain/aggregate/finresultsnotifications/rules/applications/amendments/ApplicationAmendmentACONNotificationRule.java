@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
@@ -38,12 +39,13 @@ public class ApplicationAmendmentACONNotificationRule extends AbstractApplicatio
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
         if (!impositionOffenceDetailsForACON.isEmpty()) {
+            final boolean includeOlds = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.ACON_EMAIL_SUBJECT,
                                     impositionOffenceDetailsForACON,
-                                    Boolean.FALSE));
+                                    includeOlds));
         }
         return Optional.empty();
     }
