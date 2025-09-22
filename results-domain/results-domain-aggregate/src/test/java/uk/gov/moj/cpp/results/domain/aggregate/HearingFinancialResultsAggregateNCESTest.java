@@ -43,6 +43,21 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
+                Arguments.of("DLQ: nonfin > nonfine DD-40322\t)",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/case-amendments/single-offence/nonfin-to-nonfin/case_resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                .newStep(newResultTrackedStep("application adj")
+                                        .withResultTrackedEvent("json/nces/case-amendments/single-offence/nonfin-to-nonfin/app_resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                .newStep(newResultTrackedStep("application amended")
+                                        .withResultTrackedEvent("json/nces/case-amendments/single-offence/nonfin-to-nonfin/app_amended.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                ),
                 Arguments.of("FAIL: nonfin > fin DD-36847 AC2)",
                         newScenario()
                                 .newStep(newResultTrackedStep("case amended")
