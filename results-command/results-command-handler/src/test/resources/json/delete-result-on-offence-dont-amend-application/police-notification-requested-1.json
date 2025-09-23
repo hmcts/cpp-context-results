@@ -630,31 +630,36 @@
                 "amendmentType": "ADDED",
                 "id": "023681e1-0d8b-4363-835e-dd325be92b12",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "f430712d-8703-4cd8-a41c-7decddbe551e",
                 "judicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
-                "resultTitle": "Imprisonment"
+                "resultTitle": "Imprisonment",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "e6f5224d-3dcd-427e-9ff7-90a6bdbcf843",
                 "judicialResultTypeId": "204fc6b8-d6c9-4fb8-acd0-47d23c087625",
-                "resultTitle": "No surcharge"
+                "resultTitle": "No surcharge",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "b1ad3ef1-27b5-47c2-a61a-579f04b3ff12",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "e814ea2f-568d-492e-baaf-0225d94eacd6",
                 "judicialResultTypeId": "6cb15971-c945-4398-b7c9-3f8b743a4de3",
-                "resultTitle": "Total custodial period"
+                "resultTitle": "Total custodial period",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,
@@ -671,7 +676,8 @@
             "amendmentType": "ADDED",
             "id": "471fb18c-1ce6-455d-9b5d-3cb3665ec879",
             "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
-            "resultTitle": "No adjudication - dealt with for original offence"
+            "resultTitle": "No adjudication - dealt with for original offence",
+            "isQualifyingResult": false
           }
         ],
         "offenceResultDetails": []

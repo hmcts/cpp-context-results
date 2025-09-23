@@ -11,7 +11,6 @@ import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.CaseAddedEvent.caseAddedEvent;
 import static uk.gov.justice.core.courts.CourtCentre.courtCentre;
 import static uk.gov.justice.core.courts.CourtCentreWithLJA.courtCentreWithLJA;
@@ -34,6 +33,9 @@ import static uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationReques
 
 import com.google.common.base.Functions;
 import org.apache.commons.collections.map.HashedMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CaseAddedEvent;
@@ -71,6 +73,7 @@ import uk.gov.moj.cpp.domains.results.structure.Result;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.EmailNotificationFailed;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
+import uk.gov.moj.cpp.results.domain.event.PublishToDcs;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -89,6 +92,8 @@ import javax.json.JsonObject;
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class ResultsAggregate implements Aggregate {
 
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsAggregate.class);
     public static final String AMEND_RESHARE = "Amend & Reshare";
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
@@ -177,7 +182,18 @@ public class ResultsAggregate implements Aggregate {
         if (nonNull(isReshareFromPayload) && isReshareFromPayload.isPresent()) {
             isReshare = isReshareFromPayload.get();
         }
-        return apply(Stream.of(new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime())));
+
+        final HearingResultsAddedForDay hearingResultsAddedForDay = new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime());
+
+        PublishToDcs publishToDcs =  PublishToDcs.publishToDcs()
+                .withPreviousHearing(hearing)
+                .withCurrentHearing(payload.getHearing())
+                .withHearingDay(hearingDay)
+                .withIsReshare(isReshare)
+                .withSharedTime(payload.getSharedTime())
+                .build();
+
+        return apply(Stream.of(hearingResultsAddedForDay, publishToDcs));
     }
 
     public Stream<Object> ejectCaseOrApplication(final UUID hearingId, final JsonObject payload) {

@@ -1358,7 +1358,8 @@
             "amendmentType": "ADDED",
             "id": "10b61930-e19d-417a-bcd1-2ab127a72681",
             "judicialResultTypeId": "5e253119-9aab-4d0d-8288-bcdbf3695d86",
-            "resultTitle": "Order (Disposal)"
+            "resultTitle": "Order (Disposal)",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []
@@ -1374,7 +1375,8 @@
             "amendmentType": "ADDED",
             "id": "40d0ae09-372b-402a-b45f-4423e75f809b",
             "judicialResultTypeId": "5e253119-9aab-4d0d-8288-bcdbf3695d86",
-            "resultTitle": "Order (Disposal)"
+            "resultTitle": "Order (Disposal)",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": [
@@ -1385,7 +1387,8 @@
                 "amendmentType": "ADDED",
                 "id": "9522d6de-2b4c-461e-8df0-87cf06237ee4",
                 "judicialResultTypeId": "98138ec8-5dd3-11e8-9c2d-fa7ae01bbebc",
-                "resultTitle": "Text"
+                "resultTitle": "Text",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1405,7 +1408,8 @@
             "amendmentType": "ADDED",
             "id": "ce8484bc-7a2b-49e3-87f3-8b826560319a",
             "judicialResultTypeId": "5e253119-9aab-4d0d-8288-bcdbf3695d86",
-            "resultTitle": "Order (Disposal)"
+            "resultTitle": "Order (Disposal)",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []
@@ -1421,7 +1425,8 @@
             "amendmentType": "ADDED",
             "id": "71690a33-54db-484b-a6ba-7e9622453df9",
             "judicialResultTypeId": "5e253119-9aab-4d0d-8288-bcdbf3695d86",
-            "resultTitle": "Order (Disposal)"
+            "resultTitle": "Order (Disposal)",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []

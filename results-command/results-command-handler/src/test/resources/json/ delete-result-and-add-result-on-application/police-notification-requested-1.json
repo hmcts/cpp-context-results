@@ -202,7 +202,8 @@
             "amendmentType": "ADDED",
             "id": "4a087a52-98e1-4baa-9d75-6a135f238552",
             "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
-            "resultTitle": "No adjudication - dealt with for original offence"
+            "resultTitle": "No adjudication - dealt with for original offence",
+            "isQualifyingResult": false
           }
         ],
         "offenceResultDetails": [
@@ -213,7 +214,8 @@
                 "amendmentType": "ADDED",
                 "id": "dc2e1491-2730-479a-af19-3ac544fea67e",
                 "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
-                "resultTitle": "Conditional discharge"
+                "resultTitle": "Conditional discharge",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

@@ -498,19 +498,22 @@
             "amendmentType": "UPDATED",
             "id": "311b143f-d08b-4dc2-88ef-740ae68c32f0",
             "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
-            "resultTitle": "Community order varied"
+            "resultTitle": "Community order varied",
+            "isQualifyingResult":false
           },
           {
             "amendmentType": "UPDATED",
             "id": "1ca28841-6082-4d9f-9a8d-de7dc714848c",
             "judicialResultTypeId": "9bec5977-1796-4645-9b9e-687d4f23d37d",
-            "resultTitle": "Unpaid work. Requirement to be completed within 12 months."
+            "resultTitle": "Unpaid work. Requirement to be completed within 12 months.",
+            "isQualifyingResult":false
           },
           {
             "amendmentType": "UPDATED",
             "id": "793b3673-bec2-42c8-bda4-8a5a3a551d9e",
             "judicialResultTypeId": "346edadd-5b2f-4e52-9d71-cd2296508cdf",
-            "resultTitle": "The new and amended requirements are"
+            "resultTitle": "The new and amended requirements are",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []
@@ -529,13 +532,15 @@
                 "amendmentType": "UPDATED",
                 "id": "753b6c02-58fc-4492-81bd-545ae163f54a",
                 "judicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
-                "resultTitle": "Community order England / Wales"
+                "resultTitle": "Community order England / Wales",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "44e2632b-16fc-49b5-b5fd-11daff6abc2f",
                 "judicialResultTypeId": "9bec5977-1796-4645-9b9e-687d4f23d37d",
-                "resultTitle": "Unpaid work. Requirement to be completed within 12 months."
+                "resultTitle": "Unpaid work. Requirement to be completed within 12 months.",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

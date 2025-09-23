@@ -573,19 +573,22 @@
                 "amendmentType": "ADDED",
                 "id": "cc723ab6-c365-4373-a328-9895b717c270",
                 "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
-                "resultTitle": "Surcharge"
+                "resultTitle": "Surcharge",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "dbe45a67-2e15-4840-952d-9d129895a6bd",
                 "judicialResultTypeId": "f7dfefd2-64c6-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Application made for benefit deductions"
+                "resultTitle": "Application made for benefit deductions",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "0f8141ea-6cc6-4755-b8d5-8ab0ad6a47bc",
                 "judicialResultTypeId": "a09bbfa0-5dd5-11e8-9c2d-fa7ae01bbebc",
-                "resultTitle": "Reserve Terms Lump sum"
+                "resultTitle": "Reserve Terms Lump sum",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,
@@ -602,13 +605,15 @@
             "amendmentType": "ADDED",
             "id": "f5b875a1-dbd9-46fa-a053-a6c7c9df87e0",
             "judicialResultTypeId": "e3fb46ee-e406-4f73-9bf1-71d513da8cc7",
-            "resultTitle": "Case reopened"
+            "resultTitle": "Case reopened",
+            "isQualifyingResult": false
           },
           {
             "amendmentType": "DELETED",
             "id": "d17cb7bd-f00b-435b-b75f-056447e8eb47",
             "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
-            "resultTitle": "Community order varied"
+            "resultTitle": "Community order varied",
+            "isQualifyingResult": false
           }
         ],
         "offenceResultDetails": []
