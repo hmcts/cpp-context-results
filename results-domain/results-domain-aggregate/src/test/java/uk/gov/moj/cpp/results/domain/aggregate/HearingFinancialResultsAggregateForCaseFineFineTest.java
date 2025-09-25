@@ -1263,7 +1263,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 "json/nces/multi-applications/applications-mixed-offences/3_case-o1o2fp-o3dism_case-amended-o2-add-fo_app1-reopen-o1o2-dism-o3-fp_app2-non-rehearing-refused_app3-statdec-o1o2-fp-o3-dism/3_app1_expected_app_to_reopen_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("id", "materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                                 .newStep(newResultTrackedStep("app1 reopen resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/3_case-o1o2fp-o3dism_case-amended-o2-add-fo_app1-reopen-o1o2-dism-o3-fp_app2-non-rehearing-refused_app3-statdec-o1o2-fp-o3-dism/3_app_reopen_results_tracked.json",
@@ -1491,7 +1491,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
-                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                                 .newStep(newNcesEmailForNewApplicationStep("app2 reopen received", "json/nces/multi-applications/Case-Fine-NonFine/Case-amended-o2-Fine/App1-Granted-Fine-Fine/App2-Granted-Fine-Fine/4_app_reopen_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")

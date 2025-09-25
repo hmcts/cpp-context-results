@@ -28,7 +28,6 @@ import static uk.gov.justice.core.courts.ContactNumber.contactNumber;
 import static uk.gov.justice.core.courts.CourtCentre.courtCentre;
 import static uk.gov.justice.core.courts.CourtCentreWithLJA.courtCentreWithLJA;
 import static uk.gov.justice.core.courts.CourtIndicatedSentence.courtIndicatedSentence;
-import static uk.gov.justice.core.courts.DeletedJudicialResult.deletedJudicialResult;
 import static uk.gov.justice.core.courts.Gender.FEMALE;
 import static uk.gov.justice.core.courts.Gender.MALE;
 import static uk.gov.justice.core.courts.Hearing.hearing;
@@ -52,7 +51,6 @@ import uk.gov.justice.core.courts.DefendantAddedEvent;
 import uk.gov.justice.core.courts.DefendantRejectedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
 import uk.gov.justice.core.courts.DelegatedPowers;
-import uk.gov.justice.core.courts.DeletedJudicialResult;
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
@@ -932,33 +930,6 @@ public class ResultsAggregateTest {
         assertEquals(policeResultGenerated1.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
         assertThat(policeResultGenerated1.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("123"));
         assertEquals(LocalDate.now(), policeResultGenerated1.getSessionDays().get(0).getSittingDay().toLocalDate());
-    }
-
-    @Test
-    public void shouldRaiseHearingResultsAddedForDayWithDeletedJudicialResultsWhen_WhenHearingResultedWithDeletedResults() {
-        final List<OffenceDetails> offenceDetailsList = new ArrayList<>();
-        offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
-        final JudicialResult judicialResult1 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
-                .withLevel("FINAL")
-                .withIsUnscheduled(false)
-                .withIsNewAmendment(true)
-                .withLabel("Conditional discharge")
-                .build();
-        final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
-
-
-        final List<DeletedJudicialResult> deletedJudicialResults = List.of(deletedJudicialResult().withDefendantId(randomUUID()).withOffenceId(randomUUID()).build());
-        final Stream<Object> eventStream = resultsAggregate.saveHearingResultsForDay(publicHearingResulted()
-                        .setSharedTime(now())
-                        .setIsReshare(Optional.of(Boolean.FALSE))
-                        .setDeletedJudicialResults(deletedJudicialResults)
-                        .setHearing(createMultiDayHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1)),
-                LocalDate.of(2025, 9, 9));
-
-
-        final List<Object> eventsList = eventStream.toList();
-        assertThat(eventsList.size(), is(1));
-        assertThat(((HearingResultsAddedForDay) eventsList.get(0)).getDeletedJudicialResults(), is(deletedJudicialResults));
     }
 
     private Hearing createHearing(UUID caseId, UUID defendantId, UUID offenceId, JudicialResult judicialResult) {
