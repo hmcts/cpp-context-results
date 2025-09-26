@@ -48,7 +48,7 @@
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty-common>4.1.113.Final</netty-common>
         <sjp.version>17.0.72</sjp.version>
-        <staging.dcs.version>17.101.88-STAGINGDCS-SNAPSHOT</staging.dcs.version>
+        <staging.dcs.version>17.101.1</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
             **/uk/gov/justice/api/**/*,
