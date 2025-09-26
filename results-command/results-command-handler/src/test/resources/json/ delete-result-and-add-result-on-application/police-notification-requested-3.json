@@ -451,25 +451,29 @@
             "amendmentType": "ADDED",
             "id": "56e72f59-5e70-42c9-9fcd-45cd043c296f",
             "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
-            "resultTitle": "Community order varied"
+            "resultTitle": "Community order varied",
+            "isQualifyingResult": false
           },
           {
             "amendmentType": "ADDED",
             "id": "46dc97c9-04d1-4fa3-9bba-32ce83657963",
             "judicialResultTypeId": "f9eac601-a1e7-4d45-99ee-c49e2c4ca85b",
-            "resultTitle": "Attendance centre"
+            "resultTitle": "Attendance centre",
+            "isQualifyingResult": false
           },
           {
             "amendmentType": "ADDED",
             "id": "8dd1b462-0742-4d84-8042-23119b373288",
             "judicialResultTypeId": "346edadd-5b2f-4e52-9d71-cd2296508cdf",
-            "resultTitle": "The new and amended requirements are"
+            "resultTitle": "The new and amended requirements are",
+            "isQualifyingResult": false
           },
           {
             "amendmentType": "DELETED",
             "id": "4a087a52-98e1-4baa-9d75-6a135f238552",
             "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
-            "resultTitle": "No adjudication - dealt with for original offence"
+            "resultTitle": "No adjudication - dealt with for original offence",
+            "isQualifyingResult": false
           }
         ],
         "offenceResultDetails": []

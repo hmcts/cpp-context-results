@@ -359,19 +359,22 @@
                 "amendmentType": "ADDED",
                 "id": "9f7d8c11-b8e5-40c6-8eeb-e2f74a95b1d6",
                 "judicialResultTypeId": "c36fed37-b635-4303-b514-2273e9e2594d",
-                "resultTitle": "Entered in error"
+                "resultTitle": "Entered in error",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "3b1d3422-7d59-4495-a2cc-e0f496460abc",
                 "judicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
-                "resultTitle": "Community order England / Wales"
+                "resultTitle": "Community order England / Wales",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "c0440af1-1d42-4d7f-84a6-822a435772f6",
                 "judicialResultTypeId": "9bec5977-1796-4645-9b9e-687d4f23d37d",
-                "resultTitle": "Unpaid work. Requirement to be completed within 12 months."
+                "resultTitle": "Unpaid work. Requirement to be completed within 12 months.",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

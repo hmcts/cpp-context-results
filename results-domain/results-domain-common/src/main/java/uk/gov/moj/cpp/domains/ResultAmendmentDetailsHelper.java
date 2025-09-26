@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNullElse;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
@@ -342,14 +343,14 @@ public class ResultAmendmentDetailsHelper {
             else if (Boolean.TRUE.equals(judicialResult.getIsNewAmendment())) {
                 resultAmendmentType = JudicialResultAmendmentType.UPDATED;
             }
-            judicialResultDetails.add(new JudicialResultDetails(judicialResult.getJudicialResultId(), judicialResult.getLabel(),  judicialResult.getJudicialResultTypeId(), resultAmendmentType));
+            final boolean isDcsQualifiedResult = requireNonNullElse(judicialResult.getCommittedToCC(), false) || requireNonNullElse(judicialResult.getSentToCC(), false);
+            judicialResultDetails.add(new JudicialResultDetails(judicialResult.getJudicialResultId(), judicialResult.getLabel(),  judicialResult.getJudicialResultTypeId(), resultAmendmentType, isDcsQualifiedResult));
         }
-
 
         final List<JudicialResultDetails> deletedResults = existingResultDetails.stream()
                 .filter(r -> newJudicialResults.stream().noneMatch(jr -> Objects.equals(r.getResultId(), jr.getJudicialResultId())))
-                .map(resultDetail -> new JudicialResultDetails(resultDetail.getResultId(), resultDetail.getTitle(), resultDetail.getResultTypeId(), JudicialResultAmendmentType.DELETED))
-                .collect(toList());
+                .map(resultDetail -> new JudicialResultDetails(resultDetail.getResultId(), resultDetail.getTitle(), resultDetail.getResultTypeId(), JudicialResultAmendmentType.DELETED, resultDetail.isQualifyingResult()))
+                .toList();
 
         judicialResultDetails.addAll(deletedResults);
 

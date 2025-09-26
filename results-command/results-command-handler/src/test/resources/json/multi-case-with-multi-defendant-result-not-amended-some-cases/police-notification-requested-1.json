@@ -206,7 +206,8 @@
                 "amendmentType": "UPDATED",
                 "id": "e25f7119-026b-42c3-9ff9-1b2b1cb760ea",
                 "judicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
-                "resultTitle": "Warrant for arrest without bail"
+                "resultTitle": "Warrant for arrest without bail",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,

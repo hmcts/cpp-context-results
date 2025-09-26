@@ -132,6 +132,6 @@ public class ResultReshareHelperHasResultsTest {
     }
 
     private JudicialResultDetails result(final AmendmentType amendmentType) {
-        return new JudicialResultDetails(amendmentType, UUID.randomUUID(), UUID.randomUUID(), "title");
+        return new JudicialResultDetails(amendmentType, UUID.randomUUID(), false, UUID.randomUUID(), "title");
     }
 }

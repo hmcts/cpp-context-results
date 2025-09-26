@@ -771,7 +771,8 @@
                 "amendmentType": "DELETED",
                 "id": "14c8ec49-7cf2-450b-9343-8aa4109a11e7",
                 "judicialResultTypeId": "5e253119-9aab-4d0d-8288-bcdbf3695d86",
-                "resultTitle": "Order (Disposal)"
+                "resultTitle": "Order (Disposal)",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -785,13 +786,15 @@
                 "amendmentType": "DELETED",
                 "id": "832b5561-a709-42ae-bf96-c0f42a9ed3da",
                 "judicialResultTypeId": "73fe22ca-76bd-4aba-bdea-6dfef8ee03a2",
-                "resultTitle": "Points disqualification"
+                "resultTitle": "Points disqualification",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "4347e7cf-5c5f-4829-8701-4fb0b780c860",
                 "judicialResultTypeId": "4b850aa9-984c-4a15-a1ae-b2f861cfcbe8",
-                "resultTitle": "1: Prov DVLA produced"
+                "resultTitle": "1: Prov DVLA produced",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 12,
@@ -805,19 +808,22 @@
                 "amendmentType": "DELETED",
                 "id": "55bd4fdf-d1b8-4699-b9b1-3f698d4f327b",
                 "judicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
-                "resultTitle": "Imprisonment"
+                "resultTitle": "Imprisonment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "bd5e86f5-99c0-404c-9fc4-0fe9f616bde9",
                 "judicialResultTypeId": "204fc6b8-d6c9-4fb8-acd0-47d23c087625",
-                "resultTitle": "No surcharge"
+                "resultTitle": "No surcharge",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "6b3f790c-7b28-48c5-a5d5-50e8448d7e13",
                 "judicialResultTypeId": "6cb15971-c945-4398-b7c9-3f8b743a4de3",
-                "resultTitle": "Total custodial period"
+                "resultTitle": "Total custodial period",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 10,

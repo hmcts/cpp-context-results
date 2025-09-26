@@ -144,6 +144,7 @@ public class CaseResultDetailsConverter {
                 .withResultTitle(resultDetails.getTitle())
                 .withAmendmentType(AmendmentType.valueFor(resultDetails.getAmendmentType().name()).orElse(null))
                 .withJudicialResultTypeId(resultDetails.getResultTypeId())
+                .withIsQualifyingResult(resultDetails.isQualifyingResult())
                 .build();
     }
 }
