@@ -41,7 +41,7 @@ public class ApplicationACONNotificationRule extends AbstractApplicationResultNo
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.ACON_EMAIL_SUBJECT,
-                                    impositionOffenceDetailsForACON,
+                                    getAppFinancialImpositionOffenceDetails(input, request),
                                     Boolean.FALSE));
         }
         return Optional.empty();

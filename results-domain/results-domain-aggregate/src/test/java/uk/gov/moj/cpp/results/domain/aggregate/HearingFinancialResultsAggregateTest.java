@@ -712,7 +712,7 @@ public class HearingFinancialResultsAggregateTest {
                         asList(Boolean.TRUE, Boolean.TRUE),
                         null);
 
-        assertThat(eventsApp1.size(), is(3));
+        assertThat(eventsApp1.size(), is(4));
         Optional.of(eventsApp1.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
                 verifyEmailWithoutOlds(APPEAL_DISMISSED_SENTENCE_VARIED, accountCorrelationId, asList(offenceIdA), event, "caseUrn1"));
         Optional.of(eventsApp1.get(2)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
@@ -815,7 +815,7 @@ public class HearingFinancialResultsAggregateTest {
         events = updateGobAccounts(singletonList(accountCorrelationId));
         assertThat(events.size(), is(3));
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOldsForDeemed(ACON_EMAIL_SUBJECT, accountCorrelationId, singletonList(offenceIdA), event, "caseUrn1", singletonList(" Application")));
+                verifyEmailWithoutOldsForDeemed(ACON_EMAIL_SUBJECT, accountCorrelationId, asList(offenceIdA, offenceIdB), event, "caseUrn1", asList(" Application", " Application")));
     }
 
     @Test
@@ -845,7 +845,7 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(events.size(), is(3));
 
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, singletonList(offenceIdB), event, "Ref1,Ref2"));
+                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, asList(offenceIdA,offenceIdB), event, "Ref1,Ref2"));
 
     }
 
@@ -1026,7 +1026,7 @@ public class HearingFinancialResultsAggregateTest {
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
                 verifyEmailWithOlds(asList(accountCorrelationId1, accountCorrelationId2), asList(offenceIdA, offenceIdB, offenceIdC), event, asList("changed", "", "")));
         Optional.of(events.get(2)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, singletonList(offenceIdA), event, "Ref1,Ref2", asList("changed", "", "")));
+                verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2", asList("changed", "", "")));
     }
 
     @Test
@@ -1091,7 +1091,7 @@ public class HearingFinancialResultsAggregateTest {
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
                 verifyEmailWithOlds(asList(accountCorrelationId1, accountCorrelationId2), asList(offenceIdA, offenceIdB, offenceIdC), event, asList("changed", "", "")));
         Optional.of(events.get(2)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, singletonList(offenceIdA), event, "Ref1,Ref2", asList("changed", "", "")));
+                verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2", asList("changed", "", "")));
     }
 
     @Test

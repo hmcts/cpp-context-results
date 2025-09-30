@@ -38,13 +38,13 @@ public class ApplicationAmendmentACONNotificationRule extends AbstractApplicatio
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
-        if (!impositionOffenceDetailsForACON.isEmpty()) {
+        if (!impositionOffenceDetailsForACON.isEmpty() && input.isFinancial()) {
             final boolean includeOlds = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.ACON_EMAIL_SUBJECT,
-                                    impositionOffenceDetailsForACON,
+                                    getAppFinancialImpositionOffenceDetails(input, request),
                                     includeOlds));
         }
         return Optional.empty();

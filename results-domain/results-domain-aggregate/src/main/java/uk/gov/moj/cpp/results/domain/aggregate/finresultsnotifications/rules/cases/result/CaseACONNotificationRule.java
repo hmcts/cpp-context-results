@@ -38,7 +38,7 @@ public class CaseACONNotificationRule extends AbstractCaseResultNotificationRule
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.ACON_EMAIL_SUBJECT,
-                                    impositionOffenceDetailsForAcon,
+                                    getCaseFinancialImpositionOffenceDetails(input, request),
                                     Boolean.FALSE)
             );
         }

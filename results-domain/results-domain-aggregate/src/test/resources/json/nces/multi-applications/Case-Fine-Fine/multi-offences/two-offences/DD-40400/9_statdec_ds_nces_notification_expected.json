@@ -5,17 +5,17 @@
   "defendantDateOfBirth": "1991-02-18",
   "defendantName": "Korey Dicki",
   "divisionCode": "47",
-  "gobAccountNumber": "{{gobAccountNumber}}",
+  "gobAccountNumber": "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingSittingDay": "2025-09-29",
   "impositionOffenceDetails": [
     {
-      "details": "FO - Fine\nFined £400.00\nFIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £30.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £30.00.\nFO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2026.",
       "offenceDate": "2019-11-28",
       "offenceId": "4b3bff00-9349-4b83-adc3-90c311a28c5a",
       "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
     },
     {
-      "details": "FO - Fine\nFined £40.00",
+      "details": "FO - Fine\nFined £300.00",
       "offenceDate": "2019-11-28",
       "offenceId": "c47512e8-cb0c-43ea-a4cd-f8d0951468ed",
       "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
@@ -24,8 +24,8 @@
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "65263065-8860-49db-b0f4-d5c284ab89eb",
-  "materialId": "{{materialId}}",
-  "notificationId": "{{notificationId}}",
+  "materialId": "c55b88ce-aeb6-4c5c-a7fb-70ab083f2316",
+  "notificationId": "396cf8c3-06be-4a36-97e3-3225bf7d08a9",
   "originalDateOfSentence": "29/09/2025",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "WRITE OFF ONE DAY DEEMED SERVED"

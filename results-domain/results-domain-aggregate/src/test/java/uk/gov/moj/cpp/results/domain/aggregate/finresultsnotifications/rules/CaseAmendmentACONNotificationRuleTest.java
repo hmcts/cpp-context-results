@@ -27,6 +27,7 @@ class CaseAmendmentACONNotificationRuleTest {
                                 .withResultCode(NCESDecisionConstants.ACON)
                                 .withIsFinancial(true)
                                 .withAmendmentDate("2023-10-01")
+                                .withImpositionOffenceDetails("imposition details")
                                 .build()
                 ));
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()

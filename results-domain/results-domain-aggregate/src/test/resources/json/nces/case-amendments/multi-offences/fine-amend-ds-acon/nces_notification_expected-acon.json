@@ -10,6 +10,12 @@
       "offenceDate": "2019-11-28",
       "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
       "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "034f2cd7-fcd9-461a-8fd3-9651aee82be6",
+      "title": "Theft from a shop"
     }
   ],
   "isSJPHearing": false,

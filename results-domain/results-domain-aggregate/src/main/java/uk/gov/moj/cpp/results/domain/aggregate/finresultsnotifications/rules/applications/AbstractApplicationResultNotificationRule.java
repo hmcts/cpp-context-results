@@ -121,4 +121,14 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
                 .toList();
     }
+
+    protected List<ImpositionOffenceDetails> getAppFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {
+        return request.getOffenceResults().stream()
+                .filter(o -> nonNull(o.getApplicationType()) &&
+                        Boolean.TRUE.equals(o.getIsParentFlag()) &&
+                        nonNull(o.getImpositionOffenceDetails()))
+                .filter(OffenceResults::getIsFinancial)
+                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
+                .toList();
+    }
 }

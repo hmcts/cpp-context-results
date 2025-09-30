@@ -30,6 +30,7 @@ class CaseACONNotificationRuleTest {
                                 .withApplicationType(null)
                                 .withResultCode(NCESDecisionConstants.ACON)
                                 .withIsFinancial(true)
+                                .withImpositionOffenceDetails("Impositions details")
                                 .build()
                 ));
         var input = resultNotificationRuleInputBuilder()

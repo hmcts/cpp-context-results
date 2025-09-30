@@ -28,6 +28,7 @@ class CaseDeemedServedNotificationRuleTest {
                                 .withOffenceId(randomUUID())
                                 .withApplicationType(null)
                                 .withIsDeemedServed(true)
+                                .withImpositionOffenceDetails("Impostion details")
                                 .withIsFinancial(true)
                                 .build()
                 ));

@@ -30,12 +30,12 @@ public class ApplicationDeemedServedNotificationRule extends AbstractApplication
                 .filter(o -> nonNull(o.getImpositionOffenceDetails()))
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
-        if (!impositionOffenceDetailsForDeemed.isEmpty()) {
+        if (!impositionOffenceDetailsForDeemed.isEmpty() && input.isFinancial()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,
                                     NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED,
-                                    impositionOffenceDetailsForDeemed,
+                                    getAppFinancialImpositionOffenceDetails(input, request),
                                     Boolean.FALSE));
         }
         return Optional.empty();

@@ -32,10 +32,13 @@ public class CaseDeemedServedNotificationRule extends AbstractCaseResultNotifica
                 .filter(OffenceResults::getIsDeemedServed)
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
                 .toList();
-        if (!impositionOffenceDetailsForDeemed.isEmpty()) {
+        if (!impositionOffenceDetailsForDeemed.isEmpty() && input.isFinancial()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed, Boolean.FALSE)
+                            .buildMarkedAggregateWithoutOlds(request,
+                                    WRITE_OFF_ONE_DAY_DEEMED_SERVED,
+                                    getCaseFinancialImpositionOffenceDetails(input, request),
+                                    Boolean.FALSE)
             );
         }
         return Optional.empty();

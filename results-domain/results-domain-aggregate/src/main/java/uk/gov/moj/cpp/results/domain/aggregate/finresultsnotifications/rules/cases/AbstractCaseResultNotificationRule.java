@@ -83,4 +83,13 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .filter(OffenceResults::getIsFinancial)
                 .anyMatch(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(ofr -> !TRUE.equals(ofr.getIsFinancial())).orElse(false));
     }
+
+    protected List<ImpositionOffenceDetails> getCaseFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {
+        return request.getOffenceResults().stream()
+                .filter(o -> isNull(o.getApplicationType()) &&
+                        nonNull(o.getImpositionOffenceDetails()))
+                .filter(OffenceResults::getIsFinancial)
+                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
+                .toList();
+    }
 }
