@@ -30,20 +30,23 @@ public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractAp
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
+        final UUID applicationId = request.getOffenceResults().stream().filter(or -> nonNull(or.getApplicationId())).map(OffenceResults::getApplicationId).findFirst().orElse(null);
+        
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))
                 .filter(o -> nonNull(o.getIsParentFlag()) && o.getIsParentFlag())
                 .filter(o -> nonNull(o.getIsDeemedServed()) && o.getIsDeemedServed())
                 .filter(o -> nonNull(o.getImpositionOffenceDetails()))
+                .filter(o -> nonNull(o.getAmendmentDate())) // Only include offences that are being amended
+                .filter(o -> isDeemedServedStatusChanged(o.getOffenceId(), o.getIsDeemedServed(), applicationId, input.prevApplicationOffenceResultsMap()))
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
-
-        final UUID applicationId = request.getOffenceResults().stream().filter(or -> nonNull(or.getApplicationId())).map(OffenceResults::getApplicationId).findFirst().orElse(null);
         final List<ImpositionOffenceDetails> impositionOffenceDetailsDeemedServedRemoved = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))
                 .filter(o -> nonNull(o.getIsParentFlag()) && o.getIsParentFlag())
                 .filter(or -> !or.getIsDeemedServed() && isPrevOffenceResultDeemedServed(or.getOffenceId(), applicationId, input.prevApplicationOffenceResultsMap()))
                 .filter(or -> Objects.nonNull(or.getAmendmentDate()))
+                .filter(o -> nonNull(o.getImpositionOffenceDetails()))
                 .map(or -> buildImpositionOffenceDetailsFromRequest(or, input.offenceDateMap())).distinct()
                 .toList();
 
@@ -67,8 +70,32 @@ public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractAp
         return Optional.empty();
     }
 
+   /* private boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+        return prevApplicationOffenceResultsMap.containsKey(applicationId)
+                && prevApplicationOffenceResultsMap.get(applicationId).stream()
+                .filter(or -> offenceId.equals(or.getOffenceId()))
+                .findFirst()
+                .map(OffenceResultsDetails::getIsDeemedServed)
+                .orElse(false);
+    }*/
+
     private boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
         return prevApplicationOffenceResultsMap.containsKey(applicationId)
                 && prevApplicationOffenceResultsMap.get(applicationId).stream().filter(or -> offenceId.equals(or.getOffenceId())).anyMatch(OffenceResultsDetails::getIsDeemedServed);
+    }
+
+    private boolean isDeemedServedStatusChanged(final UUID offenceId, final Boolean currentIsDeemedServed, final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+        if (applicationId == null || !prevApplicationOffenceResultsMap.containsKey(applicationId)) {
+            return currentIsDeemedServed; // If no previous application results, treat as a change if current is deemed served
+        }
+        
+        final List<OffenceResultsDetails> prevOffenceResults = prevApplicationOffenceResultsMap.get(applicationId);
+        final Optional<OffenceResultsDetails> prevOffenceResult = prevOffenceResults.stream()
+                .filter(or -> offenceId.equals(or.getOffenceId()))
+                .findFirst();
+        
+        return prevOffenceResult
+                .map(prev -> !Objects.equals(prev.getIsDeemedServed(), currentIsDeemedServed))
+                .orElse(currentIsDeemedServed); // If no previous result for this offence, treat as a change if current is deemed served
     }
 }

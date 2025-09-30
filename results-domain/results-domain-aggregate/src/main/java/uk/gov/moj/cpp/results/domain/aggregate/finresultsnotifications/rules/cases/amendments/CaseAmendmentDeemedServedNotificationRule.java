@@ -34,9 +34,11 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
                 .filter(OffenceResults::getIsDeemedServed)
                 .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
+                .filter(offence -> isDeemedServedChanged(offence.getOffenceId(), offence.getIsDeemedServed(), input.prevOffenceResultsDetails()))
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
                 .toList();
 
+        //TBD: check as part of CCT-2357
         final List<ImpositionOffenceDetails> impositionOffenceDetailsDeemedServedRemoved = request.getOffenceResults().stream()
                 .filter(or -> !or.getIsDeemedServed() && isPrevOffenceResultDeemedServed(or.getOffenceId(), input.prevOffenceResultsDetails()))
                 .filter(or -> Objects.nonNull(or.getAmendmentDate()))
@@ -53,6 +55,8 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
                             .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed, includeOlds)
             );
         }
+
+        //TBD: check as part of CCT-2357
         if (isDeemedServedRemoved) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
@@ -64,5 +68,24 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
 
     private boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
         return prevOffenceResultsDetailsMap.containsKey(offenceId) && prevOffenceResultsDetailsMap.get(offenceId).getIsDeemedServed();
+    }
+
+    private boolean isDeemedServedChanged(final UUID offenceId, final Boolean currentIsDeemedServed, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
+        if (!prevOffenceResultsDetailsMap.containsKey(offenceId)) {
+            return currentIsDeemedServed; // If no previous result, treat as a change if current is deemed served
+        }
+        
+        final OffenceResultsDetails prevOffenceResult = prevOffenceResultsDetailsMap.get(offenceId);
+        final boolean statusChanged = !Objects.equals(prevOffenceResult.getIsDeemedServed(), currentIsDeemedServed);
+        
+        // Also consider it a change if:
+        // 1. The status actually changed, OR
+        // 2. Current is deemed served and this is the first amendment to a deemed served offence
+        //    (previous was deemed served but had no amendment date, indicating it was the original result)
+        final boolean isFirstAmendmentToDeemedServed = currentIsDeemedServed && 
+                prevOffenceResult.getIsDeemedServed() && 
+                (prevOffenceResult.getAmendmentDate() == null || prevOffenceResult.getAmendmentDate().isEmpty());
+        
+        return statusChanged || isFirstAmendmentToDeemedServed;
     }
 }

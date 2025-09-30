@@ -6,7 +6,7 @@
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
-      "details": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.",
       "offenceDate": "2019-11-28",
       "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
       "title": "Robbery"
@@ -15,8 +15,8 @@
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "fa17411a-3d23-496b-9fdc-8f78b32c5278",
-  "materialId": "ce2ffeec-55c1-4854-8b0b-52feb9a6bd01",
-  "notificationId": "4d04a325-43fd-4fe1-a101-686b53701fe8",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "ACCOUNTS TO BE CONSOLIDATED"
 }
