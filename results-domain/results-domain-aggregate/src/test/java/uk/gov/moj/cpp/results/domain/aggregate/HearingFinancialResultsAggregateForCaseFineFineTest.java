@@ -1586,7 +1586,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
 
     public static Stream<Arguments> caseFinMixedOffencesOnMultiMixedApplicationResults() {
         return Stream.of(
-                Arguments.of("DEMO::CCT-2390:DD-40400-1::Case-Fine+DS-Fine > Case-Fine+DS no change-Fine change > App1-Granted-> Fine+DS-Fine > App1 amended : Fine+DS no change-Fine change - DD-40400-1",
+                Arguments.of("DEMO::CCT-2390:DD-40400::Case-Fine+DS-Fine > Case-Fine+DS no change-Fine change > App1-Granted-> Fine+DS-Fine > App1 amended : Fine+DS no change-Fine change - DD-40400-1",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/DD-40400/1_case_results_tracked.json",

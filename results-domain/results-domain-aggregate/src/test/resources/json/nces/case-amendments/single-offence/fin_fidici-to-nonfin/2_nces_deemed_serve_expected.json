@@ -5,12 +5,19 @@
   "defendantName": "Adolph Berge",
   "divisionCode": "47",
   "gobAccountNumber": "{{gobAccountNumber}}",
-  "impositionOffenceDetails": [],
+  "impositionOffenceDetails": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 5 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "eefd3f79-66eb-4e2b-bca2-9e6f9cdc00b7",
+      "title": "Theft from a shop"
+    }
+  ],
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "0effc607-e232-4654-81f5-3f506100a92b",
-  "materialId": "fbe59fba-a804-45d6-97c4-ee9d21cf38a1",
-  "notificationId": "c899691a-64d0-418f-ba5f-7d6ee3b370a2",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "av.qet@justice.gov.uk",
   "subject": "WRITE OFF ONE DAY DEEMED SERVED REMOVED"
 }

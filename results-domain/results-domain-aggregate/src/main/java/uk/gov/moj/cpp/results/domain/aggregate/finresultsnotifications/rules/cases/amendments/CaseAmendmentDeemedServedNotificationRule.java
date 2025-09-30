@@ -58,7 +58,7 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED,
-                                    getCaseFinancialImpositionOffenceDetails(input, request),
+                                    impositionOffenceDetailsDeemedServedRemoved,
                                     Boolean.TRUE)
             );
         }
