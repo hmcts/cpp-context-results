@@ -22,6 +22,30 @@
             "offenceId": "842d8777-fc3d-4662-9fe8-ef0ef45ea4bf",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
             "resultCode": "FIDIPI"
+        },
+        {
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4563.00, FO - Fine\nFined £100000.00, FVS - Surcharge\nTo pay a surcharge of £34567.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/06/2027",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+        },
+        {
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 12/12/2026.\nRR - Residence\nResidence Requirement: Live at Address for 6 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+        },
+        {
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
         }
     ],
     "prosecutionCaseReferences": [

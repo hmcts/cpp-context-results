@@ -1264,7 +1264,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 "json/nces/multi-applications/applications-mixed-offences/3_case-o1o2fp-o3dism_case-amended-o2-add-fo_app1-reopen-o1o2-dism-o3-fp_app2-non-rehearing-refused_app3-statdec-o1o2-fp-o3-dism/3_app1_expected_app_to_reopen_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("id", "materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                                 .newStep(newResultTrackedStep("app1 reopen resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/3_case-o1o2fp-o3dism_case-amended-o2-add-fo_app1-reopen-o1o2-dism-o3-fp_app2-non-rehearing-refused_app3-statdec-o1o2-fp-o3-dism/3_app_reopen_results_tracked.json",
@@ -1275,7 +1275,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
-                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                                 .newStep(newNcesEmailForNewApplicationStep("app2 statdec received", "json/nces/multi-applications/applications-mixed-offences/3_case-o1o2fp-o3dism_case-amended-o2-add-fo_app1-reopen-o1o2-dism-o3-fp_app2-non-rehearing-refused_app3-statdec-o1o2-fp-o3-dism/4_app_stat_dec_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")
@@ -1378,7 +1378,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
-                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
                 Arguments.of("Case-Fine-Fine-Fine > App1-Granted > Fine-Non-fine-Fine > App2-Granted > NR-Fine-NR > App3-Granted > NR-NR-Fine > App4-Granted > NR-Fine-Fine [STE77/RQ699722881]",
@@ -1586,7 +1586,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
 
     public static Stream<Arguments> caseFinMixedOffencesOnMultiMixedApplicationResults() {
         return Stream.of(
-                Arguments.of("DEMO::CCT-2390:DD-40400::Case-Fine+DS-Fine > Case-Fine+DS no change-Fine change > App1-Granted-> Fine+DS-Fine > App1 amended : Fine+DS no change-Fine change - DD-40400-1",
+                Arguments.of("Case-Fine+DS-Fine > Case-Fine+DS no change-Fine change > App1-Granted-> Fine+DS-Fine > App1 amended : Fine+DS no change-Fine change - DD-40400",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/DD-40400/1_case_results_tracked.json",
@@ -1646,7 +1646,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                         .withParam("gobAccountNumber", "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
-                Arguments.of("DEMO::CCT-2390:DD-40400-1::Case-Fine+DS-Fine > Case-Fine(change)+DS(no change),Fine(no change) > Case-Fine(no change)+DS(no change),Fine(change) > DD-40400-2",
+                Arguments.of("Case-Fine+DS-Fine > Case-Fine(change)+DS(no change),Fine(no change) > Case-Fine(no change)+DS(no change),Fine(change) > DD-40400-1",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/DD-40400-1/1_case_results_tracked.json",
