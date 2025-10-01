@@ -27,6 +27,7 @@ class CaseAmendmentDeemedServedNotificationRuleTest {
                                 .withIsDeemedServed(true)
                                 .withIsFinancial(true)
                                 .withAmendmentDate("2023-10-01")
+                                .withImpositionOffenceDetails("Imposition Details")
                                 .build()
                 ));
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()

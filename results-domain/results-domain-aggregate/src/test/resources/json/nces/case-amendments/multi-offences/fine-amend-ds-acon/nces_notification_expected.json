@@ -5,7 +5,7 @@
   "defendantDateOfBirth": "1981-10-02",
   "defendantName": "Enos Purdy",
   "divisionCode": "77",
-  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
       "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
@@ -23,16 +23,22 @@
   "isSJPHearing": false,
   "isWriteOff": true,
   "masterDefendantId": "fa17411a-3d23-496b-9fdc-8f78b32c5278",
-  "materialId": "85e5487f-8fd7-44ce-bf27-d16b1cbaa0ad",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
-      "details": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.",
       "offenceDate": "2019-11-28",
       "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
       "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "034f2cd7-fcd9-461a-8fd3-9651aee82be6",
+      "title": "Theft from a shop"
     }
   ],
-  "notificationId": "05fdef4e-a71e-43bc-a3a8-068767d23e48",
+  "notificationId": "172740a1-5103-497a-a930-7c9c7019c000",
   "oldDivisionCode": "77",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
