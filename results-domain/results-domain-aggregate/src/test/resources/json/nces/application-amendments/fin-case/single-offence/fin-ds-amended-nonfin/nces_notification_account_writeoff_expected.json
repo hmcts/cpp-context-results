@@ -5,7 +5,7 @@
   "defendantDateOfBirth": "1972-11-01",
   "defendantName": "Lorenz Metz",
   "divisionCode": "47",
-  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
       "details": "FCOST - Costs\nTo pay costs of £300.00 to test ss\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £300.00\nFO - Fine\nFined £440.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/11/2025.",
