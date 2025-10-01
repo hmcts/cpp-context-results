@@ -8,16 +8,16 @@
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
-      "details": "FO - Fine\nFined £600.00",
-      "offenceDate": "2019-11-28",
-      "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
-      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
-    },
-    {
       "details": "FO - Fine\nFined £500.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 28/07/2025.",
       "offenceDate": "2019-11-28",
       "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
       "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
     }
   ],
   "isSJPHearing": false,
