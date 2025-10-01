@@ -1,16 +1,12 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result;
 
-import static java.util.Objects.isNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule;
-import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,12 +23,7 @@ public class CaseDeemedServedNotificationRule extends AbstractCaseResultNotifica
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
-                .filter(o -> isNull(o.getApplicationType()))
-                .filter(OffenceResults::getIsDeemedServed)
-                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
-                .toList();
-        if (!impositionOffenceDetailsForDeemed.isEmpty() && input.isFinancial()) {
+        if (hasDeemedServedOffences(request) && input.isFinancial()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request,

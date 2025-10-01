@@ -124,11 +124,59 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
 
     protected List<ImpositionOffenceDetails> getAppFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {
         return request.getOffenceResults().stream()
-                .filter(o -> nonNull(o.getApplicationType()) &&
-                        Boolean.TRUE.equals(o.getIsParentFlag()) &&
-                        nonNull(o.getImpositionOffenceDetails()))
+                .filter(this::isValidApplicationOffence)
                 .filter(OffenceResults::getIsFinancial)
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
+    }
+
+    // Common condition methods for application rules
+    protected boolean isValidApplicationOffence(OffenceResults offence) {
+        return nonNull(offence.getApplicationType()) &&
+                Boolean.TRUE.equals(offence.getIsParentFlag()) &&
+                nonNull(offence.getImpositionOffenceDetails());
+    }
+
+    protected boolean hasDeemedServedOffences(HearingFinancialResultRequest request) {
+        return request.getOffenceResults().stream()
+                .anyMatch(o -> isValidApplicationOffence(o) && nonNull(o.getIsDeemedServed()) && o.getIsDeemedServed());
+    }
+
+    protected boolean hasACONOffences(HearingFinancialResultRequest request) {
+        return request.getOffenceResults().stream()
+                .anyMatch(o -> isValidApplicationOffence(o) && 
+                        nonNull(o.getImpositionOffenceDetails()) && 
+                        o.getImpositionOffenceDetails().contains("ACON") &&
+                        o.getIsFinancial());
+    }
+
+    protected boolean hasACONAmendmentOffences(HearingFinancialResultRequest request) {
+        return request.getOffenceResults().stream()
+                .anyMatch(o -> isValidApplicationOffence(o) && 
+                        o.getIsFinancial() &&
+                        nonNull(o.getImpositionOffenceDetails()) &&
+                        o.getImpositionOffenceDetails().contains("ACON") &&
+                        Objects.nonNull(o.getAmendmentDate()));
+    }
+
+    protected boolean hasDeemedServedAmendmentOffences(HearingFinancialResultRequest request) {
+        return request.getOffenceResults().stream()
+                .anyMatch(o -> isValidApplicationOffence(o) &&
+                        nonNull(o.getIsDeemedServed()) && o.getIsDeemedServed());
+    }
+
+    protected boolean hasDeemedServedRemovedOffences(HearingFinancialResultRequest request, UUID applicationId, Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+        return request.getOffenceResults().stream()
+                .anyMatch(or -> isValidApplicationOffence(or) &&
+                        !or.getIsDeemedServed() && 
+                        isPrevOffenceResultDeemedServed(or.getOffenceId(), applicationId, prevApplicationOffenceResultsMap) &&
+                        Objects.nonNull(or.getAmendmentDate()));
+    }
+
+    protected boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+        return prevApplicationOffenceResultsMap.containsKey(applicationId)
+                && prevApplicationOffenceResultsMap.get(applicationId).stream()
+                .filter(or -> offenceId.equals(or.getOffenceId()))
+                .anyMatch(OffenceResultsDetails::getIsDeemedServed);
     }
 }
