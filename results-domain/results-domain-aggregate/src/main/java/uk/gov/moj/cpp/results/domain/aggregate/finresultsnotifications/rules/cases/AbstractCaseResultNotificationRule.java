@@ -106,7 +106,7 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
 
     protected boolean hasACONOffences(HearingFinancialResultRequest request) {
         return request.getOffenceResults().stream()
-                .anyMatch(o -> isValidCaseOffence(o) && 
+                .anyMatch(o -> isValidCaseOffence(o) &&
                         o.getIsFinancial() &&
                         ACON.equals(o.getResultCode()));
     }
@@ -127,13 +127,13 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
     protected boolean hasDeemedServedRemovedOffences(HearingFinancialResultRequest request, Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
         return request.getOffenceResults().stream()
                 .anyMatch(or -> isValidCaseOffence(or) &&
-                        !or.getIsDeemedServed() && 
+                        !or.getIsDeemedServed() &&
                         isPrevOffenceResultDeemedServed(or.getOffenceId(), prevOffenceResultsDetails) &&
                         nonNull(or.getAmendmentDate()));
     }
 
     protected boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
-        return prevOffenceResultsDetailsMap.containsKey(offenceId) && 
+        return prevOffenceResultsDetailsMap.containsKey(offenceId) &&
                 prevOffenceResultsDetailsMap.get(offenceId).getIsDeemedServed();
     }
 }
