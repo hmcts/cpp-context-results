@@ -42,7 +42,7 @@ public class MarkedAggregateSendEmailEventBuilder {
 
     private MarkedAggregateSendEmailEventBuilder(final String ncesEmail, final LinkedList<CorrelationItem> correlationItemList) {
         this.ncesEmail = ncesEmail;
-        this.correlationItemList = correlationItemList;
+        this.correlationItemList = new LinkedList<>(correlationItemList);
     }
 
     public static MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder(final String ncesEmail, final LinkedList<CorrelationItem> correlationItemList) {
