@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
@@ -63,5 +64,310 @@ class CaseACONNotificationRuleTest {
                 .build();
 
         assertThat("Rule should not apply for ACON in amendment flow", !rule.appliesTo(input));
+    }
+
+    @Test
+    void shouldNotApplyWhenNoCaseResult() {
+        // Create a request with only application offences (no case offences)
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType("APPLICATION") // This makes it an application offence, not case
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        assertFalse(rule.appliesTo(input), "Rule should not apply when no case result");
+    }
+
+    @Test
+    void shouldNotGenerateNotificationWhenNoACONOffences() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode("OTHER")
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("Other imposition details")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification for non-ACON offences");
+    }
+
+    @Test
+    void shouldNotGenerateNotificationWhenACONOffenceIsNotFinancial() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(false)
+                                .withImpositionOffenceDetails("ACON imposition details")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification for non-financial ACON offences");
+    }
+
+    @Test
+    void shouldNotGenerateNotificationWhenOffenceHasApplicationType() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType("APPLICATION")
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("ACON imposition details")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification for application offences");
+    }
+
+    @Test
+    void shouldNotGenerateNotificationWhenNoImpositionOffenceDetails() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails(null)
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification when no imposition offence details");
+    }
+
+    @Test
+    void shouldGenerateNotificationWithMixedOffenceTypesWhenACONIsPresent() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode("OTHER")
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("Other imposition details")
+                                .build(),
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("ACON imposition details")
+                                .withOffenceTitle("ACON Offence")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertTrue(output.isPresent(), "Expected ACON notification to be present");
+        output.ifPresent(notification -> {
+            assertThat("Subject should match ACON email subject", 
+                notification.getSubject(), is(NCESDecisionConstants.ACON_EMAIL_SUBJECT));
+            assertThat("Should have two imposition offence details (both financial)", 
+                notification.getImpositionOffenceDetails().size(), is(2));
+        });
+    }
+
+    @Test
+    void shouldHandleEmptyOffenceResultsList() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of());
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification for empty offence results");
+    }
+    @Test
+    void shouldHandleACONOffenceWithNullResultCode() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(null)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("ACON imposition details")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification for null result code");
+    }
+
+    @Test
+    void shouldHandleACONOffenceWithNullFinancialFlag() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(false)
+                                .withImpositionOffenceDetails("ACON imposition details")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertFalse(output.isPresent(), "Should not generate notification for non-financial ACON offence");
+    }
+
+    @Test
+    void shouldHandleLargeNumberOfMixedOffencesWithSingleACON() {
+        var offences = List.of(
+                OffenceResults.offenceResults()
+                        .withOffenceId(randomUUID())
+                        .withApplicationType(null)
+                        .withResultCode("FINE")
+                        .withIsFinancial(true)
+                        .withImpositionOffenceDetails("Fine imposition details")
+                        .build(),
+                OffenceResults.offenceResults()
+                        .withOffenceId(randomUUID())
+                        .withApplicationType(null)
+                        .withResultCode("CUSTODIAL")
+                        .withIsFinancial(false)
+                        .withImpositionOffenceDetails("Custodial imposition details")
+                        .build(),
+                OffenceResults.offenceResults()
+                        .withOffenceId(randomUUID())
+                        .withApplicationType(null)
+                        .withResultCode(NCESDecisionConstants.ACON)
+                        .withIsFinancial(true)
+                        .withImpositionOffenceDetails("ACON imposition details")
+                        .withOffenceTitle("ACON Offence")
+                        .build(),
+                OffenceResults.offenceResults()
+                        .withOffenceId(randomUUID())
+                        .withApplicationType(null)
+                        .withResultCode("COMMUNITY")
+                        .withIsFinancial(false)
+                        .withImpositionOffenceDetails("Community imposition details")
+                        .build()
+        );
+
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(offences);
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertTrue(output.isPresent(), "Expected ACON notification to be present");
+        output.ifPresent(notification -> {
+            assertThat("Subject should match ACON email subject", 
+                notification.getSubject(), is(NCESDecisionConstants.ACON_EMAIL_SUBJECT));
+            assertThat("Should have two financial imposition offence details", 
+                notification.getImpositionOffenceDetails().size(), is(2));
+        });
+    }
+
+    @Test
+    void shouldOnlyProcessCaseLevelOffences() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType("APPLICATION")
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("Application ACON imposition details")
+                                .build(),
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("Case ACON imposition details")
+                                .withOffenceTitle("Case ACON Offence")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertTrue(output.isPresent(), "Expected ACON notification to be present");
+        output.ifPresent(notification -> {
+            assertThat("Should have one case-level imposition offence detail", 
+                notification.getImpositionOffenceDetails().size(), is(1));
+        });
+    }
+
+    @Test
+    void shouldHandleCaseWithMultipleProsecutionCaseReferences() {
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1", "CaseId2", "CaseId3"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(randomUUID())
+                                .withApplicationType(null)
+                                .withResultCode(NCESDecisionConstants.ACON)
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("ACON imposition details")
+                                .withOffenceTitle("ACON Offence")
+                                .build()
+                ));
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .build();
+
+        var output = rule.apply(input);
+        assertTrue(output.isPresent(), "Expected ACON notification to be present");
+        output.ifPresent(notification -> {
+            assertThat("Subject should match ACON email subject", 
+                notification.getSubject(), is(NCESDecisionConstants.ACON_EMAIL_SUBJECT));
+            assertThat("Should have one imposition offence detail", 
+                notification.getImpositionOffenceDetails().size(), is(1));
+        });
     }
 }

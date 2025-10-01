@@ -4,7 +4,7 @@
   "caseReferences": "28DI7587940",
   "defendantName": "Lorenz Metz",
   "divisionCode": "47",
-  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
       "details": "AD - Absolute discharge",
@@ -16,8 +16,8 @@
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
-  "materialId": "4bd381ed-f396-4f77-9c96-712410a9269b",
-  "notificationId": "939117a4-b43b-44ec-a415-7dd69ee6f752",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
   "sendTo": "av.qet@justice.gov.uk",
   "subject": "WRITE OFF ONE DAY DEEMED SERVED REMOVED"
 }
