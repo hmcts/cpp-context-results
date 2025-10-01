@@ -30,14 +30,14 @@ public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractAp
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
-        final UUID applicationId = request.getOffenceResults().stream().filter(or -> nonNull(or.getApplicationId())).map(OffenceResults::getApplicationId).findFirst().orElse(null);
-        
         final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))
                 .filter(o -> nonNull(o.getIsParentFlag()) && o.getIsParentFlag())
                 .filter(o -> nonNull(o.getIsDeemedServed()) && o.getIsDeemedServed())
                 .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
                 .toList();
+
+        final UUID applicationId = request.getOffenceResults().stream().filter(or -> nonNull(or.getApplicationId())).map(OffenceResults::getApplicationId).findFirst().orElse(null);
         final List<ImpositionOffenceDetails> impositionOffenceDetailsDeemedServedRemoved = request.getOffenceResults().stream()
                 .filter(o -> nonNull(o.getApplicationType()))
                 .filter(o -> nonNull(o.getIsParentFlag()) && o.getIsParentFlag())
