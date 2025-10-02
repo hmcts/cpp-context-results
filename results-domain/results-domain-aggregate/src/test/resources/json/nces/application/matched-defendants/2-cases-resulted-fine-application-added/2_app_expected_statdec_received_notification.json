@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI2654240,28DI4256692",
+  "defendantAddress": "n Fisher Tunnel4256692 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Mac Donald",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-09-23",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "23/09/2025",
+  "masterDefendantId": "3f9fcc41-9c72-4f00-81f9-3c7dba8a6d99",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "23/09/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

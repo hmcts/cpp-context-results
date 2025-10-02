@@ -52,6 +52,9 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
         // Get imposition offence details for non-financial offences corresponding to original financial offences
         final List<ImpositionOffenceDetails> impositionOffenceDetailsFineToNonFine = getImpositionOffenceDetailsFineToNonFine(input, request, currentApplicationId);
 
+        // Get imposition offence details for non-financial offences corresponding to original non-financial offences
+        final List<ImpositionOffenceDetails> impositionOffenceDetailsNonFineToNonFine = getImpositionOffenceDetailsNonFineToNonFine(input, request, currentApplicationId);
+
         final Optional<OriginalApplicationResults> originalApplicationResults = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
 
         final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
@@ -60,11 +63,14 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
                 .toList();
 
         final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
-
-        //has fp to nFP
+        //has application amendments
         final boolean appResultsOnly = originalApplicationResults.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty();
+        //has fp to nFP
         final boolean finToNonFin = !impositionOffenceDetailsFineToNonFine.isEmpty() && impositionOffenceDetailsFineToFine.isEmpty();
-        if (appResultsOnly || finToNonFin) {
+        //has nFP to nFP
+        final boolean nonFinToNonFin = !impositionOffenceDetailsNonFineToNonFine.isEmpty();
+
+        if ((appResultsOnly && !nonFinToNonFin) || finToNonFin) {
             return Optional.of(markedAggregateSendEmailEventBuilder
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             NCESDecisionConstants.AMEND_AND_RESHARE,
