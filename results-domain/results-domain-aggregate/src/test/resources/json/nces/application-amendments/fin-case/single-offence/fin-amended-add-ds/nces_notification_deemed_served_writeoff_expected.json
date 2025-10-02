@@ -13,6 +13,18 @@
       "offenceDate": "2019-11-28",
       "offenceId": "2c7cc1f9-fc39-442f-acf2-28a8534207de",
       "title": "Theft of motor vehicle"
+    },
+    {
+      "details": "FO - Fine\nFined £250.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "21541103-1872-427a-8fca-735a863d5568",
+      "title": "Theft from a shop"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "326bba91-abd3-4afc-a7a7-ea43f7d652fe",
+      "title": "Robbery"
     }
   ],
   "isSJPHearing": false,
