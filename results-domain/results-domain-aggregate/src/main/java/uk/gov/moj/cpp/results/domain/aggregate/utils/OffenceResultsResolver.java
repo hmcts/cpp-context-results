@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
-import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isAppealApplicationWithNoOffenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
@@ -24,8 +23,9 @@ public class OffenceResultsResolver {
     public static List<OffenceResultsDetails> getOriginalOffenceResultsCaseAmendment(final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap,
                                                                                      final List<OffenceResults> newOffenceResults) {
 
-        return previousCaseOffenceResultsMap.values().stream()
-                .filter(previousOffenceResult -> hasFinancialChanges(newOffenceResults.stream().filter(no -> no.getOffenceId().equals(previousOffenceResult.getOffenceId())).findFirst().orElse(null), previousOffenceResult))
+        return newOffenceResults.stream()
+                .filter(reqOffenceResult -> hasFinancialChanges(reqOffenceResult, previousCaseOffenceResultsMap.get(reqOffenceResult.getOffenceId())))
+                .map(reqOffenceResult -> previousCaseOffenceResultsMap.get(reqOffenceResult.getOffenceId()))
                 .filter(Objects::nonNull)
                 .toList();
     }
