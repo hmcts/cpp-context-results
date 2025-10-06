@@ -38,7 +38,7 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>17.102.9</coredomain.version>
-        <referencedata.version>17.0.111</referencedata.version>
+        <referencedata.version>17.0.113</referencedata.version>
         <notification.notify.version>17.0.24</notification.notify.version>
         <systemdocgenerator.version>17.0.64</systemdocgenerator.version>
         <progression.version>17.0.196</progression.version>
@@ -47,7 +47,7 @@
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty-common>4.1.113.Final</netty-common>
-        <sjp.version>17.0.72</sjp.version>
+        <sjp.version>17.0.119</sjp.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
             **/uk/gov/justice/api/**/*,
