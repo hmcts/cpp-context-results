@@ -14,15 +14,15 @@
   "ncesEmail": "av.qet@justice.gov.uk",
   "offenceResults": [
     {
-      "amendmentDate": "2025-03-18",
-      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
-      "dateOfResult": "2025-03-18",
-      "impositionOffenceDetails": "FO - Fine\nFined £102.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £20.00. Reason for decision: fidici added.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
-      "isDeemedServed": true,
-      "isFinancial": true,
       "offenceId": "0ac5faf6-52ee-4b47-95ce-bd1ca2c3927a",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "isFinancial": true,
+      "impositionOffenceDetails": "FO - Fine\nFined £102.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £20.00. Reason for decision: fidici added.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "dateOfResult": "2025-03-18",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-03-18",
+      "resultCode": "FIDICI",
+      "isDeemedServed": true
     }
   ],
   "prosecutionCaseReferences": [

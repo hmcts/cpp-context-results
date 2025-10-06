@@ -177,7 +177,8 @@ public class ResultsAggregate implements Aggregate {
         if (nonNull(isReshareFromPayload) && isReshareFromPayload.isPresent()) {
             isReshare = isReshareFromPayload.get();
         }
-        return apply(Stream.of(new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime())));
+        return apply(Stream.of(new HearingResultsAddedForDay(payload.getDeletedJudicialResults(), payload.getHearing(), hearingDay,
+                isReshare, payload.getSharedTime())));
     }
 
     public Stream<Object> ejectCaseOrApplication(final UUID hearingId, final JsonObject payload) {

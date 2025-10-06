@@ -382,6 +382,76 @@ public class HearingResultedEventProcessorTest {
         }
     }
 
+    @Test
+    public void shouldHandlePublicHearingResultedEventForDeletedJudicialResults() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+        final boolean reshare = false;
+
+        final String prosecutionId = "764bff92-a135-34cb-b858-8bb6b4b66301";
+
+        final JsonObject caseIdentifier = createObjectBuilder()
+                .add("id", prosecutionId)
+                .add("prosecutionAuthorityId", "764bff92-a135-34cb-b858-8bb6b4b66301")
+                .add("prosecutionAuthorityOUCode", "0450000")
+                .build();
+        final JsonObject prosecutionCase = createObjectBuilder()
+                .add("id", prosecutionId)
+                .add("prosecutionCaseIdentifier", caseIdentifier)
+                .build();
+        final JsonArrayBuilder prosecutionCases = createArrayBuilder()
+                .add(prosecutionCase);
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .add("prosecutionCases", prosecutionCases.build())
+                .build();
+
+        final JsonArray deletedJudicialResults = createArrayBuilder()
+                .add(createObjectBuilder()
+                        .add("defendantId", randomUUID().toString())
+                        .add("offenceId", randomUUID().toString()).build())
+                .build();
+
+        ArgumentCaptor<String> externalPayloadCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> internalPayloadCaptor = ArgumentCaptor.forClass(String.class);
+
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare, deletedJudicialResults);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(hearing);
+        when(referenceDataService.getPoliceFlag(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(cacheService).add(eq("EXT_" + hearingId + "_2021-03-15_result_"), externalPayloadCaptor.capture());
+        verify(cacheService).add(eq("INT_" + hearingId + "_2021-03-15_result_"), internalPayloadCaptor.capture());
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        final String externalCaptor = externalPayloadCaptor.getValue();
+        JsonObject externalPayload = toJsonObject(externalCaptor);
+        assertThat(externalPayload.containsKey("deletedJudicialResults"), is(false));
+
+        final String internalCaptor = internalPayloadCaptor.getValue();
+        JsonObject internalPayload = toJsonObject(internalCaptor);
+        assertThat(internalPayload.containsKey("deletedJudicialResults"), is(true));
+
+        final JsonObject commandPayload = envelopeArgumentCaptor.getValue().payload();
+        assertThat(commandPayload.containsKey("deletedJudicialResults"), is(true));
+    }
+
+    private JsonObject toJsonObject(final String jsonString) {
+        JsonReader jsonReader = Json.createReader(new StringReader(jsonString));
+        JsonObject externalPayload = jsonReader.readObject();
+        jsonReader.close();
+        return externalPayload;
+    }
+
     private JsonEnvelope createPublicEvent(final UUID userId, final JsonObject hearing, final ZonedDateTime sharedTime, final String hearingDay,
                                            final boolean reshare, final JsonArray deletedJudicialResults) {
         final JsonObjectBuilder resultPayload = createObjectBuilder()

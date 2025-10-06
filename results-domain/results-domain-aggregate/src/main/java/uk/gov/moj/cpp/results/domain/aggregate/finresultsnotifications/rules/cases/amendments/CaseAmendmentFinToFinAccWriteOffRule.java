@@ -32,8 +32,7 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
 
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
         final Map<UUID, String> offenceDateMap = input.offenceDateMap();
-        final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults())
-                .stream()
+        final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults()).stream()
                 .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                 .distinct().toList();
 
