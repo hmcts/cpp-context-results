@@ -15,20 +15,12 @@
       "amendmentDate": "2025-09-18",
       "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
       "dateOfResult": "2025-09-18",
-      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
       "isDeemedServed": true,
       "isFinancial": true,
       "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
       "offenceTitle": "Robbery",
       "resultCode": "ACON"
-    },
-    {
-      "dateOfResult": "2025-09-18",
-      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
-      "isDeemedServed": false,
-      "isFinancial": true,
-      "offenceId": "034f2cd7-fcd9-461a-8fd3-9651aee82be6",
-      "offenceTitle": "Theft from a shop"
     }
   ],
   "prosecutionCaseReferences": [

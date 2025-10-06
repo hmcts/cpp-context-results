@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.domain.aggregate;
 import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -392,25 +391,23 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .ifPresent(a -> ncesEmailNotificationRequested.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN)))
                         .withOriginalDateOfSentence(a.format(ofPattern(BRITISH_DATE_FORMAT))));
 
-        if (isNotEmpty(correlationItemList)) {
-            final List<UUID> offenceIdList = isNotEmpty(clonedOffenceIdList) ? clonedOffenceIdList.stream().map(UUID::fromString).toList() : emptyList();
-            final List<String> gobAccounts = getOldGobAccounts(new LinkedList<>(correlationItemList), null, offenceIdList, applicationResultsDetails);
-            if (isNotEmpty(gobAccounts)) {
-                return apply(builder().add(ncesEmailNotificationRequested
-                                .withGobAccountNumber(String.join(",", gobAccounts))
-                                .withDivisionCode(getCorrelationItemForDivisionCode().getAccountDivisionCode())
-                                .build())
-                        .build());
-            } else {
-                return apply(builder().add(buildMarkedAggregateSendEmailWhenAccountReceived(correlationItemList.peekLast(), ncesEmailNotificationRequested.build()))
-                        .build());
-            }
-        } else {
-            return apply(Stream.empty());
-        }
+        final Stream<Object> events = ofNullable(getCorrelationItemForGobAccount())
+                .map(correlationItem ->
+                        correlationItem.getAccountNumber() != null ?
+                                builder().add(ncesEmailNotificationRequested
+                                                .withGobAccountNumber(correlationItem.getAccountNumber())
+                                                .withDivisionCode(correlationItem.getAccountDivisionCode())
+                                                .build())
+                                        .build() :
+                                builder().add(buildMarkedAggregateSendEmailWhenAccountReceived(correlationItem, ncesEmailNotificationRequested.build()))
+                                        .build()
+                )
+                .orElseGet(Stream::empty);
+
+        return apply(events);
     }
 
-    private CorrelationItem getCorrelationItemForDivisionCode() {
+    private CorrelationItem getCorrelationItemForGobAccount() {
         final LinkedList<CorrelationItem> correlationItemListGob = new LinkedList<>(correlationItemList);
         correlationItemListGob.sort(comparing(CorrelationItem::getCreatedTime).reversed());
 
@@ -555,6 +552,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateSendEmailWhenAccountReceived(final CorrelationItem correlationItem, final NcesEmailNotificationRequested ncesEmailNotificationRequested) {
         return markedAggregateSendEmailWhenAccountReceived()
                 .withId(randomUUID())
+                .withAccountCorrelationId(correlationItem.getAccountCorrelationId())
                 .withAccountCorrelationId(correlationItem.getAccountCorrelationId())
                 .withDivisionCode(correlationItem.getAccountDivisionCode())
                 .withSendTo(ncesEmailNotificationRequested.getSendTo())
