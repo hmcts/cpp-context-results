@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
@@ -191,6 +192,7 @@ public class StagingEnforcementIT {
                 .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE)
                 .replaceAll("HEARING_ID", hearingId);
 
+        final List<String> offenceIdList = convertStringToJson(payload).getJsonArray("offenceResults").stream().map(j -> ((JsonObject) j).getString("offenceId")).toList();
         whenResultsAreTraced(payload);
 
         JsonPath jsonResponse = QueueUtil.retrieveMessage(correlationIdAndMasterDefendantIdAddedConsumer);
@@ -212,12 +214,15 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
 
+        final JsonArrayBuilder offenceIdListJsonArray = createArrayBuilder();
+        offenceIdList.forEach(offenceIdListJsonArray::add);
 
         final JsonObject ncesEmailPayload = createObjectBuilder()
                 .add("applicationType", "APPEAL")
                 .add(MASTER_DEFENDANT_ID, masterDefendantId)
                 .add("listingDate", "01/12/2019")
                 .add("caseUrns", createArrayBuilder().add("caseUrn1").build())
+                .add("caseOffenceIdList", offenceIdListJsonArray.build())
                 .add(HEARING_COURT_CENTRE_NAME, HEARING_COURT_CENTRE_NAME_VALUE)
                 .build();
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
