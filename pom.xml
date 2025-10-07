@@ -37,7 +37,7 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <coredomain.version>17.102.9</coredomain.version>
+        <coredomain.version>17.102.11</coredomain.version>
         <referencedata.version>17.0.113</referencedata.version>
         <notification.notify.version>17.0.24</notification.notify.version>
         <systemdocgenerator.version>17.0.64</systemdocgenerator.version>
@@ -48,6 +48,7 @@
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty-common>4.1.113.Final</netty-common>
         <sjp.version>17.0.116</sjp.version>
+        <staging.dcs.version>17.101.1</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
             **/uk/gov/justice/api/**/*,
@@ -175,6 +176,11 @@
                         <artifactId>*</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.moj.cpp.staging.dcs</groupId>
+                <artifactId>stagingdcs-command-api</artifactId>
+                <version>${staging.dcs.version}</version>
             </dependency>
             <dependency>
                 <groupId>uk.gov.moj.cpp.core.domain</groupId>

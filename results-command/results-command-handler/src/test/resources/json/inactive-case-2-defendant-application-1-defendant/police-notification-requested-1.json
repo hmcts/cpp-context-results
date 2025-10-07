@@ -566,13 +566,15 @@
                 "amendmentType": "ADDED",
                 "id": "d74da31c-5d47-4995-af9f-aa3ff1913372",
                 "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
-                "resultTitle": "Surcharge"
+                "resultTitle": "Surcharge",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "e5a13e68-0950-422c-af07-14291a129538",
                 "judicialResultTypeId": "272d1ec2-634b-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Payment terms - Lump sum plus instalments"
+                "resultTitle": "Payment terms - Lump sum plus instalments",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,
@@ -589,13 +591,15 @@
             "amendmentType": "ADDED",
             "id": "e3d220f4-bbe3-4729-82ee-ac875cc12809",
             "judicialResultTypeId": "e3fb46ee-e406-4f73-9bf1-71d513da8cc7",
-            "resultTitle": "Case reopened"
+            "resultTitle": "Case reopened",
+            "isQualifyingResult": false
           },
           {
             "amendmentType": "DELETED",
             "id": "7ceaab90-0753-4d1f-b15a-2c079a3e7c3e",
             "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
-            "resultTitle": "Community order varied"
+            "resultTitle": "Community order varied",
+            "isQualifyingResult": false
           }
         ],
         "offenceResultDetails": []

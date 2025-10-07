@@ -25,7 +25,6 @@ public class NotificationNotifyServiceStub {
     public static final String NOTIFICATION_NOTIFY_ENDPOINT = "/notificationnotify-service/command/api/rest/notificationnotify/notifications/.*";
     public static final String NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON = "application/vnd.notificationnotify.email+json";
 
-
     public static void setupNotificationNotifyStubs() {
         stubFor(post(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
                 .withHeader(CONTENT_TYPE, equalTo(NOTIFICATIONNOTIFY_SEND_EMAIL_NOTIFICATION_JSON))

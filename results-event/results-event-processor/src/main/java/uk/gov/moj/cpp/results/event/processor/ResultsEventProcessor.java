@@ -1,9 +1,11 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.lang.Boolean.TRUE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
@@ -49,6 +51,7 @@ import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
+import uk.gov.moj.cpp.results.event.helper.DcsCaseHelper;
 import uk.gov.moj.cpp.results.event.helper.FixedListComparator;
 import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
@@ -145,6 +148,7 @@ public class ResultsEventProcessor {
     private static final String NOTIFICATION_ID = "notificationId";
     private static final String EMAIL_TEMPLATE_ID = "emailTemplateId";
     private static final String SEND_TO_ADDRESS = "sendToAddress";
+    public static final String HEARING_DAY = "hearingDay";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -157,6 +161,9 @@ public class ResultsEventProcessor {
 
     @Inject
     private HearingHelper hearingHelper;
+
+    @Inject
+    private DcsCaseHelper dcsCaseHelper;
 
     @Inject
     private CacheService cacheService;
@@ -256,10 +263,15 @@ public class ResultsEventProcessor {
 
     @Handles("results.events.hearing-results-added-for-day")
     public void hearingResultAddedForDay(final JsonEnvelope resultsAddedForDayEvent) {
-        final LocalDate hearingDay = LocalDate.parse(resultsAddedForDayEvent.payloadAsJsonObject().getString("hearingDay"), ISO_LOCAL_DATE);
-        processResultsAdded(resultsAddedForDayEvent, "results.command.create-results-for-day", Optional.of(hearingDay));
+        final LocalDate hearingDay = LocalDate.parse(resultsAddedForDayEvent.payloadAsJsonObject().getString(HEARING_DAY), ISO_LOCAL_DATE);
+        processResultsAdded(resultsAddedForDayEvent, "results.command.create-results-for-day", of(hearingDay));
 
         processDefendantTrackingStatus(resultsAddedForDayEvent);
+    }
+
+    @Handles("results.event.publish-to-dcs")
+    public void publishToDcs(final JsonEnvelope inputEvent) {
+        dcsCaseHelper.prepareAndSendToDCSIfEligible(inputEvent);
     }
 
     @Handles("results.event.police-result-generated")
@@ -323,7 +335,7 @@ public class ResultsEventProcessor {
                 .add("caseDocument", fileId.toString())
                 .build();
 
-        final Envelope<JsonObject> sjpEenvelope = Envelope.envelopeFrom(
+        final Envelope<JsonObject> sjpEenvelope = envelopeFrom(
                 JsonEnvelope.metadataFrom(envelope.metadata()).withName(SJP_UPLOAD_CASE_DOCUMENT),
                 uploadCaseDocumentPayload);
 
@@ -369,7 +381,7 @@ public class ResultsEventProcessor {
     private Optional<UUID> getCcCaseUUID(final String caseUrn) {
         final Optional<JsonObject> caseIdJsonObject = progressionService.caseExistsByCaseUrn(caseUrn);
         if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(CASE_ID)){
-            return Optional.of(fromString(caseIdJsonObject.get().getString(CASE_ID)));
+            return of(fromString(caseIdJsonObject.get().getString(CASE_ID)));
         }
         return Optional.empty() ;
     }
@@ -377,7 +389,7 @@ public class ResultsEventProcessor {
     private Optional<UUID> getSjpCaseUUID(final String caseUrn) {
         final Optional<JsonObject> caseIdJsonObject = sjpService.caseExistsByCaseUrn(caseUrn);
         if(caseIdJsonObject.isPresent() && caseIdJsonObject.get().containsKey(SJP_CASE_ID)){
-            return Optional.of(fromString(caseIdJsonObject.get().getString(SJP_CASE_ID)));
+            return of(fromString(caseIdJsonObject.get().getString(SJP_CASE_ID)));
         }
         return Optional.empty() ;
     }
@@ -498,7 +510,7 @@ public class ResultsEventProcessor {
         final Optional<String> userId = envelope.metadata().userId();
         try {
             LOGGER.info("Adding Hearing Resulted for hearing {} and eventType {} to EventGrid", hearingId, eventType);
-            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(UUID.fromString(s), hearingId, eventType));
+            userId.ifPresent(s -> eventGridService.sendHearingResultedEvent(fromString(s), hearingId, eventType));
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to connect to EventGrid: {} for eventType {}", e, eventType);
         }
@@ -530,7 +542,7 @@ public class ResultsEventProcessor {
         resultJsonPayload.add("cases", caseDetailsJsonArrayBuilder.build());
         resultJsonPayload.add("jurisdictionType", publicHearingResulted.getHearing().getJurisdictionType().toString());
 
-        hearingDay.ifPresent(localDate -> resultJsonPayload.add("hearingDay", localDate.toString()));
+        hearingDay.ifPresent(localDate -> resultJsonPayload.add(HEARING_DAY, localDate.toString()));
         if (isNotEmpty(courtApplications)) {
             final JsonArrayBuilder courtApplicationJsonArrayBuilder = createArrayBuilder();
             courtApplications.forEach(c -> courtApplicationJsonArrayBuilder.add(objectToJsonObjectConverter.convert(c)));
@@ -702,14 +714,14 @@ public class ResultsEventProcessor {
         final String formattedSubject = subject.replace(DELIMITER, " / ").trim();
 
         final StringBuilder sb = new StringBuilder();
-        if (Boolean.TRUE.equals(resultsAmended)) {
+        if (TRUE.equals(resultsAmended)) {
             sb.append(AMEND_RESHARE1).append(SPC);
         }
 
         sb.append(urn).append(SPC);
         sb.append(dateTimeFormat).append(SPC);
 
-        if (Boolean.TRUE.equals(resultsAmended) && nonNull(courtCentre)) {
+        if (TRUE.equals(resultsAmended) && nonNull(courtCentre)) {
             sb.append(courtCentre).append(SPC);
         }
 
@@ -733,7 +745,7 @@ public class ResultsEventProcessor {
             return false;
         }
 
-        if (!Boolean.TRUE.equals(resultsAmended)) {
+        if (!TRUE.equals(resultsAmended)) {
             return true;
         }
 
@@ -741,12 +753,12 @@ public class ResultsEventProcessor {
     }
 
     private String getPoliceEmailTemplate(final Boolean includeApplications, final Boolean includeResultsAmended) {
-        if (Boolean.TRUE.equals(includeApplications)) {
-            return Boolean.TRUE.equals(includeResultsAmended)
+        if (TRUE.equals(includeApplications)) {
+            return TRUE.equals(includeResultsAmended)
                     ? applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()
                     : applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId();
         }
-        return Boolean.TRUE.equals(includeResultsAmended)
+        return TRUE.equals(includeResultsAmended)
                 ? applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()
                 : applicationParameters.getPoliceEmailHearingResultsTemplateId();
     }

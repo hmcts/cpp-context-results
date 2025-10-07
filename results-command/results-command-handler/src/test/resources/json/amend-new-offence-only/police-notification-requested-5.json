@@ -1358,13 +1358,15 @@
                 "amendmentType": "ADDED",
                 "id": "7913ee4f-74bb-4014-921f-1cf73fc71e29",
                 "judicialResultTypeId": "9161f3cb-e821-44e5-a9ee-4680b358a037",
-                "resultTitle": "Guilty plea taken into account"
+                "resultTitle": "Guilty plea taken into account",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "3e0e4a77-83af-4c43-bdb5-11bf8877300f",
                 "judicialResultTypeId": "4b5a2d33-5121-4d09-a8f1-49c7beb2994c",
-                "resultTitle": "Passport surrender"
+                "resultTitle": "Passport surrender",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1378,19 +1380,22 @@
                 "amendmentType": "ADDED",
                 "id": "8209f588-61e3-454f-b184-c2fdaab2dca4",
                 "judicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
-                "resultTitle": "Imprisonment"
+                "resultTitle": "Imprisonment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "a652e80e-4c0f-4d4c-b05a-e132f9190682",
                 "judicialResultTypeId": "204fc6b8-d6c9-4fb8-acd0-47d23c087625",
-                "resultTitle": "No surcharge"
+                "resultTitle": "No surcharge",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "1e2bd93b-f89a-4ebc-bc47-6d2d30413f56",
                 "judicialResultTypeId": "6cb15971-c945-4398-b7c9-3f8b743a4de3",
-                "resultTitle": "Total custodial period"
+                "resultTitle": "Total custodial period",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 12,
@@ -1404,7 +1409,8 @@
                 "amendmentType": "ADDED",
                 "id": "10bd4f18-943e-44a6-b797-7b765d3f90d7",
                 "judicialResultTypeId": "b65fb5f1-b11d-4a95-a198-3b81333c7cf9",
-                "resultTitle": "Total suspended custodial period"
+                "resultTitle": "Total suspended custodial period",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 10,
