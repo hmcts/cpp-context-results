@@ -32,6 +32,7 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
         final HearingFinancialResultRequest request = input.request();
         final Map<UUID, String> offenceDateMap = input.offenceDateMap();
         final String ncesEmail = input.ncesEmail();
+        final LinkedList<CorrelationItem> correlationItemList = input.correlationItemList();
         final String writtenOffExists = input.isWrittenOffExists();
         final List<NewOffenceByResult> newResultByOffence = input.newOffenceResultsFromHearing();
         final String applicationResult = input.applicationResult();
@@ -48,11 +49,11 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                     input.prevApplicationOffenceResultsMap());
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
                 return Optional.of(
-                        markedAggregateSendEmailEventBuilder(ncesEmail, input.correlationItemList())
+                        markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
                                         request,
                                         NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT.get(offence.getApplicationType()),
-                                        input.correlationItemList().peekLast(),
+                                        correlationItemList.peekLast(),
                                         impositionOffenceDetailsForApplication,
                                         ncesEmail,
                                         writtenOffExists,

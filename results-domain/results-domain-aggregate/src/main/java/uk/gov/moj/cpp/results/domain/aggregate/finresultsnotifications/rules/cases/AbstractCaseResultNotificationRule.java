@@ -22,7 +22,6 @@ import java.util.function.Predicate;
  */
 public abstract class AbstractCaseResultNotificationRule implements ResultNotificationRule {
     private static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
-    private static final String ACON = "ACON";
 
     protected ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
@@ -83,57 +82,5 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .filter(isCaseAmended)
                 .filter(OffenceResults::getIsFinancial)
                 .anyMatch(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(ofr -> !TRUE.equals(ofr.getIsFinancial())).orElse(false));
-    }
-
-    protected List<ImpositionOffenceDetails> getCaseFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {
-        return request.getOffenceResults().stream()
-                .filter(this::isValidCaseOffence)
-                .filter(OffenceResults::getIsFinancial)
-                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap())).distinct()
-                .toList();
-    }
-
-    // Common condition methods for case rules
-    protected boolean isValidCaseOffence(OffenceResults offence) {
-        return isNull(offence.getApplicationType()) &&
-                nonNull(offence.getImpositionOffenceDetails());
-    }
-
-    protected boolean hasDeemedServedOffences(HearingFinancialResultRequest request) {
-        return request.getOffenceResults().stream()
-                .anyMatch(o -> isValidCaseOffence(o) && o.getIsDeemedServed());
-    }
-
-    protected boolean hasACONOffences(HearingFinancialResultRequest request) {
-        return request.getOffenceResults().stream()
-                .anyMatch(o -> isValidCaseOffence(o) &&
-                        o.getIsFinancial() &&
-                        ACON.equals(o.getResultCode()));
-    }
-
-    protected boolean hasACONAmendmentOffences(HearingFinancialResultRequest request) {
-        return request.getOffenceResults().stream()
-                .anyMatch(o -> isValidCaseOffence(o) &&
-                        o.getIsFinancial() &&
-                        ACON.equals(o.getResultCode()) &&
-                        nonNull(o.getAmendmentDate()));
-    }
-
-    protected boolean hasDeemedServedAmendmentOffences(HearingFinancialResultRequest request) {
-        return request.getOffenceResults().stream()
-                .anyMatch(OffenceResults::getIsDeemedServed);
-    }
-
-    protected boolean hasDeemedServedRemovedOffences(HearingFinancialResultRequest request, Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
-        return request.getOffenceResults().stream()
-                .anyMatch(or -> isValidCaseOffence(or) &&
-                        !or.getIsDeemedServed() &&
-                        isPrevOffenceResultDeemedServed(or.getOffenceId(), prevOffenceResultsDetails) &&
-                        nonNull(or.getAmendmentDate()));
-    }
-
-    protected boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
-        return prevOffenceResultsDetailsMap.containsKey(offenceId) &&
-                prevOffenceResultsDetailsMap.get(offenceId).getIsDeemedServed();
     }
 }

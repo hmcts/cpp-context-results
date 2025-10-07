@@ -80,7 +80,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                 "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/4_app1_expected_app_for_reopen_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app3 reopen resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/4_app_reopen_results_tracked.json",
                                                 accountInfo("33c39541-e8e0-45b3-af99-532b33646b69", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
@@ -99,7 +99,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                 "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/5_app1_expected_app_for_appeal_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                                        .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app4 appeal resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/5_app_appeal_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
@@ -115,7 +115,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                 "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/6_app1_expected_app_for_appeal_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                                        .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app5 appeal resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-1/6_app_appeal_results_tracked.json",
                                                 accountInfo("44c39541-e8e0-45b3-af99-532b33646b69", "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
@@ -175,7 +175,7 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
                                                 "json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/4_app1_expected_app_for_reopen_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app3 reopen resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/Case-4Offences-5Applications/scenario-2/4_app_reopen_results_tracked.json", emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")

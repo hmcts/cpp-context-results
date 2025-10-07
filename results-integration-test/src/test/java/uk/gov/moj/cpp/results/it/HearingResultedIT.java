@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.core.courts.CourtApplication.courtApplication;
 import static uk.gov.justice.core.courts.CourtApplicationCase.courtApplicationCase;
 import static uk.gov.justice.core.courts.CourtCentre.courtCentre;
+import static uk.gov.justice.core.courts.DeletedJudicialResult.deletedJudicialResult;
+import static uk.gov.justice.core.courts.JudicialResult.judicialResult;
+import static uk.gov.justice.core.courts.JudicialResultCategory.ANCILLARY;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.core.courts.ProsecutionCase.prosecutionCase;
 import static uk.gov.justice.core.courts.ProsecutionCaseIdentifier.prosecutionCaseIdentifier;
@@ -50,6 +53,8 @@ import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionP
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
 import static uk.gov.moj.cpp.results.it.utils.Queries.pollForMatch;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.PROSECUTOR_WITH_SPI_OUT_FALSE;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
@@ -77,9 +82,12 @@ import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentre;
+import uk.gov.justice.core.courts.DeletedJudicialResult;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.core.courts.IndicatedPleaValue;
+import uk.gov.justice.core.courts.JudicialResult;
+import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.Verdict;
@@ -103,17 +111,22 @@ import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.path.json.JsonPath;
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
@@ -149,6 +162,8 @@ public class HearingResultedIT {
 
     private final String policeEmailAddress = randomAlphabetic(10) + "@email.com";
     private NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
+    private MessageProducer messageProducerClientPrivate;
+    private MessageConsumer messagePrivateConsumer;
 
     @BeforeAll
     public static void setUpClass() {
@@ -176,6 +191,9 @@ public class HearingResultedIT {
         stubSpiOutFlag(true, true);
         createMessageConsumers();
         ncesNotificationRequestDocumentRequestHelper = new NcesNotificationRequestDocumentRequestHelper();
+
+        messageProducerClientPrivate = privateEvents.createProducer();
+        messagePrivateConsumer = privateEvents.createConsumer("results.events.hearing-results-added-for-day");
     }
 
     @Test
@@ -826,6 +844,70 @@ public class HearingResultedIT {
         firstOffence = new JSONObject(response.get()).getJSONArray("sessionDays").getJSONObject(0);
         assertThat(ZonedDateTime.parse(firstOffence.getString("sittingDay")).toLocalDate(), is(LocalDate.of(2018, 5, 2)));
 
+    }
+
+    @Test
+    public void shouldProcessHearingResultsWithDeletedJudicialResults() throws JMSException {
+
+        final PublicHearingResulted resultsMessage = publicHearingResulted()
+                .setHearing(basicShareHearingTemplateWithApplication(randomUUID(), MAGISTRATES))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        resultsMessage.setIsReshare(Optional.of(false));
+        resultsMessage.setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)));
+
+        final ProsecutionCase prosecutionCase = prosecutionCase().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0))
+                .withOriginatingOrganisation(null)
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build())
+                .withOriginatingOrganisation(null)
+                .build();
+        final CourtApplicationCase courtApplicationCase = courtApplicationCase().
+                withValuesFrom(resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().get(0))
+                .withProsecutionCaseIdentifier(prosecutionCaseIdentifier().withValuesFrom(resultsMessage.getHearing().getProsecutionCases().get(0).getProsecutionCaseIdentifier())
+                        .withProsecutionAuthorityCode(PROSECUTOR_WITH_SPI_OUT_FALSE).build()).build();
+
+        resultsMessage.getHearing().getProsecutionCases().set(0, prosecutionCase);
+        resultsMessage.getHearing().getCourtApplications().get(0).getCourtApplicationCases().set(0, courtApplicationCase);
+        final DeletedJudicialResult deletedJudicialResult = deletedJudicialResult()
+                .withDefendantId(randomUUID())
+                .withOffenceId(randomUUID())
+                .withJudicialResult(getJudicialResult())
+                .build();
+        resultsMessage.setDeletedJudicialResults(List.of(deletedJudicialResult));
+
+        setOuCodeAndProsecutorAuthority(resultsMessage);
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+
+        final JsonPath message = retrieveMessage(messagePrivateConsumer);
+        final List<Map<String, Object>> deletedJudicialResults = message.getList("deletedJudicialResults");
+        assertThat(deletedJudicialResults.size(), CoreMatchers.is(1));
+        assertThat(deletedJudicialResults.get(0).get("defendantId"), CoreMatchers.is(deletedJudicialResult.getDefendantId().toString()));
+    }
+
+    private static JudicialResult getJudicialResult() {
+        return judicialResult()
+                .withOrderedHearingId(randomUUID())
+                .withLabel("label")
+                .withIsAdjournmentResult(true)
+                .withIsFinancialResult(true)
+                .withIsConvictedResult(true)
+                .withIsAvailableForCourtExtract(true)
+                .withOrderedDate(LocalDate.now())
+                .withCategory(ANCILLARY)
+                .withResultText("result text")
+                .withTerminatesOffenceProceedings(true)
+                .withLifeDuration(false)
+                .withPublishedForNows(false)
+                .withRollUpPrompts(false)
+                .withPublishedAsAPrompt(true)
+                .withExcludedFromResults(false)
+                .withAlwaysPublished(true)
+                .withUrgent(true)
+                .withD20(true)
+                .withJudicialResultId(randomUUID())
+                .withJudicialResultTypeId(randomUUID())
+                .build();
     }
 
     private void setOuCodeAndProsecutorAuthority(final PublicHearingResulted resultsMessage) {
