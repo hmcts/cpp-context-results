@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate.utils;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -20,7 +21,7 @@ public class GobAccountHelper {
                 .map(offenceId -> getOldGobAccount(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
                 .filter(Objects::nonNull)
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public static String getOldGobAccount(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,
@@ -56,6 +57,15 @@ public class GobAccountHelper {
                 .map(offenceId -> getOldCorrelation(correlationItemList, currentCorrelationId, offenceId))
                 .filter(Objects::nonNull)
                 .findFirst().orElse(null);
+    }
+
+    public static List<CorrelationItem> getOldCorrelations(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final List<UUID> currentOffenceIdList) {
+        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
+        return currentOffenceIdList.stream()
+                .map(offenceId -> getOldCorrelation(correlationItemList, currentCorrelationId, offenceId))
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
     }
 
     private static CorrelationItem getOldCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final UUID offenceId) {

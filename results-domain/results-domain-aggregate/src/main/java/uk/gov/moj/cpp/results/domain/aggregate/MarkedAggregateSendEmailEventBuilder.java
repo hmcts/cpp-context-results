@@ -5,19 +5,22 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ACON_EMAIL_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealAllowedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldCorrelation;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldCorrelations;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldGobAccounts;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
+import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
@@ -29,7 +32,9 @@ import uk.gov.moj.cpp.results.domain.event.OriginalApplicationResults;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Builder class for constructing a MarkedAggregateSendEmailWhenAccountReceived event.
@@ -125,11 +130,11 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                    final List<ImpositionOffenceDetails> impositionOffenceDetails,
                                                                                    final String ncesEMail, final String isFinancialPenaltiesWrittenOff,
                                                                                    final String originalDateOfOffenceList, final String originalDateOfSentenceList,
-                                                                                   final List<NewOffenceByResult> newResultByOffence, final NewApplicationResults applicationResults) {
+                                                                                   final List<NewOffenceByResult> newResultByOffence, final NewApplicationResults applicationResults,
+                                                                                   final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
 
-        final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(),
-                hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList());
-
+        final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
+        final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
 
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
                 .withId(randomUUID())
@@ -150,8 +155,14 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withImpositionOffenceDetails(impositionOffenceDetails);
 
         if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
-            builder.withAccountCorrelationId(previousItem.getAccountCorrelationId())
-                    .withGobAccountNumber(previousItem.getAccountNumber());
+            builder.withAccountCorrelationId(previousItem.getAccountCorrelationId());
+            if (isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences()) && hearingFinancialResultRequest.getProsecutionCaseReferences().size() > 1) {
+                final List<CorrelationItem> prevItemList = getOldCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
+                final List<String> oldGobAccounts = getOldGobAccounts(new LinkedList<>(prevItemList), hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
+                builder.withGobAccountNumber(isNotEmpty(oldGobAccounts) ? String.join(",", oldGobAccounts) : previousItem.getAccountNumber());
+            } else {
+                builder.withGobAccountNumber(previousItem.getAccountNumber());
+            }
         } else {
             builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
                     .withGobAccountNumber(hearingFinancialResultRequest.getAccountNumber())

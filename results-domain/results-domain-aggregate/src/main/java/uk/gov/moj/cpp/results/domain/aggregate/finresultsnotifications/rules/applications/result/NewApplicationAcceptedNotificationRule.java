@@ -90,7 +90,8 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
                                     originalDateOfOffenceList,
                                     originalDateOfSentenceList,
                                     newApplicationOffenceResults,
-                                    buildNewApplicationResultsFromTrackRequest(offenceResults)));
+                                    buildNewApplicationResultsFromTrackRequest(offenceResults),
+                                    input.prevApplicationResultsDetails()));
                 }
             }
         }
