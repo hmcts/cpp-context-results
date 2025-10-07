@@ -942,19 +942,22 @@
                 "amendmentType": "UPDATED",
                 "id": "4b0968d9-61d5-40d0-bd48-1bf15c81c580",
                 "judicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
-                "resultTitle": "Adjournment"
+                "resultTitle": "Adjournment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "7b169502-be96-4af0-83e4-e75a2610bd41",
                 "judicialResultTypeId": "dbf9f59c-eee5-4285-8a1c-4fefe4508581",
-                "resultTitle": "To produce motor insurance documents or test certificates (not driving licence)"
+                "resultTitle": "To produce motor insurance documents or test certificates (not driving licence)",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "a8bd6976-2c2e-4bee-8648-6ec0c92b2667",
                 "judicialResultTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Next hearing in magistrates' court"
+                "resultTitle": "Next hearing in magistrates' court",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -974,19 +977,22 @@
                 "amendmentType": "UPDATED",
                 "id": "10371cd8-a1b0-4c0b-a56d-5eed74270d2e",
                 "judicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
-                "resultTitle": "Adjournment"
+                "resultTitle": "Adjournment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "105f301d-e63c-4186-b64f-1758f1e241d0",
                 "judicialResultTypeId": "dbf9f59c-eee5-4285-8a1c-4fefe4508581",
-                "resultTitle": "To produce motor insurance documents or test certificates (not driving licence)"
+                "resultTitle": "To produce motor insurance documents or test certificates (not driving licence)",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "8c677a5a-9fe7-406c-9b8d-7d504d43e02a",
                 "judicialResultTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Next hearing in magistrates' court"
+                "resultTitle": "Next hearing in magistrates' court",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

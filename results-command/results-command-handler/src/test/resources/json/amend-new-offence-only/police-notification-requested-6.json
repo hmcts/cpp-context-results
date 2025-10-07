@@ -1667,13 +1667,15 @@
                 "amendmentType": "ADDED",
                 "id": "f3ad7b0c-400e-4dc1-ac9e-f43e5f086439",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "3e0e4a77-83af-4c43-bdb5-11bf8877300f",
                 "judicialResultTypeId": "4b5a2d33-5121-4d09-a8f1-49c7beb2994c",
-                "resultTitle": "Passport surrender"
+                "resultTitle": "Passport surrender",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1687,37 +1689,43 @@
                 "amendmentType": "UPDATED",
                 "id": "8209f588-61e3-454f-b184-c2fdaab2dca4",
                 "judicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
-                "resultTitle": "Imprisonment"
+                "resultTitle": "Imprisonment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "db9ac39e-f6fb-4f64-b181-054256be59a1",
                 "judicialResultTypeId": "9ea0d845-5096-44f6-9ce0-8ae801141eac",
-                "resultTitle": "Collection order"
+                "resultTitle": "Collection order",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "bb3c4406-ba75-451c-994b-e097396ccd21",
                 "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
-                "resultTitle": "Surcharge"
+                "resultTitle": "Surcharge",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "d1c50d5b-4245-4ba0-9e52-b2df4e0c2329",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "1e2bd93b-f89a-4ebc-bc47-6d2d30413f56",
                 "judicialResultTypeId": "6cb15971-c945-4398-b7c9-3f8b743a4de3",
-                "resultTitle": "Total custodial period"
+                "resultTitle": "Total custodial period",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "a652e80e-4c0f-4d4c-b05a-e132f9190682",
                 "judicialResultTypeId": "204fc6b8-d6c9-4fb8-acd0-47d23c087625",
-                "resultTitle": "No surcharge"
+                "resultTitle": "No surcharge",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 12,
@@ -1731,13 +1739,15 @@
                 "amendmentType": "ADDED",
                 "id": "64358c62-516b-4366-afbc-5f81402fa563",
                 "judicialResultTypeId": "ae89b99c-e0e3-47b5-b218-24d4fca3ca53",
-                "resultTitle": "Compensation"
+                "resultTitle": "Compensation",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "10bd4f18-943e-44a6-b797-7b765d3f90d7",
                 "judicialResultTypeId": "b65fb5f1-b11d-4a95-a198-3b81333c7cf9",
-                "resultTitle": "Total suspended custodial period"
+                "resultTitle": "Total suspended custodial period",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 10,

@@ -293,13 +293,15 @@
                 "amendmentType": "UPDATED",
                 "id": "77ab2fa1-589c-40a9-b5e2-7192b036b605",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "ba2dfc66-4b51-44b0-a1d6-00366d353b75",
                 "judicialResultTypeId": "272d1ec2-634b-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Payment terms - Lump sum plus instalments"
+                "resultTitle": "Payment terms - Lump sum plus instalments",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,

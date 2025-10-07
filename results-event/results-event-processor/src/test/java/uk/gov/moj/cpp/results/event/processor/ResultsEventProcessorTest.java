@@ -11,6 +11,7 @@ import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -67,8 +68,10 @@ import uk.gov.moj.cpp.results.domain.event.ApplicationResultDetails;
 import uk.gov.moj.cpp.results.domain.event.CaseResultDetails;
 import uk.gov.moj.cpp.results.domain.event.DefendantResultDetails;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
+import uk.gov.moj.cpp.results.domain.event.PublishToDcs;
 import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
+import uk.gov.moj.cpp.results.event.helper.DcsCaseHelper;
 import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.Prompt;
@@ -166,6 +169,9 @@ public class ResultsEventProcessorTest {
 
     @Mock
     ReferenceDataService referenceDataService;
+
+    @Mock
+    DcsCaseHelper dcsCaseHelper;
     @Mock
     ProgressionService progressionService;
 
@@ -1104,6 +1110,30 @@ public class ResultsEventProcessorTest {
         verify(progressionService, times(1)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
+    }
+
+    @Test
+    public void shouldHandlePublishToDcs() {
+
+        final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
+
+        PublishToDcs publishToDcs = PublishToDcs.publishToDcs()
+                .withCurrentHearing(shareResultsMessage.getHearing())
+                .withSharedTime(shareResultsMessage.getSharedTime())
+                .withHearingDay(shareResultsMessage.getHearingDay().get())
+                .withIsReshare(shareResultsMessage.getIsReshare().get())
+                .build();
+        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.event.publish-to-dcs"),
+                objectToJsonObjectConverter.convert(publishToDcs));
+
+        resultsEventProcessor.publishToDcs(envelope);
+
+        verify(dcsCaseHelper, times(1)).prepareAndSendToDCSIfEligible(jsonEnvelopeArgumentCaptor.capture());
+
+        final JsonObject hearingJsonObject = jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getJsonObject("currentHearing");
+
+        final uk.gov.justice.core.courts.Hearing hearing = jsonObjectToObjectConverter.convert(hearingJsonObject, uk.gov.justice.core.courts.Hearing.class);
+        assertEquals(hearing.getId(), shareResultsMessage.getHearing().getId());
     }
 
     private void setSjpServiceMock(){

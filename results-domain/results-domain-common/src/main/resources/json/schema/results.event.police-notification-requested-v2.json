@@ -159,6 +159,9 @@
             "UPDATED",
             "DELETED"
           ]
+        },
+        "isQualifyingResult": {
+          "type": "boolean"
         }
       }
     }

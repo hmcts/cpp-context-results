@@ -43,17 +43,17 @@ public class CaseResultDetailsConverterTest {
         final CaseResultDetails caseResultDetails = new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId, defendantName, Arrays.asList(
                         new OffenceResultDetails(offenceId, offenceNo, offenceCount, offenceTitle, Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.ADDED),
-                                new JudicialResultDetails(judicialResultIdInCase2, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.NONE)
+                                new JudicialResultDetails(judicialResultIdInCase1, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.ADDED, true),
+                                new JudicialResultDetails(judicialResultIdInCase2, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.NONE, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, applicationTitle, Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp, appResultTitle, judicialResultTypeIdInApp, JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp, appResultTitle, judicialResultTypeIdInApp, JudicialResultAmendmentType.ADDED, true)
                         ), Arrays.asList(
                                 new OffenceResultDetails(offenceId, offenceNo, offenceCount, offenceTitle, Arrays.asList(
-                                        new JudicialResultDetails(judicialResultIdInAppOffence1, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.ADDED),
-                                        new JudicialResultDetails(judicialResultIdInAppOffence2, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.NONE)
+                                        new JudicialResultDetails(judicialResultIdInAppOffence1, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.ADDED, true),
+                                        new JudicialResultDetails(judicialResultIdInAppOffence2, resultTitle, judicialResultTypeId, JudicialResultAmendmentType.NONE, false)
                                 ))
                         ), Collections.emptyList(), "firstName", "lastName")
                 ),

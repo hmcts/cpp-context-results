@@ -905,7 +905,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(jsonResponse.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452"));
 
         JsonPath jsonResponseDs = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponseDs.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED));
@@ -979,7 +979,7 @@ public class StagingEnforcementIT {
         assertThat(amendResultInputError.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(amendResultInputError.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(amendResultInputError.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
+        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452"));
         assertThat(writeOffOneDayDeemedServed.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(writeOffOneDayDeemedServed.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(writeOffOneDayDeemedServed.getString(SEND_TO), is("John.Doe@xxx.com"));
