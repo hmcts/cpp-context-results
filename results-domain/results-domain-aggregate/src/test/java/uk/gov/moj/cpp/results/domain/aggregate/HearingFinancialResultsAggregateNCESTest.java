@@ -1798,6 +1798,37 @@ class HearingFinancialResultsAggregateNCESTest {
                                         )
                                 )
                 ),
+                Arguments.of("Matched Def 2 INACTIVE cases > case1 fine, non-fine with multi offences > case2 fine, non-fine with multi offences > app Granted, DD-40488",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case1 resulted")
+                                        .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/28DI975229_1_case_1_results_tracked.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("case2 resulted")
+                                        .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/28DI975227_1_case_2_results_tracked.json",
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+
+                                .newStep(newNcesEmailForNewApplicationStep("app1 appeal received","json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_appeal_1_send_nces_request.json")
+                                        .withExpectedEventNames("NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPEAL APPLICATION RECEIVED\".*")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_expected_appeal_received_notification.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
+                                .newStep(newResultTrackedStep("app APPEAL resulted")
+                                        .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_appeal_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_allowed_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                        )
+                                )
+                ),
                 Arguments.of("Matched Def 2 cases > case1 fine with multi offences exits > case2 fine with multi offences  o1 FCOST > case2 amended o2 fine updated + DS, DD-40391",
                         newScenario()
                                 .newStep(newResultTrackedStep("case1 resulted")
