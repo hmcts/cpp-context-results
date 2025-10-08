@@ -64,6 +64,7 @@ public class ResultNotificationRuleEngine {
         List<MarkedAggregateSendEmailWhenAccountReceived> results = new ArrayList<>();
         for (ResultNotificationRule rule : rules) {
             if (rule.appliesTo(input)) {
+                System.out.println(rule.getClass());
                 rule.apply(input).ifPresent(results::add);
             }
         }

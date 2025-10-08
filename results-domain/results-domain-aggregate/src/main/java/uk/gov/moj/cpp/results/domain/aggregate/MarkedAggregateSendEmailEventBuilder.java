@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -63,11 +64,12 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                                                final List<NewOffenceByResult> newResultByOffenceList,
                                                                                                                final String applicationResult,
                                                                                                                final OriginalApplicationResults originalApplicationResults,
-                                                                                                               final NewApplicationResults newApplicationResults
+                                                                                                               final NewApplicationResults newApplicationResults,
+                                                                                                               final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails
     ) {
         return buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest, subject, correlationItem, impositionOffenceDetails,
                 ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail), isWrittenOffExists, originalDateOfOffenceList,
-                originalDateOfSentenceList, newResultByOffenceList, applicationResult, originalApplicationResults, newApplicationResults);
+                originalDateOfSentenceList, newResultByOffenceList, applicationResult, originalApplicationResults, newApplicationResults, prevApplicationResultsDetails);
     }
 
     @SuppressWarnings("java:S107")
@@ -76,7 +78,16 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                                                         final String ncesEMail, final String isFinancialPenaltiesWrittenOff,
                                                                                                                         final String originalDateOfOffenceList, final String originalDateOfSentenceList,
                                                                                                                         final List<NewOffenceByResult> newResultByOffence, final String applicationResult,
-                                                                                                                        final OriginalApplicationResults originalApplicationResults, final NewApplicationResults newApplicationResults) {
+                                                                                                                        final OriginalApplicationResults originalApplicationResults, final NewApplicationResults newApplicationResults,
+                                                                                                                        final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
+        List<String> oldGobAccounts = emptyList();
+        if (isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences()) && hearingFinancialResultRequest.getProsecutionCaseReferences().size() > 1) {
+            final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
+            final List<CorrelationItem> prevItemList = getOldCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
+            oldGobAccounts = getOldGobAccounts(new LinkedList<>(prevItemList), hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
+        }
+
+        final String accountNumber = isNotEmpty(oldGobAccounts) ? String.join(",", oldGobAccounts) : correlationItem.getAccountNumber();
 
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
                 .withId(randomUUID())
@@ -93,7 +104,7 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
                 .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
                 .withAccountCorrelationId(correlationItem.getAccountCorrelationId())
-                .withGobAccountNumber(correlationItem.getAccountNumber())
+                .withGobAccountNumber(accountNumber)
                 .withDivisionCode(correlationItem.getAccountDivisionCode())
                 .withImpositionOffenceDetails(impositionOffenceDetails);
 
@@ -238,10 +249,15 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                     final String applicationResult, final List<NewOffenceByResult> newResultByOffenceList,
                                                                                     final OriginalApplicationResults originalApplicationResults,
                                                                                     final NewApplicationResults newApplicationResults,
-                                                                                    final String subject) {
+                                                                                    final String subject, final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
 
-        final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(),
-                hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList());
+        final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
+        final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
+        List<String> oldGobAccounts = emptyList();
+        if (isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences()) && hearingFinancialResultRequest.getProsecutionCaseReferences().size() > 1) {
+            final List<CorrelationItem> prevItemList = getOldCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
+            oldGobAccounts = getOldGobAccounts(new LinkedList<>(prevItemList), hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
+        }
 
         final Optional<OffenceResults> offenceResult = hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getAmendmentDate())).findFirst();
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
@@ -265,7 +281,7 @@ public class MarkedAggregateSendEmailEventBuilder {
 
         if (nonNull(previousItem)) {
             builder.withOldAccountCorrelationId(previousItem.getAccountCorrelationId())
-                    .withOldGobAccountNumber(previousItem.getAccountNumber())
+                    .withOldGobAccountNumber(isNotEmpty(oldGobAccounts) ? String.join(",", oldGobAccounts) : previousItem.getAccountNumber())
                     .withOldDivisionCode(previousItem.getAccountDivisionCode());
         }
 
