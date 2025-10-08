@@ -67,7 +67,8 @@ public class CaseAmendmentFinToNonFinAccWriteOffRule extends AbstractCaseResultN
                             newOffenceResults,
                             input.applicationResult(),
                             null,
-                            null));
+                            null,
+                            input.prevApplicationResultsDetails()));
         }
 
 

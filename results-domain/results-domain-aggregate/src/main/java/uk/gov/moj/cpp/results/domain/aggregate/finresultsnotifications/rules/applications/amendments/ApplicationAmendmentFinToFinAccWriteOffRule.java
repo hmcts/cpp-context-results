@@ -67,7 +67,8 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
                             hasSentenceVaried(newOffenceResults) ? buildNewOffenceResultForSV(newOffenceResults) : newOffenceResults,
                             originalResultsByApplication.orElse(null),
                             newApplicationResults,
-                            NCESDecisionConstants.AMEND_AND_RESHARE));
+                            NCESDecisionConstants.AMEND_AND_RESHARE,
+                            input.prevApplicationResultsDetails()));
         }
 
         return Optional.empty();

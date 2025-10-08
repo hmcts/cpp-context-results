@@ -61,7 +61,8 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         newResultByOffence,
                                         applicationResult,
                                         null,
-                                        null));
+                                        null,
+                                        input.prevApplicationResultsDetails()));
             } else {
                 return null;
             }

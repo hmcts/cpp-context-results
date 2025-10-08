@@ -58,7 +58,8 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
                                     newOffenceResults,
                                     null,
                                     null,
-                                    AMEND_AND_RESHARE));
+                                    AMEND_AND_RESHARE,
+                                    input.prevApplicationResultsDetails()));
         }
         return Optional.empty();
     }

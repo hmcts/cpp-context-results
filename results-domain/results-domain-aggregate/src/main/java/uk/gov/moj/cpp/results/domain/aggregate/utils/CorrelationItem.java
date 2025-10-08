@@ -73,9 +73,7 @@ public class CorrelationItem implements Serializable {
         return java.util.Objects.equals(this.accountCorrelationId, that.accountCorrelationId) &&
                 java.util.Objects.equals(this.accountDivisionCode, that.accountDivisionCode) &&
                 java.util.Objects.equals(this.accountNumber, that.accountNumber) &&
-                java.util.Objects.equals(this.createdTime, that.createdTime) &&
-                java.util.Objects.equals(this.prosecutionCaseReferences, that.prosecutionCaseReferences) &&
-                java.util.Objects.equals(this.offenceResultsDetailsList, that.offenceResultsDetailsList);
+                java.util.Objects.equals(this.createdTime, that.createdTime);
     }
 
     @Override

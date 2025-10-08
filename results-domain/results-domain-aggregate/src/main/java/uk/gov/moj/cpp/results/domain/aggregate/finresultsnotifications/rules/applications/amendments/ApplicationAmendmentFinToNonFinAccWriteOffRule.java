@@ -82,7 +82,8 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
                             newOffenceResults,
                             input.applicationResult(),
                             originalApplicationResults.orElse(null),
-                            newApplicationResults));
+                            newApplicationResults,
+                            input.prevApplicationResultsDetails()));
         }
 
         return Optional.empty();

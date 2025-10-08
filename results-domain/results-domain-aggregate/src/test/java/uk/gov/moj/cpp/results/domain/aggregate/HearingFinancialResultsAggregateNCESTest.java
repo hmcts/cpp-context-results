@@ -1798,7 +1798,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                         )
                                 )
                 ),
-                Arguments.of("Matched Def 2 INACTIVE cases > case1 fine, non-fine with multi offences > case2 fine, non-fine with multi offences > app Granted, DD-40488",
+                Arguments.of("Matched Def 2 INACTIVE cases > case1 fine, non-fine with multi offences > case2 fine, non-fine with multi offences > app allowed, DD-40488",
                         newScenario()
                                 .newStep(newResultTrackedStep("case1 resulted")
                                         .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/28DI975229_1_case_1_results_tracked.json",
@@ -1826,6 +1826,37 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                        )
+                                )
+                ),
+                Arguments.of("Matched Def 2 INACTIVE cases > case1 fine, non-fine with multi offences > case2 fine, non-fine with multi offences > app refused, DD-40488",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case1 resulted")
+                                        .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/28DI975223_1_case_1_results_tracked.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived"))
+                                .newStep(newResultTrackedStep("case2 resulted")
+                                        .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/28DI975224_1_case_1_results_tracked.json",
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+
+                                .newStep(newNcesEmailForNewApplicationStep("app1 REOPEN received","json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/2_app_reopen_1_send_nces_request.json")
+                                        .withExpectedEventNames("NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION TO REOPEN RECEIVED\".*")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/2_app_expected_reopen_received_notification.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
+                                .newStep(newResultTrackedStep("app REOPEN resulted")
+                                        .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/2_app_reopen_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/2_app_refused_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                         )
                                 )
                 ),
