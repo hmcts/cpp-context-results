@@ -78,7 +78,7 @@ public class CorrelationItem implements Serializable {
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(accountCorrelationId, accountDivisionCode, accountNumber, createdTime, prosecutionCaseReferences, offenceResultsDetailsList);
+        return java.util.Objects.hash(accountCorrelationId, accountDivisionCode, accountNumber, createdTime);
     }
 
     @Override
