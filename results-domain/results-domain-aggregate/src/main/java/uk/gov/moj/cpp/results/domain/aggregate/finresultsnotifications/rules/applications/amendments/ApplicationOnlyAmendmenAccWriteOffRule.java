@@ -46,9 +46,6 @@ public class ApplicationOnlyAmendmenAccWriteOffRule extends AbstractApplicationR
                 .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
                 .distinct().toList();
 
-        // Get imposition offence details for non-financial offences corresponding to original non-financial offences
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsNonFineToNonFine = getImpositionOffenceDetailsNonFineToNonFine(input, request, currentApplicationId);
-
         final Optional<OriginalApplicationResults> originalApplicationResults = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
 
         final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
@@ -59,10 +56,10 @@ public class ApplicationOnlyAmendmenAccWriteOffRule extends AbstractApplicationR
         final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
         //has application amendments
         final boolean appResultsOnly = originalApplicationResults.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty();
-        //has nFP to nFP
-        final boolean nonFinToNonFin = !impositionOffenceDetailsNonFineToNonFine.isEmpty();
+        //has nFP to nFP - using conditional decision making instead of list check
+        final boolean hasNonFineToNonFineOffences = hasNonFineToNonFineOffences(input, request, currentApplicationId);
 
-        if (appResultsOnly && !nonFinToNonFin) {
+        if (appResultsOnly && !hasNonFineToNonFineOffences) {
             return Optional.of(markedAggregateSendEmailEventBuilder
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             NCESDecisionConstants.AMEND_AND_RESHARE,
