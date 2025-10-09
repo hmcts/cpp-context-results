@@ -75,12 +75,8 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("case amended")
                                         .withResultTrackedEvent("json/nces/case-amendments/single-offence/fin-to-nonfin/1_case_amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/case-amendments/single-offence/fin-to-nonfin/1_nces_acc_writeoff_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                )
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
+                                       )
                 ),
                 Arguments.of("fin > nonfin (FO+CD -> FO:deleted + CD:NoChange) (One GOB A/C) (DD-36847 AC3)(CCT-2357, see https://tools.hmcts.net/confluence/display/CROWN/CCT-2266+Gaps)",
                         newScenario()
@@ -189,11 +185,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("case amended")
                                         .withResultTrackedEvent("json/nces/case-amendments/single-offence/fin_fidici-to-nonfin/case_amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/case-amendments/single-offence/fin_fidici-to-nonfin/nces_acc_writeoff_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/case-amendments/single-offence/fin_fidici-to-nonfin/2_nces_deemed_serve_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
@@ -292,11 +284,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("case amended")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/fine-amend-ds-acon/case_amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/case-amendments/multi-offences/fine-amend-ds-acon/nces_notification_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/case-amendments/multi-offences/fine-amend-ds-acon/nces_notification_expected-acon.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
@@ -655,14 +643,6 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-nonfin/application_resulted.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "HearingFinancialResultsUpdated", "MarkedAggregateSendEmailWhenAccountReceived", "UnmarkedAggregateSendEmailWhenAccountReceived"))
-                                .newStep(newResultTrackedStep("application amended")
-                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-nonfin/application_amended.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-nonfin/nces_notification_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
                 Arguments.of("single offence > case fin > app fin > fin,ds DD-36848 SC4",
                         newScenario()
@@ -742,16 +722,12 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("application amended")
-                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-ds-amended-nonfin/application_amended.json", emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-ds-amended-nonfin/nces_notification_deemed_served_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-ds-amended-nonfin/nces_notification_account_writeoff_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-ds-amended-nonfin/application_amended.json", emptyAccountInfo())
+                                                .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                                .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-ds-amended-nonfin/nces_notification_deemed_served_expected.json",
+                                                        comparison()
+                                                                .withPathsExcluded("materialId", "notificationId")
+                                                                .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
 
                 ),
@@ -922,11 +898,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("application amended")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amend-add-fidici/application-amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amend-add-fidici/nces_duplicate_writeoff.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amend-add-fidici/nces_deemed.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
@@ -949,13 +921,9 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("application amended")
-                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/application-amended.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/nces_duplicate_writeoff.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                                .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/application-amended.json",
+                                                        emptyAccountInfo())
+                                                .withExpectedEventNames("HearingFinancialResultsTracked"))
                 ),
                 Arguments.of("single offence > case fin > app fin+ds+acon",
                         newScenario()
@@ -1484,15 +1452,6 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/application_resulted.json",
                                                 accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
-                                .newStep(newResultTrackedStep("application amended")
-                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/application_amended.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/nces_notification_account_writeoff_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/nces_notification_deemed_served_writeoff_expected.json"))
                 ),
                 Arguments.of("single offence > case fin > app fin > fin,ds > fin,ds removed DD-34584 SC1",
                         newScenario()
@@ -1503,23 +1462,22 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("application amended")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/application_amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/nces_notification_account_writeoff_expected.json",
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/nces_notification_deemed_served_writeoff_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/nces_notification_deemed_served_writeoff_expected.json")
-                                ).newStep(newResultTrackedStep("application amended 2")
-                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/2_application_amended.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/2_nces_notification_account_writeoff_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/2_nces_notification_deemed_served_writeoff_expected.json")
-                                )
+
+                ).newStep(newResultTrackedStep("application amended 2")
+                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/2_application_amended.json",
+                                emptyAccountInfo())
+                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amended-add-ds/2_nces_notification_deemed_served_writeoff_expected.json",
+                                comparison()
+                                        .withPathsExcluded("materialId", "notificationId")
+                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                 )
+        )
         );
     }
 
@@ -1809,7 +1767,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
 
-                                .newStep(newNcesEmailForNewApplicationStep("app1 appeal received","json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_appeal_1_send_nces_request.json")
+                                .newStep(newNcesEmailForNewApplicationStep("app1 appeal received", "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_appeal_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPEAL APPLICATION RECEIVED\".*")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
@@ -1840,7 +1798,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
 
-                                .newStep(newNcesEmailForNewApplicationStep("app1 REOPEN received","json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/2_app_reopen_1_send_nces_request.json")
+                                .newStep(newNcesEmailForNewApplicationStep("app1 REOPEN received", "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-refused/2_app_reopen_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION TO REOPEN RECEIVED\".*")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
@@ -1910,11 +1868,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("app amended with NEXH")
                                         .withResultTrackedEvent("json/nces/application-amendments-nexh/fin-case/single-offence/casefin-appfingranted-amended-nexh/application_amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments-nexh/fin-case/single-offence/casefin-appfingranted-amended-nexh/nces_notification_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                 ),
 //TODO add scenarios for app and offence adjournment to next hearing > next hearing finalise the application with Fine impositions
                 Arguments.of("Next Hearing>> non fin case > app > finalised, offence adj > NextHearing : offence Fine & amended fine(tracking starts from adjourned)",

@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments;
 
+import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelper.buildNewApplicationResultsFromTrackRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
@@ -59,7 +60,7 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
 
         final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
 
-        if (!impositionOffenceDetailsFineToFine.isEmpty()) {
+        if (nonNull(request.getAccountCorrelationId()) && !impositionOffenceDetailsFineToFine.isEmpty()) {
             return Optional.of(markedAggregateSendEmailEventBuilder
                     .buildMarkedAggregateWithOlds(request,
                             hasSentenceVaried(newOffenceResults) ? buildOriginalOffenceResultForSV(originalImpositionDetails) : originalImpositionDetails,

@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments;
 
+import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
@@ -48,7 +49,7 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
             return Optional.empty();
         }
 
-        if (!impositionOffenceDetailsFinToFin.isEmpty()) {
+        if (nonNull(request.getAccountCorrelationId()) && !impositionOffenceDetailsFinToFin.isEmpty()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithOlds(
