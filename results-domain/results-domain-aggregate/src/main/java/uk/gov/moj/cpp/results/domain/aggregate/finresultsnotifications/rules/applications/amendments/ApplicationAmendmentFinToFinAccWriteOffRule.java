@@ -34,7 +34,7 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow();
+        return input.hasValidApplicationType() && input.isAmendmentFlow() && input.hasFinancialAmendments();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
 
         final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
 
-        if (nonNull(request.getAccountCorrelationId()) && !impositionOffenceDetailsFineToFine.isEmpty()) {
+        if (!impositionOffenceDetailsFineToFine.isEmpty()) {
             return Optional.of(markedAggregateSendEmailEventBuilder
                     .buildMarkedAggregateWithOlds(request,
                             hasSentenceVaried(newOffenceResults) ? buildOriginalOffenceResultForSV(originalImpositionDetails) : originalImpositionDetails,

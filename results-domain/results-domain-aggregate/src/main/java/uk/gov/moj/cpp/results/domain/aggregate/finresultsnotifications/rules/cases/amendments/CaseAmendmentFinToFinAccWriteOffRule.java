@@ -25,7 +25,7 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isCaseAmendmentProcess();
+        return input.isCaseAmendmentProcess() && input.hasFinancialAmendments();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
             return Optional.empty();
         }
 
-        if (nonNull(request.getAccountCorrelationId()) && !impositionOffenceDetailsFinToFin.isEmpty()) {
+        if (!impositionOffenceDetailsFinToFin.isEmpty()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithOlds(
