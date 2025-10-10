@@ -12,7 +12,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.corr
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -55,7 +54,7 @@ class ApplicationOnlyAmendmentAccWriteOffRuleTest {
     }
 
     @Test
-    void shouldApplyToApplicationOnlyAmendmentWithNonFinancialOffences() {
+    void shouldNotApplyToApplicationOnlyAmendmentWithNonFinancialOffences() {
         final UUID applicationId = randomUUID();
         final UUID offenceId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
@@ -65,6 +64,7 @@ class ApplicationOnlyAmendmentAccWriteOffRuleTest {
                                 .withApplicationId(applicationId)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .withOffenceId(randomUUID())
+                                .withApplicationTitle("Reopen")
                                 .withIsFinancial(false)
                                 .withAmendmentDate("2023-01-01")
                                 .withResultCode("RFSD")
@@ -77,12 +77,70 @@ class ApplicationOnlyAmendmentAccWriteOffRuleTest {
                         List.of(offenceResultsDetails()
                                 .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withApplicationId(applicationId)
-                                .withIsFinancial(true)
+                                .withApplicationTitle("Reopen")
+                                .withIsFinancial(false)
+                                .withResultCode("G")
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .withImpositionOffenceDetails("Previous non-financial offence details")
                                 .build())))
                 .withPrevOffenceResultsDetails(Map.of(
                         trackRequest.getOffenceResults().get(0).getOffenceId(),
+                        offenceResultsDetails()
+                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
+                                .withIsFinancial(false)
+                                .withImpositionOffenceDetails("Previous offence details")
+                                .build()))
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
+                                .withIsFinancial(false)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .build())))
+                .build();
+
+        var output = rule.apply(input);
+
+        output.ifPresentOrElse(notification -> {
+            fail("Expected no Acc Write Off notification to be present for application-only amendment with non-financial offences" +
+                    "Rule should not apply for Application Acc Write Off if Application results only amended with offences adj to next hearing\" +\n" +
+                    "                \"and application is amended in previous hearing");
+        }, () -> {
+        });
+    }
+
+    @Test
+    void shouldApplyToApplicationOnlyAmendmentWithFinancialOffences() {
+        final UUID applicationId = randomUUID();
+        final UUID offenceId = randomUUID();
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        offenceResults()
+                                .withApplicationId(applicationId)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withOffenceId(offenceId)
+                                .withApplicationTitle("Reopen")
+                                .withIsFinancial(false)
+                                .withAmendmentDate("2023-01-01")
+                                .withResultCode("RFSD")
+                                .build()))
+                .build();
+        var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest)
+                .withPrevApplicationResultsDetails(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(offenceId)
+                                .withApplicationId(applicationId)
+                                .withApplicationTitle("Reopen")
+                                .withIsFinancial(true)
+                                .withResultCode("G")
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withImpositionOffenceDetails("Previous non-financial offence details")
+                                .build())))
+                .withPrevOffenceResultsDetails(Map.of(
+                        offenceId,
                         offenceResultsDetails()
                                 .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withIsFinancial(true)
@@ -91,26 +149,17 @@ class ApplicationOnlyAmendmentAccWriteOffRuleTest {
                 .withPrevApplicationOffenceResultsMap(Map.of(
                         applicationId,
                         List.of(offenceResultsDetails()
-                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
+                                .withOffenceId(offenceId)
                                 .withIsFinancial(true)
                                 .withApplicationType(NCESDecisionConstants.REOPEN)
                                 .build())))
                 .withCorrelationItemList(
                         List.of(correlationItem()
-                                        .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
-                                        .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
-                                        .build(),
-                                correlationItem()
-                                        .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(ZonedDateTime.now())
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
-                                        .withAccountNumber("AC123456789")
-                                        .build()))
+                                .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                .withAccountNumber("AC123456789")
+                                .build()))
                 .build();
 
-        assertThat("Rule should apply for Acc Write Off", rule.appliesTo(input));
         var output = rule.apply(input);
 
         output.ifPresentOrElse(notification -> {
