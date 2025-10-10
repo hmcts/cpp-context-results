@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToFinAccWriteOffRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationOnlyAmendmenAccWriteOffRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationOnlyAmendmentAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationAcceptedNotificationRule;
@@ -39,7 +39,7 @@ public class ResultNotificationRuleEngine {
         rules.add(new ApplicationACONNotificationRule());
         rules.add(new ApplicationAmendmentACONNotificationRule());
         rules.add(new ApplicationAmendmentFinToFinAccWriteOffRule());
-        rules.add(new ApplicationOnlyAmendmenAccWriteOffRule());
+        rules.add(new ApplicationOnlyAmendmentAccWriteOffRule());
         rules.add(new CaseAmendmentFinToFinAccWriteOffRule());
         rules.add(new CaseAmendmentACONNotificationRule());
         rules.add(new CaseACONNotificationRule());

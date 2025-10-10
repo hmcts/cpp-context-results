@@ -25,9 +25,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Rule for application amendments from financial to non-financial impositions.
+ * Rule for application only amendments.
  */
-public class ApplicationOnlyAmendmenAccWriteOffRule extends AbstractApplicationResultNotificationRule {
+public class ApplicationOnlyAmendmentAccWriteOffRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(final RuleInput input) {

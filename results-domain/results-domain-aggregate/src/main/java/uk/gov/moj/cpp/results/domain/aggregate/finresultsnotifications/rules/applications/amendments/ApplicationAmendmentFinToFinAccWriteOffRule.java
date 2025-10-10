@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments;
 
-import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelper.buildNewApplicationResultsFromTrackRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;

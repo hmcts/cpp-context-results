@@ -18,7 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class ApplicationAmendmentFinToNonFinAccWriteOffRuleTest {
-    private final ApplicationOnlyAmendmenAccWriteOffRule rule = new ApplicationOnlyAmendmenAccWriteOffRule();
+    private final ApplicationOnlyAmendmentAccWriteOffRule rule = new ApplicationOnlyAmendmentAccWriteOffRule();
 
     @Test
     void shouldNotApplyToNonAmendmentFlow() {
