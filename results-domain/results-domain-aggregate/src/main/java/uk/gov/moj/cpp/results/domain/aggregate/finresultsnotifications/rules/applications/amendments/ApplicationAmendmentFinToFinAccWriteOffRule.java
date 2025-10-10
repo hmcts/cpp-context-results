@@ -33,7 +33,7 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow();
+        return input.hasValidApplicationType() && input.isAmendmentFlow() && input.hasFinancialAmendments();
     }
 
     @Override

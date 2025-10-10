@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments;
 
+import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
@@ -24,7 +25,7 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isCaseAmendmentProcess();
+        return input.isCaseAmendmentProcess() && input.hasFinancialAmendments();
     }
 
     @Override
