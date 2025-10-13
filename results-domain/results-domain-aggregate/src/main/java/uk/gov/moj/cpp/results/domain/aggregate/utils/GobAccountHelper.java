@@ -27,20 +27,11 @@ public class GobAccountHelper {
                 .distinct()
                 .collect(Collectors.groupingBy(CorrelationItem::getHearingId));
 
-        final boolean isSingleHearing = hearingIdCorrelationItemsMap.keySet().size() == 1;
-        if (isSingleHearing) {
-            return hearingIdCorrelationItemsMap.values().stream()
-                    .findFirst()
-                    .filter(CollectionUtils::isNotEmpty)
-                    .map(GobAccountHelper::getRecentAccountNumber)
-                    .stream().toList();
-        } else {
-            return hearingIdCorrelationItemsMap.values().stream()
-                    .filter(CollectionUtils::isNotEmpty)
-                    .map(GobAccountHelper::getRecentAccountNumber)
-                    .distinct()
-                    .collect(Collectors.toList());
-        }
+        return hearingIdCorrelationItemsMap.values().stream()
+                .filter(CollectionUtils::isNotEmpty)
+                .map(GobAccountHelper::getRecentAccountNumber)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
