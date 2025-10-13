@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-03-21",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI8365860",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Elroy Muller",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2015.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "916f1f10-c645-402d-934b-90f832118f59",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
+  "materialId": "4cb2fa1f-7e47-4b70-9a3c-ba5d00fbe5a5",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse deemed served by reason of time already spent in custody. Total amount enforced £35.00.\nFO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2015.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "916f1f10-c645-402d-934b-90f832118f59",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

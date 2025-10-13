@@ -5,7 +5,7 @@
   "defendantDateOfBirth": "1991-02-18",
   "defendantName": "Christina Feest",
   "divisionCode": "77",
-  "gobAccountNumber": "{{gobAccountNumber}}",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingSittingDay": "2025-04-15",
   "impositionOffenceDetails": [
     {
@@ -30,8 +30,8 @@
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "8e5f6779-795a-4893-b056-aee4134213ed",
-  "materialId": "{{materialId}}",
-  "notificationId": "{{notificationId}}",
+  "materialId": "6f1928e7-5520-4ec7-b68b-725e57820146",
+  "notificationId": "3253297d-91dc-4d84-a502-725ba4123f82",
   "originalDateOfSentence": "15/04/2025",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "WRITE OFF ONE DAY DEEMED SERVED"

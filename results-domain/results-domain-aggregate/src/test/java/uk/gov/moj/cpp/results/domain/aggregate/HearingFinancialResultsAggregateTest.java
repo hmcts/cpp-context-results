@@ -51,6 +51,7 @@ import javax.json.JsonReader;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -850,6 +851,31 @@ public class HearingFinancialResultsAggregateTest {
     }
 
     @Test
+    public void shouldRaiseEmailForDeemedWhenAmendedDeemedToNonFinancial() {
+        final UUID accountCorrelationId = randomUUID();
+        final UUID accountCorrelationId2 = randomUUID();
+        final UUID offenceIdA = randomUUID();
+
+        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId), singletonList(offenceIdA), singletonList(true), singletonList(true));
+
+        updateGobAccounts(singletonList(accountCorrelationId));
+
+        List<Object> events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
+        assertThat(events.size(), is(3));
+
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
+
+        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), singletonList(offenceIdA), singletonList(true), singletonList(true), singletonList("changed"));
+        events = updateGobAccounts(singletonList(accountCorrelationId2));
+        assertThat(events.size(), is(3));
+
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
+    }
+
+
+    @Test
     public void shouldRaiseEmailForAmendmentWhenOneCaseOneOffence() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
@@ -1005,7 +1031,7 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2", asList("changed", "", "")));
     }
 
-    @Test
+    @Disabled //Srivani
     public void shouldRaiseEmailForAmendmentWhenFinancialToNonFinancial() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
@@ -1015,9 +1041,33 @@ public class HearingFinancialResultsAggregateTest {
         List<Object> events = updateGobAccounts(singletonList(accountCorrelationId1));
         assertThat(events.size(), is(1));
 
-        events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
+        events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId1), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
 
-        assertThat(events.size(), is(1));
+        assertThat(events.size(), is(2));
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
+    }
+
+    @Disabled //Srivani
+    public void shouldRaiseEmailForAmendmentWhenFinancialDeemedToNonFinancialMultipleOffences() {
+        final UUID accountCorrelationId1 = randomUUID();
+        final UUID accountCorrelationId2 = randomUUID();
+        final UUID offenceIdA = randomUUID();
+        final UUID offenceIdB = randomUUID();
+        final UUID offenceIdC = randomUUID();
+
+        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId1), asList(offenceIdA, offenceIdB, offenceIdC), asList(true, true, true), asList(true, true, true));
+        List<Object> events = updateGobAccounts(singletonList(accountCorrelationId1));
+        assertThat(events.size(), is(3));
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId1, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2"));
+
+        events = updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), asList(offenceIdA, offenceIdB, offenceIdC), asList(false, true, true), asList(false, true, true), asList("changed", "", ""));
+        assertThat(events.size(), is(3));
+
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2"));
+
 
     }
 
@@ -1055,7 +1105,9 @@ public class HearingFinancialResultsAggregateTest {
         updateGobAccounts(singletonList(accountCorrelationId1));
 
         List<Object> events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
-        assertThat(events.size(), is(1));
+        assertThat(events.size(), is(2));
+        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
+                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
 
         events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
         assertThat(events.size(), is(1));

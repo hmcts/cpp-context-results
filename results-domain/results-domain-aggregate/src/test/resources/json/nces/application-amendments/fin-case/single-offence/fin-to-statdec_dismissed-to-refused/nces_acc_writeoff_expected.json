@@ -1,0 +1,28 @@
+{
+  "amendmentDate": "2025-03-05",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28NS5751349",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Benny Dickens",
+  "divisionCode": "47",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "impositionOffenceDetails": [],
+  "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Withdrawn"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [],
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

@@ -110,14 +110,16 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                 .toList();
     }
 
-    protected boolean hasNonFineToNonFineOffences(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
+    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsNonFineToNonFine(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
         return request.getOffenceResults().stream()
                 .filter(isApplicationAmended)
                 .filter(o -> !o.getIsFinancial())
-                .anyMatch(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
+                .filter(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
                         .map(OffenceResultsDetails::getIsFinancial)
                         .map(isFinancial -> !isFinancial)
-                        .orElse(true));
+                        .orElse(true))
+                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
+                .toList();
     }
 
     protected List<ImpositionOffenceDetails> getAppFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {

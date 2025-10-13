@@ -747,7 +747,12 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
                                 .newStep(newResultTrackedStep("case amended resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/Case-Amend-Non-fine-Non-fine/App1-Granted/Fine-Fine/App2-Granted-Fine-Non-fine/2_case_results_tracked.json", emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/multi-applications/Case-Fine-Fine/Case-Amend-Non-fine-Non-fine/App1-Granted/Fine-Fine/App2-Granted-Fine-Non-fine/2_nces_acc_writeoff_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newNcesEmailForNewApplicationStep("app1 statdec received", "json/nces/multi-applications/Case-Fine-Fine/Case-Amend-Non-fine-Non-fine/App1-Granted/Fine-Fine/App2-Granted-Fine-Non-fine/3_app_stat_dec_1_send_nces_request.json"))
                                 .newStep(newResultTrackedStep("app1 statdec resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/Case-Amend-Non-fine-Non-fine/App1-Granted/Fine-Fine/App2-Granted-Fine-Non-fine/3_app_stat_dec_results_tracked.json",
