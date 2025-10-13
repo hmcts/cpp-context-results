@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.domain.aggregate.utils;
 
 import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.groupingBy;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -25,13 +25,13 @@ public class GobAccountHelper {
                 .map(offenceId -> getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
                 .filter(Objects::nonNull)
                 .distinct()
-                .collect(Collectors.groupingBy(CorrelationItem::getHearingId));
+                .collect(groupingBy(CorrelationItem::getHearingId));
 
         return hearingIdCorrelationItemsMap.values().stream()
                 .filter(CollectionUtils::isNotEmpty)
                 .map(GobAccountHelper::getRecentAccountNumber)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
