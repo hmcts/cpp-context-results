@@ -105,6 +105,8 @@ public class HearingFinancialResultsAggregateTest {
     private String defendantAddress = "address";
     private String defendantEmail = "aa@aa.com";
     private String defendantContactNumber = "02074561234";
+
+    private UUID hearingId = randomUUID();
     private final HearingFinancialResultRequest input = HearingFinancialResultRequest.hearingFinancialResultRequest()
             .withAccountCorrelationId(CORRELATION_ID_1)
             .withHearingId(HEARING_ID)
@@ -1212,6 +1214,7 @@ public class HearingFinancialResultsAggregateTest {
                     .withDefendantAddress(defendantAddress)
                     .withDefendantEmail(defendantEmail)
                     .withDefendantContactNumber(defendantContactNumber)
+                    .withHearingId(hearingId)
                     .withIsSJPHearing(false)
                     .withNcesEmail(ncesEMail)
                     .withOffenceResults(offenceIds.stream().map(id -> OffenceResults.offenceResults()

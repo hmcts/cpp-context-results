@@ -12,9 +12,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class CorrelationItem implements Serializable {
     @Serial
-    private static final long serialVersionUID = -4327123646461499830L;
+    private static final long serialVersionUID = -4327123646461499831L;
 
     private final UUID accountCorrelationId;
+    private final UUID hearingId;
 
     private final String accountDivisionCode;
 
@@ -26,9 +27,10 @@ public class CorrelationItem implements Serializable {
     private final List<OffenceResultsDetails> offenceResultsDetailsList;
 
     @JsonCreator
-    public CorrelationItem(final UUID accountCorrelationId, final String accountDivisionCode, final String accountNumber, final ZonedDateTime createdTime,
+    public CorrelationItem(final UUID accountCorrelationId, final UUID hearingId, final String accountDivisionCode, final String accountNumber, final ZonedDateTime createdTime,
                            final List<String> prosecutionCaseReferences, final List<OffenceResultsDetails> offenceResultsDetailsList) {
         this.accountCorrelationId = accountCorrelationId;
+        this.hearingId = hearingId;
         this.accountDivisionCode = accountDivisionCode;
         this.accountNumber = accountNumber;
         this.createdTime = createdTime;
@@ -38,6 +40,10 @@ public class CorrelationItem implements Serializable {
 
     public UUID getAccountCorrelationId() {
         return accountCorrelationId;
+    }
+
+    public UUID getHearingId() {
+        return hearingId;
     }
 
     public String getAccountDivisionCode() {
@@ -71,6 +77,7 @@ public class CorrelationItem implements Serializable {
         final CorrelationItem that = (CorrelationItem) obj;
 
         return java.util.Objects.equals(this.accountCorrelationId, that.accountCorrelationId) &&
+                java.util.Objects.equals(this.hearingId, that.hearingId) &&
                 java.util.Objects.equals(this.accountDivisionCode, that.accountDivisionCode) &&
                 java.util.Objects.equals(this.accountNumber, that.accountNumber) &&
                 java.util.Objects.equals(this.createdTime, that.createdTime);
@@ -78,13 +85,14 @@ public class CorrelationItem implements Serializable {
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(accountCorrelationId, accountDivisionCode, accountNumber, createdTime);
+        return java.util.Objects.hash(accountCorrelationId, hearingId, accountDivisionCode, accountNumber, createdTime);
     }
 
     @Override
     public String toString() {
         return "CorrelationItem{" +
                 "accountCorrelationId='" + accountCorrelationId + "'," +
+                "hearingId='" + hearingId + "'," +
                 "accountDivisionCode='" + accountDivisionCode + "'," +
                 "accountNumber='" + accountNumber + "'," +
                 "createdTime='" + createdTime + "'," +
@@ -95,6 +103,7 @@ public class CorrelationItem implements Serializable {
 
     public static class Builder {
         private UUID accountCorrelationId;
+        private UUID hearingId;
 
         private String accountDivisionCode;
 
@@ -107,6 +116,11 @@ public class CorrelationItem implements Serializable {
 
         public CorrelationItem.Builder withAccountCorrelationId(final UUID accountCorrelationId) {
             this.accountCorrelationId = accountCorrelationId;
+            return this;
+        }
+
+        public CorrelationItem.Builder withHearingId(final UUID hearingId) {
+            this.hearingId = hearingId;
             return this;
         }
 
@@ -137,6 +151,7 @@ public class CorrelationItem implements Serializable {
 
         public CorrelationItem.Builder withValuesFrom(final CorrelationItem correlationItem) {
             this.accountCorrelationId = correlationItem.getAccountCorrelationId();
+            this.hearingId = correlationItem.getHearingId();
             this.accountDivisionCode = correlationItem.getAccountDivisionCode();
             this.accountNumber = correlationItem.getAccountNumber();
             this.createdTime = correlationItem.getCreatedTime();
@@ -146,7 +161,7 @@ public class CorrelationItem implements Serializable {
         }
 
         public CorrelationItem build() {
-            return new CorrelationItem(accountCorrelationId, accountDivisionCode, accountNumber, createdTime, prosecutionCaseReferences, offenceResultsDetailsList);
+            return new CorrelationItem(accountCorrelationId, hearingId, accountDivisionCode, accountNumber, createdTime, prosecutionCaseReferences, offenceResultsDetailsList);
         }
     }
 }

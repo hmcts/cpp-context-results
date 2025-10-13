@@ -1421,7 +1421,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "55c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
-                                                        .withParam("oldGobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("oldGobAccountNumber", "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
 
