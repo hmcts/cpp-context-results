@@ -48,13 +48,8 @@ public class CaseAmendmentFinToNonFinAccWriteOffRule extends AbstractCaseResultN
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap)).distinct()
                 .toList();
 
-        //newOffenceResults will be empty when no financial change from previous to new offence  - no marked event required
-        //previous nonFine to new Fine - no marked event required
-        if (newOffenceResults.isEmpty() || isNonFinToFinImposition(request, prevOffenceResultsDetails, offenceDateMap)) {
-            return Optional.empty();
-        }
-
-        //f to f - without olds
+        //if offences has fin+nonfin and amendement happens to only non fine  - no correlation and no marked event required
+        //f to nf - without olds
         if (!impositionOffenceDetailsFinToNonFin.isEmpty() && impositionOffenceDetailsFinToFin.isEmpty()) {
             return Optional.of(
                     markedAggregateSendEmailEventBuilder.buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
