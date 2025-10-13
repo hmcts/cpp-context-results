@@ -1,10 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate.utils;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -14,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections.CollectionUtils;
 
 public class GobAccountHelper {
 
@@ -21,20 +21,31 @@ public class GobAccountHelper {
                                                  final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
 
         correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        final List<CorrelationItem> oldCorrelationItemsMatchingOffences = offenceIdList.stream()
+        final Map<UUID, List<CorrelationItem>> hearingIdCorrelationItemsMap = offenceIdList.stream()
                 .map(offenceId -> getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
                 .filter(Objects::nonNull)
                 .distinct()
-                .toList();
+                .collect(Collectors.groupingBy(CorrelationItem::getHearingId));
 
-        final boolean isSingleHearing = oldCorrelationItemsMatchingOffences.stream().map(CorrelationItem::getHearingId).filter(Objects::nonNull).distinct().count() == 1;
+        final boolean isSingleHearing = hearingIdCorrelationItemsMap.keySet().size() == 1;
         if (isSingleHearing) {
-            return isNotEmpty(oldCorrelationItemsMatchingOffences)
-                    ? singletonList(oldCorrelationItemsMatchingOffences.get(oldCorrelationItemsMatchingOffences.size() - 1).getAccountNumber())
-                    : emptyList();
+            return hearingIdCorrelationItemsMap.values().stream()
+                    .findFirst()
+                    .filter(CollectionUtils::isNotEmpty)
+                    .map(GobAccountHelper::getRecentAccountNumber)
+                    .stream().toList();
         } else {
-            return oldCorrelationItemsMatchingOffences.stream().map(CorrelationItem::getAccountNumber).filter(Objects::nonNull).distinct().toList();
+            return hearingIdCorrelationItemsMap.values().stream()
+                    .filter(CollectionUtils::isNotEmpty)
+                    .map(GobAccountHelper::getRecentAccountNumber)
+                    .distinct()
+                    .collect(Collectors.toList());
         }
+    }
+
+    private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
+        ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
+        return ciList.get(0).getAccountNumber();
     }
 
     public static String getOldGobAccount(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,

@@ -165,6 +165,50 @@ public class GobAccountHelperTest {
         assertThat(oldGobAccountsForApp4, containsInAnyOrder("GOB1", "GOB2"));
     }
 
+    @Test
+    public void givenCaseOffencesResultedWithFPInDifferentHearingsAndGobAccountsCreated_whenTheGetGobAccountsResolvedUsingHearingId_shouldGetMostRecentGobAccountForEachPreviousHearing() {
+        final UUID offenceId1 = randomUUID();
+        final UUID offenceId2 = randomUUID();
+        final UUID offenceId3 = randomUUID();
+        final UUID offenceId4 = randomUUID();
+
+        final UUID hearingId1 = randomUUID();
+        final UUID hearingId2 = randomUUID();
+        final UUID hearingId3 = randomUUID();
+
+        //hearing1 case  o1, o2 - GOB1 - C1 O1, O2, O3(Adj), O4(Adj)  [O1, O2][H1] GOB1
+        final List<OffenceResultsDetails> caseOffences = getOffenceResultsDetails(List.of(offenceId1, offenceId2));
+        correlationItemList.add(getCorrelation(hearingId1, caseOffences, "GOB1"));
+
+        //hearing1 case amend o1 - GOB2 - C1 O1, O2 [O1][H1] GOB2    <-- Only O1 amended
+        final List<OffenceResultsDetails> caseAmendOffenceId1 = getOffenceResultsDetails(List.of(offenceId1));
+        correlationItemList.add(getCorrelation(hearingId1, caseAmendOffenceId1, "GOB2"));
+
+        //hearing1 case amend o2 - GOB3 - C1 O1, O2  [O2][H1] GOB3    <-- Only O2 amended
+        final List<OffenceResultsDetails> caseAmendOffenceId2 = getOffenceResultsDetails(List.of(offenceId2));
+        correlationItemList.add(getCorrelation(hearingId1, caseAmendOffenceId2, "GOB3"));
+
+        //hearing2 case o3, o4 - GOB4 - C1 O3, O4 [O3, O4][H2] GOB4 <-- Adjourned hearing
+        final List<OffenceResultsDetails> hearing2caseOffences = getOffenceResultsDetails(List.of(offenceId3, offenceId4));
+        correlationItemList.add(getCorrelation(hearingId2, hearing2caseOffences, "GOB4"));
+
+        //hearing2 case amend o4 - GOB5 - C1 O3, O4 [O4][H2] GOB5 <-- Adjourned hearing (Only O4 amended)
+        final List<OffenceResultsDetails> hearing2caseOffencesAmend = getOffenceResultsDetails(List.of(offenceId4));
+        correlationItemList.add(getCorrelation(hearingId2, hearing2caseOffencesAmend, "GOB5"));
+
+//        POST-2390:
+//        App O1, O2, O3, O4      [O1, O2, O3, O4][H3] GOB6  <-- All offences are included post-2390
+        final CorrelationItem correlationItemsAllOffences = getCorrelation(hearingId3, of(getOffenceResultsDetails(offenceId1, true),
+                getOffenceResultsDetails(offenceId2, true),
+                getOffenceResultsDetails(offenceId3, true),
+                getOffenceResultsDetails(offenceId4, true)), "GOB6");
+        correlationItemList.add(correlationItemsAllOffences);
+
+        final List<String> oldGobAccountsForApp4 = getOldGobAccounts(correlationItemList, correlationItemsAllOffences.getAccountCorrelationId(), List.of(offenceId1, offenceId2, offenceId3, offenceId4), EMPTY_MAP);
+        assertThat(oldGobAccountsForApp4.size(), is(2));
+        assertThat(oldGobAccountsForApp4, containsInAnyOrder("GOB3", "GOB5"));
+    }
+
     private static OffenceResultsDetails getOffenceResultsDetails(final UUID offenceId1, final boolean isFinancial) {
         return offenceResultsDetails().withOffenceId(offenceId1)
                 .withIsFinancial(isFinancial)
