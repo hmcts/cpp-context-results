@@ -1743,7 +1743,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 "json/nces/application/matched-defendants/2-cases-resulted-fine-application-added/2_app_expected_statdec_received_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app STAT_DEC resulted")
                                         .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-fine-application-added/2_app_stat_dec_results_tracked.json",
                                                 accountInfo("33c39541-e8e0-45b3-af99-532b33646b69", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
@@ -1751,7 +1751,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/matched-defendants/2-cases-resulted-fine-application-added/2_app_granted_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                                        .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                         )
                                 )
