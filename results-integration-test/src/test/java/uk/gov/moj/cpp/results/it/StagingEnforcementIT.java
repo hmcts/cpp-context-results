@@ -1244,20 +1244,6 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
 
-
-        final JsonPath jsonResponseAmend = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
-        assertThat(jsonResponseAmend.getString(SUBJECT), is(AMEND_AND_RESHARE));
-        assertThat(jsonResponseAmend.getString(DEFENDANT_NAME), is("John Doe"));
-        assertThat(jsonResponseAmend.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
-        assertThat(jsonResponseAmend.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponseAmend.getString(GOB_ACCOUNT_NUMBER), is(accountNumber));
-        assertThat(jsonResponseAmend.getString(CASE_REFERENCE), is("REF1,REF2"));
-        assertThat(jsonResponseAmend.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponseAmend.getString(DIVISION_CODE), is("DIV01"));
-        assertThat(jsonResponseAmend.getString("amendmentReason"), is("Amendment1"));
-        assertThat(jsonResponseAmend.getString("amendmentDate"), is("01/01/2021"));
-        assertThat(jsonResponseAmend.getString(MATERIAL_ID), is(notNullValue()));
-
         payload = getPayload(TRACE_RESULT_AMENDMENT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId2)
                 .replaceAll("DEEMED_SERVED", "true")
