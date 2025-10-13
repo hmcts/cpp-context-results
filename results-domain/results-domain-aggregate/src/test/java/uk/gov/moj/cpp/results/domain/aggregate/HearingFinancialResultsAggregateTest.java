@@ -1031,7 +1031,7 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, asList(offenceIdA, offenceIdB, offenceIdC), event, "Ref1,Ref2", asList("changed", "", "")));
     }
 
-    @Disabled //Srivani
+    @Disabled //TBD
     public void shouldRaiseEmailForAmendmentWhenFinancialToNonFinancial() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
@@ -1048,7 +1048,7 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId1, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
     }
 
-    @Disabled //Srivani
+    @Disabled //TBD
     public void shouldRaiseEmailForAmendmentWhenFinancialDeemedToNonFinancialMultipleOffences() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
