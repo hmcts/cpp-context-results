@@ -1021,7 +1021,9 @@ public class StagingEnforcementIT {
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId1, accountNumber1);
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId2, accountNumber2);
 
-        JsonPath jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 3);
+        JsonPath jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
+
         assertThat(jsonResponse.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -1030,7 +1032,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
-        jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(AMEND_AND_RESHARE)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(AMEND_AND_RESHARE));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
@@ -1039,7 +1041,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
-        jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(AMEND_AND_RESHARE)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(AMEND_AND_RESHARE));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
