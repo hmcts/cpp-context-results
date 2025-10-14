@@ -113,7 +113,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("Srivani::: Regression > fin > nonfin (FO -> Fine :No Change + Non Fine:amended) > Statdec",
+                Arguments.of("Regression > fin > nonfin (FO -> Fine :No Change + Non Fine:amended) > Statdec",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/case-amendments/single-offence/fin-to-nonfin-regression/1_case_resulted.json",
