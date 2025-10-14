@@ -56,7 +56,7 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
     }
 
     protected OffenceResultsDetails getOldOffenceResultsDetails(final UUID offenceId, final Map<UUID, OffenceResultsDetails> caseOffenceResultsDetails,
-                                                              final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap, final UUID currentApplicationId) {
+                                                                final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap, final UUID currentApplicationId) {
         final List<OffenceResultsDetails> allOffenceResults = new ArrayList<>();
 
         //add case level results for that offence
@@ -90,34 +90,63 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                 .findFirst();
     }
 
-    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFineToFine(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
+
+    /**
+     * Determines if there are valid financial amendments that require processing.
+     * This method implements proper decision-making logic instead of just checking list presence.
+     *
+     * @return true if there are valid financial amendments that need processing, false otherwise
+     */
+    protected boolean isFineToFineApplicationAmendment(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
         return request.getOffenceResults().stream()
                 .filter(isApplicationAmended)
                 .filter(OffenceResults::getIsFinancial)
-                .filter(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
-                        .map(OffenceResultsDetails::getIsFinancial).orElse(false))
-                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
-                .toList();
+                .anyMatch(offenceFromRequest ->
+                        ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(),
+                                currentApplicationId,
+                                input.prevOffenceResultsDetails(),
+                                input.prevApplicationOffenceResultsMap(),
+                                input.prevApplicationResultsDetails()))
+                                .map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
-    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFineToNonFine(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
+    /**
+     * Determines if there are valid financial to non-financial amendments that require processing.
+     * This method implements proper decision-making logic instead of just checking list presence.
+     *
+     * @return true if there are valid financial to non-financial amendments that need processing, false otherwise
+     */
+    protected boolean isFineToNonFineApplicationAmendment(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
         return request.getOffenceResults().stream()
                 .filter(isApplicationAmended)
                 .filter(o -> !o.getIsFinancial())
-                .filter(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
-                        .map(OffenceResultsDetails::getIsFinancial).orElse(false))
-                .map(offenceResults -> buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
-                .toList();
+                .anyMatch(offenceFromRequest ->
+                        ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(),
+                                currentApplicationId, input.prevOffenceResultsDetails(),
+                                input.prevApplicationOffenceResultsMap(),
+                                input.prevApplicationResultsDetails()))
+                                .map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
-    protected boolean hasNonFineToNonFineOffences(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
+    /**
+     * Determines if there are valid non-financial to non-financial amendments that require processing.
+     * This method implements proper decision-making logic instead of just checking list presence.
+     *
+     * @return true if there are valid non-financial to non-financial amendments that need processing, false otherwise
+     */
+    protected boolean isNonFineToNonFineApplicationAmendment(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
         return request.getOffenceResults().stream()
                 .filter(isApplicationAmended)
                 .filter(o -> !o.getIsFinancial())
-                .anyMatch(offenceFromRequest -> ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), currentApplicationId, input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()))
-                        .map(OffenceResultsDetails::getIsFinancial)
-                        .map(isFinancial -> !isFinancial)
-                        .orElse(true));
+                .anyMatch(offenceFromRequest ->
+                        ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(),
+                                currentApplicationId,
+                                input.prevOffenceResultsDetails(),
+                                input.prevApplicationOffenceResultsMap(),
+                                input.prevApplicationResultsDetails()))
+                                .map(OffenceResultsDetails::getIsFinancial)
+                                .map(isFinancial -> !isFinancial)
+                                .orElse(true));
     }
 
     protected List<ImpositionOffenceDetails> getAppFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {
@@ -142,15 +171,15 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
 
     protected boolean hasACONOffences(HearingFinancialResultRequest request) {
         return request.getOffenceResults().stream()
-                .anyMatch(o -> isValidApplicationOffence(o) && 
-                        nonNull(o.getImpositionOffenceDetails()) && 
+                .anyMatch(o -> isValidApplicationOffence(o) &&
+                        nonNull(o.getImpositionOffenceDetails()) &&
                         o.getImpositionOffenceDetails().contains("ACON") &&
                         o.getIsFinancial());
     }
 
     protected boolean hasACONAmendmentOffences(HearingFinancialResultRequest request) {
         return request.getOffenceResults().stream()
-                .anyMatch(o -> isValidApplicationOffence(o) && 
+                .anyMatch(o -> isValidApplicationOffence(o) &&
                         o.getIsFinancial() &&
                         nonNull(o.getImpositionOffenceDetails()) &&
                         o.getImpositionOffenceDetails().contains("ACON") &&
@@ -166,7 +195,7 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
     protected boolean hasDeemedServedRemovedOffences(HearingFinancialResultRequest request, UUID applicationId, Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
         return request.getOffenceResults().stream()
                 .anyMatch(or -> isValidApplicationOffence(or) &&
-                        !or.getIsDeemedServed() && 
+                        !or.getIsDeemedServed() &&
                         isPrevOffenceResultDeemedServed(or.getOffenceId(), applicationId, prevApplicationOffenceResultsMap) &&
                         Objects.nonNull(or.getAmendmentDate()));
     }

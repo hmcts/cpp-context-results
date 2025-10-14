@@ -4,9 +4,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewOffenceResultForSV;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildOriginalOffenceResultForSV;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.hasSentenceVaried;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.shouldNotifyNCESForAppResultAmendment;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsAppAmendment;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsAppAmendment;
 
@@ -27,47 +25,55 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Application amendment rule for financial to financial imposition changes.
+ * Rule for application amendments from financial to non-financial impositions.
  */
-public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplicationResultNotificationRule {
+public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow() && input.hasFinancialAmendments();
+        return input.hasValidApplicationType() && input.isAmendmentFlow() && !input.hasFinancialAmendments();
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
-
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
+
         final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
 
-        // Check if there are valid financial amendments
-        if (isFineToFineApplicationAmendment(input, request, currentApplicationId)) {
+        final Optional<OriginalApplicationResults> originalApplicationResults = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
 
+        final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsAppAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()).stream()
+                .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
+                .toList();
+
+        //has application amendments
+        final boolean appResultsOnly = originalApplicationResults.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty();
+        //has financial to non-financial amendments
+        final boolean finToNonFin = isFineToNonFineApplicationAmendment(input, request, currentApplicationId) && !isFineToFineApplicationAmendment(input, request, currentApplicationId);
+
+        if ((appResultsOnly && !isNonFineToNonFineApplicationAmendment(input, request, currentApplicationId)) || finToNonFin) {
+            // Get original imposition offence details from the aggregate when needed
             final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
                     .stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
                     .distinct().toList();
 
-            final Optional<OriginalApplicationResults> originalResultsByApplication = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
-
             final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
-
-            final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsAppAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()).stream()
-                    .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
-                    .toList();
 
             final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
 
             return Optional.of(markedAggregateSendEmailEventBuilder
-                    .buildMarkedAggregateWithOlds(request,
-                            hasSentenceVaried(newOffenceResults) ? buildOriginalOffenceResultForSV(originalImpositionDetails) : originalImpositionDetails,
-                            input.applicationResult(),
-                            hasSentenceVaried(newOffenceResults) ? buildNewOffenceResultForSV(newOffenceResults) : newOffenceResults,
-                            originalResultsByApplication.orElse(null),
-                            newApplicationResults,
+                    .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             NCESDecisionConstants.AMEND_AND_RESHARE,
+                            input.correlationItemList().peekLast(),
+                            originalImpositionDetails,
+                            input.isWrittenOffExists(),
+                            input.originalDateOfOffenceList(),
+                            input.originalDateOfOffenceList(),
+                            newOffenceResults,
+                            input.applicationResult(),
+                            originalApplicationResults.orElse(null),
+                            newApplicationResults,
                             input.prevApplicationResultsDetails()));
         }
 

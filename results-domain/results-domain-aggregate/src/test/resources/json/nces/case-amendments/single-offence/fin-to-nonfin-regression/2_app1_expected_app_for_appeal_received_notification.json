@@ -1,0 +1,19 @@
+{
+  "caseReferences": "BB8NYLHBIUS",
+  "defendantAddress": "799 StreetDescription Locality2O CR0 1XB",
+  "defendantDateOfBirth": "1970-01-14",
+  "defendantName": "Cooper Langosh",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-31",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "04/08/2025",
+  "masterDefendantId": "c0e68cfb-bc7c-418a-b2c0-df72f1de26bf",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "31/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}
