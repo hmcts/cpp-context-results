@@ -60,6 +60,21 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .toList();
     }
 
+    /**
+     * Determines if there are valid financial to non-financial case amendments that require processing.
+     * This method implements proper decision-making logic instead of just checking list presence.
+     *
+     * @return true if there are valid financial to non-financial case amendments that need processing, false otherwise
+     */
+    protected boolean isFineToNonFineCaseAmendments(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
+        return request.getOffenceResults().stream()
+                .filter(isCaseAmended)
+                .filter(o -> !o.getIsFinancial())
+                .anyMatch(offenceFromRequest ->
+                        ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId()))
+                                .map(OffenceResultsDetails::getIsFinancial).orElse(false));
+    }
+
     protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFinToFin(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
         return request.getOffenceResults().stream()
                 .filter(isCaseAmended)
@@ -67,6 +82,20 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .filter(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
                 .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
                 .toList();
+    }
+
+    /**
+     * Determines if there are valid financial to financial case amendments that require processing.
+     * This method implements proper decision-making logic instead of just checking list presence.
+     *
+     * @return true if there are valid financial to financial case amendments that need processing, false otherwise
+     */
+    protected boolean isFineToFineCaseAmendments(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
+        return request.getOffenceResults().stream()
+                .filter(isCaseAmended)
+                .filter(OffenceResults::getIsFinancial)
+                .anyMatch(offenceFromRequest ->
+                        ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
     protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsNonFinToFin(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
@@ -78,7 +107,7 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .toList();
     }
 
-    protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
+    protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
         return request.getOffenceResults().stream()
                 .filter(isCaseAmended)
                 .filter(OffenceResults::getIsFinancial)
