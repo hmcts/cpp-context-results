@@ -92,7 +92,6 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
      */
     protected boolean isFineToFineCaseAmendments(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
         return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
                 .filter(OffenceResults::getIsFinancial)
                 .anyMatch(offenceFromRequest ->
                         ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false));
@@ -109,7 +108,6 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
 
     protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
         return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
                 .filter(OffenceResults::getIsFinancial)
                 .allMatch(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(ofr -> !TRUE.equals(ofr.getIsFinancial())).orElse(false));
     }
