@@ -13,6 +13,8 @@
   "ncesEmail": "LCCCCancellations@Justice.gov.uk",
   "offenceResults": [
     {
+      "amendmentDate": "2025-10-15",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
       "dateOfResult": "2025-10-14",
       "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £30.00 to test, FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2027.",
       "isDeemedServed": false,
@@ -31,6 +33,8 @@
       "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
     },
     {
+      "amendmentDate": "2025-10-15",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
       "dateOfResult": "2025-10-14",
       "impositionOffenceDetails": "FO - Fine\nFined £400.00, FVS - Surcharge\nTo pay a surcharge of £20.00",
       "isDeemedServed": false,
@@ -39,6 +43,8 @@
       "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
     },
     {
+      "amendmentDate": "2025-10-15",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
       "dateOfResult": "2025-10-14",
       "impositionOffenceDetails": "FO - Fine\nFined £50.00",
       "isDeemedServed": false,
