@@ -160,7 +160,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("Regression4 > DD-40587 Financial changes with Nonfine to Fine change",
+                /*Arguments.of("Regression4 > DD-40587 Financial changes with Nonfine to Fine change",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/regression-1/1_case_resulted.json",
@@ -199,7 +199,44 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
+                ),*/
+                Arguments.of("REG1 - pre-2390 > DD-40587 Financial changes with Nonfine to Fine change",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/case-amendments/multi-offences/reg-1-pre-2390/1_case_resulted-pre-2390.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("case amended-PRE-2390")
+                                        .withResultTrackedEvent("json/nces/case-amendments/multi-offences/reg-1-pre-2390/2_case_amended-pre-2390.json",
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived",  "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/case-amendments/multi-offences/reg-1-pre-2390/2a_nces_acc_writeoff_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
                 ),
+                Arguments.of("REG1 - post-2390 > DD-40587 Financial changes with Nonfine to Fine change",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/case-amendments/multi-offences/reg-1-post-2390/1_case_resulted-post-2390.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("case amended-PRE-2390")
+                                        .withResultTrackedEvent("json/nces/case-amendments/multi-offences/reg-1-post-2390/2_case_amended-post-2390.json",
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived",  "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/case-amendments/multi-offences/reg-1-post-2390/2a_nces_acc_writeoff_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
+                ),
+
                 Arguments.of("TBD::CCT-2357::fin > nonfin (FO+CD -> FO:deleted + CD:NoChange) (One GOB A/C) (DD-36847 AC3)(CCT-2357, see https://tools.hmcts.net/confluence/display/CROWN/CCT-2266+Gaps)",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
