@@ -417,7 +417,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))))
                 ,
-                Arguments.of("Srivani: offence is adjourned to next hearing and resulted with ACON > DD-40639",
+                Arguments.of("offence is adjourned to next hearing and resulted with ACON > DD-40639",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/acon/case_resulted.json",
