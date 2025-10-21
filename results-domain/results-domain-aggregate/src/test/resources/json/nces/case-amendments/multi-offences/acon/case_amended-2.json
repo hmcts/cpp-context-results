@@ -1,0 +1,28 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "21 Furnburry Park Road London TA1 1AT",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Michele Crona",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "673bd0b9-dd98-421f-a9a0-f09377ec9793",
+  "hearingSittingDay": "2025-10-21T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "85c21da8-865d-4bda-8ed8-57f0cb2fed6f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-10-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-10-21",
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 20/05/2026.\nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 30 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2405263"
+  ]
+}

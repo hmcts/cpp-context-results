@@ -72,7 +72,7 @@ class CaseACONNotificationRuleTest {
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenNoACONOffences() {
+    void shouldNotApplyWhenNoACONOffences() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -88,12 +88,11 @@ class CaseACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-ACON offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-ACON offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenACONOffenceIsNotFinancial() {
+    void shouldNotApplyWhenACONOffenceIsNotFinancial() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -109,12 +108,11 @@ class CaseACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-financial ACON offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-financial ACON offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenOffenceHasApplicationType() {
+    void shouldNotApplyWhenOffenceHasApplicationType() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -130,8 +128,7 @@ class CaseACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for application offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for application offences");
     }
 
     @Test

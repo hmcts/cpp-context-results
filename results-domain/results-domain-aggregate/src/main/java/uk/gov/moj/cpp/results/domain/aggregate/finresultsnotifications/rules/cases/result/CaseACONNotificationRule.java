@@ -16,21 +16,20 @@ public class CaseACONNotificationRule extends AbstractCaseResultNotificationRule
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.hasCaseResult() && !input.isCaseAmendmentProcess();
+        return input.hasCaseResult() &&
+                !input.isCaseAmendment() &&
+                hasACONOffences(filteredCaseResults(input.request()));
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
-        if (hasACONOffences(request)) {
-            return Optional.of(
-                    markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                            .buildMarkedAggregateWithoutOlds(request,
-                                    NCESDecisionConstants.ACON_EMAIL_SUBJECT,
-                                    getCaseFinancialImpositionOffenceDetails(input, request),
-                                    Boolean.FALSE)
-            );
-        }
-        return Optional.empty();
+        return Optional.of(
+                markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
+                        .buildMarkedAggregateWithoutOlds(request,
+                                NCESDecisionConstants.ACON_EMAIL_SUBJECT,
+                                getCaseFinancialImpositionOffenceDetails(input, request),
+                                Boolean.FALSE)
+        );
     }
 }

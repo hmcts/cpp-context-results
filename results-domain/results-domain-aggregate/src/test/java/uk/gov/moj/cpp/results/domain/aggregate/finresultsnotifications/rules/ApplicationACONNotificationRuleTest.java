@@ -196,7 +196,7 @@ class ApplicationACONNotificationRuleTest {
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenNoACONOffences() {
+    void shouldNotApplyWhenNoACONOffences() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -212,12 +212,11 @@ class ApplicationACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-ACON offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-ACON offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenOffenceIsNotFinancial() {
+    void shouldNotApplyWhenOffenceIsNotFinancial() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -233,12 +232,11 @@ class ApplicationACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-financial offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-financial offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenIsParentFlagIsFalse() {
+    void shouldNotApplyWhenIsParentFlagIsFalse() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -254,8 +252,7 @@ class ApplicationACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification when isParentFlag is false");
+        assertFalse(rule.appliesTo(input), "Rule should not apply when isParentFlag is false");
     }
 
     @Test

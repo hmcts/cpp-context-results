@@ -99,7 +99,7 @@ public interface ResultNotificationRule {
             return request.getOffenceResults().stream().anyMatch(o -> o.getIsFinancial());
         }
 
-        private boolean isCaseAmendment() {
+        public boolean isCaseAmendment() {
             return request.getOffenceResults().stream()
                     .filter(offence -> isNull(offence.getApplicationType()))
                     .anyMatch(offence -> nonNull(offence.getAmendmentDate()));
