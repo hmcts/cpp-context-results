@@ -16,20 +16,19 @@ public class ApplicationACONNotificationRule extends AbstractApplicationResultNo
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && !input.isAmendmentFlow();
+        return input.hasValidApplicationType() &&
+                !input.isAmendmentFlow() &&
+                hasACONOffences(filteredApplicationResults(input.request()));
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
-        if (hasACONOffences(request)) {
-            return Optional.of(
-                    markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                            .buildMarkedAggregateWithoutOlds(request,
-                                    NCESDecisionConstants.ACON_EMAIL_SUBJECT,
-                                    getAppFinancialImpositionOffenceDetails(input, request),
-                                    Boolean.FALSE));
-        }
-        return Optional.empty();
+        return Optional.of(
+                markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
+                        .buildMarkedAggregateWithoutOlds(request,
+                                NCESDecisionConstants.ACON_EMAIL_SUBJECT,
+                                getAppFinancialImpositionOffenceDetails(input, request),
+                                Boolean.FALSE));
     }
 }

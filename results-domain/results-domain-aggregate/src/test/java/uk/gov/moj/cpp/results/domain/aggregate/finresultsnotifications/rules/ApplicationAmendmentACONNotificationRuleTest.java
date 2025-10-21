@@ -152,7 +152,7 @@ class ApplicationAmendmentACONNotificationRuleTest {
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenNoACONOffences() {
+    void shouldNotApplyWhenNoACONOffences() {
         final UUID offenceId = randomUUID();
         final UUID applicationId = randomUUID();
         final UUID currentCorrelationId = randomUUID();
@@ -184,12 +184,11 @@ class ApplicationAmendmentACONNotificationRuleTest {
                                 .build())))
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-ACON offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-ACON offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenOffenceIsNotFinancial() {
+    void shouldNotApplyWhenOffenceIsNotFinancial() {
         final UUID offenceId = randomUUID();
         final UUID applicationId = randomUUID();
         final UUID currentCorrelationId = randomUUID();
@@ -221,12 +220,11 @@ class ApplicationAmendmentACONNotificationRuleTest {
                                 .build())))
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-financial offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-financial offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenIsParentFlagIsFalse() {
+    void shouldNotApplyWhenIsParentFlagIsFalse() {
         final UUID offenceId = randomUUID();
         final UUID applicationId = randomUUID();
         final UUID currentCorrelationId = randomUUID();
@@ -258,8 +256,7 @@ class ApplicationAmendmentACONNotificationRuleTest {
                                 .build())))
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification when isParentFlag is false");
+        assertFalse(rule.appliesTo(input), "Rule should not apply when isParentFlag is false");
     }
 
     @Test

@@ -119,7 +119,7 @@ class CaseAmendmentACONNotificationRuleTest {
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenNoACONOffences() {
+    void shouldNotApplyWhenNoACONOffences() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -136,12 +136,11 @@ class CaseAmendmentACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification when no ACON offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply when no ACON offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenOffenceIsNotFinancial() {
+    void shouldNotApplyWhenOffenceIsNotFinancial() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -158,12 +157,11 @@ class CaseAmendmentACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification for non-financial offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-financial offences");
     }
 
     @Test
-    void shouldNotGenerateNotificationWhenNoAmendmentDate() {
+    void shouldNotApplyWhenNoAmendmentDate() {
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -179,8 +177,7 @@ class CaseAmendmentACONNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        var output = rule.apply(input);
-        assertFalse(output.isPresent(), "Should not generate notification when no amendment date");
+        assertFalse(rule.appliesTo(input), "Rule should not apply when no amendment date");
     }
 
     @Test
