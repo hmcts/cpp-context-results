@@ -21,7 +21,7 @@
       {
         "defendants": [
           {
-            "id": "7ba647bd-04b1-44ad-a39d-dfae01158109",
+            "id": "DEFENDANT_ID",
             "masterDefendantId": "7ba647bd-04b1-44ad-a39d-dfae01158109",
             "courtProceedingsInitiated": "2019-03-04T14:10:07.239Z",
             "offences": [
@@ -29,7 +29,7 @@
                 "arrestDate": "2017-12-12",
                 "chargeDate": "2017-12-12",
                 "count": 0,
-                "id": "fd637140-7c86-3c2a-acc2-3ef84d01f794",
+                "id": "OFFENCE_ID_1",
                 "allocationDecision": {
                   "originatingHearingId": "8aaecac5-222b-402d-9047-84803679edac",
                   "offenceId": "7aaecac5-222b-402d-9047-84803679edac",
@@ -104,7 +104,8 @@
                     "orderedDate": "2019-06-03",
                     "orderedHearingId": "e1ff9340-7b6c-4d95-883d-c6ca62c45fe7",
                     "rank": 46,
-                    "usergroups": []
+                    "usergroups": [],
+                    "sentToCC": true
                   }
                 ],
                 "offenceCode": "CA03012",
@@ -129,7 +130,7 @@
                 "arrestDate": "2016-12-12",
                 "chargeDate": "2016-12-12",
                 "count": 0,
-                "id": "4a81b89b-e438-331b-b527-b42d9d6591db",
+                "id": "OFFENCE_ID_2",
                 "allocationDecision": {
                   "allocationDecisionDate": "2019-05-01",
                   "courtIndicatedSentence": {
@@ -184,7 +185,7 @@
             "prosecutionCaseId": "55df6649-8c4d-4614-a1db-a54b70cdc306"
           }
         ],
-        "id": "e930721a-5982-4b19-b348-92319ab106c0",
+        "id": "CASE_ID",
         "prosecutionCaseIdentifier": {
           "address": {
             "address1": "Criminal Justice Department",

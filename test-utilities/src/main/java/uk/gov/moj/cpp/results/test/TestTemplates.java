@@ -105,6 +105,7 @@ public class TestTemplates {
     private static final String TRIAL = "Trial";
     private static final String COURT_NAME = "courtName";
     private static final ZonedDateTime FIXED_UTC_TIME = ZonedDateTime.of(2021, 6, 15, 10, 35, 10, 0, ZoneId.of("UTC"));
+    public static final String DERPF = "DERPF";
 
 
     private TestTemplates() {
@@ -279,7 +280,7 @@ public class TestTemplates {
                         .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
                         .withApplicant(courtApplicationPartyTemplates())
                         .withApplicationStatus(ApplicationStatus.DRAFT)
-                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode("DERPF")))
+                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode(DERPF)))
                         .withJudicialResults(buildJudicialResultList())
                         .build()))
                 .withDefendantAttendance(of(
@@ -315,7 +316,7 @@ public class TestTemplates {
                         .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
                         .withApplicant(courtApplicationPartyTemplates())
                         .withApplicationStatus(ApplicationStatus.DRAFT)
-                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode("DERPF")))
+                        .withCourtApplicationCases(asList(TestTemplates.createCourtApplicationCaseWithOffencesWithProsecutionAuthorityCode(DERPF)))
                         .withJudicialResults(buildJudicialResultList())
                         .build()))
                 .withHearingDays(hearingDays)
@@ -537,7 +538,7 @@ public class TestTemplates {
                 .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
                         .withProsecutionAuthorityCode(STRING.next())
-                        .withProsecutionAuthorityReference(AUTHORITY_REFERENCE)
+                        .withProsecutionAuthorityReference(DERPF)
                         .build())
                 .withDefendants(
                         asList(createDefendant(DEFAULT_DEFENDANT_ID1.toString(), null, judicialResults, isWithVerdict, null, true),
@@ -624,7 +625,7 @@ public class TestTemplates {
                 .withOriginatingOrganisation(STRING.next())
                 .withProsecutionCaseIdentifier(prosecutionCaseIdentifier()
                         .withProsecutionAuthorityId(randomUUID())
-                        .withProsecutionAuthorityCode(STRING.next())
+                        .withProsecutionAuthorityCode(DERPF)
                         .withCaseURN(STRING.next())
                         .build())
                 .withDefendants(
@@ -670,6 +671,7 @@ public class TestTemplates {
                                 .withTitle(TITLE)
                                 .withGender(NOT_KNOWN)
                                 .withNationalityId(NATIONALITY_ID)
+                                .withInterpreterLanguageNeeds("Interpreter required.")
                                 .build())
                         .build())
                 .withAssociatedPersons(of(associatedPerson()
@@ -807,6 +809,8 @@ public class TestTemplates {
                 .withPublishedForNows(false)
                 .withRollUpPrompts(false)
                 .withJudicialResultTypeId(randomUUID())
+                .withSentToCC(true)
+                .withCommittedToCC(true)
                 .build());
     }
 

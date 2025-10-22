@@ -84,12 +84,12 @@ public class ResultAmendmentDetailsHelperTest {
         caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId, "Defendant Name", Arrays.asList(
                         new OffenceResultDetails(offenceId, 1, 1, "Offence 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ), emptyList(), emptyList(), "firstName", "lastName")
                 ),
                 false
@@ -131,15 +131,15 @@ public class ResultAmendmentDetailsHelperTest {
         caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId, "Defendant Name", Arrays.asList(
                         new OffenceResultDetails(offenceId, 1, 1, "Offence 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED),
-                                new JudicialResultDetails(judicialResultIdInCase3, "Result 3 needs to be ignored", UUID.randomUUID(), JudicialResultAmendmentType.DELETED)
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false),
+                                new JudicialResultDetails(judicialResultIdInCase3, "Result 3 needs to be ignored", UUID.randomUUID(), JudicialResultAmendmentType.DELETED, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ), emptyList(), emptyList(),"firstName", "lastName")
                 ),
                 false
@@ -181,14 +181,14 @@ public class ResultAmendmentDetailsHelperTest {
         caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId, "Defendant Name", Arrays.asList(
                         new OffenceResultDetails(offenceId, 1, 1, "Offence 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE,false),
+                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ), emptyList(), emptyList(),"firstName", "lastName")
                 ),
                 false
@@ -244,28 +244,28 @@ public class ResultAmendmentDetailsHelperTest {
         caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId1, "Defendant Name", Arrays.asList(
                         new OffenceResultDetails(offenceId1, 1, 1, "Offence 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ))
                 )),
                 new DefendantResultDetails(defendantId2, "Defendant Name 2", Arrays.asList(
                         new OffenceResultDetails(offenceId2, 1, 1, "Offence 2", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase3, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInCase4, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase3, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInCase4, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         )),
                         new OffenceResultDetails(offenceId3, 1, 1, "Offence 3", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase5, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE)
+                                new JudicialResultDetails(judicialResultIdInCase5, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false)
                         ))
                 )),
                 new DefendantResultDetails(defendantId3, "Defendant Name 2", Arrays.asList(
                         new OffenceResultDetails(offenceId4, 1, 1, "Offence 4", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase6, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE)
+                                new JudicialResultDetails(judicialResultIdInCase6, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInApp2, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ), emptyList(), emptyList(),"firstName", "lastName")
                 ),
                 false
@@ -345,33 +345,33 @@ public class ResultAmendmentDetailsHelperTest {
         caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId1, "Defendant Name", Arrays.asList(
                         new OffenceResultDetails(offenceId1, 1, 1, "Offence 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInCase2, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ))
                 )),
                 new DefendantResultDetails(defendantId2, "Defendant Name 2", Arrays.asList(
                         new OffenceResultDetails(offenceId2, 1, 1, "Offence 2", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase3, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE),
-                                new JudicialResultDetails(judicialResultIdInCase4, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase3, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false),
+                                new JudicialResultDetails(judicialResultIdInCase4, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         )),
                         new OffenceResultDetails(offenceId3, 1, 1, "Offence 3", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase5, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE)
+                                new JudicialResultDetails(judicialResultIdInCase5, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false)
                         ))
                 )),
                 new DefendantResultDetails(defendantId3, "Defendant Name 2", Arrays.asList(
                         new OffenceResultDetails(offenceId4, 1, 1, "Offence 4", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase6, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE)
+                                new JudicialResultDetails(judicialResultIdInCase6, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp3, "Result In App 3", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp3, "Result In App 3", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                                     ), Arrays.asList(
                                             new OffenceResultDetails(clonedOffenceId1, 0, 0, "Cloned Offence",
-                                                    Arrays.asList(new JudicialResultDetails(judicialResultIdInClonedOffence, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)))
+                                                    Arrays.asList(new JudicialResultDetails(judicialResultIdInClonedOffence, "Result In App 2", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)))
                                     ), Arrays.asList(
                                             new OffenceResultDetails(courtApplicationCaseOffenceId1, 0, 0, "CourtApplicationCase Offence",
-                                                    Arrays.asList(new JudicialResultDetails(judicialResultIdInCourtAppCase1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)))
+                                                    Arrays.asList(new JudicialResultDetails(judicialResultIdInCourtAppCase1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)))
                                     ),"firstName", "lastName")
                 ),
                 false
@@ -497,18 +497,18 @@ public class ResultAmendmentDetailsHelperTest {
         caseResultDetailsMap.put(caseId, new CaseResultDetails(caseId, Arrays.asList(
                 new DefendantResultDetails(defendantId, "Defendant Name", Arrays.asList(
                         new OffenceResultDetails(offenceId, 1, 1, "Offence 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInCase1, "Result 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ))
                 ))),
                 Arrays.asList(
                         new ApplicationResultDetails(applicationId, "Application 1", Arrays.asList(
-                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED)
+                                new JudicialResultDetails(judicialResultIdInApp1, "Result In App 1", UUID.randomUUID(), JudicialResultAmendmentType.ADDED, false)
                         ),
                                 Arrays.asList(new OffenceResultDetails(offenceIdInAppOffence, 1, 1, "App Offence 1", Arrays.asList(
-                                        new JudicialResultDetails(judicialResultIdInAppOffence, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.NONE)))),
+                                        new JudicialResultDetails(judicialResultIdInAppOffence, "Result 2", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false)))),
 
                                 Arrays.asList(new OffenceResultDetails(offenceIdInCourtAppCases, 1, 1, "AppCase Offence 1", Arrays.asList(
-                                        new JudicialResultDetails(judicialResultIdInCourtAppCases, "Result 3", UUID.randomUUID(), JudicialResultAmendmentType.NONE)))),
+                                        new JudicialResultDetails(judicialResultIdInCourtAppCases, "Result 3", UUID.randomUUID(), JudicialResultAmendmentType.NONE, false)))),
                                 "firstName", "lastName")
                 ),
                 false

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 @SuppressWarnings({"squid:S2384"})
 public class CaseResultDetails implements Serializable {
     private UUID caseId;
@@ -52,5 +54,15 @@ public class CaseResultDetails implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(caseId, defendantResultDetails, applicationResultDetails);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("caseId", caseId)
+                .append("isThisCaseReshared", isThisCaseReshared)
+                .append("defendantResultDetails", defendantResultDetails)
+                .append("applicationResultDetails", applicationResultDetails)
+                .toString();
     }
 }

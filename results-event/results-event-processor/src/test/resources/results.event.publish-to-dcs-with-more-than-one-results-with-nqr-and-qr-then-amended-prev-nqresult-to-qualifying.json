@@ -1,0 +1,1057 @@
+{
+  "caseResultDetails": [
+    {
+      "caseId": "9a3786dd-cc6b-4585-bfa4-4387ddf63477",
+      "defendantResultDetails": [
+        {
+          "defendantName": "Fred Smith",
+          "id": "457bedc3-0c5e-41b9-a54b-7c393a2d6ca1",
+          "offenceResultDetails": [
+            {
+              "id": "0383bee4-4d59-4346-9aa0-3f03f35b0642",
+              "judicialResultDetails": [
+                {
+                  "amendmentType": "ADDED",
+                  "id": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                  "isQualifyingResult": true,
+                  "judicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                  "resultTitle": "Sent to Crown Court for trial on unconditional bail"
+                },
+                {
+                  "amendmentType": "ADDED",
+                  "id": "eef6d992-eceb-4111-870d-5f1fe4e95e1d",
+                  "isQualifyingResult": false,
+                  "judicialResultTypeId": "fbed768b-ee95-4434-87c8-e81cbc8d24c8",
+                  "resultTitle": "Next hearing in Crown Court"
+                },
+                {
+                  "amendmentType": "ADDED",
+                  "id": "e1bba54d-67e4-476b-8c97-7ec3103859a6",
+                  "isQualifyingResult": false,
+                  "judicialResultTypeId": "491e30e9-2508-4e3a-9291-dfaf16d975ab",
+                  "resultTitle": "Sent to Crown Court for trial"
+                },
+                {
+                  "amendmentType": "DELETED",
+                  "id": "20a300ef-43e6-4667-a302-b8f1fc4ad3de",
+                  "isQualifyingResult": false,
+                  "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                  "resultTitle": "Conditional discharge"
+                }
+              ],
+              "offenceCount": 1,
+              "offenceNo": 1,
+              "offenceTitle": "Motor vehicle fail to comply with a stop sign - manned equipment"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "hearing": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "NOT_PRESENT",
+            "day": "2025-07-23"
+          }
+        ],
+        "defendantId": "457bedc3-0c5e-41b9-a54b-7c393a2d6ca1"
+      }
+    ],
+    "defendantReferralReasons": [
+      {
+        "defendantId": "457bedc3-0c5e-41b9-a54b-7c393a2d6ca1",
+        "description": "Defence request",
+        "id": "798e3d82-44fa-40e6-a93d-4c8f5322fa66"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2025-07-23T10:00:00.000Z"
+      },
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": false,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2025-07-24T09:00:00.000Z"
+      },
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": false,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2025-07-25T09:00:00.000Z"
+      },
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": false,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2025-07-27T09:00:00.000Z"
+      },
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": false,
+        "isCancelled": false,
+        "listedDurationMinutes": 2,
+        "listingSequence": 0,
+        "sittingDay": "2025-07-28T14:30:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "6f0e8adb-7192-4c1f-a4cc-80dfce2d711e",
+    "isEffectiveTrial": true,
+    "isVacatedTrial": false,
+    "judiciary": [
+      {
+        "firstName": "Christine",
+        "isBenchChairman": true,
+        "isDeputy": true,
+        "judicialId": "0fc170ec-bb8f-31af-b2c6-de48ea5343e7",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "0fc170ec-bb8f-31af-b2c6-de48ea5343e7",
+          "judiciaryType": "Magistrate"
+        },
+        "lastName": "Marsters",
+        "title": "Ms"
+      }
+    ],
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "SJP_REFERRAL",
+        "defendants": [
+          {
+            "courtProceedingsInitiated": "2025-07-23T17:43:00.119Z",
+            "id": "457bedc3-0c5e-41b9-a54b-7c393a2d6ca1",
+            "isYouth": false,
+            "masterDefendantId": "457bedc3-0c5e-41b9-a54b-7c393a2d6ca1",
+            "numberOfPreviousConvictionsCited": 3,
+            "offences": [
+              {
+                "chargeDate": "2016-01-01",
+                "count": 1,
+                "custodyTimeLimit": {
+                  "isCtlExtended": false,
+                  "timeLimit": "2025-07-23"
+                },
+                "dateHeldInCustodySince": "2025-07-23",
+                "dvlaOffenceCode": "TS30",
+                "endorsableFlag": true,
+                "id": "0383bee4-4d59-4346-9aa0-3f03f35b0642",
+                "isDisposed": false,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": true,
+                    "amendmentDate": "2025-07-23",
+                    "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                    "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "INTERMEDIARY",
+                    "cjsCode": "4560",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Emma",
+                      "lastName": "Cleaner",
+                      "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "8fe919ca-e6b4-4762-a2b0-146fa6b6c87c",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison organisation name",
+                        "promptReference": "prisonOrganisationName",
+                        "promptSequence": 300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "HMP Buckley Hall",
+                        "welshValue": "HMP Buckley Hall"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison email address 1",
+                        "promptReference": "prisonEmailAddress1",
+                        "promptSequence": 300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "OMU.BuckleyHall@justice.gov.uk",
+                        "welshValue": "OMU.BuckleyHall@justice.gov.uk"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+                        "label": "Conveyor / custodian name organisation name",
+                        "promptReference": "conveyorcustodiannameOrganisationName",
+                        "promptSequence": 400,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Barrow-in-Furness Magistrates' Court: PECS",
+                        "welshValue": "Barrow-in-Furness Magistrates' Court: PECS"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+                        "label": "Conveyor / custodian name email address 1",
+                        "promptReference": "conveyorcustodiannameEmailAddress1",
+                        "promptSequence": 400,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "barrowmc@geoamey.co.uk",
+                        "welshValue": "barrowmc@geoamey.co.uk"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "49f9ee68-3dee-4ed1-8020-377818c3697f",
+                        "label": "Remand basis",
+                        "promptReference": "remandBasis",
+                        "promptSequence": 500,
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Charged with an offence punishable in the case of an adult with 14 years imprisonment or more",
+                        "welshLabel": "Sail remand",
+                        "welshValue": "Wedi'i gyhuddo o drosedd y gellir ei chosbi yn achos oedolyn â 14 mlynedd o garchar neu fwy"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "7b2e6219-ddcb-4afa-8615-8de978e60af1",
+                        "label": "Bail exception",
+                        "promptReference": "bailException",
+                        "promptSequence": 600,
+                        "qualifier": "MV",
+                        "type": "FIXLM",
+                        "usergroups": [],
+                        "value": "Likely to offend (physical or mental injury)",
+                        "welshLabel": "Eithriad rhag caniatáu mechnïaeth",
+                        "welshValue": "Likely to offend (physical or mental injury)"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "53ac8d08-49a9-4495-ab3a-0ef94ca9e560",
+                        "label": "Bail exception reason",
+                        "promptReference": "bailExceptionReason",
+                        "promptSequence": 800,
+                        "type": "FIXLOM",
+                        "usergroups": [],
+                        "value": "none",
+                        "welshLabel": "Rheswm dros beidio â chaniatáu mechnïaeth",
+                        "welshValue": "none"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "5348fd0e-0670-4811-997f-1baa78b06d62",
+                        "label": "Custody time limit expires",
+                        "promptReference": "CTLDATE",
+                        "promptSequence": 100,
+                        "type": "DATE",
+                        "usergroups": [],
+                        "value": "23/07/2025",
+                        "welshLabel": "Mae terfyn amser y ddalfa yn dod i ben",
+                        "welshValue": "23/07/2025"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4483c255-2761-4549-a70a-314aa311d052",
+                        "label": "Time spent in custody (in days)",
+                        "promptReference": "CTLTIME",
+                        "promptSequence": 200,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "2",
+                        "welshLabel": "Amser a dreuliwyd yn y ddalfa (mewn dyddiau)",
+                        "welshValue": "2"
+                      }
+                    ],
+                    "judicialResultTypeId": "4ea1c855-03cc-48f8-8d58-970ea673f15d",
+                    "label": "Sent to Crown Court for trial in custody",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "6f0e8adb-7192-4c1f-a4cc-80dfce2d711e",
+                    "postHearingCustodyStatus": "C",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 143400,
+                    "resultDefinitionGroup": "SentToCC",
+                    "resultText": "CCII - Sent to Crown Court for trial in custody\n Remanded in custody until . Basis: Charged with an offence punishable in the case of an adult with 14 years imprisonment or more. Bail exceptions: Likely to offend (physical or mental injury). Reason for applying: none. Custody time limit expires on 23/07/2025. Time spent in custody: 2.",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "8fe919ca-e6b4-4762-a2b0-146fa6b6c87c",
+                    "rootJudicialResultTypeId": "4ea1c855-03cc-48f8-8d58-970ea673f15d",
+                    "sentToCC": true,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Traddodwyd chi i Lys y Goron ar gyfer treial tra yn y ddalfa"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "amendmentDate": "2025-07-23",
+                    "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                    "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "INTERMEDIARY",
+                    "cjsCode": "4558",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": false,
+                    "isUnscheduled": false,
+                    "judicialResultId": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4362a1a4-aa80-4a68-ae61-f57962709f3d",
+                        "label": "Sent for trial under",
+                        "promptReference": "sentForTrialUnder",
+                        "promptSequence": 100,
+                        "qualifier": "XA",
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Section 51(1) & (2)(c) of the Crime and Disorder Act 1998",
+                        "welshLabel": "Traddodwyd ar gyfer treial ar",
+                        "welshValue": "Adran 51 (1) a (2) (c) Deddf Trosedd ac Anhrefn 1998"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d10cd4b-fb39-40dd-88e1-2397832bc914",
+                        "label": "Bail remand days to count (tagged days)",
+                        "promptReference": "bailRemandDaysToCountTaggedDays",
+                        "promptSequence": 300,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "2",
+                        "welshLabel": "Dyddiau mechnïaeth ar remand i’w cyfrif (dyddiad gyda tag)",
+                        "welshValue": "2"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "07fe6e7e-dde2-45d6-b0c0-aa8e1b2883b8",
+                        "label": "No indication given re victim personal statement",
+                        "promptReference": "noIndicationGivenReVictimPersonalStatement",
+                        "promptSequence": 800,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "true",
+                        "welshLabel": "Ni roddwyd unrhyw arwydd o ddatganiad personol dioddefwyr",
+                        "welshValue": "true"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "ed26a92b-0850-435b-a4c7-2c77baaea4b3",
+                        "label": "PSR ordered",
+                        "promptReference": "pSROrdered",
+                        "promptSequence": 1200,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "false",
+                        "welshValue": "false"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified organisation name",
+                        "promptReference": "probationyottobenotifiedOrganisationName",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Nottingham City YOT",
+                        "welshValue": "Nottingham City YOT"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified email address 1",
+                        "promptReference": "probationyottobenotifiedEmailAddress1",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "grp.nottinghamcity-yot@nottinghamcity.gov.uk",
+                        "welshValue": "grp.nottinghamcity-yot@nottinghamcity.gov.uk"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "150a22a8-05d0-4be1-ada7-a0d512a63b5d",
+                        "label": "Defendant excused attendance at next hearing",
+                        "promptReference": "defendantExcusedAttendanceAtNextHearing",
+                        "promptSequence": 200,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "true",
+                        "welshLabel": "Nid oes rhaid i'r diffynnydd fod yn bresennol yn y gwrandawiad nesaf",
+                        "welshValue": "true"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "judicialResultPromptTypeId": "fbed768b-ee95-4434-87c8-e81cbc8d24c8",
+                        "label": "Next hearing in Crown Court",
+                        "promptReference": "eef6d992-eceb-4111-870d-5f1fe4e95e1d",
+                        "promptSequence": 300,
+                        "usergroups": [],
+                        "value": "Fixed Date:23/07/2025\nTime of hearing:10:00\nCourthouse organisation name:Croydon Crown Court\nCourthouse address line 1:The Law Courts\nCourthouse address line 2:Altyre Road\nCourthouse address line 3:Croydon\nCourthouse post code:CR9 5AB\nHearing type:Trial\nEstimated duration:2 DAYS",
+                        "welshLabel": "Bydd y gwrandawiad nesaf yn Llys y Goron"
+                      }
+                    ],
+                    "judicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "label": "Sent to Crown Court for trial on unconditional bail",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "nextHearing": {
+                      "adjournmentReason": "",
+                      "courtCentre": {
+                        "address": {
+                          "address1": "The Law Courts",
+                          "address2": "Altyre Road",
+                          "address3": "Croydon",
+                          "postcode": "CR9 5AB"
+                        },
+                        "code": "C01CY00",
+                        "courtHearingLocation": "C01CY00",
+                        "id": "07e45c88-9e5d-3e44-b664-d5345bb13be2",
+                        "name": "Croydon Crown Court",
+                        "psaCode": 2576,
+                        "welshName": "Llys Y Goron Croydon"
+                      },
+                      "estimatedDuration": "2 DAYS",
+                      "estimatedMinutes": 720,
+                      "jurisdictionType": "CROWN",
+                      "listedStartDateTime": "2025-07-23T09:00:00.000Z",
+                      "type": {
+                        "description": "Trial",
+                        "id": "bf8155e1-90b9-4080-b133-bfbad895d6e4"
+                      }
+                    },
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "6f0e8adb-7192-4c1f-a4cc-80dfce2d711e",
+                    "postHearingCustodyStatus": "U",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 141200,
+                    "resultDefinitionGroup": "SentToCC",
+                    "resultText": "CCIU - Sent to Crown Court for trial on unconditional bail\nSent for trial under Section 51(1) & (2)(c) of the Crime and Disorder Act 1998. Bail remand days to count (tagged days): 2. No indication given re victim personal statement. Remanded on unconditional bail until hearing on 23/07/2025 at 10:00, Croydon Crown Court. Defendant excused attendance at next hearing",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                    "rootJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "sentToCC": true,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Traddodi i Lys y Goron ar gyfer dedfryd ar fechnïaeth ddiamod"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "amendmentDate": "2025-07-23",
+                    "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                    "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "ANCILLARY",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": false,
+                    "isUnscheduled": false,
+                    "judicialResultId": "eef6d992-eceb-4111-870d-5f1fe4e95e1d",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "aea2ee79-47b4-4023-9a95-1b327e6e03d5",
+                        "label": "Fixed Date",
+                        "promptReference": "fixedDate",
+                        "promptSequence": 200,
+                        "type": "DATE",
+                        "usergroups": [],
+                        "value": "23/07/2025",
+                        "welshLabel": "Dyddiad Penodol",
+                        "welshValue": "23/07/2025"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d125a5a-acbc-461d-a657-ba5643af85a6",
+                        "label": "Time of hearing",
+                        "promptReference": "timeOfHearing",
+                        "promptSequence": 400,
+                        "type": "TIME",
+                        "usergroups": [],
+                        "value": "10:00",
+                        "welshLabel": "Amser y gwrandawiad",
+                        "welshValue": "10:00"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse organisation name",
+                        "promptReference": "hCHOUSEOrganisationName",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Croydon Crown Court",
+                        "welshValue": "Croydon Crown Court"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 1",
+                        "promptReference": "hCHOUSEAddress1",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "The Law Courts",
+                        "welshValue": "The Law Courts"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 2",
+                        "promptReference": "hCHOUSEAddress2",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Altyre Road",
+                        "welshValue": "Altyre Road"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 3",
+                        "promptReference": "hCHOUSEAddress3",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Croydon",
+                        "welshValue": "Croydon"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse post code",
+                        "promptReference": "hCHOUSEPostCode",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "CR9 5AB",
+                        "welshValue": "CR9 5AB"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "c1116d12-dd35-4171-807a-2cb845357d22",
+                        "label": "Hearing type",
+                        "promptReference": "HTYPE",
+                        "promptSequence": 700,
+                        "type": "TXT",
+                        "usergroups": [],
+                        "value": "Trial",
+                        "welshLabel": "Math o wrandawiad",
+                        "welshValue": "Trial"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "d85cc2d7-66c8-471e-b6ff-c1bc60c6cdac",
+                        "label": "Estimated duration",
+                        "promptReference": "HEST",
+                        "promptSequence": 800,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "2 DAYS",
+                        "welshLabel": "Amcangyfrif amser",
+                        "welshValue": "2 DAYS"
+                      }
+                    ],
+                    "judicialResultTypeId": "fbed768b-ee95-4434-87c8-e81cbc8d24c8",
+                    "label": "Next hearing in Crown Court",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "6f0e8adb-7192-4c1f-a4cc-80dfce2d711e",
+                    "parentJudicialResultId": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                    "parentJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "postHearingCustodyStatus": "A",
+                    "preserveActiveOrder": true,
+                    "publishedAsAPrompt": true,
+                    "publishedForNows": true,
+                    "rank": 29600,
+                    "resultDefinitionGroup": "Next hearing",
+                    "resultText": "hearing on 23/07/2025 at 10:00, Croydon Crown Court",
+                    "resultWording": "",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                    "rootJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "sentToCC": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Bydd y gwrandawiad nesaf yn Llys y Goron"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "amendmentDate": "2025-07-23",
+                    "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                    "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "INTERMEDIARY",
+                    "cjsCode": "4028",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Emma",
+                      "lastName": "Cleaner",
+                      "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "e2b4a965-a6de-41d9-90cb-f807f9d62e5d",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison organisation name",
+                        "promptReference": "prisonOrganisationName",
+                        "promptSequence": 300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "HMP Buckley Hall",
+                        "welshValue": "HMP Buckley Hall"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "2d6330a2-1f12-45fb-bb72-65f4c1215e9c",
+                        "label": "Prison email address 1",
+                        "promptReference": "prisonEmailAddress1",
+                        "promptSequence": 300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "OMU.BuckleyHall@justice.gov.uk",
+                        "welshValue": "OMU.BuckleyHall@justice.gov.uk"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+                        "label": "Conveyor / custodian name organisation name",
+                        "promptReference": "conveyorcustodiannameOrganisationName",
+                        "promptSequence": 400,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Barrow-in-Furness Magistrates' Court: PECS",
+                        "welshValue": "Barrow-in-Furness Magistrates' Court: PECS"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6927b6ac-4c85-4532-838d-88ac00ea83f9",
+                        "label": "Conveyor / custodian name email address 1",
+                        "promptReference": "conveyorcustodiannameEmailAddress1",
+                        "promptSequence": 400,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "barrowmc@geoamey.co.uk",
+                        "welshValue": "barrowmc@geoamey.co.uk"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "49f9ee68-3dee-4ed1-8020-377818c3697f",
+                        "label": "Remand basis",
+                        "promptReference": "remandBasis",
+                        "promptSequence": 500,
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Charged with an offence punishable in the case of an adult with 14 years imprisonment or more",
+                        "welshLabel": "Sail remand",
+                        "welshValue": "Wedi'i gyhuddo o drosedd y gellir ei chosbi yn achos oedolyn â 14 mlynedd o garchar neu fwy"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "7b2e6219-ddcb-4afa-8615-8de978e60af1",
+                        "label": "Bail exception",
+                        "promptReference": "bailException",
+                        "promptSequence": 600,
+                        "qualifier": "MV",
+                        "type": "FIXLM",
+                        "usergroups": [],
+                        "value": "Likely to offend (physical or mental injury)",
+                        "welshLabel": "Eithriad rhag caniatáu mechnïaeth",
+                        "welshValue": "Likely to offend (physical or mental injury)"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "53ac8d08-49a9-4495-ab3a-0ef94ca9e560",
+                        "label": "Bail exception reason",
+                        "promptReference": "bailExceptionReason",
+                        "promptSequence": 800,
+                        "type": "FIXLOM",
+                        "usergroups": [],
+                        "value": "none",
+                        "welshLabel": "Rheswm dros beidio â chaniatáu mechnïaeth",
+                        "welshValue": "none"
+                      }
+                    ],
+                    "judicialResultTypeId": "d0a369c9-5a28-40ec-99cb-da7943550b18",
+                    "label": "Remanded in custody",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "6f0e8adb-7192-4c1f-a4cc-80dfce2d711e",
+                    "parentJudicialResultId": "8fe919ca-e6b4-4762-a2b0-146fa6b6c87c",
+                    "parentJudicialResultTypeId": "4ea1c855-03cc-48f8-8d58-970ea673f15d",
+                    "policeSubjectLineTitle": "Remand",
+                    "postHearingCustodyStatus": "C",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": true,
+                    "qualifier": "MV",
+                    "rank": 34500,
+                    "resultDefinitionGroup": "Remand in custody",
+                    "resultText": "Remanded in custody until . Basis: Charged with an offence punishable in the case of an adult with 14 years imprisonment or more. Bail exceptions: Likely to offend (physical or mental injury). Reason for applying: none.",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "8fe919ca-e6b4-4762-a2b0-146fa6b6c87c",
+                    "rootJudicialResultTypeId": "4ea1c855-03cc-48f8-8d58-970ea673f15d",
+                    "sentToCC": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Rydych wedi’ch remandio yn y ddalfa"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "amendmentDate": "2025-07-23",
+                    "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                    "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "ANCILLARY",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": false,
+                    "isUnscheduled": false,
+                    "judicialResultId": "e1bba54d-67e4-476b-8c97-7ec3103859a6",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4362a1a4-aa80-4a68-ae61-f57962709f3d",
+                        "label": "Sent for trial under",
+                        "promptReference": "sentForTrialUnder",
+                        "promptSequence": 100,
+                        "qualifier": "XA",
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Section 51(1) & (2)(c) of the Crime and Disorder Act 1998",
+                        "welshLabel": "Traddodwyd ar gyfer treial ar",
+                        "welshValue": "Adran 51 (1) a (2) (c) Deddf Trosedd ac Anhrefn 1998"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d10cd4b-fb39-40dd-88e1-2397832bc914",
+                        "label": "Bail remand days to count (tagged days)",
+                        "promptReference": "bailRemandDaysToCountTaggedDays",
+                        "promptSequence": 300,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "2",
+                        "welshLabel": "Dyddiau mechnïaeth ar remand i’w cyfrif (dyddiad gyda tag)",
+                        "welshValue": "2"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "07fe6e7e-dde2-45d6-b0c0-aa8e1b2883b8",
+                        "label": "No indication given re victim personal statement",
+                        "promptReference": "noIndicationGivenReVictimPersonalStatement",
+                        "promptSequence": 800,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "true",
+                        "welshLabel": "Ni roddwyd unrhyw arwydd o ddatganiad personol dioddefwyr",
+                        "welshValue": "true"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "ed26a92b-0850-435b-a4c7-2c77baaea4b3",
+                        "label": "PSR ordered",
+                        "promptReference": "pSROrdered",
+                        "promptSequence": 1200,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "false",
+                        "welshValue": "false"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified organisation name",
+                        "promptReference": "probationyottobenotifiedOrganisationName",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Nottingham City YOT",
+                        "welshValue": "Nottingham City YOT"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified email address 1",
+                        "promptReference": "probationyottobenotifiedEmailAddress1",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "grp.nottinghamcity-yot@nottinghamcity.gov.uk",
+                        "welshValue": "grp.nottinghamcity-yot@nottinghamcity.gov.uk"
+                      }
+                    ],
+                    "judicialResultTypeId": "491e30e9-2508-4e3a-9291-dfaf16d975ab",
+                    "label": "Sent to Crown Court for trial",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "6f0e8adb-7192-4c1f-a4cc-80dfce2d711e",
+                    "parentJudicialResultId": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                    "parentJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "postHearingCustodyStatus": "A",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": true,
+                    "qualifier": "XA",
+                    "rank": 61800,
+                    "resultText": "Sent for trial under Section 51(1) & (2)(c) of the Crime and Disorder Act 1998. Bail remand days to count (tagged days): 2. No indication given re victim personal statement.",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "cdb9b34f-62df-4fcc-9e24-529423ec9589",
+                    "rootJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "sentToCC": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Er mwyn cynnal y treial"
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "S: LE 3pp",
+                "modeOfTrial": "Summary",
+                "notifiedPlea": {
+                  "notifiedPleaDate": "2025-07-23",
+                  "notifiedPleaValue": "NO_NOTIFICATION",
+                  "offenceId": "0383bee4-4d59-4346-9aa0-3f03f35b0642"
+                },
+                "offenceCode": "RT88756",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "0116275b-6176-36ff-89bc-0ef5d9751137",
+                "offenceLegislation": "Contrary to section 36(1) of the Road Traffic Act 1988, Schedule 9 to the Traffic Signs Regulations and General Directions 2016 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                "offenceLegislationWelsh": "Yn groes i adran 36(1) o Ddeddf Traffig y Ffyrdd 1988, Atodlen 9 i Reoliadau Arwyddion Traffig a Chyfeiriadau Cyffredinol 2016 ac Atodlen 2 i Ddeddf Troseddwyr Traffig Ffyrdd 1988.",
+                "offenceTitle": "Motor vehicle fail to comply with a stop sign - manned equipment",
+                "offenceTitleWelsh": "Cerbyd modur heb gydymffurfio ag arwydd stop - cyfarpar a reolir gan unigolyn",
+                "orderIndex": 1,
+                "startDate": "2017-04-23",
+                "wording": "On 12/07/2018 at Brighton, without reasonable excuse, failed to give assistance that you were under a duty to give to a person authorised to execute a search warrant granted under section 366 of the Communications Act 2003 by the Liverpool Magistrates' Court on 02/07/2018",
+                "wordingWelsh": "On 12/07/2018 at Brighton, without reasonable excuse, failed to give assistance that you were under a duty to give to a person authorised to execute a search warrant granted under section 366 of the Communications Act 2003 by the Liverpool Magistrates' Court on 02/07/2018"
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "arrest/summons",
+              "bailConditions": "",
+              "bailReasons": "none",
+              "bailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              },
+              "driverNumber": "MORGA657054460BF",
+              "personDetails": {
+                "address": {
+                  "address1": "theU8bFJcj",
+                  "address2": "Cathays Park",
+                  "address3": "Cardiff",
+                  "address4": "Wales",
+                  "address5": "UK",
+                  "postcode": "CF10 3NP"
+                },
+                "contact": {
+                  "home": "1231231230",
+                  "mobile": "1231231230",
+                  "primaryEmail": "aer@af.com"
+                },
+                "dateOfBirth": "1982-08-24",
+                "disabilityStatus": "Blindness",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Fred",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "WELSH",
+                "interpreterLanguageNeeds": "French",
+                "lastName": "Smith",
+                "nationalInsuranceNumber": "AB123456C",
+                "occupation": "TA",
+                "occupationCode": "666",
+                "specificRequirements": "Blindness",
+                "title": "MR"
+              }
+            },
+            "prosecutionCaseId": "9a3786dd-cc6b-4585-bfa4-4387ddf63477"
+          }
+        ],
+        "id": "9a3786dd-cc6b-4585-bfa4-4387ddf63477",
+        "initiationCode": "J",
+        "originatingOrganisation": "GAFTL00",
+        "prosecutionCaseIdentifier": {
+          "address": {
+            "address1": "6th Floor Windsor House",
+            "address2": "42-50 Victoria Street",
+            "address3": "London",
+            "postcode": "SW1H 0TL"
+          },
+          "contact": {
+            "primaryEmail": "tfl.enforcement@tfl.cjsm.net"
+          },
+          "majorCreditorCode": "TFL2",
+          "prosecutionAuthorityCode": "TFL",
+          "prosecutionAuthorityId": "31af405e-7b60-4dd8-a244-c24c2d3fa595",
+          "prosecutionAuthorityName": "Transport for London",
+          "prosecutionAuthorityOUCode": "GAFTL00",
+          "prosecutionAuthorityReference": "TFL2100465"
+        },
+        "statementOfFacts": "Prosecution Facts"
+      }
+    ],
+    "type": {
+      "description": "Sentence",
+      "id": "c6d76309-c912-436b-a21b-a4c4450bc052"
+    }
+  },
+  "hearingDay": "2025-07-23",
+  "isReshare": true,
+  "sharedTime": "2025-07-23T18:17:07.029Z"
+}

@@ -979,7 +979,7 @@ public class StagingEnforcementIT {
         assertThat(amendResultInputError.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(amendResultInputError.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(amendResultInputError.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
+        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452"));
         assertThat(writeOffOneDayDeemedServed.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(writeOffOneDayDeemedServed.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(writeOffOneDayDeemedServed.getString(SEND_TO), is("John.Doe@xxx.com"));

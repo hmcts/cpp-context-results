@@ -369,19 +369,22 @@
                 "amendmentType": "ADDED",
                 "id": "11ea7eb6-ca07-490b-9096-bd283f937d3e",
                 "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
-                "resultTitle": "Conditional discharge"
+                "resultTitle": "Conditional discharge",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "e34df34b-0c07-4efe-acd4-956c7f7427bb",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "75367223-04a0-4084-a900-e035fdf68191",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -404,19 +407,22 @@
                 "amendmentType": "ADDED",
                 "id": "e44ac82d-4733-4b42-8a00-10b7bc406c35",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "dc722cea-15f8-494c-a1c5-99ac3419d4ef",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "6a2af0b3-ed4d-41e9-911c-c4c6ec2dc33e",
                 "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
-                "resultTitle": "Conditional discharge"
+                "resultTitle": "Conditional discharge",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

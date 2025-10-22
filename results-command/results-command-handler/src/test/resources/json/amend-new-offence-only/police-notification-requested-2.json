@@ -1040,7 +1040,8 @@
             "amendmentType": "DELETED",
             "id": "d7beec6f-9ffa-4014-8729-2543e5b94eb6",
             "judicialResultTypeId": "2e83102c-a262-4bb3-a48d-c2107a094a66",
-            "resultTitle": "Order revoked"
+            "resultTitle": "Order revoked",
+            "isQualifyingResult": false
           }
         ],
         "offenceResultDetails": []
@@ -1056,7 +1057,8 @@
             "amendmentType": "DELETED",
             "id": "5a3500d2-e4c8-4c4e-9192-1b6a41bca45f",
             "judicialResultTypeId": "61c246d8-f771-4420-9e02-30f34c0305b1",
-            "resultTitle": "Community order amended"
+            "resultTitle": "Community order amended",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []
@@ -1072,7 +1074,8 @@
             "amendmentType": "DELETED",
             "id": "181a2968-63ee-4d68-93f8-973740f9de7b",
             "judicialResultTypeId": "98138ec8-5dd3-11e8-9c2d-fa7ae01bbebc",
-            "resultTitle": "Text"
+            "resultTitle": "Text",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []
@@ -1088,7 +1091,8 @@
             "amendmentType": "DELETED",
             "id": "48afe2e7-4c2c-4a5a-a263-a9178f1acec8",
             "judicialResultTypeId": "96d9e17a-fd20-4bb8-b00e-8c9350aa9d77",
-            "resultTitle": "Remittal of criminal courts charge"
+            "resultTitle": "Remittal of criminal courts charge",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []

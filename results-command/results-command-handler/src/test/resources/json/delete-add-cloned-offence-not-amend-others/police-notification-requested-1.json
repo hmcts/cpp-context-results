@@ -864,19 +864,22 @@
                 "amendmentType": "ADDED",
                 "id": "876af4b0-7d2f-4fb7-9d89-40284b64c4f6",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "e714a378-a38f-4486-a47a-bcf43fd92b8e",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "7902e81e-8c26-46cf-ac40-f7967950567b",
                 "judicialResultTypeId": "49939c7c-750f-403e-9ce1-f82e3e568065",
-                "resultTitle": "No separate penalty"
+                "resultTitle": "No separate penalty",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,

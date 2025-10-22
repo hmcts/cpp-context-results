@@ -195,6 +195,18 @@
                         </exclusions>
                     </dependency>
                     <dependency>
+                        <groupId>uk.gov.moj.cpp.staging.dcs</groupId>
+                        <artifactId>stagingdcs-command-api</artifactId>
+                        <version>${staging.dcs.version}</version>
+                        <classifier>raml</classifier>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>*</groupId>
+                                <artifactId>*</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
                         <groupId>uk.gov.moj.cpp.progression</groupId>
                         <artifactId>progression-query-api</artifactId>
                         <version>${progression.version}</version>

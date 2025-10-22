@@ -229,7 +229,8 @@
                 "amendmentType": "DELETED",
                 "id": "c8a8bb9b-517f-41dc-8c2f-93cecebc1789",
                 "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
-                "resultTitle": "Surcharge"
+                "resultTitle": "Surcharge",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

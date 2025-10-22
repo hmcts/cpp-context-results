@@ -941,19 +941,22 @@
                 "amendmentType": "UPDATED",
                 "id": "7d4170f1-6aaa-4c45-b371-e1c5b4741660",
                 "judicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
-                "resultTitle": "Adjournment"
+                "resultTitle": "Adjournment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "4c33627e-10c6-4fb2-8d28-750b3d2bce0c",
                 "judicialResultTypeId": "69ff04d5-84e8-4a61-8478-82c2999c1969",
-                "resultTitle": "To attend or a warrant to issue"
+                "resultTitle": "To attend or a warrant to issue",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "07ccfcd8-161c-4b5c-a252-f2d1e6cbcffb",
                 "judicialResultTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Next hearing in magistrates' court"
+                "resultTitle": "Next hearing in magistrates' court",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -973,19 +976,22 @@
                 "amendmentType": "UPDATED",
                 "id": "65a141c4-b5f7-4888-803c-6ebe8f508d04",
                 "judicialResultTypeId": "d278650c-e429-11e8-9f32-f2801f1b9fd1",
-                "resultTitle": "Adjournment"
+                "resultTitle": "Adjournment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "e2f55cbe-7f3f-438d-aa21-a15de06a4e8d",
                 "judicialResultTypeId": "69ff04d5-84e8-4a61-8478-82c2999c1969",
-                "resultTitle": "To attend or a warrant to issue"
+                "resultTitle": "To attend or a warrant to issue",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "UPDATED",
                 "id": "3742c23f-906b-42d8-b536-d60a59802852",
                 "judicialResultTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
-                "resultTitle": "Next hearing in magistrates' court"
+                "resultTitle": "Next hearing in magistrates' court",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,

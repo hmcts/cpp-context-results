@@ -514,13 +514,15 @@
                 "amendmentType": "DELETED",
                 "id": "023681e1-0d8b-4363-835e-dd325be92b12",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "b1ad3ef1-27b5-47c2-a61a-579f04b3ff12",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,
