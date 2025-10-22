@@ -1,0 +1,16 @@
+{
+    "caseUrns": [
+        "28DI975229",
+        "28DI975227"
+    ],
+    "caseOffenceIdList": [
+        "fef4866b-3c66-4403-8bcc-5adae3ca07e0",
+        "b717f0bc-0213-425b-acc5-05e2fb2a5f83",
+        "f2617f17-2492-4c91-a9a9-cb2ed09ff1a7",
+        "9fb9221b-f66e-46f4-8e2e-1ab57209b6a8"
+    ],
+    "applicationType": "APPEAL",
+    "masterDefendantId": "11afaf89-db69-450f-909f-9ceb70d52dc7",
+    "listingDate": "07/10/2025",
+    "hearingCourtCentreName": "Kingston upon Thames Crown Court"
+}

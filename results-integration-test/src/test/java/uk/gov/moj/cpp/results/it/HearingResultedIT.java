@@ -46,9 +46,7 @@ import static javax.json.Json.createObjectBuilder;
 import static javax.json.Json.createReader;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -65,21 +63,7 @@ import static uk.gov.justice.core.courts.external.ApiCourtCentre.apiCourtCentre;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted.publicHearingResulted;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetailsForHearingId;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetailsForHearingIdAndHearingDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getInternalHearingDetailsForHearingId;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getSummariesByDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.thenReturnsBadRequestForResultsSummaryWithoutFromDate;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventForPoliceResultsGenerated;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedAndReturnPayload;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedMessage;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedNotRaised;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultsGenerated;
-import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.*;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DcsStub.clearDcsStub;
 import static uk.gov.moj.cpp.results.it.stub.DcsStub.setupDCSStub;
@@ -90,6 +74,9 @@ import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionP
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.HttpClientUtil.sendGeneratePoliceResultsForADefendantCommand;
 import static uk.gov.moj.cpp.results.it.utils.Queries.pollForMatch;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.*;
+import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.*;
+import static uk.gov.moj.cpp.results.test.TestTemplates.*;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.PROSECUTOR_WITH_SPI_OUT_FALSE;
@@ -940,10 +927,9 @@ public class HearingResultedIT {
         assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
     }
 
-
     @Test
     public void shouldSendSpiOutAndPoliceNotificationForMultiDayHearingResultedOnHearingDayAndReshare() {
-        final UUID hearingId = randomUUID();
+        final UUID  hearingId = randomUUID();
         stubSpiOutFlag(true, true, policeEmailAddress);
         PublicHearingResulted resultsMessage = basicShareResultsTemplateWithOneCaseOneDefendant(hearingId, MAGISTRATES, false, of(2018, 4, 3));
 

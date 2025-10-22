@@ -13,9 +13,7 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Rule to handle notifications for case amendments with financial to financial imposition changes.
@@ -24,30 +22,32 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isCaseAmendmentProcess();
+        return input.isCaseAmendmentProcess() && input.hasFinancialAmendments();
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
 
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
-        final Map<UUID, String> offenceDateMap = input.offenceDateMap();
-        final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults()).stream()
-                .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
-                .distinct().toList();
 
         final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsCaseAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails()).stream()
-                .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap)).distinct()
+                .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
                 .toList();
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsFinToFin = getImpositionOffenceDetailsFinToFin(request, input.prevOffenceResultsDetails(), offenceDateMap);
 
         //newOffenceResults will be empty when no financial change from previous to new offence  - no marked event required
         //previous nonFine to new Fine - no marked event required
-        if (newOffenceResults.isEmpty() || isNonFinToFinImposition(request, input.prevOffenceResultsDetails(), offenceDateMap)) {
+        if (newOffenceResults.isEmpty() || isNonFinToFinImposition(request, input.prevOffenceResultsDetails())) {
             return Optional.empty();
         }
 
-        if (!impositionOffenceDetailsFinToFin.isEmpty()) {
+        // Check if there are valid financial to financial case amendments
+        if (isFineToFineCaseAmendments(request, input.prevOffenceResultsDetails(), input.offenceDateMap())) {
+
+            final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults())
+                    .stream()
+                    .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
+                    .distinct().toList();
+
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithOlds(
@@ -57,8 +57,10 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
                                     newOffenceResults,
                                     null,
                                     null,
-                                    AMEND_AND_RESHARE));
+                                    AMEND_AND_RESHARE,
+                                    input.prevApplicationResultsDetails()));
         }
+
         return Optional.empty();
     }
 }

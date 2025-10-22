@@ -91,7 +91,15 @@ public interface ResultNotificationRule {
             return request.getOffenceResults().stream().anyMatch(o -> nonNull(o.getAmendmentDate()));
         }
 
-        private boolean isCaseAmendment() {
+        public boolean hasFinancialAmendments() {
+            return nonNull(request.getAccountCorrelationId());
+        }
+
+        public boolean isFinancial() {
+            return request.getOffenceResults().stream().anyMatch(o -> o.getIsFinancial());
+        }
+
+        public boolean isCaseAmendment() {
             return request.getOffenceResults().stream()
                     .filter(offence -> isNull(offence.getApplicationType()))
                     .anyMatch(offence -> nonNull(offence.getAmendmentDate()));

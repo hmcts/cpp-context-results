@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "21 Furnburry Park Road London TA1 1AT",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Michele Crona",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "bf993f39-04f6-4601-8aaa-e207c916d8d1",
+  "hearingSittingDay": "2025-10-20T22:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "85c21da8-865d-4bda-8ed8-57f0cb2fed6f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-10-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00, FVS - Surcharge\nTo pay a surcharge of £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "4b264717-3790-4e2a-bf2b-7c55c0edca69",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "dateOfResult": "2025-10-20",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 21/10/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 21/10/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2405263"
+  ]
+}
