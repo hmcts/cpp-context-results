@@ -1,0 +1,34 @@
+{
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "917e671a-adc4-47cc-90ed-d0831fc24c92",
+      "offenceTitle": "Theft from a shop",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 19/09/2025 at 10:00 in Courtroom 02, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue, To produce motor insurance documents or test certificates (not driving licence). Defendant to attend the next hearing.\nTo attend or a warrant to issue\nTo produce motor insurance documents or test certificates (not driving licence)\nhearing on 19/09/2025 at 10:00 in Courtroom 02, Lavender Hill Magistrates' Court",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "f7bfc71e-1f6a-4d8a-8488-7d6b426e0f70",
+      "isFinancial": false,
+      "isParentFlag": true,
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-09-19",
+      "dateOfResult": "2025-09-19",
+      "resultCode": "G",
+      "isDeemedServed": false
+    }
+  ],
+  "hearingId": "acc152b7-203c-4ad0-b1c9-4f4ab5d55cac",
+  "masterDefendantId": "d035a8b3-19d1-4af2-895e-edcfe2c27d5f",
+  "defendantName": "Charley Wisozk",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantEmail": "firstName.lastName9144924@gmail.com",
+  "defendantContactNumber": "0209144924",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI9144924"
+  ],
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-09-19T09:00:00.000Z"
+}

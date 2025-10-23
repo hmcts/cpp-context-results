@@ -381,13 +381,15 @@
             "amendmentType": "ADDED",
             "id": "d6b4b158-5544-4d2e-8124-dd7dc480be8c",
             "judicialResultTypeId": "e3fb46ee-e406-4f73-9bf1-71d513da8cc7",
-            "resultTitle": "Case reopened"
+            "resultTitle": "Case reopened",
+            "isQualifyingResult":false
           },
           {
             "amendmentType": "DELETED",
             "id": "ed759b59-4bc8-49db-8518-b0824a403c92",
             "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
-            "resultTitle": "Community order varied"
+            "resultTitle": "Community order varied",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": []

@@ -40,8 +40,8 @@ public class ResultNotificationRuleEngine {
         rules.add(new ApplicationACONNotificationRule());
         rules.add(new ApplicationAmendmentACONNotificationRule());
         rules.add(new ApplicationAmendmentFinToFinAccWriteOffRule());
-        rules.add(new ApplicationAmendmentFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentFinToFinAccWriteOffRule());
+        rules.add(new ApplicationAmendmentFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentACONNotificationRule());
         rules.add(new CaseACONNotificationRule());

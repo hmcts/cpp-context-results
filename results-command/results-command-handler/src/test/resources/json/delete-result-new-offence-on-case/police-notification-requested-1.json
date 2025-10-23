@@ -825,7 +825,8 @@
                 "amendmentType": "DELETED",
                 "id": "02347d32-8c5a-45e6-875d-bc6443386df4",
                 "judicialResultTypeId": "f9eac601-a1e7-4d45-99ee-c49e2c4ca85b",
-                "resultTitle": "Attendance centre"
+                "resultTitle": "Attendance centre",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,
@@ -848,13 +849,15 @@
                 "amendmentType": "DELETED",
                 "id": "419a54d5-8950-4a56-9824-89b9c95a4792",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult": false
               },
               {
                 "amendmentType": "DELETED",
                 "id": "4a592949-bb05-41d3-a8f6-8ad9e09a9e11",
                 "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
-                "resultTitle": "Pay by date"
+                "resultTitle": "Pay by date",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,

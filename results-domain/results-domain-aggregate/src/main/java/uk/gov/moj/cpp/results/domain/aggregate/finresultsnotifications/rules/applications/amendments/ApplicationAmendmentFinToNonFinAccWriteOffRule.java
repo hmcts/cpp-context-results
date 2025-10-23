@@ -31,7 +31,7 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow();
+        return input.hasValidApplicationType() && input.isAmendmentFlow() && !input.hasFinancialAmendments();
     }
 
     @Override
@@ -39,32 +39,29 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
 
         final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
-        // Get original imposition offence details from the aggregate.
-
-        final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
-                .stream()
-                .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
-                .distinct().toList();
-
-        // Get imposition offence details for financial offences that are corresponding to original financial offences
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsFineToFine = getImpositionOffenceDetailsFineToFine(input, request, currentApplicationId);
-
-        // Get imposition offence details for non-financial offences corresponding to original financial offences
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsFineToNonFine = getImpositionOffenceDetailsFineToNonFine(input, request, currentApplicationId);
 
         final Optional<OriginalApplicationResults> originalApplicationResults = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
 
-        final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
         final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsAppAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()).stream()
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
                 .toList();
 
-        final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
-
-        //has fp to nFP
+        //has application amendments
         final boolean appResultsOnly = originalApplicationResults.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty();
-        final boolean finToNonFin = !impositionOffenceDetailsFineToNonFine.isEmpty() && impositionOffenceDetailsFineToFine.isEmpty();
-        if (appResultsOnly || finToNonFin) {
+        //has financial to non-financial amendments
+        final boolean finToNonFin = isFineToNonFineApplicationAmendment(input, request, currentApplicationId) && !isFineToFineApplicationAmendment(input, request, currentApplicationId);
+
+        if ((appResultsOnly && !isNonFineToNonFineApplicationAmendment(input, request, currentApplicationId)) || finToNonFin) {
+            // Get original imposition offence details from the aggregate when needed
+            final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
+                    .stream()
+                    .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
+                    .distinct().toList();
+
+            final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
+
+            final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
+
             return Optional.of(markedAggregateSendEmailEventBuilder
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             NCESDecisionConstants.AMEND_AND_RESHARE,
@@ -76,7 +73,8 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
                             newOffenceResults,
                             input.applicationResult(),
                             originalApplicationResults.orElse(null),
-                            newApplicationResults));
+                            newApplicationResults,
+                            input.prevApplicationResultsDetails()));
         }
 
         return Optional.empty();

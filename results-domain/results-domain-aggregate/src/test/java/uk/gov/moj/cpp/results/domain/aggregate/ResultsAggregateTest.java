@@ -957,7 +957,7 @@ public class ResultsAggregateTest {
 
 
         final List<Object> eventsList = eventStream.toList();
-        assertThat(eventsList.size(), is(1));
+        assertThat(eventsList.size(), is(2));
         assertThat(((HearingResultsAddedForDay) eventsList.get(0)).getDeletedJudicialResults(), is(deletedJudicialResults));
     }
 

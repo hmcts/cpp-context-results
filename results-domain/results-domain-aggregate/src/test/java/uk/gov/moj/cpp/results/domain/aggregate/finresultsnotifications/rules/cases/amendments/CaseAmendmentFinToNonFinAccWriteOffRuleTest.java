@@ -34,7 +34,6 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
                                 .withIsFinancial(false)
                                 .withAmendmentDate("2023-01-01")
                                 .build()))
-                .withAccountCorrelationId(randomUUID())
                 .build();
         final ResultNotificationRule.RuleInput input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
@@ -67,7 +66,6 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
         final UUID accountCorrelationId = randomUUID();
         HearingFinancialResultRequest trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
-                .withAccountCorrelationId(accountCorrelationId)
                 .withOffenceResults(List.of(
                         offenceResults()
                                 .withOffenceId(offenceId1)

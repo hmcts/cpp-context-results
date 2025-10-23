@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
@@ -191,6 +192,7 @@ public class StagingEnforcementIT {
                 .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE)
                 .replaceAll("HEARING_ID", hearingId);
 
+        final List<String> offenceIdList = convertStringToJson(payload).getJsonArray("offenceResults").stream().map(j -> ((JsonObject) j).getString("offenceId")).toList();
         whenResultsAreTraced(payload);
 
         JsonPath jsonResponse = QueueUtil.retrieveMessage(correlationIdAndMasterDefendantIdAddedConsumer);
@@ -212,12 +214,15 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
 
+        final JsonArrayBuilder offenceIdListJsonArray = createArrayBuilder();
+        offenceIdList.forEach(offenceIdListJsonArray::add);
 
         final JsonObject ncesEmailPayload = createObjectBuilder()
                 .add("applicationType", "APPEAL")
                 .add(MASTER_DEFENDANT_ID, masterDefendantId)
                 .add("listingDate", "01/12/2019")
                 .add("caseUrns", createArrayBuilder().add("caseUrn1").build())
+                .add("caseOffenceIdList", offenceIdListJsonArray.build())
                 .add(HEARING_COURT_CENTRE_NAME, HEARING_COURT_CENTRE_NAME_VALUE)
                 .build();
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
@@ -905,7 +910,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(jsonResponse.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
+        assertThat(jsonResponse.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452"));
 
         JsonPath jsonResponseDs = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponseDs.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED));
@@ -979,7 +984,7 @@ public class StagingEnforcementIT {
         assertThat(amendResultInputError.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(amendResultInputError.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(amendResultInputError.getString(OLD_DIVISION_CODE), is(divisionCode2));
-        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452,AER123451"));
+        assertThat(amendResultInputError.getString(OLD_GOB_ACCOUNT_NUMBER), is("AER123452"));
         assertThat(writeOffOneDayDeemedServed.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(writeOffOneDayDeemedServed.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(writeOffOneDayDeemedServed.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -1016,7 +1021,9 @@ public class StagingEnforcementIT {
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId1, accountNumber1);
         whenAccountNumberRetrieved(masterDefendantId, accountCorrelationId2, accountNumber2);
 
-        JsonPath jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 3);
+        JsonPath jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(WRITE_OFF_ONE_DAY_DEEMED_SERVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
+
         assertThat(jsonResponse.getString(SUBJECT), is(WRITE_OFF_ONE_DAY_DEEMED_SERVED));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -1025,7 +1032,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DIVISION_CODE), is(divisionCode3));
         assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
-        jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(AMEND_AND_RESHARE)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(AMEND_AND_RESHARE));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
@@ -1034,7 +1041,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(MATERIAL_ID), is(notNullValue()));
 
-        jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(AMEND_AND_RESHARE)).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is(AMEND_AND_RESHARE));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
@@ -1238,20 +1245,6 @@ public class StagingEnforcementIT {
         jsonResponse = QueueUtil.retrieveMessage(correlationIdAndMasterDefendantIdAddedConsumer);
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-
-
-        final JsonPath jsonResponseAmend = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
-        assertThat(jsonResponseAmend.getString(SUBJECT), is(AMEND_AND_RESHARE));
-        assertThat(jsonResponseAmend.getString(DEFENDANT_NAME), is("John Doe"));
-        assertThat(jsonResponseAmend.getString(DEFENDANT_DATE_OF_BIRTH), is(DEFENDANT_DATE_OF_BIRTH_VALUE));
-        assertThat(jsonResponseAmend.getString(SEND_TO), is("John.Doe@xxx.com"));
-        assertThat(jsonResponseAmend.getString(GOB_ACCOUNT_NUMBER), is(accountNumber));
-        assertThat(jsonResponseAmend.getString(CASE_REFERENCE), is("REF1,REF2"));
-        assertThat(jsonResponseAmend.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponseAmend.getString(DIVISION_CODE), is("DIV01"));
-        assertThat(jsonResponseAmend.getString("amendmentReason"), is("Amendment1"));
-        assertThat(jsonResponseAmend.getString("amendmentDate"), is("01/01/2021"));
-        assertThat(jsonResponseAmend.getString(MATERIAL_ID), is(notNullValue()));
 
         payload = getPayload(TRACE_RESULT_AMENDMENT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId2)

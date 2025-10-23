@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -87,6 +88,7 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
+import uk.gov.moj.cpp.results.domain.event.PublishToDcs;
 import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.io.IOException;
@@ -195,7 +197,8 @@ public class ResultsCommandHandlerTest {
             MarkedAggregateSendEmailWhenAccountReceived.class,
             NcesEmailNotificationRequested.class,
             DefendantTrackingStatusUpdated.class,
-            AppealUpdateNotificationRequested.class
+            AppealUpdateNotificationRequested.class,
+            PublishToDcs.class
     );
 
     @Captor
@@ -324,6 +327,13 @@ public class ResultsCommandHandlerTest {
                                         withJsonPath("$.hearing.id", is(hearingId.toString())),
                                         withJsonPath("$.hearingDay", is(hearingDay.toString()))
                                 )
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.publish-to-dcs"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.currentHearing.id", is(hearingId.toString())),
+                                        withJsonPath("$.hearingDay", is(hearingDay.toString()))
+                                )
                         ))));
 
     }
@@ -444,6 +454,33 @@ public class ResultsCommandHandlerTest {
                                 withJsonPath("$.hearing.prosecutionCases[1].isGroupMember", is(true)),
                                 withJsonPath("$.hearing.prosecutionCases[2].isGroupMember", is(false)),
                                 withJsonPath("$.hearing.prosecutionCases[3].isGroupMember", Objects::isNull)
+                        ))),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.publish-to-dcs"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.currentHearing.id", is(hearingId.toString())),
+                                withJsonPath("$.hearingDay", is(hearingDay.toString())),
+                                withJsonPath("$.currentHearing.isGroupProceedings", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[0].id", is(case1Id.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[1].id", is(case2Id.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[2].id", is(case3Id.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[3].id", is(case4Id.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[0].isCivil", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[1].isCivil", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[2].isCivil", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[3].isCivil", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[0].groupId", is(groupId.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[1].groupId", is(groupId.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[2].groupId", is(groupId.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[3].groupId", is(groupId.toString())),
+                                withJsonPath("$.currentHearing.prosecutionCases[0].isGroupMember", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[1].isGroupMember", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[2].isGroupMember", is(false)),
+                                withJsonPath("$.currentHearing.prosecutionCases[3].isGroupMember", is(false)),
+                                withJsonPath("$.currentHearing.prosecutionCases[0].isGroupMember", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[1].isGroupMember", is(true)),
+                                withJsonPath("$.currentHearing.prosecutionCases[2].isGroupMember", is(false)),
+                                withJsonPath("$.currentHearing.prosecutionCases[3].isGroupMember", Objects::isNull)
                         )))));
     }
 
@@ -918,6 +955,7 @@ public class ResultsCommandHandlerTest {
         CorrelationItem correlationItem = CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
                 .withAccountNumber("AccountNumber")
+                .withOffenceResultsDetailsList(emptyList())
                 .withAccountDivisionCode("Code").build();
         LinkedList<CorrelationItem> list = new LinkedList<>();
         list.add(correlationItem);

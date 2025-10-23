@@ -290,7 +290,8 @@
                 "amendmentType": "ADDED",
                 "id": "27d31040-243c-4805-9bc4-ecbd09eb7b1e",
                 "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
-                "resultTitle": "Fine"
+                "resultTitle": "Fine",
+                "isQualifyingResult": false
               }
             ],
             "offenceCount": 0,

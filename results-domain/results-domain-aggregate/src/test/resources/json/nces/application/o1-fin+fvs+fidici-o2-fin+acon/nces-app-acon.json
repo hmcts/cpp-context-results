@@ -6,6 +6,12 @@
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse deemed served by reason of time already spent in custody. Total amount enforced £400.00.\nFO - Fine\nFined £300.00\nFVS - Surcharge\nTo pay a surcharge of £4000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "title": "Robbery"
+    },
+    {
       "details": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFO - Fine\nFined £300.00",
       "offenceDate": "2019-11-28",
       "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",

@@ -1410,7 +1410,8 @@
             "amendmentType": "ADDED",
             "id": "d7beec6f-9ffa-4014-8729-2543e5b94eb6",
             "judicialResultTypeId": "2e83102c-a262-4bb3-a48d-c2107a094a66",
-            "resultTitle": "Order revoked"
+            "resultTitle": "Order revoked",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": [
@@ -1421,7 +1422,8 @@
                 "amendmentType": "ADDED",
                 "id": "1a583089-1531-48dd-be02-945dfc51c097",
                 "judicialResultTypeId": "2852b770-a7ad-11e8-98d0-529269fb1459",
-                "resultTitle": "Forfeiture and destruction"
+                "resultTitle": "Forfeiture and destruction",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1441,7 +1443,8 @@
             "amendmentType": "ADDED",
             "id": "5a3500d2-e4c8-4c4e-9192-1b6a41bca45f",
             "judicialResultTypeId": "61c246d8-f771-4420-9e02-30f34c0305b1",
-            "resultTitle": "Community order amended"
+            "resultTitle": "Community order amended",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": [
@@ -1452,7 +1455,8 @@
                 "amendmentType": "ADDED",
                 "id": "9bcacf57-a3e8-4e3e-96e3-959dd6b632ef",
                 "judicialResultTypeId": "49939c7c-750f-403e-9ce1-f82e3e568065",
-                "resultTitle": "No separate penalty"
+                "resultTitle": "No separate penalty",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1472,13 +1476,15 @@
             "amendmentType": "ADDED",
             "id": "a2c8ce9f-a893-4a1f-ab1c-b4f1cc8f16aa",
             "judicialResultTypeId": "49939c7c-750f-403e-9ce1-f82e3e568065",
-            "resultTitle": "No separate penalty"
+            "resultTitle": "No separate penalty",
+            "isQualifyingResult":false
           },
           {
             "amendmentType": "ADDED",
             "id": "181a2968-63ee-4d68-93f8-973740f9de7b",
             "judicialResultTypeId": "98138ec8-5dd3-11e8-9c2d-fa7ae01bbebc",
-            "resultTitle": "Text"
+            "resultTitle": "Text",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": [
@@ -1489,7 +1495,8 @@
                 "amendmentType": "ADDED",
                 "id": "ed753940-4cc6-4a8f-820f-4e056c89b462",
                 "judicialResultTypeId": "cf10ee96-c82c-46c7-8a34-0c9d08aca134",
-                "resultTitle": "Order for destruction in the interests of the animal made under Section 37 Animal Welfare Act 2006"
+                "resultTitle": "Order for destruction in the interests of the animal made under Section 37 Animal Welfare Act 2006",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1509,7 +1516,8 @@
             "amendmentType": "ADDED",
             "id": "48afe2e7-4c2c-4a5a-a263-a9178f1acec8",
             "judicialResultTypeId": "96d9e17a-fd20-4bb8-b00e-8c9350aa9d77",
-            "resultTitle": "Remittal of criminal courts charge"
+            "resultTitle": "Remittal of criminal courts charge",
+            "isQualifyingResult":false
           }
         ],
         "offenceResultDetails": [
@@ -1520,7 +1528,8 @@
                 "amendmentType": "ADDED",
                 "id": "c438bba7-a86d-4196-85fe-907368cb9f3a",
                 "judicialResultTypeId": "98dc94c8-45f0-4961-bb34-cd979dcc2874",
-                "resultTitle": "Order that dog be destroyed"
+                "resultTitle": "Order that dog be destroyed",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1543,7 +1552,8 @@
                 "amendmentType": "ADDED",
                 "id": "14c8ec49-7cf2-450b-9343-8aa4109a11e7",
                 "judicialResultTypeId": "5e253119-9aab-4d0d-8288-bcdbf3695d86",
-                "resultTitle": "Order (Disposal)"
+                "resultTitle": "Order (Disposal)",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 0,
@@ -1557,13 +1567,15 @@
                 "amendmentType": "ADDED",
                 "id": "832b5561-a709-42ae-bf96-c0f42a9ed3da",
                 "judicialResultTypeId": "73fe22ca-76bd-4aba-bdea-6dfef8ee03a2",
-                "resultTitle": "Points disqualification"
+                "resultTitle": "Points disqualification",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "4347e7cf-5c5f-4829-8701-4fb0b780c860",
                 "judicialResultTypeId": "4b850aa9-984c-4a15-a1ae-b2f861cfcbe8",
-                "resultTitle": "1: Prov DVLA produced"
+                "resultTitle": "1: Prov DVLA produced",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 12,
@@ -1577,19 +1589,22 @@
                 "amendmentType": "ADDED",
                 "id": "55bd4fdf-d1b8-4699-b9b1-3f698d4f327b",
                 "judicialResultTypeId": "abb95a52-2a75-40c3-8d3f-a1d75a199c47",
-                "resultTitle": "Imprisonment"
+                "resultTitle": "Imprisonment",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "bd5e86f5-99c0-404c-9fc4-0fe9f616bde9",
                 "judicialResultTypeId": "204fc6b8-d6c9-4fb8-acd0-47d23c087625",
-                "resultTitle": "No surcharge"
+                "resultTitle": "No surcharge",
+                "isQualifyingResult":false
               },
               {
                 "amendmentType": "ADDED",
                 "id": "6b3f790c-7b28-48c5-a5d5-50e8448d7e13",
                 "judicialResultTypeId": "6cb15971-c945-4398-b7c9-3f8b743a4de3",
-                "resultTitle": "Total custodial period"
+                "resultTitle": "Total custodial period",
+                "isQualifyingResult":false
               }
             ],
             "offenceCount": 10,

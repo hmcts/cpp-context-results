@@ -1,0 +1,674 @@
+{
+  "caseResultDetails": [],
+  "currentHearing": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "NOT_PRESENT",
+            "day": "2025-07-23"
+          }
+        ],
+        "defendantId": "47d0a008-4c5c-4766-9448-b4f8b8c7e984"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2025-07-23T22:30:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "431aac7b-2210-4bfd-9b98-acd3bef9953b",
+    "isGroupProceedings": false,
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "ACTIVE",
+        "cpsOrganisation": "A30AB00",
+        "defendants": [
+          {
+            "courtProceedingsInitiated": "2025-07-23T14:13:59.514Z",
+            "id": "47d0a008-4c5c-4766-9448-b4f8b8c7e984",
+            "isYouth": false,
+            "masterDefendantId": "47d0a008-4c5c-4766-9448-b4f8b8c7e984",
+            "offences": [
+              {
+                "arrestDate": "2021-11-29",
+                "chargeDate": "2022-11-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "7e54fc5a-676a-4315-82a9-6c48d738f615",
+                "isDisposed": true,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "FINAL",
+                    "cjsCode": "1017",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "dvlaCode": "J",
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "78b4285f-6844-4c9d-958c-864081c2faa2",
+                    "judicialResultTypeId": "b9c6047b-fb84-4b12-97a1-2175e4b8bbac",
+                    "label": "Absolute discharge",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "431aac7b-2210-4bfd-9b98-acd3bef9953b",
+                    "policeSubjectLineTitle": "Final Sentence",
+                    "postHearingCustodyStatus": "A",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 53800,
+                    "resultText": "AD - Absolute discharge",
+                    "resultWording": "",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "78b4285f-6844-4c9d-958c-864081c2faa2",
+                    "rootJudicialResultTypeId": "b9c6047b-fb84-4b12-97a1-2175e4b8bbac",
+                    "sentToCC": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Rhyddhad diamod"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "INTERMEDIARY",
+                    "cjsCode": "4558",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "3144c37b-053f-4a8b-b3a0-2f15437e8b10",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4362a1a4-aa80-4a68-ae61-f57962709f3d",
+                        "label": "Sent for trial under",
+                        "promptReference": "sentForTrialUnder",
+                        "promptSequence": 100,
+                        "qualifier": "XB",
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Section 51(3) of the Crime and Disorder Act 1998",
+                        "welshLabel": "Traddodwyd ar gyfer treial ar",
+                        "welshValue": "Adran 51 (3) Deddf Trosedd ac Anhrefn 1998"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d10cd4b-fb39-40dd-88e1-2397832bc914",
+                        "label": "Bail remand days to count (tagged days)",
+                        "promptReference": "bailRemandDaysToCountTaggedDays",
+                        "promptSequence": 300,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "50",
+                        "welshLabel": "Dyddiau mechnïaeth ar remand i’w cyfrif (dyddiad gyda tag)",
+                        "welshValue": "50"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "583ea6cb-4251-406e-b07a-445fb0dde914",
+                        "label": "Victim personal statement to be presented to court by prosecutor or other person",
+                        "promptReference": "victimPersonalStatementToBePresentedToCourtByProsecutorOrOtherPerson",
+                        "promptSequence": 1000,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "true",
+                        "welshLabel": "Datganiad personol i ddioddefwyr i'w gyflwyno i'r llys gan erlynydd neu unigolyn arall",
+                        "welshValue": "true"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "ed26a92b-0850-435b-a4c7-2c77baaea4b3",
+                        "label": "PSR ordered",
+                        "promptReference": "pSROrdered",
+                        "promptSequence": 1200,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "false",
+                        "welshValue": "false"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified organisation name",
+                        "promptReference": "probationyottobenotifiedOrganisationName",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Barking & Dagenham YOT",
+                        "welshValue": "Barking & Dagenham YOT"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified email address 1",
+                        "promptReference": "probationyottobenotifiedEmailAddress1",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "grp.lbbdyot-barkinganddagenham@lbbd.cjsm.net",
+                        "welshValue": "grp.lbbdyot-barkinganddagenham@lbbd.cjsm.net"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "61f951c3-f18d-4a44-ae4a-0cad4efb4133",
+                        "label": "Defendant to attend the next hearing",
+                        "promptReference": "defendantToAttendTheNextHearing",
+                        "promptSequence": 100,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "true",
+                        "welshLabel": "Diffynnydd i fynychu’r gwrandawiad nesaf",
+                        "welshValue": "true"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "judicialResultPromptTypeId": "fbed768b-ee95-4434-87c8-e81cbc8d24c8",
+                        "label": "Next hearing in Crown Court",
+                        "promptReference": "fcb1840f-91cc-4bfb-a77d-63d1f8f1c9c6",
+                        "promptSequence": 200,
+                        "usergroups": [],
+                        "value": "Fixed Date:30/07/2025\nTime of hearing:10:00\nCourthouse organisation name:Snaresbrook Crown Court\nCourthouse address line 1:75 Hollybush Hill\nCourthouse address line 2:Snaresbrook\nCourthouse address line 3:London\nCourthouse post code:E11 1QW\nHearing type:Application to Rescind Grant of Bail\nEstimated duration:20 MINUTES",
+                        "welshLabel": "Bydd y gwrandawiad nesaf yn Llys y Goron"
+                      }
+                    ],
+                    "judicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "label": "Sent to Crown Court for trial on unconditional bail",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "nextHearing": {
+                      "adjournmentReason": "",
+                      "courtCentre": {
+                        "address": {
+                          "address1": "75 Hollybush Hill",
+                          "address2": "Snaresbrook",
+                          "address3": "London",
+                          "postcode": "E11 1QW"
+                        },
+                        "code": "C01SN00",
+                        "courtHearingLocation": "C01SN00",
+                        "id": "8cea5952-851a-3142-8a0a-f80c91368ccd",
+                        "name": "Snaresbrook Crown Court",
+                        "psaCode": 2573,
+                        "welshName": "Llys Y Goron Snaresbrook"
+                      },
+                      "estimatedDuration": "20 MINUTES",
+                      "estimatedMinutes": 20,
+                      "jurisdictionType": "CROWN",
+                      "listedStartDateTime": "2025-07-30T09:00:00.000Z",
+                      "type": {
+                        "description": "Application to Rescind Grant of Bail",
+                        "id": "3d8f6751-c2d6-401f-a1b5-dbd49bbf7c4f"
+                      }
+                    },
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "431aac7b-2210-4bfd-9b98-acd3bef9953b",
+                    "postHearingCustodyStatus": "U",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 141200,
+                    "resultDefinitionGroup": "SentToCC",
+                    "resultText": "CCIU - Sent to Crown Court for trial on unconditional bail\nSent for trial under Section 51(3) of the Crime and Disorder Act 1998. Bail remand days to count (tagged days): 50. Victim personal statement to be presented to court by prosecutor or other person. Remanded on unconditional bail until hearing on 30/07/2025 at 10:00, Snaresbrook Crown Court. Defendant to attend the next hearing",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "3144c37b-053f-4a8b-b3a0-2f15437e8b10",
+                    "rootJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "sentToCC": true,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Traddodi i Lys y Goron ar gyfer dedfryd ar fechnïaeth ddiamod"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "ANCILLARY",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "fcb1840f-91cc-4bfb-a77d-63d1f8f1c9c6",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "aea2ee79-47b4-4023-9a95-1b327e6e03d5",
+                        "label": "Fixed Date",
+                        "promptReference": "fixedDate",
+                        "promptSequence": 200,
+                        "type": "DATE",
+                        "usergroups": [],
+                        "value": "30/07/2025",
+                        "welshLabel": "Dyddiad Penodol",
+                        "welshValue": "30/07/2025"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d125a5a-acbc-461d-a657-ba5643af85a6",
+                        "label": "Time of hearing",
+                        "promptReference": "timeOfHearing",
+                        "promptSequence": 400,
+                        "type": "TIME",
+                        "usergroups": [],
+                        "value": "10:00",
+                        "welshLabel": "Amser y gwrandawiad",
+                        "welshValue": "10:00"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse organisation name",
+                        "promptReference": "hCHOUSEOrganisationName",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Snaresbrook Crown Court",
+                        "welshValue": "Snaresbrook Crown Court"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 1",
+                        "promptReference": "hCHOUSEAddress1",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "75 Hollybush Hill",
+                        "welshValue": "75 Hollybush Hill"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 2",
+                        "promptReference": "hCHOUSEAddress2",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Snaresbrook",
+                        "welshValue": "Snaresbrook"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 3",
+                        "promptReference": "hCHOUSEAddress3",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "London",
+                        "welshValue": "London"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse post code",
+                        "promptReference": "hCHOUSEPostCode",
+                        "promptSequence": 500,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "E11 1QW",
+                        "welshValue": "E11 1QW"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "c1116d12-dd35-4171-807a-2cb845357d22",
+                        "label": "Hearing type",
+                        "promptReference": "HTYPE",
+                        "promptSequence": 700,
+                        "type": "TXT",
+                        "usergroups": [],
+                        "value": "Application to Rescind Grant of Bail",
+                        "welshLabel": "Math o wrandawiad",
+                        "welshValue": "Application to Rescind Grant of Bail"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "d85cc2d7-66c8-471e-b6ff-c1bc60c6cdac",
+                        "label": "Estimated duration",
+                        "promptReference": "HEST",
+                        "promptSequence": 800,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "20 MINUTES",
+                        "welshLabel": "Amcangyfrif amser",
+                        "welshValue": "20 MINUTES"
+                      }
+                    ],
+                    "judicialResultTypeId": "fbed768b-ee95-4434-87c8-e81cbc8d24c8",
+                    "label": "Next hearing in Crown Court",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "431aac7b-2210-4bfd-9b98-acd3bef9953b",
+                    "parentJudicialResultId": "3144c37b-053f-4a8b-b3a0-2f15437e8b10",
+                    "parentJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "postHearingCustodyStatus": "A",
+                    "preserveActiveOrder": true,
+                    "publishedAsAPrompt": true,
+                    "publishedForNows": true,
+                    "rank": 29600,
+                    "resultDefinitionGroup": "Next hearing",
+                    "resultText": "hearing on 30/07/2025 at 10:00, Snaresbrook Crown Court",
+                    "resultWording": "",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "3144c37b-053f-4a8b-b3a0-2f15437e8b10",
+                    "rootJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "sentToCC": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Bydd y gwrandawiad nesaf yn Llys y Goron"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "canExtendActiveOrder": false,
+                    "category": "ANCILLARY",
+                    "committedToCC": false,
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "7329692f-9350-448e-a866-f2ffaf3f20f0",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4362a1a4-aa80-4a68-ae61-f57962709f3d",
+                        "label": "Sent for trial under",
+                        "promptReference": "sentForTrialUnder",
+                        "promptSequence": 100,
+                        "qualifier": "XB",
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Section 51(3) of the Crime and Disorder Act 1998",
+                        "welshLabel": "Traddodwyd ar gyfer treial ar",
+                        "welshValue": "Adran 51 (3) Deddf Trosedd ac Anhrefn 1998"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4d10cd4b-fb39-40dd-88e1-2397832bc914",
+                        "label": "Bail remand days to count (tagged days)",
+                        "promptReference": "bailRemandDaysToCountTaggedDays",
+                        "promptSequence": 300,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "50",
+                        "welshLabel": "Dyddiau mechnïaeth ar remand i’w cyfrif (dyddiad gyda tag)",
+                        "welshValue": "50"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "583ea6cb-4251-406e-b07a-445fb0dde914",
+                        "label": "Victim personal statement to be presented to court by prosecutor or other person",
+                        "promptReference": "victimPersonalStatementToBePresentedToCourtByProsecutorOrOtherPerson",
+                        "promptSequence": 1000,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "true",
+                        "welshLabel": "Datganiad personol i ddioddefwyr i'w gyflwyno i'r llys gan erlynydd neu unigolyn arall",
+                        "welshValue": "true"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "ed26a92b-0850-435b-a4c7-2c77baaea4b3",
+                        "label": "PSR ordered",
+                        "promptReference": "pSROrdered",
+                        "promptSequence": 1200,
+                        "type": "BOOLEAN",
+                        "usergroups": [],
+                        "value": "false",
+                        "welshValue": "false"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified organisation name",
+                        "promptReference": "probationyottobenotifiedOrganisationName",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Barking & Dagenham YOT",
+                        "welshValue": "Barking & Dagenham YOT"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "714cfc3a-c860-49e0-a775-32fa7a1540db",
+                        "label": "Probation / YOT to be notified email address 1",
+                        "promptReference": "probationyottobenotifiedEmailAddress1",
+                        "promptSequence": 1300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "grp.lbbdyot-barkinganddagenham@lbbd.cjsm.net",
+                        "welshValue": "grp.lbbdyot-barkinganddagenham@lbbd.cjsm.net"
+                      }
+                    ],
+                    "judicialResultTypeId": "491e30e9-2508-4e3a-9291-dfaf16d975ab",
+                    "label": "Sent to Crown Court for trial",
+                    "lastSharedDateTime": "2025-07-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-07-23",
+                    "orderedHearingId": "431aac7b-2210-4bfd-9b98-acd3bef9953b",
+                    "parentJudicialResultId": "3144c37b-053f-4a8b-b3a0-2f15437e8b10",
+                    "parentJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "postHearingCustodyStatus": "A",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": true,
+                    "qualifier": "XB",
+                    "rank": 61800,
+                    "resultText": "Sent for trial under Section 51(3) of the Crime and Disorder Act 1998. Bail remand days to count (tagged days): 50. Victim personal statement to be presented to court by prosecutor or other person.",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "3144c37b-053f-4a8b-b3a0-2f15437e8b10",
+                    "rootJudicialResultTypeId": "705140dc-833a-4aa0-a872-839009fc4494",
+                    "sentToCC": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Er mwyn cynnal y treial"
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "S:L3",
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03012",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "6588ffee-89ec-36a2-ab90-a54177cbda97",
+                "offenceLegislation": "Contrary to section 363(3)(b) and (4) of the Communications Act 2003.",
+                "offenceLegislationWelsh": "Yn groes i adran 363(3)(b) a (4) Deddf Cyfathrebu 2003.",
+                "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+                "offenceTitleWelsh": "Meddu ar/mewn rheolaeth set deledu gan fwriadu i unigolyn arall ei ddefnyddio/osod heb drwydded",
+                "orderIndex": 1,
+                "startDate": "2022-11-28",
+                "wording": "Theft of pedal cycle."
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "0800PP0100000000002A",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "U",
+                "description": "Unconditional bail",
+                "id": "eaf18bf8-9569-3656-a4ab-64299f9bd513"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9999AAAA",
+                  "address2": "Woodlane",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon",
+                  "postcode": "BS1 1JQ"
+                },
+                "contact": {
+                  "home": "0207052632",
+                  "mobile": "07777052632",
+                  "primaryEmail": "REDDY.TEST017052632@gmail.com"
+                },
+                "dateOfBirth": "1991-02-18",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Milo5",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Medhurst5",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            },
+            "prosecutionAuthorityReference": "0800PP0100000000002A",
+            "prosecutionCaseId": "8d89b04a-afa2-414a-9bc3-d91b41aa4180"
+          }
+        ],
+        "id": "8d89b04a-afa2-414a-9bc3-d91b41aa4180",
+        "initiationCode": "C",
+        "originatingOrganisation": "G94DV00",
+        "prosecutionCaseIdentifier": {
+          "address": {
+            "address1": "Finance Operations",
+            "address2": "C3 East",
+            "address3": "DVLA",
+            "address4": "Longview Road",
+            "address5": "Swansea",
+            "postcode": "SA6 7JL"
+          },
+          "contact": {
+            "primaryEmail": "sjp@dvla.gov.uk"
+          },
+          "majorCreditorCode": "DVL2",
+          "prosecutionAuthorityCode": "DVLA",
+          "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+          "prosecutionAuthorityName": "Driver and Vehicle Licensing Agency",
+          "prosecutionAuthorityOUCode": "G94DV00",
+          "caseURN": "28DI7052632"
+        }
+      }
+    ],
+    "type": {
+      "description": "First hearing",
+      "id": "4a0e892d-c0c5-3c51-95b8-704d8c781776"
+    }
+  },
+  "hearingDay": "2025-07-23",
+  "isReshare": false,
+  "sharedTime": "2025-07-23T14:16:05.667Z"
+}
