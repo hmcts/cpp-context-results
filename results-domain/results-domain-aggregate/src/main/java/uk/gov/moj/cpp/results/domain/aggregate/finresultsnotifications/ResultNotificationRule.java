@@ -3,17 +3,18 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;

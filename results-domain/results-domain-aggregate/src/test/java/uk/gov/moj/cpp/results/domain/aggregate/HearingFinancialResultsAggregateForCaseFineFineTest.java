@@ -128,8 +128,8 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app2 reopen resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/three-offences/Case-Fin-Fin-Fin/App1-Granted/Fine-Fine-Fine/App2-Granted-Non-fine-Non-fine-Non-fine/3_app_reopen_results_tracked.json",
-                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested")
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/Case-Fine-Fine/multi-offences/three-offences/Case-Fin-Fin-Fin/App1-Granted/Fine-Fine-Fine/App2-Granted-Non-fine-Non-fine-Non-fine/3_app_granted_nces_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")

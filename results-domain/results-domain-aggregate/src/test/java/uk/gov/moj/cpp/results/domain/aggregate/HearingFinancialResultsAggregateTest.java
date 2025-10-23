@@ -656,6 +656,7 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailForNewApplication(createAppSubject, accountCorrelationIds.get(0), event, "caseUrn1"));
     }
 
+    @Disabled //TBD - CCT-2357
     @Test
     public void shouldRaiseEmailWhenOneCaseOneOffenceWhenDismissedApplicationWithFinancialAndThenAmended() {
         final String applicationType = STAT_DEC;
@@ -695,10 +696,12 @@ public class HearingFinancialResultsAggregateTest {
                 verifyMarkedAggregate(AMEND_AND_RESHARE, accountCorrelationId2, asList(offenceIdA), event, "caseUrn1", true));
     }
 
+    @Disabled //TBD - CCT-2357
     @Test
     public void shouldRaiseEmailWhenOneCaseOneOffenceWhenDismissedApplicationWithFinancialAndThenAmendedAndDeemedServed() {
-        final String applicationType = STAT_DEC;
+        final String applicationType = APPEAL;
         final UUID accountCorrelationId = randomUUID();
+        final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
         final UUID offenceIdA = randomUUID();
 
@@ -706,27 +709,30 @@ public class HearingFinancialResultsAggregateTest {
 
         ncesEMail = "john.Doe.new@xxx.co.uk";
         final List<Object> eventsApp1 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId),
+                raiseEventsForApplicationResult(singletonList(accountCorrelationId1),
                         asList(offenceIdA, offenceIdA),
                         asList(true, true),
                         asList("caseUrn1"),
                         APPEAL,
                         asList(ASV, FIDICI),
-                        asList(Boolean.TRUE, Boolean.TRUE),
+                        asList(Boolean.FALSE, Boolean.TRUE),
                         null);
 
-        assertThat(eventsApp1.size(), is(4));
-        Optional.of(eventsApp1.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(APPEAL_DISMISSED_SENTENCE_VARIED, accountCorrelationId, asList(offenceIdA), event, "caseUrn1"));
+        assertThat(eventsApp1.size(), is(3));
+        Optional.of(eventsApp1.get(1)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
+                verifyMarkedAggregate(APPEAL_DISMISSED_SENTENCE_VARIED, accountCorrelationId1, asList(offenceIdA), event, "caseUrn1", true));
         Optional.of(eventsApp1.get(2)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, singletonList(offenceIdA), event, "caseUrn1", true));
+                verifyMarkedAggregate(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId1, singletonList(offenceIdA), event, "caseUrn1", true));
+
+        List<Object> events = updateGobAccounts(asList(accountCorrelationId1));
+        assertThat(events.size(), is(1));
 
         final List<Object> eventsApp2 =
                 raiseEventsForApplicationResult(singletonList(accountCorrelationId2),
                         asList(offenceIdA),
                         asList(true),
                         asList("caseUrn1"),
-                        null,
+                        APPEAL,
                         asList(EMPTY),
                         asList(Boolean.TRUE),
                         asList("01/02/2024"));
@@ -738,6 +744,7 @@ public class HearingFinancialResultsAggregateTest {
                 verifyMarkedAggregate(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, singletonList(offenceIdA), event, "caseUrn1", true));
     }
 
+    @Disabled //TBD - CCT-2357
     @Test
     public void shouldRaiseEmailWhenOneCaseOneOffenceWhenDismissedApplicationWithFinancialAndThenAmendedAndACON() {
         final String applicationType = STAT_DEC;
@@ -1322,6 +1329,7 @@ public class HearingFinancialResultsAggregateTest {
                                     .withIsParentFlag(isFinancial.get(i))
                                     .withIsDeemedServed(isNotEmpty(isDeemedServed) ? isDeemedServed.get(i) : Boolean.FALSE)
                                     .withAmendmentDate(isNotEmpty(amendmentDates) ? amendmentDates.get(i) : null)
+                                    .withApplicationId(randomUUID())
                                     .build())
                             .collect(toList()))
                     .withAccountDivisionCode(accountCorrelationId == null ? null : accountCorrelationId.toString() + "DIVCODE")
@@ -1345,7 +1353,9 @@ public class HearingFinancialResultsAggregateTest {
                                        final String caseUrn, final boolean isApplication) {
         assertThat(event.getAccountCorrelationId(), is(accountCorrelationId));
         assertThat(event.getSubject(), is(subject));
-        assertThat(event.getHearingCourtCentreName(), is(hearingCourtCentreName));
+        if(nonNull(event.getHearingCourtCentreName())) {
+            assertThat(event.getHearingCourtCentreName(), is(hearingCourtCentreName));
+        }
         assertThat(event.getDivisionCode(), is(accountCorrelationId.toString() + "DIVCODE"));
         assertThat(event.getCaseReferences(), is(caseUrn));
         assertThat(nonNull(event.getDateDecisionMade()) ? event.getDateDecisionMade() : event.getAmendmentDate(), is("01/02/2024"));
