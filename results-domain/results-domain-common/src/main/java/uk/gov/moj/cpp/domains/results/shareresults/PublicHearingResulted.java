@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.domains.results.shareresults;
 
-import uk.gov.justice.core.courts.DeletedJudicialResult;
 import uk.gov.justice.core.courts.Hearing;
 
 import java.time.LocalDate;
@@ -16,8 +15,6 @@ public class PublicHearingResulted {
     private List<UUID> shadowListedOffences;
     private Optional<LocalDate> hearingDay;
     private Optional<Boolean> isReshare;
-
-    private List<DeletedJudicialResult> deletedJudicialResults;
 
     public static PublicHearingResulted publicHearingResulted() {
         return new PublicHearingResulted();
@@ -68,12 +65,4 @@ public class PublicHearingResulted {
         return this;
     }
 
-    public List<DeletedJudicialResult> getDeletedJudicialResults() {
-        return deletedJudicialResults;
-    }
-
-    public PublicHearingResulted setDeletedJudicialResults(final List<DeletedJudicialResult> deletedJudicialResults) {
-        this.deletedJudicialResults = deletedJudicialResults;
-        return this;
-    }
 }

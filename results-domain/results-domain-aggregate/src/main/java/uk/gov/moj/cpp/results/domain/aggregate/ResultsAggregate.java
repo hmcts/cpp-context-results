@@ -183,7 +183,7 @@ public class ResultsAggregate implements Aggregate {
             isReshare = isReshareFromPayload.get();
         }
 
-        final HearingResultsAddedForDay hearingResultsAddedForDay = new HearingResultsAddedForDay(payload.getDeletedJudicialResults(), payload.getHearing(), hearingDay, isReshare, payload.getSharedTime());
+        final HearingResultsAddedForDay hearingResultsAddedForDay = new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime());
 
         PublishToDcs publishToDcs =  PublishToDcs.publishToDcs()
                 .withPreviousHearing(hearing)
