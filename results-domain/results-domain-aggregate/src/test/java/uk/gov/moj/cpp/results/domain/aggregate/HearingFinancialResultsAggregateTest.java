@@ -105,8 +105,6 @@ public class HearingFinancialResultsAggregateTest {
     private String defendantAddress = "address";
     private String defendantEmail = "aa@aa.com";
     private String defendantContactNumber = "02074561234";
-
-    private UUID hearingId = randomUUID();
     private final HearingFinancialResultRequest input = HearingFinancialResultRequest.hearingFinancialResultRequest()
             .withAccountCorrelationId(CORRELATION_ID_1)
             .withHearingId(HEARING_ID)
@@ -137,7 +135,7 @@ public class HearingFinancialResultsAggregateTest {
                             .withIsDeemedServed(false)
                             .build()))
             .build();
-
+    private UUID hearingId = randomUUID();
     @InjectMocks
     private HearingFinancialResultsAggregate aggregate;
 
@@ -655,6 +653,7 @@ public class HearingFinancialResultsAggregateTest {
         Optional.of(eventsCreateApp1.get(0)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
                 verifyEmailForNewApplication(createAppSubject, accountCorrelationIds.get(0), event, "caseUrn1"));
     }
+
     @Test
     public void shouldNotRaiseEmailWhenApplicationResultedWithoutTracked() {
         final UUID offenceIdA = randomUUID();
@@ -722,7 +721,7 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(events.size(), is(3));
 
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, asList(offenceIdA,offenceIdB), event, "Ref1,Ref2"));
+                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, asList(offenceIdA, offenceIdB), event, "Ref1,Ref2"));
 
     }
 
@@ -1220,9 +1219,9 @@ public class HearingFinancialResultsAggregateTest {
                                        final String caseUrn, final boolean isApplication) {
         assertThat(event.getAccountCorrelationId(), is(accountCorrelationId));
         assertThat(event.getSubject(), is(subject));
-        if(nonNull(event.getHearingCourtCentreName())) {
-            assertThat(event.getHearingCourtCentreName(), is(hearingCourtCentreName));
-        }
+//        if(nonNull(event.getHearingCourtCentreName())) {
+        assertThat(event.getHearingCourtCentreName(), is(hearingCourtCentreName));
+        //   }
         assertThat(event.getDivisionCode(), is(accountCorrelationId.toString() + "DIVCODE"));
         assertThat(event.getCaseReferences(), is(caseUrn));
         assertThat(nonNull(event.getDateDecisionMade()) ? event.getDateDecisionMade() : event.getAmendmentDate(), is("01/02/2024"));
