@@ -69,7 +69,6 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                                                final NewApplicationResults newApplicationResults,
                                                                                                                final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails
     ) {
-        // find the appropriate correlation item based on offence IDs
         return buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest, subject, impositionOffenceDetails,
                 ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail), isWrittenOffExists, originalDateOfOffenceList,
                 originalDateOfSentenceList, newResultByOffenceList, applicationResult, originalApplicationResults, newApplicationResults, prevApplicationResultsDetails);
