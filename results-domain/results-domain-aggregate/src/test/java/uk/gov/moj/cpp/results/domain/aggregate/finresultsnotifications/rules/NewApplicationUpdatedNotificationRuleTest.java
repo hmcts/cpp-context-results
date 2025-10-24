@@ -17,16 +17,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class NewApplicationUpdatedNotificationRuleTest {
     private final NewApplicationUpdatedNotificationRule rule = new NewApplicationUpdatedNotificationRule();
 
-    @Disabled
     @Test
     void shouldGenerateUpdateNotificationForAdjournedApplication() {
         final UUID hearingId = randomUUID();
+        final UUID offenceId = randomUUID();
+        final UUID accountCorrelationId = randomUUID();
+
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -35,8 +36,9 @@ class NewApplicationUpdatedNotificationRuleTest {
                                 .withApplicationResultType("Adjournment")
                                 .withResultCode(null)
                                 .withAmendmentDate(null)
+                                .withImpositionOffenceDetails("Adjourn offences")
                                 .withApplicationId(randomUUID())
-                                .withOffenceId(randomUUID())
+                                .withOffenceId(offenceId)
                                 .build()))
                 .build();
         var input = resultNotificationRuleInputBuilder()
@@ -50,9 +52,10 @@ class NewApplicationUpdatedNotificationRuleTest {
                 .withPrevApplicationResultsDetails(Map.of())
                 .withCorrelationItemList(
                         List.of(correlationItem()
-                                .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                .withAccountCorrelationId(accountCorrelationId)
+                                .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).build()))
                                 .withAccountNumber("AC123456789")
-                                        .withHearingId(hearingId)
+                                .withHearingId(hearingId)
                                 .build()))
                 .build();
 

@@ -100,11 +100,7 @@ public class MarkedAggregateSendEmailEventBuilder {
             } else {
                 builder.withGobAccountNumber(previousItem.getAccountNumber());
             }
-        } /*else {
-            builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
-                    .withGobAccountNumber(hearingFinancialResultRequest.getAccountNumber());
-        }*/
-
+        }
         builder.withId(randomUUID())
                 .withSendTo(ncesEMail)
                 .withSubject(subject)
