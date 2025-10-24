@@ -114,10 +114,10 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
         if (hasSentenceVaried(newResultByOffenceList) || !newResultByOffenceList.isEmpty()) {
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                     .buildMarkedAggregateWithOlds(hearingFinancialResultRequest,
-                            impositionOffenceDetailsForApplication, 
-                            applicationResult, 
+                            impositionOffenceDetailsForApplication,
+                            applicationResult,
                             buildNewOffenceResultForSV(newResultByOffenceList),
-                            originalApplicationResults, 
+                            originalApplicationResults,
                             null,
                             APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
                             prevApplicationResultsDetails));
