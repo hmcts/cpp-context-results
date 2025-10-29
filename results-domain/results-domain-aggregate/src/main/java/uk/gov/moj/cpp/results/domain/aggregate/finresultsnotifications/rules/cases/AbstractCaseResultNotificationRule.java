@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  * Base class for case result notification rules.
  */
 public abstract class AbstractCaseResultNotificationRule implements ResultNotificationRule {
-    private static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
+    public static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
     private static final String ACON = "ACON";
 
     protected ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {

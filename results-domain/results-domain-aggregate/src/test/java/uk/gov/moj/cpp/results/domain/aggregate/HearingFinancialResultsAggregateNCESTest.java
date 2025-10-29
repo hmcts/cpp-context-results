@@ -160,7 +160,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("REG1 - pre-2390 > DD-40587 Financial changes with Nonfine to Fine change",
+                Arguments.of("1-REG1 - pre-2390 > DD-40587 Financial changes with Nonfine to Fine change",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/reg-1-pre-2390/1_case_resulted-pre-2390.json",
@@ -178,7 +178,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("REG1 - post-2390 > DD-40587 Financial changes with Nonfine to Fine change",
+                Arguments.of("2-REG1 - post-2390 > DD-40587 Financial changes with Nonfine to Fine change",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/reg-1-post-2390/1_case_resulted-post-2390.json",
