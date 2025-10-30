@@ -8,6 +8,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule.isCaseAmended;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -95,7 +96,7 @@ public interface ResultNotificationRule {
         }
 
         public boolean isFinancial() {
-            return request.getOffenceResults().stream().anyMatch(o -> o.getIsFinancial());
+            return request.getOffenceResults().stream().anyMatch(OffenceResults::getIsFinancial);
         }
 
         public boolean isCaseAmendment() {
@@ -105,6 +106,9 @@ public interface ResultNotificationRule {
         }
 
         public boolean hasFinancialTransitionInTheCase() {
+            final boolean currentAllFin = request.getOffenceResults().stream()
+                    .filter(isCaseAmended)
+                    .allMatch(OffenceResults::getIsFinancial);
 
             final boolean hasMixedFinancialOffences = prevOffenceResultsDetails.isEmpty()
                     || request.getOffenceResults().stream().filter(isCaseAmended).allMatch(o -> isNull(prevOffenceResultsDetails.get(o.getOffenceId())))
@@ -113,13 +117,15 @@ public interface ResultNotificationRule {
                     && request.getOffenceResults().stream().filter(isCaseAmended)
                     .anyMatch(o -> nonNull(prevOffenceResultsDetails.get(o.getOffenceId())) && !prevOffenceResultsDetails.get(o.getOffenceId()).getIsFinancial()));
 
-            final boolean nonFinToFinTransition = request.getOffenceResults().stream()
+            final boolean nonFinToFinTransition = prevOffenceResultsDetails.isEmpty()
+                    || request.getOffenceResults().stream()
                     .filter(isCaseAmended)
                     .anyMatch(o -> o.getIsFinancial()
                             && nonNull(prevOffenceResultsDetails.get(o.getOffenceId()))
                             && !prevOffenceResultsDetails.get(o.getOffenceId()).getIsFinancial());
 
-            return hasMixedFinancialOffences && nonFinToFinTransition;
+
+            return currentAllFin && hasMixedFinancialOffences && nonFinToFinTransition;
         }
 
         private boolean isDeemedServedChangedForCase() {
