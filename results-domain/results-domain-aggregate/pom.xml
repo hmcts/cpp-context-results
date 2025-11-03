@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-domain</artifactId>
-        <version>17.0.80-DLRM6-SNAPSHOT</version>
+        <version>17.0.81-DLRM6-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-domain-aggregate</artifactId>
