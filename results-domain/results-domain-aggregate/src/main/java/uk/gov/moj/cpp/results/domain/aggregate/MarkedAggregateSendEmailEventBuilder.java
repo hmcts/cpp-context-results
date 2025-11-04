@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -15,7 +14,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldCorrelation;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldCorrelations;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldGobAccounts;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
 
@@ -92,13 +90,7 @@ public class MarkedAggregateSendEmailEventBuilder {
             final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
             builder.withAccountCorrelationId(previousItem.getAccountCorrelationId());
             builder.withDivisionCode(previousItem.getAccountDivisionCode());
-            if (isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences()) &&
-                    hearingFinancialResultRequest.getProsecutionCaseReferences().size() > 1) {
-                final List<String> oldGobAccounts = getGobAccountsWhenMultipleCases(hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
-                builder.withGobAccountNumber(isNotEmpty(oldGobAccounts) ? String.join(",", oldGobAccounts) : previousItem.getAccountNumber());
-            } else {
-                builder.withGobAccountNumber(previousItem.getAccountNumber());
-            }
+            builder.withGobAccountNumber(getOldGobAccount(previousItem, offenceIdList, hearingFinancialResultRequest, prevApplicationResultsDetails));
         }
         builder.withId(randomUUID())
                 .withSendTo(ncesEMail)
@@ -174,12 +166,7 @@ public class MarkedAggregateSendEmailEventBuilder {
 
         if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
             builder.withAccountCorrelationId(previousItem.getAccountCorrelationId());
-            if (isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences()) && hearingFinancialResultRequest.getProsecutionCaseReferences().size() > 1) {
-                final List<String> oldGobAccounts = getGobAccountsWhenMultipleCases(hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
-                builder.withGobAccountNumber(isNotEmpty(oldGobAccounts) ? String.join(",", oldGobAccounts) : previousItem.getAccountNumber());
-            } else {
-                builder.withGobAccountNumber(previousItem.getAccountNumber());
-            }
+            builder.withGobAccountNumber(getOldGobAccount(previousItem, offenceIdList, hearingFinancialResultRequest, prevApplicationResultsDetails));
         } else {
             builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
                     .withGobAccountNumber(hearingFinancialResultRequest.getAccountNumber())
@@ -260,10 +247,7 @@ public class MarkedAggregateSendEmailEventBuilder {
         final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
         final CorrelationItem previousItem = getOldCorrelation(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList);
 
-        List<String> oldGobAccounts = emptyList();
-        if (isNotEmpty(hearingFinancialResultRequest.getProsecutionCaseReferences()) && hearingFinancialResultRequest.getProsecutionCaseReferences().size() > 1) {
-            oldGobAccounts = getGobAccountsWhenMultipleCases(hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
-        }
+        final String oldGobAccount = getOldGobAccount(previousItem, offenceIdList, hearingFinancialResultRequest, prevApplicationResultsDetails);
 
         final Optional<OffenceResults> offenceResult = hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getAmendmentDate())).findFirst();
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
@@ -286,9 +270,13 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withNewApplicationResults(newApplicationResults);
 
         if (nonNull(previousItem)) {
-            builder.withOldAccountCorrelationId(previousItem.getAccountCorrelationId())
-                    .withOldGobAccountNumber(isNotEmpty(oldGobAccounts) ? String.join(",", oldGobAccounts) : previousItem.getAccountNumber())
-                    .withOldDivisionCode(previousItem.getAccountDivisionCode());
+            builder.withOldAccountCorrelationId(previousItem.getAccountCorrelationId());
+            if (oldGobAccount != null) {
+                builder.withOldGobAccountNumber(oldGobAccount);
+            } else {
+                builder.withOldGobAccountNumber(oldGobAccount);
+            }
+            builder.withOldDivisionCode(previousItem.getAccountDivisionCode());
         }
 
         if (AMEND_AND_RESHARE.equals(subject)) {
@@ -302,14 +290,26 @@ public class MarkedAggregateSendEmailEventBuilder {
         return builder.build();
     }
 
-    private List<String> getGobAccountsWhenMultipleCases(final UUID accountCorrelationId, final List<UUID> offenceIdList, final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-        final List<CorrelationItem> prevItemList = getOldCorrelations(correlationItemList, accountCorrelationId, offenceIdList);
-        return getOldGobAccounts(new LinkedList<>(prevItemList), accountCorrelationId, offenceIdList, prevApplicationResultsDetails);
-    }
 
     private void buildDecisionMade(final HearingFinancialResultRequest hearingFinancialResultRequest, final MarkedAggregateSendEmailWhenAccountReceived.Builder builder) {
         hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getDateOfResult())).findFirst().ifPresent(offence ->
                 builder.withDateDecisionMade(offence.getDateOfResult())
         );
+    }
+
+    private String getOldGobAccount(final CorrelationItem previousItem,
+                                           final List<UUID> offenceIdList,
+                                           final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                           final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
+
+        final List<String> oldGobAccounts = getOldGobAccounts(correlationItemList,
+                hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
+
+        if (isNotEmpty(oldGobAccounts)) {
+            return oldGobAccounts.size() > 1 ? String.join(",", oldGobAccounts) : oldGobAccounts.get(0);
+        }
+
+        //TBD:fallback to previousItem can be removed after DD-40882
+        return previousItem != null ? previousItem.getAccountNumber() : null;
     }
 }
