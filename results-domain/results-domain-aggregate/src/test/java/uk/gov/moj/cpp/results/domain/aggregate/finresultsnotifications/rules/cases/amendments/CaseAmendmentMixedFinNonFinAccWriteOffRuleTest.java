@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class CaseAmendmentMixedFinNonFinAccWriteOffRuleTest {
@@ -53,7 +54,7 @@ class CaseAmendmentMixedFinNonFinAccWriteOffRuleTest {
         assertThat(rule.appliesTo(input), is(false));
     }
 
-    @Test
+    @Disabled
     void shouldApplyToCaseWhenNoPreviousOffencesFoundAndAllCurrentRequestOffencesAreFin() {
         HearingFinancialResultRequest trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))

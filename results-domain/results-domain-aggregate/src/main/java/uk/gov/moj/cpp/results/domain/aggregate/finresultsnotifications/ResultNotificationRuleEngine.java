@@ -45,7 +45,7 @@ public class ResultNotificationRuleEngine {
         rules.add(new CaseAmendmentFinToFinAccWriteOffRule());
         rules.add(new CaseAmendmentFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentACONNotificationRule());
-        rules.add(new CaseAmendmentMixedFinNonFinAccWriteOffRule());
+//        rules.add(new CaseAmendmentMixedFinNonFinAccWriteOffRule());
         rules.add(new CaseACONNotificationRule());
         rules.add(new CaseAmendmentDeemedServedNotificationRule());
         rules.add(new CaseDeemedServedNotificationRule());

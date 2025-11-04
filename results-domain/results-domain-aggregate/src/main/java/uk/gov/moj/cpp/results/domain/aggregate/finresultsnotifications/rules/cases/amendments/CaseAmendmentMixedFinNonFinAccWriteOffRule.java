@@ -18,7 +18,7 @@ public class CaseAmendmentMixedFinNonFinAccWriteOffRule extends AbstractCaseResu
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.isCaseAmendmentProcess() && input.hasFinancialTransitionInTheCase();
+        return input.isCaseAmendment() && input.hasFinancialTransitionInTheCase();
     }
 
     @Override
