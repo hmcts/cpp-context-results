@@ -1219,9 +1219,7 @@ public class HearingFinancialResultsAggregateTest {
                                        final String caseUrn, final boolean isApplication) {
         assertThat(event.getAccountCorrelationId(), is(accountCorrelationId));
         assertThat(event.getSubject(), is(subject));
-//        if(nonNull(event.getHearingCourtCentreName())) {
         assertThat(event.getHearingCourtCentreName(), is(hearingCourtCentreName));
-        //   }
         assertThat(event.getDivisionCode(), is(accountCorrelationId.toString() + "DIVCODE"));
         assertThat(event.getCaseReferences(), is(caseUrn));
         assertThat(nonNull(event.getDateDecisionMade()) ? event.getDateDecisionMade() : event.getAmendmentDate(), is("01/02/2024"));
