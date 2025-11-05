@@ -81,21 +81,28 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                         ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
-    public boolean hasFinancialTransitionInTheCase(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
+    public boolean isMixedFinancialCaseAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
+        //for any fin offence (amended or not) in the request was previously resulted financial too
         return offenceResults.stream()
                 .anyMatch(o -> TRUE.equals(o.getIsFinancial()) && nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId()))
                         && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
-                && (offenceResults.stream()
-                .filter(isCaseAmended)
-                .anyMatch(o -> TRUE.equals(o.getIsFinancial())
-                        && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
-                        nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && FALSE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial())))
-                || offenceResults.stream()
-                .filter(isCaseAmended)
-                .anyMatch(o -> FALSE.equals(o.getIsFinancial())
-                        && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
-                        nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
-                ));
+                &&
+                //for any amended offence resulted financial in the request was previously resulted nonFinancial
+                // OR for any amended offence resulted nonFinancial in the request was previously resulted Financial
+                (
+                        offenceResults.stream()
+                                .filter(isCaseAmended)
+                                .anyMatch(o -> TRUE.equals(o.getIsFinancial())
+                                        && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
+                                        nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && FALSE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial())))
+                                ||
+                                offenceResults.stream()
+                                        .filter(isCaseAmended)
+                                        .anyMatch(o -> FALSE.equals(o.getIsFinancial())
+                                                && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
+                                                nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
+                                        )
+                );
     }
 
     protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
