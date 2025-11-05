@@ -238,6 +238,7 @@ public class MarkedAggregateSendEmailEventBuilder {
         return builder.build();
     }
 
+    @SuppressWarnings("java:S107")
     public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithOlds(final HearingFinancialResultRequest hearingFinancialResultRequest, final List<ImpositionOffenceDetails> impositionOffenceDetails,
                                                                                     final String applicationResult, final List<NewOffenceByResult> newResultByOffenceList,
                                                                                     final OriginalApplicationResults originalApplicationResults,
@@ -271,11 +272,7 @@ public class MarkedAggregateSendEmailEventBuilder {
 
         if (nonNull(previousItem)) {
             builder.withOldAccountCorrelationId(previousItem.getAccountCorrelationId());
-            if (oldGobAccount != null) {
-                builder.withOldGobAccountNumber(oldGobAccount);
-            } else {
-                builder.withOldGobAccountNumber(oldGobAccount);
-            }
+            builder.withOldGobAccountNumber(oldGobAccount != null ? oldGobAccount : previousItem.getAccountNumber());
             builder.withOldDivisionCode(previousItem.getAccountDivisionCode());
         }
 

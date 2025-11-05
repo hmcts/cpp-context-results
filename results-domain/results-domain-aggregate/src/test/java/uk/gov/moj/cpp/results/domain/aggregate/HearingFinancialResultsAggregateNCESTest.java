@@ -1974,7 +1974,7 @@ class HearingFinancialResultsAggregateNCESTest {
 
     public static Stream<Arguments> matchedDefsfinCaseMultiOffenceAppScenarios() {
         return Stream.of(
-                Arguments.of("TBD:CCT-2357:Matched Def > fin case > multi offences , FO DD-40638",
+                Arguments.of("Matched Def > fin case > multi offences , FO DD-40638",
                         newScenario()
                                 .newStep(newResultTrackedStep("case1 resulted")
                                         .withResultTrackedEvent("json/nces/application/matched-defendants/DD-40638/case_1_GD25910423_results_tracked.json",
@@ -2022,7 +2022,6 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("oldGobAccountNumber", "44c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                         )
                                 )
-                                //TBD-Natraj
                                 .newStep(newResultTrackedStep("statdec created reulted")
                                         .withResultTrackedEvent("json/nces/application/matched-defendants/DD-40638/case_7_GD19416603_results_tracked.json",
                                                 accountInfo("66c39541-e8e0-45b3-af99-532b33646b69", "66c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
