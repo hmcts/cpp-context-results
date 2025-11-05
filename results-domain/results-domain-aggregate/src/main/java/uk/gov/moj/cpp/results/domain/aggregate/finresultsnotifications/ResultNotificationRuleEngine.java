@@ -14,7 +14,6 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cas
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentFinToFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentFinToNonFinAccWriteOffRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentMixedFinNonFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -45,7 +44,6 @@ public class ResultNotificationRuleEngine {
         rules.add(new CaseAmendmentFinToFinAccWriteOffRule());
         rules.add(new CaseAmendmentFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentACONNotificationRule());
-//        rules.add(new CaseAmendmentMixedFinNonFinAccWriteOffRule());
         rules.add(new CaseACONNotificationRule());
         rules.add(new CaseAmendmentDeemedServedNotificationRule());
         rules.add(new CaseDeemedServedNotificationRule());
