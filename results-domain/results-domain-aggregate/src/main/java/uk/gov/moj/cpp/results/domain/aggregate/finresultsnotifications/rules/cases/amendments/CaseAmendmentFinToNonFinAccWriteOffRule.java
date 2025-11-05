@@ -53,7 +53,6 @@ public class CaseAmendmentFinToNonFinAccWriteOffRule extends AbstractCaseResultN
             return Optional.of(
                     markedAggregateSendEmailEventBuilder.buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             AMEND_AND_RESHARE,
-                            input.correlationItemList().peekLast(),
                             originalImpositions,
                             input.isWrittenOffExists(),
                             input.originalDateOfOffenceList(),

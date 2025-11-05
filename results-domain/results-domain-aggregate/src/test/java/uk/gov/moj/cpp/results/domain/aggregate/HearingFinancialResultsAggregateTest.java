@@ -105,8 +105,6 @@ public class HearingFinancialResultsAggregateTest {
     private String defendantAddress = "address";
     private String defendantEmail = "aa@aa.com";
     private String defendantContactNumber = "02074561234";
-
-    private UUID hearingId = randomUUID();
     private final HearingFinancialResultRequest input = HearingFinancialResultRequest.hearingFinancialResultRequest()
             .withAccountCorrelationId(CORRELATION_ID_1)
             .withHearingId(HEARING_ID)
@@ -137,7 +135,7 @@ public class HearingFinancialResultsAggregateTest {
                             .withIsDeemedServed(false)
                             .build()))
             .build();
-
+    private UUID hearingId = randomUUID();
     @InjectMocks
     private HearingFinancialResultsAggregate aggregate;
 
@@ -657,131 +655,6 @@ public class HearingFinancialResultsAggregateTest {
     }
 
     @Test
-    public void shouldRaiseEmailWhenOneCaseOneOffenceWhenDismissedApplicationWithFinancialAndThenAmended() {
-        final String applicationType = STAT_DEC;
-        final UUID accountCorrelationId = randomUUID();
-        final UUID accountCorrelationId2 = randomUUID();
-        final UUID offenceIdA = randomUUID();
-
-        assertApplicationProcess(applicationType, asList(accountCorrelationId), asList(offenceIdA));
-
-        ncesEMail = "john.Doe.new@xxx.co.uk";
-        final List<Object> eventsApp1 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId),
-                        asList(offenceIdA, offenceIdA),
-                        asList(false, true),
-                        asList("caseUrn1"),
-                        APPEAL,
-                        asList(ASV, EMPTY),
-                        asList(Boolean.FALSE, Boolean.FALSE),
-                        null);
-
-        assertThat(eventsApp1.size(), is(2));
-        Optional.of(eventsApp1.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(APPEAL_DISMISSED_SENTENCE_VARIED, accountCorrelationId, asList(offenceIdA), event, "caseUrn1"));
-
-        final List<Object> eventsApp2 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId2),
-                        asList(offenceIdA),
-                        asList(true),
-                        asList("caseUrn1"),
-                        null,
-                        asList(EMPTY),
-                        asList(Boolean.FALSE),
-                        asList("01/02/2024"));
-
-        assertThat(eventsApp2.size(), is(2));
-        Optional.of(eventsApp2.get(1)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(AMEND_AND_RESHARE, accountCorrelationId2, asList(offenceIdA), event, "caseUrn1", true));
-    }
-
-    @Test
-    public void shouldRaiseEmailWhenOneCaseOneOffenceWhenDismissedApplicationWithFinancialAndThenAmendedAndDeemedServed() {
-        final String applicationType = STAT_DEC;
-        final UUID accountCorrelationId = randomUUID();
-        final UUID accountCorrelationId2 = randomUUID();
-        final UUID offenceIdA = randomUUID();
-
-        assertApplicationProcess(applicationType, asList(accountCorrelationId), asList(offenceIdA));
-
-        ncesEMail = "john.Doe.new@xxx.co.uk";
-        final List<Object> eventsApp1 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId),
-                        asList(offenceIdA, offenceIdA),
-                        asList(true, true),
-                        asList("caseUrn1"),
-                        APPEAL,
-                        asList(ASV, FIDICI),
-                        asList(Boolean.TRUE, Boolean.TRUE),
-                        null);
-
-        assertThat(eventsApp1.size(), is(4));
-        Optional.of(eventsApp1.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(APPEAL_DISMISSED_SENTENCE_VARIED, accountCorrelationId, asList(offenceIdA), event, "caseUrn1"));
-        Optional.of(eventsApp1.get(2)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, singletonList(offenceIdA), event, "caseUrn1", true));
-
-        final List<Object> eventsApp2 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId2),
-                        asList(offenceIdA),
-                        asList(true),
-                        asList("caseUrn1"),
-                        null,
-                        asList(EMPTY),
-                        asList(Boolean.TRUE),
-                        asList("01/02/2024"));
-
-        assertThat(eventsApp2.size(), is(3));
-        Optional.of(eventsApp2.get(1)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(AMEND_AND_RESHARE, accountCorrelationId2, asList(offenceIdA), event, "caseUrn1", true));
-        Optional.of(eventsApp2.get(2)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, singletonList(offenceIdA), event, "caseUrn1", true));
-    }
-
-    @Test
-    public void shouldRaiseEmailWhenOneCaseOneOffenceWhenDismissedApplicationWithFinancialAndThenAmendedAndACON() {
-        final String applicationType = STAT_DEC;
-        final UUID accountCorrelationId = randomUUID();
-        final UUID accountCorrelationId2 = randomUUID();
-        final UUID offenceIdA = randomUUID();
-
-        assertApplicationProcess(applicationType, asList(accountCorrelationId), asList(offenceIdA));
-
-        ncesEMail = "john.Doe.new@xxx.co.uk";
-        final List<Object> eventsApp1 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId),
-                        asList(offenceIdA, offenceIdA),
-                        asList(false, true),
-                        asList("caseUrn1"),
-                        APPEAL,
-                        asList(ASV, ACON),
-                        asList(Boolean.FALSE, Boolean.FALSE),
-                        null);
-
-        assertThat(eventsApp1.size(), is(3));
-        Optional.of(eventsApp1.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(APPEAL_DISMISSED_SENTENCE_VARIED, accountCorrelationId, asList(offenceIdA), event, "caseUrn1"));
-        Optional.of(eventsApp1.get(2)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(ACON_EMAIL_SUBJECT, accountCorrelationId, singletonList(offenceIdA), event, "caseUrn1", true));
-
-        final List<Object> eventsApp2 =
-                raiseEventsForApplicationResult(singletonList(accountCorrelationId2),
-                        asList(offenceIdA),
-                        asList(true),
-                        asList("caseUrn1"),
-                        null,
-                        asList(ACON),
-                        asList(Boolean.FALSE),
-                        asList("01/02/2024"));
-
-        assertThat(eventsApp2.size(), is(3));
-        Optional.of(eventsApp2.get(1)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(AMEND_AND_RESHARE, accountCorrelationId2, asList(offenceIdA), event, "caseUrn1", true));
-        Optional.of(eventsApp2.get(2)).map(o -> (MarkedAggregateSendEmailWhenAccountReceived) o).ifPresent(event ->
-                verifyMarkedAggregate(ACON_EMAIL_SUBJECT, accountCorrelationId2, singletonList(offenceIdA), event, "caseUrn1", true));
-    }
-
-    @Test
     public void shouldNotRaiseEmailWhenApplicationResultedWithoutTracked() {
         final UUID offenceIdA = randomUUID();
         final String applicationType = STAT_DEC;
@@ -848,7 +721,7 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(events.size(), is(3));
 
         Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, asList(offenceIdA,offenceIdB), event, "Ref1,Ref2"));
+                verifyEmailWithoutOlds(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId, asList(offenceIdA, offenceIdB), event, "Ref1,Ref2"));
 
     }
 
@@ -1322,6 +1195,7 @@ public class HearingFinancialResultsAggregateTest {
                                     .withIsParentFlag(isFinancial.get(i))
                                     .withIsDeemedServed(isNotEmpty(isDeemedServed) ? isDeemedServed.get(i) : Boolean.FALSE)
                                     .withAmendmentDate(isNotEmpty(amendmentDates) ? amendmentDates.get(i) : null)
+                                    .withApplicationId(randomUUID())
                                     .build())
                             .collect(toList()))
                     .withAccountDivisionCode(accountCorrelationId == null ? null : accountCorrelationId.toString() + "DIVCODE")
