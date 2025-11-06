@@ -33,6 +33,7 @@ import java.util.function.Predicate;
  */
 public abstract class AbstractApplicationResultNotificationRule implements ResultNotificationRule {
     private static final Predicate<OffenceResults> isApplicationAmended = o -> nonNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
+    private static final Boolean IS_FINANCIAL = TRUE;
 
     protected HearingFinancialResultRequest filteredApplicationResults(HearingFinancialResultRequest request) {
         final HearingFinancialResultRequest filtered = HearingFinancialResultRequest.hearingFinancialResultRequest()
@@ -153,7 +154,7 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                                 .orElse(true));
     }
 
-    protected boolean isMixedFinancialApplicationAmendment(final List<OffenceResults> offenceResults, final List<OffenceResultsDetails> prevApplicationOffenceResults) {
+    protected boolean hasTransitionedToFinancialState(final List<OffenceResults> offenceResults, final List<OffenceResultsDetails> prevApplicationOffenceResults) {
         //for any fin offence (amended or not) in the request was previously resulted financial too
         return offenceResults.stream()
                 .filter(ro -> TRUE.equals(ro.getIsFinancial()))
@@ -165,16 +166,20 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                 (
                         offenceResults.stream()
                                 .filter(isApplicationAmended)
-                                .anyMatch(ro -> TRUE.equals(ro.getIsFinancial())
-                                        && (isEmpty(prevApplicationOffenceResults) ||
-                                        prevApplicationOffenceResults.stream().anyMatch(ao -> ao.getOffenceId().equals(ro.getOffenceId()) && FALSE.equals(ao.getIsFinancial()))))
+                                .filter(ro -> TRUE.equals(ro.getIsFinancial()))
+                                .anyMatch(ro -> previousFinancialState(!IS_FINANCIAL, prevApplicationOffenceResults, ro))
                                 ||
                                 offenceResults.stream()
                                         .filter(isApplicationAmended)
-                                        .anyMatch(ro -> FALSE.equals(ro.getIsFinancial())
-                                                && (isEmpty(prevApplicationOffenceResults) ||
-                                                prevApplicationOffenceResults.stream().anyMatch(ao -> ao.getOffenceId().equals(ro.getOffenceId()) && TRUE.equals(ao.getIsFinancial()))))
+                                        .filter(ro -> FALSE.equals(ro.getIsFinancial()))
+                                        .anyMatch(ro -> previousFinancialState(IS_FINANCIAL, prevApplicationOffenceResults, ro))
                 );
+    }
+
+    private static boolean previousFinancialState(final Boolean isFinancial, final List<OffenceResultsDetails> prevApplicationOffenceResults, final OffenceResults offenceResult) {
+        return isEmpty(prevApplicationOffenceResults) ||
+                prevApplicationOffenceResults.stream()
+                        .anyMatch(ao -> ao.getOffenceId().equals(offenceResult.getOffenceId()) && isFinancial.equals(ao.getIsFinancial()));
     }
 
     protected List<ImpositionOffenceDetails> getAppFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {

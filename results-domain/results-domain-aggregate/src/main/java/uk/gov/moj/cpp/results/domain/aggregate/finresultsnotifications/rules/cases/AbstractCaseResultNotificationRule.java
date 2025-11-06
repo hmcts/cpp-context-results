@@ -25,6 +25,9 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
     public static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
     private static final String ACON = "ACON";
 
+    private static final Boolean IS_FINANCIAL = TRUE;
+
+
     protected ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
                 .withDetails(offencesFromRequest.getImpositionOffenceDetails())
@@ -81,27 +84,25 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                         ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
-    public boolean isMixedFinancialCaseAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
+    public boolean hasTransitionedToFinancialState(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
         //for any fin offence (amended or not) in the request was previously resulted financial too
         return offenceResults.stream()
-                .anyMatch(o -> TRUE.equals(o.getIsFinancial()) && nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId()))
+                .filter(o -> TRUE.equals(o.getIsFinancial()))
+                .anyMatch(o -> nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId()))
                         && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
                 &&
-                //for any amended offence resulted financial in the request was previously resulted nonFinancial
+                //any amended offence resulted financial in the request was previously resulted nonFinancial
                 // OR for any amended offence resulted nonFinancial in the request was previously resulted Financial
                 (
                         offenceResults.stream()
                                 .filter(isCaseAmended)
-                                .anyMatch(o -> TRUE.equals(o.getIsFinancial())
-                                        && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
-                                        nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && FALSE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial())))
+                                .filter(o -> TRUE.equals(o.getIsFinancial()))
+                                .anyMatch(o -> previousFinancialState(!IS_FINANCIAL, prevOffenceResultsDetailsMap, o))
                                 ||
                                 offenceResults.stream()
                                         .filter(isCaseAmended)
-                                        .anyMatch(o -> FALSE.equals(o.getIsFinancial())
-                                                && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
-                                                nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
-                                        )
+                                        .filter(o -> FALSE.equals(o.getIsFinancial()))
+                                        .anyMatch(o -> previousFinancialState(IS_FINANCIAL, prevOffenceResultsDetailsMap, o))
                 );
     }
 
@@ -162,5 +163,10 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
     protected boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
         return prevOffenceResultsDetailsMap.containsKey(offenceId) &&
                 prevOffenceResultsDetailsMap.get(offenceId).getIsDeemedServed();
+    }
+
+    private static boolean previousFinancialState(final Boolean financial, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap, final OffenceResults o) {
+        return isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
+                nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && financial.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial());
     }
 }
