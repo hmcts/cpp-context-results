@@ -97,7 +97,7 @@ public class NCESDecisionHelper {
     }
 
     /**
-     * Overloaded check which also consults previous application results to avoid sending duplicate notifications
+     * Overloaded check which also checks previous application results to avoid sending duplicate application notifications
      * when a notification for the same application has already been generated from aggregate state.
      */
     public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest,
