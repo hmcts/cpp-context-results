@@ -7,6 +7,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -94,7 +95,7 @@ public interface ResultNotificationRule {
         }
 
         public boolean isFinancial() {
-            return request.getOffenceResults().stream().anyMatch(o -> o.getIsFinancial());
+            return request.getOffenceResults().stream().anyMatch(OffenceResults::getIsFinancial);
         }
 
         public boolean isCaseAmendment() {

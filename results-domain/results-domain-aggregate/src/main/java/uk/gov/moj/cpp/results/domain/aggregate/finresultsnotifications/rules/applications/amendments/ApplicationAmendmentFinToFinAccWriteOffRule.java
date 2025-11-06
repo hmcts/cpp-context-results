@@ -42,8 +42,10 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
         final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
 
+        final boolean isMixedFinancialAmendment = isMixedFinancialApplicationAmendment(request.getOffenceResults(), input.prevApplicationOffenceResultsMap().get(currentApplicationId));
+
         // Check if there are valid financial amendments
-        if (isFineToFineApplicationAmendment(input, request, currentApplicationId)) {
+        if (isFineToFineApplicationAmendment(input, request, currentApplicationId) || isMixedFinancialAmendment) {
 
             final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
                     .stream()

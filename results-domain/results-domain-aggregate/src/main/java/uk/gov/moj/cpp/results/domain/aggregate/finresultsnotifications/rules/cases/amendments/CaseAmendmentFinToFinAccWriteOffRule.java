@@ -33,15 +33,17 @@ public class CaseAmendmentFinToFinAccWriteOffRule extends AbstractCaseResultNoti
         final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsCaseAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails()).stream()
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
                 .toList();
+        final boolean isMixedFinancial = isMixedFinancialCaseAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails());
 
         //newOffenceResults will be empty when no financial change from previous to new offence  - no marked event required
         //previous nonFine to new Fine - no marked event required
-        if (newOffenceResults.isEmpty() || isNonFinToFinImposition(request, input.prevOffenceResultsDetails())) {
+        if (newOffenceResults.isEmpty() || (isNonFinToFinImposition(request, input.prevOffenceResultsDetails())) && !isMixedFinancial) {
             return Optional.empty();
         }
 
         // Check if there are valid financial to financial case amendments
-        if (isFineToFineCaseAmendments(request, input.prevOffenceResultsDetails(), input.offenceDateMap())) {
+        if (isFineToFineCaseAmendments(request, input.prevOffenceResultsDetails(), input.offenceDateMap())
+                || isMixedFinancial) {
 
             final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults())
                     .stream()

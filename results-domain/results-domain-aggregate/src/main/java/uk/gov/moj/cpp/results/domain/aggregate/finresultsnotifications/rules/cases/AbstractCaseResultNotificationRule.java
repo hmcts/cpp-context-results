@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -21,7 +22,7 @@ import java.util.function.Predicate;
  * Base class for case result notification rules.
  */
 public abstract class AbstractCaseResultNotificationRule implements ResultNotificationRule {
-    private static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
+    public static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
     private static final String ACON = "ACON";
 
     protected ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
@@ -51,15 +52,6 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
         return filtered;
     }
 
-    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFinToNonFin(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
-        return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
-                .filter(o -> !o.getIsFinancial())
-                .filter(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
-                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .toList();
-    }
-
     /**
      * Determines if there are valid financial to non-financial case amendments that require processing.
      * This method implements proper decision-making logic instead of just checking list presence.
@@ -73,15 +65,6 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .anyMatch(offenceFromRequest ->
                         ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId()))
                                 .map(OffenceResultsDetails::getIsFinancial).orElse(false));
-    }
-
-    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsFinToFin(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
-        return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
-                .filter(OffenceResults::getIsFinancial)
-                .filter(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false))
-                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .toList();
     }
 
     /**
@@ -98,13 +81,28 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                         ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
-    protected List<ImpositionOffenceDetails> getImpositionOffenceDetailsNonFinToFin(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
-        return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
-                .filter(OffenceResults::getIsFinancial)
-                .filter(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(ofr -> !TRUE.equals(ofr.getIsFinancial())).orElse(false))
-                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .toList();
+    public boolean isMixedFinancialCaseAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
+        //for any fin offence (amended or not) in the request was previously resulted financial too
+        return offenceResults.stream()
+                .anyMatch(o -> TRUE.equals(o.getIsFinancial()) && nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId()))
+                        && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
+                &&
+                //for any amended offence resulted financial in the request was previously resulted nonFinancial
+                // OR for any amended offence resulted nonFinancial in the request was previously resulted Financial
+                (
+                        offenceResults.stream()
+                                .filter(isCaseAmended)
+                                .anyMatch(o -> TRUE.equals(o.getIsFinancial())
+                                        && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
+                                        nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && FALSE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial())))
+                                ||
+                                offenceResults.stream()
+                                        .filter(isCaseAmended)
+                                        .anyMatch(o -> FALSE.equals(o.getIsFinancial())
+                                                && (isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
+                                                nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
+                                        )
+                );
     }
 
     protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
