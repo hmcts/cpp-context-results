@@ -368,5 +368,50 @@ class NewApplicationAcceptedNotificationRuleTest {
         // Should return empty as the rule checks for offences with parent flag
         assertThat("Should not generate notification for non-parent flag offences", output.isEmpty(), is(true));
     }
-}
 
+    @Test
+    void shouldNotGenerateGrantedNotificationWhenAlreadyNotified() {
+        final UUID offenceId = randomUUID();
+        final UUID applicationId = randomUUID();
+
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        OffenceResults.offenceResults()
+                                .withOffenceId(offenceId)
+                                .withApplicationType(STAT_DEC)
+                                .withResultCode(G)
+                                .withIsParentFlag(true)
+                                .withImpositionOffenceDetails("stat dec details")
+                                .withIsFinancial(true)
+                                .withApplicationId(applicationId)
+                                .build()
+                )).withAccountCorrelationId(randomUUID());
+
+        // previous application results already contain a grant for this applicationId
+        OffenceResultsDetails prevAppResult = offenceResultsDetails()
+                .withOffenceId(offenceId)
+                .withApplicationId(applicationId)
+                .withApplicationType(STAT_DEC)
+                .withResultCode(G)
+                .withIsFinancial(true)
+                .build();
+
+        Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(prevAppResult));
+
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest.build())
+                .withPrevApplicationResultsDetails(prevApplicationResultsDetails)
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                .withAccountCorrelationId(randomUUID())
+                                .withAccountNumber("AC123456789")
+                                .build()))
+                .build();
+
+        // The rule should not apply because the application was already granted previously
+        assertThat("Rule should not apply when the same application has already been notified as granted", rule.appliesTo(input), is(false));
+        var output = rule.apply(input);
+        assertThat("apply() should return empty when already notified", output.isEmpty(), is(true));
+    }
+}
