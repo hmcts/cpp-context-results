@@ -21,7 +21,7 @@
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "b7ea5d56-7942-479a-9bc2-6b5d3f4b3e4a",
-  "materialId": "b2879ab6-f96d-42a4-bc3e-583ce3d9ae63",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Granted"
@@ -36,7 +36,7 @@
       "title": "Theft of motor vehicle"
     }
   ],
-  "notificationId": "{{5962ee19-d639-4563-ab3f-a4aff8d4f861}}",
+  "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
