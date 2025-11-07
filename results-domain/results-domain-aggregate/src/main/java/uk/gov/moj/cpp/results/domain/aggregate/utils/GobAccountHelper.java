@@ -66,7 +66,8 @@ public class GobAccountHelper {
                     if (correlationItem.getOffenceResultsDetailsList().stream()
                             .filter(o -> o.getOffenceId().equals(offenceId))
                             .findFirst()
-                            .filter(offenceResultsMatch -> Boolean.TRUE.equals(offenceResultsMatch.getIsFinancial())).isPresent()) {
+                            .filter(offenceResultsMatch -> Boolean.TRUE.equals(offenceResultsMatch.getIsFinancial())).isPresent()
+                    ) {
                         return correlationItem;
                     }
                     return null;

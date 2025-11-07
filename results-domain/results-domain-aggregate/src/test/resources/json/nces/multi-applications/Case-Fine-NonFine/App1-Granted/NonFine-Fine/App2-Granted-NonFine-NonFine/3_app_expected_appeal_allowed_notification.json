@@ -1,0 +1,45 @@
+{
+  "caseReferences": "28DI3216769",
+  "dateDecisionMade": "2025-07-07",
+  "defendantAddress": "n Fisher Tunnel3216769 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Trystan Rice",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £9999.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £6666.00.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/05/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "85ca22d6-2b74-4347-8bed-fc99c3b036f4",
+  "materialId": "9188027c-2efe-47d5-9b1e-bd92c778de9c",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2026. \nRR - Residence\nResidence Requirement: Live at 35 test for 8 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}

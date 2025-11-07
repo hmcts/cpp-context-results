@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases;
 
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -72,38 +71,12 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
 
     /**
      * Determines if there are valid financial to financial case amendments that require processing.
-     * This method implements proper decision-making logic instead of just checking list presence.
      *
      * @return true if there are valid financial to financial case amendments that need processing, false otherwise
      */
-    protected boolean isFineToFineCaseAmendments(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails, final Map<UUID, String> offenceDateMap) {
-        return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
-                .filter(OffenceResults::getIsFinancial)
-                .anyMatch(offenceFromRequest ->
-                        ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(OffenceResultsDetails::getIsFinancial).orElse(false));
-    }
-
-    public boolean hasTransitionedToFinancialState(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
-        //for any fin offence (amended or not) in the request was previously resulted financial too
-        return offenceResults.stream()
-                .filter(o -> TRUE.equals(o.getIsFinancial()))
-                .anyMatch(o -> nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId()))
-                        && TRUE.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial()))
-                &&
-                //any amended offence resulted financial in the request was previously resulted nonFinancial
-                // OR for any amended offence resulted nonFinancial in the request was previously resulted Financial
-                (
-                        offenceResults.stream()
-                                .filter(isCaseAmended)
-                                .filter(o -> TRUE.equals(o.getIsFinancial()))
-                                .anyMatch(o -> previousFinancialState(!IS_FINANCIAL, prevOffenceResultsDetailsMap, o))
-                                ||
-                                offenceResults.stream()
-                                        .filter(isCaseAmended)
-                                        .filter(o -> FALSE.equals(o.getIsFinancial()))
-                                        .anyMatch(o -> previousFinancialState(IS_FINANCIAL, prevOffenceResultsDetailsMap, o))
-                );
+    public boolean hasTransitionedToFinancial(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
+        return offenceResults.stream().anyMatch(o -> TRUE.equals(o.getIsFinancial()))
+                && nonNull(prevOffenceResultsDetailsMap) && prevOffenceResultsDetailsMap.values().stream().anyMatch(o -> TRUE.equals(o.getIsFinancial()));
     }
 
     protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
