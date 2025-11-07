@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2269882 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Enos Purdy",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d8fbd66e-7b28-403f-8788-d67427c17890",
+  "hearingSittingDay": "2025-09-18T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "fa17411a-3d23-496b-9fdc-8f78b32c5278",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-09-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-09-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "034f2cd7-fcd9-461a-8fd3-9651aee82be6",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2269882"
+  ]
+}

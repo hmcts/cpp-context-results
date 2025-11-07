@@ -6,10 +6,11 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 
+import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
-import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.util.Collection;
@@ -82,16 +83,6 @@ public interface ResultNotificationRule {
                     .anyMatch(offence -> APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()));
         }
 
-        public boolean isApplicationAlreadyResulted() {
-            return request.getOffenceResults().stream()
-                    .filter(result -> nonNull(result.getApplicationId()))
-                    .map(offenceFromRequest -> prevApplicationResultsDetails.get(offenceFromRequest.getApplicationId()))
-                    .filter(Objects::nonNull)
-                    .flatMap(Collection::stream)
-                    .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
-                    .anyMatch(offence -> APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()));
-        }
-
         public boolean isCaseAmendmentProcess() {
             return isCaseAmendment() || isDeemedServedChangedForCase();
         }
@@ -100,19 +91,26 @@ public interface ResultNotificationRule {
             return request.getOffenceResults().stream().anyMatch(o -> nonNull(o.getAmendmentDate()));
         }
 
-        private boolean isCaseAmendment() {
+        public boolean hasFinancialAmendments() {
+            return nonNull(request.getAccountCorrelationId());
+        }
+
+        public boolean isFinancial() {
+            return request.getOffenceResults().stream().anyMatch(o -> o.getIsFinancial());
+        }
+
+        public boolean isCaseAmendment() {
             return request.getOffenceResults().stream()
                     .filter(offence -> isNull(offence.getApplicationType()))
                     .anyMatch(offence -> nonNull(offence.getAmendmentDate()));
         }
 
         private boolean isDeemedServedChangedForCase() {
-            final boolean deemedServeChanged = request.getOffenceResults().stream()
+            return request.getOffenceResults().stream()
                     .anyMatch(offenceResult ->
                             ofNullable(prevOffenceResultsDetails.get(offenceResult.getOffenceId()))
                                     .map(prevOffenceResult -> !Objects.equals(prevOffenceResult.getIsDeemedServed(), offenceResult.getIsDeemedServed()))
                                     .orElse(false));
-            return !hasAnyApplicationType() && deemedServeChanged;
         }
     }
 }

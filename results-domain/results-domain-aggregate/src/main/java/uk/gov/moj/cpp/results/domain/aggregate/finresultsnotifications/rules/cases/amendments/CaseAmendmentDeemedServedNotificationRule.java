@@ -3,9 +3,9 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ca
 import static java.util.Objects.isNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -21,24 +21,37 @@ public class CaseAmendmentDeemedServedNotificationRule extends AbstractCaseResul
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isCaseAmendmentProcess();
+        return input.hasCaseResult() && input.isCaseAmendmentProcess();
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
-        final HearingFinancialResultRequest request = getFilteredCaseResults(input.request());
-        final List<ImpositionOffenceDetails> impositionOffenceDetailsForDeemed = request.getOffenceResults().stream()
-                .filter(o -> isNull(o.getApplicationType()))
-                .filter(OffenceResults::getIsDeemedServed)
-                .filter(offence -> Objects.nonNull(offence.getAmendmentDate()))
-                .map(offenceResults -> this.buildImpositionOffenceDetailsFromRequest(offenceResults, input.offenceDateMap()))
-                .toList();
-        if (!impositionOffenceDetailsForDeemed.isEmpty()) {
+        final HearingFinancialResultRequest request = filteredCaseResults(input.request());
+
+        if (hasDeemedServedAmendmentOffences(request) && input.isFinancial()) {
+            final boolean includeOlds = isNull(request.getAccountCorrelationId());
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
-                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED, impositionOffenceDetailsForDeemed, Boolean.FALSE)
+                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED,
+                                    getCaseFinancialImpositionOffenceDetails(input, request),
+                                    includeOlds)
+            );
+        }
+        if (hasDeemedServedRemovedOffences(request, input.prevOffenceResultsDetails())) {
+            final List<ImpositionOffenceDetails> impositionOffenceDetailsDeemedServedRemoved = request.getOffenceResults().stream()
+                    .filter(or -> !or.getIsDeemedServed() && isPrevOffenceResultDeemedServed(or.getOffenceId(), input.prevOffenceResultsDetails()))
+                    .filter(or -> Objects.nonNull(or.getAmendmentDate()))
+                    .map(or -> this.buildImpositionOffenceDetailsFromRequest(or, input.offenceDateMap())).distinct()
+                    .toList();
+            
+            return Optional.of(
+                    markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
+                            .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED,
+                                    impositionOffenceDetailsDeemedServedRemoved,
+                                    Boolean.TRUE)
             );
         }
         return Optional.empty();
     }
+
 }

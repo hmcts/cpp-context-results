@@ -52,7 +52,6 @@ public class HearingResultedEventProcessor {
     private static final String PROSECUTOR_CODE = "prosecutionAuthorityId";
 
     private static final String CPS_PROSECUTOR_IDS = "cpsProsecutorIds";
-
     @Inject
     private Sender sender;
 

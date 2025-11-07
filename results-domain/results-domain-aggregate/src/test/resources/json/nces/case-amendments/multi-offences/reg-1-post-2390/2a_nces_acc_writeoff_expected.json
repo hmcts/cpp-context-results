@@ -1,0 +1,106 @@
+{
+  "amendmentDate": "2025-10-16",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "16OCTVTC779",
+  "defendantDateOfBirth": "1997-08-08",
+  "defendantName": "Emile Legros66",
+  "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "impositionOffenceDetails": [
+    {
+      "details": "he defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
+      "title": "Drive / move vehicle making 'u' turn on the motorway"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £100.00. , FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    },
+    {
+      "details": "FO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "29b9ae02-d801-4bf0-9a0c-e82b1e3b716f",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c2efd5bc-259d-41f7-b3cb-929fddf44611",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1ae26311-09a8-4589-baab-940e747c29f9",
+      "title": "Attempt robbery"
+    },
+    {
+      "details": "FVS - Surcharge\nTo pay a surcharge of £70.00\nIMP - Imprisonment\nCommitted to prison for 1 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 1. Total custodial period: 1 Years.\n \n \nTotal custodial period: 1 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ef20d927-10ce-46db-9a25-51f77aed113e",
+      "title": "Fail / refuse to hand over valid ticket not in a designated compulsory ticket area - railway bye-law"
+    },
+    {
+      "details": "FO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8bb75ff2-2a29-4be4-99ca-a878040ff304",
+      "title": "Fail to hand over for inspection a ticket for the Croydon Tramlink system"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "91655195-c76c-4860-bc81-d955123f56d6",
+  "materialId": "2d6d1b06-5672-4c01-a9ee-3429bdab84d3",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £20.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
+      "title": "Drive / move vehicle making 'u' turn on the motorway"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £200.00. , FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "29b9ae02-d801-4bf0-9a0c-e82b1e3b716f",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c2efd5bc-259d-41f7-b3cb-929fddf44611",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1ae26311-09a8-4589-baab-940e747c29f9",
+      "title": "Attempt robbery"
+    },
+    {
+      "details": "FVS - Surcharge\nTo pay a surcharge of £80.00\nIMP - Imprisonment\nCommitted to prison for 2 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 1. Total custodial period: 1 Years.\n \n \nTotal custodial period: 1 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ef20d927-10ce-46db-9a25-51f77aed113e",
+      "title": "Fail / refuse to hand over valid ticket not in a designated compulsory ticket area - railway bye-law"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8bb75ff2-2a29-4be4-99ca-a878040ff304",
+      "title": "Fail to hand over for inspection a ticket for the Croydon Tramlink system"
+    }
+  ],
+  "notificationId": "6a8cee65-460b-46b9-88e3-a3c5f18dc308",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

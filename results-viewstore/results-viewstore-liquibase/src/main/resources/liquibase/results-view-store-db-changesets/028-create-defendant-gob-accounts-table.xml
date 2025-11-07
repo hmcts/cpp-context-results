@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1" author="cpp.context.results"
+               logicalFilePath="028-create-defendant-gob-accounts-table.xml">
+        <createTable tableName="defendant_gob_accounts">
+            <column name="master_defendant_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hearing_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_correlation_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_number" type="text" />
+            <column name="account_request_time" type="TIMESTAMP"/>
+            <column name="case_references" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <addPrimaryKey tableName="defendant_gob_accounts" 
+                       columnNames="master_defendant_id,account_correlation_id" 
+                       constraintName="defendant_gob_accounts_pk"/>
+    </changeSet>
+
+    <changeSet id="add-index-master-defendant-id" author="cpp.context.results"
+               logicalFilePath="028-create-defendant-gob-accounts-table.xml">
+        <sql>
+            CREATE INDEX IF NOT EXISTS defendant_gob_accounts_master_defendant_id_hearing_id_idx ON
+            defendant_gob_accounts (master_defendant_id, hearing_id);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

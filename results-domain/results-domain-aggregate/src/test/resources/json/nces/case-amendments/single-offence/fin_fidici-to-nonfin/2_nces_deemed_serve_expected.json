@@ -1,0 +1,23 @@
+{
+  "amendmentDate": "2025-03-14",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28NS2172608",
+  "defendantName": "Adolph Berge",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 5 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "eefd3f79-66eb-4e2b-bca2-9e6f9cdc00b7",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "0effc607-e232-4654-81f5-3f506100a92b",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED REMOVED"
+}

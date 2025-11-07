@@ -65,4 +65,11 @@ public class ResultsQueryApiComponentTest {
                                 .thatHandles(value))));
     }
 
+    @Test
+    public void testHearingFinancialDetailsQueryApiHandler() {
+        assertThat(DefendantGobAccountsQueryApi.class, isHandlerClass(QUERY_API)
+                .with(method("getDefendantGobAccounts")
+                        .thatHandles("results.query.defendant-gob-account")));
+    }
+
 }
