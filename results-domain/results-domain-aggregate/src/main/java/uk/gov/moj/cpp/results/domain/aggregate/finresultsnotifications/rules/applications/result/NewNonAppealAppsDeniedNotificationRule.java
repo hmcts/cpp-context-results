@@ -91,7 +91,8 @@ public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationR
                                         newApplicationOffenceResults,
                                         applicationResult,
                                         originalApplicationResults,
-                                        null));
+                                        null,
+                                        input.prevApplicationResultsDetails()));
             }
         }
         return Optional.empty();

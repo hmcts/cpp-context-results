@@ -1,0 +1,32 @@
+{
+  "caseReferences": "28DI2269882",
+  "defendantAddress": "n Fisher Tunnel2269882 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Enos Purdy",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-09-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £50.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "30a2ea46-02c5-4134-95e1-0f48fb6d5407",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "034f2cd7-fcd9-461a-8fd3-9651aee82be6",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "fa17411a-3d23-496b-9fdc-8f78b32c5278",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "18/09/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

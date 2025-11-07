@@ -62,9 +62,9 @@ public class OffenceResultsResolver {
     }
 
     public static OffenceResultsDetails getPreviousOffenceResultsDetails(final UUID offenceId, final UUID currentApplicationId,
-                                                                          final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap,
-                                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
-                                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
+                                                                         final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap,
+                                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
+                                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
 
         if (isApplicationDenied(prevApplicationResultsDetails.get(currentApplicationId)) || (isAppealApplicationWithNoOffenceResults(currentApplicationId, prevApplicationOffenceResultsMap, prevApplicationResultsDetails))) {
             return getPreviousOffenceResultsDetails(offenceId, previousCaseOffenceResultsMap, prevApplicationOffenceResultsMap, currentApplicationId);

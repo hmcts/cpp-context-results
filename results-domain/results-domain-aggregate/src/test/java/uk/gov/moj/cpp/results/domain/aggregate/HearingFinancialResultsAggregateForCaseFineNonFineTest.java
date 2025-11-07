@@ -132,7 +132,7 @@ class HearingFinancialResultsAggregateForCaseFineNonFineTest {
                                                         .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("TBD-Case-Fine-Non-fine > App1-Granted > Fine-Non-fine > App2-Granted > Fine-Fine [STE77/28DI7582313]",
+                Arguments.of("Case-Fine-Non-fine > App1-Granted > Fine-Non-fine > App2-Granted > Fine-Fine [STE77/28DI7582313]",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-NonFine/App1-Granted/Fine-NonFine/App2-Granted-Fine-Fine/1_case_results_tracked.json",
@@ -856,7 +856,7 @@ class HearingFinancialResultsAggregateForCaseFineNonFineTest {
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
-                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                                 .newStep(newNcesEmailForNewApplicationStep("app2 reopen received", "json/nces/multi-applications/Case-Fine-NonFine/Case-amended-o2-Fine/App1-Granted-Fine-Fine/App2-Granted-Fine-Fine/4_app_reopen_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")

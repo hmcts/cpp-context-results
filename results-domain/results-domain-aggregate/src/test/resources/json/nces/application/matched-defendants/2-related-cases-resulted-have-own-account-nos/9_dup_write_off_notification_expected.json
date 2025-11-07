@@ -1,0 +1,46 @@
+{
+  "amendmentDate": "2025-09-26",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI7093530",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea1 Jackie1",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £400.00 to first last, FO - Fine\nFined £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "799cc004-f4cf-4e49-af08-fa0119b5d33e",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £9999.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b190aa8e-0d02-4648-8a5b-1085f2a79652",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "dd55768f-1364-450d-b1a1-a358deeee5fd",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £400.00 to first last, FO - Fine\nFined £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "799cc004-f4cf-4e49-af08-fa0119b5d33e",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £87659999.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £3245.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b190aa8e-0d02-4648-8a5b-1085f2a79652",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

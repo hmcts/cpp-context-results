@@ -1,0 +1,22 @@
+{
+  "caseReferences": "28DI2405263",
+  "dateDecisionMade": "2025-10-21",
+  "defendantName": "Michele Crona",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £40.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2027.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "85c21da8-865d-4bda-8ed8-57f0cb2fed6f",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

@@ -5,13 +5,16 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.frequency;
 import static java.util.Collections.nCopies;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.GobAccountUpdateStep.newGobAccountUpdateStep;
 import static uk.gov.moj.cpp.results.test.TestUtilities.payloadAsString;
 import static uk.gov.moj.cpp.results.test.TestUtilities.stringToJsonObject;
 
@@ -19,7 +22,6 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.moj.cpp.results.domain.event.NewApplicationResults;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.test.matchers.JsonMatcher;
 
@@ -28,7 +30,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,7 +75,9 @@ class HearingFinancialResultAggregateTestSteps {
     }
 
     /**
-     * Base class for defining a step in a scenario.
+     * Base class for defining a step in a scenario, responsible for executing the step and asserting the expected events.
+     * Each step can define expected event payloads, event names, and not expected event names.
+     * It can also define custom comparisons for expected event payloads.
      */
     abstract static class StepDef {
         Map<String, List<String>> expectedEventPayloads = new HashMap<>();
@@ -200,12 +203,13 @@ class HearingFinancialResultAggregateTestSteps {
     }
 
     /**
-     * Builder for defining a result tracked step. It takes a result tracked event and emits expected events that should be created as a result.
+     * Builder for defining a result tracked step.
+     * If accountInfo is not empty and also contains account-number then implicitly executes GobExport step.
+     * It takes a result tracked event and emits expected events that should be created as a result.
      */
     static class ResultTrackedStep extends StepDef {
         List<NewOffenceByResult> newOffenceByResults = new ArrayList<>();
-        NewApplicationResults.Builder newApplicationResults = new NewApplicationResults.Builder();
-        Optional<AccountInfo> accountInfo = AccountInfo.defaultAccountInfo();
+        AccountInfo accountInfo = AccountInfo.defaultAccountInfo();
 
         String resultTrackedPayload;
 
@@ -216,11 +220,7 @@ class HearingFinancialResultAggregateTestSteps {
         }
 
         public Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
-            String accountCorrelationId = "";
-            if (accountInfo.isPresent()) {
-                accountCorrelationId = accountInfo.get().accountCorrelationId.toString();
-            }
-
+            String accountCorrelationId = accountInfo != null ? accountInfo.accountCorrelationIdString() : "";
             final JsonObject resultTracked = stringToJsonObject(payloadAsString(resultTrackedPayload).replace("{{accountCorrelationId}}", accountCorrelationId));
             HearingFinancialResultRequest applicationResulted = jsonToObjectConverter.convert(resultTracked, HearingFinancialResultRequest.class);
 
@@ -228,11 +228,11 @@ class HearingFinancialResultAggregateTestSteps {
             when(mockOffenceDates.get(any(UUID.class))).thenReturn("2019-11-28");
             Stream<Object> financialResultStream = aggregate.updateFinancialResults(applicationResulted, "false", "2021-21-21", "2021-21-21", newOffenceByResults, APPLICATION_RESULT, mockOffenceDates);
 
-            if (accountInfo.isPresent()) {
-                final AccountInfo accountInformation = accountInfo.get();
-                final Stream<Object> updateAccountNumber = aggregate.updateAccountNumber(accountInformation.accountNumber, accountInformation.accountCorrelationId);
-                final Stream<Object> applicationEmailAndSend = aggregate.checkApplicationEmailAndSend();
-                financialResultStream = Stream.of(financialResultStream, updateAccountNumber, applicationEmailAndSend).flatMap(s -> s);
+            if (accountInfo != null && nonNull(accountInfo.accountCorrelationId) && isNoneBlank(accountInfo.accountNumber)) {
+                final Stream<Object> accountUpdateEvents = newGobAccountUpdateStep("gobExport")
+                        .withAccountInfo(accountInfo.accountCorrelationId.toString(), accountInfo.accountNumber)
+                        .executeInternal(aggregate);
+                financialResultStream = Stream.of(financialResultStream, accountUpdateEvents).flatMap(s -> s);
             }
 
             return financialResultStream.peek(e -> logEvent(name, e))
@@ -246,10 +246,48 @@ class HearingFinancialResultAggregateTestSteps {
             return this;
         }
 
-        ResultTrackedStep withResultTrackedEvent(final String payload, final Optional<AccountInfo> accountInfo) {
+        ResultTrackedStep withResultTrackedEvent(final String payload, final AccountInfo accountInfo) {
             resultTrackedPayload = payload;
             this.accountInfo = accountInfo;
             return this;
+        }
+    }
+
+    /**
+     * Step that executes updateAccountNumber and checkApplicationEmailAndSend methods on the Aggregate, in business terms called `Gob Export`
+     * It requires an AccountInfo object to be set. This step is proceeded by a result tracked step.
+     */
+    static class GobAccountUpdateStep extends StepDef {
+        List<AccountInfo> accountInfos = new ArrayList<>();
+
+        static GobAccountUpdateStep newGobAccountUpdateStep(String name) {
+            final GobAccountUpdateStep step = new GobAccountUpdateStep();
+            step.name = name;
+            return step;
+        }
+
+        GobAccountUpdateStep withAccountInfo(final String accountCorrelationId, final String accountNumber) {
+            accountInfos.add(AccountInfo.accountInfo(accountCorrelationId, accountNumber));
+            return this;
+        }
+
+        @Override
+        public Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
+            Stream<Object> allEvents = executeInternal(aggregate);
+            return allEvents.peek(e -> logEvent(name, e))
+                    .collect(Collectors.groupingBy(
+                            e -> e.getClass().getSimpleName()
+                    ));
+        }
+
+        private Stream<Object> executeInternal(final HearingFinancialResultsAggregate aggregate) {
+            Stream<Object> allEvents = Stream.empty();
+            for (AccountInfo accountInfo : accountInfos) {
+                final Stream<Object> updateAccountNumber = aggregate.updateAccountNumber(accountInfo.accountNumber, accountInfo.accountCorrelationId);
+                final Stream<Object> applicationEmailAndSend = aggregate.checkApplicationEmailAndSend();
+                allEvents = Stream.concat(allEvents, Stream.of(updateAccountNumber, applicationEmailAndSend).flatMap(s -> s));
+            }
+            return allEvents;
         }
     }
 
@@ -333,20 +371,24 @@ class HearingFinancialResultAggregateTestSteps {
         UUID accountCorrelationId;
         String accountNumber;
 
-        static Optional<AccountInfo> defaultAccountInfo() {
+        String accountCorrelationIdString() {
+            return accountCorrelationId != null ? accountCorrelationId.toString() : "";
+        }
+
+        static AccountInfo defaultAccountInfo() {
             final UUID uuid = UUID.randomUUID();
             return accountInfo(uuid.toString(), uuid + "ACCOUNT");
         }
 
-        static Optional<AccountInfo> emptyAccountInfo() {
-            return Optional.empty();
+        static AccountInfo emptyAccountInfo() {
+            return null;
         }
 
-        static Optional<AccountInfo> accountInfo(final String accountCorrelationId, final String accountNumber) {
+        static AccountInfo accountInfo(final String accountCorrelationId, final String accountNumber) {
             final AccountInfo accountInfo = new AccountInfo();
             accountInfo.accountCorrelationId = UUID.fromString(accountCorrelationId);
             accountInfo.accountNumber = accountNumber;
-            return Optional.of(accountInfo);
+            return accountInfo;
         }
     }
 

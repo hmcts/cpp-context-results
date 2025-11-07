@@ -32,7 +32,6 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
         final HearingFinancialResultRequest request = input.request();
         final Map<UUID, String> offenceDateMap = input.offenceDateMap();
         final String ncesEmail = input.ncesEmail();
-        final LinkedList<CorrelationItem> correlationItemList = input.correlationItemList();
         final String writtenOffExists = input.isWrittenOffExists();
         final List<NewOffenceByResult> newResultByOffence = input.newOffenceResultsFromHearing();
         final String applicationResult = input.applicationResult();
@@ -49,11 +48,11 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                     input.prevApplicationOffenceResultsMap());
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
                 return Optional.of(
-                        markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
+                        markedAggregateSendEmailEventBuilder(ncesEmail, input.correlationItemList())
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
                                         request,
                                         NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT.get(offence.getApplicationType()),
-                                        correlationItemList.peekLast(),
+                                        input.correlationItemList().peekLast(),
                                         impositionOffenceDetailsForApplication,
                                         ncesEmail,
                                         writtenOffExists,
@@ -62,7 +61,8 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         newResultByOffence,
                                         applicationResult,
                                         null,
-                                        null));
+                                        null,
+                                        input.prevApplicationResultsDetails()));
             } else {
                 return null;
             }

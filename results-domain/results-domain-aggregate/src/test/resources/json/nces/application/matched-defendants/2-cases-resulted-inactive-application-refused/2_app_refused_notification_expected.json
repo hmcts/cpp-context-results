@@ -1,0 +1,44 @@
+{
+  "caseReferences": "28DI975224,28DI975223",
+  "dateDecisionMade": "2025-10-07",
+  "defendantAddress": "9999H9999QQQJ WplfoqqP addressline 4 BtfgstQQ Elfo YO43 4DF",
+  "defendantContactNumber": "02012345679",
+  "defendantDateOfBirth": "1995-04-30",
+  "defendantEmail": "test02@gmail.com",
+  "defendantName": "CCT-2390caseextra matchdefendentscenarionew1",
+  "divisionCode": "96",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £400.00\nSTRO - Slavery and trafficking risk order\nApplication for slavery and trafficking risk order granted.. Whilst the order is in force the defendant is subject to the following prohibitions: tets.  ",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b7b9844c-44dd-4ac3-97dc-1532583ea24f",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5ec17174-36a2-46df-a573-b7800933f0af",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    },
+    {
+      "details": "FCPC - Costs to Crown Prosecution Service\nTo pay costs of £30.00 to the Crown Prosecution Service, FO - Fine\nFined £500.00\nFIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £20.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5306dd66-6e1a-46e7-9479-8c2d037021be",
+      "title": "Robbery"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN REFUSED"
+}
