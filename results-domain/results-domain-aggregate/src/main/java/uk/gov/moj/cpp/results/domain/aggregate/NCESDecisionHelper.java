@@ -38,6 +38,8 @@ import java.util.UUID;
 
 public class NCESDecisionHelper {
 
+    private static final List<String> grantResultCodes = asList(G, STDEC, ROPENED, AACA, AASA);
+
     public static boolean hasSentenceVaried(final List<NewOffenceByResult> newOffenceByResults) {
         return newOffenceByResults.stream().anyMatch(newOffenceByResult ->
                 newOffenceByResult.getDetails().contains(SV_SENTENCE_VARIED));
@@ -93,7 +95,7 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> asList(G, STDEC, ROPENED, AACA, AASA).contains(offence.getResultCode()));
+                .anyMatch(offence -> grantResultCodes.contains(offence.getResultCode()));
     }
 
     /**
@@ -112,7 +114,6 @@ public class NCESDecisionHelper {
             return true;
         }
 
-        final List<String> grantResultCodes = asList(G, STDEC, ROPENED, AACA, AASA);
 
         final boolean notificationAlreadySent = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationId()))
@@ -120,13 +121,14 @@ public class NCESDecisionHelper {
                 .filter(result -> nonNull(result.getApplicationType()))
                 .filter(result -> NCESDecisionConstants.APPLICATION_SUBJECT.get(result.getApplicationType()).containsKey(result.getResultCode()))
                 .anyMatch(result -> {
-                    return isApplicationAlreadyGranted(applicationResultsDetails, grantResultCodes, result);
+                    return isApplicationAlreadyGranted(applicationResultsDetails, result);
                 });
 
         return !notificationAlreadySent;
     }
 
-    private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final List<String> grantResultCodes, final OffenceResults result) {
+    private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final OffenceResults result) {
+
         final List<OffenceResultsDetails> prevAppList = applicationResultsDetails.get(result.getApplicationId());
         if (prevAppList == null || prevAppList.isEmpty()) {
             return false;
