@@ -69,16 +69,6 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                                 .map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
-    /**
-     * Determines if there are valid financial to financial case amendments that require processing.
-     *
-     * @return true if there are valid financial to financial case amendments that need processing, false otherwise
-     */
-    public boolean hasTransitionedToFinancial(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
-        return offenceResults.stream().anyMatch(o -> TRUE.equals(o.getIsFinancial()))
-                && nonNull(prevOffenceResultsDetailsMap) && prevOffenceResultsDetailsMap.values().stream().anyMatch(o -> TRUE.equals(o.getIsFinancial()));
-    }
-
     protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
         return request.getOffenceResults().stream()
                 .filter(isCaseAmended)

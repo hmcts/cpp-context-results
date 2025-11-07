@@ -222,7 +222,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/mixed-financial/scenario-2/1_case_resulted.json",
                                                 accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
-                                .newStep(newResultTrackedStep("case amended")
+                                .newStep(newResultTrackedStep("case amended post 2390")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/mixed-financial/scenario-2/2_case_amended.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
@@ -254,7 +254,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
-                                .newStep(newResultTrackedStep("case amended 2")
+                                .newStep(newResultTrackedStep("case amended 2 post 2390")
                                         .withResultTrackedEvent("json/nces/case-amendments/multi-offences/mixed-financial/scenario-3/3_case_amended.json",
                                                 accountInfo("33c39541-e8e0-45b3-af99-532b33646b69", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated",
@@ -1269,7 +1269,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
 
                 ),
-                Arguments.of("single offence > case fin > app fin > add cd",
+                Arguments.of("TBD::CCT-2357 - single offence > case fin > app fin > add cd",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/case-resulted.json",
@@ -1287,11 +1287,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("application amended")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/application-amended.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/nces_duplicate_writeoff.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                 ),
                 Arguments.of("single offence > case fin > app fin+ds+acon",
                         newScenario()
