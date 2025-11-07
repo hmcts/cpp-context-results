@@ -103,40 +103,38 @@ public class NCESDecisionHelper {
     public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                                   final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
 
-        // If incoming request doesn't indicate a grant, don't treat it a new-grant
         final boolean incomingRequestIndicatesGrant = isNewApplicationGranted(hearingFinancialResultRequest);
         if (!incomingRequestIndicatesGrant) {
             return false;
         }
 
-        // If there's no previous state, treat as a new grant
         if (applicationResultsDetails == null || applicationResultsDetails.isEmpty()) {
             return true;
         }
 
-        // Grant result codes considered as having produced a grant notification previously
         final List<String> grantResultCodes = asList(G, STDEC, ROPENED, AACA, AASA);
 
-        //  For incoming offences that carry an applicationId: check prev state by that same applicationId.
         final boolean notificationAlreadySent = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationId()))
-                // only consider incoming offences that are grant-type and not amendments
                 .filter(result -> Objects.isNull(result.getAmendmentDate()))
                 .filter(result -> nonNull(result.getApplicationType()))
                 .filter(result -> NCESDecisionConstants.APPLICATION_SUBJECT.get(result.getApplicationType()).containsKey(result.getResultCode()))
                 .anyMatch(result -> {
-                    final List<OffenceResultsDetails> prevAppList = applicationResultsDetails.get(result.getApplicationId());
-                    if (prevAppList == null || prevAppList.isEmpty()) {
-                        return false;
-                    }
-                    // if previous application results for this same applicationId already contained a grant-like code -> already notified
-                    return prevAppList.stream()
-                            .map(OffenceResultsDetails::getResultCode)
-                            .filter(Objects::nonNull)
-                            .anyMatch(grantResultCodes::contains);
+                    return isApplicationAlreadyGranted(applicationResultsDetails, grantResultCodes, result);
                 });
 
         return !notificationAlreadySent;
+    }
+
+    private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final List<String> grantResultCodes, final OffenceResults result) {
+        final List<OffenceResultsDetails> prevAppList = applicationResultsDetails.get(result.getApplicationId());
+        if (prevAppList == null || prevAppList.isEmpty()) {
+            return false;
+        }
+        return prevAppList.stream()
+                .map(OffenceResultsDetails::getResultCode)
+                .filter(Objects::nonNull)
+                .anyMatch(grantResultCodes::contains);
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
