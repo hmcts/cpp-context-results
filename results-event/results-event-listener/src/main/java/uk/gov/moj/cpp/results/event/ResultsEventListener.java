@@ -20,6 +20,8 @@ import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -104,13 +106,16 @@ public class ResultsEventListener {
     }
 
     private void saveHearingResultedDocument(final JsonEnvelope event, final UUID hearingId, final LocalDate hearingDay, final List<HearingDay> days){
-        final LocalDate startDate = days.stream().map(day -> day.getSittingDay().toLocalDate()).min((d1, d2) -> d1.compareTo(d2)).orElse(null);
-        final LocalDate endDate = days.stream().map(day -> day.getSittingDay().toLocalDate()).max((d1, d2) -> d1.compareTo(d2)).orElse(null);
+        final LocalDate startDate = days.stream().map(day -> getLocalLondonZoneDate(day.getSittingDay())).min((d1, d2) -> d1.compareTo(d2)).orElse(null);
+        final LocalDate endDate = days.stream().map(day -> getLocalLondonZoneDate(day.getSittingDay())).max((d1, d2) -> d1.compareTo(d2)).orElse(null);
         final LocalDate calculatedHearingDay = nonNull(hearingDay) ? hearingDay : startDate;
         hearingResultedDocumentRepository.save(createHearingResultedDocument(event, hearingId, calculatedHearingDay, startDate, endDate));
         LOGGER.info("Hearing Event Document successfully stored for hearing id: {}, hearing day: {}", hearingId, calculatedHearingDay);
     }
 
+    private LocalDate getLocalLondonZoneDate(ZonedDateTime utcDateTime){
+        return utcDateTime.withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate();
+    }
 
     private HearingResultedDocument createHearingResultedDocument(JsonEnvelope event, UUID hearingId, LocalDate hearingDay, LocalDate startDate, LocalDate endDate) {
         final HearingResultedDocument document = new HearingResultedDocument();
