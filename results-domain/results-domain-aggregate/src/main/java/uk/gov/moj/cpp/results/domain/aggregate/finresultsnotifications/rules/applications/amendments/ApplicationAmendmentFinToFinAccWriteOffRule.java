@@ -33,46 +33,40 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow() && input.hasFinancialAmendments();
+        final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
+        final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
+
+        return input.hasValidApplicationType() && input.isAmendmentFlow()
+                && input.hasFinancialAmendments()
+                && isFineToFineApplicationAmendment(input, request, currentApplicationId);
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
-
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
-        final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
+        final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
+                .stream()
+                .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
+                .distinct().toList();
 
-        final boolean isMixedFinancialAmendment = isMixedFinancialApplicationAmendment(request.getOffenceResults(), input.prevApplicationOffenceResultsMap().get(currentApplicationId));
+        final Optional<OriginalApplicationResults> originalResultsByApplication = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
 
-        // Check if there are valid financial amendments
-        if (isFineToFineApplicationAmendment(input, request, currentApplicationId) || isMixedFinancialAmendment) {
+        final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
+        final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsAppAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()).stream()
+                .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
+                .toList();
 
-            final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
-                    .stream()
-                    .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
-                    .distinct().toList();
+        final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
 
-            final Optional<OriginalApplicationResults> originalResultsByApplication = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
+        return Optional.of(markedAggregateSendEmailEventBuilder
+                .buildMarkedAggregateWithOlds(request,
+                        hasSentenceVaried(newOffenceResults) ? buildOriginalOffenceResultForSV(originalImpositionDetails) : originalImpositionDetails,
+                        input.applicationResult(),
+                        hasSentenceVaried(newOffenceResults) ? buildNewOffenceResultForSV(newOffenceResults) : newOffenceResults,
+                        originalResultsByApplication.orElse(null),
+                        newApplicationResults,
+                        NCESDecisionConstants.AMEND_AND_RESHARE,
+                        input.prevApplicationResultsDetails()));
 
-            final NewApplicationResults newApplicationResults = buildNewApplicationResultsFromTrackRequest(request.getOffenceResults());
-
-            final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsAppAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()).stream()
-                    .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
-                    .toList();
-
-            final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
-
-            return Optional.of(markedAggregateSendEmailEventBuilder
-                    .buildMarkedAggregateWithOlds(request,
-                            hasSentenceVaried(newOffenceResults) ? buildOriginalOffenceResultForSV(originalImpositionDetails) : originalImpositionDetails,
-                            input.applicationResult(),
-                            hasSentenceVaried(newOffenceResults) ? buildNewOffenceResultForSV(newOffenceResults) : newOffenceResults,
-                            originalResultsByApplication.orElse(null),
-                            newApplicationResults,
-                            NCESDecisionConstants.AMEND_AND_RESHARE,
-                            input.prevApplicationResultsDetails()));
-        }
-
-        return Optional.empty();
     }
 }

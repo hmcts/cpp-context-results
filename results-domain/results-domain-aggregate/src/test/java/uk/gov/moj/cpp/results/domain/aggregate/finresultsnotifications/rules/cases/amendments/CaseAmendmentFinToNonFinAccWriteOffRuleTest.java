@@ -27,20 +27,23 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
     @Test
     void shouldGenerateAccWriteOffNotificationForFinToNonFinAmendment() {
         final UUID hearingId = randomUUID();
+        final UUID offenceId = randomUUID();
+        final UUID acountCorrelationId = randomUUID();
+
         HearingFinancialResultRequest trackRequest = hearingFinancialResultRequest()
                 .withHearingId(hearingId)
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
-                                .withOffenceId(randomUUID())
+                                .withOffenceId(offenceId)
                                 .withIsFinancial(false)
                                 .withAmendmentDate("2023-01-01")
+                                .withImpositionOffenceDetails("non fin  Offence details")
                                 .build()))
                 .build();
         final ResultNotificationRule.RuleInput input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
+                .withPrevOffenceResultsDetails(Map.of(offenceId,
                         offenceResultsDetails()
                                 .withIsFinancial(true)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
@@ -48,8 +51,9 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                 .withHearingId(hearingId)
-                                .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                .withAccountCorrelationId(acountCorrelationId)
                                 .withAccountNumber("AC123456789")
+                                .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).build()))
                                 .build()))
                 .build();
 

@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.AccountInfo.accountInfo;
 import static uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultAggregateTestSteps.AccountInfo.emptyAccountInfo;
@@ -1470,7 +1469,15 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                 .newStep(newResultTrackedStep("case amended resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-NonFine/Case-amended-o2-Fine/App1-Granted-Fine-Fine/App2-Granted-Fine-Fine/2_case_results_tracked.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated",
+                                                "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/multi-applications/Case-Fine-NonFine/Case-amended-o2-Fine/App1-Granted-Fine-Fine/App2-Granted-Fine-Fine/1_case_expected_write_off_notification.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
                                 .newStep(newNcesEmailForNewApplicationStep("app1 statdec received", "json/nces/multi-applications/Case-Fine-NonFine/Case-amended-o2-Fine/App1-Granted-Fine-Fine/App2-Granted-Fine-Fine/3_app_stat_dec_1_send_nces_request.json")
                                         .withExpectedEventNames("NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION FOR A STATUTORY DECLARATION RECEIVED\".*")
@@ -1595,7 +1602,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                 .newStep(newResultTrackedStep("case amended")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/DD-40400/2_case_amended_tracked.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived","MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived", "UnmarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived", "UnmarkedAggregateSendEmailWhenAccountReceived")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/DD-40400/3_case_nces_email_notification.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")

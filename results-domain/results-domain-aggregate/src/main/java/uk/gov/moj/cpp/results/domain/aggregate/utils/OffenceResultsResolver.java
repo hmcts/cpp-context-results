@@ -78,7 +78,6 @@ public class OffenceResultsResolver {
 
     public static List<OffenceResults> getNewOffenceResultsCaseAmendment(final List<OffenceResults> newOffenceResults,
                                                                          final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap) {
-
         return newOffenceResults.stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .map(newOffenceResult -> {

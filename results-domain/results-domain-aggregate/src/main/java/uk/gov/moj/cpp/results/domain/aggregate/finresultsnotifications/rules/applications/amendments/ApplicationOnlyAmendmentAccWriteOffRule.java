@@ -59,8 +59,6 @@ public class ApplicationOnlyAmendmentAccWriteOffRule extends AbstractApplication
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
 
-        final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
-
         final Optional<OriginalApplicationResults> originalApplicationResults = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
 
         final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsAppAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails()).stream()
