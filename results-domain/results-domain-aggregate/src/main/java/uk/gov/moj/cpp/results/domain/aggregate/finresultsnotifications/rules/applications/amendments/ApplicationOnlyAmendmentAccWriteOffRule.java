@@ -26,14 +26,15 @@ import java.util.UUID;
 
 /**
  * Rule for application-only amendments that result in account write-off (application-level changes only).
+ *
+ * Application-only amendments are application amendments where there are original application results present,
+ * the amendment relates to application subjects and there are no new imposition offence results for the application
+ * and it is not a non-financial to non-financial amendment
  */
 public class ApplicationOnlyAmendmentAccWriteOffRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        // application-only amendments are application amendments where there are original application results present,
-        // the amendment relates to application subjects and there are no new imposition offence results for the application
-        // and it is not a non-financial to non-financial amendment
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
         final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
 
@@ -45,7 +46,6 @@ public class ApplicationOnlyAmendmentAccWriteOffRule extends AbstractApplication
 
         final boolean appResultsOnly = originalApplicationResults.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty();
 
-        // ensure we are not a fin->non-fin amendment (avoids duplicate AMEND_AND_RESHARE)
         final boolean finToNonFin = isFineToNonFineApplicationAmendment(input, request, currentApplicationId) && !isFineToFineApplicationAmendment(input, request, currentApplicationId);
 
         return input.hasValidApplicationType() &&
@@ -57,6 +57,7 @@ public class ApplicationOnlyAmendmentAccWriteOffRule extends AbstractApplication
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
+
         final HearingFinancialResultRequest request = filteredApplicationResults(input.request());
 
         final Optional<OriginalApplicationResults> originalApplicationResults = getOriginalApplicationResults(request, input.prevApplicationResultsDetails());
@@ -65,7 +66,6 @@ public class ApplicationOnlyAmendmentAccWriteOffRule extends AbstractApplication
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
                 .toList();
 
-        // Get original imposition offence details from the aggregate when needed
         final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
                 .stream()
                 .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
