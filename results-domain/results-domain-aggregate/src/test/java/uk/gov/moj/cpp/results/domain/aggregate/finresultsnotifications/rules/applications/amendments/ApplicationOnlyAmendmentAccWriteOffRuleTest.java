@@ -2,6 +2,8 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ap
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
@@ -9,6 +11,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.corr
 
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver;
 
 import java.util.List;
 import java.util.Map;
@@ -21,29 +24,32 @@ class ApplicationOnlyAmendmentAccWriteOffRuleTest {
 
     @Test
     void shouldApplyOnlyForApplicationResultsOnlyAmendment() {
+        final UUID applicationId = randomUUID();
+        final UUID offenceId = randomUUID();
+
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
                                 .withApplicationType(NCESDecisionConstants.APPEAL)
-                                .withApplicationId(randomUUID())
-                                .withOffenceId(randomUUID())
+                                .withApplicationId(applicationId)
+                                .withOffenceId(offenceId)
                                 .withIsParentFlag(true)
-                                .withIsFinancial(false)
+                                .withIsFinancial(true)
                                 .withAmendmentDate("2025-01-01")
                                 .withResultCode(NCESDecisionConstants.G)
                                 .build()))
                 .build();
 
-        final UUID applicationId = randomUUID();
         var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevApplicationResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getApplicationId(),
+                .withPrevApplicationResultsDetails(Map.of(applicationId,
                         List.of(offenceResultsDetails()
-                                .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
+                                .withOffenceId(offenceId)
+                                // previous imposition was financial to model application-only change
                                 .withIsFinancial(true)
                                 .withApplicationType(NCESDecisionConstants.APPEAL)
+                                .withResultCode(NCESDecisionConstants.WDRN)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
                                 .build())))
                 .withCorrelationItemList(
@@ -53,7 +59,14 @@ class ApplicationOnlyAmendmentAccWriteOffRuleTest {
                                 .build()))
                 .build();
 
-        assertThat("Rule should apply for application-only amendment", rule.appliesTo(input));
+        assertTrue(input.hasValidApplicationType(), "expected hasValidApplicationType true");
+        assertTrue(input.isAmendmentFlow(), "expected isAmendmentFlow true");
+        assertTrue(input.prevApplicationResultsDetails().containsKey(applicationId), "expected prevApplicationResultsDetails to contain applicationId");
+
+        final var newOffences = OffenceResultsResolver.getNewOffenceResultsAppAmendment(input.request().getOffenceResults(), input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails());
+        assertTrue(newOffences.isEmpty(), "expected newOffenceResults to be empty");
+
+        assertTrue(rule.appliesTo(input), "Rule should apply for application-only amendment");
     }
 
     @Test
