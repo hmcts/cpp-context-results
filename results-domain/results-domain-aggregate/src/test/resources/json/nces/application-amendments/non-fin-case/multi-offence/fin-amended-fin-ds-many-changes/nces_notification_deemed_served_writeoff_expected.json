@@ -10,6 +10,18 @@
   "hearingSittingDay": "2025-03-05",
   "impositionOffenceDetails": [
     {
+      "details": "FO - Fine\nFined £100.00\nFVS - Surcharge\nTo pay a surcharge of £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 23/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £222.00 to org test\nFO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3e731cb8-8a79-4a43-860a-6279126000c5",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
       "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £3339.00.\nFO - Fine\nFined £333.00",
       "offenceDate": "2019-11-28",
       "offenceId": "ef473c48-7ef0-4e9a-8eac-f04ee8f3005c",

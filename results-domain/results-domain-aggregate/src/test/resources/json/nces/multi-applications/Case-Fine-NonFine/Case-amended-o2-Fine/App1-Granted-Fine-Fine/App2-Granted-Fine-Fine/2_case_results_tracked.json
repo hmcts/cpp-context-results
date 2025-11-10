@@ -13,6 +13,14 @@
     "ncesEmail": "LCCCCancellations@Justice.gov.uk",
     "offenceResults": [
         {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "FO - Fine\nFined £43211.00, FVS - Surcharge\nTo pay a surcharge of £3456.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/05/2026.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery"
+        },
+        {
             "amendmentDate": "2025-07-17",
             "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
             "dateOfResult": "2025-06-27",

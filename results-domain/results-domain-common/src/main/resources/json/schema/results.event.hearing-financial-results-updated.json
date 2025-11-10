@@ -11,12 +11,17 @@
     },
     "accountNumber": {
       "type": "string"
+    },
+    "updatedTime": {
+      "type": "string",
+      "format": "date-time"
     }
   },
   "required": [
     "masterDefendantId",
     "correlationId",
-    "accountNumber"
+    "accountNumber",
+    "updatedTime"
   ],
   "additionalProperties": false
 }

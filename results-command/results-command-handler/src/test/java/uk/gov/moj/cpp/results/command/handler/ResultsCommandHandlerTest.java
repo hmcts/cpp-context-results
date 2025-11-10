@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -948,6 +949,7 @@ public class ResultsCommandHandlerTest {
         CorrelationItem correlationItem = CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
                 .withAccountNumber("AccountNumber")
+                .withOffenceResultsDetailsList(emptyList())
                 .withAccountDivisionCode("Code").build();
         LinkedList<CorrelationItem> list = new LinkedList<>();
         list.add(correlationItem);

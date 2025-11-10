@@ -233,3 +233,29 @@ protocols: [ HTTP, HTTPS ]
                   application/vnd.results.query.nces-email-notification-details+json:
                     example:  !include json/results.query.nces-email-notification-details.json
                     schema:  !include json/schema/results.query.nces-email-notification-details.json
+
+/defendant-gob-account:
+   get:
+     description: |
+       Return latest account number by master defendant id & hearing Id
+       ...
+       (mapping):
+           responseType: application/vnd.results.query.defendant-gob-account+json
+           name: results.query.defendant-gob-account
+       ...
+     queryParameters:
+         masterDefendantId:
+           description: masterDefendantId
+           type: string
+           required: true
+         hearingId:
+            description: hearingId
+            type: string
+            required: true
+     responses:
+           200:
+               description: OK
+               body:
+                 application/vnd.results.query.defendant-gob-account+json:
+                   example:  !include json/results.query.defendant-gob-account.json
+                   schema:  !include json/schema/results.query.defendant-gob-account.json

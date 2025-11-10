@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>17.101.1</version>
+        <version>17.102.7</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.results</groupId>
@@ -37,7 +37,7 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <coredomain.version>17.102.11</coredomain.version>
+        <coredomain.version>17.102.12</coredomain.version>
         <referencedata.version>17.0.113</referencedata.version>
         <notification.notify.version>17.0.24</notification.notify.version>
         <systemdocgenerator.version>17.0.64</systemdocgenerator.version>
