@@ -26,36 +26,34 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
 
     @Test
     void shouldGenerateAccWriteOffNotificationForFinToNonFinAmendment() {
-
         final UUID hearingId = randomUUID();
         final UUID offenceId = randomUUID();
+        final UUID acountCorrelationId = randomUUID();
 
         HearingFinancialResultRequest trackRequest = hearingFinancialResultRequest()
-                .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withHearingId(hearingId)
+                .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
                                 .withOffenceId(offenceId)
                                 .withIsFinancial(false)
-                                .withImpositionOffenceDetails("non fine")
                                 .withAmendmentDate("2023-01-01")
+                                .withImpositionOffenceDetails("non fin  Offence details")
                                 .build()))
                 .build();
         final ResultNotificationRule.RuleInput input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest)
-                .withPrevOffenceResultsDetails(Map.of(
-                        trackRequest.getOffenceResults().get(0).getOffenceId(),
+                .withPrevOffenceResultsDetails(Map.of(offenceId,
                         offenceResultsDetails()
                                 .withIsFinancial(true)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
-                                .withOffenceId(offenceId)
                                 .build()))
                 .withCorrelationItemList(
                         List.of(correlationItem()
-                                .withAccountCorrelationId(randomUUID())
+                                .withHearingId(hearingId)
+                                .withAccountCorrelationId(acountCorrelationId)
                                 .withAccountNumber("AC123456789")
                                 .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).build()))
-                                .withHearingId(hearingId)
                                 .build()))
                 .build();
 
@@ -73,7 +71,9 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
         final UUID offenceId1 = randomUUID();
         final UUID offenceId2 = randomUUID();
         final UUID accountCorrelationId = randomUUID();
+        final UUID hearingId = randomUUID();
         HearingFinancialResultRequest trackRequest = hearingFinancialResultRequest()
+                .withHearingId(hearingId)
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
@@ -106,6 +106,7 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
                 ))
                 .withCorrelationItemList(
                         List.of(correlationItem()
+                                        .withHearingId(hearingId)
                                         .withCreatedTime(ZonedDateTime.now().minusHours(1))
                                         .withAccountCorrelationId(randomUUID())
                                         .withAccountNumber("AC123456789OLD")
@@ -113,6 +114,7 @@ class CaseAmendmentFinToNonFinAccWriteOffRuleTest {
                                                 offenceResultsDetails().withOffenceId(offenceId2).withCreatedTime(ZonedDateTime.now().minusHours(1)).build()))
                                         .build(),
                                 correlationItem()
+                                        .withHearingId(hearingId)
                                         .withCreatedTime(ZonedDateTime.now())
                                         .withAccountCorrelationId(accountCorrelationId)
                                         .withAccountNumber("AC123456789")
