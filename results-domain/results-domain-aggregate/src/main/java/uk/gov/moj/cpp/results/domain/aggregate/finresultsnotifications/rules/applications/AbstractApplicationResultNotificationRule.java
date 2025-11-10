@@ -5,7 +5,6 @@ import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getPreviousOffenceResultsDetails;
@@ -112,18 +111,6 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                                 input.prevApplicationResultsDetails()))
                         .filter(Objects::nonNull)
                         .anyMatch(o -> TRUE.equals(o.getIsFinancial()));
-
-
-        //        return request.getOffenceResults().stream()
-//                .filter(isApplicationAmended)
-//                .filter(OffenceResults::getIsFinancial)
-//                .anyMatch(offenceFromRequest ->
-//                        ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(),
-//                                currentApplicationId,
-//                                input.prevOffenceResultsDetails(),
-//                                input.prevApplicationOffenceResultsMap(),
-//                                input.prevApplicationResultsDetails()))
-//                                .map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
     /**
