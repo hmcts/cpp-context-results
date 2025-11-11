@@ -462,6 +462,9 @@ public class HearingTransformer {
         if (courtApplication.getVerdict() != null) {
             apiCourtApplication.withVerdict(verdict(courtApplication.getVerdict()).build());
         }
+        if (courtApplication.getLaaApplnReference() != null) {
+            apiCourtApplication.withLaaApplnReference(laaReference(courtApplication.getLaaApplnReference()).build());
+        }
         return apiCourtApplication
                 .withApplicationParticulars(courtApplication.getApplicationParticulars())
                 .withApplicationDecisionSoughtByDate(courtApplication.getApplicationDecisionSoughtByDate())
