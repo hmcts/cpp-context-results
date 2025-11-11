@@ -35,8 +35,8 @@ public class GobAccountHelper {
                 .toList();
     }
 
-    public static Boolean getOldGobAccountByHearing(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
-                                                    final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final UUID hearingId) {
+    public static Boolean hasOldGobAccount(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
+                                           final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final UUID hearingId) {
 
         correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
 

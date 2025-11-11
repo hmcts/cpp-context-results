@@ -3,14 +3,13 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ca
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldGobAccountByHearing;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.hasOldGobAccount;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsCaseAmendment;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsCaseAmendment;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
@@ -23,13 +22,6 @@ import java.util.stream.Collectors;
 /**
  * This class implements a notification rule for case amendments with financial imposition changes. If there are
  * financial imposition changes to non financial changes, it builds a notification event with the updated imposition details.
- *
- * * Rule to handle notifications for
- *  * 1. Case -> offence financial results are amended to non financials
- *  * 2. Case -> Partial offences result in financials first,
- *  *            and the remaining offences are non financials later without altering the financials that were already applied
- *  *            and amended financials to non financials
- *
  */
 public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificationRule {
 
@@ -41,13 +33,10 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
                 .map(OffenceResults::getOffenceId)
                 .collect(Collectors.toList());
 
-        final Boolean hasPreviousCorrelation = getOldGobAccountByHearing(input.correlationItemList(),
+        final Boolean hasPreviousCorrelation = hasOldGobAccount(input.correlationItemList(),
                 request.getAccountCorrelationId(), offenceIdList, input.prevApplicationResultsDetails(), request.getHearingId());
 
-        if (!input.hasCorrelation() && hasPreviousCorrelation) {
-            return true;
-        }
-        return false;
+        return !input.hasCorrelation() && hasPreviousCorrelation;
     }
 
     @Override
