@@ -1,0 +1,44 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+    "defendantContactNumber": "015325443756",
+    "defendantDateOfBirth": "1991-02-18",
+    "defendantName": "Joe McGlynn",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "74fc4dd6-8254-44a3-8881-9c005366183e",
+    "hearingSittingDay": "2025-07-29T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "e57a60dc-3da1-4117-904f-e35440d5a30a",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "25662140-b596-430d-8633-3619c36f5de5",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-29",
+            "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
+            "offenceTitle": "Theft of motor vehicle",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-29",
+            "impositionOffenceDetails": "FO - Fine\nFined £400.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
+            "offenceTitle": "Theft of motor vehicle"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI9473376"
+    ]
+}

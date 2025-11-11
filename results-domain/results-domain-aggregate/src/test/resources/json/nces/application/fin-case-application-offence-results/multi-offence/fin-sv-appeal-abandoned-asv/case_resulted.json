@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Miller Walk Marceloside Avon DA61 7ND",
+  "defendantContactNumber": "724-337-0958",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Hilario Hirthe",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "302e4271-bac1-4da2-913f-528fe4cf5856",
+  "hearingSittingDay": "2025-04-24T15:15:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £11.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £11.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD39876942"
+  ]
+}

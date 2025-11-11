@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI3955007",
+  "dateDecisionMade": "2025-08-14",
+  "defendantAddress": "n Fisher Tunnel3955007 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-08-14",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £10000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £20000.00\nFVS - Surcharge\nTo pay a surcharge of £65.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "materialId": "58e89340-a4b0-44f0-896e-bf362a49f60a",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £444444.00\nFVS - Surcharge\nTo pay a surcharge of £34.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £55555.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "2a402f06-628b-4617-85aa-81a414d89132",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

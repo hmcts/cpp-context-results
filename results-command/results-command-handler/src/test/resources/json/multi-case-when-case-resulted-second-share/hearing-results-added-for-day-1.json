@@ -1,0 +1,578 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "NOT_PRESENT",
+            "day": "2024-09-23"
+          }
+        ],
+        "defendantId": "4d51757f-383c-4164-beaf-3edd63a55c58"
+      },
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "NOT_PRESENT",
+            "day": "2024-09-23"
+          }
+        ],
+        "defendantId": "6fb33432-1f84-4f07-b4a9-d5ec55bf8e22"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2024-09-23T22:30:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "25525d31-a54d-4b9c-bc2c-701474f29084",
+    "isGroupProceedings": false,
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "ACTIVE",
+        "cpsOrganisation": "A30AB00",
+        "defendants": [
+          {
+            "courtProceedingsInitiated": "2024-09-23T15:21:46.124Z",
+            "id": "6fb33432-1f84-4f07-b4a9-d5ec55bf8e22",
+            "isYouth": false,
+            "masterDefendantId": "6fb33432-1f84-4f07-b4a9-d5ec55bf8e22",
+            "offences": [
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "ddb37df5-1b00-4ff4-921c-4bc3c9645621",
+                "isDisposed": false,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": true,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "INTERMEDIARY",
+                    "cjsCode": "4576",
+                    "courtClerk": {
+                      "firstName": "Evan",
+                      "lastName": "Roberts",
+                      "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": true,
+                    "judicialResultId": "4bedaa46-f419-4b8b-9860-23aabda13f6a",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4630968a-0e3f-42a6-bde0-55a0c4f2e92e",
+                        "label": "Grounds for warrant",
+                        "promptReference": "groundsForWarrant",
+                        "promptSequence": 100,
+                        "qualifier": "CG",
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "no appearance in answer to bail",
+                        "welshValue": "no appearance in answer to bail"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse organisation name",
+                        "promptReference": "hCHOUSEOrganisationName",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Aberdeen JP Court",
+                        "welshValue": "Aberdeen JP Court"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 1",
+                        "promptReference": "hCHOUSEAddress1",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Sheriff Court House",
+                        "welshValue": "Sheriff Court House"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 2",
+                        "promptReference": "hCHOUSEAddress2",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Castle Street",
+                        "welshValue": "Castle Street"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 3",
+                        "promptReference": "hCHOUSEAddress3",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Aberdeen",
+                        "welshValue": "Aberdeen"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse post code",
+                        "promptReference": "hCHOUSEPostCode",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "AB10 1WP",
+                        "welshValue": "AB10 1WP"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4c8bd45c-e0c7-456c-8104-d1ce3ac0419e",
+                        "label": "Process server name",
+                        "promptReference": "processServerName",
+                        "promptSequence": 400,
+                        "type": "TXT",
+                        "usergroups": [],
+                        "value": "Aberdeen",
+                        "welshValue": "Aberdeen"
+                      }
+                    ],
+                    "judicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                    "label": "Warrant for arrest without bail",
+                    "lastSharedDateTime": "2024-09-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-09-23",
+                    "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                    "policeSubjectLineTitle": "Warrant",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "qualifier": "CG",
+                    "rank": 160700,
+                    "resultDefinitionGroup": "Warrants of arrest",
+                    "resultText": "WOFN - Warrant for arrest without bail\nWarrant for arrest without bail. Basis: no appearance in answer to bail.",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "4bedaa46-f419-4b8b-9860-23aabda13f6a",
+                    "rootJudicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": true,
+                    "usergroups": []
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "S:L3",
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03012",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "6588ffee-89ec-36a2-ab90-a54177cbda97",
+                "offenceLegislation": "Contrary to section 363(3)(b) and (4) of the Communications Act 2003.",
+                "offenceLegislationWelsh": "Yn groes i adran 363(3)(b) a (4) Deddf Cyfathrebu 2003.",
+                "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+                "offenceTitleWelsh": "Meddu ar/mewn rheolaeth set deledu gan fwriadu i unigolyn arall ei ddefnyddio/osod heb drwydded",
+                "orderIndex": 1,
+                "startDate": "2019-11-28",
+                "wording": "Theft of pedal cycle."
+              },
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "83de53f8-d7a4-4604-8916-097c8773b54d",
+                "isDisposed": false,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": true,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "INTERMEDIARY",
+                    "cjsCode": "4576",
+                    "courtClerk": {
+                      "firstName": "Evan",
+                      "lastName": "Roberts",
+                      "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": true,
+                    "judicialResultId": "6c9f3f24-452c-4399-b516-b6a88a224b78",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4630968a-0e3f-42a6-bde0-55a0c4f2e92e",
+                        "label": "Grounds for warrant",
+                        "promptReference": "groundsForWarrant",
+                        "promptSequence": 100,
+                        "qualifier": "CG",
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "no appearance in answer to bail",
+                        "welshValue": "no appearance in answer to bail"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse organisation name",
+                        "promptReference": "hCHOUSEOrganisationName",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Aberdeen JP Court",
+                        "welshValue": "Aberdeen JP Court"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 1",
+                        "promptReference": "hCHOUSEAddress1",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Sheriff Court House",
+                        "welshValue": "Sheriff Court House"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 2",
+                        "promptReference": "hCHOUSEAddress2",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Castle Street",
+                        "welshValue": "Castle Street"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse address line 3",
+                        "promptReference": "hCHOUSEAddress3",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Aberdeen",
+                        "welshValue": "Aberdeen"
+                      },
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                        "label": "Courthouse post code",
+                        "promptReference": "hCHOUSEPostCode",
+                        "promptSequence": 200,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "AB10 1WP",
+                        "welshValue": "AB10 1WP"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "4c8bd45c-e0c7-456c-8104-d1ce3ac0419e",
+                        "label": "Process server name",
+                        "promptReference": "processServerName",
+                        "promptSequence": 400,
+                        "type": "TXT",
+                        "usergroups": [],
+                        "value": "Aberdeen",
+                        "welshValue": "Aberdeen"
+                      }
+                    ],
+                    "judicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                    "label": "Warrant for arrest without bail",
+                    "lastSharedDateTime": "2024-09-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-09-23",
+                    "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                    "policeSubjectLineTitle": "Warrant",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "qualifier": "CG",
+                    "rank": 160700,
+                    "resultDefinitionGroup": "Warrants of arrest",
+                    "resultText": "WOFN - Warrant for arrest without bail\nWarrant for arrest without bail. Basis: no appearance in answer to bail.",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "6c9f3f24-452c-4399-b516-b6a88a224b78",
+                    "rootJudicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": true,
+                    "usergroups": []
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "EW:6M &/or Ultd Fine",
+                "modeOfTrial": "Either Way",
+                "offenceCode": "CA03001",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "d22aa6d2-bc1c-35fd-bf6a-d010ae09ac6c",
+                "offenceLegislation": "Contrary to section 125 of the Communications Act 2003.",
+                "offenceTitle": "Obtain electronic communications service with intent to avoid payment",
+                "orderIndex": 2,
+                "startDate": "2019-11-28",
+                "wording": "Obtain electronic communications service with intent to avoid payment."
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01124463301",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9999AAAA",
+                  "address2": "Woodlane",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon"
+                },
+                "contact": {
+                  "home": "0204463301",
+                  "mobile": "07774463301",
+                  "primaryEmail": "REDDY.TEST014463301@gmail.com"
+                },
+                "dateOfBirth": "1998-07-09",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Ethan",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Hunt",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            },
+            "prosecutionAuthorityReference": "D28GC01124463301",
+            "prosecutionCaseId": "b32637e9-b666-439b-bd54-5a4bd3acb25e"
+          }
+        ],
+        "id": "b32637e9-b666-439b-bd54-5a4bd3acb25e",
+        "initiationCode": "C",
+        "originatingOrganisation": "0400000",
+        "prosecutionCaseIdentifier": {
+          "address": {
+            "address1": "CTC Prosecutions Team",
+            "address2": "Stevenage Police Station",
+            "address3": "Lytton Way",
+            "address4": "Stevenage",
+            "address5": "Herts",
+            "postcode": "SG1 1HF"
+          },
+          "contact": {
+            "primaryEmail": "cpnotifications@bch.police.uk"
+          },
+          "majorCreditorCode": "PO40",
+          "prosecutionAuthorityCode": "BEDSPF",
+          "prosecutionAuthorityId": "82446eb4-f393-323a-b11f-d07b15e442a2",
+          "prosecutionAuthorityName": "Bedfordshire Police",
+          "prosecutionAuthorityOUCode": "0400000",
+          "caseURN": "28KE4463301"
+        }
+      },
+      {
+        "caseStatus": "ACTIVE",
+        "cpsOrganisation": "A30AB00",
+        "defendants": [
+          {
+            "courtProceedingsInitiated": "2024-09-23T15:23:34.676Z",
+            "id": "4d51757f-383c-4164-beaf-3edd63a55c58",
+            "isYouth": false,
+            "masterDefendantId": "4d51757f-383c-4164-beaf-3edd63a55c58",
+            "offences": [
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "dateHeldInCustodySince": "2024-09-23",
+                "endorsableFlag": false,
+                "id": "13aa5732-b730-4704-978a-f676a3834d93",
+                "isDisposed": false,
+                "listingNumber": 1,
+                "maxPenalty": "S:L3",
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03012",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "6588ffee-89ec-36a2-ab90-a54177cbda97",
+                "offenceLegislation": "Contrary to section 363(3)(b) and (4) of the Communications Act 2003.",
+                "offenceLegislationWelsh": "Yn groes i adran 363(3)(b) a (4) Deddf Cyfathrebu 2003.",
+                "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+                "offenceTitleWelsh": "Meddu ar/mewn rheolaeth set deledu gan fwriadu i unigolyn arall ei ddefnyddio/osod heb drwydded",
+                "orderIndex": 1,
+                "startDate": "2019-11-28",
+                "wording": "Theft of pedal cycle."
+              },
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "dateHeldInCustodySince": "2024-09-23",
+                "endorsableFlag": false,
+                "id": "9fac3ade-eec8-4495-98bd-4e79a884dbb1",
+                "isDisposed": false,
+                "listingNumber": 1,
+                "maxPenalty": "EW:6M &/or Ultd Fine",
+                "modeOfTrial": "Either Way",
+                "offenceCode": "CA03001",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "d22aa6d2-bc1c-35fd-bf6a-d010ae09ac6c",
+                "offenceLegislation": "Contrary to section 125 of the Communications Act 2003.",
+                "offenceTitle": "Obtain electronic communications service with intent to avoid payment",
+                "orderIndex": 2,
+                "startDate": "2019-11-28",
+                "wording": "Obtain electronic communications service with intent to avoid payment."
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01127588917",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9999AAAA",
+                  "address2": "Woodlane",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon"
+                },
+                "contact": {
+                  "home": "0207588917",
+                  "mobile": "07777588917",
+                  "primaryEmail": "REDDY.TEST017588917@gmail.com"
+                },
+                "dateOfBirth": "1994-07-29",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Tom",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Hickley",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            },
+            "prosecutionAuthorityReference": "D28GC01127588917",
+            "prosecutionCaseId": "17024b5a-ec09-4389-aeff-c2316e91a737"
+          }
+        ],
+        "id": "17024b5a-ec09-4389-aeff-c2316e91a737",
+        "initiationCode": "C",
+        "originatingOrganisation": "0400000",
+        "prosecutionCaseIdentifier": {
+          "address": {
+            "address1": "CTC Prosecutions Team",
+            "address2": "Stevenage Police Station",
+            "address3": "Lytton Way",
+            "address4": "Stevenage",
+            "address5": "Herts",
+            "postcode": "SG1 1HF"
+          },
+          "contact": {
+            "primaryEmail": "cpnotifications@bch.police.uk"
+          },
+          "majorCreditorCode": "PO40",
+          "prosecutionAuthorityCode": "BEDSPF",
+          "prosecutionAuthorityId": "82446eb4-f393-323a-b11f-d07b15e442a2",
+          "prosecutionAuthorityName": "Bedfordshire Police",
+          "prosecutionAuthorityOUCode": "0400000",
+          "caseURN": "28KE7588917"
+        }
+      }
+    ],
+    "type": {
+      "description": "First hearing",
+      "id": "4a0e892d-c0c5-3c51-95b8-704d8c781776"
+    }
+  },
+  "hearingDay": "2024-09-23",
+  "sharedTime": "2024-09-23T15:27:08.025Z"
+}

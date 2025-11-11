@@ -1,0 +1,30 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208137872",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8137872@gmail.com",
+  "defendantName": "Martine Brakus",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "9df784d8-25cc-4759-8617-4b1741e5738a",
+  "hearingSittingDay": "2025-03-10T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "79cdef69-6c35-462b-8532-e53a169929e6",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-11",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "dateOfResult": "2025-03-10",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £199.00. Reason for decision: fidici 2.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "offenceId": "af82882b-de9c-466e-a8d5-5168f1b5af53",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS8137872"
+  ]
+}

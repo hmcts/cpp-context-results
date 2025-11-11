@@ -1,0 +1,36 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3316700 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Katharina Pfannerstill",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "8d0c0ed3-6061-45db-b9fa-a0b3bed67371",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3ec0d24e-7c1e-49fb-a8b9-c87d49a224bb",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "FO - Fine\nFined £7898.00, FVS - Surcharge\nTo pay a surcharge of £76543.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "25475aa3-0b0c-444f-b8e2-e8f572f14e9c",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "ACON"
+        },
+        {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2025.\nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 54 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "d3f7a5a8-6cff-46d2-83f6-53bba7dcaf6e",
+            "offenceTitle": "Robbery"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3316700"
+    ]
+}

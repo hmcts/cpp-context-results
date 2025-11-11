@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel5984707 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Patrick Stiedemann",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "208d22aa-09e8-4331-bfe5-4305dd80eeff",
+    "hearingSittingDay": "2025-07-16T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "35952a42-ca0a-459a-a4e3-0f854b926388",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £999999.00, FVS - Surcharge\nTo pay a surcharge of £4567.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £333.00. Instalment amount: £300.00 to be paid monthly from 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £222222.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £4444.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "6d9424df-cbcb-40df-9b34-5d6a5ec3c3d1",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI5984707"
+    ]
+}

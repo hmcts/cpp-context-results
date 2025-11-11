@@ -1,0 +1,203 @@
+{
+  "prosecutionCases": [
+    {
+      "id": "f340786e-a8fe-4b3d-a7a7-7c45eadbd85b",
+      "isCivil": true,
+      "isGroupMember": true,
+      "isGroupMaster": false,
+      "prosecutionCaseIdentifier": {
+        "caseURN": "MEMBER1_URN",
+        "prosecutionAuthorityId": "cf73207f-3ced-488a-82a0-3fba79c2ce85",
+        "prosecutionAuthorityCode": "TFL",
+        "oldProsecutionAuthorityCode": "DVLA",
+        "prosecutionAuthorityReference": "MEMBER1_PAR"
+      },
+      "originatingOrganisation": "G01FT01AB",
+      "prosecutorCosts": "300",
+      "initiationCode": "Z",
+      "hasReportingRestrictions": true,
+      "caseStatus": "SJP Referral",
+      "defendants": [
+        {
+          "aliases": [
+            {
+              "firstName": "alias1FirstName",
+              "lastName": "alias1LastName",
+              "middleName": "alias1MiddleName",
+              "title": "alias1Title"
+            }
+          ],
+          "id": "0d464949-fd93-4014-abef-38306ac9dfea",
+          "offences": [
+            {
+              "arrestDate": "2006-05-04",
+              "chargeDate": "2006-05-30",
+              "convictionDate": "2019-10-16",
+              "count": 0,
+              "endDate": "2005-05-05",
+              "id": "47ece016-0113-4910-ab68-7fa64eb53787",
+              "modeOfTrial": "Summary",
+              "offenceCode": "CA03014",
+              "offenceDefinitionId": "d6bd72ad-37bf-330d-bcc6-215728949d3e",
+              "offenceFacts": {
+                "alcoholReadingAmount": 500,
+                "alcoholReadingMethodCode": "A",
+                "vehicleRegistration": "TE4654"
+              },
+              "offenceTitle": "Fail / refuse give assistance to person executing Communications Act search warrant",
+              "orderIndex": 500,
+              "startDate": "1996-05-04",
+              "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+            }
+          ],
+          "personDefendant": {
+            "arrestSummonsNumber": "TFLA",
+            "bailStatus": {
+              "code": "C",
+              "description": "Custody or remanded into custody",
+              "id": "12e69486-4d01-3403-a50a-7419ca040635"
+            },
+            "driverNumber": "ABCDE0,0010BCFAA",
+            "perceivedBirthYear": 2006,
+            "personDetails": {
+              "address": {
+                "address1": "person1Address1",
+                "address2": "person1Address2",
+                "address3": "person1Address3",
+                "postcode": "AA1 1AA"
+              },
+              "contact": {
+                "home": "09998021888",
+                "mobile": "09998021889",
+                "primaryEmail": "person1@gmail.com",
+                "work": "0917894278022"
+              },
+              "dateOfBirth": "2001-01-01",
+              "documentationLanguageNeeds": "ENGLISH",
+              "ethnicity": {
+                "observedEthnicityCode": "4",
+                "observedEthnicityDescription": "Asian",
+                "observedEthnicityId": "a87ff679-a2f3-371d-9181-a67b7542122c",
+                "selfDefinedEthnicityCode": "A1",
+                "selfDefinedEthnicityDescription": "Indian",
+                "selfDefinedEthnicityId": "30b9df3f-5067-44b5-82ff-7cd8a525aaa3"
+              },
+              "firstName": "person1FirstName",
+              "middleName": "person1MiddleName",
+              "lastName": "person1LastName",
+              "gender": "MALE",
+              "nationalityCode": "NAT1",
+              "nationalityDescription": "Nationality 1",
+              "nationalityId": "0185fd77-b422-44fc-aaf1-d60d7fbaff27",
+              "occupationCode": "50",
+              "occupation": "Occupation1",
+              "interpreterLanguageNeeds": "LanguageNeeds1",
+              "specificRequirements": "SpecialNeeds1",
+              "title": "MR"
+            }
+          },
+          "prosecutionCaseId": "f340786e-a8fe-4b3d-a7a7-7c45eadbd85b"
+        }
+      ]
+    },
+    {
+      "id": "a715f264-ed7a-4b50-8eb0-6d5dedde2c96",
+      "isCivil": true,
+      "isGroupMember": true,
+      "isGroupMaster": false,
+      "prosecutionCaseIdentifier": {
+        "prosecutionAuthorityId": "cf73207f-3ced-488a-82a0-3fba79c2ce85",
+        "prosecutionAuthorityCode": "TFL",
+        "oldProsecutionAuthorityCode": "DVLA",
+        "prosecutionAuthorityReference": "MEMBER2_PAR"
+      },
+      "originatingOrganisation": "G01FT01AB",
+      "prosecutorCosts": "300",
+      "initiationCode": "Z",
+      "hasReportingRestrictions": true,
+      "caseStatus": "SJP Referral",
+      "defendants": [
+        {
+          "aliases": [
+            {
+              "firstName": "alias2FirstName",
+              "lastName": "alias2LastName",
+              "middleName": "alias2MiddleName",
+              "title": "alias2Title"
+            }
+          ],
+          "id": "0d464949-fd93-4014-abef-38306ac9dfea",
+          "offences": [
+            {
+              "arrestDate": "2006-05-04",
+              "chargeDate": "2006-05-30",
+              "convictionDate": "2019-10-16",
+              "count": 0,
+              "endDate": "2005-05-05",
+              "id": "47ece016-0113-4910-ab68-7fa64eb53787",
+              "modeOfTrial": "Summary",
+              "offenceCode": "CA03014",
+              "offenceDefinitionId": "d6bd72ad-37bf-330d-bcc6-215728949d3e",
+              "offenceFacts": {
+                "alcoholReadingAmount": 500,
+                "alcoholReadingMethodCode": "A",
+                "vehicleRegistration": "TE4654"
+              },
+              "offenceTitle": "Fail / refuse give assistance to person executing Communications Act search warrant",
+              "orderIndex": 500,
+              "startDate": "1996-05-04",
+              "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+            }
+          ],
+          "personDefendant": {
+            "arrestSummonsNumber": "TFLA",
+            "bailStatus": {
+              "code": "C",
+              "description": "Custody or remanded into custody",
+              "id": "12e69486-4d01-3403-a50a-7419ca040635"
+            },
+            "driverNumber": "ABCDE0,0010BCFAA",
+            "perceivedBirthYear": 2006,
+            "personDetails": {
+              "address": {
+                "address1": "person2Address1",
+                "address2": "person2Address2",
+                "address3": "person2Address3",
+                "postcode": "AA2 2AA"
+              },
+              "contact": {
+                "home": "09998021888",
+                "mobile": "09998021889",
+                "primaryEmail": "person2@gmail.com",
+                "work": "0917894278022"
+              },
+              "dateOfBirth": "2002-02-02",
+              "documentationLanguageNeeds": "ENGLISH",
+              "ethnicity": {
+                "observedEthnicityCode": "4",
+                "observedEthnicityDescription": "Asian",
+                "observedEthnicityId": "a87ff679-a2f3-371d-9181-a67b7542122c",
+                "selfDefinedEthnicityCode": "A1",
+                "selfDefinedEthnicityDescription": "Indian",
+                "selfDefinedEthnicityId": "30b9df3f-5067-44b5-82ff-7cd8a525aaa3"
+              },
+              "firstName": "person2FirstName",
+              "middleName": "person2MiddleName",
+              "lastName": "person2LastName",
+              "gender": "MALE",
+              "nationalityCode": "NAT2",
+              "nationalityDescription": "Nationality 2",
+              "nationalityId": "0185fd77-b422-44fc-aaf1-d60d7fbaff27",
+              "occupationCode": "50",
+              "occupation": "Occupation2",
+              "interpreterLanguageNeeds": "LanguageNeeds2",
+              "specificRequirements": "SpecialNeeds2",
+              "title": "MR"
+            }
+          },
+          "prosecutionCaseId": "a715f264-ed7a-4b50-8eb0-6d5dedde2c96"
+        }
+      ]
+    }
+  ]
+}

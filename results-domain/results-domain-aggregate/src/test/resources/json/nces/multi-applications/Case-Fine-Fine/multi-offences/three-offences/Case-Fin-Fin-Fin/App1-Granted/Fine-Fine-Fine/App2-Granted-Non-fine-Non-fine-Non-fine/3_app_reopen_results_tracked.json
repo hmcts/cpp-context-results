@@ -1,0 +1,62 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+    "defendantContactNumber": "01231231230",
+    "defendantDateOfBirth": "2000-01-01",
+    "defendantEmail": "FlmUFO2hSmithIAkjp@email.com",
+    "defendantName": "FlmUFO2h SmithIAkjp",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "a0df40ae-4d79-4cc0-bb8c-1fcc86fb82cd",
+    "hearingSittingDay": "2025-07-16T14:55:13.775Z",
+    "isSJPHearing": true,
+    "masterDefendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "7f1f16ee-d265-4618-b879-d761881e7697",
+            "applicationResultType": "Refused",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Application refused\nReasons Reject the reopen application",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+            "resultCode": "RFSD"
+        },
+        {
+            "applicationId": "7f1f16ee-d265-4618-b879-d761881e7697",
+            "applicationResultType": "Refused",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Application refused\nReasons Reject the reopen application",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+            "offenceTitle": "Cause use of motor vehicle with no insurance",
+            "resultCode": "RFSD"
+        },
+        {
+            "applicationId": "7f1f16ee-d265-4618-b879-d761881e7697",
+            "applicationResultType": "Refused",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Application refused\nReasons Reject the reopen application",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd",
+            "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+            "resultCode": "RFSD"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "SJ918778267"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

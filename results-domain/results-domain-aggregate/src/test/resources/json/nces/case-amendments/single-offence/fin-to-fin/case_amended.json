@@ -1,0 +1,30 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0204845975",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName4845975@gmail.com",
+  "defendantName": "Louisa Wyman",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "fb2387b6-6576-4c16-9f28-db93d76d7f5a",
+  "hearingSittingDay": "2025-02-12T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "adfed0bc-9c36-47f4-af27-e25203990880",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-02-12",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-02-12",
+      "impositionOffenceDetails": "FO - Fine\nFined £10.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "410a4942-816c-40e4-8591-c6cad7bd5ecb",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI4845975"
+  ]
+}

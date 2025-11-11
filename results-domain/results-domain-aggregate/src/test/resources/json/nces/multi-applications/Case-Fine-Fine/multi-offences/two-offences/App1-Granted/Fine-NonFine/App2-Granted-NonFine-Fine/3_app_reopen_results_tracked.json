@@ -1,0 +1,68 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7404759 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Jakob Ritchie",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "eade8741-9c46-472f-98ad-e2ad558af584",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bd821e9e-a819-4ee6-b692-9679dbe0b5c6",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "d4ea4586-aeb5-48bb-bd01-2a6359decba2",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "d4ea4586-aeb5-48bb-bd01-2a6359decba2",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00\nFVS - Surcharge\nTo pay a surcharge of £7777.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £7777.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7404759"
+    ]
+}

@@ -1,0 +1,42 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Megane River Binsside Avon DA61 7ND",
+    "defendantContactNumber": "286-941-6538",
+    "defendantDateOfBirth": "1978-11-11",
+    "defendantName": "Dandre Dickinson",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "b81bede1-1979-4e41-bbc7-b3c042f5527d",
+    "hearingSittingDay": "2025-08-04T15:15:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "0fdbfb21-27e5-4e01-bbfa-1f4c37adb7d4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+      {
+        "dateOfResult": "2025-08-04",
+        "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/09/2025.\nACR - Attendance centre\nAttendance Centre Requirement: Attend for 11 Hours.",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "offenceId": "b1e1ba67-493f-45ef-9aea-0ed4d500eae3",
+        "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+      },
+      {
+        "dateOfResult": "2025-08-04",
+        "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/09/2025.\nACR - Attendance centre\nAttendance Centre Requirement: Attend for 11 Hours.",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "offenceId": "fd2a5bc5-a2da-4630-b8ed-e27a87cfd78e",
+        "offenceTitle": "Provide money / property for use in acts of terrorism"
+      },
+      {
+        "dateOfResult": "2025-08-04",
+        "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/09/2025.\nACR - Attendance centre\nAttendance Centre Requirement: Attend for 11 Hours.",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "offenceId": "be6d6186-85a2-4332-b3ab-46e9e763c600",
+        "offenceTitle": "Attempt to cause a male aged 13 or over to engage in sexual activity - no penetration"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "GD43292880"
+    ]
+}

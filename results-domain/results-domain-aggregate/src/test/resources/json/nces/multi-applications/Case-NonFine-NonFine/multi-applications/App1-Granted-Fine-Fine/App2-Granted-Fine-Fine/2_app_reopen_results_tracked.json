@@ -1,0 +1,119 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel1480609 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Chaya Waelchi",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "aff2ad60-73f4-437c-b733-39b250312aa9",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bcba026b-2be8-4692-8138-9e3a754d4e05",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £33333333.00\nIMP - Imprisonment\nCommitted to prison for 33 Months. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 34. Total custodial period: 3 Years.\n \n \nFVS - Surcharge\nTo pay a surcharge of £987654.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £3000.00 to be paid monthly. Instalment start date: 10/10/2025.\nTotal custodial period: 3 Years.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £50000.00 to Person first name Muddineni\nFO - Fine\nFined £876545.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £33333333.00\nIMP - Imprisonment\nCommitted to prison for 33 Months. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 34. Total custodial period: 3 Years.\n \n \nFVS - Surcharge\nTo pay a surcharge of £987654.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £3000.00 to be paid monthly. Instalment start date: 10/10/2025.\nTotal custodial period: 3 Years.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £50000.00 to Person first name Muddineni\nFO - Fine\nFined £876545.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £33333333.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £987654.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Costs",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £50000.00 to Person first name Muddineni",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £876545.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI1480609"
+    ]
+}

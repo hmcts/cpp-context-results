@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/case-added-event.json",
+  "type": "object",
+  "properties": {
+    "caseId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "urn": {
+      "type": "string"
+    },
+    "prosecutionAuthorityCode": {
+      "type": "string"
+    },
+    "isCivil": {
+      "type": "boolean"
+    },
+    "groupId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "isGroupMember": {
+      "type": "boolean"
+    },
+    "isGroupMaster": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "urn",
+    "prosecutionAuthorityCode"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,10 @@
+{
+    "id": "a93646c9-739a-40a4-a6b0-c69902ba1360",
+    "masterDefendantId": "a93646c9-739a-40a4-a6b0-c69902ba1360",
+    "notificationId": "a93646c9-739a-40a4-a6b0-c69902ba1360",
+    "materialId": "a93646c9-739a-40a4-a6b0-c69902ba1360",
+    "templateId": "a93646c9-739a-40a4-a6b0-c69902ba1360",
+    "sendToAddress": "sendToAddress",
+    "subject": "subject",
+    "materialUrl": "http://localhost:1234/materialurl"
+}

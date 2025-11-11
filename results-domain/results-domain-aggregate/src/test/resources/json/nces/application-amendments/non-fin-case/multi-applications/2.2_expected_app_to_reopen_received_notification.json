@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI1070802",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0201070802",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName1070802@gmail.com",
+  "defendantName": "Tre Spinka",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-02-18",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "04/08/2025",
+  "masterDefendantId": "f0702610-5670-4a14-ac58-732648008970",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "18/02/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

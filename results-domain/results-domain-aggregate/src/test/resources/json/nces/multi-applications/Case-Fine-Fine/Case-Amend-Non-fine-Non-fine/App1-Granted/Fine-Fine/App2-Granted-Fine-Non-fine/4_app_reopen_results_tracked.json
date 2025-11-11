@@ -1,0 +1,70 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "1, Strand Test Street Test Locality Test Town Test Area TA1 1AT",
+    "defendantContactNumber": "0821292179",
+    "defendantDateOfBirth": "1994-07-17",
+    "defendantEmail": "katia.tremblay@example.com",
+    "defendantName": "Katia Tremblay",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "2d342c14-9462-46eb-9840-700fd9c2542a",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "e0bcb42a-25a4-449f-914f-f171d3e70fed",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "5c7ef25a-0a93-481d-8e53-757a6773a836",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00\nFO - Fine\nFined £8765.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £876.00 to be paid monthly from 12/11/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "5c7ef25a-0a93-481d-8e53-757a6773a836",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 7 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+            "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Excise penalty",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £8765.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ126157841"
+    ]
+}

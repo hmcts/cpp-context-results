@@ -1,0 +1,92 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel4306863 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Vida Cormier",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "1b173db4-8577-4f18-90ac-860063d207cd",
+  "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Granted",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceTitle": "Robbery",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00\nFVS - Surcharge\nTo pay a surcharge of £56.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationId": "eb82719b-fd3c-46e6-b47b-32f2fa09d7c9",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-06-30",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "APPEAL",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-06-30",
+      "resultCode": "DISM",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "DISM - Dismissed",
+      "isFinancial": false,
+      "isParentFlag": true
+    },
+    {
+      "applicationType": "APPEAL",
+      "applicationResultType": "Granted",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationId": "eb82719b-fd3c-46e6-b47b-32f2fa09d7c9",
+      "isFinancial": false,
+      "isParentFlag": false,
+      "dateOfResult": "2025-06-30",
+      "resultCode": "G",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "G - Granted"
+    },
+    {
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-06-30",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Surcharge",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-06-30",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £56.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "applicationType": "APPEAL",
+      "applicationResultType": "Dismissed",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-06-30",
+      "resultCode": "DISM",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "DISM - Dismissed",
+      "isFinancial": false,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI4306863"
+  ]
+}

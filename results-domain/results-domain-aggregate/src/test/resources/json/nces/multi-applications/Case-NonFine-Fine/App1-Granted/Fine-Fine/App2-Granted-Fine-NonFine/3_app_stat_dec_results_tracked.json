@@ -1,0 +1,118 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3358350 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Cristopher Rempel",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "a1e8528a-62c9-4ff8-adb3-305bd02a376c",
+  "hearingSittingDay": "2025-07-08T00:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "95d70a5b-0fc9-432a-bae9-c665111413c8",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "offenceTitle": "Robbery",
+      "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £7898.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence\nFVS - Surcharge\nTo pay a surcharge of £300.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nCOLLO - Collection order\nCollection order made. Deductions from benefit. Reason for not making an attachment of earnings order or deduction from benefit application: test reasons. Reason for making an attachment of earnings order: compensation ordered, defendant is a known defaulter, defendant requested this. Reason for making an application for deductions from benefit: compensation ordered, defendant is a known defaulter, defendant requested this.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons test Additional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons test.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £400.00 to be paid weekly from 12/12/2025",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "5ce98cea-c557-4f73-b179-ffd8f9ed51f3",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-08",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "5ce98cea-c557-4f73-b179-ffd8f9ed51f3",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-07-08",
+      "resultCode": "G",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "APP2 offence2 non financial results",
+      "isFinancial": false,
+      "isParentFlag": true
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Statutory Declaration",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "offenceTitle": "Robbery",
+      "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £7898.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence\nFVS - Surcharge\nTo pay a surcharge of £300.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nCOLLO - Collection order\nCollection order made. Deductions from benefit. Reason for not making an attachment of earnings order or deduction from benefit application: test reasons. Reason for making an attachment of earnings order: compensation ordered, defendant is a known defaulter, defendant requested this. Reason for making an application for deductions from benefit: compensation ordered, defendant is a known defaulter, defendant requested this.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons test Additional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons testAdditional reasons test.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £400.00 to be paid weekly from 12/12/2025",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "5ce98cea-c557-4f73-b179-ffd8f9ed51f3",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-08",
+      "resultCode": "STDEC",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Statutory Declaration",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "5ce98cea-c557-4f73-b179-ffd8f9ed51f3",
+      "isFinancial": false,
+      "isParentFlag": false,
+      "dateOfResult": "2025-07-08",
+      "resultCode": "STDEC",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "APP2 offence2 non financial results"
+    },
+    {
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Compensation",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-07-08",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £7898.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Surcharge",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-07-08",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £300.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-07-08",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "impositons results",
+      "isFinancial": false,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-07-08",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £5000.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3358350"
+  ]
+}

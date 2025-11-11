@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/nces-email-notification.json",
+  "type": "object",
+  "properties": {
+    "masterDefendantId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "notificationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "materialId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "templateId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "sendToAddress": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "materialUrl": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "masterDefendantId",
+    "notificationId",
+    "materialId",
+    "templateId",
+    "sendToAddress",
+    "subject",
+    "materialUrl"
+  ]
+}

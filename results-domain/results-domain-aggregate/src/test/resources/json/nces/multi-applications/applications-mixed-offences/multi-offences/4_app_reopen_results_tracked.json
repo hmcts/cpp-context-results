@@ -1,0 +1,68 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "hearingId": "e7488ee7-e713-489f-99f7-fef4f6fb5b65",
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "defendantName": "Cordia Feeney",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-15T09:00:00.000Z",
+  "offenceResults": [
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Granted",
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "impositionOffenceDetails": "FO - Fine\nFined £456.00\nIMP - Imprisonment\nCommitted to prison for 9 Years. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nFVS - Surcharge\nTo pay a surcharge of £4332.00\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £43.00 to be paid monthly from 11/11/2025\nTotal custodial period is life.",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "2eff4072-df50-49c6-ab35-682c84fedba6",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-15",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Case reopened",
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "impositionOffenceDetails": "FO - Fine\nFined £456.00\nIMP - Imprisonment\nCommitted to prison for 9 Years. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nFVS - Surcharge\nTo pay a surcharge of £4332.00\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £43.00 to be paid monthly from 11/11/2025\nTotal custodial period is life.",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "2eff4072-df50-49c6-ab35-682c84fedba6",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-15",
+      "resultCode": "ROPENED",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £456.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Surcharge",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £4332.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "48DI4492996"
+  ]
+}

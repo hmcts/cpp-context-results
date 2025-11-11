@@ -1,0 +1,108 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel1480609 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Chaya Waelchi",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "7fd7d07c-1ad3-42d7-a6e5-baf33d62da95",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bcba026b-2be8-4692-8138-9e3a754d4e05",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "6ab3163b-041c-4224-b1fc-147b7ab77bf6",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £87653.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £876.00.\nFVS - Surcharge\nTo pay a surcharge of £999.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUMI - Reserve Terms Lump sum plus instalments\nReserve Terms Lump sum plus instalments. Lump sum amount: £343.00. Instalment amount: £322.00 to be paid fortnightly from 11/11/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "6ab3163b-041c-4224-b1fc-147b7ab77bf6",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "financial impositions",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "6ab3163b-041c-4224-b1fc-147b7ab77bf6",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £87653.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £876.00.\nFVS - Surcharge\nTo pay a surcharge of £999.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUMI - Reserve Terms Lump sum plus instalments\nReserve Terms Lump sum plus instalments. Lump sum amount: £343.00. Instalment amount: £322.00 to be paid fortnightly from 11/11/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "6ab3163b-041c-4224-b1fc-147b7ab77bf6",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "financial impositions",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £87653.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Vehicle Excise Back Duty",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £876.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £999.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+            "offenceTitle": "Robbery"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI1480609"
+    ]
+}

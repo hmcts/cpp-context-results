@@ -1,0 +1,57 @@
+{
+  "amendmentDate": "2025-01-10",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI3899442",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "John Doe",
+  "divisionCode": "DIVCODE",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £600.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isWriteOff": true,
+  "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £60.00 to Test\nFO - Fine\nFined £700.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £666.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "DIVCODE",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "John.Doe@xxx.com",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

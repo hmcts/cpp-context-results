@@ -1,0 +1,58 @@
+{
+  "caseReferences": "GD61903271",
+  "dateDecisionMade": "2025-07-24",
+  "defendantAddress": "9999A9999AAAA Robyn Street Danbury Avon DA61 7ND",
+  "defendantContactNumber": "686-933-4091",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Brandon Abbott",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-24",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £450.50\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "954b1808-2803-461c-96c8-a52922cd30d3",
+  "materialId": "a6991475-be90-4bd7-9368-edfc9302fc5f",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "DISM - Dismissed",
+      "offenceDate": "2019-11-28",
+      "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £125.25\nPDATE - Pay by date\nPay by date. Date to pay in full by: 09/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "ad4dab43-bf6b-4dee-971c-689e07a7d24b",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

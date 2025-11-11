@@ -1,0 +1,20 @@
+{
+  "caseReferences": "GD61903271",
+  "defendantAddress": "9999A9999AAAA Robyn Street Danbury Avon DA61 7ND",
+  "defendantContactNumber": "686-933-4091",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Brandon Abbott",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-24",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "954b1808-2803-461c-96c8-a52922cd30d3",
+  "materialId": "ab6d3787-422c-427f-82c8-05c2481c438c",
+  "notificationId": "d2fdf001-5155-4a58-86f6-221a960d3616",
+  "originalDateOfSentence": "24/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

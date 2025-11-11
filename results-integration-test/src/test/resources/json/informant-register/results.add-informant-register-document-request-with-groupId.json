@@ -1,0 +1,73 @@
+{
+  "fileName": "InformantRegister_TFL_2020-04-12.csv",
+  "hearingVenue": {
+    "courtHouse": "Lavender Hill Magistrates' Court",
+    "courtSessions": [
+      {
+        "courtRoom": "Room name",
+        "hearingStartTime": "2020-03-12",
+        "defendants": [
+          {
+            "name": "person0FirstName person0LastName",
+            "dateOfBirth": "1999-12-27",
+            "address1": "person0Address1",
+            "address2": "person0Address2",
+            "address3": "person0Address3",
+            "address4": "person0Address4",
+            "postCode": "AA0 0AA",
+            "title": "MR",
+            "firstName": "person0FirstName",
+            "lastName": "person0LastName",
+            "prosecutionCasesOrApplications": [
+              {
+                "caseOrApplicationReference": "MASTER_CASE_URN",
+                "offences": [
+                  {
+                    "offenceCode": "MASTER_CASE_OFFENCE_CODE",
+                    "orderIndex": 1,
+                    "offenceTitle": "MASTER_CASE_OFFENCE_TITLE",
+                    "pleaValue": "NOT_GUILTY",
+                    "offenceResults": [
+                      {
+                        "resultText": "MASTER_CASE_OFFENCE_RESULT_TEXT"
+                      }
+                    ]
+                  }
+                ],
+                "results": [
+                  {
+                    "resultText": "MASTER_CASE_RESULT_TEXT"
+                  }
+                ],
+                "arrestSummonsNumber": "MASTER_CASE_ASN"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "prosecutionAuthorityOuCode": "%PROSECUTION_AUTHORITY_OU_CODE%",
+  "prosecutionAuthorityCode": "%PROSECUTION_AUTHORITY_CODE%",
+  "prosecutionAuthorityId": "%PROSECUTION_AUTHORITY_ID%",
+  "majorCreditorCode": "PF01",
+  "prosecutionAuthorityName": "London Police",
+  "recipients": [
+    {
+      "emailAddress1": "info@attendancelegalpanel.cjsm.net",
+      "emailAddress2": "",
+      "emailTemplateName": "ir_standard",
+      "recipientName": "Cambridge County Council (Educational Welfare)"
+    },
+    {
+      "emailAddress1": "info@attendancelegalpanel.cjsm.net",
+      "emailAddress2": "",
+      "emailTemplateName": "ir_standard",
+      "recipientName": "Cambridge County Council (Educational Welfare)"
+    }
+  ],
+  "registerDate": "%REGISTER_DATE%",
+  "hearingDate": "%HEARING_DATE%",
+  "hearingId": "%HEARING_ID%",
+  "groupId": "%GROUP_ID%"
+}

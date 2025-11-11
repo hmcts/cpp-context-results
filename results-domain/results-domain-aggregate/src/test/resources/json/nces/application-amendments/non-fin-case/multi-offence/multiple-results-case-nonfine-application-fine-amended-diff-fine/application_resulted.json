@@ -1,0 +1,79 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "DIVCODE",
+  "defendantAddress": "n Fisher Tunnel3899442 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "John Doe",
+  "hearingCourtCentreName": "Croydon Crown Court",
+  "hearingId": "d3acde7b-76ab-43d7-9c36-779304656559",
+  "hearingSittingDay": "2025-01-29T10:00:00.000Z",
+  "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationId": "33f3d79a-be0d-4abe-8f72-458d39efda84",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/06/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "33f3d79a-be0d-4abe-8f72-458d39efda84",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £50.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3899442"
+  ]
+}

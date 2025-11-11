@@ -1,0 +1,60 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0201640110",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName1640110@gmail.com",
+  "defendantName": "Holden Weissnat",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "8a3ef310-3aac-4601-b679-dbed72c6e964",
+  "hearingSittingDay": "2025-02-20T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e80181ba-bdb2-4823-bebd-f3ce8606939e",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "03e444a8-5643-4c70-a995-9e87c1cab981",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "ab403c64-2896-4be3-a042-7375e544da60",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-02-19",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "ab403c64-2896-4be3-a042-7375e544da60",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-02-19",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "ab403c64-2896-4be3-a042-7375e544da60",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI1640110"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "caseReferences": "48DI9761991",
+  "dateDecisionMade": "2025-07-18",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £40000.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £6999.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "30c36c31-b38d-4532-ae4c-7f5398912afa",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "30c36c31-b38d-4532-ae4c-7f5398912afa",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

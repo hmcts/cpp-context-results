@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI3358350",
+  "dateDecisionMade": "2025-07-08",
+  "defendantAddress": "n Fisher Tunnel3358350 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Cristopher Rempel",
+  "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £6787.00\nIMP - Imprisonment\nCommitted to prison for 6 Years Concurrent Consecutive to offence Consecutive to offence. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property, because the number and nature of the offences shows that the defendant is operating as a professional criminal, because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence, other reasons. Bail remand days to count (Tagged Days): 56. Number of days in custody in foreign jurisdiction to count: 45. Total custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.\n \n \nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nFVS - Surcharge\nTo pay a surcharge of £43.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/12/2026\nTotal custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "95d70a5b-0fc9-432a-bae9-c665111413c8",
+  "materialId": "3776123b-2c5a-40f6-bc42-ab5c9d33cf48",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "Application2 offence1 non financial impositions",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+      "title": "Robbery"
+    },
+    {
+      "details": "Application2 offence2 non financial impositions",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "f39d25e1-0fe3-4320-9a81-2de373c70a5c",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

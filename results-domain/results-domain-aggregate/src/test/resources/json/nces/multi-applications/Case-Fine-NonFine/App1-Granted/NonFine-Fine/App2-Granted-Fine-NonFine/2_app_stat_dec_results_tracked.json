@@ -1,0 +1,69 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3216769 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Trystan Rice",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "f11e5fcb-ffbf-40d8-a363-2a8e18863a69",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "85ca22d6-2b74-4347-8bed-fc99c3b036f4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "9b3eecf1-7008-459c-9324-847a5f1f4263",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £6666.00.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/05/2026",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "9b3eecf1-7008-459c-9324-847a5f1f4263",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Vehicle Excise Back Duty",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £6666.00.",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3216769"
+    ]
+}

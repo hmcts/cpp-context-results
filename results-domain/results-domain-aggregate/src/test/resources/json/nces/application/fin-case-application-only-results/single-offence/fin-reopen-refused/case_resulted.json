@@ -1,0 +1,27 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel1912790 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Hermina Armstrong",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "174863d6-3210-4ebe-b624-adb10150558e",
+  "hearingSittingDay": "2025-03-12T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-12",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
+      "offenceTitle": "Robbery"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI1912790"
+  ]
+}

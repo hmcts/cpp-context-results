@@ -1,0 +1,46 @@
+{
+  "amendmentDate": "2025-04-07",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI7253928",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Monte Yundt",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "a25666da-81d7-4e25-b57f-541389f18149",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

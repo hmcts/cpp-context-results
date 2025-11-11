@@ -1,0 +1,8 @@
+{
+    "masterDefendantId": "a73646c9-739a-40a4-a6b0-c69902ba1360",
+    "accountCorrelationId": "c93646c9-739a-40a4-a6b0-c69902ba1360",
+    "hearingId": "b73646c9-739a-40a4-a6b0-c69902ba1360",
+    "accountNumber": "ACC123456789",
+    "caseReferences": "[caseRef1, caseRef2]",
+    "accountRequestTime": "2023-12-01T10:30:00Z"
+}

@@ -1,0 +1,170 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel7477225 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jessyca Beier",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "6def2336-cdda-4e23-8513-c4fee31e9a6b",
+  "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "8a175f38-8d9c-4593-835c-d9c0459d8e0d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £111.00\nFO - Fine\nFined £100.00\nAEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within lump sum 14 days",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery",
+      "resultCode": "FIDIPI"
+    },
+    {
+      "applicationId": "d6080dac-bb11-4279-b701-6a8aac6609da",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 11:11. Total amount enforced £222.00.\nFO - Fine\nFined £200.00",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationId": "d6080dac-bb11-4279-b701-6a8aac6609da",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £111.00\nFO - Fine\nFined £100.00\nAEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within lump sum 14 days",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery",
+      "resultCode": "FIDIPI"
+    },
+    {
+      "applicationId": "d6080dac-bb11-4279-b701-6a8aac6609da",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 11:11. Total amount enforced £222.00.\nFO - Fine\nFined £200.00",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationId": "d6080dac-bb11-4279-b701-6a8aac6609da",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment in police station",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery",
+      "resultCode": "FIDIPI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Attachment of earnings order",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "AEOC - Attachment of earnings order\nAttachment of Earnings Order made.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "13a9f4a9-4561-478e-8634-88ee52be55f7",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until time",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "3ff6b794-e5e6-49be-904b-c99d565fb53b",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7477225"
+  ]
+}

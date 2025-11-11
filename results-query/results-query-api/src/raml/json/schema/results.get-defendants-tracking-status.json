@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/json/schemas/results/results.query.defendants-tracking-status.json",
+  "type": "object",
+  "properties": {
+    "defendants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "defendantId": {
+            "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+          },
+          "trackingStatus": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "minLength": 0,
+              "properties": {
+                "offenceId": {
+                  "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+                },
+                "emLastModifiedTime": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "emStatus": {
+                  "type": "boolean"
+                },
+                "woaLastModifiedTime": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "woaStatus": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "offenceId",
+                "emStatus",
+                "woaStatus"
+              ]
+            },
+            "required": [
+              "defendantId",
+              "trackingStatus"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

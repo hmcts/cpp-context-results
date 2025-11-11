@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/sjp/results/caseDefendant.json",
+  "type": "object",
+  "properties": {
+    "defendantId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "prosecutorReference": {
+      "type": "string"
+    },
+    "parentGuardianDetails": {
+      "$ref": "http://justice.gov.uk/sjp/results/basePersonDetail.json"
+    },
+    "offences": {
+      "type": "array",
+      "items": {
+        "$ref": "http://justice.gov.uk/sjp/results/caseOffence.json"
+      }
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "defendantId",
+    "prosecutorReference",
+    "offences"
+  ],
+  "oneOf": [
+    {
+      "properties": {
+        "individualDefendant": {
+          "$ref": "http://justice.gov.uk/sjp/results/individualDefendant.json"
+        }
+      },
+      "required": [
+        "individualDefendant"
+      ]
+    },
+    {
+      "properties": {
+        "corporateDefendant": {
+          "$ref": "http://justice.gov.uk/sjp/results/corporateDefendant.json"
+        }
+      },
+      "required": [
+        "corporateDefendant"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel1480609 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Chaya Waelchi",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "aff2ad60-73f4-437c-b733-39b250312aa9",
+  "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "bcba026b-2be8-4692-8138-9e3a754d4e05",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2026. \nRR - Residence\nResidence Requirement: Live at 35 test for 8 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/12/2026. \nRR - Residence\nResidence Requirement: Live at 25 test for 5 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+      "offenceTitle": "Robbery",
+      "resultCode": "ROPENED"
+    },
+    {
+      "applicationId": "ab1593bf-d662-4b8c-ad33-d4daadbb63c5",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ROPENED"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 2 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "AD - Absolute discharge",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Costs",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 2 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-17",
+      "impositionOffenceDetails": "AD - Absolute discharge",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI1480609"
+  ]
+}

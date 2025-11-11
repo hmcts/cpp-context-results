@@ -1,0 +1,119 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3316700 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Katharina Pfannerstill",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "a6332c4d-5e15-40ae-ace0-0b3d31c1b5ca",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3ec0d24e-7c1e-49fb-a8b9-c87d49a224bb",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "6e3b01fd-16b0-43b6-b584-d87611c1c4a3",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £8765.00 to first name last\nFO - Fine\nFined £98765.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £876.00. Instalment amount: £987.00 to be paid monthly from 13/04/2026. Parent / Guardian to pay. Number of days in default: 56. Payment card required.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "d3f7a5a8-6cff-46d2-83f6-53bba7dcaf6e",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "6e3b01fd-16b0-43b6-b584-d87611c1c4a3",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £87654.00\nSATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £7896.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "25475aa3-0b0c-444f-b8e2-e8f572f14e9c",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "6e3b01fd-16b0-43b6-b584-d87611c1c4a3",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £8765.00 to first name last\nFO - Fine\nFined £98765.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £876.00. Instalment amount: £987.00 to be paid monthly from 13/04/2026. Parent / Guardian to pay. Number of days in default: 56. Payment card required.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "d3f7a5a8-6cff-46d2-83f6-53bba7dcaf6e",
+            "offenceTitle": "Robbery",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationId": "6e3b01fd-16b0-43b6-b584-d87611c1c4a3",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £87654.00\nSATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £7896.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "25475aa3-0b0c-444f-b8e2-e8f572f14e9c",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationResultType": "Costs",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £8765.00 to first name last",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "d3f7a5a8-6cff-46d2-83f6-53bba7dcaf6e",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £98765.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "d3f7a5a8-6cff-46d2-83f6-53bba7dcaf6e",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £87654.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "25475aa3-0b0c-444f-b8e2-e8f572f14e9c",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Slavery and Trafficking Reparation Order",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "SATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £7896.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "25475aa3-0b0c-444f-b8e2-e8f572f14e9c",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3316700"
+    ]
+}

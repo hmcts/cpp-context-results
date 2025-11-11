@@ -1,0 +1,99 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0207587940",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName7587940@gmail.com",
+  "defendantName": "Lorenz Metz",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "00b12a78-88e8-4099-b804-031c10bb3d30",
+  "hearingSittingDay": "2025-03-03T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £444.00\nFO - Fine\nFined £40.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/05/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDIPI"
+    },
+    {
+      "applicationId": "486d76ef-99f2-4f62-84ca-be67367e3fa1",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fined and detained in default of payment in police station",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £444.00",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDIPI"
+    },
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £40.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Surcharge",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £33.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 12/05/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7587940"
+  ]
+}

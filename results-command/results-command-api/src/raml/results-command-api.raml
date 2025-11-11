@@ -1,0 +1,112 @@
+#%RAML 0.8
+title: Results command api
+version: v1
+protocols: [ HTTP ]
+
+baseUri: http://localhost:8080/results-command-api/command/api/rest/results
+
+/results/{sessionId}:
+  uriParameters:
+    sessionId:
+      type: string
+  post:
+    description: |
+      ...
+      (mapping):
+          requestType: application/vnd.results.command.generate-police-results-for-a-defendant+json
+          name: results.command.generate-police-results-for-a-defendant
+      ...
+    body:
+      application/vnd.results.command.generate-police-results-for-a-defendant+json:
+        example:
+          !include json/results.command.generate-police-results-for-a-defendant.json
+        schema:
+          !include json/schema/results.command.generate-police-results-for-a-defendant.json
+    responses:
+      202:
+        description: Accepted
+      400:
+        description: Invalid command
+      500:
+        description: Internal Server Error
+
+/create-results:
+  post:
+    description: |
+      ...
+      (mapping):
+          requestType: application/vnd.results.api.create-results+json
+          name: results.api.create-results
+      ...
+    body:
+      application/vnd.results.api.create-results+json:
+        example:
+          !include json/results.api.create-results.json
+        schema:
+          !include json/schema/results.api.create-results.json
+    responses:
+      202:
+        description: Accepted
+
+/track-results:
+  post:
+    description: |
+      ...
+      (mapping):
+          requestType: application/vnd.results.api.track-results+json
+          name: results.api.track-results
+      ...
+    body:
+      application/vnd.results.api.track-results+json:
+        example:
+          !include json/results.api.track-results.json
+        schema:
+          !include json/schema/results.api.track-results.json
+    responses:
+      202:
+        description: Accepted
+
+/informant-register:
+  post:
+    description: |
+      add informant register
+      ...
+      (mapping):
+          requestType: application/vnd.results.add-informant-register+json
+          name: results.add-informant-register
+      ...
+    body:
+      application/vnd.results.add-informant-register+json:
+        example:
+          !include json/results.add-informant-register.json
+        schema:
+          !include json/schema/results.add-informant-register.json
+    responses:
+      202:
+        description: Accepted
+      500:
+        description: Internal Server Error
+
+/informant-register/generate:
+  post:
+      description: |
+        Request for generation of informant register by register date
+        ...
+        (mapping):
+            requestType: application/vnd.results.generate-informant-register+json
+            name: results.generate-informant-register
+        (mapping):
+            requestType: application/vnd.results.generate-informant-register-by-date+json
+            name: results.generate-informant-register-by-date
+        ...
+      body:
+        application/vnd.results.generate-informant-register+json: !!null
+        application/vnd.results.generate-informant-register-by-date+json:
+          example:
+            !include json/results.generate-informant-register-by-date.json
+          schema:
+            !include json/schema/results.generate-informant-register-by-date.json
+      responses:
+            202:
+                description: OK
+

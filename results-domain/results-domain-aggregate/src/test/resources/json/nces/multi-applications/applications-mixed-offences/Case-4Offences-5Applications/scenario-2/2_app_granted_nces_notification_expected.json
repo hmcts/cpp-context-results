@@ -1,0 +1,58 @@
+{
+  "caseReferences": "48DI9761991",
+  "dateDecisionMade": "2025-07-18",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £10000.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £9999.00.\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 13/04/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £20000.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £2999.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2026. \nRR - Residence\nResidence Requirement: Live at 35 test for 8 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

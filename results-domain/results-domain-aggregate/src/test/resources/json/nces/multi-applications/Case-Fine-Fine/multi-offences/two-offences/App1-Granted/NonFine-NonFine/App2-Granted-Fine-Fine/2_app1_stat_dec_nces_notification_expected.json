@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI3744431",
+  "dateDecisionMade": "2025-07-07",
+  "defendantAddress": "n Fisher Tunnel3744431 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Fiona Gorczany",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £200.00. , FO - Fine\nFined £2000.00, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £100.00 to be paid monthly from 11/01/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £2000.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "27a8300d-cbf6-4ed5-aed8-0d33da90247e",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+      "title": "Robbery"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

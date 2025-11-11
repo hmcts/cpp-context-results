@@ -1,0 +1,43 @@
+{
+  "hearingId": "HEARING_ID",
+  "masterDefendantId": "MASTER_DEFENDANT_ID",
+  "defendantName": "John Doe",
+  "accountDivisionCode": "DIV01",
+  "accountCorrelationId": "CORRELATION_ID",
+  "prosecutionCaseReferences": [
+    "caseUrn1"
+  ],
+  "hearingSittingDay": "HEARING_SITTING_DAY",
+  "hearingCourtCentreName": "HEARING_COURT_CENTRE_NAME",
+  "defendantDateOfBirth": "DEFENDANT_DATE_OF_BIRTH",
+  "defendantAddress": "DEFENDANT_ADDRESS",
+  "defendantEmail": "DEFENDANT_EMAIL",
+  "defendantContactNumber": "DEFENDANT_CONTACT_NUMBER",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Granted",
+      "applicationId": "902df768-a722-4b0e-b851-7496e13b82d8",
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82d8",
+      "offenceId": "a02df768-a722-4b0e-b851-7496e13b82e8",
+      "resultCode": "G",
+      "dateOfResult": "01/01/2021",
+      "impositionOffenceDetails": "Amount of fine: £155",
+      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+      "isParentFlag": true,
+      "isFinancial": true,
+      "isDeemedServed": false
+    },
+    {
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82f7",
+      "offenceId": "a02df768-a722-4b0e-b851-7496e13b82e8",
+      "offenceTitle": "Title 3",
+      "resultCode": "ACON",
+      "dateOfResult": "01/01/2021",
+      "impositionOffenceDetails": "Amount of surcharge: £200",
+      "isFinancial" : FINANCIAL,
+      "isDeemedServed" : DEEMED_SERVED
+    }
+  ]
+}

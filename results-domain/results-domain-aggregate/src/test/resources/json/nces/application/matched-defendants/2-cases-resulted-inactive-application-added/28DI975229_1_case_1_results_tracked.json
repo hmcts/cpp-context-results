@@ -1,0 +1,36 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "96",
+    "defendantAddress": "9999H9999QQQJ WplfoqqP addressline 4 BtfgstQQ Elfo YO43 4DF",
+    "defendantContactNumber": "02012345679",
+    "defendantDateOfBirth": "1996-01-30",
+    "defendantEmail": "test02@gmail.com",
+    "defendantName": "CCT-2390casenew matchdefendentscenarionew",
+    "hearingCourtCentreName": "City of London Magistrates' Court",
+    "hearingId": "a4bff0fb-edb3-4c4c-801a-c6821d3d4574",
+    "hearingSittingDay": "2025-10-20T12:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "11afaf89-db69-450f-909f-9ceb70d52dc7",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-10-20",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £40.00. , FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "fef4866b-3c66-4403-8bcc-5adae3ca07e0",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "dateOfResult": "2025-10-20",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 20/05/2026.\nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 20 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "b717f0bc-0213-425b-acc5-05e2fb2a5f83",
+            "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI975229"
+    ]
+}

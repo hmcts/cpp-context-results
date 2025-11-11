@@ -1,0 +1,75 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1979-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "d0fd5f95-c159-4214-aa2a-2626b4c55005",
+    "hearingSittingDay": "2025-07-18T00:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "bc1f4171-cabb-4795-afbf-0bab192e982e",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "bc1f4171-cabb-4795-afbf-0bab192e982e",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2026. \nRR - Residence\nResidence Requirement: Live at 35 test for 8 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "bc1f4171-cabb-4795-afbf-0bab192e982e",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "bc1f4171-cabb-4795-afbf-0bab192e982e",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2026. \nRR - Residence\nResidence Requirement: Live at 35 test for 8 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "STDEC"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI9761991"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

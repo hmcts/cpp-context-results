@@ -1,0 +1,70 @@
+{
+  "amendmentDate": "2025-03-04",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "38DI5815875",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantName": "Florencio Klocko",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5e9da120-8a29-499f-aab0-c9393c5c4f4a",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £200.00.\nFO - Fine\nFined £20.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a534f85e-6185-4b35-9617-78e5f989ed9d",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £300.00\nFO - Fine\nFined £30.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "276f2ba8-cf57-4796-bef5-176c87db5868",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "caa158bf-5b03-4ac6-8446-bc03794fe0aa",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £111.00.\nFO - Fine\nFined £10.00\nFVS - Surcharge\nTo pay a surcharge of £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/03/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5e9da120-8a29-499f-aab0-c9393c5c4f4a",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £200.00.\nFO - Fine\nFined £20.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a534f85e-6185-4b35-9617-78e5f989ed9d",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £300.00\nFO - Fine\nFined £30.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "276f2ba8-cf57-4796-bef5-176c87db5868",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/courtCentreWithLJA.json",
+  "type": "object",
+  "properties": {
+    "courtCentre": {
+      "$ref": "http://justice.gov.uk/core/courts/courtCentre.json"
+    },
+    "courtHearingLocation": {
+      "type": "string"
+    },
+    "psaCode": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "courtCentre",
+    "courtHearingLocation",
+    "psaCode"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,108 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3358350 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Cristopher Rempel",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "69468b62-fb21-4807-95fa-b8ec9218362e",
+    "hearingSittingDay": "2025-07-08T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "95d70a5b-0fc9-432a-bae9-c665111413c8",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £6787.00\nIMP - Imprisonment\nCommitted to prison for 6 Years Concurrent Consecutive to offence Consecutive to offence. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property, because the number and nature of the offences shows that the defendant is operating as a professional criminal, because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence, other reasons. Bail remand days to count (Tagged Days): 56. Number of days in custody in foreign jurisdiction to count: 45. Total custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.\n \n \nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nFVS - Surcharge\nTo pay a surcharge of £43.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/12/2026\nTotal custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "db340cd5-5947-4fe4-a694-26c0f7739e0f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-08",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "db340cd5-5947-4fe4-a694-26c0f7739e0f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-08",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £6787.00\nIMP - Imprisonment\nCommitted to prison for 6 Years Concurrent Consecutive to offence Consecutive to offence. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property, because the number and nature of the offences shows that the defendant is operating as a professional criminal, because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence, other reasons. Bail remand days to count (Tagged Days): 56. Number of days in custody in foreign jurisdiction to count: 45. Total custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.\n \n \nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nFVS - Surcharge\nTo pay a surcharge of £43.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/12/2026\nTotal custodial period is life. Consecutive to sentence imposed on 08/08/2026, which was imposed by Aberdeen Sheriff Court District. Minimum term: 3 Years. Defendant sentenced without a pre-sentence report because Reason for sentence without PSR\n test. Sentenced in absence.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "db340cd5-5947-4fe4-a694-26c0f7739e0f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-08",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "db340cd5-5947-4fe4-a694-26c0f7739e0f",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-08",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-08",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £6787.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-08",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £43.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Costs",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-08",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3358350"
+    ]
+}

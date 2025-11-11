@@ -1,0 +1,119 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel8919760 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Easton Hickle",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "6b51c7bf-e628-47ac-9bf3-c017fe367d54",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "dc28b3e8-fe2b-4925-a3c3-f54a660b7423",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "f9633368-db61-4c5e-8d0a-7832fc7b3d25",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £432.00\nFVS - Surcharge\nTo pay a surcharge of £543.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2026.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "f9633368-db61-4c5e-8d0a-7832fc7b3d25",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £987.00\nFO - Fine\nFined £9876.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "f9633368-db61-4c5e-8d0a-7832fc7b3d25",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £432.00\nFVS - Surcharge\nTo pay a surcharge of £543.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2026.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationId": "f9633368-db61-4c5e-8d0a-7832fc7b3d25",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £987.00\nFO - Fine\nFined £9876.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £432.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £543.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Excise penalty",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £987.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £9876.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI8919760"
+    ]
+}

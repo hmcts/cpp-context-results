@@ -1,0 +1,28 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0203110385",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName3110385@gmail.com",
+    "defendantName": "Kira Powlowski",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "53daec01-ef2d-402a-9570-0185665fd61a",
+    "hearingSittingDay": "2025-03-13T23:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "854235dc-70bc-449d-9672-275fcc56051d",
+    "ncesEmail": "av.qet@justice.gov.uk",
+    "offenceResults": [
+      {
+        "dateOfResult": "2025-03-13",
+        "impositionOffenceDetails": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/04/2025.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+        "offenceTitle": "Theft from a shop"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI3110385"
+    ]
+}

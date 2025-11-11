@@ -1,0 +1,18 @@
+{
+  "modeOfTrialReasons": [
+    {
+      "id": "4aaecac5-222b-402d-9047-84803679edac",
+      "seqNum": 10,
+      "code": "01",
+      "description": "Summary-only offence",
+      "validFrom": "2019-05-01"
+    },
+    {
+      "id": "5aaecac5-222b-402d-9047-84803679edac",
+      "seqNum": 20,
+      "code": "02",
+      "description": "Indictable-only offence ",
+      "validFrom": "2019-05-02"
+    }
+  ]
+}

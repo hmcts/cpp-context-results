@@ -1,0 +1,47 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1979-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "2bad7ec6-cdc7-485a-8ecc-814b2c9806f2",
+    "hearingSittingDay": "2025-07-18T00:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "203d44cd-a269-46dd-b8bb-7a42fb5dbc4b",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 04/04/2025. \nERBD - Exclusion not to enter with between dates\nExclusion Requirement: Not to enter Place / area test between 10/10/2025 and 10/11/2026. This exclusion requirement lasts until 10/10/2027. ",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "AASA"
+        },
+        {
+            "applicationId": "203d44cd-a269-46dd-b8bb-7a42fb5dbc4b",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "IMP - Imprisonment\nCommitted to prison for 6 Years. Reason: failure to comply with requirements of post custodial sentence supervision because the offence was aggravated by being committed whilst on bail, because the offence was committed during the operational period of a suspended sentence. Bail remand days to count (Tagged Days): 44. Total custodial period: 6 Years.\n \n \nNOVS - No surcharge\nReason: No reasons\nTotal custodial period: 6 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "AASA"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI9761991"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

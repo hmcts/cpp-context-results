@@ -1,0 +1,80 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel7409493 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "9877409493",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Philip Moen",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "b4421697-e0f8-4eb6-b49e-673e4166e2fe",
+  "hearingSittingDay": "2025-02-28T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "09118f04-e2e3-468e-929f-28e96edf8b77",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "50df804d-c10a-44f6-8595-1bfea55cf546",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-28",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £13.00 to Abellio Greater Anglia Ltd\nFO - Fine\nFined £101.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f65e6978-27b4-4767-9f22-d6baea7c23a7",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "50df804d-c10a-44f6-8595-1bfea55cf546",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-28",
+      "impositionOffenceDetails": "FO - Fine\nFined £101.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "15219c19-ca2f-48d3-89b4-75d1227157ea",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Costs",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-28",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £13.00 to Abellio Greater Anglia Ltd",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f65e6978-27b4-4767-9f22-d6baea7c23a7",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-28",
+      "impositionOffenceDetails": "FO - Fine\nFined £101.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f65e6978-27b4-4767-9f22-d6baea7c23a7",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-28",
+      "impositionOffenceDetails": "FO - Fine\nFined £101.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "15219c19-ca2f-48d3-89b4-75d1227157ea",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "29NS7409493"
+  ]
+}

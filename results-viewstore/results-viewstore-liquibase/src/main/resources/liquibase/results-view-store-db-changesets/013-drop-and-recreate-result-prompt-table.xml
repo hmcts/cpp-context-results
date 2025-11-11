@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="013-drop-and-recreate-result-prompt-table.xml">
+
+        <preConditions>
+            <tableExists tableName="result_prompt"/>
+        </preConditions>
+
+        <dropTable cascadeConstraints="true" tableName="result_prompt"/>
+
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="013-drop-and-recreate-result-prompt-table.xml">
+        <createTable tableName="result_prompt">
+            <column name="id" type="uuid"/>
+            <column name="label" type="text"/>
+            <column name="value" type="text"/>
+            <column name="hearing_result_id" type="uuid"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="CCR" logicalFilePath="013-drop-and-recreate-result-prompt-table.xml">
+        <addPrimaryKey tableName="result_prompt" columnNames="hearing_result_id, id" constraintName="result_prompt_pk"/>
+    </changeSet>
+
+</databaseChangeLog>

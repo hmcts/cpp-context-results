@@ -1,0 +1,46 @@
+{
+  "caseReferences": "28DI4199070",
+  "dateDecisionMade": "2025-07-08",
+  "defendantAddress": "n Fisher Tunnel4199070 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Herminia Casper",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £5676.00, FVS - Surcharge\nTo pay a surcharge of £432.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £433.00. Reason for decision: Reason for decision\nReason for decision\nReason for decision\nReason for decision.\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £455.00 to be paid fortnightly. Instalment start date: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+      "title": "Robbery"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "48e36bad-9eeb-4b24-a085-f9293a72041a",
+  "materialId": "c0dbe28e-4ee3-46a1-a2e9-efce60afd2fd",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "Application1 offence 2 non financial impositions",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "fac4f8d3-91d4-422f-abd9-ac8f1652dd1b",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

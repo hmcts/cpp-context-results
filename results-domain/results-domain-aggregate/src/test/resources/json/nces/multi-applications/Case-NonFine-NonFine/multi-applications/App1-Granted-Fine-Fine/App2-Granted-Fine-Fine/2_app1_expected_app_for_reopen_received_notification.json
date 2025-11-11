@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI1480609",
+  "defendantAddress": "n Fisher Tunnel1480609 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Chaya Waelchi",
+  "divisionCode": "77",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-17",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "17/07/2025",
+  "masterDefendantId": "bcba026b-2be8-4692-8138-9e3a754d4e05",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "17/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

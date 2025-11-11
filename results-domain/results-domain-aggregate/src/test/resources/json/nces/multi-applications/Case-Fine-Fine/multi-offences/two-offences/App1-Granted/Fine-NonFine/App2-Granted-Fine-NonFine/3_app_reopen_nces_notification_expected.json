@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI7404759",
+  "dateDecisionMade": "2025-06-30",
+  "defendantAddress": "n Fisher Tunnel7404759 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jakob Ritchie",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £3222.00. \nFO - Fine\nFined £4333.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+      "title": "Robbery"
+    },
+    {
+      "details": "Fine Impositions App1",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "bd821e9e-a819-4ee6-b692-9679dbe0b5c6",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "Financial Impositions App2",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+      "title": "Robbery"
+    },
+    {
+      "details": "Non financials impositions for App2",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

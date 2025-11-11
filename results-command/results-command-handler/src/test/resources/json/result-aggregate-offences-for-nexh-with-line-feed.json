@@ -1,0 +1,705 @@
+{
+  "hearing": {
+    "isSJPHearing": false,
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "c6b8b180-8d93-4a28-b8c6-e6a313fc47cc",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "9795eb60-d6f6-4986-bd11-1fe8da78fe64",
+                "caseReference": "20NX7502092",
+                "defendantId": "1e50234e-7463-4ae4-bb80-e3e86d3c4f9d"
+              }
+            ],
+            "masterDefendantId": "1e50234e-7463-4ae4-bb80-e3e86d3c4f9d",
+            "personDefendant": {
+              "arrestSummonsNumber": "2213NX00000007502092",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9999AAAA",
+                  "address2": "Woodlane",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon"
+                },
+                "contact": {
+                  "home": "0207502092",
+                  "mobile": "07777502092",
+                  "primaryEmail": "REDDY.TEST017502092@gmail.com"
+                },
+                "dateOfBirth": "1997-10-09",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Nathanael",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Noemie",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2024-04-19",
+        "applicationReference": "20NX7502092",
+        "applicationStatus": "UN_ALLOCATED",
+        "commissionerOfOath": false,
+        "courtApplicationCases": [
+          {
+            "caseStatus": "INACTIVE",
+            "isSJP": false,
+            "offences": [
+              {
+                "arrestDate": "2022-10-28",
+                "chargeDate": "2022-10-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "d0225e3a-af15-45ef-a1be-65668bd2e40a",
+                "isDisposed": true,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "cjsCode": "1015",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isDeleted": false,
+                    "isFinancialResult": true,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "bb58f1ea-b3c4-47ad-932a-c4621f026771",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": true,
+                        "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                        "label": "Amount of fine",
+                        "promptReference": "AOF",
+                        "promptSequence": 100,
+                        "type": "CURR",
+                        "usergroups": [],
+                        "value": "£555.00",
+                        "welshLabel": "Swm y ddirwy",
+                        "welshValue": "£555.00"
+                      }
+                    ],
+                    "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                    "label": "Fine",
+                    "lastSharedDateTime": "2024-04-23",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-04-16",
+                    "orderedHearingId": "c6fd5f9c-0a06-4454-aae2-9f0ae67c2152",
+                    "policeSubjectLineTitle": "Final Sentence",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 51600,
+                    "resultDefinitionGroup": "Imposition",
+                    "resultText": "FO - Fine\nFined £555.00",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "bb58f1ea-b3c4-47ad-932a-c4621f026771",
+                    "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Dirwy"
+                  },
+                  {
+                    "alwaysPublished": true,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "ANCILLARY",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "c9845bf3-ba00-4861-a08f-1d6663cf7466",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "6b36e5ff-e116-4dc3-b438-8c02d493959e",
+                        "label": "Collection order type",
+                        "promptReference": "collectionOrderType",
+                        "promptSequence": 100,
+                        "type": "FIXL",
+                        "usergroups": [],
+                        "value": "Deductions from benefit",
+                        "welshLabel": "Math o orchymyn casglu",
+                        "welshValue": "Didynnu o Fudd-daliadau"
+                      }
+                    ],
+                    "judicialResultTypeId": "9ea0d845-5096-44f6-9ce0-8ae801141eac",
+                    "label": "Collection order",
+                    "lastSharedDateTime": "2024-04-23",
+                    "level": "D",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-04-16",
+                    "orderedHearingId": "c6fd5f9c-0a06-4454-aae2-9f0ae67c2152",
+                    "parentJudicialResultId": "adfc9b8f-8937-4144-9db3-889abf0a4fbd",
+                    "parentJudicialResultTypeId": "cfa66730-f81c-4768-a36e-581791cb0270",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 19100,
+                    "resultText": "COLLO - Collection order\nCollection order made. Deductions from benefit.",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "bb58f1ea-b3c4-47ad-932a-c4621f026771",
+                    "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Gorchymyn Casglu"
+                  },
+                  {
+                    "alwaysPublished": true,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "courtClerk": {
+                      "firstName": "Erica",
+                      "lastName": "Wilson",
+                      "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                    },
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": false,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "432d044a-d679-46a9-b6b5-4672f9d7a3ca",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "ee7d253a-c629-11e8-a355-529269fb1459",
+                        "label": "Date to pay in full by",
+                        "promptReference": "PBD",
+                        "promptSequence": 100,
+                        "type": "DATE",
+                        "usergroups": [],
+                        "value": "30/05/2024",
+                        "welshLabel": "Dyddiad terfyn ar gyfer talu'r swm llawn",
+                        "welshValue": "30/05/2024"
+                      }
+                    ],
+                    "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
+                    "label": "Pay by date",
+                    "lastSharedDateTime": "2024-04-23",
+                    "level": "D",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-04-16",
+                    "orderedHearingId": "c6fd5f9c-0a06-4454-aae2-9f0ae67c2152",
+                    "parentJudicialResultId": "1472c3a2-c950-4a2f-8bfc-2c4c07efa183",
+                    "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 120500,
+                    "resultDefinitionGroup": "Payment terms",
+                    "resultText": "PDATE - Pay by date\nPay by date. Date to pay in full by: 30/05/2024.",
+                    "rollUpPrompts": false,
+                    "rootJudicialResultId": "bb58f1ea-b3c4-47ad-932a-c4621f026771",
+                    "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Dyddiad terfyn ar gyfer talu"
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "S:L3",
+                "modeOfTrial": "Summary",
+                "offenceCode": "CA03012",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "6588ffee-89ec-36a2-ab90-a54177cbda97",
+                "offenceLegislation": "Contrary to section 363(3)(b) and (4) of the Communications Act 2003.",
+                "offenceLegislationWelsh": "Yn groes i adran 363(3)(b) a (4) Deddf Cyfathrebu 2003.",
+                "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+                "offenceTitleWelsh": "Meddu ar/mewn rheolaeth set deledu gan fwriadu i unigolyn arall ei ddefnyddio/osod heb drwydded",
+                "orderIndex": 1,
+                "proceedingsConcluded": true,
+                "startDate": "2022-10-28",
+                "wording": "Theft of pedal cycle."
+              }
+            ],
+            "prosecutionCaseId": "9795eb60-d6f6-4986-bd11-1fe8da78fe64",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "Criminal Justice Department",
+                "address2": "Derbyshire Constabulary",
+                "address3": "Butterley Hall",
+                "address4": "Ripley",
+                "address5": "Derby",
+                "postcode": "DE5 3RS"
+              },
+              "contact": {
+                "primaryEmail": "criminaldataderbyshire@derbyshire.police.uk"
+              },
+              "majorCreditorCode": "PO30",
+              "prosecutionAuthorityCode": "DERPF",
+              "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+              "prosecutionAuthorityName": "Derbyshire Police",
+              "prosecutionAuthorityOUCode": "0300000",
+              "caseURN": "20NX7502092"
+            }
+          }
+        ],
+        "id": "ab8b01a5-8ba9-4a87-bf49-5ca59aea6cb9",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": false,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "2bb3a505-db47-4ad4-b4ac-7d6bcbcfe3c2",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "judicialResultPromptTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
+                "label": "Next hearing in magistrates' court",
+                "promptReference": "e30966d8-58de-4336-8881-599120f347dc",
+                "promptSequence": 0,
+                "usergroups": [],
+                "value": "Date of hearing:18/04/2024\nTime of hearing:10:00\nCourthouse organisation name:Lavender Hill Magistrates' Court\nCourthouse address line 1:176A Lavender Hill\nCourthouse address line 2:London\nCourthouse post code:SW11 1JU\nCourtroom:Courtroom 02\nHearing type:Plea\nEstimated duration:3 HOURS\nBooking reference:158b3eae-256b-46a6-870c-5754023b7b30",
+                "welshLabel": "Ni wnaeth y Llys barhau â’r treial yn absenoldeb y diffynnydd"
+              }
+            ],
+            "judicialResultTypeId": "f00359b5-7303-403b-b59e-0b1a1daa89bc",
+            "label": "Next hearing",
+            "lastSharedDateTime": "2024-04-23",
+            "level": "O",
+            "lifeDuration": false,
+            "nextHearing": {
+              "adjournmentReason": "",
+              "bookingReference": "158b3eae-256b-46a6-870c-5754023b7b30",
+              "courtCentre": {
+                "address": {
+                  "address1": "176A Lavender Hill",
+                  "address2": "London",
+                  "postcode": "SW11 1JU"
+                },
+                "code": "B01LY00",
+                "courtHearingLocation": "B01LY02",
+                "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+                "name": "Lavender Hill Magistrates' Court",
+                "psaCode": 2577,
+                "roomId": "b4562684-9209-3ec4-a544-7f80dabd94d8",
+                "roomName": "Courtroom 02",
+                "welshName": "Llys Ynadon Lavender Hill"
+              },
+              "estimatedDuration": "3 HOURS",
+              "estimatedMinutes": 180,
+              "jurisdictionType": "MAGISTRATES",
+              "listedStartDateTime": "2024-04-18T09:00:00.000Z",
+              "type": {
+                "description": "Plea",
+                "id": "511fe0a3-1391-4954-8158-6b10eed0dad9"
+              }
+            },
+            "orderedDate": "2024-04-16",
+            "orderedHearingId": "c6fd5f9c-0a06-4454-aae2-9f0ae67c2152",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 800,
+            "resultDefinitionGroup": "Next Hearing",
+            "resultText": "NEXH - Next hearing\nhearing on 18/04/2024 at 10:00 in Courtroom 02, Lavender Hill Magistrates' Court",
+            "resultWording": "",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "2bb3a505-db47-4ad4-b4ac-7d6bcbcfe3c2",
+            "rootJudicialResultTypeId": "f00359b5-7303-403b-b59e-0b1a1daa89bc",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Gwrandawiad nesaf"
+          },
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "e30966d8-58de-4336-8881-599120f347dc",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d27a5d86-d51f-4c6e-914b-cb4b0abc4283",
+                "label": "Date of hearing",
+                "promptReference": "HDATE",
+                "promptSequence": 100,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "18/04/2024",
+                "welshLabel": "Dyddiad y gwrandawiad",
+                "welshValue": "18/04/2024"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "4d125a5a-acbc-461d-a657-ba5643af85a6",
+                "label": "Time of hearing",
+                "promptReference": "timeOfHearing",
+                "promptSequence": 200,
+                "type": "TIME",
+                "usergroups": [],
+                "value": "10:00",
+                "welshLabel": "Amser y gwrandawiad",
+                "welshValue": "10:00"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse organisation name",
+                "promptReference": "hCHOUSEOrganisationName",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "Lavender Hill Magistrates' Court",
+                "welshValue": "Lavender Hill Magistrates' Court"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse address line 1",
+                "promptReference": "hCHOUSEAddress1",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "176A Lavender Hill",
+                "welshValue": "176A Lavender Hill"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse address line 2",
+                "promptReference": "hCHOUSEAddress2",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "London",
+                "welshValue": "London"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                "label": "Courthouse post code",
+                "promptReference": "hCHOUSEPostCode",
+                "promptSequence": 300,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "SW11 1JU",
+                "welshValue": "SW11 1JU"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "49ec9b26-dd63-4637-b2e9-55ba9948a90f",
+                "label": "Courtroom",
+                "promptReference": "HCROOM",
+                "promptSequence": 400,
+                "type": "INT",
+                "usergroups": [],
+                "value": "Courtroom 02",
+                "welshLabel": "Ystafell Llys",
+                "welshValue": "Courtroom 02"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "c1116d12-dd35-4171-807a-2cb845357d22",
+                "label": "Hearing type",
+                "promptReference": "HTYPE",
+                "promptSequence": 500,
+                "type": "TXT",
+                "usergroups": [],
+                "value": "Plea",
+                "welshLabel": "Math o wrandawiad",
+                "welshValue": "Plea"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d85cc2d7-66c8-471e-b6ff-c1bc60c6cdac",
+                "label": "Estimated duration",
+                "promptReference": "HEST",
+                "promptSequence": 600,
+                "type": "INT",
+                "usergroups": [],
+                "value": "3 HOURS",
+                "welshLabel": "Amcangyfrif amser",
+                "welshValue": "3 HOURS"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "e73e6ab8-9bfe-4135-9fe6-f526544584d6",
+                "label": "Booking reference",
+                "promptReference": "bookingReference",
+                "promptSequence": 700,
+                "type": "TXT",
+                "usergroups": [],
+                "value": "158b3eae-256b-46a6-870c-5754023b7b30",
+                "welshLabel": "Cyfeirnod archebu",
+                "welshValue": "158b3eae-256b-46a6-870c-5754023b7b30"
+              }
+            ],
+            "judicialResultTypeId": "70c98fa6-804d-11e8-adc0-fa7ae01bbebc",
+            "label": "Next hearing in magistrates' court",
+            "lastSharedDateTime": "2024-04-23",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-04-16",
+            "orderedHearingId": "c6fd5f9c-0a06-4454-aae2-9f0ae67c2152",
+            "parentJudicialResultId": "2bb3a505-db47-4ad4-b4ac-7d6bcbcfe3c2",
+            "parentJudicialResultTypeId": "f00359b5-7303-403b-b59e-0b1a1daa89bc",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": true,
+            "publishedForNows": true,
+            "rank": 1200,
+            "resultDefinitionGroup": "Next hearing",
+            "resultText": "hearing on 18/04/2024 at 10:00 in Courtroom 02, Lavender Hill Magistrates' Court",
+            "resultWording": "",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "2bb3a505-db47-4ad4-b4ac-7d6bcbcfe3c2",
+            "rootJudicialResultTypeId": "f00359b5-7303-403b-b59e-0b1a1daa89bc",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Ni wnaeth y Llys barhau â’r treial yn absenoldeb y diffynnydd"
+          }
+        ],
+        "respondents": [
+          {
+            "id": "dd2e015b-e76e-4fcc-8be6-9e3f9f0628d2",
+            "notificationRequired": true,
+            "prosecutingAuthority": {
+              "address": {
+                "address1": "Criminal Justice Department",
+                "address2": "Derbyshire Constabulary",
+                "address3": "Butterley Hall",
+                "address4": "Ripley",
+                "address5": "Derby",
+                "postcode": "DE5 3RS"
+              },
+              "contact": {
+                "primaryEmail": "criminaldataderbyshire@derbyshire.police.uk"
+              },
+              "majorCreditorCode": "PO30",
+              "name": "Derbyshire Police",
+              "prosecutionAuthorityCode": "DERPF",
+              "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+              "prosecutionAuthorityOUCode": "0300000",
+              "welshName": "Heddlu Derbyshire"
+            },
+            "summonsRequired": false
+          }
+        ],
+        "subject": {
+          "id": "c6b8b180-8d93-4a28-b8c6-e6a313fc47cc",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "9795eb60-d6f6-4986-bd11-1fe8da78fe64",
+                "caseReference": "20NX7502092",
+                "defendantId": "1e50234e-7463-4ae4-bb80-e3e86d3c4f9d"
+              }
+            ],
+            "masterDefendantId": "1e50234e-7463-4ae4-bb80-e3e86d3c4f9d",
+            "personDefendant": {
+              "arrestSummonsNumber": "2213NX00000007502092",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9999AAAA",
+                  "address2": "Woodlane",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon"
+                },
+                "contact": {
+                  "home": "0207502092",
+                  "mobile": "07777502092",
+                  "primaryEmail": "REDDY.TEST017502092@gmail.com"
+                },
+                "dateOfBirth": "1997-10-09",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Nathanael",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Noemie",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CO",
+          "code": "MC80527",
+          "commrOfOathFlag": true,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "hearingCode": "APN",
+          "id": "f3a6e917-7cc8-3c66-83dd-d958abd6a6e4",
+          "jurisdiction": "MAGISTRATES",
+          "legislation": "In accordance with section 14 of the Magistrates' Courts Act 1980.",
+          "legislationWelsh": "Yn unol ag adran 14 Deddf Llysoedd Ynadon 1980.",
+          "linkType": "LINKED",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": true,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Appearance to make statutory declaration",
+          "typeWelsh": "Ymddangosiad i wneud datganiad statudol"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2024-04-16T09:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "c6fd5f9c-0a06-4454-aae2-9f0ae67c2152",
+    "jurisdictionType": "MAGISTRATES",
+    "shadowListedOffences": [],
+    "type": {
+      "description": "Application",
+      "id": "3449743b-95d6-4836-8941-57f588b52068"
+    },
+    "isSJPHearing": false
+  },
+  "hearingDay": "2024-04-16",
+  "sharedTime": "2024-04-23T16:53:00.899Z"
+}

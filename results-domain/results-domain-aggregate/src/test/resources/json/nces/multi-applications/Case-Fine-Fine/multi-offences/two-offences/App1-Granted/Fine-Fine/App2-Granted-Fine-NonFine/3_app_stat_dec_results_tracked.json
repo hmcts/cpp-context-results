@@ -1,0 +1,80 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Ena Pouros",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "ba66fcdb-526f-48a8-9db5-2cc665543c6c",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00\nFVS - Surcharge\nTo pay a surcharge of £888.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/05/2025.",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "9d0c004c-9546-4f97-b332-e5e1db7649cf",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FO - Fine\nFined £8888.00",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "9d0c004c-9546-4f97-b332-e5e1db7649cf",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £888.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £8888.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7664890"
+    ]
+}

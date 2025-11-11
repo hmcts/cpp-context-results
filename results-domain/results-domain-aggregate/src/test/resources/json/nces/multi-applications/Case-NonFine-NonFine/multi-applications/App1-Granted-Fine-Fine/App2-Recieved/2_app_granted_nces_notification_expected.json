@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI7135464",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0207135464",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName7135464@gmail.com",
+  "defendantName": "Celine Friesen",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-16",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "16/07/2025",
+  "masterDefendantId": "08009c7f-2261-49e1-8029-04389314713e",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "16/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

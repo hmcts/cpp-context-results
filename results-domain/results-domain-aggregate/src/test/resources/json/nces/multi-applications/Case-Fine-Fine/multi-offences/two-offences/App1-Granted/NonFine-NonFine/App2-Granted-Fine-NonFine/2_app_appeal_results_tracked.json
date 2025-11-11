@@ -1,0 +1,47 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel5984707 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Patrick Stiedemann",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "220059da-8e66-4339-a397-4a4383647874",
+    "hearingSittingDay": "2025-07-16T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "35952a42-ca0a-459a-a4e3-0f854b926388",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "02d4a24a-23c4-47f3-b9a1-4038b722a32a",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 18/07/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 18/07/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
+            "offenceTitle": "Robbery",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationId": "02d4a24a-23c4-47f3-b9a1-4038b722a32a",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 18/07/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 18/07/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "6d9424df-cbcb-40df-9b34-5d6a5ec3c3d1",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "AACA"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI5984707"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

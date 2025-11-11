@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI8919760",
+  "dateDecisionMade": "2025-07-17",
+  "defendantAddress": "n Fisher Tunnel8919760 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Easton Hickle",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-17",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £98765.00\nSATRO - Slavery and Trafficking Reparation Order\nAmount of reparation compensation: £34521.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £98762.00\nFVS - Surcharge\nTo pay a surcharge of £3444.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "dc28b3e8-fe2b-4925-a3c3-f54a660b7423",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Case reopened"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £432.00\nFVS - Surcharge\nTo pay a surcharge of £543.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
+      "title": "Robbery"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £987.00\nFO - Fine\nFined £9876.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "notificationId",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

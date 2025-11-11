@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="003-create-hearing-table.xml">
+        <createTable tableName="hearing">
+            <column name="id" type="uuid"/>
+            <column name="person_id" type="uuid"/>
+            <column name="start_date" type="DATETIME"/>
+            <column name="court_centre_name" type="text"/>
+            <column name="court_code" type="text"/>
+            <column name="judge_name" type="text"/>
+            <column name="prosecutor_name" type="text"/>
+            <column name="defence_name" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="003-create-hearing-table.xml">
+        <addPrimaryKey tableName="hearing" columnNames="id, person_id"
+                       constraintName="hearing_pk"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3358350 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Cristopher Rempel",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "9c0bbba5-634c-4312-9d44-1282f80a8eb6",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "95d70a5b-0fc9-432a-bae9-c665111413c8",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
+            "offenceTitle": "Theft from a shop",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £4554.00. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 05/01/2026.",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "SUSPS - Suspended sentence order - imprisonment\nCommitted to prison for 8 Years suspended for 3 Years. Reason: failure to comply with a pre-sentence drug testing order. The defendant must comply with the requirements within the supervision period.  In the event of activation of sentence: 45 bail remand days to count. Total custodial period 6 Years. Supervision period: 2 Years.\nACR - Attendance centre\nAttendance Centre Requirement: Attend for 5 Hours.\nTotal custodial period 6 Years. Supervision period: 2 Years.",
+            "isFinancial": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3358350"
+    ]
+}

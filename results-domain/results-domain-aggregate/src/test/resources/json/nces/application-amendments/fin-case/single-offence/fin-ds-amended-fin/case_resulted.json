@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203937798",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3937798@gmail.com",
+  "defendantName": "William Kessler",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "6cf6d4f7-cb2a-4e6c-aa5d-b4f603a9cb2e",
+  "hearingSittingDay": "2025-02-24T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "f6592175-2619-4eb8-89f0-42900faa2320",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-02-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3937798"
+  ]
+}

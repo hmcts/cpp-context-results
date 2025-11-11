@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0206114747",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName6114747@gmail.com",
+  "defendantName": "Alanna Padberg",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "4905310d-6098-4b9c-8614-9b8af5f63adc",
+  "hearingSittingDay": "2025-03-10T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "d5f193fb-447d-4eb3-9787-6c58e3976c8e",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-10",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00, FVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "706e046b-559b-4814-a95f-0cbabf366add",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6114747"
+  ]
+}

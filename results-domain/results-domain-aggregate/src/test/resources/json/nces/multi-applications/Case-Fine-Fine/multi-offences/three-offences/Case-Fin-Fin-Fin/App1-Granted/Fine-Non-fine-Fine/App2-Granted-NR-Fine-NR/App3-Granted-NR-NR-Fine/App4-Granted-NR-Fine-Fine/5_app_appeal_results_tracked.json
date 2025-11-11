@@ -1,0 +1,81 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "130",
+    "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+    "defendantContactNumber": "0162245826",
+    "defendantDateOfBirth": "1968-07-15",
+    "defendantEmail": "robieshalanda.botsleffler@example.com",
+    "defendantName": "RobieShalanda BotsLeffler",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "a4d1d46b-c589-44fd-b9a2-5702dcf4058a",
+    "hearingSittingDay": "2025-07-15T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "67e6baf5-eea3-48bc-9f29-028336f750d5",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "1ecf4876-6c30-4fa2-9315-5c2c9ba53749",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £4567.00. \nFO - Fine\nFined £3456.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £100.00. Instalment amount: £234.00 to be paid monthly from 11/04/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationId": "1ecf4876-6c30-4fa2-9315-5c2c9ba53749",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "IMP - Imprisonment\nCommitted to prison for 8 Years. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 45. Total custodial period: 9 Years.\n \n \nFVS - Surcharge\nTo pay a surcharge of £567.00\nTotal custodial period: 9 Years.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £4567.00. ",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FO - Fine\nFined £3456.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-15",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £567.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ699722881"
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "130",
+    "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+    "defendantContactNumber": "0162245826",
+    "defendantDateOfBirth": "1968-07-15",
+    "defendantEmail": "robieshalanda.botsleffler@example.com",
+    "defendantName": "RobieShalanda BotsLeffler",
+    "hearingCourtCentreName": "City of London Magistrates' Court",
+    "hearingId": "14b9f9a5-81f1-463e-bd55-fbb9892fc6c2",
+    "hearingSittingDay": "2025-07-16T09:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "67e6baf5-eea3-48bc-9f29-028336f750d5",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £1000.00, FVS - Surcharge\nTo pay a surcharge of £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "a039b3c1-1134-48fe-a85e-33953793107e",
+            "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+        },
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £200.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £20.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
+            "offenceTitle": "Develop / produce an anti-personnel mine"
+        },
+        {
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £30.00, FO - Fine\nFined £300.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
+            "offenceTitle": "Drive whilst unfit through drink"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ699722881"
+    ]
+}

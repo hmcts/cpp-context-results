@@ -1,0 +1,45 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202136471",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2136471@gmail.com",
+  "defendantName": "Jaylin Conroy",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b513bbbe-aff5-49df-acd7-141ebd18dae9",
+  "hearingSittingDay": "2025-02-20T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "2ee5bf29-d1b6-4d99-b767-45febc762803",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "33f3d79a-be0d-4abe-8f72-458d39efda84",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-02-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9ebd39b4-9d63-4d6a-b092-f9472b98cd25",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2136471"
+  ]
+}

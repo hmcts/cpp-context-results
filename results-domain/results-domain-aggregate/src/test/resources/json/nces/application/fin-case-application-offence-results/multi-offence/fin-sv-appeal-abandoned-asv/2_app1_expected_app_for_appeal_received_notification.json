@@ -1,0 +1,20 @@
+{
+  "caseReferences": "GD39876942",
+  "defendantAddress": "9999A9999AAAA Miller Walk Marceloside Avon DA61 7ND",
+  "defendantContactNumber": "724-337-0958",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Hilario Hirthe",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-04-24",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "04/08/2025",
+  "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "24/04/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

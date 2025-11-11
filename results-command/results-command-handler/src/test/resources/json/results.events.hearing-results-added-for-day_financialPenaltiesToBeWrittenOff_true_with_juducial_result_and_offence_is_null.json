@@ -1,0 +1,213 @@
+{
+  "hearing": {
+    "isSJPHearing": false,
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "a6345d41-fb59-4db3-a729-e9d92c5f4752",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "5c2e6c08-bff2-4662-8f5a-ec957d0feacd",
+                "caseReference": "89GD3347323",
+                "defendantId": "af3dd295-1912-4faf-af05-311eb68a11ae"
+              }
+            ],
+            "masterDefendantId": "af3dd295-1912-4faf-af05-311eb68a11ae",
+            "personDefendant": {
+              "personDetails": {
+                "address": {
+                  "address1": "679 Glover Springs",
+                  "address3": "Croydon",
+                  "postcode": "CR0 1XG"
+                },
+                "contact": {
+                  "primaryEmail": "Edyth42@example.org"
+                },
+                "dateOfBirth": "1970-01-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Weldon",
+                "gender": "NOT_SPECIFIED",
+                "lastName": "VonRueden",
+                "nationalInsuranceNumber": "CW123790B",
+                "occupation": "TA",
+                "occupationCode": "1"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "applicationParticulars": "Appearance to make statutory declaration (SJP case)",
+        "applicationReceivedDate": "2023-11-22",
+        "applicationReference": "89GD3347323",
+        "applicationStatus": "UN_ALLOCATED",
+        "commissionerOfOath": false,
+        "courtApplicationCases": [
+          {
+            "caseStatus": "INACTIVE",
+            "isSJP": true,
+            "offences": [
+            ],
+            "prosecutionCaseId": "5c2e6c08-bff2-4662-8f5a-ec957d0feacd",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "Finance Operations",
+                "address2": "C3 East",
+                "address3": "DVLA",
+                "address4": "Longview Road",
+                "address5": "Swansea",
+                "postcode": "SA6 7JL"
+              },
+              "contact": {
+                "primaryEmail": "sjp@dvla.gov.uk"
+              },
+              "majorCreditorCode": "DVL2",
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityName": "Driver and Vehicle Licensing Agency",
+              "prosecutionAuthorityOUCode": "G94DV00",
+              "prosecutionAuthorityReference": "89GD3347323"
+            }
+          }
+        ],
+        "id": "9e86c20f-b5cd-46f7-82b0-7657a54aad13",
+        "respondents": [
+          {
+            "id": "9596c75b-f2f6-45cf-bfe8-9b368dc88294",
+            "notificationRequired": true,
+            "prosecutingAuthority": {
+              "address": {
+                "address1": "Finance Operations",
+                "address2": "C3 East",
+                "address3": "DVLA",
+                "address4": "Longview Road",
+                "address5": "Swansea",
+                "postcode": "SA6 7JL"
+              },
+              "contact": {
+                "primaryEmail": "sjp@dvla.gov.uk"
+              },
+              "majorCreditorCode": "DVL2",
+              "name": "Driver and Vehicle Licensing Agency",
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityOUCode": "G94DV00",
+              "welshName": "Asiantaeth Trwyddedu Gyrwyr a Cherbydau"
+            },
+            "summonsRequired": false
+          }
+        ],
+        "subject": {
+          "id": "a6345d41-fb59-4db3-a729-e9d92c5f4752",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "5c2e6c08-bff2-4662-8f5a-ec957d0feacd",
+                "caseReference": "89GD3347323",
+                "defendantId": "af3dd295-1912-4faf-af05-311eb68a11ae"
+              }
+            ],
+            "masterDefendantId": "af3dd295-1912-4faf-af05-311eb68a11ae",
+            "personDefendant": {
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "personDetails": {
+                "address": {
+                  "address1": "679 Glover Springs",
+                  "address3": "Croydon",
+                  "postcode": "CR0 1XG"
+                },
+                "contact": {
+                  "primaryEmail": "Edyth42@example.org"
+                },
+                "dateOfBirth": "1970-01-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Weldon",
+                "gender": "NOT_SPECIFIED",
+                "lastName": "VonRueden",
+                "nationalInsuranceNumber": "CW123790B",
+                "occupation": "TA",
+                "occupationCode": "1"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CR",
+          "code": "MC80528",
+          "commrOfOathFlag": true,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "hearingCode": "APN",
+          "id": "7375727f-30fc-3f55-99f3-36adc4f0e70e",
+          "jurisdiction": "MAGISTRATES",
+          "legislation": "In accordance with section 16E of the Magistrates' Courts Act 1980.",
+          "legislationWelsh": "Yn unol ag adran 16E Deddf Llysoedd Ynadon 1980.",
+          "linkType": "SJP",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": true,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Appearance to make statutory declaration (SJP case)",
+          "typeWelsh": "Ymddangos i wneud datganiad statudol (achos gweithdrefn un ynad - SJP)"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "448 High Road",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "NW10 2DZ"
+      },
+      "code": "B01CE00",
+      "courtHearingLocation": "B01CE07",
+      "id": "a25848d6-d96e-4a52-8c54-de55b6542afc",
+      "lja": {
+        "ljaCode": "2571",
+        "ljaName": "North West London Magistrates' Court"
+      },
+      "name": "Willesden Magistrates' Court",
+      "roomId": "6d3da633-c750-3011-9161-d5221a0e100d",
+      "roomName": "Courtroom 07"
+    },
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "a25848d6-d96e-4a52-8c54-de55b6542afc",
+        "courtRoomId": "6d3da633-c750-3011-9161-d5221a0e100d",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2023-11-24T10:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "44547ac2-55be-41f6-9f87-6b8b224d622f",
+    "jurisdictionType": "MAGISTRATES",
+    "shadowListedOffences": [],
+    "type": {
+      "description": "Application",
+      "id": "3449743b-95d6-4836-8941-57f588b52068"
+    },
+    "isSJPHearing": false
+  },
+  "hearingDay": "2023-11-24",
+  "sharedTime": "2023-11-22T14:57:57.953Z"
+}

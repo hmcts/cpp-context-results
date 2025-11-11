@@ -1,0 +1,19 @@
+{
+  "caseReferences": "RQ123835335",
+  "defendantAddress": "40 Market Place Market Place Bristol BS1 1AA",
+  "defendantContactNumber": "0939137252",
+  "defendantDateOfBirth": "1998-08-08",
+  "defendantEmail": "carrol.gerlach@example.com",
+  "defendantName": "Carrol Gerlach",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-08-08",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "45533349-6528-4692-ab97-00bc767938de",
+  "materialId": "5ceb488f-29f4-4c75-9a1a-0cb5e9d6476b",
+  "notificationId": "68e87d68-150e-44ca-a299-120818f7dddc",
+  "originalDateOfSentence": "08/08/2025",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

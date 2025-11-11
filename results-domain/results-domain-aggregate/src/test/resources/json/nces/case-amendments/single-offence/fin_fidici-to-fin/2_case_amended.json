@@ -1,0 +1,30 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208524614",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8524614@gmail.com",
+  "defendantName": "Lonzo Mertz",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "46fe4951-d8de-4919-acb7-7a2ee51cdd65",
+  "hearingSittingDay": "2025-03-14T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5de763e9-8b4d-4e94-a980-45de4cb680d6",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-03-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £101.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "bf729897-9588-4c1a-a18e-fd4106434f8d",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS8524614"
+  ]
+}

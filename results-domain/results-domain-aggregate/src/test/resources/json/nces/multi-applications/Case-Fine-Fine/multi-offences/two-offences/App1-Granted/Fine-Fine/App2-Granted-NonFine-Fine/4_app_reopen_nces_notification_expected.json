@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI7664890",
+  "dateDecisionMade": "2025-06-30",
+  "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Ena Pouros",
+  "divisionCode": "77",
+  "gobAccountNumber": "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £9999.00\nFVS - Surcharge\nTo pay a surcharge of £888.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £8888.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "Nonfinacial Impositions",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £9999.00\nFVS - Surcharge\nTo pay a surcharge of £888.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "ddf05ab5-db1c-488d-8c69-e9a561c8f90c",
+      "title": "Theft"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

@@ -1,0 +1,81 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "1, Strand Test Street Test Locality Test Town Test Area TA1 1AT",
+    "defendantContactNumber": "0821292179",
+    "defendantDateOfBirth": "1994-07-17",
+    "defendantEmail": "katia.tremblay@example.com",
+    "defendantName": "Katia Tremblay",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "2d0d47e1-e8f7-4c22-96b0-be29f2ee7819",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "e0bcb42a-25a4-449f-914f-f171d3e70fed",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "7dda45f3-f451-4549-8d9e-54ee9056835c",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £30000.00\nFVS - Surcharge\nTo pay a surcharge of £5676.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 14/05/2026",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "7dda45f3-f451-4549-8d9e-54ee9056835c",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £8888.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+            "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £30000.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £5676.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink"
+        },
+        {
+            "applicationResultType": "Excise penalty",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £8888.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+            "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ126157841"
+    ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Command schema for notifying to send an email for nces notification",
+  "id": "http://justice.gov.uk/results/courts/nces-document-notification.json",
+  "type": "object",
+  "properties": {
+    "materialId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "materialUrl": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "materialId",
+    "materialUrl"
+  ],
+  "additionalProperties": false
+}

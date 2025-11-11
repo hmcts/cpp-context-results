@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel9463535 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Winifred Kuvalis",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "abccb959-1668-4f8f-9a4c-bca4fb2a24cf",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "373515e0-14d9-4008-b208-51c0db064fb2",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "79e80fda-1faa-49f6-8e38-cddd82e39e7c",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FO - Fine\nFined £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "81cc1a1f-c45c-4dbf-8b46-ec8e457c8860",
+            "offenceTitle": "Theft from a shop",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £500.00\nIMP - Imprisonment\nCommitted to prison for 8 Years. Reason: failure to comply with requirements of post custodial sentence supervision because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 67. Total custodial period is life.\n \n \nTotal custodial period is life.",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI9463535"
+    ]
+}

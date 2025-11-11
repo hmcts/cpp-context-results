@@ -1,0 +1,45 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0209835087",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName9835087@gmail.com",
+  "defendantName": "Alisa Jaskolski",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "16c38c18-f03d-4c45-b717-46bf7695cceb",
+  "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "b0a3ecae-02f5-46d4-ae68-384eef12197d",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "079b8a3a-edac-47bd-b37f-39bb9ac65394",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "bf493270-c7ba-443a-83d0-0cf08b4b7f3a",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9835087"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel4199070 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Herminia Casper",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "c44c10f7-0674-4ca2-a19c-215b6406d83d",
+    "hearingSittingDay": "2025-07-08T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "48e36bad-9eeb-4b24-a085-f9293a72041a",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "APPEAL",
+            "applicationResultType": "Allowed",
+            "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £4000.00\nFVS - Surcharge\nTo pay a surcharge of £345.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationId": "ea0ce972-6ca0-4591-98a9-6623cc4605ea",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-08",
+            "resultCode": "AACA",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "APPEAL",
+            "applicationResultType": "Allowed",
+            "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "Application2 offence2 non financials",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationId": "ea0ce972-6ca0-4591-98a9-6623cc4605ea",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-08",
+            "resultCode": "AACA",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
+            "applicationType": "APPEAL",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-08",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £4000.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
+            "applicationType": "APPEAL",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-08",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £345.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+            "applicationType": "APPEAL",
+            "applicationResultType": "Costs",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-08",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "Application2 offence2 non financials",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI4199070"
+    ]
+}

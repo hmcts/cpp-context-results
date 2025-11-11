@@ -1,0 +1,27 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203495440",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3495440@gmail.com",
+  "defendantName": "Janice Turner",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "3e8f5582-9175-460d-afa9-e83d21f276c4",
+  "hearingSittingDay": "2025-03-05T23:30:00.000Z",
+  "masterDefendantId": "792ff18d-696f-4141-8637-2852e87b8509",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "67757b68-bf40-4728-8cb1-d40f0c0d2180",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS3495440"
+  ]
+}

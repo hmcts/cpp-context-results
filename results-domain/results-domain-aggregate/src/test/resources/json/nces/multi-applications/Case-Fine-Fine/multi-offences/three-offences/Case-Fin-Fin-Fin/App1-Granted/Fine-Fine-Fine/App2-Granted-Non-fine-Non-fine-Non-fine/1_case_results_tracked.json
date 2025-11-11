@@ -1,0 +1,44 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+    "defendantContactNumber": "01231231230",
+    "defendantDateOfBirth": "2000-01-01",
+    "defendantEmail": "FlmUFO2hSmithIAkjp@email.com",
+    "defendantName": "FlmUFO2h SmithIAkjp",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "4716a792-435d-48aa-bb9f-38f276e7411d",
+    "hearingSittingDay": "2025-07-04T09:19:03.911Z",
+    "isSJPHearing": true,
+    "masterDefendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-07-04",
+            "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name British Transport Police, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £293.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police, Surcharge\nAmount of surcharge £118.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 18/07/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+        },
+        {
+            "dateOfResult": "2025-07-04",
+            "impositionOffenceDetails": "Fine\nAmount of fine £147.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+            "offenceTitle": "Cause use of motor vehicle with no insurance"
+        },
+        {
+            "dateOfResult": "2025-07-04",
+            "impositionOffenceDetails": "Fine\nAmount of fine £147.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd",
+            "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "SJ918778267"
+    ]
+}

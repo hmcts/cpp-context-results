@@ -1,0 +1,73 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0203954642",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName3954642@gmail.com",
+    "defendantName": "Melyna Klein",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "29c9c019-1122-4d45-9fe9-ff56fc3b5f59",
+    "hearingSittingDay": "2025-07-16T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "161d0ba2-a2fc-4a21-b510-30427b747dd8",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £433.00\nFO - Fine\nFined £500078.00\nFVS - Surcharge\nTo pay a surcharge of £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "amendmentDate": "2025-07-16",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "applicationResultType": "Excise penalty",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £433.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "amendmentDate": "2025-07-16",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £500078.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "amendmentDate": "2025-07-16",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "applicationResultType": "Pay by date",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3954642"
+    ]
+}
