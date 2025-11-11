@@ -1,0 +1,155 @@
+{
+  "defendantId": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+  "offences": [
+    {
+      "allocationDecision": {
+        "allocationDecisionDate": "2018-04-13",
+        "courtIndicatedSentence": {
+          "courtIndicatedSentenceDescription": "nsB1tkr8N5",
+          "courtIndicatedSentenceTypeId": "b7df0605-6458-4f4f-a2f4-d5d44d16d293"
+        },
+        "motReasonCode": "mfnRAWdywt",
+        "motReasonDescription": "uTBmMfuyMI",
+        "motReasonId": "c5f2eccd-916e-4b35-9f22-d28bd4481dd7",
+        "offenceId": "5c5318b1-9e19-4177-ac76-95f231479c73",
+        "originatingHearingId": "2545142c-2a79-43ab-9cda-9d1c93eb924f",
+        "sequenceNumber": 1
+      },
+      "arrestDate": "2021-07-29",
+      "chargeDate": "2021-07-29",
+      "convictionDate": "2021-07-29",
+      "count": 434,
+      "endDate": "2021-07-29",
+      "id": "ff5c6458-9cb1-42da-a48f-9ae999891161",
+      "introducedAfterInitialProceedings": true,
+      "isDiscontinued": true,
+      "isDisposed": true,
+      "judicialResults": [
+        {
+          "alwaysPublished": false,
+          "category": "FINAL",
+          "cjsCode": "cjsCode",
+          "d20": false,
+          "excludedFromResults": false,
+          "isAdjournmentResult": false,
+          "isAvailableForCourtExtract": false,
+          "isConvictedResult": false,
+          "isFinancialResult": false,
+          "judicialResultId": "81bff51e-c1b2-48a6-8a52-cbe484e9d45e",
+          "judicialResultTypeId": "fd63ddde-8e9b-4ea6-9594-50c725dddd26",
+          "label": "label",
+          "lifeDuration": false,
+          "orderedDate": "2021-07-29",
+          "orderedHearingId": "db896046-cde4-4ee9-a7c8-5fc3d3412436",
+          "publishedAsAPrompt": false,
+          "publishedForNows": false,
+          "rank": 0,
+          "resultText": "resultText",
+          "rollUpPrompts": false,
+          "terminatesOffenceProceedings": false,
+          "urgent": false,
+          "welshLabel": "label"
+        }
+      ],
+      "modeOfTrial": "1010",
+      "offenceCode": "offenceCode",
+      "offenceDefinitionId": "5648f585-284d-42b5-9bbc-9533aacbe02e",
+      "offenceTitle": "RDKHbxRqsp",
+      "orderIndex": 65,
+      "plea": {
+        "offenceId": "db896046-cde4-4ee9-a7c8-5fc3d3412436",
+        "pleaDate": "2021-07-29",
+        "pleaValue": "NOT_GUILTY"
+      },
+      "proceedingsConcluded": true,
+      "startDate": "2021-07-29",
+      "verdict": {
+        "offenceId": "db896046-cde4-4ee9-a7c8-5fc3d3412436",
+        "originatingHearingId": "0bced3f5-a290-403e-b996-a1daf1cb3932",
+        "verdictDate": "2021-07-29",
+        "verdictType": {
+          "category": "WltT1Yc56p",
+          "categoryType": "U599yGK0nZ",
+          "cjsVerdictCode": "N",
+          "id": "3f0d69d0-2fda-3472-8d4c-a6248f661825"
+        }
+      },
+      "wording": "7bSA66NFh2"
+    },
+    {
+      "allocationDecision": {
+        "allocationDecisionDate": "2020-11-03",
+        "courtIndicatedSentence": {
+          "courtIndicatedSentenceDescription": "6NyQkemC7H",
+          "courtIndicatedSentenceTypeId": "9f780768-9747-4219-b7d5-48cf8341afca"
+        },
+        "motReasonCode": "wdBEi953oU",
+        "motReasonDescription": "8n5dCkBWGZ",
+        "motReasonId": "88c93371-7ea4-4399-89dc-579139d8b332",
+        "offenceId": "e77fa5d9-08c3-4220-8cc8-391013a4fc72",
+        "originatingHearingId": "7b23ce2b-4f54-4057-b9a7-ba7fab76673c",
+        "sequenceNumber": 1
+      },
+      "arrestDate": "2021-07-29",
+      "chargeDate": "2021-07-29",
+      "convictionDate": "2021-07-29",
+      "count": 434,
+      "endDate": "2021-07-29",
+      "id": "54cd2093-6343-4ae6-a889-ee263b3306e8",
+      "introducedAfterInitialProceedings": true,
+      "isDiscontinued": true,
+      "isDisposed": true,
+      "judicialResults": [
+        {
+          "alwaysPublished": false,
+          "category": "FINAL",
+          "cjsCode": "cjsCode",
+          "d20": false,
+          "excludedFromResults": false,
+          "isAdjournmentResult": false,
+          "isAvailableForCourtExtract": false,
+          "isConvictedResult": false,
+          "isFinancialResult": false,
+          "judicialResultId": "cd959b61-5427-44e3-829a-8c3110dec62d",
+          "judicialResultTypeId": "07d6dae6-d566-4ce7-979f-d1e46c23c69d",
+          "label": "label",
+          "lifeDuration": false,
+          "orderedDate": "2021-07-29",
+          "orderedHearingId": "db896046-cde4-4ee9-a7c8-5fc3d3412436",
+          "publishedAsAPrompt": false,
+          "publishedForNows": false,
+          "rank": 0,
+          "resultText": "resultText",
+          "rollUpPrompts": false,
+          "terminatesOffenceProceedings": false,
+          "urgent": false,
+          "welshLabel": "label"
+        }
+      ],
+      "modeOfTrial": "1010",
+      "offenceCode": "offenceCode",
+      "offenceDefinitionId": "9500f8e3-3256-427f-bed1-6d0cf059058f",
+      "offenceTitle": "wI5hX4oq7j",
+      "orderIndex": 65,
+      "plea": {
+        "offenceId": "db896046-cde4-4ee9-a7c8-5fc3d3412436",
+        "pleaDate": "2021-07-29",
+        "pleaValue": "NOT_GUILTY"
+      },
+      "proceedingsConcluded": true,
+      "startDate": "2021-07-29",
+      "verdict": {
+        "offenceId": "db896046-cde4-4ee9-a7c8-5fc3d3412436",
+        "originatingHearingId": "b1debcae-3862-4173-bc03-6b7f6146d8c0",
+        "verdictDate": "2021-07-29",
+        "verdictType": {
+          "category": "IEat920gRa",
+          "categoryType": "kWmR6YfnBl",
+          "cjsVerdictCode": "N",
+          "id": "3f0d69d0-2fda-3472-8d4c-a6248f661825"
+        }
+      },
+      "wording": "rLb6fPr8Iw"
+    }
+  ]
+}

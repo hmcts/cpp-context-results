@@ -1,0 +1,69 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel8266932 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Osborne Rolfson",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "8d7ac6d7-0c19-466e-806c-5653e8e56824",
+  "hearingSittingDay": "2025-07-11T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e40c5c67-22ca-4118-b24e-592aa3da4507",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "443d9eef-6587-4647-83ef-73e85418c197",
+      "offenceTitle": "Robbery",
+      "impositionOffenceDetails": "FO - Fine\nFined £8888.00\nFVS - Surcharge\nTo pay a surcharge of £567.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2026.",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "935a8fcf-b981-4560-ac09-401098f50418",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-11",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "9a713ac5-73db-4428-bebd-7c7dcc8dc869",
+      "offenceTitle": "Theft from a shop",
+      "impositionOffenceDetails": "AD - Absolute discharge",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "935a8fcf-b981-4560-ac09-401098f50418",
+      "isFinancial": false,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-11",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "443d9eef-6587-4647-83ef-73e85418c197",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-07-11",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £8888.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "443d9eef-6587-4647-83ef-73e85418c197",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Surcharge",
+      "offenceTitle": "Robbery",
+      "dateOfResult": "2025-07-11",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £567.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8266932"
+  ]
+}

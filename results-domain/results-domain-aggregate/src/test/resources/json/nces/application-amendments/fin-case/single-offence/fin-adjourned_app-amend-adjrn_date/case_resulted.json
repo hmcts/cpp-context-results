@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203726212",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3726212@gmail.com",
+  "defendantName": "Janis Nikolaus",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b3473f4a-f752-4eca-9319-9481dfb2896e",
+  "hearingSittingDay": "2025-03-05T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "93cb9ee4-0eae-41fe-b58b-384447979185",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "cc2dd879-9463-466c-8805-fb2a8d9cba4a",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS3726212"
+  ]
+}

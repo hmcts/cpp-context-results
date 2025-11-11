@@ -1,0 +1,50 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3955007 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "edc073ed-4054-4cf4-9d38-c8a81308b40e",
+  "hearingSittingDay": "2025-08-14T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "367c3d7b-d747-4981-991a-f208ea75d004",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery",
+      "resultCode": "RFSD"
+    },
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "367c3d7b-d747-4981-991a-f208ea75d004",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "RFSD"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3955007"
+  ]
+}

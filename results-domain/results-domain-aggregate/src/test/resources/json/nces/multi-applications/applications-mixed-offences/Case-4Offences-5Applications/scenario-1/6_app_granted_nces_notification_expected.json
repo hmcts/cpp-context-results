@@ -1,0 +1,70 @@
+{
+  "caseReferences": "48DI6925261",
+  "dateDecisionMade": "2025-07-24",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-24",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £98763.00\nFVS - Surcharge\nTo pay a surcharge of £2323.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £444.00\nFO - Fine\nFined £45666.00\nFVS - Surcharge\nTo pay a surcharge of £3453.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 14 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £4332432.00\nFVS - Surcharge\nTo pay a surcharge of £42432.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/04/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £423111.00 to Abellio Greater Anglia Ltd\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £45673.00\nvulnerability - Risk or vulnerability factors",
+      "offenceDate": "2019-11-28",
+      "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}

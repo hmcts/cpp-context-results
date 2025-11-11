@@ -1,0 +1,58 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel5984707 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Patrick Stiedemann",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "8a00c5f0-a493-4ed0-b72a-e728becb7331",
+    "hearingSittingDay": "2025-07-18T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "35952a42-ca0a-459a-a4e3-0f854b926388",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "02d4a24a-23c4-47f3-b9a1-4038b722a32a",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/04/2026. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 45 Hours.\nFVS - Surcharge\nTo pay a surcharge of £5098.00\nSV - Sentence varied\nAppeal heard on: 11/05/2025\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £456.00 to be paid monthly. Instalment start date: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
+            "offenceTitle": "Robbery",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationId": "02d4a24a-23c4-47f3-b9a1-4038b722a32a",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/04/2026. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 45 Hours.\nSV - Sentence varied\nAppeal heard on: 11/05/2025",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "6d9424df-cbcb-40df-9b34-5d6a5ec3c3d1",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £5098.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
+            "offenceTitle": "Robbery"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI5984707"
+    ]
+}

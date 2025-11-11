@@ -1,0 +1,44 @@
+subscriptions_descriptor:
+  spec_version: 1.0.0
+  service: results
+  service_component: EVENT_LISTENER
+  subscriptions:
+    - name: results event listener subscription
+      events:
+        - name: results.hearing-results-added
+          schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.hearing-results-added.json
+
+        - name: results.events.hearing-results-added-for-day
+          schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.events.hearing-results-added-for-day.json
+
+        - name: results.hearing-case-ejected
+          schema_uri: http://justice.gov.uk/core/courts/results.hearing-case-ejected.json
+
+        - name: results.hearing-application-ejected
+          schema_uri: http://justice.gov.uk/core/courts/results.hearing-application-ejected.json
+
+        - name: results.event.informant-register-recorded
+          schema_uri: http://justice.gov.uk/core/courts/informant-register-recorded.json
+
+        - name: results.event.informant-register-generated
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
+
+        - name: results.event.informant-register-notified
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-notified.json
+
+        - name: results.event.informant-register-notified-v2
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-notified-v2.json
+
+        - name: results.events.defendant-tracking-status-updated
+          schema_uri: http://justice.gov.uk/results/courts/results.events.defendant-tracking-status-updated.json
+
+        - name: results.event.nces-email-notification-requested
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/nces-email-notification-requested.json
+
+        - name: results.event.hearing-financial-results-updated
+          schema_uri: http://justice.gov.uk/core/courts/hearing-financial-results-updated.json
+
+        - name: results.event.hearing-financial-results-tracked
+          schema_uri: http://justice.gov.uk/hearing/courts/hearing-financial-results-tracked.json
+
+      event_source_name: results

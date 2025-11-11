@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/police-result-generated.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "sessionDays": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "http://justice.gov.uk/core/courts/sessionDay.json"
+      }
+    },
+    "courtCentreWithLJA": {
+      "$ref": "http://justice.gov.uk/core/courts/courtCentreWithLJA.json"
+    },
+    "caseId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "urn": {
+      "type": "string"
+    },
+    "defendant": {
+      "type": "object",
+      "$ref": "http://justice.gov.uk/core/courts/caseDefendant.json"
+    }
+  },
+  "required": [
+    "id",
+    "sessionDays",
+    "courtCentreWithLJA",
+    "caseId",
+    "urn",
+    "defendant"
+  ],
+  "additionalProperties": false
+}

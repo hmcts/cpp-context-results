@@ -1,0 +1,29 @@
+{
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0202172608",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName2172608@gmail.com",
+    "defendantName": "Adolph Berge",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "08b58988-f6d0-428b-9645-e02770bf4418",
+    "hearingSittingDay": "2025-03-14T23:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "0effc607-e232-4654-81f5-3f506100a92b",
+    "ncesEmail": "av.qet@justice.gov.uk",
+    "offenceResults": [
+      {
+        "amendmentDate": "2025-03-14",
+        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+        "dateOfResult": "2025-03-14",
+        "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 5 Months.",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "offenceId": "eefd3f79-66eb-4e2b-bca2-9e6f9cdc00b7",
+        "offenceTitle": "Theft from a shop"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28NS2172608"
+    ]
+  }

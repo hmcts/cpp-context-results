@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/sjp/results/baseOffense.json",
+  "type": "object",
+  "properties": {
+    "offenceId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "offenceSequenceNumber": {
+      "type": "integer",
+      "description": "Sequence number of the offence"
+    },
+    "offenceCode": {
+      "type": "string",
+      "description": "Identifies the CJS code applicable to criminal offences as per the CJS Standard section 3.11"
+    },
+    "offenceWording": {
+      "type": "string"
+    },
+    "offenceDateCode": {
+      "description": "The codification of the date of offence.",
+      "type": "integer",
+      "id": "officeDateCode"
+    },
+    "offenceStartDate": {
+      "type": "string",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "offenceEndDate": {
+      "type": "string",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "chargeDate": {
+      "type": "string",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "arrestDate": {
+      "type": "string",
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "locationOfOffence": {
+      "type": "string",
+      "description": "Location of offense"
+    },
+    "alcoholLevelAmount": {
+      "type": "integer"
+    },
+    "alcoholLevelMethod": {
+      "type": "string"
+    },
+    "vehicleCode": {
+      "type": "string",
+      "id": "vehicleCode"
+    },
+    "vehicleRegistrationMark": {
+      "type": "string",
+      "id": "vehicleRegistrationMark"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "offenceCode",
+    "offenceWording",
+    "offenceDateCode",
+    "offenceStartDate"
+  ]
+}

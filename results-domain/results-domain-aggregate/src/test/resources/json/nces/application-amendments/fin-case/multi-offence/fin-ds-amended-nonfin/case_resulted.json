@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0203064614",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST013064614@gmail.com",
+  "defendantName": "Alexander Langworth",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "3435caa5-7707-4939-acce-407c2b781134",
+  "hearingSittingDay": "2025-04-03T22:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ff578407-214a-4f57-a251-f8155b5c7ed1",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-04-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £41.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "68cfd013-a279-4ac5-9a5e-3ddfe2f8c683",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "dateOfResult": "2025-04-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £42.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "78b46590-cf91-446a-b437-29b73f66646e",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "dateOfResult": "2025-04-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £43.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "e9ce8db2-b079-4c10-b964-010570a224c3",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "38DI3064614"
+  ]
+}

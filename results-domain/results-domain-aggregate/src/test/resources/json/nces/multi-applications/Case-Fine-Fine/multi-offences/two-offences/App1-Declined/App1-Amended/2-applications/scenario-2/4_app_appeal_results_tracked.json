@@ -1,0 +1,80 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3955007 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "6c4ca34a-da30-48d7-b167-368c1b2bf7e2",
+  "hearingSittingDay": "2025-08-14T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "fc087c20-ccf4-480a-8661-bf08742396c8",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £876578.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery",
+      "resultCode": "ASV"
+    },
+    {
+      "applicationId": "fc087c20-ccf4-480a-8661-bf08742396c8",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £432243243.00\nFVS - Surcharge\nSV - Sentence varied\nTo pay a surcharge of £4234.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ASV"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £876578.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £432243243.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £4234.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3955007"
+  ]
+}

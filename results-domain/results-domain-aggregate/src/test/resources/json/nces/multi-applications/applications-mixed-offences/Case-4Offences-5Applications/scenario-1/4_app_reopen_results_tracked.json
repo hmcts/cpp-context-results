@@ -1,0 +1,91 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1978-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "5dbaf370-c06d-42fc-b173-1318cde65598",
+    "hearingSittingDay": "2025-07-18T00:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "c3988cbf-c5a8-4ab3-b286-9c700aac0841",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FO - Fine\nFined £98763.00\nFVS - Surcharge\nTo pay a surcharge of £2323.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "c3988cbf-c5a8-4ab3-b286-9c700aac0841",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FO - Fine\nFined £287632.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £33333.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FO - Fine\nFined £98763.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £2323.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FO - Fine\nFined £287632.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+        },
+        {
+            "applicationResultType": "Vehicle Excise Back Duty",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £33333.00.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI6925261"
+    ]
+}

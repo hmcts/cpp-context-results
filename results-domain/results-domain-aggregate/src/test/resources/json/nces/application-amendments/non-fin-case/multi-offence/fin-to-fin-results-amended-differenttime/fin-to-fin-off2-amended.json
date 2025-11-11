@@ -1,0 +1,60 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2867968 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "9872867968",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jordyn Gulgowski",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "17605775-5280-4f00-a324-42eea8aa7960",
+  "hearingSittingDay": "2025-03-03T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "66320668-7b59-45a0-858f-1cf72278770c",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "f106451d-2c0e-4347-bbb4-77aedd1746d6",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £11.10\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "d51520ce-4421-40e9-80c8-9fa3969f127c",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "f106451d-2c0e-4347-bbb4-77aedd1746d6",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £21.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "97a3c9a9-270c-495f-9f5b-c5ccb494b13c",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-03-03",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £21.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "97a3c9a9-270c-495f-9f5b-c5ccb494b13c",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "29NS2867968"
+  ]
+}

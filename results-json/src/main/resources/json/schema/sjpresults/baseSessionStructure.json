@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/sjp/results/baseSessionStructure.json",
+  "type": "object",
+  "properties": {
+    "sessionId": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+    },
+    "sessionLocation": {
+      "description": "As per Libra documentation, for SPI out this has to provide unique reference to court room.",
+      "type": "object",
+      "properties": {
+        "courtId": {
+          "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+        },
+        "courtHouseCode": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "roomId": {
+          "type": "string"
+        },
+        "roomName": {
+          "type": "string"
+        },
+        "lja": {
+          "type": "string"
+        },
+        "address": {
+          "$ref": "http://justice.gov.uk/core/courts/address.json"
+        }
+      },
+      "required": [
+        "courtId",
+        "courtHouseCode",
+        "name",
+        "roomName",
+        "lja"
+      ]
+    },
+    "dateAndTimeOfSession": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ouCode": {
+      "description": "The unique identifier of Local Justice Area.",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "sessionId",
+    "sessionLocation",
+    "dateAndTimeOfSession",
+    "ouCode"
+  ]
+}

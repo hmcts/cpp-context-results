@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI5651663",
+  "dateDecisionMade": "2025-08-19",
+  "defendantAddress": "n Fisher Tunnel5651663 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Toni Parisian",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-08-19",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £1000.00, FVS - Surcharge\nTo pay a surcharge of £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "title": "Robbery"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £366.00\nFO - Fine\nFined £5455.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "327e9b92-1df4-4eeb-b21f-777a8590914c",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "title": "Robbery"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £66.00\nFO - Fine\nFined £450.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

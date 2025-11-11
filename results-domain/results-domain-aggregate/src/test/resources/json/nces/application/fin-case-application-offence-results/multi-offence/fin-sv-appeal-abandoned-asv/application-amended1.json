@@ -1,0 +1,80 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Miller Walk Marceloside Avon DA61 7ND",
+  "defendantContactNumber": "724-337-0958",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Hilario Hirthe",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "3ce01ba1-c1a4-46a8-bb2c-f87a7a3162b9",
+  "hearingSittingDay": "2025-04-24T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationId": "b7c0f974-1fda-49d0-a32c-e9cb1d299e4a",
+      "applicationResultType": "Dismissed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nSV - Sentence varied\nAppeal heard on: 11/08/2024\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid fortnightly. Instalment start date: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "resultCode": "AASD"
+    },
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationId": "b7c0f974-1fda-49d0-a32c-e9cb1d299e4a",
+      "applicationResultType": "Dismissed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.45\nSV - Sentence varied\nAppeal heard on: 11/08/2024",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "AASD"
+    },
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationId": "b7c0f974-1fda-49d0-a32c-e9cb1d299e4a",
+      "applicationResultType": "Driving disqualification stands",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nSV - Sentence varied\nAppeal heard on: 11/08/2024\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid fortnightly. Instalment start date: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationId": "b7c0f974-1fda-49d0-a32c-e9cb1d299e4a",
+      "applicationResultType": "Driving disqualification stands",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.45\nSV - Sentence varied\nAppeal heard on: 11/08/2024",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD39876942"
+  ]
+}

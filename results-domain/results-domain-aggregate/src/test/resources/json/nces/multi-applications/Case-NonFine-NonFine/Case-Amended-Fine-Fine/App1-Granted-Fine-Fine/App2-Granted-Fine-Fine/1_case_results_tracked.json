@@ -1,0 +1,39 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7658121 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Clotilde Gusikowski",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "4554b3eb-2a2c-4b3e-ba07-77dd9025f6b9",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "9cdc9818-ad55-42ef-a351-1ba337d0b886",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "amendmentDate": "2025-07-18",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £765.00, FO - Fine\nFined £87654.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £786.00 to be paid monthly. Instalment start date: 10/10/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "amendmentDate": "2025-07-18",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £7654.00\nIMP - Imprisonment\nCommitted to prison for 9 Years. Reason: failure to comply with requirements of post custodial sentence supervision because the defendant has a flagrant disregard for court orders, because the defendant has a flagrant disregard for people and their property. Bail remand days to count (Tagged Days): 45. This offence is aggravated by the foreign power condition being met in relation to it as defined by section 31 of the National Security Act 2023. Total custodial period: 6 Years.\n \n \nTotal custodial period: 6 Years.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7658121"
+    ]
+}

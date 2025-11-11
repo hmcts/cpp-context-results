@@ -1,0 +1,37 @@
+{
+  "caseReferences": "28DI4859387",
+  "dateDecisionMade": "2025-07-31",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Edyth Quitzon",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £90.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7bfcf6db-4aa5-46f6-9281-6bb80447f9bb",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "details": "FO - Fine\nFined £800.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6f744bf2-cb06-4d39-bc86-1b934023e9bf",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "f6bc801f-3516-4187-bd49-19ce9fc04ff8",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Withdrawn"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN WITHDRAWN"
+}

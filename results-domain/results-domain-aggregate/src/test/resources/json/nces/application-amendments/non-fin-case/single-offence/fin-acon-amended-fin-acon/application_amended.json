@@ -1,0 +1,86 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0209935678",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName9935678@gmail.com",
+  "defendantName": "Maximilian Maggio",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "f70bb2c6-ede1-4679-9900-2d098934b992",
+  "hearingSittingDay": "2025-03-07T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "31b29644-10c8-4d51-aead-9c74d8b68f0f",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-07",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-07",
+      "impositionOffenceDetails": "FO - Fine\nFined £1110.00\nACON - Account Consolidated\nAccount to be consolidated with existing account number 30688211A. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "139aafbb-60aa-45e8-aa45-b24be7c8a2c4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "e7d53f16-e78c-4cf9-ad38-f50b2e56e38b",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-07",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "139aafbb-60aa-45e8-aa45-b24be7c8a2c4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-03-07",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-07",
+      "impositionOffenceDetails": "FO - Fine\nFined £1110.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "139aafbb-60aa-45e8-aa45-b24be7c8a2c4",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-03-07",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Consolidated",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-07",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing account number 30688211A. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "139aafbb-60aa-45e8-aa45-b24be7c8a2c4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "amendmentDate": "2025-03-07",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-07",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "139aafbb-60aa-45e8-aa45-b24be7c8a2c4",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9935678"
+  ]
+}

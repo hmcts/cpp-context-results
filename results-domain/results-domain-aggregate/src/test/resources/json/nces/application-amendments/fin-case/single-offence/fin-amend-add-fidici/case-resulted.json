@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208365860",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8365860@gmail.com",
+  "defendantName": "Elroy Muller",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ab415704-b069-454f-a209-6f0f682aeb70",
+  "hearingSittingDay": "2025-03-21T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "916f1f10-c645-402d-934b-90f832118f59",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8365860"
+  ]
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="19" author="hearing" logicalFilePath="019-create-index-variant_directory.xml">
+
+        <sql>
+            CREATE INDEX IF NOT EXISTS idx_variant_directory_hearing_id 
+                ON variant_directory (hearing_id NULLS FIRST);
+        </sql>
+
+    </changeSet>
+
+
+</databaseChangeLog>

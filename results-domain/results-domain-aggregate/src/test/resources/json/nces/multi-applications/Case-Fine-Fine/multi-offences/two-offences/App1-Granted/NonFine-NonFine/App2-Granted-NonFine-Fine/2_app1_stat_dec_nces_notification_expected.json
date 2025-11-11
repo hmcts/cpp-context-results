@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI7629356",
+  "dateDecisionMade": "2025-06-30",
+  "defendantAddress": "n Fisher Tunnel7629356 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Will Reynolds",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £9999.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "31be7206-2c07-45cf-89be-eeac70beeb67",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £5000.00, FVS - Surcharge\nTo pay a surcharge of £444.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "602ac4e2-318a-4dd9-befc-5763842445f8",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "7b44692f-2249-4282-9408-4f56eaad1c89",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 4 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "31be7206-2c07-45cf-89be-eeac70beeb67",
+      "title": "Robbery"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "602ac4e2-318a-4dd9-befc-5763842445f8",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

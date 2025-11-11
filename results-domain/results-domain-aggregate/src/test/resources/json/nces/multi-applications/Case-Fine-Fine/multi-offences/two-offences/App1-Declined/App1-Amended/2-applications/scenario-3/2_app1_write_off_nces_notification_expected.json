@@ -1,0 +1,43 @@
+{
+  "amendmentDate": "2025-08-18",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI5651663",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Toni Parisian",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00\nFVS - Surcharge\nTo pay a surcharge of £35.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "327e9b92-1df4-4eeb-b21f-777a8590914c",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [],
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

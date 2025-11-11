@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI8919760",
+  "defendantAddress": "n Fisher Tunnel8919760 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Easton Hickle",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-17",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "17/07/2025",
+  "masterDefendantId": "dc28b3e8-fe2b-4925-a3c3-f54a660b7423",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "17/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

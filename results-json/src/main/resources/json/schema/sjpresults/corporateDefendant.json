@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/sjp/results/corporateDefendant.json",
+  "type": "object",
+  "properties": {
+    "organisationName": {
+      "type": "string"
+    },
+    "telephoneNumberBusiness1": {
+      "type": "string"
+    },
+    "telephoneNumberBusiness2": {
+      "type": "string"
+    },
+    "emailAddress1": {
+      "type": "string"
+    },
+    "emailAddress2": {
+      "type": "string"
+    },
+    "address": {
+      "$ref": "http://justice.gov.uk/core/courts/address.json"
+    },
+    "pncIdentifier": {
+      "type": "string"
+    },
+    "presentAtHearing": {
+      "type": "string"
+    },
+    "bailStatus": {
+      "$ref": "http://justice.gov.uk/core/courts/bailStatus.json"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "organisationName",
+    "address",
+    "presentAtHearing",
+    "bailStatus"
+  ]
+}

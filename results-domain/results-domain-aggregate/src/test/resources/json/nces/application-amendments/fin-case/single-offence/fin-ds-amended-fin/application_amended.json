@@ -1,0 +1,121 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203937798",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3937798@gmail.com",
+  "defendantName": "William Kessler",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "1927dcc6-b5be-4ef3-83c9-78fb9dae6b57",
+  "hearingSittingDay": "2025-02-24T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "f6592175-2619-4eb8-89f0-42900faa2320",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "REOPEN",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "resultCode": "FIDICI",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £350.00 to test test\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £700.00.\nFO - Fine\nFined £400.00\nFVS - Surcharge\nTo pay a surcharge of £300.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isParentFlag": true
+    },
+    {
+      "applicationType": "REOPEN",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "resultCode": "ACON",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-02-24",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Granted",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "b4d049a9-6a95-4470-993e-0945ea611eb1",
+      "isFinancial": false,
+      "isParentFlag": false,
+      "dateOfResult": "2025-02-24",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Costs",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-02-24",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £350.00 to test test",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "resultCode": "FIDICI",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-02-24",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Consolidated",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "resultCode": "ACON",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-02-24",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "applicationType": "REOPEN",
+      "applicationResultType": "Pay by date",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-02-24",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-02-24",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isFinancial": false,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3937798"
+  ]
+}

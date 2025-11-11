@@ -1,0 +1,57 @@
+{
+  "caseReferences": "RQ123835335",
+  "dateDecisionMade": "2025-08-08",
+  "defendantAddress": "1, Strand Test Street Test Locality Test Town Test Area TA1 1AT",
+  "defendantContactNumber": "0939137252",
+  "defendantDateOfBirth": "1998-08-08",
+  "defendantEmail": "carrol.gerlach@example.com",
+  "defendantName": "Carrol Gerlach",
+  "divisionCode": "47",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-08-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 19/08/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25b3a10b-68a4-4c74-a6c0-5b3d9099fa14",
+      "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b757a3a7-a938-4b26-ab5f-ece92e55ef20",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "45533349-6528-4692-ab97-00bc767938de",
+  "materialId": "952bf709-e50e-4e7e-bbe2-7d47b6f0e9d7",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £800.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 19/08/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25b3a10b-68a4-4c74-a6c0-5b3d9099fa14",
+      "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 3 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b757a3a7-a938-4b26-ab5f-ece92e55ef20",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "notificationId": "98c238ca-76d0-4812-810f-cf3f2846c4b0",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

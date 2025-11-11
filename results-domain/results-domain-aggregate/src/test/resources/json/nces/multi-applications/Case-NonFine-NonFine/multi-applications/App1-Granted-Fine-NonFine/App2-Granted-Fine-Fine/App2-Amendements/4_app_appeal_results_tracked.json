@@ -1,0 +1,46 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel1480609 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Chaya Waelchi",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "48af182b-c862-415e-80fc-dee1a153da43",
+  "hearingSittingDay": "2025-07-29T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "bcba026b-2be8-4692-8138-9e3a754d4e05",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "fa847911-9edb-4b5e-8906-7046b57af479",
+      "applicationResultType": "Abandoned",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-07-29",
+      "impositionOffenceDetails": "APA - Appeal abandoned\n ",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "f717cf84-6532-4689-a028-50d31269a794",
+      "offenceTitle": "Robbery",
+      "resultCode": "APA"
+    },
+    {
+      "applicationId": "fa847911-9edb-4b5e-8906-7046b57af479",
+      "applicationResultType": "Abandoned",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-07-29",
+      "impositionOffenceDetails": "APA - Appeal abandoned\n ",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "4656963e-004f-4dc7-addf-e1a3d6b39c40",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "APA"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI1480609"
+  ]
+}

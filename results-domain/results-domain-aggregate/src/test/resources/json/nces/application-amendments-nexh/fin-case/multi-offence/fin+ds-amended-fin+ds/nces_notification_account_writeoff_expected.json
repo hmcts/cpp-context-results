@@ -1,0 +1,70 @@
+{
+  "amendmentDate": "2025-04-23",
+  "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+  "caseReferences": "28DI9291625",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Nedra Koepp",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "details": "FO - Fine\nFined £50.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9b06bebd-51e8-4286-a897-ef8169227ede",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "6a9ceab0-928b-4096-b450-063e717e5761",
+  "materialId": "7c4bd954-0cf2-4607-9979-db2964d2caad",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £11.00.\nFIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £65.00\nPDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "details": "FO - Fine\nFined £50.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9b06bebd-51e8-4286-a897-ef8169227ede",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "notificationId": "d3eebf1c-f5ad-4490-9422-f5a69b4c3036",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

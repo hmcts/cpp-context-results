@@ -1,0 +1,37 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2324843 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eusebio Kautzer",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e972cd42-c5cc-40aa-b3fd-c66f1c649871",
+  "hearingSittingDay": "2025-03-20T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00, FVS - Surcharge\nTo pay a surcharge of £50.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/05/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "ACON"
+    },
+    {
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £50.00.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2324843"
+  ]
+}

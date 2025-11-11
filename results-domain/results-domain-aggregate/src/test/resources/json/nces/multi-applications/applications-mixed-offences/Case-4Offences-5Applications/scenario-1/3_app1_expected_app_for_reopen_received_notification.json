@@ -1,0 +1,20 @@
+{
+  "caseReferences": "48DI6925261",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "18/07/2025",
+  "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "18/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

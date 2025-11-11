@@ -1,0 +1,364 @@
+{
+    "hearing": {
+        "courtApplications": [
+            {
+                "applicant": {
+                    "id": "4db8edc5-36d9-4806-b7df-ce946475f20b",
+                    "notificationRequired": true,
+                    "prosecutingAuthority": {
+                        "address": {
+                            "address1": "Criminal Justice Department",
+                            "address2": "Derbyshire Constabulary",
+                            "address3": "Butterley Hall",
+                            "address4": "Ripley",
+                            "address5": "Derby",
+                            "postcode": "DE5 3RS"
+                        },
+                        "contact": {
+                            "primaryEmail": "criminaldataderbyshire@derbyshire.police.uk"
+                        },
+                        "majorCreditorCode": "PO30",
+                        "name": "Derbyshire Police",
+                        "prosecutionAuthorityCode": "DERPF",
+                        "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+                        "prosecutionAuthorityOUCode": "0300000",
+                        "welshName": "Heddlu Derbyshire"
+                    },
+                    "summonsRequired": false
+                },
+                "applicationReceivedDate": "2025-08-04",
+                "applicationReference": "RL91080687",
+                "applicationStatus": "DRAFT",
+                "commissionerOfOath": false,
+                "courtApplicationCases": [
+                    {
+                        "caseStatus": "INACTIVE",
+                        "isSJP": false,
+                        "offences": [
+                            {
+                                "arrestDate": "2019-12-01",
+                                "chargeDate": "2019-12-02",
+                                "count": 0,
+                                "endorsableFlag": false,
+                                "id": "9aacbfb4-a17f-49a8-8511-2790f0870ac3",
+                                "isDisposed": false,
+                                "listingNumber": 1,
+                                "maxPenalty": "EW:6M &/or Ultd Fine",
+                                "modeOfTrial": "Either Way",
+                                "offenceCode": "SX03209",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "12ac7151-d196-3b0e-9492-88e76e2d208a",
+                                "offenceLegislation": "Contrary to section 41 of the Sexual Offences Act 2003.",
+                                "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+                                "orderIndex": 1,
+                                "proceedingsConcluded": true,
+                                "reportingRestrictions": [
+                                    {
+                                        "id": "e6b407ee-0f2a-4523-b74b-9e077b442b6d",
+                                        "label": "Complainant's anonymity protected by virtue of Section 1 of the Sexual Offences Amendment Act 1992",
+                                        "orderedDate": "2025-08-04"
+                                    }
+                                ],
+                                "startDate": "2019-11-28",
+                                "wording": "Theft of pedal cycle."
+                            },
+                            {
+                                "arrestDate": "2019-12-01",
+                                "chargeDate": "2019-12-02",
+                                "count": 0,
+                                "dvlaOffenceCode": "TS10",
+                                "endorsableFlag": true,
+                                "id": "c292b149-ffc5-40ce-97ec-2b1f400474c6",
+                                "isDisposed": false,
+                                "listingNumber": 1,
+                                "maxPenalty": "S:L3 LE 3pp",
+                                "modeOfTrial": "Summary",
+                                "offenceCode": "RT88972",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "3bba7c55-0cf7-34de-8945-c841a707487f",
+                                "offenceLegislation": "Contrary to section 36(1) of the Road Traffic Act 1988, the Traffic Signs Regulations and General Directions 2016 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                                "offenceLegislationWelsh": "Yn groes i adran 36(1) Deddf Traffig Ffyrdd 1988, Rheoliadau a Chyfarwyddiadau Cyffredinol Arwyddion Traffig 2016 ac Atodlen 2 Deddf Troseddwyr Traffig Ffyrdd 1988.",
+                                "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+                                "offenceTitleWelsh": "Gyrru c / m a methu â chydymffurfio ag arwyddion golau - saeth goch / saeth werdd / lonydd ar gau – cyfarpar awtomatig",
+                                "orderIndex": 3,
+                                "proceedingsConcluded": true,
+                                "startDate": "2019-11-28",
+                                "wording": "Use a motor vehicle without third party insurance."
+                            }
+                        ],
+                        "prosecutionCaseId": "90fa9af5-75c0-4c8a-9378-65340fe9008c",
+                        "prosecutionCaseIdentifier": {
+                            "address": {
+                                "address1": "Criminal Justice Department",
+                                "address2": "Derbyshire Constabulary",
+                                "address3": "Butterley Hall",
+                                "address4": "Ripley",
+                                "address5": "Derby",
+                                "postcode": "DE5 3RS"
+                            },
+                            "contact": {
+                                "primaryEmail": "criminaldataderbyshire@derbyshire.police.uk"
+                            },
+                            "majorCreditorCode": "PO30",
+                            "prosecutionAuthorityCode": "DERPF",
+                            "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+                            "prosecutionAuthorityName": "Derbyshire Police",
+                            "prosecutionAuthorityOUCode": "0300000",
+                            "caseURN": "RL91080687"
+                        }
+                    }
+                ],
+                "id": "9204ab79-1391-41ba-a368-1c90ec329609",
+                "judicialResults": [
+                    {
+                        "alwaysPublished": false,
+                        "canBeSubjectOfBreach": false,
+                        "canBeSubjectOfVariation": false,
+                        "canExtendActiveOrder": false,
+                        "category": "FINAL",
+                        "courtClerk": {
+                            "firstName": "Erica",
+                            "lastName": "Wilson",
+                            "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                        },
+                        "d20": false,
+                        "excludedFromResults": false,
+                        "isAdjournmentResult": false,
+                        "isAvailableForCourtExtract": true,
+                        "isConvictedResult": false,
+                        "isDeleted": false,
+                        "isFinancialResult": false,
+                        "isNewAmendment": true,
+                        "isUnscheduled": false,
+                        "judicialResultId": "22a1baa6-5b91-43ed-9090-b2edef980bd1",
+                        "judicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+                        "label": "Application refused",
+                        "lastSharedDateTime": "2025-08-04",
+                        "level": "O",
+                        "lifeDuration": false,
+                        "orderedDate": "2025-08-04",
+                        "orderedHearingId": "f907348f-2756-4ecc-896e-8aaf0b132b35",
+                        "postHearingCustodyStatus": "A",
+                        "preserveActiveOrder": false,
+                        "publishedAsAPrompt": false,
+                        "publishedForNows": false,
+                        "rank": 212300,
+                        "resultText": "RFSD - Application refused",
+                        "resultWording": "",
+                        "rollUpPrompts": true,
+                        "rootJudicialResultId": "22a1baa6-5b91-43ed-9090-b2edef980bd1",
+                        "rootJudicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+                        "terminatesOffenceProceedings": false,
+                        "urgent": false,
+                        "usergroups": [],
+                        "welshLabel": "Gwrthodwyd y cais"
+                    }
+                ],
+                "respondents": [
+                    {
+                        "id": "23d51bd3-b3e0-4eb5-975c-08bff4d91421",
+                        "masterDefendant": {
+                            "defendantCase": [
+                                {
+                                    "caseId": "90fa9af5-75c0-4c8a-9378-65340fe9008c",
+                                    "caseReference": "RL91080687",
+                                    "defendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b"
+                                }
+                            ],
+                            "masterDefendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b",
+                            "personDefendant": {
+                                "arrestSummonsNumber": "D28GC01123537141",
+                                "bailStatus": {
+                                    "code": "A",
+                                    "description": "Not applicable",
+                                    "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                                },
+                                "driverNumber": "CRIME709136TC9GZ",
+                                "personDetails": {
+                                    "address": {
+                                        "address1": "9999A9999AAAA",
+                                        "address2": "Schowalter Manor",
+                                        "address3": "Port Trudie",
+                                        "address4": "Avon",
+                                        "postcode": "DA61 7ND"
+                                    },
+                                    "contact": {
+                                        "home": "231-832-9294"
+                                    },
+                                    "dateOfBirth": "1978-11-11",
+                                    "documentationLanguageNeeds": "ENGLISH",
+                                    "ethnicity": {
+                                        "observedEthnicityCode": "1",
+                                        "observedEthnicityDescription": "White",
+                                        "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                        "selfDefinedEthnicityCode": "W1",
+                                        "selfDefinedEthnicityDescription": "British",
+                                        "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                    },
+                                    "firstName": "Xander",
+                                    "gender": "FEMALE",
+                                    "hearingLanguageNeeds": "ENGLISH",
+                                    "lastName": "Miller",
+                                    "title": "Mr"
+                                },
+                                "policeBailStatus": {
+                                    "code": "C",
+                                    "description": "Custody",
+                                    "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                                }
+                            }
+                        },
+                        "notificationRequired": true,
+                        "summonsRequired": false
+                    }
+                ],
+                "subject": {
+                    "id": "23d51bd3-b3e0-4eb5-975c-08bff4d91421",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "90fa9af5-75c0-4c8a-9378-65340fe9008c",
+                                "caseReference": "RL91080687",
+                                "defendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b"
+                            }
+                        ],
+                        "masterDefendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "D28GC01123537141",
+                            "bailConditions": "",
+                            "bailStatus": {
+                                "code": "A",
+                                "description": "Not applicable",
+                                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                            },
+                            "driverNumber": "CRIME709136TC9GZ",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "9999A9999AAAA",
+                                    "address2": "Schowalter Manor",
+                                    "address3": "Port Trudie",
+                                    "address4": "Avon",
+                                    "postcode": "DA61 7ND"
+                                },
+                                "contact": {
+                                    "home": "231-832-9294"
+                                },
+                                "dateOfBirth": "1978-11-11",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "ethnicity": {
+                                    "observedEthnicityCode": "1",
+                                    "observedEthnicityDescription": "White",
+                                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                    "selfDefinedEthnicityCode": "W1",
+                                    "selfDefinedEthnicityDescription": "British",
+                                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                },
+                                "firstName": "Xander",
+                                "gender": "FEMALE",
+                                "hearingLanguageNeeds": "ENGLISH",
+                                "lastName": "Miller",
+                                "title": "Mr"
+                            },
+                            "policeBailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "type": {
+                    "appealFlag": false,
+                    "applicantAppellantFlag": false,
+                    "applicationWording": "Appears before the court in order to make a statutory declaration following conviction {1} by {2} on {3}. Original case number: {4}",
+                    "applicationWordingWelsh": "Yn ymddangos gerbron y llys er mwyn gwneud datganiad statudol yn dilyn euogfarn <[am y trosedd <Original Offence>][am y troseddau <Original Offences>]> gan <Court name> ar <Date of hearing>. Rhif yr Achos Gwreiddiol: <Original case number>",
+                    "boxworkNotifTemplate": "NOT_APPLICABLE",
+                    "breachType": "NOT_APPLICABLE",
+                    "categoryCode": "CR",
+                    "changeDate": "2025-03-17T10:29:09",
+                    "code": "MC80527",
+                    "commrOfOathFlag": true,
+                    "contestedFeeApplicable": false,
+                    "courtExtractAvlFlag": true,
+                    "courtOfAppealFlag": false,
+                    "exParte": false,
+                    "hearingCode": "APN",
+                    "id": "a6663f2a-c900-4bb4-a7d7-4be34cb2f1f7",
+                    "initialFeeApplicable": false,
+                    "jurisdiction": "MAGISTRATES",
+                    "lastModified": "2025-03-17T14:00:40.437Z",
+                    "legislation": "In accordance with section 14 of the Magistrates' Courts Act 1980.",
+                    "legislationWelsh": "Yn unol ag adran 14 Deddf Llysoedd Ynadon 1980.",
+                    "linkType": "LINKED",
+                    "listingNotifTemplate": "POSTAL_NOTIFICATION",
+                    "offenceActiveOrder": "OFFENCE",
+                    "pleaApplicableFlag": true,
+                    "prosecutorThirdPartyFlag": true,
+                    "pssId": 601795,
+                    "sowRef": "APPS",
+                    "spiOutApplicableFlag": true,
+                    "summonsTemplateType": "NOT_APPLICABLE",
+                    "type": "Appearance to make statutory declaration (other than SJP)",
+                    "typeWelsh": "Ymddangosiad i wneud datganiad statudol",
+                    "validFrom": "2000-01-05"
+                }
+            }
+        ],
+        "courtCentre": {
+            "address": {
+                "address1": "Norwich Place",
+                "address2": "Bexleyheath",
+                "address3": "Kent",
+                "address4": "",
+                "address5": "",
+                "postcode": "DA6 7ND"
+            },
+            "code": "B01BH00",
+            "courtHearingLocation": "B01BH01",
+            "id": "7e967376-eacf-4fca-9b30-21b0c5aad427",
+            "lja": {
+                "ljaCode": "2575",
+                "ljaName": "South East London Magistrates' Court"
+            },
+            "name": "Bexley Magistrates' Court",
+            "roomId": "8e912353-3b5d-36c3-953e-ad3b94b19de3",
+            "roomName": "Courtroom 01"
+        },
+        "defendantAttendance": [
+            {
+                "attendanceDays": [
+                    {
+                        "attendanceType": "IN_PERSON",
+                        "day": "2025-08-04"
+                    }
+                ],
+                "defendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b"
+            }
+        ],
+        "hasSharedResults": true,
+        "hearingDays": [
+            {
+                "courtCentreId": "7e967376-eacf-4fca-9b30-21b0c5aad427",
+                "courtRoomId": "8e912353-3b5d-36c3-953e-ad3b94b19de3",
+                "hasSharedResults": true,
+                "isCancelled": false,
+                "listedDurationMinutes": 1,
+                "listingSequence": 0,
+                "sittingDay": "2025-08-04T09:00:00.000Z"
+            }
+        ],
+        "hearingLanguage": "ENGLISH",
+        "id": "f907348f-2756-4ecc-896e-8aaf0b132b35",
+        "jurisdictionType": "MAGISTRATES",
+        "shadowListedOffences": [],
+        "type": {
+            "description": "Application",
+            "id": "3449743b-95d6-4836-8941-57f588b52068"
+        }
+    },
+    "hearingDay": "2025-08-04",
+    "isReshare": false,
+    "sharedTime": "2025-08-04T15:41:29.410Z"
+}

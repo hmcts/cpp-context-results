@@ -1,0 +1,23 @@
+{
+  "amendmentDate": "2025-03-03",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI7587940",
+  "defendantName": "Lorenz Metz",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "AD - Absolute discharge",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED REMOVED"
+}

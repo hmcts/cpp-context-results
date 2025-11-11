@@ -1,0 +1,20 @@
+{
+  "caseReferences": "RL91080687",
+  "defendantAddress": "9999A9999AAAA Schowalter Manor Port Trudie Avon DA61 7ND",
+  "defendantContactNumber": "231-832-9294",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Xander Miller",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-08-04",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "04/08/2025",
+  "masterDefendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "04/08/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

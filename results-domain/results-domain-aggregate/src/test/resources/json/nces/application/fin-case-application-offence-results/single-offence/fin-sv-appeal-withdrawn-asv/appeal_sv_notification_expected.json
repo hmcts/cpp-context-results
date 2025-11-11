@@ -1,0 +1,41 @@
+{
+  "caseReferences": "28DI6114747",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0206114747",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName6114747@gmail.com",
+  "defendantName": "Alanna Padberg",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £300.00, FVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "706e046b-559b-4814-a95f-0cbabf366add",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "d5f193fb-447d-4eb3-9787-6c58e3976c8e",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £650.00\nAppeal heard on: 13/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "706e046b-559b-4814-a95f-0cbabf366add",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPEAL DISMISSED SENTENCE VARIED"
+}

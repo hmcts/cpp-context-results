@@ -1,0 +1,44 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+    "defendantContactNumber": "015325443756",
+    "defendantDateOfBirth": "1991-02-18",
+    "defendantName": "Joe McGlynn",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "d5a29c3d-e12d-4fd6-ae92-c743fa1f3e04",
+    "hearingSittingDay": "2025-07-29T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "e57a60dc-3da1-4117-904f-e35440d5a30a",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "881b1acd-e741-45f2-b1fe-18bb68eed05c",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-29",
+            "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2029.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
+            "offenceTitle": "Theft of motor vehicle",
+            "resultCode": "G"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-29",
+            "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
+            "offenceTitle": "Theft of motor vehicle"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI9473376"
+    ]
+}

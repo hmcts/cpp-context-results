@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/session-added-event.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "sessionDays": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "http://justice.gov.uk/core/courts/sessionDay.json"
+      }
+    },
+    "courtCentreWithLJA": {
+      "$ref": "http://justice.gov.uk/core/courts/courtCentreWithLJA.json"
+    }
+  },
+  "required": [
+    "id",
+    "sessionDays",
+    "courtCentreWithLJA"
+  ],
+  "additionalProperties": false
+}

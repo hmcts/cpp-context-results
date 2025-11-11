@@ -1,0 +1,108 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3744431 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Fiona Gorczany",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "bdcc3651-1d43-48b5-aa9e-91ac7601889a",
+    "hearingSittingDay": "2025-07-07T00:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "27a8300d-cbf6-4ed5-aed8-0d33da90247e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £5000.00\nFVS - Surcharge\nTo pay a surcharge of £999.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0e3b524f-6981-4391-90bb-e75f5fcaaf00",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £3000.00 to Avon and Somerset Police",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0e3b524f-6981-4391-90bb-e75f5fcaaf00",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "FO - Fine\nFined £5000.00\nFVS - Surcharge\nTo pay a surcharge of £999.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0e3b524f-6981-4391-90bb-e75f5fcaaf00",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £3000.00 to Avon and Somerset Police",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0e3b524f-6981-4391-90bb-e75f5fcaaf00",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £5000.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "b3059aa5-985c-44ec-8511-409834bb9bd7",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £999.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "16adc011-a5ce-42e7-b81b-3edf4a00de5d",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Costs",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-07-07",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £3000.00 to Avon and Somerset Police",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3744431"
+    ]
+}

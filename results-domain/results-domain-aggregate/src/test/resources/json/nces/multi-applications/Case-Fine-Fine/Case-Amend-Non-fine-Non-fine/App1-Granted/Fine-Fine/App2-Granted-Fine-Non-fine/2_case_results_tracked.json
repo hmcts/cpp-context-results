@@ -1,0 +1,40 @@
+{
+    "accountDivisionCode": "105",
+    "defendantAddress": "50 Main Street Main Street Liverpool Merseyside L1 1AA",
+    "defendantContactNumber": "0821292179",
+    "defendantDateOfBirth": "1994-07-17",
+    "defendantEmail": "katia.tremblay@example.com",
+    "defendantName": "Katia Tremblay",
+    "hearingCourtCentreName": "City of London Magistrates' Court",
+    "hearingId": "f95d2f95-f90b-41a5-9bce-28fbf5a8df64",
+    "hearingSittingDay": "2025-07-17T09:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "e0bcb42a-25a4-449f-914f-f171d3e70fed",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "amendmentDate": "2025-07-17",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 1 Months.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+            "offenceTitle": "Drive whilst unfit through drink"
+        },
+        {
+            "amendmentDate": "2025-07-17",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 1 Months.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+            "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ126157841"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

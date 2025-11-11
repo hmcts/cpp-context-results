@@ -1,0 +1,58 @@
+---
+resource_descriptor:
+  spec_version: '1.0.0'
+  version: '${project.version}'
+
+  resources:
+    - name: java:/app/results-service/DS.eventstore
+      type: xa-datasource
+      setup:
+        - type: liquibase
+          maven:
+            groupId: uk.gov.justice.services
+            artifactId: event-repository-liquibase
+            type: jar
+            version: '${cpp.framework.version}'
+        - type: liquibase
+          maven:
+            groupId: uk.gov.justice.services
+            artifactId: aggregate-snapshot-repository-liquibase
+            type: jar
+            version: '${project.version}'
+
+    - name: java:/DS.results
+      type: xa-datasource
+      setup:
+        - type: liquibase
+          maven:
+            groupId: uk.gov.justice.services
+            artifactId: event-buffer-liquibase
+            type: jar
+            version: '${cpp.framework.version}'
+        - type: liquibase
+          maven:
+            groupId: uk.gov.moj.cpp.hearing
+            artifactId: results-viewstore-liquibase
+            type: jar
+            version: '${project.version}'
+
+    - name: results.handler.command
+      type: queue
+    - name: results.event
+      type: topic
+    - name: public.event
+      type: topic
+
+  services:
+    # hearing provides these service mappings
+    - name: 'results-service'
+      id: 'results_service'
+      target: '/results-service'
+      map:
+        - '/results-command-api'
+        - '/results-command-handler'
+        - '/results-event-listener'
+        - '/results-event-processor'
+        - '/results-query-api'
+        - '/results-query-view'
+      matcher: '/results-[^/]+'

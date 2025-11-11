@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="3.1" jmeter="3.1 r1770033">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="TestPlan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="TestPlan" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Create Stub for Shared Results" enabled="true">
+        <stringProp name="TestPlan.comments">This would stub the data for shared resulst otherwise would have come from hearing context</stringProp>
+      </TestFragmentController>
+      <hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Stub results-summary details" enabled="true">
+          <stringProp name="TestPlan.comments">This would stub the data for shared resulst otherwise would have come from hearing context</stringProp>
+        </GenericController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="stubResultsSummary" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;request&quot;:{&#xd;
+      &quot;method&quot;:&quot;GET&quot;,&#xd;
+      &quot;url&quot;:&quot;/results-query-api/query/api/rest/results/results/summary?fromDate=${__time(yyyy-MM-dd)}&amp;CJSCPPUID=9d967fe5-e838-43d4-bb07-b6ea3b9587bf&amp;_=1521651141019&quot;&#xd;
+   },&#xd;
+   &quot;response&quot;:&quot;{\&quot;results\&quot;:[{\&quot;hearingId\&quot;:\&quot;e27bdf6b-94f5-409a-ab5a-483bb14f7ef1\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;53GD6462418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;6de2195e-de1b-463c-9346-368ec40cd3d5\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;b760676a-d028-43e7-beec-1646d8b79720\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;64GD2522618\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;ebd0ef8e-2024-40cd-a294-288f8f4eb115\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;b760676a-d028-43e7-beec-1646d8b79720\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;64GD2522618\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;6ccabba0-38b7-4897-ae90-893285772246\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;c942c93b-db70-48d8-91f4-f87277e29c69\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;19GD7278918\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;10a94810-2af5-4f22-b305-1187968270cc\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;c942c93b-db70-48d8-91f4-f87277e29c69\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;19GD7278918\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;71497723-a469-4ac4-9234-9f2d89e23e1f\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;c52bcfa7-0258-4fcc-9862-a01182d4c52c\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;35GD1365618\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;f13d0392-728c-4003-ba6e-42ccb6c9a2d6\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;c52bcfa7-0258-4fcc-9862-a01182d4c52c\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;35GD1365618\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;4798a6ee-3c3c-4a66-b2be-fcdd1c2d00e2\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;d76aaf4f-a6b9-4733-beb8-cc9cdce42794\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;51GD7206418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;e5cc80ec-c7cd-4c48-8652-60d2fa644209\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;d76aaf4f-a6b9-4733-beb8-cc9cdce42794\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;51GD7206418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;1bdb4927-98b2-47a2-a6d2-1af06a96288d\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;886898ec-1398-4e31-82f7-b62748282f62\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;40GD2360718\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;979ec95b-0460-4324-bc9c-010e468d98c2\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;7e0fa1c8-4682-484c-a665-2b62405f631e\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;81GD2293218\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;f4f99cc0-c88b-4b97-8978-d7e78bc64681\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;7e0fa1c8-4682-484c-a665-2b62405f631e\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;81GD2293218\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;5d40506e-5efd-430b-956b-6383376e7cca\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;0820833a-9188-4e57-9490-38618a3798f6\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;40GD2225418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;db79c5e6-a59f-4879-9a46-d8ff8e670233\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;0820833a-9188-4e57-9490-38618a3798f6\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;40GD2225418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;9d7b26d6-415d-4c90-8db5-b8acaedd87bd\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;0f6a44a1-08cb-4e10-9f9e-689cea9595b9\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;32GD5833018\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;dd7a1559-a7f1-47ef-afd5-639bd4704a4a\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;0f6a44a1-08cb-4e10-9f9e-689cea9595b9\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;32GD5833018\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;a77229b6-8baf-4670-a8c7-dfffa90d9600\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;297ae3aa-88f7-4bfa-863c-2ecea7b818da\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;35GD1848418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;dc19ea3b-e00a-4c51-8574-0a918e6ca5a8\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;564eb627-cb44-4d98-9866-1d117cec9750\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;24GD5505318\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;1acded32-2b8e-4c8b-bb1c-87f8517a0066\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;564eb627-cb44-4d98-9866-1d117cec9750\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;24GD5505318\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;b4c720c2-9642-4339-b36e-82190ee2ba58\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;7d8d7bd3-1eca-4f69-80e3-1f6d5c460f33\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;44GD1925418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;0e7353b7-274f-419e-ac60-92be3e7aefb8\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;7d8d7bd3-1eca-4f69-80e3-1f6d5c460f33\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;44GD1925418\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;0b476487-e537-402e-bbb7-b9e67489335e\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;1664680d-8255-4da8-ba60-0ac9d5b88394\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;14GD1181818\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;7f54d2d8-4c76-4855-9507-257a09dbe2fa\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;1664680d-8255-4da8-ba60-0ac9d5b88394\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;14GD1181818\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;48dae434-010b-4bf7-b8ca-a95f41a296a3\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;567d2385-5dc8-44a3-952f-87487840f60c\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;39GD3910018\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;050d5c6d-b0ab-4084-a40a-6e31b09eae02\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;567d2385-5dc8-44a3-952f-87487840f60c\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;39GD3910018\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;63a76528-0bf3-4a88-99dd-5522baee5f9b\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;eeb9c9bc-7145-46aa-af34-a1ebc4605ebc\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;64GD2811218\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;c86738cb-08e5-495a-b7ea-52d260326d47\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;8b33372a-cd9c-422f-bd25-7173696d60f8\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;10GD5248718\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;2a4aec39-95df-4ec5-9dcc-46355d4c2d52\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;8b33372a-cd9c-422f-bd25-7173696d60f8\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;10GD5248718\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;5be449f0-1eef-46d9-a21d-1cd3ca4cfbc5\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;4f510221-3a7b-438e-8544-4550b299c951\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;29GD3801318\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;2853784b-0ffa-41f3-9507-f25f05b5ef5b\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;4f510221-3a7b-438e-8544-4550b299c951\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;29GD3801318\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;a587536b-7edb-4978-bc85-e5b6126ddb48\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;ba112617-993e-4e6e-8a84-2908d536bffb\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;54GD4802818\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;b7658914-263d-4fe1-a619-6f5a158af35d\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;ba112617-993e-4e6e-8a84-2908d536bffb\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;54GD4802818\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;14631d55-a9b3-46e8-aeb4-32c474b41d01\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;20aca71f-ae54-4df0-9875-0de1f4cce46b\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;40GD8043918\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;54318a5d-a257-4d96-86e2-d44ea9df96e0\&quot;,\&quot;firstName\&quot;:\&quot;Eric\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}},{\&quot;hearingId\&quot;:\&quot;20aca71f-ae54-4df0-9875-0de1f4cce46b\&quot;,\&quot;hearingType\&quot;:\&quot;PTP\&quot;,\&quot;hearingDate\&quot;:\&quot;2018-03-21\&quot;,\&quot;urns\&quot;:[\&quot;40GD8043918\&quot;],\&quot;defendant\&quot;:{\&quot;personId\&quot;:\&quot;b5cef01e-a520-4d5f-bf2f-ec9b29e5c919\&quot;,\&quot;firstName\&quot;:\&quot;Robert\&quot;,\&quot;lastName\&quot;:\&quot;Ormsby\&quot;}}]}&quot;,&#xd;
+      &quot;headers&quot;:{&#xd;
+      &quot;CPPID&quot;:&quot;${__UUID}&quot;,&#xd;
+         &quot;Content-Type&quot;:&quot;application/vnd.results.results-summary+json&quot;&#xd;
+      }&#xd;
+   }&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${server}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${protocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">__admin/mappings/new</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">results.results-summary</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Stub person-details details" enabled="false">
+          <stringProp name="TestPlan.comments">This would stub the data for shared resulst otherwise would have come from hearing context</stringProp>
+        </GenericController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="stubPersonDetails" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;request&quot;:{&#xd;
+      &quot;method&quot;:&quot;GET&quot;,&#xd;
+      &quot;url&quot;:&quot;/usersgroups-service/query/api/rest/usersgroups/users/${listingOfficer.cjscppuid}/groups&quot;&#xd;
+   },&#xd;
+   &quot;response&quot;:{&#xd;
+      &quot;status&quot;:200,&#xd;
+      &quot;body&quot;:&quot;{\&quot;groups\&quot;:[ { \&quot;groupId\&quot;:\&quot;7e2f143e-d619-40b3-8611-8015f3a18957\&quot;, \&quot;groupName\&quot;:\&quot;Listing Officers\&quot;},{\&quot;groupId\&quot;:\&quot;7e2f143e-d619-40b3-8611-8015f3a18958\&quot;, \&quot;groupName\&quot;:\&quot;System Users\&quot; } ] }&quot;,&#xd;
+      &quot;headers&quot;:{&#xd;
+      &quot;CPPID&quot;:&quot;${__UUID}&quot;,&#xd;
+         &quot;Content-Type&quot;:&quot;application/json&quot;&#xd;
+      }&#xd;
+   }&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${server}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${protocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">__admin/mappings/new</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">results.person-details</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Stub hearing-details details" enabled="false">
+          <stringProp name="TestPlan.comments">This would stub the data for shared resulst otherwise would have come from hearing context</stringProp>
+        </GenericController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="stubHearingDetails" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;request&quot;:{&#xd;
+      &quot;method&quot;:&quot;GET&quot;,&#xd;
+      &quot;url&quot;:&quot;/usersgroups-service/query/api/rest/usersgroups/users/${listingOfficer.cjscppuid}/groups&quot;&#xd;
+   },&#xd;
+   &quot;response&quot;:{&#xd;
+      &quot;status&quot;:200,&#xd;
+      &quot;body&quot;:&quot;{\&quot;groups\&quot;:[ { \&quot;groupId\&quot;:\&quot;7e2f143e-d619-40b3-8611-8015f3a18957\&quot;, \&quot;groupName\&quot;:\&quot;Listing Officers\&quot;},{\&quot;groupId\&quot;:\&quot;7e2f143e-d619-40b3-8611-8015f3a18958\&quot;, \&quot;groupName\&quot;:\&quot;System Users\&quot; } ] }&quot;,&#xd;
+      &quot;headers&quot;:{&#xd;
+      &quot;CPPID&quot;:&quot;${__UUID}&quot;,&#xd;
+         &quot;Content-Type&quot;:&quot;application/json&quot;&#xd;
+      }&#xd;
+   }&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${server}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${protocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">__admin/mappings/new</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">results.hearing-details</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Stub results-details details" enabled="false">
+          <stringProp name="TestPlan.comments">This would stub the data for shared resulst otherwise would have come from hearing context</stringProp>
+        </GenericController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="stubResultDetails" enabled="true">
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{&#xd;
+	&quot;request&quot;:{&#xd;
+      &quot;method&quot;:&quot;GET&quot;,&#xd;
+      &quot;url&quot;:&quot;/usersgroups-service/query/api/rest/usersgroups/users/${listingOfficer.cjscppuid}/groups&quot;&#xd;
+   },&#xd;
+   &quot;response&quot;:{&#xd;
+      &quot;status&quot;:200,&#xd;
+      &quot;body&quot;:&quot;{\&quot;groups\&quot;:[ { \&quot;groupId\&quot;:\&quot;7e2f143e-d619-40b3-8611-8015f3a18957\&quot;, \&quot;groupName\&quot;:\&quot;Listing Officers\&quot;},{\&quot;groupId\&quot;:\&quot;7e2f143e-d619-40b3-8611-8015f3a18958\&quot;, \&quot;groupName\&quot;:\&quot;System Users\&quot; } ] }&quot;,&#xd;
+      &quot;headers&quot;:{&#xd;
+      &quot;CPPID&quot;:&quot;${__UUID}&quot;,&#xd;
+         &quot;Content-Type&quot;:&quot;application/json&quot;&#xd;
+      }&#xd;
+   }&#xd;
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${server}</stringProp>
+            <stringProp name="HTTPSampler.port">${port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${protocol}</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">__admin/mappings/new</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">results.results-details</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">Content-Type</stringProp>
+                  <stringProp name="Header.value">application/json</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+    <WorkBench guiclass="WorkBenchGui" testclass="WorkBench" testname="WorkBench" enabled="true">
+      <boolProp name="WorkBench.save">true</boolProp>
+    </WorkBench>
+    <hashTree/>
+  </hashTree>
+</jmeterTestPlan>

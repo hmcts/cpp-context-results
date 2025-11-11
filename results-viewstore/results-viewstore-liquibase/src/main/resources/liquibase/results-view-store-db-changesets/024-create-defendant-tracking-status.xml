@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="defendant_tracking_status" author="jive"
+               logicalFilePath="024-create-defendant-tracking-status.xml">
+        <createTable tableName="defendant_tracking_status">
+            <column name="offence_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="defendant_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="em_status" type="boolean" defaultValue="false"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

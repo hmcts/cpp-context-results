@@ -1,0 +1,75 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel1978850 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Brooklyn McLaughlin",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "75a78aed-ee38-4392-912e-1f8111e4b562",
+    "hearingSittingDay": "2025-07-16T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "1fbca355-115c-4052-9781-07e053e78528",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "2b160dd8-22bb-423f-9a61-b353e156566f",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 33 Hours.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "4d2f56c7-6f2d-4e7d-b2f6-cf94edb0a6a9",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "2b160dd8-22bb-423f-9a61-b353e156566f",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "SUSPS - Suspended sentence order - imprisonment\nCommitted to prison for 6 Years suspended for 3 Years. Reason: failure to comply with requirements of post custodial sentence supervision. The defendant must comply with the requirements within the supervision period.  In the event of activation of sentence: 55 bail remand days to count. Total custodial period 6 Years. Supervision period: 4 Years.\nRR - Residence\nRR - Residence\nResidence Requirement: Live at test address for 6 Years.\nTotal custodial period 6 Years. Supervision period: 4 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "0a19084d-36cb-4032-803b-c1e6e89c52ee",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "2b160dd8-22bb-423f-9a61-b353e156566f",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 33 Hours.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "4d2f56c7-6f2d-4e7d-b2f6-cf94edb0a6a9",
+            "offenceTitle": "Robbery",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "2b160dd8-22bb-423f-9a61-b353e156566f",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "SUSPS - Suspended sentence order - imprisonment\nCommitted to prison for 6 Years suspended for 3 Years. Reason: failure to comply with requirements of post custodial sentence supervision. The defendant must comply with the requirements within the supervision period.  In the event of activation of sentence: 55 bail remand days to count. Total custodial period 6 Years. Supervision period: 4 Years.\nRR - Residence\nRR - Residence\nResidence Requirement: Live at test address for 6 Years.\nTotal custodial period 6 Years. Supervision period: 4 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "0a19084d-36cb-4032-803b-c1e6e89c52ee",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "STDEC"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI1978850"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

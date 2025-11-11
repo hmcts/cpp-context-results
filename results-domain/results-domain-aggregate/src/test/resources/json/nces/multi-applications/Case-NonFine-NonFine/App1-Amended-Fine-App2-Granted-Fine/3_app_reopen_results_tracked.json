@@ -1,0 +1,70 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0203954642",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName3954642@gmail.com",
+    "defendantName": "Melyna Klein",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "6ff9c820-8478-4b0d-89e3-45872908bad5",
+    "hearingSittingDay": "2025-07-16T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "b1c81cb9-41da-4d2e-a37f-c490aecd9044",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £5000.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence\nFO - Fine\nFined £56788.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 12/11/2025.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "b1c81cb9-41da-4d2e-a37f-c490aecd9044",
+            "applicationResultType": "Case reopened",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £5000.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence\nFO - Fine\nFined £56788.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 12/11/2025.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable or inappropriate. Additional reasons: Additional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional reasons Additional reasons Additional reasons Additional reasonsAdditional.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "ROPENED"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £5000.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £56788.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3954642"
+    ]
+}

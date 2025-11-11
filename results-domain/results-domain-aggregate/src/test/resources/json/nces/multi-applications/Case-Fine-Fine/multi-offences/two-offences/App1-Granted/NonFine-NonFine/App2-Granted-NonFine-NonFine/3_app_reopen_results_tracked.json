@@ -1,0 +1,47 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7629356 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Will Reynolds",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "99aaf6d0-e92d-4edc-9eb1-63f2c33f4939",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "7b44692f-2249-4282-9408-4f56eaad1c89",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "31be7206-2c07-45cf-89be-eeac70beeb67",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 7 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "baf8a749-dd41-450a-9276-547e1c341105",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "602ac4e2-318a-4dd9-befc-5763842445f8",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "baf8a749-dd41-450a-9276-547e1c341105",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7629356"
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0207587940",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName7587940@gmail.com",
+    "defendantName": "Lorenz Metz",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "10d12ee6-bcc9-4728-ac1c-da638d059443",
+    "hearingSittingDay": "2025-03-03T23:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+    "ncesEmail": "av.qet@justice.gov.uk",
+    "offenceResults": [
+      {
+        "dateOfResult": "2025-03-03",
+        "impositionOffenceDetails": "FO - Fine\nFined £200.00, FVS - Surcharge\nTo pay a surcharge of £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI7587940"
+    ]
+}

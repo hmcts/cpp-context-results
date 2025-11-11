@@ -1,0 +1,47 @@
+{
+  "caseReferences": "28DI2333934",
+  "dateDecisionMade": "2025-04-28",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202333934",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2333934@gmail.com",
+  "defendantName": "Nola Jones",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-04-28",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £333.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e175d4-021d-4eaf-b27c-49b0d1d0983f",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "032ac212-e6b4-4bca-bbac-60469c0a26c2",
+  "materialId": "95f7ad5f-a4f4-4ff9-8216-34abec35acc2",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £444.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 29/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e175d4-021d-4eaf-b27c-49b0d1d0983f",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "e38816fe-8ab8-4ce4-ac77-cffcfc207a54",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

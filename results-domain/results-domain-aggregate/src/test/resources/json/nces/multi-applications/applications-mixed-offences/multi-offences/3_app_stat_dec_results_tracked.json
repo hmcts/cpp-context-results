@@ -1,0 +1,54 @@
+{
+  "hearingId": "b676311e-9b94-448d-ae5a-cee40a1ae06f",
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "defendantName": "Cordia Feeney",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "accountDivisionCode": "30",
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "ncesEmail": "ljae@xyz.com",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-15T09:00:00.000Z",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00\nFO - Fine\nFined £6544.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £454.00 to be paid monthly. Instalment start date: 11/11/2025.",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationId": "a693e799-ddb9-4c16-8afe-d47e4069289b",
+      "isFinancial": true,
+      "isParentFlag": true,
+      "dateOfResult": "2025-07-15",
+      "resultCode": "G",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Excise penalty",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    },
+    {
+      "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Fine",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "dateOfResult": "2025-07-15",
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FO - Fine\nFined £6544.00",
+      "isFinancial": true,
+      "isParentFlag": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "48DI4492996"
+  ]
+}

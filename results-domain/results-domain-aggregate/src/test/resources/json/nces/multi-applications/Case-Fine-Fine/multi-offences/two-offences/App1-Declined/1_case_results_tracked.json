@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel6224082 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Verdie Wyman",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "71da0b55-04ae-433d-b58b-43b00be13973",
+  "hearingSittingDay": "2025-07-31T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5b9d35fc-3521-4dc9-915b-230cdd766a07",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £3333.00, FVS - Surcharge\nTo pay a surcharge of £3456.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £2345.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6224082"
+  ]
+}

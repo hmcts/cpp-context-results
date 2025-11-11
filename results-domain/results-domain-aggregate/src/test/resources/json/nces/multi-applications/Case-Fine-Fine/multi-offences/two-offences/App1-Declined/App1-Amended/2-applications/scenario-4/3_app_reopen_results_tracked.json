@@ -1,0 +1,80 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5651663 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Toni Parisian",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "1f07d635-b61d-4702-9ba6-c95bf42b08e4",
+  "hearingSittingDay": "2025-08-19T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "327e9b92-1df4-4eeb-b21f-777a8590914c",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "0a4bf184-8651-4421-b753-95347fd7d635",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "0a4bf184-8651-4421-b753-95347fd7d635",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £66.00\nFO - Fine\nFined £450.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Excise penalty",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £66.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-19",
+      "impositionOffenceDetails": "FO - Fine\nFined £450.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5651663"
+  ]
+}

@@ -1,0 +1,785 @@
+{
+  "session": {
+    "courtCentreWithLJA": {
+      "courtCentre": {
+        "address": {
+          "address1": "176A Lavender Hill",
+          "address2": "London",
+          "address3": "",
+          "address4": "",
+          "address5": "",
+          "postcode": "SW11 1JU"
+        },
+        "code": "B01LY00",
+        "courtHearingLocation": "B01LY01",
+        "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "lja": {
+          "ljaCode": "2577",
+          "ljaName": "South West London Magistrates' Court"
+        },
+        "name": "Lavender Hill Magistrates' Court",
+        "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "roomName": "Courtroom 01"
+      },
+      "courtHearingLocation": "B01LY01",
+      "psaCode": 2577
+    },
+    "id": "25525d31-a54d-4b9c-bc2c-701474f29084",
+    "sessionDays": [
+      {
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2024-09-23T22:30:00.000Z"
+      }
+    ],
+    "sourceType": "CC"
+  },
+  "cases": [
+    {
+      "caseId": "b32637e9-b666-439b-bd54-5a4bd3acb25e",
+      "defendants": [
+        {
+          "associatedPerson": [],
+          "attendanceDays": [
+            {
+              "attendanceType": "NOT_PRESENT",
+              "day": "2024-09-23"
+            }
+          ],
+          "defendantId": "6fb33432-1f84-4f07-b4a9-d5ec55bf8e22",
+          "individualDefendant": {
+            "bailConditions": "",
+            "bailStatus": {
+              "code": "A",
+              "description": "Not applicable",
+              "id": "86009c70-759d-3308-8de4-194886ff9a77"
+            },
+            "person": {
+              "address": {
+                "address1": "9999A9999AAAA",
+                "address2": "Woodlane",
+                "address3": "addressline 3",
+                "address4": "Bristol",
+                "address5": "Avon"
+              },
+              "contact": {
+                "home": "0204463301",
+                "mobile": "07774463301",
+                "primaryEmail": "REDDY.TEST014463301@gmail.com"
+              },
+              "dateOfBirth": "1998-07-09",
+              "firstName": "Ethan",
+              "gender": "MALE",
+              "lastName": "Hunt",
+              "title": "Mr"
+            },
+            "presentAtHearing": "N"
+          },
+          "offences": [
+            {
+              "arrestDate": "2021-01-01",
+              "chargeDate": "2020-12-28",
+              "finalDisposal": "N",
+              "id": "ddb37df5-1b00-4ff4-921c-4bc3c9645621",
+              "judicialResults": [
+                {
+                  "alwaysPublished": true,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "INTERMEDIARY",
+                  "cjsCode": "4576",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": false,
+                  "isDeleted": false,
+                  "isFinancialResult": false,
+                  "isNewAmendment": false,
+                  "isUnscheduled": true,
+                  "judicialResultId": "4bedaa46-f419-4b8b-9860-23aabda13f6a",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "4630968a-0e3f-42a6-bde0-55a0c4f2e92e",
+                      "label": "Grounds for warrant",
+                      "promptReference": "groundsForWarrant",
+                      "promptSequence": 100,
+                      "qualifier": "CG",
+                      "type": "FIXL",
+                      "usergroups": [],
+                      "value": "no appearance in answer to bail",
+                      "welshValue": "no appearance in answer to bail"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse organisation name",
+                      "promptReference": "hCHOUSEOrganisationName",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Aberdeen JP Court",
+                      "welshValue": "Aberdeen JP Court"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse address line 1",
+                      "promptReference": "hCHOUSEAddress1",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Sheriff Court House",
+                      "welshValue": "Sheriff Court House"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse address line 2",
+                      "promptReference": "hCHOUSEAddress2",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Castle Street",
+                      "welshValue": "Castle Street"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse address line 3",
+                      "promptReference": "hCHOUSEAddress3",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Aberdeen",
+                      "welshValue": "Aberdeen"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse post code",
+                      "promptReference": "hCHOUSEPostCode",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "AB10 1WP",
+                      "welshValue": "AB10 1WP"
+                    },
+                    {
+                      "courtExtract": "N",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "4c8bd45c-e0c7-456c-8104-d1ce3ac0419e",
+                      "label": "Process server name",
+                      "promptReference": "processServerName",
+                      "promptSequence": 400,
+                      "type": "TXT",
+                      "usergroups": [],
+                      "value": "Aberdeen",
+                      "welshValue": "Aberdeen"
+                    }
+                  ],
+                  "judicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                  "label": "Warrant for arrest without bail",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "policeSubjectLineTitle": "Warrant",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "qualifier": "CG",
+                  "rank": 160700,
+                  "resultDefinitionGroup": "Warrants of arrest",
+                  "resultText": "WOFN - Warrant for arrest without bail\nWarrant for arrest without bail. Basis: no appearance in answer to bail.",
+                  "rollUpPrompts": false,
+                  "rootJudicialResultId": "4bedaa46-f419-4b8b-9860-23aabda13f6a",
+                  "rootJudicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": true,
+                  "usergroups": []
+                }
+              ],
+              "modeOfTrial": "Summary",
+              "offenceCode": "CA03012",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 1,
+              "startDate": "2019-11-28",
+              "wording": "Theft of pedal cycle."
+            },
+            {
+              "arrestDate": "2021-01-01",
+              "chargeDate": "2020-12-28",
+              "finalDisposal": "N",
+              "id": "83de53f8-d7a4-4604-8916-097c8773b54d",
+              "judicialResults": [
+                {
+                  "alwaysPublished": true,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "INTERMEDIARY",
+                  "cjsCode": "4576",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": false,
+                  "isDeleted": false,
+                  "isFinancialResult": false,
+                  "isNewAmendment": false,
+                  "isUnscheduled": true,
+                  "judicialResultId": "6c9f3f24-452c-4399-b516-b6a88a224b78",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "4630968a-0e3f-42a6-bde0-55a0c4f2e92e",
+                      "label": "Grounds for warrant",
+                      "promptReference": "groundsForWarrant",
+                      "promptSequence": 100,
+                      "qualifier": "CG",
+                      "type": "FIXL",
+                      "usergroups": [],
+                      "value": "no appearance in answer to bail",
+                      "welshValue": "no appearance in answer to bail"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse organisation name",
+                      "promptReference": "hCHOUSEOrganisationName",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Aberdeen JP Court",
+                      "welshValue": "Aberdeen JP Court"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse address line 1",
+                      "promptReference": "hCHOUSEAddress1",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Sheriff Court House",
+                      "welshValue": "Sheriff Court House"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse address line 2",
+                      "promptReference": "hCHOUSEAddress2",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Castle Street",
+                      "welshValue": "Castle Street"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse address line 3",
+                      "promptReference": "hCHOUSEAddress3",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "Aberdeen",
+                      "welshValue": "Aberdeen"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "66868c04-72c4-46d9-a4fc-860a82107475",
+                      "label": "Courthouse post code",
+                      "promptReference": "hCHOUSEPostCode",
+                      "promptSequence": 200,
+                      "type": "NAMEADDRESS",
+                      "usergroups": [],
+                      "value": "AB10 1WP",
+                      "welshValue": "AB10 1WP"
+                    },
+                    {
+                      "courtExtract": "N",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "4c8bd45c-e0c7-456c-8104-d1ce3ac0419e",
+                      "label": "Process server name",
+                      "promptReference": "processServerName",
+                      "promptSequence": 400,
+                      "type": "TXT",
+                      "usergroups": [],
+                      "value": "Aberdeen",
+                      "welshValue": "Aberdeen"
+                    }
+                  ],
+                  "judicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                  "label": "Warrant for arrest without bail",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "policeSubjectLineTitle": "Warrant",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "qualifier": "CG",
+                  "rank": 160700,
+                  "resultDefinitionGroup": "Warrants of arrest",
+                  "resultText": "WOFN - Warrant for arrest without bail\nWarrant for arrest without bail. Basis: no appearance in answer to bail.",
+                  "rollUpPrompts": false,
+                  "rootJudicialResultId": "6c9f3f24-452c-4399-b516-b6a88a224b78",
+                  "rootJudicialResultTypeId": "c98cb51f-8639-49c1-91f0-a7e820c34355",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": true,
+                  "usergroups": []
+                }
+              ],
+              "modeOfTrial": "Either Way",
+              "offenceCode": "CA03001",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 2,
+              "startDate": "2019-11-28",
+              "wording": "Obtain electronic communications service with intent to avoid payment."
+            }
+          ],
+          "prosecutorReference": "D28GC01124463301"
+        }
+      ],
+      "originatingOrganisation": "0400000",
+      "prosecutionAuthorityCode": "BEDSPF",
+      "urn": "28KE4463301"
+    },
+    {
+      "caseId": "17024b5a-ec09-4389-aeff-c2316e91a737",
+      "defendants": [
+        {
+          "associatedPerson": [],
+          "attendanceDays": [
+            {
+              "attendanceType": "NOT_PRESENT",
+              "day": "2024-09-23"
+            }
+          ],
+          "defendantId": "4d51757f-383c-4164-beaf-3edd63a55c58",
+          "individualDefendant": {
+            "bailConditions": "",
+            "bailStatus": {
+              "code": "A",
+              "description": "Not applicable",
+              "id": "86009c70-759d-3308-8de4-194886ff9a77"
+            },
+            "person": {
+              "address": {
+                "address1": "9999A9999AAAA",
+                "address2": "Woodlane",
+                "address3": "addressline 3",
+                "address4": "Bristol",
+                "address5": "Avon"
+              },
+              "contact": {
+                "home": "0207588917",
+                "mobile": "07777588917",
+                "primaryEmail": "REDDY.TEST017588917@gmail.com"
+              },
+              "dateOfBirth": "1994-07-29",
+              "firstName": "Tom",
+              "gender": "MALE",
+              "lastName": "Hickley",
+              "title": "Mr"
+            },
+            "presentAtHearing": "N"
+          },
+          "offences": [
+            {
+              "arrestDate": "2021-01-01",
+              "chargeDate": "2020-12-28",
+              "finalDisposal": "Y",
+              "id": "13aa5732-b730-4704-978a-f676a3834d93",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "FINAL",
+                  "cjsCode": "1015",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": true,
+                  "isDeleted": false,
+                  "isFinancialResult": true,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "4c7bd21d-cddb-4610-b643-579f2f46639b",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                      "label": "Amount of fine",
+                      "promptReference": "AOF",
+                      "promptSequence": 100,
+                      "type": "CURR",
+                      "usergroups": [],
+                      "value": "£250.00",
+                      "welshLabel": "Swm y ddirwy",
+                      "welshValue": "£250.00"
+                    }
+                  ],
+                  "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                  "label": "Fine",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "policeSubjectLineTitle": "Final Sentence",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 72100,
+                  "resultDefinitionGroup": "Imposition",
+                  "resultText": "FO - Fine\nFined £250.00",
+                  "rollUpPrompts": true,
+                  "rootJudicialResultId": "4c7bd21d-cddb-4610-b643-579f2f46639b",
+                  "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Dirwy"
+                },
+                {
+                  "alwaysPublished": true,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "ANCILLARY",
+                  "cjsCode": "3117",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": true,
+                  "isDeleted": false,
+                  "isFinancialResult": true,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "10205ebd-0bb0-4d78-9f90-2b421352ed86",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "629a971e-9d7a-4526-838d-0a4cb922b5cb",
+                      "label": "Amount of surcharge",
+                      "promptReference": "AOS",
+                      "promptSequence": 100,
+                      "type": "CURR",
+                      "usergroups": [],
+                      "value": "£150.00",
+                      "welshLabel": "Swm y gordal",
+                      "welshValue": "£150.00"
+                    }
+                  ],
+                  "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                  "label": "Surcharge",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "D",
+                  "lifeDuration": false,
+                  "offenceId": "13aa5732-b730-4704-978a-f676a3834d93",
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 1100,
+                  "resultDefinitionGroup": "Imposition",
+                  "resultText": "FVS - Surcharge\nTo pay a surcharge of £150.00",
+                  "rollUpPrompts": false,
+                  "rootJudicialResultId": "10205ebd-0bb0-4d78-9f90-2b421352ed86",
+                  "rootJudicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Gordal"
+                },
+                {
+                  "alwaysPublished": true,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "FINAL",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": false,
+                  "isDeleted": false,
+                  "isFinancialResult": false,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "bab5e702-01ca-4ba9-99af-9cb2b0b9cab2",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "8e235a65-5ea2-4fff-ba3b-6cdb74195436",
+                      "label": "Lump sum amount",
+                      "promptReference": "LSA",
+                      "promptSequence": 100,
+                      "type": "CURR",
+                      "usergroups": [],
+                      "value": "£250.00",
+                      "welshLabel": "Swm y Cyfandaliad",
+                      "welshValue": "£250.00"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "1393acda-7a35-4d65-859d-6298e1470cf1",
+                      "label": "Instalment amount",
+                      "promptReference": "IAMT",
+                      "promptSequence": 200,
+                      "type": "CURR",
+                      "usergroups": [],
+                      "value": "£50.00",
+                      "welshLabel": "Swm y Rhandaliad",
+                      "welshValue": "£50.00"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "fb4f761c-29d0-4a8e-a947-3debf281dab0",
+                      "label": "Payment frequency following lump sum",
+                      "promptReference": "PF",
+                      "promptSequence": 300,
+                      "type": "FIXL",
+                      "usergroups": [],
+                      "value": "fortnightly",
+                      "welshLabel": "Amlder y taliadau yn dilyn y cyfandaliad",
+                      "welshValue": "pob pythefnos"
+                    },
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": false,
+                      "judicialResultPromptTypeId": "b487696e-dfc9-4c89-80d3-337a4319e925",
+                      "label": "Instalment start date",
+                      "promptReference": "instalmentStartDate",
+                      "promptSequence": 400,
+                      "type": "DATE",
+                      "usergroups": [],
+                      "value": "23/12/2024",
+                      "welshLabel": "Dyddiad cychwyn y rhandaliadau",
+                      "welshValue": "23/12/2024"
+                    }
+                  ],
+                  "judicialResultTypeId": "272d1ec2-634b-11e8-adc0-fa7ae01bbebc",
+                  "label": "Payment terms - Lump sum plus instalments",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "D",
+                  "lifeDuration": false,
+                  "offenceId": "13aa5732-b730-4704-978a-f676a3834d93",
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "parentJudicialResultId": "243805a5-2446-4a23-b6fb-7b119eecc654",
+                  "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 193100,
+                  "resultDefinitionGroup": "Payment terms",
+                  "resultText": "LUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £250.00. Instalment amount: £50.00 to be paid fortnightly from 23/12/2024.",
+                  "rollUpPrompts": false,
+                  "rootJudicialResultId": "4c7bd21d-cddb-4610-b643-579f2f46639b",
+                  "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Telerau talu - Cyfandaliad a rhandaliadau"
+                }
+              ],
+              "modeOfTrial": "Summary",
+              "offenceCode": "CA03012",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 1,
+              "startDate": "2019-11-28",
+              "wording": "Theft of pedal cycle."
+            },
+            {
+              "arrestDate": "2021-01-01",
+              "chargeDate": "2020-12-28",
+              "finalDisposal": "Y",
+              "id": "9fac3ade-eec8-4495-98bd-4e79a884dbb1",
+              "judicialResults": [
+                {
+                  "alwaysPublished": false,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "FINAL",
+                  "cjsCode": "1015",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": true,
+                  "isDeleted": false,
+                  "isFinancialResult": true,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "57d2a4e3-5783-4839-bfae-17ca91bb8fe0",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                      "label": "Amount of fine",
+                      "promptReference": "AOF",
+                      "promptSequence": 100,
+                      "type": "CURR",
+                      "usergroups": [],
+                      "value": "£250.00",
+                      "welshLabel": "Swm y ddirwy",
+                      "welshValue": "£250.00"
+                    }
+                  ],
+                  "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                  "label": "Fine",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "O",
+                  "lifeDuration": false,
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "policeSubjectLineTitle": "Final Sentence",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 72100,
+                  "resultDefinitionGroup": "Imposition",
+                  "resultText": "FO - Fine\nFined £250.00",
+                  "rollUpPrompts": true,
+                  "rootJudicialResultId": "57d2a4e3-5783-4839-bfae-17ca91bb8fe0",
+                  "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Dirwy"
+                },
+                {
+                  "alwaysPublished": true,
+                  "canBeSubjectOfBreach": false,
+                  "canBeSubjectOfVariation": false,
+                  "category": "ANCILLARY",
+                  "cjsCode": "3117",
+                  "courtClerk": {
+                    "firstName": "Evan",
+                    "lastName": "Roberts",
+                    "userId": "9a84122a-c561-4229-b8ed-01bf089a877c"
+                  },
+                  "d20": false,
+                  "excludedFromResults": false,
+                  "isAdjournmentResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "isConvictedResult": true,
+                  "isDeleted": false,
+                  "isFinancialResult": true,
+                  "isNewAmendment": true,
+                  "isUnscheduled": false,
+                  "judicialResultId": "1accf6d4-e60e-447e-a1dc-626952acd0a7",
+                  "judicialResultPrompts": [
+                    {
+                      "courtExtract": "Y",
+                      "isFinancialImposition": true,
+                      "judicialResultPromptTypeId": "629a971e-9d7a-4526-838d-0a4cb922b5cb",
+                      "label": "Amount of surcharge",
+                      "promptReference": "AOS",
+                      "promptSequence": 100,
+                      "type": "CURR",
+                      "usergroups": [],
+                      "value": "£150.00",
+                      "welshLabel": "Swm y gordal",
+                      "welshValue": "£150.00"
+                    }
+                  ],
+                  "judicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                  "label": "Surcharge",
+                  "lastSharedDateTime": "2024-09-23",
+                  "level": "D",
+                  "lifeDuration": false,
+                  "offenceId": "9fac3ade-eec8-4495-98bd-4e79a884dbb1",
+                  "orderedDate": "2024-09-23",
+                  "orderedHearingId": "25525d31-a54d-4b9c-bc2c-701474f29084",
+                  "postHearingCustodyStatus": "A",
+                  "publishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "rank": 1100,
+                  "resultDefinitionGroup": "Imposition",
+                  "resultText": "FVS - Surcharge\nTo pay a surcharge of £150.00",
+                  "rollUpPrompts": false,
+                  "rootJudicialResultId": "1accf6d4-e60e-447e-a1dc-626952acd0a7",
+                  "rootJudicialResultTypeId": "e866cd11-6073-4fdf-a229-51c9d694e1d0",
+                  "terminatesOffenceProceedings": false,
+                  "urgent": false,
+                  "usergroups": [],
+                  "welshLabel": "Gordal"
+                }
+              ],
+              "modeOfTrial": "Either Way",
+              "offenceCode": "CA03001",
+              "offenceDateCode": 1,
+              "offenceSequenceNumber": 2,
+              "startDate": "2019-11-28",
+              "wording": "Obtain electronic communications service with intent to avoid payment."
+            }
+          ],
+          "prosecutorReference": "D28GC01127588917"
+        }
+      ],
+      "originatingOrganisation": "0400000",
+      "prosecutionAuthorityCode": "BEDSPF",
+      "urn": "28KE7588917"
+    }
+  ],
+  "jurisdictionType": "MAGISTRATES",
+  "hearingDay": "2024-09-23"
+}

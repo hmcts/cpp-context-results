@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>results-parent</artifactId>
+        <groupId>uk.gov.moj.cpp.results</groupId>
+        <version>17.0.81-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>results-performance-test</artifactId>
+
+    <properties>
+        <jmeter.test.file>*.jmx</jmeter.test.file>
+        <!-- Performance tests don't need compilation -->
+        <maven.test.skip>true</maven.test.skip>
+        <jacoco.skip>true</jacoco.skip>
+    </properties>
+
+    <dependencies />
+
+
+    <profiles>
+        <profile>
+            <id>results-performance-test</id>
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.lazerycode.jmeter</groupId>
+                        <artifactId>jmeter-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jmeter-tests</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>jmeter</goal>
+                                </goals>
+                                <configuration>
+                                    <jmeterPlugins>
+                                        <plugin>
+                                            <groupId>kg.apc</groupId>
+                                            <artifactId>jmeter-plugins-standard</artifactId>
+                                        </plugin>
+                                    </jmeterPlugins>
+                                    <testResultsTimestamp>false</testResultsTimestamp>
+                                    <resultsFileFormat>csv</resultsFileFormat>
+                                    <propertiesJMeter>
+                                        <server>${target.host}</server>
+                                        <port>${target.port}</port>
+                                        <jmeter.get.usergroup.by.usertoken.test.threads>${jmeter.get.usergroup.by.usertoken.test.threads}</jmeter.get.usergroup.by.usertoken.test.threads>
+                                        <jmeter.save.saveservice.print_field_names>true</jmeter.save.saveservice.print_field_names>
+                                        <jmeter.save.saveservice.successful>true</jmeter.save.saveservice.successful>
+                                        <jmeter.save.saveservice.label>true</jmeter.save.saveservice.label>
+                                        <jmeter.save.saveservice.time>true</jmeter.save.saveservice.time>
+                                    </propertiesJMeter>
+                                    <testFilesIncluded>
+                                        <jMeterTestFile>${jmeter.test.file}</jMeterTestFile>
+                                    </testFilesIncluded>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>uk.co.automatictester</groupId>
+                        <artifactId>jmeter-lightning-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>lightning</goal>
+                                </goals>
+                                <configuration>
+                                    <mode>verify</mode>
+                                    <testSetXml>src/test/resources/ci/lightning.xml</testSetXml>
+                                    <jmeterCsv>target/jmeter/results/jmeter_test.csv</jmeterCsv>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+</project>

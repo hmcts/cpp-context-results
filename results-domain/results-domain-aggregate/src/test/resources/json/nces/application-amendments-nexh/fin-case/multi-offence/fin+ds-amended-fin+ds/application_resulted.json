@@ -1,0 +1,136 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Nedra Koepp",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "9ab8e9dd-595d-4bfd-9b38-8fe9325f958e",
+  "hearingSittingDay": "2025-04-25T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6a9ceab0-928b-4096-b450-063e717e5761",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "impositionOffenceDetails": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2026.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "offenceTitle": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationId": "0541a495-3bd9-49d9-8af3-6c8c7fde9c91",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "offenceTitle": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "impositionOffenceDetails": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 20:00. Total amount enforced £10.00.\nFO - Fine\nFined £100.00",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationId": "0541a495-3bd9-49d9-8af3-6c8c7fde9c91",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "0541a495-3bd9-49d9-8af3-6c8c7fde9c91",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9b06bebd-51e8-4286-a897-ef8169227ede",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until time",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "offenceTitle": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "7d801e4f-5fd9-4bbc-b4ae-3bfd80e81ed0",
+      "offenceTitle": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until time",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
+      "resultCode": "FIDICTI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "1b44a263-054e-47bb-87ff-abcfd7ae1106",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £50.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9b06bebd-51e8-4286-a897-ef8169227ede",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9291625"
+  ]
+}

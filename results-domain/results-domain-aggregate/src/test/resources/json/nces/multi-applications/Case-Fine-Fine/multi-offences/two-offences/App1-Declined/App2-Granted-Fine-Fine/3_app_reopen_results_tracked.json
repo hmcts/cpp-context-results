@@ -1,0 +1,108 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel6224082 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Verdie Wyman",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "882b4a25-c2e7-4635-b8bd-458acf44f35c",
+  "hearingSittingDay": "2025-07-31T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5b9d35fc-3521-4dc9-915b-230cdd766a07",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "e8668162-9f07-4bf7-b91b-f9a31355f539",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £543222.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "e8668162-9f07-4bf7-b91b-f9a31355f539",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £4321.00\nFVS - Surcharge\nTo pay a surcharge of £3456.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "e8668162-9f07-4bf7-b91b-f9a31355f539",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £543222.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "offenceTitle": "Robbery",
+      "resultCode": "ROPENED"
+    },
+    {
+      "applicationId": "e8668162-9f07-4bf7-b91b-f9a31355f539",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £4321.00\nFVS - Surcharge\nTo pay a surcharge of £3456.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ROPENED"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £543222.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9c958c87-3b7c-4b0a-9b15-6edc9d7a5fa8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FO - Fine\nFined £4321.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £3456.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "b2e9ddb4-1e0e-463c-bc38-2be2be9b9aa1",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6224082"
+  ]
+}

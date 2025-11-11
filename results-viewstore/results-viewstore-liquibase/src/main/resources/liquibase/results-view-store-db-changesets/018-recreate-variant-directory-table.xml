@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="18" author="CCR" logicalFilePath="018-recreate-variant-directory-table.xml">
+
+        <sql>
+            DROP TABLE variant_directory
+        </sql>
+
+        <createTable tableName="variant_directory">
+            <column name="material_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="hearing_id" type="uuid"/>
+            <column name="defendant_id" type="uuid"/>
+            <column name="nows_type_id" type="uuid"/>
+            <column name="user_groups" type="text"/>
+            <column name="description" type="text"/>
+            <column name="template_name" type="text"/>
+            <column name="status" type="text"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

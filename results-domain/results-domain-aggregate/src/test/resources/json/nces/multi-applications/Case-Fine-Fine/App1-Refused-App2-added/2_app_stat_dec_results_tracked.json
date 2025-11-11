@@ -1,0 +1,47 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Schowalter Manor Port Trudie Avon DA61 7ND",
+    "defendantContactNumber": "231-832-9294",
+    "defendantDateOfBirth": "1978-11-11",
+    "defendantName": "Xander Miller",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "f907348f-2756-4ecc-896e-8aaf0b132b35",
+    "hearingSittingDay": "2025-08-04T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "9204ab79-1391-41ba-a368-1c90ec329609",
+            "applicationResultType": "Refused",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-08-04",
+            "impositionOffenceDetails": "RFSD - Application refused",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "9aacbfb4-a17f-49a8-8511-2790f0870ac3",
+            "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+            "resultCode": "RFSD"
+        },
+        {
+            "applicationId": "9204ab79-1391-41ba-a368-1c90ec329609",
+            "applicationResultType": "Refused",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-08-04",
+            "impositionOffenceDetails": "RFSD - Application refused",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "c292b149-ffc5-40ce-97ec-2b1f400474c6",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "RFSD"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RL91080687"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

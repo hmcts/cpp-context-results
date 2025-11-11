@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI9473376",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Joe McGlynn",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-29",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "29/07/2025",
+  "masterDefendantId": "e57a60dc-3da1-4117-904f-e35440d5a30a",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "29/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

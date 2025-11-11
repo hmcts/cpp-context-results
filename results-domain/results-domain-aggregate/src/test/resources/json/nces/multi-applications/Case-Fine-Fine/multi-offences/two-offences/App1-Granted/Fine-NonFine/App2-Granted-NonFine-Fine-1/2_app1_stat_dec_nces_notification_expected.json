@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI7404759",
+  "dateDecisionMade": "2025-06-30",
+  "defendantAddress": "n Fisher Tunnel7404759 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jakob Ritchie",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £9999.00, FVS - Surcharge\nTo pay a surcharge of £677.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 14 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £7878.00. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £7654.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "bd821e9e-a819-4ee6-b692-9679dbe0b5c6",
+  "materialId": "2d2b657d-ee46-4dd1-9a7d-d05495653473",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £3222.00. \nFO - Fine\nFined £4333.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+      "title": "Robbery"
+    },
+    {
+      "details": "App1 non financials",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "0f5f56e7-d00e-4975-87f4-39bc949876a5",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

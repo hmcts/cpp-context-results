@@ -1,0 +1,31 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0204545133",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName4545133@gmail.com",
+  "defendantName": "Pink Schuster",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "737c32d9-5e84-4606-bd38-77d5c30bb845",
+  "hearingSittingDay": "2025-03-18T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "c184d1a6-daeb-43e3-85fb-d18679e813c7",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "offenceId": "6be574bb-baa4-442b-bc6d-486b321722c4",
+      "offenceTitle": "Theft from a shop",
+      "isFinancial": true,
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £30.00 to Abellio Greater Anglia Ltd, FO - Fine\nFined £102.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £22.00. Reason for decision: fidici2.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "dateOfResult": "2025-03-18",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "amendmentDate": "2025-03-18",
+      "resultCode": "FIDICI",
+      "isDeemedServed": true
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS4545133"
+  ]
+}

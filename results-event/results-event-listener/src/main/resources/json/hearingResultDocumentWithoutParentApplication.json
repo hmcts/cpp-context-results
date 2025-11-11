@@ -1,0 +1,199 @@
+{
+  "hearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "e60901bf-0a36-43f7-9a7d-09802c83de88"
+        },
+        "applicationReceivedDate": "2020-12-26",
+        "applicationStatus": "DRAFT",
+        "id": "79dbbf11-8108-4834-aff1-f24c3612fb69",
+        "type": {
+          "applicationCategory": "RgQfBxiFUX",
+          "applicationCode": "xhH6I2WUTi",
+          "applicationJurisdictionType": "CROWN",
+          "applicationLegislation": "0h0cIkdYFd",
+          "applicationType": "g0kvfkhZUr",
+          "id": "d6eb262d-9021-4662-ae8a-d43fbbe1930e",
+          "linkType": "LINKED"
+        }
+      },
+      {
+        "applicant": {
+          "id": "e60901bf-0a36-43f7-9a7d-09802c83de88"
+        },
+        "applicationReceivedDate": "2020-12-26",
+        "applicationStatus": "DRAFT",
+        "id": "79dbbf11-8109-4834-aff2-f24c361fb69",
+        "type": {
+          "applicationCategory": "RgQfBxiFUX",
+          "applicationCode": "xhH6I2WUTi",
+          "applicationJurisdictionType": "CROWN",
+          "applicationLegislation": "0h0cIkdYFd",
+          "applicationType": "g0kvfkhZUr",
+          "id": "d6eb262d-9021-4662-ae8a-d43fbbe1930e",
+          "linkType": "LINKED"
+        }
+      }
+
+    ],
+    "courtCentre": {
+      "id": "44d260ce-7cf6-4cdf-96e7-ff0bbc0d07c1",
+      "name": "EzagL9XzVg",
+      "roomId": "ab4114f9-8a48-4af7-8f62-60d2e56bfaeb",
+      "roomName": "uiQr20mJEp",
+      "welshName": "WzIy3ofZDC",
+      "welshRoomName": "qtElBO66Mb"
+    },
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 100,
+        "sittingDay": "2018-06-04T12:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 100,
+        "sittingDay": "2018-04-03T12:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 100,
+        "sittingDay": "2018-02-02T12:00:00.000Z"
+      }
+    ],
+    "id": "0c0ce113-72e5-4622-b184-4de61da0761d",
+    "judiciary": [
+      {
+        "judicialId": "9794f73f-2d6c-45cc-a841-22155551bc11",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "179fe183-b1ce-4b97-96f8-9b6709d3da61",
+          "judiciaryType": "CIRCUIT_JUDGE"
+        }
+      }
+    ],
+    "jurisdictionType": "CROWN",
+    "prosecutionCases": [
+      {
+        "defendants": [
+          {
+            "id": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+            "offences": [
+              {
+                "count": 434,
+                "id": "67c4b72d-a5f6-475a-a6b1-c572ed7d5bfd",
+                "offenceCode": "Cj2l1kpVKt",
+                "offenceDefinitionId": "d17f006c-39be-4a8a-99ec-657978461e72",
+                "offenceTitle": "6oLqn4TDpq",
+                "orderIndex": 65,
+                "startDate": "2019-09-02",
+                "wording": "B36XNKvbft"
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Rq5sERLf7q",
+                "gender": "NOT_KNOWN",
+                "lastName": "4LGlXRNoLZ",
+                "title": "MS"
+              }
+            },
+            "prosecutionCaseId": "51a165c1-9b48-4cd8-b2cd-65a16d46cb60"
+          },
+          {
+            "id": "dddd2222-1e20-4c21-916a-81a6c90239e5",
+            "offences": [
+              {
+                "count": 434,
+                "id": "6999dd82-6550-44ce-966f-ce2577feba9a",
+                "offenceCode": "VnHwUYnzTN",
+                "offenceDefinitionId": "a629ee30-2dfa-4f05-964f-092abab14070",
+                "offenceTitle": "wiKUatzZJE",
+                "orderIndex": 65,
+                "startDate": "2019-09-02",
+                "wording": "YPohBhUl4l"
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "5wEr402N2O",
+                "gender": "NOT_KNOWN",
+                "lastName": "eBpKIWVUAK",
+                "title": "MS"
+              }
+            },
+            "prosecutionCaseId": "e907fe25-6432-4003-8022-e55792413585"
+          }
+        ],
+        "id": "cccc1111-1e20-4c21-916a-81a6c90239e5",
+        "initiationCode": "C",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "iLko0r3oFp",
+          "prosecutionAuthorityId": "fcf5909c-a45e-4f03-a611-20c2f6442600",
+          "prosecutionAuthorityReference": "qLH6xs5NJc"
+        }
+      },
+      {
+        "defendants": [
+          {
+            "id": "dddd3333-1e20-4c21-916a-81a6c90239e5",
+            "offences": [
+              {
+                "count": 434,
+                "id": "22ecff2e-13f0-4f8f-9cd6-bcce420e7922",
+                "offenceCode": "Hw854ncQoc",
+                "offenceDefinitionId": "da85f4b6-274d-41df-ae11-d31e40af1786",
+                "offenceTitle": "KsPb2hxnzR",
+                "orderIndex": 65,
+                "startDate": "2019-09-02",
+                "wording": "wbiPc1mC3M"
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "XSI6KkUqtW",
+                "gender": "NOT_KNOWN",
+                "lastName": "uFjvEgZO0q",
+                "title": "MS"
+              }
+            },
+            "prosecutionCaseId": "02f5f102-b91c-410d-95df-6466a30e4e2f"
+          },
+          {
+            "id": "dddd4444-1e20-4c21-916a-81a6c90239e5",
+            "offences": [
+              {
+                "count": 434,
+                "id": "aee5a3d9-d7fd-4176-b6af-826087ed2343",
+                "offenceCode": "qtsQBU7tan",
+                "offenceDefinitionId": "3eabf2dd-9c96-4f19-a8ce-6610c99146f0",
+                "offenceTitle": "mHQ0mXHmog",
+                "orderIndex": 65,
+                "startDate": "2019-09-02",
+                "wording": "g6p9csYyOv"
+              }
+            ],
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "sOhFjvUBkh",
+                "gender": "NOT_KNOWN",
+                "lastName": "sBvBcLHxlV",
+                "title": "MS"
+              }
+            },
+            "prosecutionCaseId": "970b3439-748e-414d-90eb-5c90c5eee750"
+          }
+        ],
+        "id": "cccc2222-1e20-4c21-916a-81a6c90239e5",
+        "initiationCode": "C",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "POZEYKwCrp",
+          "prosecutionAuthorityId": "ce1767e9-00b1-4ac9-bd6e-4c6715f1f354",
+          "caseURN": "ZBq6AOoBFX"
+        }
+      }
+    ],
+    "type": {
+      "description": "Trial",
+      "id": "4de2889c-56c7-48b5-899a-f44a0c4e9bb0"
+    }
+  },
+  "sharedTime": "2019-09-02T10:54:15.281Z"
+}

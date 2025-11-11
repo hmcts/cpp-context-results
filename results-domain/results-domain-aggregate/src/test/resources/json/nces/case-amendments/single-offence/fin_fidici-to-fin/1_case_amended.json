@@ -1,0 +1,30 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0201495389",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName1495389@gmail.com",
+  "defendantName": "Arno Brown",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "00c8061e-37d6-4da5-9121-14e02c0d3f65",
+  "hearingSittingDay": "2025-03-14T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "9a3acce1-9e9a-49a1-b6b6-7e4dfa4e048e",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-03-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "b025ce42-389c-44c0-9c01-1cef66b2041b",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS1495389"
+  ]
+}

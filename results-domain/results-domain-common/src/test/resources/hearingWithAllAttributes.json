@@ -1,0 +1,1178 @@
+{
+  "id": "1828f356-f746-4f2d-932b-79ef2df95c80",
+  "hearingLanguage": "ENGLISH",
+  "jurisdictionType": "MAGISTRATES",
+  "type": {
+    "description": "Sentence",
+    "id": "c6d76309-c912-436b-a21b-a4c4450bc052",
+    "welshDescription": "Welsh sentence"
+  },
+  "judiciary": [],
+  "prosecutionCases": [
+    {
+      "id": "c10e3b71-6a6d-45ef-9b62-34df4d54971a",
+      "prosecutionCaseIdentifier": {
+        "prosecutionAuthorityId": "31af405e-7b60-4dd8-a244-c24c2d3fa595",
+        "prosecutionAuthorityCode": "TFL",
+        "prosecutionAuthorityReference": "TFL4359536",
+        "prosecutionAuthorityName": "Prosecution Authority Name1",
+        "prosecutionAuthorityOUCode": "OUCode1",
+        "prosecutorCategory": "PCIPC"
+      },
+      "initiationCode": "J",
+      "caseStatus": "SJP_REFERRAL",
+      "statementOfFacts": "Prosecution Facts",
+      "caseMarkers": [
+        {
+          "id": "24a46148-d3cc-4ac0-9906-fb1b459fdd63",
+          "markerTypeCode": "HT",
+          "markerTypeDescription": "Human Trafficking",
+          "markerTypeid": "e7eff972-189c-4957-8b1e-cb45213aa64e"
+        }
+      ],
+      "policeOfficerInCase": {
+        "personDetails": {
+          "additionalNationalityCode": "GBP",
+          "additionalNationalityDescription": "GBP",
+          "additionalNationalityId": "49433158-3542-49c8-a9af-581a0e746152",
+          "address": {
+            "address1": "FojacYZKYM",
+            "address2": "12801 Bahringer Crest",
+            "address3": "Hyattside",
+            "address4": "SK",
+            "address5": "Honduras",
+            "postcode": "WA9 1AB"
+          },
+          "contact": {
+            "fax": "426.164.8997",
+            "home": "1-666-446-9957",
+            "mobile": "315-812-4196",
+            "primaryEmail": "florence.nitzsche@gmail.com",
+            "secondaryEmail": "nettie.conn@yahoo.com",
+            "work": "136-278-3700"
+          },
+          "dateOfBirth": "1951-11-08",
+          "disabilityStatus": "wRFqxmAkwb",
+          "documentationLanguageNeeds": "ENGLISH",
+          "ethnicity": {
+            "observedEthnicityCode": "GBP",
+            "observedEthnicityDescription": "GBP",
+            "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+            "selfDefinedEthnicityCode": "GBP",
+            "selfDefinedEthnicityDescription": "GBP",
+            "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+          },
+          "firstName": "Tyrique",
+          "gender": "MALE",
+          "interpreterLanguageNeeds": "NA",
+          "lastName": "Rosenbaum",
+          "middleName": "Holden",
+          "nationalInsuranceNumber": "PY847926D",
+          "nationalityCode": "GBP",
+          "nationalityDescription": "GBP",
+          "nationalityId": "49433158-3542-49c8-a9af-581a0e746152",
+          "occupation": "Service",
+          "occupationCode": "SS",
+          "personMarkers": [
+            {
+              "id": "37aa6df3-d86b-4aab-9a02-8c343c11a8ef",
+              "markerTypeCode": "GBP",
+              "markerTypeDescription": "GBP",
+              "markerTypeid": "ae7ca87b-15a0-405c-ba49-3edef85c69c1"
+            }
+          ],
+          "specificRequirements": "NA",
+          "title": "MR"
+        },
+        "policeOfficerRank": "ScotlandYardInvestigation",
+        "policeWorkerLocationCode": "Chemsford",
+        "policeWorkerReferenceNumber": "007LicenseToKill"
+      },
+      "defendants": [
+        {
+          "id": "6647df67-a065-4d07-90ba-a8daa064ecc4",
+          "masterDefendantId": "6647df67-a065-4d07-90ba-a8daa064ecc4",
+          "prosecutionCaseId": "c10e3b71-6a6d-45ef-9b62-34df4d54971a",
+          "prosecutionAuthorityReference": "DTFL",
+          "prosecutionAuthorityReference" : "REF1",
+          "witnessStatement": "AHgCZkGMCF",
+          "witnessStatementWelsh": "AHgCZkGMCF_WELSH",
+          "aliases": [
+            {
+              "legalEntityName": "Alias0"
+            }
+          ],
+          "associatedPersons": [
+            {
+              "person": {
+                "address": {
+                  "address1": "YJIgmtdl3e",
+                  "address2": "56Police House",
+                  "address3": "StreetDescriptionG",
+                  "address4": "Locality2G",
+                  "address5": "Town2G",
+                  "postcode": "TW14 9XD"
+                },
+                "contact": {
+                  "home": "19998021888",
+                  "mobile": "19998021889",
+                  "primaryEmail": "Gvishnu@gmail.com",
+                  "secondaryEmail": "Gilja@gmail.com"
+                },
+                "dateOfBirth": "1997-06-19",
+                "ethnicity": {
+                  "observedEthnicityCode": "4",
+                  "observedEthnicityDescription": "Other",
+                  "observedEthnicityId": "a87ff679-a2f3-371d-9181-a67b7542122c",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "GPersonGivenName11",
+                "gender": "MALE",
+                "lastName": "GPersonFamilyName2",
+                "middleName": "GPersonGivenName21 GPersonGivenName31",
+                "title": "GPersonTitle1"
+              },
+              "role": "ParentGuardian"
+            }
+          ],
+          "legalEntityDefendant": {
+            "organisation": {
+              "address": {
+                "address1": "906",
+                "address2": "56Police House",
+                "address3": "StreetDescription3",
+                "address4": "Locality3",
+                "address5": "Town6",
+                "postcode": "TW14 9XD"
+              },
+              "contact": {
+                "primaryEmail": "test@test.com",
+                "secondaryEmail": "test@test.com",
+                "work": "07894278021"
+              },
+              "name": "OrganisationName0"
+            }
+          },
+          "mitigation": "FsN7z5OBHj",
+          "mitigationWelsh": "FsN7z5OBHj_WELSH",
+          "numberOfPreviousConvictionsCited": 99,
+          "offences": [
+            {
+              "id": "a154d828-1234-47f0-b8d5-e81227831d94",
+              "offenceDefinitionId": "20f3dd74-1d32-43fa-bec3-7ffca5b73ebe",
+              "offenceCode": "PS90010",
+              "offenceTitle": "Public service vehicle - passenger use altered / defaced   ticket",
+              "offenceTitleWelsh": "",
+              "offenceLegislation": "Contrary to regulation 7(1)(a) of the Public Service Vehicles (Conduct of Drivers, Inspectors, Conductors and Passengers) Regulations 1990 and section 25 of the Public Passenger Vehicles Act 1981.",
+              "offenceLegislationWelsh": "",
+              "worfingWelsh" : "welshwording",
+              "modeOfTrial": "Summary",
+              "wording": "On 02/07/2018 at Bond street, being a passenger on a vehicle, namely Volvo B9TL 30x, used for the carriage of passengers at separate fares, used a ticket which had been altered or defaced.",
+              "startDate": "2018-07-02",
+              "endDate": "2018-08-01",
+              "chargeDate": "2018-08-01",
+              "arrestDate": "2018-08-01",
+              "dateOfInformation": "2018-08-01",
+              "aquittalDate": "2018-08-01",
+              "convictionDate": "2019-11-14",
+              "count": 1,
+              "isDiscontinued" : false,
+              "isIntroduceAfterInitialProceedings": false,
+              "indicatedPlea": {
+                "indicatedPleaDate": "2020-04-30",
+                "indicatedPleaValue": "INDICATED_GUILTY",
+                "offenceId": "ab2be6b2-c202-4f9a-88d4-3e463f1954ca",
+                "originatingHearingId": "0fb9eada-1613-4f8d-9737-5d103eed08e2",
+                "source": "IN_COURT"
+              },
+              "laaApplnReference": {
+                "applicationReference": "LAA-SIT-001",
+                "offenceLevelStatus": "Refused",
+                "statusCode": "FM",
+                "statusDate": "2019-07-15",
+                "statusDescription": "Failed on Means",
+                "statusId": "4218b955-7bf8-3972-a37b-b0f921f5e5e4"
+              },
+              "proceedingsConcluded" : false,
+              "custodyTimeLimit": {
+                "timeLimit" : "2019-08-26"
+              },
+              "victims": [
+                {
+                  "additionalNationalityCode": "GBP",
+                  "additionalNationalityDescription": "GBP",
+                  "additionalNationalityId": "49433158-3542-49c8-a9af-581a0e746152",
+                  "address": {
+                    "address1": "722",
+                    "address2": "4067 Rice Prairie",
+                    "address3": "Port Garland",
+                    "address4": "HN",
+                    "address5": "Republic of Korea",
+                    "postcode": "SW11 1JU"
+                  },
+                  "contact": {
+                    "fax": "1-667-616-5095",
+                    "home": "1-301-017-9060",
+                    "mobile": "174-472-7377",
+                    "primaryEmail": "jovan.runolfsdottir@gmail.com",
+                    "secondaryEmail": "margaretta.gusikowski@hotmail.com",
+                    "work": "1-215-096-8643"
+                  },
+                  "dateOfBirth": "1994-10-12",
+                  "disabilityStatus": "AkRycvt8aN",
+                  "documentationLanguageNeeds": "ENGLISH",
+                  "ethnicity": {
+                    "observedEthnicityCode": "GBP",
+                    "observedEthnicityDescription": "GBP",
+                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                    "selfDefinedEthnicityCode": "GBP",
+                    "selfDefinedEthnicityDescription": "GBP",
+                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                  },
+                  "firstName": "Reggie",
+                  "gender": "MALE",
+                  "interpreterLanguageNeeds": "NA",
+                  "lastName": "Weimann",
+                  "middleName": "Delores",
+                  "nationalInsuranceNumber": "BK221466B",
+                  "nationalityCode": "GBP",
+                  "nationalityDescription": "GBP",
+                  "nationalityId": "49433158-3542-49c8-a9af-581a0e746152",
+                  "occupation": "Service",
+                  "occupationCode": "SS",
+                  "personMarkers": [
+                    {
+                      "id": "80246c99-2665-40ba-8adb-0d477a8e815f",
+                      "markerTypeCode": "GBP",
+                      "markerTypeDescription": "GBP",
+                      "markerTypeid": "69e9843c-eb9d-4f24-8ac8-cd9988e3a966"
+                    }
+                  ],
+                  "specificRequirements": "NA",
+                  "title": "MR"
+                }
+              ],
+              "allocationDecision": {
+                "allocationDecisionDate": "2019-10-08",
+                "motReasonCode": "4",
+                "motReasonDescription": "Defendant chooses trial by jury",
+                "motReasonId": "f8eb278a-8bce-373e-b365-b45e939da38a",
+                "offenceId": "64c1bdc5-7c56-407c-82c9-5389a542e37f",
+                "originatingHearingId": "25ab493c-92b9-4735-ae9a-d04ef946ef5e",
+                "sequenceNumber": 40
+              },
+              "judicialResults": [
+                {
+                  "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17001",
+                  "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+                  "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+                  "label": "Pay by date",
+                  "isAdjournmentResult": false,
+                  "isFinancialResult": true,
+                  "isConvictedResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "orderedDate": "2020-01-20",
+                  "category": "FINAL",
+                  "resultText": "Pay by date",
+                  "terminatesOffenceProceedings": "",
+                  "isLifeDuration": false,
+                  "isPublishedAsAPrompt": false,
+                  "publishedForNows": false,
+                  "isExcludedFromResults": false,
+                  "isAlwaysPublished": true,
+                  "isUrgent": false,
+                  "isD20": false,
+                  "amendmentDate": "2019-06-24",
+                  "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                  "nextHearing": {
+                    "hearingLanguage": "ENGLISH",
+                    "adjournmentReason": "reason",
+                    "courtCentre": {
+                      "id": "9b583616-049b-30f9-a14f-028a53b7cfe8",
+                      "name": "Liverpool Crown Court",
+                      "roomId": "7cb09222-49e1-3622-a5a6-ad253d2b3c39",
+                      "roomName": "Crown Court 3-1"
+                    },
+                    "type" : {
+                      "id" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                      "description" : "PTP",
+                      "welshDescription" : "welsh PTP"
+                    }
+                  }
+                },
+                {
+                  "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17002",
+                  "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+                  "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+                  "label": "Pay by date",
+                  "isAdjournmentResult": false,
+                  "isFinancialResult": true,
+                  "isConvictedResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "orderedDate": "2020-01-20",
+                  "category": "FINAL",
+                  "resultText": "Pay by date",
+                  "terminatesOffenceProceedings": "",
+                  "isLifeDuration": false,
+                  "isPublishedAsAPrompt": false,
+                  "isExcludedFromResults": false,
+                  "isAlwaysPublished": true,
+                  "publishedForNows": false,
+                  "isUrgent": false,
+                  "isD20": false,
+                  "amendmentDate": "2019-06-24",
+                  "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+                },
+                {
+                  "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17003",
+                  "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+                  "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+                  "label": "Pay by date",
+                  "isAdjournmentResult": false,
+                  "isFinancialResult": true,
+                  "isConvictedResult": false,
+                  "isAvailableForCourtExtract": true,
+                  "orderedDate": "2020-01-20",
+                  "category": "FINAL",
+                  "resultText": "Pay by date",
+                  "terminatesOffenceProceedings": "",
+                  "isLifeDuration": false,
+                  "isPublishedAsAPrompt": false,
+                  "isExcludedFromResults": false,
+                  "isAlwaysPublished": true,
+                  "publishedForNows": true,
+                  "isUrgent": false,
+                  "isD20": false,
+                  "amendmentDate": "2019-06-24",
+                  "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+                }
+              ],
+              "notifiedPlea": {
+                "notifiedPleaDate": "2019-11-13",
+                "notifiedPleaValue": "NO_NOTIFICATION",
+                "offenceId": "a154d828-eaa7-47f0-b8d5-e81227831d94"
+              },
+              "orderIndex": 1,
+              "plea": {
+                "delegatedPowers": {
+                  "firstName": "FirstName",
+                  "lastName": "LastName",
+                  "userId": "7eaf9c85-220d-4040-845c-d84c919b3b6f"
+                },
+                "offenceId": "a154d828-eaa7-47f0-b8d5-e81227831d94",
+                "originatingHearingId": "1828f356-f746-4f2d-932b-79ef2df95c80",
+                "pleaDate": "2019-11-14",
+                "pleaValue": "NOT_GUILTY"
+              },
+              "verdict": {
+                "jurors": {
+                  "numberOfJurors": 12,
+                  "numberOfSplitJurors": 0,
+                  "unanimous": true
+                },
+                "lesserOrAlternativeOffence": {
+                  "offenceCode": "PS90010",
+                  "offenceDefinitionId": "20f3dd74-1d32-43fa-bec3-7ffca5b73ebe",
+                  "offenceLegislation": "Contrary to regulation 7(1)(a) of the Public Service Vehicles (Conduct of Drivers, Inspectors, Conductors and Passengers) Regulations 1990 and section 25 of the Public Passenger Vehicles Act 1981.",
+                  "offenceTitle": "Public service vehicle - passenger use altered / defaced   ticket"
+                },
+                "offenceId": "a154d828-eaa7-47f0-b8d5-e81227831d94",
+                "originatingHearingId": "1828f356-f746-4f2d-932b-79ef2df95c80",
+                "verdictDate": "2019-11-14",
+                "verdictType": {
+                  "category": "Guilty",
+                  "categoryType": "GUILTY_CONVICTED",
+                  "id": "165f95b1-fc13-4d87-9685-3eff703c1039"
+                }
+              },
+              "offenceFacts": {
+                "alcoholReadingAmount": 1,
+                "alcoholReadingMethodDescription": "desc"
+              },
+              "listingNumber": 2
+            }
+          ],
+          "personDefendant": {
+            "personDetails": {
+              "address": {
+                "address1": "Flat 1",
+                "address2": "1 Old Road",
+                "address3": "London",
+                "address4": "Merton",
+                "postcode": "SW99 1AA"
+              },
+              "contact": {
+                "home": "044-012345566",
+                "work": "01234-67859512",
+                "mobile": "0712345678",
+                "primaryEmail": "abc@test.com",
+                "secondaryEmail": "xyz@test.com"
+              },
+              "dateOfBirth": "1965-12-27",
+              "documentationLanguageNeeds": "ENGLISH",
+              "ethnicity": {
+              },
+              "firstName": "Fred",
+              "gender": "MALE",
+              "lastName": "Smith",
+              "title": "MR"
+            }
+          },
+          "defendantCaseJudicialResults": [
+            {
+              "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17001",
+              "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+              "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+              "label": "Pay by date",
+              "isAdjournmentResult": false,
+              "isFinancialResult": true,
+              "isConvictedResult": false,
+              "isAvailableForCourtExtract": true,
+              "orderedDate": "2020-01-20",
+              "category": "FINAL",
+              "resultText": "Pay by date",
+              "terminatesOffenceProceedings": "",
+              "isLifeDuration": false,
+              "isPublishedAsAPrompt": false,
+              "publishedForNows": false,
+              "isExcludedFromResults": false,
+              "isAlwaysPublished": true,
+              "isUrgent": false,
+              "isD20": false,
+              "amendmentDate": "2019-06-24",
+              "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+            },
+            {
+              "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17002",
+              "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+              "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+              "label": "Pay by date",
+              "isAdjournmentResult": false,
+              "isFinancialResult": true,
+              "isConvictedResult": false,
+              "isAvailableForCourtExtract": true,
+              "orderedDate": "2020-01-20",
+              "category": "FINAL",
+              "resultText": "Pay by date",
+              "terminatesOffenceProceedings": "",
+              "isLifeDuration": false,
+              "isPublishedAsAPrompt": false,
+              "isExcludedFromResults": false,
+              "isAlwaysPublished": true,
+              "publishedForNows": false,
+              "isUrgent": false,
+              "isD20": false,
+              "amendmentDate": "2019-06-24",
+              "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+            },
+            {
+              "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17003",
+              "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+              "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+              "label": "Pay by date",
+              "isAdjournmentResult": false,
+              "isFinancialResult": true,
+              "isConvictedResult": false,
+              "isAvailableForCourtExtract": true,
+              "orderedDate": "2020-01-20",
+              "category": "FINAL",
+              "resultText": "Pay by date",
+              "terminatesOffenceProceedings": "",
+              "isLifeDuration": false,
+              "isPublishedAsAPrompt": false,
+              "isExcludedFromResults": false,
+              "isAlwaysPublished": true,
+              "publishedForNows": true,
+              "isUrgent": false,
+              "isD20": false,
+              "amendmentDate": "2019-06-24",
+              "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "companyRepresentatives": [
+    {
+      "attendanceDays": [
+        "2021-10-28"
+      ],
+      "defendants": [
+        "adc0eaf4-3212-4905-b4e2-292f939b0816"
+      ],
+      "firstName": "Mr",
+      "id": "c880f3a7-b533-494d-9245-4ae223258051",
+      "lastName": "CEO",
+      "position": "DIRECTOR",
+      "title": ""
+    }
+  ],
+  "applicationPartyCounsels" : [{
+    "id" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+    "applicationId" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+    "attendanceDays": [
+      "2018-07-17",
+      "2018-07-18",
+      "2018-07-19",
+      "2018-07-21",
+      "2018-07-22"
+    ]
+  }],
+  "approvalsRequested":[{
+    "hearingId" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+    "userId" : "c10e3b71-6a6d-45ef-9b62-34df4d54972a",
+    "requestApprovalTime" : "2018-04-30T18:32:04.238Z",
+    "approvalType" : "APPROVAL"
+  }],
+  "courtApplicationPartyAttendance" : [{
+    "courtApplicationPartyId" : "c10e3b71-6a6d-45ef-9b62-34df4d54972a",
+    "attendanceDays": [
+      {"day": "2019-06-24",
+       "attendanceType" :  "IN_PERSON",
+      "noteDateTime" :  "2018-04-30T18:32:04.238Z",
+      "noteType" :  "HMCTS",
+      "note" :  "random notes"}
+    ]
+  }],
+  "judiciary": [
+    {
+      "firstName": "Simon Patrick",
+      "judicialId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+      "judicialRoleType": {
+        "judicialRoleTypeId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+        "judiciaryType": "CIRCUIT_JUDGE"
+      },
+      "lastName": "Drew",
+      "title": ""
+    },
+    {
+      "firstName": "Simon Patrick",
+      "judicialId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+      "judicialRoleType": {
+        "judicialRoleTypeId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+        "judiciaryType": "DISTRICT_JUDGE"
+      },
+      "lastName": "Drew",
+      "title": ""
+    },
+    {
+      "firstName": "Simon Patrick",
+      "judicialId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+      "judicialRoleType": {
+        "judicialRoleTypeId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+        "judiciaryType": "RECORDER"
+      },
+      "lastName": "Drew",
+      "title": ""
+    },
+    {
+      "firstName": "Simon Patrick",
+      "judicialId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+      "judicialRoleType": {
+        "judicialRoleTypeId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+        "judiciaryType": "MAGISTRATE"
+      },
+      "lastName": "Drew",
+      "title": ""
+    },
+    {
+      "firstName": "Simon Patrick",
+      "judicialId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+      "judicialRoleType": {
+        "judicialRoleTypeId": "e430bba9-26fa-3c41-a0e6-a3d114d40d3e",
+        "judiciaryType": "OTHER"
+      },
+      "lastName": "Drew",
+      "title": ""
+    }
+  ],
+  "seedingHearing": {
+    "jurisdictionType": "MAGISTRATES",
+    "seedingHearingId": "0fe4488f-07c2-44bf-85a9-c48f9df4bce1",
+    "sittingDay": "2021-11-01"
+  },
+  "hearingCaseNotes" : [{
+    "id" : "c10e3b71-6a6d-45ef-9b62-34df4d54972a",
+    "originatingHearingId" : "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+    "prosecutionCases" : ["f21c2bdc-1602-46b1-bd4c-44199a0aeabc"],
+    "courtClerk" : {
+      "userId" : "f21c2bdc-1602-46b1-bd4c-44199a0aeabc",
+      "firstName": "Simon Patrick",
+      "lastName": "Drew"
+    }
+
+  }],
+  "courtApplications": [
+    {
+      "id": "c10e3b71-6a6d-45ef-9b62-34df4d54972a",
+      "courtApplicationCases": [
+        {
+          "caseStatus": "INACTIVE",
+          "isSJP": false,
+          "offences": [
+            {
+              "arrestDate": "2021-03-05",
+              "chargeDate": "2021-04-01",
+              "convictionDate": "2021-07-13",
+              "count": 0,
+              "endorsableFlag": false,
+              "id": "7631e1f8-de34-4113-948d-80c23ac51d03",
+              "isDisposed": true,
+              "modeOfTrial": "Either Way",
+              "offenceCode": "TH68026",
+              "offenceDateCode": 3,
+              "offenceDefinitionId": "d0fd3135-08fe-4bbc-a25a-df6cfd4b1dbb",
+              "offenceLegislation": "Contrary to section 9(1)(a) of the Theft Act 1968.",
+              "offenceTitle": "Burglary dwelling - with intent to steal",
+              "orderIndex": 1,
+              "plea": {
+                "offenceId": "7631e1f8-de34-4113-948d-80c23ac51d03",
+                "originatingHearingId": "978e0fee-87ca-446c-aa5d-f93ad81ecaf4",
+                "pleaDate": "2021-07-13",
+                "pleaValue": "GUILTY"
+              },
+              "proceedingsConcluded": true,
+              "startDate": "2021-03-01",
+              "wording": "Test case - Burglary"
+            }
+          ],
+          "prosecutionCaseId": "35673a91-4a89-4313-9b5b-587b01bd7cdf",
+          "prosecutionCaseIdentifier": {
+            "address": {
+              "address1": "New Scotland Yard",
+              "address2": "Victoria Embankment",
+              "address3": "London",
+              "postcode": "SW1A 2JL"
+            },
+            "majorCreditorCode": "PO01",
+            "prosecutionAuthorityCode": "METPF",
+            "prosecutionAuthorityId": "8f8024ca-ff7c-3829-a0d2-35d37492aebb",
+            "prosecutionAuthorityName": "London (Metropolitan) Police",
+            "prosecutionAuthorityOUCode": "0010000",
+            "caseURN": "C3P9MAL8FW"
+          }
+        }
+      ],
+
+      "courtApplicationPayment": {
+        "isFeeExempt": false,
+        "isFeePaid": true,
+        "isFeeUndertakingAttached": false,
+        "paymentReference": "111111111111"
+      },
+      "applicationParticulars": "testing ability to add an application",
+      "applicationReference": "TVL3158537IHU-1",
+      "parentApplicationId": "c18b095c-f2da-4c44-a0d0-936d7d3b4fa9",
+      "courtOrder": {
+        "canBeSubjectOfBreachProceedings": true,
+        "canBeSubjectOfVariationProceedings": true,
+        "courtOrderOffences": [
+          {
+            "offence": {
+              "arrestDate": "2020-02-09",
+              "chargeDate": "2020-02-09",
+              "count": 0,
+              "endorsableFlag": false,
+              "id": "b148ad51-4a5f-4447-9221-9a82bb8652df",
+              "isDisposed": true,
+              "listingNumber": 1,
+              "modeOfTrial": "Either Way",
+              "offenceCode": "SX03209",
+              "offenceDateCode": 1,
+              "offenceDefinitionId": "1136fd5e-d9d3-4df6-a6a6-a79c8530379f",
+              "offenceLegislation": "Contrary to section 41 of the Sexual Offences Act 2003.",
+              "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+              "orderIndex": 1,
+              "reportingRestrictions": [
+                {
+                  "id": "36a271fd-bb28-480f-88b9-5d6d987c7fa1",
+                  "label": "Complainant's anonymity protected by virtue of Section 1 of the Sexual Offences Amendment Act 1992",
+                  "orderedDate": "2021-11-05"
+                }
+              ],
+              "startDate": "2020-02-09",
+              "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+            },
+            "prosecutionCaseId": "a45798a2-acb1-4b0d-b192-3e941e0110a3",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "Barton House",
+                "address2": "Bond Street",
+                "address3": "Bristol",
+                "postcode": "BS98 1TL"
+              },
+              "contact": {
+                "primaryEmail": "court.results@tvl.cjsm.net"
+              },
+              "majorCreditorCode": "TVL3",
+              "prosecutionAuthorityCode": "TVL",
+              "prosecutionAuthorityId": "6b7b9adc-ccee-4b13-b2c7-499c28e98962",
+              "prosecutionAuthorityName": "TV Licensing",
+              "prosecutionAuthorityOUCode": "GAEAA01",
+              "caseURN": "20GD4939021"
+            }
+          }
+        ],
+        "defendantIds": [
+          "12e9e9b3-61d9-4ed9-bf75-111b09967610"
+        ],
+        "endDate": "2028-11-05",
+        "id": "3fe62b63-0e56-4bf5-bde3-3fed71c2811b",
+        "isSJPOrder": false,
+        "judicialResultTypeId": "8b1cff00-a456-40da-9ce4-f11c20959084",
+        "label": "Suspended sentence order - imprisonment",
+        "masterDefendantId": "12e9e9b3-61d9-4ed9-bf75-111b09967610",
+        "orderDate": "2021-11-05",
+        "orderingCourt": {
+          "address": {
+            "address1": "176A Lavender Hill",
+            "address2": "London",
+            "address3": "",
+            "address4": "",
+            "address5": "",
+            "postcode": "SW11 1JU"
+          },
+          "code": "B01LY00",
+          "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+          "lja": {
+            "ljaCode": "2577",
+            "ljaName": "South West London Magistrates' Court"
+          },
+          "name": "Lavender Hill Magistrates' Court",
+          "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+          "roomName": "Courtroom 01"
+        },
+        "orderingHearingId": "125c8835-98ca-4d89-804a-d2ffbb3800a4",
+        "startDate": "2021-11-05"
+      },
+      "applicant": {
+        "representationOrganisation": {
+          "address": {
+            "address1": "2",
+            "address2": "2",
+            "address3": "2",
+            "postcode": "SL2 5FZ"
+          },
+          "contact": {
+            "primaryEmail": "a@a.com"
+          },
+          "name": "AppRep"
+        },
+        "organisation": {
+          "address": {
+            "address1": "2",
+            "address2": "2",
+            "address3": "2",
+            "postcode": "SL2 5FZ"
+          },
+          "contact": {
+            "primaryEmail": "a@a.com"
+          },
+          "name": "AppRep"
+        },
+        "organisationPersons": [
+          {
+            "person": {
+              "gender": "NOT_SPECIFIED",
+              "lastName": "asda"
+            },
+            "role": "CEO"
+          }
+        ],
+        "masterDefendant": {
+          "defendantCase": [
+            {
+              "caseId": "453d749d-83c7-43df-ac17-225bd9929995",
+              "caseReference": "DD-19267-001",
+              "defendantId": "b2c374db-c4ed-4bd1-9542-ca1f47c1f9eb"
+            }
+          ],
+          "masterDefendantId": "b2c374db-c4ed-4bd1-9542-ca1f47c1f9eb",
+          "personDefendant": {
+            "personDetails": {
+              "address": {
+                "address1": "1 hall st",
+                "postcode": "bs1 1aa"
+              },
+              "documentationLanguageNeeds": "ENGLISH",
+              "firstName": "Adam",
+              "gender": "MALE",
+              "hearingLanguageNeeds": "ENGLISH",
+              "lastName": "West",
+              "title": "Mr"
+            }
+          }
+        },
+        "prosecutingAuthority": {
+          "prosecutionAuthorityId": "ab746921-d839-4867-bcf9-b41db8ebc852",
+          "prosecutionAuthorityCode": "a",
+          "firstName": "FN",
+          "middleName": "MN",
+          "lastName": "LN",
+          "accountCode": "a",
+          "address": {
+            "address1": "a",
+            "address2": "a",
+            "address3": "a",
+            "address4": "a",
+            "address5": "a",
+            "postcode": "GIR0AA"
+          },
+          "contact": {
+            "home": " ",
+            "work": "a",
+            "mobile": " ",
+            "primaryEmail": "a@a.com",
+            "secondaryEmail": "a@a.com",
+            "fax": "a"
+          },
+          "prosecutorCategory": "PC"
+        },
+        "defendant": {
+          "id": "f21c2bdc-1602-46b1-bd4c-44199a0aeabc",
+          "masterDefendantId": "ded76309-c912-436b-a21b-a4c4450bc052",
+          "offences": [
+          ],
+          "personDefendant": {
+            "personDetails": {
+              "address": {
+                "address1": "Flat 1",
+                "address2": "1 Old Road",
+                "address3": "London",
+                "address4": "Merton",
+                "postcode": "SW99 1AA"
+              },
+              "contact": {
+                "home": "044-012345566",
+                "work": "01234-67859512",
+                "mobile": "0712345678",
+                "primaryEmail": "abc@test.com",
+                "secondaryEmail": "xyz@test.com"
+              },
+              "firstName": "Fred",
+              "gender": "MALE",
+              "lastName": "Smith"
+            }
+          }
+        }
+      },
+      "type": {
+        "id": "c10e3b71-6a6d-45ef-9b62-34df4d54972a"
+      },
+      "applicationReceivedDate": "2020-01-20",
+      "applicationStatus": "DRAFT",
+      "thirdParties": [
+        {
+          "id": "bcf45314-967e-49e1-9129-2da7a3ed2b3b",
+          "notificationRequired": true,
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "56b680e7-2c9b-4fbf-a987-d0691fc551a4",
+                "caseReference": "35GD2512621",
+                "defendantId": "e02ac9ec-7aa2-4580-b108-62fa65ebea1f"
+              }
+            ],
+            "isYouth": false,
+            "masterDefendantId": "e02ac9ec-7aa2-4580-b108-62fa65ebea1f",
+            "personDefendant": {
+              "arrestSummonsNumber": "TVL",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "personDetails": {
+                "address": {
+                  "address1": "1234",
+                  "address2": "StreetDescription",
+                  "address3": "Locality2O",
+                  "postcode": "DA6 7ND"
+                },
+                "dateOfBirth": "1982-06-29",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Walton",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Cummerata",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "prosecutingAuthority": {
+            "address": {
+              "address1": "Criminal Justice Department",
+              "address2": "Derbyshire Constabulary",
+              "address3": "Butterley Hall",
+              "address4": "Ripley",
+              "address5": "Derby",
+              "postcode": "DE5 3RS"
+            },
+            "contact": {
+              "primaryEmail": "CCSU@derbyshire.pnn.police.uk"
+            },
+            "majorCreditorCode": "PO30",
+            "name": "Derbyshire Police",
+            "prosecutionAuthorityCode": "DERPF",
+            "prosecutionAuthorityId": "bdc190e7-c939-37ca-be4b-9f615d6ef40e",
+            "prosecutionAuthorityOUCode": "0300000"
+          },
+          "summonsRequired": true
+        }
+      ],
+
+      "respondents": [
+        {
+          "partyDetails": {
+            "personDetails": {
+              "address": {
+                "address1": "Flat 1",
+                "address2": "1 Old Road",
+                "address3": "London",
+                "address4": "Merton",
+                "postcode": "SW99 1AA"
+              },
+              "contact": {
+                "home": "044-012345566",
+                "work": "01234-67859512",
+                "mobile": "0712345678",
+                "primaryEmail": "abc@test.com",
+                "secondaryEmail": "xyz@test.com"
+              },
+              "firstName": "Fred",
+              "gender": "MALE",
+              "lastName": "Smith"
+            },
+            "defendant": {
+              "id": "f21c2bdc-1602-46b1-bd4c-44199a0aeabc",
+              "masterDefendantId": "ded76309-c912-436b-a21b-a4c4450bc052",
+              "defendantCaseJudicialResults": [
+                {
+                  "judicialResultId": "25ce0d4b-b07e-41c9-956b-12cb24c68716",
+                  "judicialResultTypeId": "4f640ea6-88d4-4a3a-b816-ff5a79eaaa14",
+                  "category": "FINAL",
+                  "publishedForNows": false
+                }
+              ],
+              "offences": [
+              ],
+              "personDefendant": {
+                "personDetails": {
+                  "address": {
+                    "address1": "Flat 1",
+                    "address2": "1 Old Road",
+                    "address3": "London",
+                    "address4": "Merton",
+                    "postcode": "SW99 1AA"
+                  },
+                  "contact": {
+                    "home": "044-012345566",
+                    "work": "01234-67859512",
+                    "mobile": "0712345678",
+                    "primaryEmail": "abc@test.com",
+                    "secondaryEmail": "xyz@test.com"
+                  },
+                  "firstName": "Fred",
+                  "gender": "MALE",
+                  "lastName": "Smith"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "judicialResults": [
+        {
+          "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17001",
+          "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+          "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+          "label": "Pay by date",
+          "isAdjournmentResult": false,
+          "isFinancialResult": true,
+          "isConvictedResult": false,
+          "isAvailableForCourtExtract": true,
+          "orderedDate": "2020-01-20",
+          "category": "FINAL",
+          "resultText": "Pay by date",
+          "terminatesOffenceProceedings": "",
+          "isLifeDuration": false,
+          "isPublishedAsAPrompt": false,
+          "publishedForNows": false,
+          "isExcludedFromResults": false,
+          "isAlwaysPublished": true,
+          "isUrgent": false,
+          "isD20": false,
+          "amendmentDate": "2019-06-24",
+          "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+        },
+        {
+          "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17002",
+          "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+          "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+          "label": "Pay by date",
+          "isAdjournmentResult": false,
+          "isFinancialResult": true,
+          "isConvictedResult": false,
+          "isAvailableForCourtExtract": true,
+          "orderedDate": "2020-01-20",
+          "category": "FINAL",
+          "resultText": "Pay by date",
+          "terminatesOffenceProceedings": "",
+          "isLifeDuration": false,
+          "isPublishedAsAPrompt": false,
+          "isExcludedFromResults": false,
+          "isAlwaysPublished": true,
+          "publishedForNows": false,
+          "isUrgent": false,
+          "isD20": false,
+          "amendmentDate": "2019-06-24",
+          "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+        },
+        {
+          "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17003",
+          "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+          "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+          "label": "Pay by date",
+          "isAdjournmentResult": false,
+          "isFinancialResult": true,
+          "isConvictedResult": false,
+          "isAvailableForCourtExtract": true,
+          "orderedDate": "2020-01-20",
+          "category": "FINAL",
+          "resultText": "Pay by date",
+          "terminatesOffenceProceedings": "",
+          "isLifeDuration": false,
+          "isPublishedAsAPrompt": false,
+          "isExcludedFromResults": false,
+          "isAlwaysPublished": true,
+          "publishedForNows": true,
+          "isUrgent": false,
+          "isD20": false,
+          "amendmentDate": "2019-06-24",
+          "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+        }
+      ],
+      "subject": {
+        "id": "f21c2bdc-1602-46b1-bd4c-44199a0aeabc",
+        "summonsRequired": false,
+        "notificationRequired": false,
+        "personDetails": {
+          "address": {
+            "address1": "Flat 1",
+            "address2": "1 Old Road",
+            "address3": "London",
+            "address4": "Merton",
+            "postcode": "SW99 1AA"
+          },
+          "contact": {
+            "home": "044-012345566",
+            "work": "01234-67859512",
+            "mobile": "0712345678",
+            "primaryEmail": "abc@test.com",
+            "secondaryEmail": "xyz@test.com"
+          },
+          "firstName": "John",
+          "gender": "MALE",
+          "lastName": "Beard"
+        }
+      }
+    }
+  ],
+  "courtCentre": {
+    "code": "1234",
+    "name": "Lavender Hill",
+    "welshName": "Lavender Hill",
+    "address": {
+      "address1": "Flat 1",
+      "address2": "1 Old Road",
+      "address3": "London",
+      "address4": "Merton",
+      "postcode": "SW99 1AA"
+    },
+    "welshAddress": {
+      "welshAddress1": "Flat 1",
+      "welshAddress2": "1 Old Road",
+      "welshAddress3": "London",
+      "welshAddress4": "Merton",
+      "postcode": "SW99 1AA"
+    },
+    "lja": {
+      "ljaCode": "1800",
+      "ljaName": "East Hampshire Magistrates' Court",
+      "welshLjaName": "East Hampshire Magistrates' Court"
+    }
+  },
+  "defendantsWithWelshTranslationList": [
+    {
+      "defendantId": "c6d76309-c912-436b-a21b-a4c4450bc052",
+      "welshTranslation": true
+    }
+  ],
+  "hearingDays": [
+    {
+      "sittingDay": "2018-03-20T16:14:29.000Z"
+    }
+  ],
+  "defendantJudicialResults": [
+    {
+      "masterDefendantId": "6647df67-a065-4d07-90ba-a8daa064ecc4",
+      "judicialResult": {
+        "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17001",
+        "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+        "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+        "label": "Pay by date",
+        "isAdjournmentResult": false,
+        "isFinancialResult": true,
+        "isConvictedResult": false,
+        "isAvailableForCourtExtract": true,
+        "orderedDate": "2020-01-20",
+        "category": "FINAL",
+        "resultText": "Pay by date",
+        "terminatesOffenceProceedings": "",
+        "isLifeDuration": false,
+        "isPublishedAsAPrompt": false,
+        "publishedForNows": false,
+        "isExcludedFromResults": false,
+        "isAlwaysPublished": true,
+        "isUrgent": false,
+        "isD20": false,
+        "amendmentDate": "2019-06-24",
+        "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+      }
+    },
+    {
+      "masterDefendantId": "6647df67-a065-4d07-90ba-a8daa064ecc4",
+      "judicialResult": {
+        "judicialResultId": "8b13e723-07a5-47ad-b378-62478ad17002",
+        "judicialResultTypeId": "cfbe83c8-935b-4410-a68c-49452519f2d3",
+        "orderedHearingId": "e100d08a-ed4e-43a2-aae2-e9c5735713b0",
+        "label": "Pay by date",
+        "isAdjournmentResult": false,
+        "isFinancialResult": true,
+        "isConvictedResult": false,
+        "isAvailableForCourtExtract": true,
+        "orderedDate": "2020-01-20",
+        "category": "FINAL",
+        "resultText": "Pay by date",
+        "terminatesOffenceProceedings": "",
+        "isLifeDuration": false,
+        "isPublishedAsAPrompt": false,
+        "publishedForNows": true,
+        "isExcludedFromResults": false,
+        "isAlwaysPublished": true,
+        "isUrgent": false,
+        "isD20": false,
+        "amendmentDate": "2019-06-24",
+        "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0"
+      }
+    }
+  ]
+}

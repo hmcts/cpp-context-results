@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="23" author="CCR" logicalFilePath="023-change-primary-key-hearing-resulted-document.xml">
+        <addColumn tableName="hearing_resulted_document">
+            <column name="hearing_day" type="DATE"/>
+        </addColumn>
+        <update tableName="hearing_resulted_document">
+            <column name="hearing_day" valueComputed="start_date"></column>
+        </update>
+
+        <dropPrimaryKey tableName="hearing_resulted_document"/>
+        <addPrimaryKey tableName="hearing_resulted_document" columnNames="hearing_id,hearing_day"/>
+        <rollback>
+            <dropPrimaryKey tableName="hearing_resulted_document"/>
+            <addPrimaryKey tableName="hearing_resulted_document" columnNames="hearing_id"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

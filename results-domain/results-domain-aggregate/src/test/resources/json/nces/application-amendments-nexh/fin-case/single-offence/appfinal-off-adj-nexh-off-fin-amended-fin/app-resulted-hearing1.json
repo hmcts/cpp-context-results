@@ -1,0 +1,32 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202911105",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2911105@gmail.com",
+  "defendantName": "Bennett Brown",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "975eb6e7-6338-45e8-b464-632fc4ce8b41",
+  "hearingSittingDay": "2025-05-15T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e391646d-d6ce-4df4-a974-84cc76d01faa",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "6ad6a4c2-bc31-4389-9342-569f4fab439f",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-05-15",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2911105"
+  ]
+}

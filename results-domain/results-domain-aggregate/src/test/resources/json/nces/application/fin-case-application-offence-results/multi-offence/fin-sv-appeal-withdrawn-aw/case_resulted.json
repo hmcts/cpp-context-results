@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel9990059 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Jamarcus Steuber",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "11a0d490-82c2-4507-80b5-7057a0743090",
+  "hearingSittingDay": "2025-03-11T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "08d0cb04-5cd8-4631-9c78-053b3885f2ba",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00, FVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/05/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9990059"
+  ]
+}

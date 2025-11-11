@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/results.events.hearing-results-added-for-day.json",
+  "type": "object",
+  "properties": {
+    "hearing": {
+      "$ref": "http://justice.gov.uk/core/courts/hearing.json#"
+    },
+    "sharedTime": {
+      "format": "date-time"
+    },
+    "hearingDay": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "isReshare": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "hearing",
+    "sharedTime",
+    "hearingDay"
+  ],
+  "additionalProperties": false
+}

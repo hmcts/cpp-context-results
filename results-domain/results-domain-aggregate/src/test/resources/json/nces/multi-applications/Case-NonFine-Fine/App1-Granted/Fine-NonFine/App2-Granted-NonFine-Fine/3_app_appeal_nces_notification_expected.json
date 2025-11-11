@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI4199070",
+  "dateDecisionMade": "2025-07-08",
+  "defendantAddress": "n Fisher Tunnel4199070 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Herminia Casper",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £321.00\nFO - Fine\nFined £3455.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days\nvulnerability - Risk or vulnerability factors",
+      "offenceDate": "2019-11-28",
+      "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
+      "title": "Robbery"
+    },
+    {
+      "details": "AD - Absolute discharge",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "48e36bad-9eeb-4b24-a085-f9293a72041a",
+  "materialId": "06cac167-99d2-427b-8d60-d217d1661f27",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "Application2 offence1 non fin",
+      "offenceDate": "2019-11-28",
+      "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
+      "title": "Robbery"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £2345.00 to first name last name",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "ab2febc0-c796-4e29-8773-27ca422d4c5c",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}

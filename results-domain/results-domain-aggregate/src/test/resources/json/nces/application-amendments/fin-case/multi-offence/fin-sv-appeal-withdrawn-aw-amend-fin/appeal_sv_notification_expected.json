@@ -1,0 +1,53 @@
+{
+  "caseReferences": "28DI5296047",
+  "defendantAddress": "n Fisher Tunnel5296047 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "07983211256",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantEmail": "defendant@test.com",
+  "defendantName": "Alicia Sporer",
+  "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £32.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £99.00\nAppeal heard on: 02/04/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "title": "Robbery\nSentence varied"
+    },
+    {
+      "details": "FO - Fine\nFined £199.00\nAppeal heard on: 05/05/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "title": "Theft from a shop\nSentence varied"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal withdrawn"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL WITHDRAWN"
+}
