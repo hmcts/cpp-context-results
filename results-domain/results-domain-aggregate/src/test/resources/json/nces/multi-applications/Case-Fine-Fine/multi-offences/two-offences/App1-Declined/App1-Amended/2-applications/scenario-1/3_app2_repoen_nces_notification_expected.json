@@ -1,0 +1,43 @@
+{
+  "amendmentDate": "2025-08-14",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI3955007",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £444444.00\nFVS - Surcharge\nTo pay a surcharge of £34.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £55555.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [],
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

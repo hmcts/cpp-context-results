@@ -1,0 +1,457 @@
+{
+  "amendReshare": "Amend & Reshare",
+  "applicationTypeForCase": "Further offence committed during youth offender panel referral period",
+  "caseDefendants": [
+    {
+      "associatedPerson": [],
+      "attendanceDays": [
+        {
+          "attendanceType": "IN_PERSON",
+          "day": "2024-09-25"
+        }
+      ],
+      "defendantId": "8a0a0c25-5cac-40be-a123-a5bd47b5721b",
+      "individualDefendant": {
+        "bailConditions": "",
+        "bailStatus": {
+          "code": "A",
+          "description": "Not applicable",
+          "id": "86009c70-759d-3308-8de4-194886ff9a77"
+        },
+        "person": {
+          "address": {
+            "address1": "56saon",
+            "address2": "56Police House",
+            "address3": "StreetDescription1",
+            "address4": "Locality1",
+            "address5": "Town2",
+            "postcode": "TW14 9XD"
+          },
+          "contact": {
+            "home": "0917894278022",
+            "mobile": "0917894278022",
+            "primaryEmail": "robert@gmail.com",
+            "secondaryEmail": "ormsby@gmail.com",
+            "work": "0917894278022"
+          },
+          "dateOfBirth": "1997-08-08",
+          "firstName": "Daron",
+          "gender": "MALE",
+          "lastName": "Hettinger34",
+          "title": "MR"
+        },
+        "presentAtHearing": "Y"
+      },
+      "offences": [
+        {
+          "allocationDecision": {
+            "allocationDecisionDate": "2024-09-25",
+            "motReasonCode": "02",
+            "motReasonDescription": "Indictable-only offence",
+            "motReasonId": "4ba29b9f-9e57-32ed-b376-1840f4ba6c53",
+            "offenceId": "9eaf66fc-4be4-4e4a-b6f8-740a911423bc",
+            "originatingHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+            "sequenceNumber": 100
+          },
+          "arrestDate": "2023-06-13",
+          "chargeDate": "2023-06-13",
+          "convictionDate": "2024-09-25",
+          "endDate": "2023-04-12",
+          "finalDisposal": "Y",
+          "finding": "G",
+          "id": "9eaf66fc-4be4-4e4a-b6f8-740a911423bc",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": true,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "1018",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "durationElement": {
+                "primaryDurationUnit": "Y",
+                "primaryDurationValue": 1
+              },
+              "dvlaCode": "E",
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "deb1c76b-1b53-4787-a88b-6f8f8149e6e4",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "durationSequence": 1,
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                  "label": "Period of conditional discharge",
+                  "promptReference": "periodofConditionalDischarge",
+                  "promptSequence": 100,
+                  "type": "INT",
+                  "usergroups": [],
+                  "value": "1 Years",
+                  "welshLabel": "Cyfnod o ryddhad amodol",
+                  "welshValue": "1 Years"
+                }
+              ],
+              "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+              "label": "Conditional discharge",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 73800,
+              "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "deb1c76b-1b53-4787-a88b-6f8f8149e6e4",
+              "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Rhyddhad Amodol"
+            }
+          ],
+          "modeOfTrial": "Indictable",
+          "offenceCode": "TH68023A",
+          "offenceDateCode": 4,
+          "offenceFacts": {
+            "alcoholReadingAmount": 500,
+            "alcoholReadingMethodCode": "A",
+            "alcoholReadingMethodDescription": "Blood",
+            "vehicleCode": "LARGE_GOODS_VEHICLE",
+            "vehicleRegistration": "TE4654"
+          },
+          "offenceSequenceNumber": 1,
+          "plea": {
+            "offenceId": "9eaf66fc-4be4-4e4a-b6f8-740a911423bc",
+            "originatingHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+            "pleaDate": "2024-09-25",
+            "pleaValue": "GUILTY"
+          },
+          "startDate": "2023-04-12",
+          "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+        },
+        {
+          "chargeDate": "2024-09-25",
+          "finalDisposal": "Y",
+          "id": "ebc7d708-7efc-4dba-b750-322a40223998",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "3501",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "34758a0e-85d7-472d-826a-ab89b157ec9c",
+              "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+              "label": "No adjudication - dealt with for original offence",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 36100,
+              "resultText": "BRO - No adjudication - dealt with for original offence",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "34758a0e-85d7-472d-826a-ab89b157ec9c",
+              "rootJudicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": []
+            }
+          ],
+          "modeOfTrial": "",
+          "offenceCode": "PC00509",
+          "offenceDateCode": 1,
+          "offenceSequenceNumber": 0,
+          "startDate": "2024-09-25",
+          "wording": ""
+        },
+        {
+          "arrestDate": "2023-06-13",
+          "chargeDate": "2023-06-13",
+          "endDate": "2023-04-12",
+          "finalDisposal": "Y",
+          "id": "d30aac62-66c0-4319-bf64-3635d85d08f0",
+          "judicialResults": [
+            {
+              "alwaysPublished": false,
+              "canBeSubjectOfBreach": true,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "1018",
+              "courtClerk": {
+                "firstName": "Erica",
+                "lastName": "Wilson",
+                "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+              },
+              "d20": false,
+              "durationElement": {
+                "primaryDurationUnit": "Y",
+                "primaryDurationValue": 1
+              },
+              "dvlaCode": "E",
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": false,
+              "isUnscheduled": false,
+              "judicialResultId": "04b0579d-4482-4c93-8e9b-31be2539cc1e",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "durationSequence": 1,
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                  "label": "Period of conditional discharge",
+                  "promptReference": "periodofConditionalDischarge",
+                  "promptSequence": 100,
+                  "type": "INT",
+                  "usergroups": [],
+                  "value": "1 Years",
+                  "welshLabel": "Cyfnod o ryddhad amodol",
+                  "welshValue": "1 Years"
+                }
+              ],
+              "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+              "label": "Conditional discharge",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 73800,
+              "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "04b0579d-4482-4c93-8e9b-31be2539cc1e",
+              "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Rhyddhad Amodol"
+            },
+            {
+              "alwaysPublished": false,
+              "amendmentDate": "2024-09-25",
+              "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+              "amendmentReasonId": "a02018a1-915c-3343-95ad-abc5f99b339a",
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "cjsCode": "1015",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": true,
+              "isDeleted": false,
+              "isFinancialResult": true,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "90b4e2e7-a863-4651-b62c-195585970de0",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": true,
+                  "judicialResultPromptTypeId": "7cd1472f-2379-4f5b-9e67-98a43d86e122",
+                  "label": "Amount of fine",
+                  "promptReference": "AOF",
+                  "promptSequence": 100,
+                  "type": "CURR",
+                  "usergroups": [],
+                  "value": "£400.00",
+                  "welshLabel": "Swm y ddirwy",
+                  "welshValue": "£400.00"
+                }
+              ],
+              "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "label": "Fine",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "O",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+              "policeSubjectLineTitle": "Final Sentence",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 72100,
+              "resultDefinitionGroup": "Imposition",
+              "resultText": "FO - Fine\nFined £400.00",
+              "rollUpPrompts": true,
+              "rootJudicialResultId": "90b4e2e7-a863-4651-b62c-195585970de0",
+              "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Dirwy"
+            },
+            {
+              "alwaysPublished": true,
+              "amendmentDate": "2024-09-25",
+              "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+              "amendmentReasonId": "a02018a1-915c-3343-95ad-abc5f99b339a",
+              "canBeSubjectOfBreach": false,
+              "canBeSubjectOfVariation": false,
+              "category": "FINAL",
+              "courtClerk": {
+                "firstName": "Emma",
+                "lastName": "Cleaner",
+                "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+              },
+              "d20": false,
+              "excludedFromResults": false,
+              "isAdjournmentResult": false,
+              "isAvailableForCourtExtract": true,
+              "isConvictedResult": false,
+              "isDeleted": false,
+              "isFinancialResult": false,
+              "isNewAmendment": true,
+              "isUnscheduled": false,
+              "judicialResultId": "a863809c-3ab8-4897-8d4f-1312ad3d7448",
+              "judicialResultPrompts": [
+                {
+                  "courtExtract": "Y",
+                  "isFinancialImposition": false,
+                  "judicialResultPromptTypeId": "ee7d253a-c629-11e8-a355-529269fb1459",
+                  "label": "Date to pay in full by",
+                  "promptReference": "PBD",
+                  "promptSequence": 100,
+                  "type": "DATE",
+                  "usergroups": [],
+                  "value": "12/12/2024",
+                  "welshLabel": "Dyddiad terfyn ar gyfer talu'r swm llawn",
+                  "welshValue": "12/12/2024"
+                }
+              ],
+              "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
+              "label": "Pay by date",
+              "lastSharedDateTime": "2024-09-25",
+              "level": "D",
+              "lifeDuration": false,
+              "orderedDate": "2024-09-25",
+              "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+              "parentJudicialResultId": "c897f48d-cf84-447b-a3b3-935011c9e9b0",
+              "parentJudicialResultTypeId": "4fdd9548-c521-48c9-baa3-1bd2f13a4fcc",
+              "postHearingCustodyStatus": "A",
+              "publishedAsAPrompt": false,
+              "publishedForNows": false,
+              "rank": 120500,
+              "resultDefinitionGroup": "Payment terms",
+              "resultText": "PDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2024.",
+              "rollUpPrompts": false,
+              "rootJudicialResultId": "90b4e2e7-a863-4651-b62c-195585970de0",
+              "rootJudicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+              "terminatesOffenceProceedings": false,
+              "urgent": false,
+              "usergroups": [],
+              "welshLabel": "Dyddiad terfyn ar gyfer talu"
+            }
+          ],
+          "modeOfTrial": "Indictable",
+          "offenceCode": "CJ03522",
+          "offenceDateCode": 4,
+          "offenceFacts": {
+            "alcoholReadingAmount": 500,
+            "alcoholReadingMethodCode": "A",
+            "alcoholReadingMethodDescription": "Blood",
+            "vehicleCode": "LARGE_GOODS_VEHICLE",
+            "vehicleRegistration": "TE4654"
+          },
+          "offenceSequenceNumber": 1,
+          "startDate": "2023-04-12",
+          "wording": "Original CaseURN: 25SepVTC749, Re-sentenced Original code : TH68023, Original details: Has a violent past and fear that he will commit further offences and interfere with witnesse"
+        }
+      ],
+      "pncId": "PNCidentifier",
+      "prosecutorReference": "170909936254731460"
+    }
+  ],
+  "caseId": "f5de93f3-01c9-4e05-b311-e6e4338cedf5",
+  "caseResultDetails": {
+    "applicationResultDetails": [
+      {
+        "applicationCasesResultDetails": [],
+        "applicationSubjectFirstName": "Daron",
+        "applicationSubjectLastName": "Hettinger34",
+        "applicationTitle": "Further offence committed during youth offender panel referral period",
+        "id": "ebc7d708-7efc-4dba-b750-322a40223998",
+        "judicialResultDetails": [],
+        "offenceResultDetails": [
+          {
+            "id": "d30aac62-66c0-4319-bf64-3635d85d08f0",
+            "judicialResultDetails": [
+              {
+                "amendmentType": "ADDED",
+                "id": "90b4e2e7-a863-4651-b62c-195585970de0",
+                "judicialResultTypeId": "969f150c-cd05-46b0-9dd9-30891efcc766",
+                "resultTitle": "Fine",
+                "isQualifyingResult":false
+              },
+              {
+                "amendmentType": "ADDED",
+                "id": "a863809c-3ab8-4897-8d4f-1312ad3d7448",
+                "judicialResultTypeId": "bcb5a496-f7cf-11e8-8eb2-f2801f1b9fd1",
+                "resultTitle": "Pay by date",
+                "isQualifyingResult":false
+              }
+            ],
+            "offenceCount": 0,
+            "offenceNo": 1,
+            "offenceTitle": "Robbery"
+          }
+        ]
+      }
+    ],
+    "caseId": "f5de93f3-01c9-4e05-b311-e6e4338cedf5",
+    "defendantResultDetails": []
+  },
+  "courtCentre": "Lavender Hill Magistrates' Court",
+  "dateOfHearing": "2024-09-25",
+  "notificationId": "9cc1ae5c-d271-446e-9706-bc14eeab529c",
+  "policeEmailAddress": "cpnotifications@bch.police.uk",
+  "urn": "25SepVTC301"
+}

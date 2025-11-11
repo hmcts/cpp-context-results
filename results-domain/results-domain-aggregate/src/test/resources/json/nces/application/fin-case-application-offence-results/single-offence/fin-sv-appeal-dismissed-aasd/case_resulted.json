@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208313659",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8313659@gmail.com",
+  "defendantName": "Dasia Parisian",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "c09f81c5-2fda-4d5f-be8a-884b8e2cdab0",
+  "hearingSittingDay": "2025-03-11T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "db0d8be5-91d0-42ff-a371-3ffff7b5b1a8",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-11",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "95fef862-72e1-450b-92ad-d2fdb18152d4",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8313659"
+  ]
+}

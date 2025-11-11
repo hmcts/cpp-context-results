@@ -1,0 +1,34 @@
+{
+  "hearingId": "29978004-8002-11eb-9439-0242ac130002",
+  "prosecutionCaseReferences": [
+    "urn1",
+    "urn2"
+  ],
+  "hearingSittingDay": "2018-09-30T09:30:00.000Z",
+  "hearingCourtCentreName": "South West London Magistrates' Court",
+  "masterDefendantId": "29978298-8002-11eb-9439-0242ac130002",
+  "defendantName": "defendantName",
+  "defendantDateOfBirth": "01-01-1988",
+  "defendantAddress": "176A Lavender Hill",
+  "defendantEmail": "defendantEmail@gmail.com",
+  "defendantContactNumber": "0206989859",
+  "ncesEmail": "nces@email.com",
+  "accountCorrelationId": "2997837e-8002-11eb-9439-0242ac130002",
+  "accountDivisionCode": "accountDivisionCode",
+  "offenceResults": [
+    {
+      "resultId": "4fc80104-8002-11eb-9439-0242ac130002",
+      "applicationType": "applicationType",
+      "applicationResultType": "applicationResultType",
+      "offenceId": "4fc8000a-8002-11eb-9439-0242ac130002",
+      "amendmentReason": "amendmentReason",
+      "amendmentDate": "01-01-2021",
+      "isDeemedServed": true,
+      "resultCode": "resultCode",
+      "impositionAmount": "500",
+      "impositionOffenceDetails": "impositionOffenceDetails",
+      "offenceTitle": "offenceTitle",
+      "dateOfResult": "01-01-2021"
+    }
+  ]
+}

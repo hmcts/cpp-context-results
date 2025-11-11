@@ -1,0 +1,28 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "130",
+    "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+    "defendantContactNumber": "0186672517",
+    "defendantDateOfBirth": "1988-07-17",
+    "defendantEmail": "stanford.prohaska@example.com",
+    "defendantName": "Stanford Prohaska",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "ea92458e-c837-4eb7-99cc-4746b67ef516",
+    "hearingSittingDay": "2025-07-17T09:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "0811cb2a-b74c-4fed-a342-dab41795880f",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £120.00\nIMP - Imprisonment\nCommitted to prison for 6 Years. Reason: the offence(s) are so serious that only a custodial sentence can be justified because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 0. Total custodial period is life.\n \n \nPDATE - Pay by date\nPay by date. Date to pay in full by: 31/08/2025.\nTotal custodial period is life.\nvulnerability - Risk or vulnerability factors",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "ba8a8345-bd65-4254-a714-477a4719c11e",
+            "offenceTitle": "Theft from the person of another"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "RQ126168326"
+    ]
+}

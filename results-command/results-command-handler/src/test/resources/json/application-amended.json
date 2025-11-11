@@ -1,0 +1,57 @@
+{
+  "accountCorrelationId": "dc21d1d0-65c0-4349-849e-21e517ed686e",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0206953107",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName6953107@gmail.com",
+  "defendantName": "Lori Ruecker",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e4e62804-ea72-4906-a3e1-c7a3474319af",
+  "hearingSittingDay": "2025-01-20T23:30:00.000Z",
+  "masterDefendantId": "523e5005-19af-404a-8c5a-235f4a02fc5e",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "3c1394a1-5dfc-49d1-a6c0-ef6f2df55423",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "FO - Fine\nFined £700.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "2c1394a1-5dfc-49d1-a6c0-ef6f2df55423",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G",
+      "isParentFlag": true
+    },
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "FO - Fine\nFined £550.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "2c1394a1-5dfc-49d1-a6c0-ef6f2df55423",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "01/02/2024",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 20/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "2c1394a1-5dfc-49d1-a6c0-ef6f2df55423",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6953107"
+  ]
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="22" author="CCR" logicalFilePath="022-drop-tables-as-part-of-results-context-cleanup.xml">
+
+        <preConditions>
+            <tableExists tableName="hearing"/>
+            <tableExists tableName="hearing_result"/>
+            <tableExists tableName="defendant"/>
+            <tableExists tableName="result_prompt"/>
+            <tableExists tableName="variant_directory"/>
+            <tableExists tableName="variant_directory_usergroup"/>
+        </preConditions>
+
+        <dropTable cascadeConstraints="true" tableName="hearing_result"/>
+        <dropTable cascadeConstraints="true" tableName="defendant"/>
+        <dropTable cascadeConstraints="true" tableName="hearing"/>
+        <dropTable cascadeConstraints="true" tableName="result_prompt"/>
+        <dropTable cascadeConstraints="true" tableName="variant_directory_usergroup"/>
+        <dropTable cascadeConstraints="true" tableName="variant_directory"/>
+
+    </changeSet>
+</databaseChangeLog>

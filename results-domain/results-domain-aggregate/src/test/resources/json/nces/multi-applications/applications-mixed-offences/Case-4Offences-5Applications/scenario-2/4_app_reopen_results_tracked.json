@@ -1,0 +1,47 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+    "defendantContactNumber": "786-722-4140",
+    "defendantDateOfBirth": "1979-11-11",
+    "defendantName": "Cordia Feeney",
+    "hearingCourtCentreName": "Bexley Magistrates' Court",
+    "hearingId": "360258d0-07d7-466a-baf2-49a0a8e9dac7",
+    "hearingSittingDay": "2025-07-18T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "71ea0194-78a6-4fe8-98d3-bd4d90fa49c6",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 4 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "71ea0194-78a6-4fe8-98d3-bd4d90fa49c6",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Application to reopen case",
+            "applicationType": "REOPEN",
+            "dateOfResult": "2025-07-18",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": true,
+            "offenceId": "30c36c31-b38d-4532-ae4c-7f5398912afa",
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "resultCode": "G"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "48DI9761991"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

@@ -1,0 +1,67 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Ena Pouros",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "07b73d34-780f-4716-be66-ce6b5d503f1e",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "resultCode": "FIDICI",
+            "isDeemedServed": true,
+            "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £2000.00.\nFO - Fine\nFined £8877.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 11/05/2026.",
+            "isFinancial": true,
+            "isParentFlag": true
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "offenceTitle": "Robbery",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "65f35f24-71ae-4bd0-b033-e0ac7cab3446",
+            "isFinancial": false,
+            "isParentFlag": false,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "G - Granted"
+        },
+        {
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Fined and detained in default of payment until court rises",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "resultCode": "FIDICI",
+            "isDeemedServed": true,
+            "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £2000.00.",
+            "isFinancial": false,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+            "applicationType": "REOPEN",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £8877.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7664890"
+    ]
+}

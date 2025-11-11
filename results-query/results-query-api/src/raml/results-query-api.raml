@@ -1,0 +1,261 @@
+#%RAML 0.8
+title: Results Query API
+baseUri: http://localhost:8080/results-query-api/query/api/rest/results
+protocols: [ HTTP, HTTPS ]
+
+/people/{defendantId}/hearings/{hearingId}:
+    uriParameters:
+        defendantId:
+            description: ID of the person to fetch the results
+            type: string
+        hearingId:
+            description: ID of hearing to fetch the results
+            type: string
+    get:
+        description: |
+            ...
+            (mapping):
+                responseType: application/vnd.results.hearing-details+json
+                name: results.get-hearing-details
+            ...
+        responses:
+            200:
+                description: OK
+                body:
+                     application/vnd.results.hearing-details+json:
+                        schema: !include json/schema/results.hearing-details.json
+                        example: !include json/results.hearing-details.json
+
+/results/summary:
+    get:
+        description: |
+            Summary view of all hearing results
+            ...
+            (mapping):
+                responseType: application/vnd.results.results-summary+json
+                name: results.get-results-summary
+            ...
+        queryParameters:
+            fromDate:
+                description: From date inclusive.
+                type: string
+                required: true
+        responses:
+            200:
+                description: OK
+                body:
+                    application/vnd.results.results-summary+json:
+                        example:  !include json/results.results-summary.json
+                        schema:  !include json/schema/results.results-summary.json
+
+/hearingDetails/{hearingId}:
+    uriParameters:
+        hearingId:
+            description: ID of hearing to fetch the results
+            type: string
+    get:
+        description: |
+            ...
+            (mapping):
+                responseType: application/vnd.results.hearing-information-details+json
+                name: results.get-hearing-information-details-for-hearing
+            ...
+        queryParameters:
+            hearingDate:
+                description: hearingDate
+                type: string
+                required: false
+        responses:
+            200:
+                description: OK
+                body:
+                     application/vnd.results.hearing-information-details+json:
+                        schema: !include json/schema/results.hearing-information-details.json
+                        example: !include json/results.hearing-information-details.json
+
+/hearingDetails/internal/{hearingId}:
+    uriParameters:
+        hearingId:
+            description: ID of hearing to fetch the results
+            type: string
+    get:
+        description: |
+            ...
+            (mapping):
+                responseType: application/vnd.results.hearing-details-internal+json
+                name: results.get-hearing-details-internal
+            ...
+        responses:
+            200:
+                description: OK
+                body:
+                     application/vnd.results.hearing-details-internal+json:
+                        schema: !include json/schema/results.hearing-details.json
+                        example: !include json/results.hearing-details.json
+
+/informant-register/request/{requestStatus}:
+  uriParameters:
+        requestStatus:
+          description: informant register document by request sttaus
+          type: string
+  get:
+      description: |
+        Return all the informant register document generation requests
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-request+json
+            name: results.query.informant-register-document-request
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-request+json:
+                    example:  !include json/results.query.informant-register-document-request.json
+                    schema:  !include json/schema/results.query.informant-register-document-request.json
+
+/informant-register/material/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular prosecution authority
+          type: string
+  get:
+      description: |
+        Return all the informant register document generation requests
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-by-material+json
+            name: results.query.informant-register-document-by-material
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-by-material+json:
+                    example:  !include json/results.query.informant-register-document-by-material.json
+                    schema:  !include json/schema/results.query.informant-register-document-by-material.json
+
+/informant-register/requestByDate:
+  get:
+      description: |
+        Return all the informant register document generation requests by request date
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-by-request-date+json
+            name: results.query.informant-register-document-by-request-date
+        ...
+      queryParameters:
+          registerDate:
+            description: registerDate
+            type: string
+            required: true
+          prosecutionAuthorityCode:
+            description: comma seperated prosecution authorities
+            type: string
+            required: false
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-by-request-date+json:
+                    example:  !include json/results.query.informant-register-document-by-request-date.json
+                    schema:  !include json/schema/results.query.informant-register-document-by-request-date.json
+
+/prosecutor/{ouCode}:
+  uriParameters:
+        ouCode:
+          description: prosecutor organisation unit
+          type: string
+  get:
+      description: |
+        Return all results for prosecutor identified by ouCode for a single date or a date range
+        ...
+        (mapping):
+            responseType: application/vnd.results.prosecutor-results+json
+            name: results.prosecutor-results
+        ...
+      queryParameters:
+          startDate:
+            description: start date of date range (or can be just this without an end date)
+            type: string
+            required: true
+          endDate:
+            description: end date for date range
+            type: string
+            required: false
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.prosecutor-results+json:
+                    example:  !include json/results.prosecutor-results.json
+                    schema:  !include json/schema/results.prosecutor-results.json
+
+/defendants:
+  get:
+      description: |
+        Return all results for active defendants tracking status like under warrant or under electronic monitoring
+        ...
+        (mapping):
+            responseType: application/vnd.results.get-defendants-tracking-status+json
+            name: results.get-defendants-tracking-status
+        ...
+      queryParameters:
+          defendantIds:
+            description: comma separated list of defendant ids
+            type: string
+            required: true
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.get-defendants-tracking-status+json:
+                    example:  !include json/results.get-defendants-tracking-status.json
+                    schema:  !include json/schema/results.get-defendants-tracking-status.json
+
+/nces-email-notification/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular notification details
+          type: string
+  get:
+      description: |
+        Return the nces email notification details by material Id
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.nces-email-notification-details+json
+            name: results.query.nces-email-notification-details
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.nces-email-notification-details+json:
+                    example:  !include json/results.query.nces-email-notification-details.json
+                    schema:  !include json/schema/results.query.nces-email-notification-details.json
+
+/defendant-gob-account:
+   get:
+     description: |
+       Return latest account number by master defendant id & hearing Id
+       ...
+       (mapping):
+           responseType: application/vnd.results.query.defendant-gob-account+json
+           name: results.query.defendant-gob-account
+       ...
+     queryParameters:
+         masterDefendantId:
+           description: masterDefendantId
+           type: string
+           required: true
+         hearingId:
+            description: hearingId
+            type: string
+            required: true
+     responses:
+           200:
+               description: OK
+               body:
+                 application/vnd.results.query.defendant-gob-account+json:
+                   example:  !include json/results.query.defendant-gob-account.json
+                   schema:  !include json/schema/results.query.defendant-gob-account.json

@@ -1,0 +1,233 @@
+{
+  "hearing": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2025-03-14"
+          }
+        ],
+        "defendantId": "0effc607-e232-4654-81f5-3f506100a92b"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 20,
+        "listingSequence": 0,
+        "sittingDay": "2025-03-14T23:30:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "08b58988-f6d0-428b-9645-e02770bf4418",
+    "isGroupProceedings": false,
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "ACTIVE",
+        "cpsOrganisation": "A30AB00",
+        "defendants": [
+          {
+            "courtProceedingsInitiated": "2025-03-14T15:41:53.654Z",
+            "id": "0effc607-e232-4654-81f5-3f506100a92b",
+            "isYouth": false,
+            "masterDefendantId": "0effc607-e232-4654-81f5-3f506100a92b",
+            "offences": [
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "eefd3f79-66eb-4e2b-bca2-9e6f9cdc00b7",
+                "isDisposed": true,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "amendmentDate": "2025-03-14",
+                    "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+                    "amendmentReasonId": "ca8b8285-5fc7-3b36-aa78-ecdf5ac6dad0",
+                    "canBeSubjectOfBreach": true,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "cjsCode": "1018",
+                    "courtClerk": {
+                      "firstName": "Emma",
+                      "lastName": "Cleaner",
+                      "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+                    },
+                    "d20": false,
+                    "durationElement": {
+                      "primaryDurationUnit": "M",
+                      "primaryDurationValue": 5
+                    },
+                    "dvlaCode": "E",
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isDeleted": false,
+                    "isFinancialResult": false,
+                    "isNewAmendment": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "9b56e83e-8fff-4491-ba54-0d4ba588b0e0",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "durationSequence": 1,
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                        "label": "Period of conditional discharge",
+                        "promptReference": "periodofConditionalDischarge",
+                        "promptSequence": 100,
+                        "type": "INT",
+                        "usergroups": [],
+                        "value": "5 Months",
+                        "welshLabel": "Cyfnod o ryddhad amodol",
+                        "welshValue": "5 Months"
+                      }
+                    ],
+                    "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                    "label": "Conditional discharge",
+                    "lastSharedDateTime": "2025-03-14",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-03-14",
+                    "orderedHearingId": "08b58988-f6d0-428b-9645-e02770bf4418",
+                    "policeSubjectLineTitle": "Final Sentence",
+                    "postHearingCustodyStatus": "A",
+                    "preserveActiveOrder": false,
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 73800,
+                    "resultText": "CD - Conditional discharge\nDischarged conditionally for 5 Months.",
+                    "rollUpPrompts": true,
+                    "rootJudicialResultId": "9b56e83e-8fff-4491-ba54-0d4ba588b0e0",
+                    "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "usergroups": [],
+                    "welshLabel": "Rhyddhad Amodol"
+                  }
+                ],
+                "listingNumber": 1,
+                "maxPenalty": "EW:6M &/or Ultd Fine",
+                "modeOfTrial": "Either Way",
+                "offenceCode": "TH68010",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "c8b42f54-833a-37de-982e-e62fca7540dd",
+                "offenceLegislation": "Contrary to section 1(1) and 7 of the Theft    Act 1968.",
+                "offenceLegislationWelsh": "Yn groes i adran 1(1) a 7 Deddf Dwyn 1968.",
+                "offenceTitle": "Theft from a shop",
+                "offenceTitleWelsh": "Dwyn o siop - siop-ladrad",
+                "orderIndex": 1,
+                "startDate": "2019-11-28",
+                "wording": "Theft of pedal cycle."
+              }
+            ],
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01122172608",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9899AAAA",
+                  "address2": "Woodlane4",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon",
+                  "postcode": "BS1 1JQ"
+                },
+                "contact": {
+                  "home": "0202172608",
+                  "mobile": "07772172608",
+                  "primaryEmail": "firstName.lastName2172608@gmail.com"
+                },
+                "dateOfBirth": "1972-11-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Adolph",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Berge",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            },
+            "prosecutionAuthorityReference": "D28GC01122172608",
+            "prosecutionCaseId": "5e7a7eb3-41df-4245-ad39-d6a1aa3dbd6f"
+          }
+        ],
+        "id": "5e7a7eb3-41df-4245-ad39-d6a1aa3dbd6f",
+        "initiationCode": "C",
+        "originatingOrganisation": "G94DV00",
+        "prosecutionCaseIdentifier": {
+          "address": {
+            "address1": "Finance Operations",
+            "address2": "C3 East",
+            "address3": "DVLA",
+            "address4": "Longview Road",
+            "address5": "Swansea",
+            "postcode": "SA6 7JL"
+          },
+          "contact": {
+            "primaryEmail": "sjp@dvla.gov.uk"
+          },
+          "majorCreditorCode": "DVL2",
+          "prosecutionAuthorityCode": "DVLA",
+          "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+          "prosecutionAuthorityName": "Driver and Vehicle Licensing Agency",
+          "prosecutionAuthorityOUCode": "G94DV00",
+          "caseURN": "28NS2172608"
+        }
+      }
+    ],
+    "type": {
+      "description": "First hearing",
+      "id": "4a0e892d-c0c5-3c51-95b8-704d8c781776"
+    }
+  },
+  "hearingDay": "2025-03-14",
+  "isReshare": true,
+  "sharedTime": "2025-03-14T15:47:04.698Z"
+}

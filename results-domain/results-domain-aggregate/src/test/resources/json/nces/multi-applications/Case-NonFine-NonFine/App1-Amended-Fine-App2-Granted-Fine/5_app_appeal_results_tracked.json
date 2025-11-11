@@ -1,0 +1,62 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "112",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon NE29 1DZ",
+    "defendantContactNumber": "0203954642",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName3954642@gmail.com",
+    "defendantName": "Melyna Klein",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "72939c4f-1a65-44b6-aad1-a5318bee199f",
+    "hearingSittingDay": "2025-07-16T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "a9f0f0de-92fb-4bcd-a799-13d4fe5c1fa4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "1a2e83f1-36d6-42d1-bf17-3ea135309828",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £777777.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "AACA",
+            "amendmentDate": "2025-07-16",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)"
+        },
+        {
+            "amendmentDate": "2025-07-16",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "applicationResultType": "Fine",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "FO - Fine\nFined £777777.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        },
+        {
+            "amendmentDate": "2025-07-16",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "applicationResultType": "Payment terms - Instalments only",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "INSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3954642"
+    ]
+}

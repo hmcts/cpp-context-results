@@ -1,0 +1,39 @@
+package uk.gov.moj.cpp.results.it.utils;
+
+import static java.nio.charset.Charset.defaultCharset;
+import static javax.json.Json.createReader;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.InputStream;
+import java.io.StringReader;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
+public class FileUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+
+    public static String getPayload(final String path) {
+        String request = null;
+        try {
+            final InputStream inputStream = FileUtil.class.getClassLoader().getResourceAsStream(path);
+            assertThat(inputStream, notNullValue());
+            request = IOUtils.toString(inputStream, defaultCharset());
+        } catch (final Exception e) {
+            LOGGER.error("Error consuming file from location {}", path, e);
+            fail("Error consuming file from location " + path);
+        }
+        return request;
+    }
+    public static JsonObject convertStringToJson(String str){
+        final JsonReader reader = createReader(new StringReader(str));
+        return reader.readObject();
+    }
+}

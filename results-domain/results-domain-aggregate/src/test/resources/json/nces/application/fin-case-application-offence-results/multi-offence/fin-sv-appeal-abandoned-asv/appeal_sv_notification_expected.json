@@ -1,0 +1,52 @@
+{
+  "caseReferences": "GD39876942",
+  "defendantAddress": "9999A9999AAAA Miller Walk Marceloside Avon DA61 7ND",
+  "defendantContactNumber": "724-337-0958",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Hilario Hirthe",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £11.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £11.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £100.00\nAppeal heard on: 11/08/2024\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid fortnightly. Instalment start date: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003\nSentence varied"
+    },
+    {
+      "details": "FO - Fine\nFined £100.45\nAppeal heard on: 11/08/2024",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "title": "Provide money / property for use in acts of terrorism\nSentence varied"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL DISMISSED SENTENCE VARIED"
+}

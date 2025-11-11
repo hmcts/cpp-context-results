@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5651663 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Toni Parisian",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "c22881ca-33d4-4c93-8b92-e7a232772e2e",
+  "hearingSittingDay": "2025-08-18T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "327e9b92-1df4-4eeb-b21f-777a8590914c",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £1000.00, FVS - Surcharge\nTo pay a surcharge of £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-08-18",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5651663"
+  ]
+}

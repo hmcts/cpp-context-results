@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/hearing/courts/result.command.update-gob-account.json",
+  "type": "object",
+  "properties": {
+    "correlationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "accountNumber": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "correlationId",
+    "accountNumber"
+  ]
+}

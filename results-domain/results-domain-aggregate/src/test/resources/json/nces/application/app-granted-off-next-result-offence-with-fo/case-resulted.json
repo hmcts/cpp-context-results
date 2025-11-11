@@ -1,0 +1,27 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Euna Rutherford",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "f32ddf9f-152f-410d-aab0-9f27f8d518c5",
+  "hearingSittingDay": "2025-04-04T22:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "b7ea5d56-7942-479a-9bc2-6b5d3f4b3e4a",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-04-04",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
+      "offenceTitle": "Theft of motor vehicle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6565771"
+  ]
+}

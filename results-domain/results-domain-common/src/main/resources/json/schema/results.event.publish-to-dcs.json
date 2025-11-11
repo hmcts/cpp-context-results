@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/results.event.publish-to-dcs.json",
+  "type": "object",
+  "properties": {
+    "previousHearing": {
+      "$ref": "http://justice.gov.uk/core/courts/hearing.json#"
+    },
+    "currentHearing": {
+      "$ref": "http://justice.gov.uk/core/courts/hearing.json#"
+    },
+    "sharedTime": {
+      "format": "date-time"
+    },
+    "hearingDay": {
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/datePattern"
+    },
+    "isReshare": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "currentHearing",
+    "sharedTime",
+    "hearingDay"
+  ]
+}

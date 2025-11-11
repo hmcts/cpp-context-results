@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI7582313",
+  "defendantAddress": "n Fisher Tunnel7582313 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Regan Bashirian",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "07/07/2025",
+  "masterDefendantId": "d2d54c40-64c6-4450-b09f-cca97daec791",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "27/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

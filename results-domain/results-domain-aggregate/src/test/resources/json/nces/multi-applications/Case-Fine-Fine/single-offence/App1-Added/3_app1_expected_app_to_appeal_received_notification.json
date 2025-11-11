@@ -1,0 +1,21 @@
+{
+  "caseReferences": "RQ126168326",
+  "defendantAddress": "25 Park Avenue Park Avenue Birmingham West Midlands B1 1AA",
+  "defendantContactNumber": "0186672517",
+  "defendantDateOfBirth": "1988-07-17",
+  "defendantEmail": "stanford.prohaska@example.com",
+  "defendantName": "Stanford Prohaska",
+  "divisionCode": "130",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-17",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "17/07/2025",
+  "masterDefendantId": "0811cb2a-b74c-4fed-a342-dab41795880f",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "17/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI4306863",
+  "defendantAddress": "n Fisher Tunnel4306863 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Vida Cormier",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-27",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "27/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

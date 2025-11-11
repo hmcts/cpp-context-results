@@ -1,0 +1,46 @@
+{
+  "caseReferences": "28DI2911105",
+  "dateDecisionMade": "2025-05-15",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202911105",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2911105@gmail.com",
+  "defendantName": "Bennett Brown",
+  "divisionCode": "10",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-05-15",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £45.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isWriteOff": false,
+  "masterDefendantId": "e391646d-d6ce-4df4-a974-84cc76d01faa",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £45.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

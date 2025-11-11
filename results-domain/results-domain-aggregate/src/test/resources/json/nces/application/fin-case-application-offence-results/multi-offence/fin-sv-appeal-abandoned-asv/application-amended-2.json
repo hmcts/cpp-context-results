@@ -1,0 +1,112 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Miller Walk Marceloside Avon DA61 7ND",
+  "defendantContactNumber": "724-337-0958",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Hilario Hirthe",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b78893a0-2797-41bb-abb2-063c05a08c41",
+  "hearingSittingDay": "2025-04-24T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6bfc3f0d-d4ec-46b9-9496-95a8c76bd416",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "52a7b95f-cbe6-4132-9942-ba3a7140a51c",
+      "applicationResultType": "Dismissed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £10.00 to Aldi Stores\nFO - Fine\nFined £1111.09\nFVS - Surcharge\nTo pay a surcharge of £100.00\nSV - Sentence varied\nAppeal heard on: 11/07/2024\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "resultCode": "AASD"
+    },
+    {
+      "applicationId": "52a7b95f-cbe6-4132-9942-ba3a7140a51c",
+      "applicationResultType": "Dismissed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £1112.09\nSV - Sentence varied\nAppeal heard on: 11/07/2024",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "AASD"
+    },
+    {
+      "applicationId": "52a7b95f-cbe6-4132-9942-ba3a7140a51c",
+      "applicationResultType": "Driving disqualification stands",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £10.00 to Aldi Stores\nFO - Fine\nFined £1111.09\nFVS - Surcharge\nTo pay a surcharge of £100.00\nSV - Sentence varied\nAppeal heard on: 11/07/2024\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "applicationId": "52a7b95f-cbe6-4132-9942-ba3a7140a51c",
+      "applicationResultType": "Driving disqualification stands",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £1112.09\nSV - Sentence varied\nAppeal heard on: 11/07/2024",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £1111.09",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "amendmentDate": "2025-04-24",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-04-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £1112.09",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD39876942"
+  ]
+}

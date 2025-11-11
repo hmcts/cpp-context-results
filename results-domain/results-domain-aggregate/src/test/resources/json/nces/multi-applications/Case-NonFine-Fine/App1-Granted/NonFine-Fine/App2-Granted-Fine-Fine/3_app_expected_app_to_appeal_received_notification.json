@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI4199070",
+  "defendantAddress": "n Fisher Tunnel4199070 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Herminia Casper",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "08/07/2025",
+  "masterDefendantId": "48e36bad-9eeb-4b24-a085-f9293a72041a",
+  "materialId": "ce52126b-7529-4974-8002-b6f8069c22d4",
+  "notificationId": "b9cb49a5-5fee-4c12-a311-3527e10f3b11",
+  "originalDateOfSentence": "08/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

@@ -1,0 +1,60 @@
+{
+  "bailStatuses": [
+    {
+      "id": "dd4073b6-22be-3875-9d63-5da286bb3ece",
+      "seqNo": 10,
+      "statusCode": "B",
+      "statusDescription": "Conditional Bail",
+      "statusRanking": 6
+    },
+    {
+      "id": "eaf18bf8-9569-3656-a4ab-64299f9bd513",
+      "seqNo": 20,
+      "statusCode": "U",
+      "statusDescription": "Unconditional Bail",
+      "statusRanking": 7
+    },
+    {
+      "id": "12e69486-4d01-3403-a50a-7419ca040635",
+      "seqNo": 30,
+      "statusCode": "C",
+      "statusDescription": "Custody or remanded into custody",
+      "statusRanking": 2
+    },
+    {
+      "id": "86009c70-759d-3308-8de4-194886ff9a77",
+      "seqNo": 40,
+      "statusCode": "A",
+      "statusDescription": "Not applicable",
+      "statusRanking": 8
+    },
+    {
+      "id": "4dc146db-9d89-30bf-93b3-b22bc072d666",
+      "seqNo": 50,
+      "statusCode": "L",
+      "statusDescription": "Remanded into care of Local Authority",
+      "statusRanking": 3
+    },
+    {
+      "id": "34443c87-fa6f-34c0-897f-0cce45773df5",
+      "seqNo": 60,
+      "statusCode": "P",
+      "statusDescription": "Conditional Bail with Pre-Release conditions",
+      "statusRanking": 5
+    },
+    {
+      "id": "549336f9-2a07-3767-960f-107da761a698",
+      "seqNo": 70,
+      "statusCode": "S",
+      "statusDescription": "Remanded into Secure Accommodation",
+      "statusRanking": 1
+    },
+    {
+      "id": "7dc36d1c-a739-3792-8579-372b177d1268",
+      "seqNo": 80,
+      "statusCode": "R",
+      "statusDescription": "Re-arrested after release on bail",
+      "statusRanking": 4
+    }
+  ]
+}

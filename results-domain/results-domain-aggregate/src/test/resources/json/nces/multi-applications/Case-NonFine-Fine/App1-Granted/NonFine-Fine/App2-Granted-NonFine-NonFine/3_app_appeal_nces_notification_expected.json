@@ -1,0 +1,45 @@
+{
+  "caseReferences": "28DI4199070",
+  "dateDecisionMade": "2025-07-08",
+  "defendantAddress": "n Fisher Tunnel4199070 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Herminia Casper",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-08",
+  "impositionOffenceDetails": [
+    {
+      "details": "Application1 offence 2 financial impositions",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "48e36bad-9eeb-4b24-a085-f9293a72041a",
+  "materialId": "26382cfd-8d9a-47dc-a115-430a6061e0a7",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "Application2 offence2 non financials",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "e48e6435-beb8-4913-9832-af9199301ba1",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}

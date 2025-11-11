@@ -1,0 +1,29 @@
+{
+  "accountCorrelationId": "dc21d1d0-65c0-4349-849e-21e517ed686e",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0206953107",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName6953107@gmail.com",
+  "defendantName": "Lori Ruecker",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e4e62804-ea72-4906-a3e1-c7a3474319af",
+  "hearingSittingDay": "2025-01-20T23:30:00.000Z",
+  "masterDefendantId": "523e5005-19af-404a-8c5a-235f4a02fc5e",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-01-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-01-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £555.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/05/2024.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "fef2ff24-09dd-46f8-bb62-3892afcd1829",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6953107"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "caseReferences": "28DI6329491",
+  "dateDecisionMade": "2025-04-16",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Madisen Cummerata",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-04-16",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/08/2027.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "424c21fb-0c91-4b85-9d10-2d430755a660",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £11.00.\nFO - Fine\nFined £100.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

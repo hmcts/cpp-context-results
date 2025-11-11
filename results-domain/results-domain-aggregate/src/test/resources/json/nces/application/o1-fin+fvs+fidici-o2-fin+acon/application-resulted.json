@@ -1,0 +1,123 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2324843 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eusebio Kautzer",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "4b3bf5c0-1906-453b-9a92-91cdb3cf70bd",
+  "hearingSittingDay": "2025-03-21T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse deemed served by reason of time already spent in custody. Total amount enforced £400.00.\nFO - Fine\nFined £300.00\nFVS - Surcharge\nTo pay a surcharge of £4000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationId": "19307c8f-1820-4539-8b1c-f24c45df13d5",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "19307c8f-1820-4539-8b1c-f24c45df13d5",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £4000.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Consolidated",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2324843"
+  ]
+}

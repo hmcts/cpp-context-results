@@ -1,0 +1,58 @@
+{
+  "caseReferences": "48DI6925261",
+  "dateDecisionMade": "2025-07-18",
+  "defendantAddress": "9999A9999AAAA Hettinger Mount Parisianmouth Avon DA6 7ND",
+  "defendantContactNumber": "786-722-4140",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £43222.00. , FO - Fine\nFined £999998.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £76577.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "542f15e5-d905-4170-8a7f-d435de2ab001",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £98763.00\nFVS - Surcharge\nTo pay a surcharge of £2323.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £287632.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £33333.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}

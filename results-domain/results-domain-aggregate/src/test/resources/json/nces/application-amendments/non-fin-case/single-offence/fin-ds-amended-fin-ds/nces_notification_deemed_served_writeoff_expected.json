@@ -1,0 +1,27 @@
+{
+  "caseReferences": "28DI7067541",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0207067541",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName7067541@gmail.com",
+  "defendantName": "Lorenz Metz",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-05",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £200.00\nFO - Fine\nFined £100.00\nFVS - Surcharge\nTo pay a surcharge of £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "52509603-a55b-4794-93d3-a82973c033f2",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "05/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

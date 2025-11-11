@@ -1,0 +1,86 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0209390803",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName9390803@gmail.com",
+  "defendantName": "Cade Hermiston",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "3dffea9e-d370-4140-b7b4-9b066bee17a0",
+  "hearingSittingDay": "2025-02-21T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e746903e-f717-42b0-86d5-4b9eceb251a0",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-02-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.\nFO - Fine\nFined £550.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 16/04/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationId": "933cd4fb-9276-4cc1-a2c9-cfb8e75a861a",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-02-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    },
+    {
+      "amendmentDate": "2025-02-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £550.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-02-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 16/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9390803"
+  ]
+}

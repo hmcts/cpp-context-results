@@ -1,0 +1,15 @@
+{
+    "caseUrns": [
+        "48DI9761991"
+    ],
+    "caseOffenceIdList": [
+        "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
+        "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
+        "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
+        "30c36c31-b38d-4532-ae4c-7f5398912afa"
+    ],
+    "applicationType": "APPEAL",
+    "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+    "listingDate": "18/07/2025",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court"
+}

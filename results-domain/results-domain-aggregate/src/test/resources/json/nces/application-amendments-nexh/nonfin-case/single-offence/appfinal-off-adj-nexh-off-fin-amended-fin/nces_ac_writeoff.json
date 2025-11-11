@@ -1,0 +1,37 @@
+{
+  "amendmentDate": "2025-05-15",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28NS1211751",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Allene Halvorson",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9a4b002d-d742-4dc5-8050-b1c5d982fd8c",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "7134cd80-4934-4e96-b2e5-a7322309f579",
+  "materialId": "cc88fce3-d3f7-4383-9b81-7808ed2b5c8b",
+  "newApplicationResults": {
+    "applicationResult": []
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9a4b002d-d742-4dc5-8050-b1c5d982fd8c",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "4733921e-6302-4996-9bce-3e22b32304d5",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

@@ -1,0 +1,22 @@
+{
+  "caseReferences": "28DI6329491",
+  "dateDecisionMade": "2025-04-16",
+  "defendantName": "Madisen Cummerata",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £11.00.\nFO - Fine\nFined £100.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "424c21fb-0c91-4b85-9d10-2d430755a660",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

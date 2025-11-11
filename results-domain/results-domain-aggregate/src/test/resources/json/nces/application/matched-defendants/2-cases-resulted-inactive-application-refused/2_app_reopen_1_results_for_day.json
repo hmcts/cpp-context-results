@@ -1,0 +1,426 @@
+{
+    "hearing": {
+        "courtApplications": [
+            {
+                "applicant": {
+                    "id": "45a4b244-8e16-46ef-b84d-4c3e60d93e03",
+                    "notificationRequired": true,
+                    "prosecutingAuthority": {
+                        "address": {
+                            "address1": "Surrey Police",
+                            "address2": "Mount Browne",
+                            "address3": "Sandy Lane",
+                            "address4": "Guildford",
+                            "postcode": "GU3 1HG"
+                        },
+                        "contact": {
+                            "primaryEmail": "mail_data_bureau_res@surrey.police.uk"
+                        },
+                        "majorCreditorCode": "PO45",
+                        "name": "Surrey Police",
+                        "prosecutionAuthorityCode": "SURRPF",
+                        "prosecutionAuthorityId": "764bff92-a135-34cb-b858-8bb6b4b66301",
+                        "prosecutionAuthorityOUCode": "0450000",
+                        "welshName": "Heddlu Surrey"
+                    },
+                    "summonsRequired": false
+                },
+                "applicationReceivedDate": "2025-10-07",
+                "applicationReference": "28DI975224,28DI975223",
+                "applicationStatus": "FINALISED",
+                "commissionerOfOath": false,
+                "courtApplicationCases": [
+                    {
+                        "caseStatus": "INACTIVE",
+                        "isSJP": false,
+                        "offences": [
+                            {
+                                "arrestDate": "2024-02-06",
+                                "chargeDate": "2024-02-07",
+                                "count": 0,
+                                "endorsableFlag": false,
+                                "id": "b7b9844c-44dd-4ac3-97dc-1532583ea24f",
+                                "isDisposed": false,
+                                "listingNumber": 1,
+                                "maxPenalty": "Indictable only",
+                                "modeOfTrial": "Indictable",
+                                "offenceCode": "TH68023",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "6795cbe7-3e0f-3f6a-b59d-29a87a9d6f8d",
+                                "offenceLegislation": "Contrary to section 8(1) of the Theft Act 1968.",
+                                "offenceLegislationWelsh": "Yn groes i adran 8(1) Deddf Dwyn 1968.",
+                                "offenceTitle": "Robbery",
+                                "offenceTitleWelsh": "Ysbeilio/Lladrad",
+                                "orderIndex": 1,
+                                "proceedingsConcluded": true,
+                                "startDate": "2024-02-01",
+                                "wording": "Robbery"
+                            },
+                            {
+                                "arrestDate": "2022-12-14",
+                                "chargeDate": "2022-12-15",
+                                "count": 0,
+                                "dvlaOffenceCode": "CU84",
+                                "endorsableFlag": true,
+                                "id": "5ec17174-36a2-46df-a573-b7800933f0af",
+                                "isDisposed": false,
+                                "listingNumber": 1,
+                                "maxPenalty": "S:L4 LE 3pp",
+                                "modeOfTrial": "Summary",
+                                "offenceCode": "RC86818",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "baf2941f-fcd4-3ece-9134-6531b7597ca3",
+                                "offenceLegislation": "Contrary to regulation 104 of the Road Vehicles (Construction and Use) Regulations 1986, section 41D of the Road Traffic Act 1988 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                                "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
+                                "orderIndex": 1,
+                                "proceedingsConcluded": true,
+                                "startDate": "2022-12-12",
+                                "wording": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+                            }
+                        ],
+                        "prosecutionCaseId": "705c84ec-b34f-40b9-8e2f-2a0c2b585ec5",
+                        "prosecutionCaseIdentifier": {
+                            "address": {
+                                "address1": "Surrey Police",
+                                "address2": "Mount Browne",
+                                "address3": "Sandy Lane",
+                                "address4": "Guildford",
+                                "postcode": "GU3 1HG"
+                            },
+                            "contact": {
+                                "primaryEmail": "mail_data_bureau_res@surrey.police.uk"
+                            },
+                            "majorCreditorCode": "PO45",
+                            "prosecutionAuthorityCode": "SURRPF",
+                            "prosecutionAuthorityId": "764bff92-a135-34cb-b858-8bb6b4b66301",
+                            "prosecutionAuthorityName": "Surrey Police",
+                            "prosecutionAuthorityOUCode": "0450000",
+                            "caseURN": "28DI975224"
+                        }
+                    },
+                    {
+                        "caseStatus": "INACTIVE",
+                        "isSJP": false,
+                        "offences": [
+                            {
+                                "arrestDate": "2024-02-06",
+                                "chargeDate": "2024-02-07",
+                                "count": 0,
+                                "endorsableFlag": false,
+                                "id": "5306dd66-6e1a-46e7-9479-8c2d037021be",
+                                "isDisposed": false,
+                                "listingNumber": 1,
+                                "maxPenalty": "Indictable only",
+                                "modeOfTrial": "Indictable",
+                                "offenceCode": "TH68023",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "6795cbe7-3e0f-3f6a-b59d-29a87a9d6f8d",
+                                "offenceLegislation": "Contrary to section 8(1) of the Theft Act 1968.",
+                                "offenceLegislationWelsh": "Yn groes i adran 8(1) Deddf Dwyn 1968.",
+                                "offenceTitle": "Robbery",
+                                "offenceTitleWelsh": "Ysbeilio/Lladrad",
+                                "orderIndex": 1,
+                                "proceedingsConcluded": true,
+                                "startDate": "2024-02-01",
+                                "wording": "Robbery"
+                            },
+                            {
+                                "arrestDate": "2022-12-14",
+                                "chargeDate": "2022-12-15",
+                                "count": 0,
+                                "dvlaOffenceCode": "CU84",
+                                "endorsableFlag": true,
+                                "id": "55e33875-adc1-40ec-a219-e01ef3e400dc",
+                                "isDisposed": false,
+                                "listingNumber": 1,
+                                "maxPenalty": "S:L4 LE 3pp",
+                                "modeOfTrial": "Summary",
+                                "offenceCode": "RC86818",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "baf2941f-fcd4-3ece-9134-6531b7597ca3",
+                                "offenceLegislation": "Contrary to regulation 104 of the Road Vehicles (Construction and Use) Regulations 1986, section 41D of the Road Traffic Act 1988 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                                "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
+                                "orderIndex": 1,
+                                "proceedingsConcluded": true,
+                                "startDate": "2022-12-12",
+                                "wording": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+                            }
+                        ],
+                        "prosecutionCaseId": "d8ef042a-1e44-40ff-99fa-686e438c5ea4",
+                        "prosecutionCaseIdentifier": {
+                            "address": {
+                                "address1": "Surrey Police",
+                                "address2": "Mount Browne",
+                                "address3": "Sandy Lane",
+                                "address4": "Guildford",
+                                "postcode": "GU3 1HG"
+                            },
+                            "majorCreditorCode": "PO45",
+                            "prosecutionAuthorityCode": "SURRPF",
+                            "prosecutionAuthorityId": "764bff92-a135-34cb-b858-8bb6b4b66301",
+                            "prosecutionAuthorityName": "Surrey Police",
+                            "prosecutionAuthorityOUCode": "0450000",
+                            "caseURN": "28DI975223"
+                        }
+                    }
+                ],
+                "id": "b02c4c64-c13e-4bf5-bfec-7b5774fa83ae",
+                "judicialResults": [
+                    {
+                        "alwaysPublished": false,
+                        "canBeSubjectOfBreach": false,
+                        "canBeSubjectOfVariation": false,
+                        "canExtendActiveOrder": false,
+                        "category": "FINAL",
+                        "courtClerk": {
+                            "firstName": "Erica",
+                            "lastName": "Wilson",
+                            "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+                        },
+                        "d20": false,
+                        "excludedFromResults": false,
+                        "isAdjournmentResult": false,
+                        "isAvailableForCourtExtract": true,
+                        "isConvictedResult": false,
+                        "isDeleted": false,
+                        "isFinancialResult": false,
+                        "isNewAmendment": true,
+                        "isUnscheduled": false,
+                        "judicialResultId": "e806965b-c96a-418f-b45f-72a214391cb7",
+                        "judicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+                        "label": "Application refused",
+                        "lastSharedDateTime": "2025-10-07",
+                        "level": "O",
+                        "lifeDuration": false,
+                        "orderedDate": "2025-10-07",
+                        "orderedHearingId": "0c845639-44cf-4329-9732-f9ce6d40ba1c",
+                        "postHearingCustodyStatus": "A",
+                        "preserveActiveOrder": false,
+                        "publishedAsAPrompt": false,
+                        "publishedForNows": false,
+                        "rank": 212300,
+                        "resultText": "RFSD - Application refused",
+                        "resultWording": "",
+                        "rollUpPrompts": true,
+                        "rootJudicialResultId": "e806965b-c96a-418f-b45f-72a214391cb7",
+                        "rootJudicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+                        "terminatesOffenceProceedings": false,
+                        "urgent": false,
+                        "usergroups": [],
+                        "welshLabel": "Gwrthodwyd y cais"
+                    }
+                ],
+                "respondents": [
+                    {
+                        "id": "5a00b248-8a3c-4c80-97c6-bd47671be41e",
+                        "masterDefendant": {
+                            "defendantCase": [
+                                {
+                                    "caseId": "705c84ec-b34f-40b9-8e2f-2a0c2b585ec5",
+                                    "caseReference": "28DI975224",
+                                    "defendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7"
+                                }
+                            ],
+                            "masterDefendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7",
+                            "personDefendant": {
+                                "arrestSummonsNumber": "2333R909652306",
+                                "bailStatus": {
+                                    "code": "A",
+                                    "description": "Not applicable",
+                                    "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                                },
+                                "driverNumber": "VANFL002222OW9PI",
+                                "personDetails": {
+                                    "address": {
+                                        "address1": "9999H9999QQQJ",
+                                        "address2": "WplfoqqP",
+                                        "address3": "addressline 4",
+                                        "address4": "BtfgstQQ",
+                                        "address5": "Elfo",
+                                        "postcode": "YO43 4DF"
+                                    },
+                                    "contact": {
+                                        "home": "02012345679",
+                                        "mobile": "07771234568",
+                                        "primaryEmail": "test02@gmail.com"
+                                    },
+                                    "dateOfBirth": "1995-04-30",
+                                    "documentationLanguageNeeds": "ENGLISH",
+                                    "ethnicity": {
+                                        "observedEthnicityCode": "1",
+                                        "observedEthnicityDescription": "White",
+                                        "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                        "selfDefinedEthnicityCode": "W1",
+                                        "selfDefinedEthnicityDescription": "British",
+                                        "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                    },
+                                    "firstName": "CCT-2390caseextra",
+                                    "gender": "MALE",
+                                    "hearingLanguageNeeds": "ENGLISH",
+                                    "lastName": "matchdefendentscenarionew1",
+                                    "title": "Mr"
+                                },
+                                "policeBailStatus": {
+                                    "code": "C",
+                                    "description": "Custody",
+                                    "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                                }
+                            }
+                        },
+                        "notificationRequired": true,
+                        "summonsRequired": false
+                    }
+                ],
+                "subject": {
+                    "id": "5a00b248-8a3c-4c80-97c6-bd47671be41e",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "705c84ec-b34f-40b9-8e2f-2a0c2b585ec5",
+                                "caseReference": "28DI975224",
+                                "defendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7"
+                            }
+                        ],
+                        "masterDefendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "2333R909652306",
+                            "bailConditions": "",
+                            "bailStatus": {
+                                "code": "A",
+                                "description": "Not applicable",
+                                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+                            },
+                            "driverNumber": "VANFL002222OW9PI",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "9999H9999QQQJ",
+                                    "address2": "WplfoqqP",
+                                    "address3": "addressline 4",
+                                    "address4": "BtfgstQQ",
+                                    "address5": "Elfo",
+                                    "postcode": "YO43 4DF"
+                                },
+                                "contact": {
+                                    "home": "02012345679",
+                                    "mobile": "07771234568",
+                                    "primaryEmail": "test02@gmail.com"
+                                },
+                                "dateOfBirth": "1995-04-30",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "ethnicity": {
+                                    "observedEthnicityCode": "1",
+                                    "observedEthnicityDescription": "White",
+                                    "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                                    "selfDefinedEthnicityCode": "W1",
+                                    "selfDefinedEthnicityDescription": "British",
+                                    "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                                },
+                                "firstName": "CCT-2390caseextra",
+                                "gender": "MALE",
+                                "hearingLanguageNeeds": "ENGLISH",
+                                "lastName": "matchdefendentscenarionew1",
+                                "title": "Mr"
+                            },
+                            "policeBailStatus": {
+                                "code": "C",
+                                "description": "Custody",
+                                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "type": {
+                    "appealFlag": false,
+                    "applicantAppellantFlag": false,
+                    "applicationWording": "Application to reopen a case following conviction {1}. Original case number: {2}",
+                    "applicationWordingWelsh": "Cais i ailagor achos yn dilyn euogfarn <[am y trosedd <Original Offence>][am y troseddau <Original Offences>]>. Rhif yr Achos Gwreiddiol: <Original case number>",
+                    "boxworkNotifTemplate": "NOT_APPLICABLE",
+                    "breachType": "NOT_APPLICABLE",
+                    "categoryCode": "CR",
+                    "changeDate": "2025-03-17T10:29:09",
+                    "code": "MC80524",
+                    "commrOfOathFlag": false,
+                    "contestedFeeApplicable": false,
+                    "courtExtractAvlFlag": true,
+                    "courtOfAppealFlag": false,
+                    "exParte": false,
+                    "hearingCode": "APN",
+                    "id": "9d2ae0fe-d4d0-43ca-ab7a-7a2556cafe5e",
+                    "initialFeeApplicable": false,
+                    "jurisdiction": "MAGISTRATES",
+                    "lastModified": "2025-03-17T14:00:38.015Z",
+                    "legislation": "In accordance with section 142 of the Magistrates' Courts Act 1980.",
+                    "legislationWelsh": "Yn unol ag adran 142 Deddf Llysoedd Ynadon 1980.",
+                    "linkType": "SJP",
+                    "listingNotifTemplate": "POSTAL_NOTIFICATION",
+                    "offenceActiveOrder": "OFFENCE",
+                    "pleaApplicableFlag": true,
+                    "prosecutorThirdPartyFlag": true,
+                    "pssId": 601835,
+                    "sowRef": "APPS",
+                    "spiOutApplicableFlag": true,
+                    "summonsTemplateType": "NOT_APPLICABLE",
+                    "type": "Application to reopen case",
+                    "typeWelsh": "Cais i ailagor achos",
+                    "validFrom": "2000-01-06"
+                }
+            }
+        ],
+        "courtCentre": {
+            "address": {
+                "address1": "176A Lavender Hill",
+                "address2": "London",
+                "address3": "",
+                "address4": "",
+                "address5": "",
+                "postcode": "SW11 1JU"
+            },
+            "code": "B01LY00",
+            "courtHearingLocation": "B01LY01",
+            "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+            "lja": {
+                "ljaCode": "2577",
+                "ljaName": "South West London Magistrates' Court"
+            },
+            "name": "Lavender Hill Magistrates' Court",
+            "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+            "roomName": "Courtroom 01"
+        },
+        "defendantAttendance": [
+            {
+                "attendanceDays": [
+                    {
+                        "attendanceType": "NOT_PRESENT",
+                        "day": "2025-10-07"
+                    }
+                ],
+                "defendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7"
+            }
+        ],
+        "hasSharedResults": true,
+        "hearingDays": [
+            {
+                "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+                "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+                "hasSharedResults": true,
+                "isCancelled": false,
+                "listedDurationMinutes": 20,
+                "listingSequence": 0,
+                "sittingDay": "2025-10-07T09:00:00.000Z"
+            }
+        ],
+        "hearingLanguage": "ENGLISH",
+        "id": "0c845639-44cf-4329-9732-f9ce6d40ba1c",
+        "jurisdictionType": "MAGISTRATES",
+        "shadowListedOffences": [],
+        "type": {
+            "description": "Application",
+            "id": "3449743b-95d6-4836-8941-57f588b52068"
+        }
+    },
+    "hearingDay": "2025-10-07",
+    "isReshare": false,
+    "sharedTime": "2025-10-07T14:27:20.048Z"
+}

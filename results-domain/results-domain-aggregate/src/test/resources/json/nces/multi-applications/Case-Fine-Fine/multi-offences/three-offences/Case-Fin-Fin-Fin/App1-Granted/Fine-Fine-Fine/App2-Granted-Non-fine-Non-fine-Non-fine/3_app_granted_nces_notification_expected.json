@@ -1,0 +1,44 @@
+{
+  "caseReferences": "SJ918778267",
+  "dateDecisionMade": "2025-07-16",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmUFO2hSmithIAkjp@email.com",
+  "defendantName": "FlmUFO2h SmithIAkjp",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "Vehicle Excise Back Duty\nAmount of back duty £340.30\nExcise penalty\nAmount of excise penalty £220.00\nCompensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nSurcharge\nAmount of surcharge £176.00\nPay by date\nDate to pay in full by 30/07/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+      "title": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "details": "Fine\nAmount of fine £220.00\nCompensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+      "title": "Cause use of motor vehicle with no insurance"
+    },
+    {
+      "details": "Fine\nAmount of fine £220.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd",
+      "title": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "isSJPHearing": true,
+  "isWriteOff": false,
+  "masterDefendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN REFUSED"
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="CCR" id="1" logicalFilePath="011-rename-column-plea-to-pleaValue-and-add-plea_date-in-hearing-result-table.xml">
+
+        <renameColumn tableName="hearing_result" oldColumnName="plea" newColumnName="plea_value"/>
+
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="011-rename-column-plea-to-pleaValue-and-add-plea_date-in-hearing-result-table.xml">
+
+        <addColumn tableName="hearing_result">
+            <column name="plea_date" type="DATE"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

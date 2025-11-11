@@ -1,0 +1,58 @@
+{
+  "amendmentDate": "2025-02-27",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "29NS7409493",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Philip Moen",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £13.00 to Abellio Greater Anglia Ltd\nFO - Fine\nFined £101.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f65e6978-27b4-4767-9f22-d6baea7c23a7",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £101.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "15219c19-ca2f-48d3-89b4-75d1227157ea",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "09118f04-e2e3-468e-929f-28e96edf8b77",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £13.00 to Abellio Greater Anglia Ltd\nFO - Fine\nFined £103.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f65e6978-27b4-4767-9f22-d6baea7c23a7",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £104.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "15219c19-ca2f-48d3-89b4-75d1227157ea",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

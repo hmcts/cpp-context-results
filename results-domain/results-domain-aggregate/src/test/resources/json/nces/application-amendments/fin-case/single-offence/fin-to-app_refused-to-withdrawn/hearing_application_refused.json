@@ -1,0 +1,349 @@
+{
+  "hearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "fe4f9a2e-612c-447e-b933-249546a0ab99",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "42e34281-95be-4dcd-931d-cb1a80dd5062",
+                "caseReference": "28NS5751349",
+                "defendantId": "53e5602c-e4b3-4866-8758-c65babf505a1"
+              }
+            ],
+            "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01125751349",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9899AAAA",
+                  "address2": "Woodlane4",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon",
+                  "postcode": "BS1 1JQ"
+                },
+                "contact": {
+                  "home": "0205751349",
+                  "mobile": "07775751349",
+                  "primaryEmail": "firstName.lastName5751349@gmail.com"
+                },
+                "dateOfBirth": "1972-11-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Benny",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Dickens",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2025-03-05",
+        "applicationReference": "28NS5751349",
+        "applicationStatus": "UN_ALLOCATED",
+        "commissionerOfOath": false,
+        "courtApplicationCases": [
+          {
+            "caseStatus": "INACTIVE",
+            "isSJP": false,
+            "offences": [
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "1578c199-34f0-43ba-ad00-fbd3faf31611",
+                "isDisposed": false,
+                "listingNumber": 1,
+                "maxPenalty": "EW:6M &/or Ultd Fine",
+                "modeOfTrial": "Either Way",
+                "offenceCode": "TH68010",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "c8b42f54-833a-37de-982e-e62fca7540dd",
+                "offenceLegislation": "Contrary to section 1(1) and 7 of the Theft    Act 1968.",
+                "offenceLegislationWelsh": "Yn groes i adran 1(1) a 7 Deddf Dwyn 1968.",
+                "offenceTitle": "Theft from a shop",
+                "offenceTitleWelsh": "Dwyn o siop - siop-ladrad",
+                "orderIndex": 1,
+                "proceedingsConcluded": true,
+                "startDate": "2019-11-28",
+                "wording": "Theft of pedal cycle."
+              }
+            ],
+            "prosecutionCaseId": "42e34281-95be-4dcd-931d-cb1a80dd5062",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "Finance Operations",
+                "address2": "C3 East",
+                "address3": "DVLA",
+                "address4": "Longview Road",
+                "address5": "Swansea",
+                "postcode": "SA6 7JL"
+              },
+              "contact": {
+                "primaryEmail": "sjp@dvla.gov.uk"
+              },
+              "majorCreditorCode": "DVL2",
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityName": "Driver and Vehicle Licensing Agency",
+              "prosecutionAuthorityOUCode": "G94DV00",
+              "caseURN": "28NS5751349"
+            }
+          }
+        ],
+        "id": "af79cc53-5df0-4088-8b63-760dcf5024b3",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "courtClerk": {
+              "firstName": "Emma",
+              "lastName": "Cleaner",
+              "userId": "2781b565-4514-4805-8744-a3e827f0f611"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "d8f70313-b37c-4581-9fad-60ab837a53ca",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "318c9eb2-cf3c-4592-a353-1b2166c15f81",
+                "label": "Reasons",
+                "promptReference": "reasons",
+                "promptSequence": 100,
+                "type": "TXT",
+                "usergroups": [],
+                "value": "Refused fro fun",
+                "welshLabel": "Rhesymau",
+                "welshValue": "Refused fro fun"
+              }
+            ],
+            "judicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+            "label": "Application refused",
+            "lastSharedDateTime": "2025-03-05",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2025-03-05",
+            "orderedHearingId": "23c7b247-ee56-4020-b833-df77eef98959",
+            "postHearingCustodyStatus": "A",
+            "preserveActiveOrder": false,
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 212300,
+            "resultText": "RFSD - Application refused\nReasons: Refused fro fun.",
+            "resultWording": "",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "d8f70313-b37c-4581-9fad-60ab837a53ca",
+            "rootJudicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Gwrthodwyd y cais"
+          }
+        ],
+        "subject": {
+          "id": "fe4f9a2e-612c-447e-b933-249546a0ab99",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "42e34281-95be-4dcd-931d-cb1a80dd5062",
+                "caseReference": "28NS5751349",
+                "defendantId": "53e5602c-e4b3-4866-8758-c65babf505a1"
+              }
+            ],
+            "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01125751349",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "A",
+                "description": "Not applicable",
+                "id": "86009c70-759d-3308-8de4-194886ff9a77"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9899AAAA",
+                  "address2": "Woodlane4",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon",
+                  "postcode": "BS1 1JQ"
+                },
+                "contact": {
+                  "home": "0205751349",
+                  "mobile": "07775751349",
+                  "primaryEmail": "firstName.lastName5751349@gmail.com"
+                },
+                "dateOfBirth": "1972-11-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "White",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Benny",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Dickens",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "thirdParties": [
+          {
+            "id": "5d13402a-ce7e-4726-bd18-7b538354e86e",
+            "notificationRequired": true,
+            "prosecutingAuthority": {
+              "address": {
+                "address1": "Finance Operations",
+                "address2": "C3 East",
+                "address3": "DVLA",
+                "address4": "Longview Road",
+                "address5": "Swansea",
+                "postcode": "SA6 7JL"
+              },
+              "contact": {
+                "primaryEmail": "sjp@dvla.gov.uk"
+              },
+              "majorCreditorCode": "DVL2",
+              "name": "Driver and Vehicle Licensing Agency",
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityOUCode": "G94DV00"
+            },
+            "summonsRequired": true
+          }
+        ],
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CO",
+          "code": "MC80524",
+          "commrOfOathFlag": false,
+          "contestedFeeApplicable": false,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "exParte": false,
+          "hearingCode": "APN",
+          "id": "44c238d9-3bc2-3cf3-a2eb-a7d1437b8383",
+          "initialFeeApplicable": false,
+          "jurisdiction": "MAGISTRATES",
+          "lastModified": "2022-03-15T15:16:53.761Z",
+          "legislation": "In accordance with section 142 of the Magistrates' Courts Act 1980.",
+          "legislationWelsh": "Yn unol ag adran 142 Deddf Llysoedd Ynadon 1980.",
+          "linkType": "SJP",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": true,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Application to reopen case",
+          "typeWelsh": "Cais i ailagor achos"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2025-03-05"
+          }
+        ],
+        "defendantId": "53e5602c-e4b3-4866-8758-c65babf505a1"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2025-03-05T10:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "23c7b247-ee56-4020-b833-df77eef98959",
+    "jurisdictionType": "MAGISTRATES",
+    "shadowListedOffences": [],
+    "type": {
+      "description": "Application",
+      "id": "3449743b-95d6-4836-8941-57f588b52068"
+    }
+  },
+  "hearingDay": "2025-03-05",
+  "isReshare": false,
+  "sharedTime": "2025-03-05T17:55:43.892Z"
+}

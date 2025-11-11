@@ -1,0 +1,535 @@
+{
+  "hearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "d2d93ab6-5685-43fc-a17d-169da38f0004",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "663fa8a6-42eb-4699-9901-b81bc47eddb8",
+                "caseReference": "10GD8307236",
+                "defendantId": "a6fa1101-52fd-45fb-b6e1-ab74ba0c78a0"
+              }
+            ],
+            "masterDefendantId": "a6fa1101-52fd-45fb-b6e1-ab74ba0c78a0",
+            "personDefendant": {
+              "arrestSummonsNumber": "TFL",
+              "driverNumber": "MORGA657054SM9BF",
+              "personDetails": {
+                "address": {
+                  "address1": "56saon",
+                  "address2": "56Police House",
+                  "address3": "StreetDescription1",
+                  "address4": "Locality1",
+                  "address5": "Town2",
+                  "postcode": "TW14 9XD"
+                },
+                "contact": {
+                  "home": "09998021888",
+                  "mobile": "09998021889",
+                  "primaryEmail": "robert@gmail.com"
+                },
+                "dateOfBirth": "1990-09-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Syble",
+                "gender": "MALE",
+                "lastName": "Lucienne",
+                "occupation": "Occupation0",
+                "occupationCode": "50",
+                "specificRequirements": "SpecialNeeds0",
+                "title": "MR"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2024-09-05",
+        "applicationReference": "ZMEXBH781F",
+        "applicationStatus": "FINALISED",
+        "courtApplicationCases": [
+          {
+            "caseStatus": "INACTIVE",
+            "isSJP": true,
+            "offences": [
+              {
+                "chargeDate": "2018-05-30",
+                "count": 499,
+                "endDate": "2018-08-05",
+                "id": "eb4146cb-39f9-4ed3-ba86-088d2954a937",
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "cjsCode": "1017",
+                    "d20": false,
+                    "dvlaCode": "J",
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isFinancialResult": false,
+                    "isUnscheduled": false,
+                    "judicialResultId": "b9c6047b-fb84-4b12-97a1-2175e4b8bbac",
+                    "judicialResultTypeId": "b9c6047b-fb84-4b12-97a1-2175e4b8bbac",
+                    "label": "Absolute discharge",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-09-18",
+                    "orderedHearingId": "1b4b7021-04e9-4c18-8998-9dd411cfb184",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 53800,
+                    "resultText": "Absolute discharge",
+                    "resultWording": "",
+                    "rollUpPrompts": true,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "welshLabel": "Rhyddhad diamod"
+                  },
+                  {
+                    "alwaysPublished": false,
+                    "canBeSubjectOfBreach": false,
+                    "canBeSubjectOfVariation": false,
+                    "category": "FINAL",
+                    "cjsCode": "3012",
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": true,
+                    "isConvictedResult": true,
+                    "isFinancialResult": true,
+                    "isUnscheduled": false,
+                    "judicialResultId": "ae89b99c-e0e3-47b5-b218-24d4fca3ca53",
+                    "judicialResultPrompts": [
+                      {
+                        "courtExtract": "Y",
+                        "durationSequence": 0,
+                        "isFinancialImposition": true,
+                        "judicialResultPromptTypeId": "26985e5b-fe1f-4d7d-a21a-57207c5966e7",
+                        "label": "Amount of compensation",
+                        "promptReference": "AOCOM",
+                        "promptSequence": 100,
+                        "type": "CURR",
+                        "usergroups": [],
+                        "value": "£4.00",
+                        "welshLabel": "Swm yr iawndal"
+                      },
+                      {
+                        "courtExtract": "N",
+                        "durationSequence": 0,
+                        "isFinancialImposition": false,
+                        "judicialResultPromptTypeId": "af921cf4-06e7-4f6b-a4ea-dcb58aab0dbe",
+                        "label": "Major creditor organisation name",
+                        "promptReference": "cREDNAMEOrganisationName",
+                        "promptSequence": 300,
+                        "type": "NAMEADDRESS",
+                        "usergroups": [],
+                        "value": "Driver and Vehicle Licensing Agency"
+                      }
+                    ],
+                    "judicialResultTypeId": "ae89b99c-e0e3-47b5-b218-24d4fca3ca53",
+                    "label": "Compensation",
+                    "level": "O",
+                    "lifeDuration": false,
+                    "orderedDate": "2024-09-18",
+                    "orderedHearingId": "1b4b7021-04e9-4c18-8998-9dd411cfb184",
+                    "postHearingCustodyStatus": "A",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 72900,
+                    "resultDefinitionGroup": "Imposition",
+                    "resultText": "Compensation\nAmount of compensation £4.00\nMajor creditor organisation name Driver and Vehicle Licensing Agency",
+                    "rollUpPrompts": true,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "welshLabel": "Iawndal"
+                  }
+                ],
+                "notifiedPlea": {
+                  "notifiedPleaDate": "2024-09-18",
+                  "notifiedPleaValue": "NO_NOTIFICATION",
+                  "offenceId": "eb4146cb-39f9-4ed3-ba86-088d2954a937"
+                },
+                "offenceCode": "CA03014",
+                "offenceDateCode": 3,
+                "offenceDefinitionId": "b86778e9-bf52-3b40-9549-a8710c2e77cb",
+                "offenceFacts": {
+                  "alcoholReadingAmount": 500,
+                  "alcoholReadingMethodCode": "A",
+                  "vehicleRegistration": "TE4654"
+                },
+                "offenceLegislation": "Contrary to section 366(8)(b) and (9) of the Communications Act 2003.",
+                "offenceTitle": "Fail / refuse give assistance to person executing Communications Act search warrant",
+                "orderIndex": 0,
+                "startDate": "2018-05-04",
+                "wording": "Has a violent past and fear that he will commit further offences and\n                interfere with witnesse"
+              }
+            ],
+            "prosecutionCaseId": "663fa8a6-42eb-4699-9901-b81bc47eddb8",
+            "prosecutionCaseIdentifier": {
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityReference": "10GD8307236"
+            }
+          }
+        ],
+        "id": "50a5c85c-f050-49b0-8c7b-6c33851ecad2",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "3049",
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isFinancialResult": false,
+            "isUnscheduled": false,
+            "judicialResultId": "e2f6e11b-c3a2-4e76-8d29-fbede4174988",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "7b6ef0ac-2d0b-44e5-a68e-4720b96cc679",
+                "label": "Statutory declaration made under",
+                "promptReference": "statutoryDeclarationMadeUnder",
+                "promptSequence": 100,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "Section 14 of the Magistrates' Courts Act 1980"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "36e32c50-dbec-41c4-904b-25eb20c9c54a",
+                "label": "Financial penalties to be written off",
+                "promptReference": "financialPenaltiesToBeWrittenOff",
+                "promptSequence": 300,
+                "type": "BOOLEAN",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Prosecuting Authorities",
+                  "Probation",
+                  "YOTs"
+                ],
+                "value": "true"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "9c57c174-e939-49e9-8e14-f4ecda7d6483",
+                "label": "Vehicle registration mark (mandatory for road tax & CIE cases)",
+                "promptReference": "vehicleRegistrationMarkMandatoryForRoadTaxCIECases",
+                "promptSequence": 600,
+                "type": "TXT",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Prosecuting Authorities",
+                  "Probation",
+                  "YOTs"
+                ],
+                "value": "TE4654"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "Driver and Vehicle Licensing Agency"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "Finance Operations"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "C3 East"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "DVLA"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "Longview Road"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "Swansea"
+              },
+              {
+                "courtExtract": "N",
+                "durationSequence": 0,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0a7dd6aa-f7cc-43d7-ba03-c9621f3e4471",
+                "label": "Prosecutor to be notified organisation name",
+                "promptReference": "prosecutortobenotifiedOrganisationName",
+                "promptSequence": 500,
+                "type": "NAMEADDRESS",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "SA6 7JL"
+              }
+            ],
+            "judicialResultTypeId": "e2f6e11b-c3a2-4e76-8d29-fbede4174988",
+            "label": "Statutory Declaration",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-18",
+            "orderedHearingId": "1b4b7021-04e9-4c18-8998-9dd411cfb184",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 140000,
+            "resultDefinitionGroup": "Enforcement",
+            "resultText": "Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980\nFinancial penalties to be written off true\nVehicle registration mark (mandatory for road tax & CIE cases) TE4654\nProsecutor to be notified organisation name Driver and Vehicle Licensing Agency\nProsecutor to be notified organisation name Finance Operations\nProsecutor to be notified organisation name C3 East\nProsecutor to be notified organisation name DVLA\nProsecutor to be notified organisation name Longview Road\nProsecutor to be notified organisation name Swansea\nProsecutor to be notified organisation name SA6 7JL",
+            "rollUpPrompts": true,
+            "terminatesOffenceProceedings": false,
+            "urgent": false
+          }
+        ],
+        "subject": {
+          "id": "d2d93ab6-5685-43fc-a17d-169da38f0004",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "663fa8a6-42eb-4699-9901-b81bc47eddb8",
+                "caseReference": "10GD8307236",
+                "defendantId": "a6fa1101-52fd-45fb-b6e1-ab74ba0c78a0"
+              }
+            ],
+            "masterDefendantId": "a6fa1101-52fd-45fb-b6e1-ab74ba0c78a0",
+            "personDefendant": {
+              "arrestSummonsNumber": "TFL",
+              "driverNumber": "MORGA657054SM9BF",
+              "personDetails": {
+                "address": {
+                  "address1": "56saon",
+                  "address2": "56Police House",
+                  "address3": "StreetDescription1",
+                  "address4": "Locality1",
+                  "address5": "Town2",
+                  "postcode": "TW14 9XD"
+                },
+                "contact": {
+                  "home": "09998021888",
+                  "mobile": "09998021889",
+                  "primaryEmail": "robert@gmail.com"
+                },
+                "dateOfBirth": "1990-09-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "firstName": "Syble",
+                "gender": "MALE",
+                "lastName": "Lucienne",
+                "occupation": "Occupation0",
+                "occupationCode": "50",
+                "specificRequirements": "SpecialNeeds0",
+                "title": "MR"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "thirdParties": [
+          {
+            "id": "b7a17530-1281-4cc9-87de-a1cb16bf46d9",
+            "notificationRequired": true,
+            "prosecutingAuthority": {
+              "address": {
+                "address1": "Finance Operations",
+                "address2": "C3 East",
+                "address3": "DVLA",
+                "address4": "Longview Road",
+                "address5": "Swansea",
+                "postcode": "SA6 7JL"
+              },
+              "majorCreditorCode": "DVL2",
+              "name": "Driver and Vehicle Licensing Agency",
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityOUCode": "G94DV00",
+              "welshName": "Asiantaeth Trwyddedu Gyrwyr a Cherbydau"
+            },
+            "summonsRequired": true
+          }
+        ],
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CR",
+          "code": "MC80528",
+          "commrOfOathFlag": true,
+          "contestedFeeApplicable": false,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "exParte": false,
+          "hearingCode": "APN",
+          "id": "7375727f-30fc-3f55-99f3-36adc4f0e70e",
+          "initialFeeApplicable": false,
+          "jurisdiction": "MAGISTRATES",
+          "lastModified": "2022-03-15T15:16:58.722Z",
+          "legislation": "In accordance with section 16E of the Magistrates' Courts Act 1980.",
+          "legislationWelsh": "Yn unol ag adran 16E Deddf Llysoedd Ynadon 1980.",
+          "linkType": "SJP",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": true,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Appearance to make statutory declaration (SJP case)",
+          "typeWelsh": "Ymddangos i wneud datganiad statudol (achos gweithdrefn un ynad - SJP)"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "Lavender Hill Magistrates' Court",
+        "welshLjaName": "Llys Ynadon Lavender Hill"
+      },
+      "name": "Lavender Hill Magistrates' Court"
+    },
+    "hasSharedResults": false,
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 360,
+        "sittingDay": "2024-09-18T11:49:20.503Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "1b4b7021-04e9-4c18-8998-9dd411cfb184",
+    "isBoxHearing": false,
+    "isSJPHearing": true,
+    "jurisdictionType": "MAGISTRATES"
+  },
+  "hearingDay": "2024-09-18",
+  "sharedTime": "2024-09-18T11:49:29.716Z"
+}

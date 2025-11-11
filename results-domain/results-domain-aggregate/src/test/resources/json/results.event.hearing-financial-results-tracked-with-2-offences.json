@@ -1,0 +1,43 @@
+{
+  "createdTime": "2024-04-03T15:53:46.831Z",
+  "hearingFinancialResultRequest": {
+    "accountCorrelationId": "ACCOUNT_CORRELATION_ID",
+    "accountDivisionCode": "77",
+    "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+    "defendantContactNumber": "0204698530",
+    "defendantDateOfBirth": "1994-02-04",
+    "defendantEmail": "REDDY.TEST014698530@gmail.com",
+    "defendantName": "Adrain Kirstin",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "4c160a89-546b-4907-9948-86f4ca6b1957",
+    "hearingSittingDay": "2024-04-04T11:00:00.000Z",
+    "masterDefendantId": "MASTER_DEFENDANT_ID",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "isSJPHearing": "false",
+    "offenceResults": [{
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Granted",
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/04/2024.",
+      "isFinancial": true,
+      "dateOfResult": "2024-04-19",
+      "resultCode": "G",
+      "isDeemedServed": false
+    }, {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Case reopened",
+      "offenceId": "OFFENCE_RESULTS_ID",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/04/2024.",
+      "isFinancial": true,
+      "dateOfResult": "2024-04-19",
+      "resultCode": "ROPENED",
+      "isDeemedServed": false
+    }
+    ],
+    "prosecutionCaseReferences": [
+      "10GD7695500"
+    ]
+  }
+}

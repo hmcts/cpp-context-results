@@ -1,0 +1,46 @@
+{
+  "amendmentDate": "2025-04-28",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI2333934",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Nola Jones",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £444.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 29/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e175d4-021d-4eaf-b27c-49b0d1d0983f",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "032ac212-e6b4-4bca-bbac-60469c0a26c2",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Next hearing",
+      "Next hearing in magistrates' court"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £444.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 29/06/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25e175d4-021d-4eaf-b27c-49b0d1d0983f",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

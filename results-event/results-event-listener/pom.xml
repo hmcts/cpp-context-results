@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>results-event</artifactId>
+        <groupId>uk.gov.moj.cpp.results</groupId>
+        <version>17.0.81-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>results-event-listener</artifactId>
+    <properties>
+        <cpp.service-component>EVENT_LISTENER</cpp.service-component>
+    </properties>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.common</groupId>
+            <artifactId>event-listener</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>results-viewstore-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>uk.gov.justice.services</groupId>
+            <artifactId>test-utils-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.gov.moj.cpp.results</groupId>
+            <artifactId>test-utilities</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- MI schema contract validation tests jar dependency-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <artifactId>mireportdata-results-event-listener</artifactId>
+                                    <groupId>uk.gov.moj.cpp.mi.reportdata</groupId>
+                                    <version>RELEASE</version>
+                                    <classifier>tests</classifier>
+                                    <type>test-jar</type>
+                                    <outputDirectory>${project.build.directory}/test-classes
+                                    </outputDirectory>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

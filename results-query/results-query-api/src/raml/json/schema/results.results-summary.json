@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hearingId": {
+            "type": "string"
+          },
+          "hearingType": {
+            "type": "string"
+          },
+          "hearingDate": {
+            "type": "string"
+          },
+          "urns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "defendant": {
+            "type": "object",
+            "properties": {
+              "personId": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "hearingId",
+          "hearingType",
+          "hearingDate",
+          "urns",
+          "defendant"
+        ]
+      }
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

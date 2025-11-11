@@ -1,0 +1,108 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel7239222 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Edmund Ebert",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b04235e6-1f74-48c4-9b7e-0d020079936a",
+  "hearingSittingDay": "2025-03-06T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "a8995c85-1766-4e5e-9c4d-5034c37b0d49",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "c1488aaa-8ef4-406c-a657-5183ea9d7a7e",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £54.00\nFVS - Surcharge\nTo pay a surcharge of £12.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £10.00 to be paid monthly. Instalment start date: 16/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "c1488aaa-8ef4-406c-a657-5183ea9d7a7e",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £64.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "6c46c6c8-6deb-41ff-b389-61e983bb315e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "c1488aaa-8ef4-406c-a657-5183ea9d7a7e",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £54.00\nFVS - Surcharge\nTo pay a surcharge of £12.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £10.00 to be paid monthly. Instalment start date: 16/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "offenceTitle": "Robbery",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationId": "c1488aaa-8ef4-406c-a657-5183ea9d7a7e",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £64.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "6c46c6c8-6deb-41ff-b389-61e983bb315e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £54.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £12.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "6a1b94cc-47eb-4434-ad1d-510cb194fcde",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £64.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "6c46c6c8-6deb-41ff-b389-61e983bb315e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7239222"
+  ]
+}

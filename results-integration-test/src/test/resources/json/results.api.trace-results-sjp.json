@@ -1,0 +1,49 @@
+{
+  "hearingId": "HEARING_ID",
+  "masterDefendantId": "MASTER_DEFENDANT_ID",
+  "defendantName": "John Doe",
+  "accountCorrelationId": "CORRELATION_ID",
+  "accountDivisionCode": "DIV01",
+  "hearingSittingDay": "HEARING_SITTING_DAY",
+  "hearingCourtCentreName": "HEARING_COURT_CENTRE_NAME",
+  "defendantDateOfBirth": "DEFENDANT_DATE_OF_BIRTH",
+  "defendantAddress": "DEFENDANT_ADDRESS",
+  "defendantEmail": "DEFENDANT_EMAIL",
+  "defendantContactNumber": "DEFENDANT_CONTACT_NUMBER",
+  "prosecutionCaseReferences": [
+    "REF1",
+    "REF2"
+  ],
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82d7",
+      "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
+      "offenceTitle": "Title 1",
+      "resultCode": "CODE01",
+      "dateOfResult": "01/01/2021",
+      "isFinancial" : FINANCIAL,
+      "isDeemedServed" : DEEMED_SERVED
+    },
+    {
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82e7",
+      "offenceId": "a02df768-a722-4b0e-b851-7496e13b82e8",
+      "offenceTitle": "Title 2",
+      "resultCode": "ACON",
+      "dateOfResult": "01/01/2021",
+      "impositionOffenceDetails": "Amount of surcharge: £115",
+      "isFinancial" : FINANCIAL,
+      "isDeemedServed" : DEEMED_SERVED
+    },
+    {
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82f7",
+      "offenceId": "a02df768-a722-4b0e-b851-7496e13b82f8",
+      "offenceTitle": "Title 3",
+      "resultCode": "ACON",
+      "dateOfResult": "01/01/2021",
+      "impositionOffenceDetails": "Amount of surcharge: £200",
+      "isFinancial" : FINANCIAL,
+      "isDeemedServed" : DEEMED_SERVED
+    }
+  ]
+}

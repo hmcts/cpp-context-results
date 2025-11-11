@@ -1,0 +1,19 @@
+{
+  "applicationResult": "NEXH --",
+  "caseReferences": "28NS3726212",
+  "dateDecisionMade": "2025-03-05",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203726212",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3726212@gmail.com",
+  "defendantName": "Janis Nikolaus",
+  "divisionCode": "47",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "isWriteOff": false,
+  "masterDefendantId": "93cb9ee4-0eae-41fe-b58b-384447979185",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN UPDATED"
+}

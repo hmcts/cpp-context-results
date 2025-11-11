@@ -1,0 +1,5 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informant-register-document-request.json",
+  "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDocumentRequest.json"
+}

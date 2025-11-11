@@ -1,0 +1,44 @@
+{
+  "hearingId": "df3ee5a2-3ffa-4cfc-bc39-c1632bfaba7c",
+  "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+  "defendantName": "Hermina Armstrong",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantAddress": "n Fisher Tunnel1912790 South Lillie Avon DA6 7ND",
+  "defendantEmail": "firstName.lastName1070802@gmail.com",
+  "defendantContactNumber": "987-204-0324",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI1912790"
+  ],
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-03-12T10:00:00.000Z",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Withdrawn",
+      "offenceId": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
+      "offenceTitle": "Robbery",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationId": "8ef619c9-f391-4fca-b532-62e8c017e4b9",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "WDRN",
+      "isDeemedServed": false,
+      "isFinancial": false
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Withdrawn",
+      "offenceId": "2f98bfeb-26c3-4b52-b7eb-daea9bb02df7",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationId": "8ef619c9-f391-4fca-b532-62e8c017e4b9",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "WDRN",
+      "isDeemedServed": false,
+      "isFinancial": false
+    }
+  ]
+}

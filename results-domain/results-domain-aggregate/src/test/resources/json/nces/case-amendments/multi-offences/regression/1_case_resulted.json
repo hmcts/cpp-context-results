@@ -1,0 +1,42 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "799 StreetDescription Locality2O CR0 1XB",
+  "defendantDateOfBirth": "1970-01-14",
+  "defendantName": "Cooper Langosh",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "8c98095e-239f-4a98-a05b-7ce44538108a",
+  "hearingSittingDay": "2025-07-31T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "c0e68cfb-bc7c-418a-b2c0-df72f1de26bf",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "FCPC - Costs to Crown Prosecution Service\nTo pay costs of £500.00 to the Crown Prosecution Service, FCOMP - Compensation\nTo pay compensation of £500.00. , FVS - Surcharge\nTo pay a surcharge of £114.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 13/03/2027. \nPR - Programme\nProgramme Requirement: Participate in an accredited programme for 12 Days. \nRAR - Rehabilitation activity\nRehabilitation Activity Requirement: Offender to comply with any instructions of the responsible officer to attend appointments (with the responsible officer or someone else nominated by them), or to participate in any activity as required by the responsible officer up to a maximum of 12 Days. \nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 12 Hours within the next twelve months. This work will be supervised by the responsible officer.\nRESTRAO - Restraining order\nRestraining order made for the defendant in the following terms: test. This order lasts until 13/09/2027. This order is made on conviction.\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £50.00 to be paid monthly. Instalment start date: 31/07/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "5f1b6fc4-8d57-4dc1-a0a5-e2adb1932c32",
+      "offenceTitle": "Engage in activity requiring a licence when not a licensee"
+    },
+    {
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "Financial imposition1",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "6f1b6fc4-8d57-4dc1-a0a5-e2adb1932c32",
+      "offenceTitle": "Theft"
+    },
+    {
+      "dateOfResult": "2025-07-31",
+      "impositionOffenceDetails": "Financial imposition2",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "7f1b6fc4-8d57-4dc1-a0a5-e2adb1932c32",
+      "offenceTitle": "Robbery"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "BB8NYLHBIUS"
+  ]
+}

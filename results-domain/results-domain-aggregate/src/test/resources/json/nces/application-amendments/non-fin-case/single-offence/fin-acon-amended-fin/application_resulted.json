@@ -1,0 +1,91 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0207208379",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName7208379@gmail.com",
+  "defendantName": "Margret Waelchi",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b6a1fd15-7d31-4766-a610-2ea6e920329d",
+  "hearingSittingDay": "2025-03-06T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "cc577858-c539-4496-87c6-4cf18bc3896f",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "3270fef8-6622-40dc-8292-edbf6d3f6d22",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "3270fef8-6622-40dc-8292-edbf6d3f6d22",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "FO - Fine\nFined £1000.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Consolidated",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-06",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "b53f94b8-12cf-4acf-a7f9-c8ea41c644b4",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI7208379"
+  ]
+}

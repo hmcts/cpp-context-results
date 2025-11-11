@@ -1,0 +1,119 @@
+#%RAML 0.8
+title: Results Query view
+baseUri: http://localhost:8080/results-query-view/query/view/rest/results
+protocols: [ HTTP, HTTPS ]
+
+/informant-register/request/{requestStatus}:
+  uriParameters:
+        requestStatus:
+          description: informant register request status
+          type: string
+  get:
+      description: |
+        Return all the informant register document generation requests
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-request+json
+            name: results.query.informant-register-document-request
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-request+json:
+                    example:  !include json/results.query.informant-register-document-request.json
+                    schema:  !include json/schema/results.query.informant-register-document-request.json
+
+/informant-register/material/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular prosecution authority
+          type: string
+  get:
+      description: |
+        Return all the informant register document generation requests by material Id
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-by-material+json
+            name: results.query.informant-register-document-by-material
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-by-material+json:
+                    example:  !include json/results.query.informant-register-document-by-material.json
+                    schema:  !include json/schema/results.query.informant-register-document-by-material.json
+
+/informant-register/requestByDate:
+  get:
+      description: |
+        Return all the informant register document generation requests by request date
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.informant-register-document-by-request-date+json
+            name: results.query.informant-register-document-by-request-date
+        ...
+      queryParameters:
+          registerDate:
+            description: registerDate
+            type: string
+            required: true
+          prosecutionAuthorityCode:
+            description: comma seperated prosecution authorities
+            type: string
+            required: false
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.informant-register-document-by-request-date+json:
+                    example:  !include json/results.query.informant-register-document-by-request-date.json
+                    schema:  !include json/schema/results.query.informant-register-document-by-request-date.json
+
+/nces-email-notification/{materialId}:
+  uriParameters:
+        materialId:
+          description: material id for particular notification details
+          type: string
+  get:
+      description: |
+        Return the nces email notification details by material Id
+        ...
+        (mapping):
+            responseType: application/vnd.results.query.nces-email-notification-details+json
+            name: results.query.nces-email-notification-details
+        ...
+      responses:
+            200:
+                description: OK
+                body:
+                  application/vnd.results.query.nces-email-notification-details+json:
+                    example:  !include json/results.query.nces-email-notification-details.json
+                    schema:  !include json/schema/results.query.nces-email-notification-details.json
+
+/defendant-gob-account:
+   get:
+         description: |
+           Return latest account number by master defendant id & hearing Id
+           ...
+           (mapping):
+               responseType: application/vnd.results.query.defendant-gob-account+json
+               name: results.query.defendant-gob-account
+           ...
+         queryParameters:
+             masterDefendantId:
+               description: masterDefendantId
+               type: string
+               required: true
+             hearingId:
+                description: comma separated list of case reference(s)
+                type: string
+                required: true
+         responses:
+               200:
+                   description: OK
+                   body:
+                     application/vnd.results.query.defendant-gob-account+json
+                       example:  !include json/results.query.defendant-gob-account.json
+                       schema:  !include json/schema/results.query.defendant-gob-account.json

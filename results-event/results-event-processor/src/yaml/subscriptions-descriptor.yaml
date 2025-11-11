@@ -1,0 +1,68 @@
+subscriptions_descriptor:
+  spec_version: 1.0.0
+  service: results
+  service_component: EVENT_PROCESSOR
+  subscriptions:
+    - name: results event processor subscription
+      events:
+        - name: results.add-hearing-result
+          schema_uri: http://cpp.moj.gov.uk/results/json/schemas/event/results.add-hearing-result.json
+        - name: results.event.police-result-generated
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-result-generated.json
+        - name: results.event.police-notification-requested
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-notification-requested.json
+        - name: results.event.police-notification-requested-v2
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/police-notification-requested-v2.json
+        - name: results.hearing-results-added
+          schema_uri: http://justice.gov.uk/core/courts/hearing-results-added.json
+        - name: results.events.hearing-results-added-for-day
+          schema_uri: http://justice.gov.uk/core/courts/results.events.hearing-results-added-for-day.json
+        - name: results.event.hearing-financial-results-tracked
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/hearing-financial-results-tracked.json
+        - name: results.event.nces-email-notification-requested
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/nces-email-notification-requested.json
+        - name: results.event.nces-email-notification
+          schema_uri: http://justice.gov.uk/core/courts/results.event.nces-email-notification.json
+        - name: results.event.informant-register-generated
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
+        - name: results.event.informant-register-notified
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-notified.json
+        - name: results.event.appeal-update-notification-requested
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/results.event.appeal-update-notification-requested.json
+        - name: results.event.publish-to-dcs
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/results.event.publish-to-dcs.json
+
+      event_source_name: results
+
+    - name: public events
+      events:
+        - name: public.hearing.resulted
+          schema_uri: http://justice.gov.uk/hearing/courts/public.hearing-resulted.json
+
+        - name: public.events.hearing.hearing-resulted
+          schema_uri: http://justice.gov.uk/hearing/courts/public.events.hearing.hearing-resulted.json
+
+        - name: public.progression.events.case-or-application-ejected
+          schema_uri: http://justice.gov.uk/progression/courts/case-or-application-ejected
+
+        - name: public.stagingenforcement.enforce-financial-imposition-acknowledgement
+          schema_uri: http://cpp.moj.gov.uk/stagingenforcement/json/schema/event/public-enforce-financial-imposition-acknowledgement.json
+
+        - name: public.hearing.nces-email-notification-for-application
+          schema_uri: http://cpp.moj.gov.uk/hearing/json/schema/event/public.hearing.nces-email-notification-for-application.json
+
+        - name: material.material-added
+          schema_uri: http://justice.gov.uk/json/schemas/domains/public/material/material-added.json
+
+        - name: public.progression.defendant-address-changed
+          schema_uri: http://justice.gov.uk/core/courts/public.progression.defendant-address-changed.json
+
+        #System available doc generator
+        - name: public.systemdocgenerator.events.document-available
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/document-available.json
+
+        #System fail doc generator
+        - name: public.systemdocgenerator.events.generation-failed
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/generation-failed.json
+
+      event_source_name: public.event.source

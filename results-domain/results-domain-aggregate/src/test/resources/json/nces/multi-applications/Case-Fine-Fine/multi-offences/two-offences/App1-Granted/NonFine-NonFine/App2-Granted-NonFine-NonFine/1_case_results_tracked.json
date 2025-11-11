@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7629356 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Will Reynolds",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "e6aff1a6-ba1e-4ce7-b313-8510cfb1c15d",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "7b44692f-2249-4282-9408-4f56eaad1c89",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "31be7206-2c07-45cf-89be-eeac70beeb67",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "602ac4e2-318a-4dd9-befc-5763842445f8",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-27",
+            "isFinancial": true,
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £5000.00, FVS - Surcharge\nTo pay a surcharge of £444.00"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7629356"
+    ]
+}

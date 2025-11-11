@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="002-create-person-table.xml">
+        <createTable tableName="person">
+            <column name="id" type="uuid"/>
+            <column name="hearing_id" type="uuid"/>
+            <column name="first_name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="date_of_birth" type="DATETIME"/>
+            <column name="address_1" type="TEXT"/>
+            <column name="address_2" type="TEXT"/>
+            <column name="address_3" type="TEXT"/>
+            <column name="address_4" type="TEXT"/>
+            <column name="post_code" type="TEXT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="002-create-person-table.xml">
+        <addPrimaryKey tableName="person" columnNames="id, hearing_id"
+                       constraintName="person_pk"/>
+    </changeSet>
+
+</databaseChangeLog>

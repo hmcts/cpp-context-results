@@ -1,0 +1,142 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3594325 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Eden Von",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "ab784e72-cfbf-4a8b-9ec2-0defa7fb35f1",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "17a4833a-7daa-425f-b579-f425ee75453f",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "STAT_DEC",
+            "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "resultCode": "FIDICI",
+            "isDeemedServed": true,
+            "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £400.00.\nFO - Fine\nFined £3333.00\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/10/2025",
+            "isFinancial": true,
+            "isParentFlag": true
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+            "offenceTitle": "Robbery",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "3cbfe36f-dd74-48e6-ac1a-d6cf0443428c",
+            "isFinancial": false,
+            "isParentFlag": false,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "G - Granted"
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Granted",
+            "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FO - Fine\nFined £6666.00\nFVS - Surcharge\nTo pay a surcharge of £666.00",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "3cbfe36f-dd74-48e6-ac1a-d6cf0443428c",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "resultCode": "FIDICI",
+            "isDeemedServed": true,
+            "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £400.00.\nFO - Fine\nFined £3333.00\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/10/2025",
+            "isFinancial": true,
+            "isParentFlag": true
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+            "offenceTitle": "Robbery",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "3cbfe36f-dd74-48e6-ac1a-d6cf0443428c",
+            "isFinancial": false,
+            "isParentFlag": false,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "STDEC",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 16E of the Magistrates' Courts Act 1980. "
+        },
+        {
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Statutory Declaration",
+            "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "FO - Fine\nFined £6666.00\nFVS - Surcharge\nTo pay a surcharge of £666.00",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationId": "3cbfe36f-dd74-48e6-ac1a-d6cf0443428c",
+            "isFinancial": true,
+            "isParentFlag": true,
+            "dateOfResult": "2025-06-30",
+            "resultCode": "STDEC",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fined and detained in default of payment until court rises",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "resultCode": "FIDICI",
+            "isDeemedServed": true,
+            "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £400.00.",
+            "isFinancial": false,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Robbery",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £3333.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Fine",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FO - Fine\nFined £6666.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        },
+        {
+            "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+            "applicationType": "STAT_DEC",
+            "applicationResultType": "Surcharge",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £666.00",
+            "isFinancial": true,
+            "isParentFlag": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3594325"
+    ]
+}

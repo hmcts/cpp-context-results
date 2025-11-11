@@ -1,0 +1,45 @@
+{
+  "amendmentDate": "2025-07-15",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "48DI4492996",
+  "defendantDateOfBirth": "1979-11-11",
+  "defendantName": "Cordia Feeney",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £321455.00 to Person first name last name\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £5678.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "842d8777-fc3d-4662-9fe8-ef0ef45ea4bf"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4563.00, FO - Fine\nFined £100000.00, FVS - Surcharge\nTo pay a surcharge of £34567.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/06/2027",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
+  "materialId": "55969cae-30bc-4723-b5c9-fdd2ef68de1c",
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £321455.00 to Person first name last name, FO - Fine\nFined £8765.00\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £5678.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "842d8777-fc3d-4662-9fe8-ef0ef45ea4bf",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4563.00, FO - Fine\nFined £100000.00, FVS - Surcharge\nTo pay a surcharge of £34567.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/06/2027",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

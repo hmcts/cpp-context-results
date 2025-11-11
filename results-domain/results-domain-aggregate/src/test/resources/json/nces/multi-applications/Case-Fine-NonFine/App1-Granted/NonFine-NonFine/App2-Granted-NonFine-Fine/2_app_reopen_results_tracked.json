@@ -1,0 +1,75 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7582313 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Regan Bashirian",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "d921abbc-6c6a-48fe-a36e-4ded67c29167",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "d2d54c40-64c6-4450-b09f-cca97daec791",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/11/2025. \nEMW - Electronic monitoring whereabouts\nElectronic Monitoring of Whereabouts Requirement: The defendant's whereabouts are to be electronically monitored. Start date 11/04/2025. Start time 10:00. End date 12/04/2026. End time 11:00. Additional information",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "54b6b617-25cf-43db-91ca-e7600779dd0a",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/11/2025. \nEMW - Electronic monitoring whereabouts\nElectronic Monitoring of Whereabouts Requirement: The defendant's whereabouts are to be electronically monitored. Start date 11/04/2025. Start time 10:00. End date 12/04/2026. End time 11:00. Additional information",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "9054b8a6-7aaa-4a9c-9178-9f38c86dfc7d",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "0c57daa2-8e17-46b3-ae3c-c97f3448151f",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7582313"
+    ],
+    "accountCorrelationId": "{{accountCorrelationId}}"
+}

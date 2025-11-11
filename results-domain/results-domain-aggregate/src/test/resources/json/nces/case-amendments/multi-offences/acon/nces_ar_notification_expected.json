@@ -1,0 +1,32 @@
+{
+  "amendmentDate": "2025-10-20",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI2405263",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Michele Crona",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £40.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2027.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "85c21da8-865d-4bda-8ed8-57f0cb2fed6f",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 20/05/2026.\nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 30 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

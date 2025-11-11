@@ -1,0 +1,46 @@
+{
+  "caseReferences": "28NS3495440",
+  "dateDecisionMade": "2025-03-05",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203495440",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3495440@gmail.com",
+  "defendantName": "Janice Turner",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-03-05",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "67757b68-bf40-4728-8cb1-d40f0c0d2180",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isWriteOff": false,
+  "masterDefendantId": "792ff18d-696f-4141-8637-2852e87b8509",
+  "materialId": "a31afffd-2501-497a-a940-0a2259c22c49",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "67757b68-bf40-4728-8cb1-d40f0c0d2180",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

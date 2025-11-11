@@ -1,0 +1,83 @@
+{
+  "caseReferences": "GD07547764,GD80552485",
+  "dateDecisionMade": "2025-04-24",
+  "defendantAddress": "9999A9999AAAA Jeanne Run Port Rowenaport Avon DA61 7ND",
+  "defendantContactNumber": "826-791-2944",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Mariane Smitham",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "City of London Magistrates' Court",
+  "hearingSittingDay": "2025-04-24",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £1111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d2cb684c-ba37-428f-9f78-fae441405966",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £1111.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8eea3b75-4ad6-4f0c-88a2-43d58fc8189a",
+      "title": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "details": "FO - Fine\nFined £1111.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9941e0c8-cb64-4b37-9d7f-76352d498ca3",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £1111.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a3865b4f-600b-4d67-8dc2-665aa374af45",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "c5b31a5e-c951-4f2a-b08a-d123882f85ef",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £101.11 to Aldi Stores\nFO - Fine\nFined £101.23\nFVS - Surcharge\nTo pay a surcharge of £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d2cb684c-ba37-428f-9f78-fae441405966",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £101.23",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8eea3b75-4ad6-4f0c-88a2-43d58fc8189a",
+      "title": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "details": "FO - Fine\nFined £101.23",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9941e0c8-cb64-4b37-9d7f-76352d498ca3",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £101.23",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a3865b4f-600b-4d67-8dc2-665aa374af45",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

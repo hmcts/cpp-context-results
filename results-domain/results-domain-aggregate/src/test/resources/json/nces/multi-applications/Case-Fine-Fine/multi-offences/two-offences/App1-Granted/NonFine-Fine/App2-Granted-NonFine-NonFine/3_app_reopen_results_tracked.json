@@ -1,0 +1,74 @@
+{
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel9463535 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Winifred Kuvalis",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "58cbb53f-3f5b-438e-b7f0-aee47559fe83",
+    "hearingSittingDay": "2025-07-07T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "373515e0-14d9-4008-b208-51c0db064fb2",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "79e80fda-1faa-49f6-8e38-cddd82e39e7c",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "App2 non fin offence1 CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "ba328afb-93dc-4dff-be5d-cb772f3a4c22",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Granted",
+            "offenceId": "81cc1a1f-c45c-4dbf-8b46-ec8e457c8860",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "App2 non fine offence 2CD - Conditional discharge\nDischarged conditionally for 18 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "ba328afb-93dc-4dff-be5d-cb772f3a4c22",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "G",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "79e80fda-1faa-49f6-8e38-cddd82e39e7c",
+            "offenceTitle": "Robbery",
+            "impositionOffenceDetails": "App2 non fin offence1 CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "ba328afb-93dc-4dff-be5d-cb772f3a4c22",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        },
+        {
+            "applicationType": "REOPEN",
+            "applicationResultType": "Case reopened",
+            "offenceId": "81cc1a1f-c45c-4dbf-8b46-ec8e457c8860",
+            "offenceTitle": "Theft from a shop",
+            "impositionOffenceDetails": "App2 non fine offence 2CD - Conditional discharge\nDischarged conditionally for 18 Years.",
+            "applicationTitle": "Application to reopen case",
+            "applicationId": "ba328afb-93dc-4dff-be5d-cb772f3a4c22",
+            "isFinancial": false,
+            "isParentFlag": true,
+            "dateOfResult": "2025-07-07",
+            "resultCode": "ROPENED",
+            "isDeemedServed": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI9463535"
+    ]
+}

@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI5984707",
+  "defendantAddress": "n Fisher Tunnel5984707 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Patrick Stiedemann",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingSittingDay": "2025-07-16",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "16/07/2025",
+  "masterDefendantId": "35952a42-ca0a-459a-a4e3-0f854b926388",
+  "materialId": "06cdc812-0af7-4e7e-ae5c-33c29776576b",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "16/07/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

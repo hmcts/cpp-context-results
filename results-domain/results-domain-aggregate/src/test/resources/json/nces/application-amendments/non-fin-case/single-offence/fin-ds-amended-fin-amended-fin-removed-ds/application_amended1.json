@@ -1,0 +1,88 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0208914227",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName8914227@gmail.com",
+    "defendantName": "Lorenz Metz",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "b7b84656-f61b-4a06-be67-225135224c51",
+    "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+    "ncesEmail": "av.qet@justice.gov.uk",
+    "offenceResults": [
+      {
+        "applicationId": "b031c1e4-d9a3-43c4-bfed-3c7b642dfbdc",
+        "applicationResultType": "Granted",
+        "applicationTitle": "Appearance to make statutory declaration",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FO - Fine\nFined £44.00\nFVS - Surcharge\nTo pay a surcharge of £333.00\nPDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": true,
+        "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "G"
+      },
+      {
+        "applicationId": "b031c1e4-d9a3-43c4-bfed-3c7b642dfbdc",
+        "applicationResultType": "Statutory Declaration",
+        "applicationTitle": "Appearance to make statutory declaration",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FO - Fine\nFined £44.00\nFVS - Surcharge\nTo pay a surcharge of £333.00\nPDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": true,
+        "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "STDEC"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+        "applicationResultType": "Fine",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FO - Fine\nFined £44.00",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+        "offenceTitle": "Theft from a shop"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+        "applicationResultType": "Surcharge",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £333.00",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+        "offenceTitle": "Theft from a shop"
+      },
+      {
+        "amendmentDate": "2025-03-05",
+        "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+        "applicationResultType": "Pay by date",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-05",
+        "impositionOffenceDetails": "PDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+        "offenceTitle": "Theft from a shop"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI8914227"
+    ]
+  }
+}

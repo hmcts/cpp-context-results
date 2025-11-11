@@ -1,0 +1,33 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202542207",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2542207@gmail.com",
+  "defendantName": "John Doe",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "cea8d4a6-c118-418f-bfa5-3f561886dac0",
+  "hearingSittingDay": "2025-01-30T10:00:00.000Z",
+  "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "amendmentDate": "01/02/2024",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Refused",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-28",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "54f3d79a-be0d-4abe-8f82-458d39efda95",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "RFSD",
+      "applicationId": "22f3d79a-be0d-4abe-8f82-458d39efda95",
+      "applicationTitle": "applicationTitle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2542207"
+  ]
+}

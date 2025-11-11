@@ -1,0 +1,44 @@
+{
+  "offenceResults": [
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Refused",
+      "offenceId": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
+      "offenceTitle": "Robbery",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "2b3c5800-5397-4d9c-936c-e2e6c9f83507",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "RFSD",
+      "isDeemedServed": false,
+      "isFinancial": false
+    },
+    {
+      "applicationType": "REOPEN",
+      "applicationResultType": "Refused",
+      "offenceId": "2f98bfeb-26c3-4b52-b7eb-daea9bb02df7",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Application to reopen case",
+      "applicationId": "2b3c5800-5397-4d9c-936c-e2e6c9f83507",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "RFSD",
+      "isDeemedServed": false,
+      "isFinancial": false
+    }
+  ],
+  "hearingId": "2992549e-da32-437b-bd1b-6dea21c78fbc",
+  "masterDefendantId": "49b6ff88-aebb-4287-b446-5908efa7b4d1",
+  "defendantName": "Hermina Armstrong",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantAddress": "n Fisher Tunnel1912790 South Lillie Avon DA6 7ND",
+  "defendantEmail": "defendant@test.com",
+  "defendantContactNumber": "07894234271",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI1912790"
+  ],
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-03-12T10:00:00.000Z"
+}

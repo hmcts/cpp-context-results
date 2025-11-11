@@ -1,0 +1,36 @@
+{
+  "amendmentDate": "01/02/2024",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI2542207",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "John Doe",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £50.00 to be paid monthly. Instalment start date: 15/02/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "54f3d79a-be0d-4abe-8f82-458d39efda95",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isWriteOff": true,
+  "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "applicationTitle"
+  },
+  "newOffenceByResult": [],
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "stat dec"
+  },
+  "sendTo": "John.Doe@xxx.com",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

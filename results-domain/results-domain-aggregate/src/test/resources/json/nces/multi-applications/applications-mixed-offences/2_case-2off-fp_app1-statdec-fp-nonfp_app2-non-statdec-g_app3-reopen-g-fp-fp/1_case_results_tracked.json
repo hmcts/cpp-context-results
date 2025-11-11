@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3720936 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Dasia Kihn",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "1501d354-91ff-4f46-a3c3-528a2f6b8667",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "fbcd16f9-881c-4b51-898b-ef2a7ba107d6",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "5b2bb1dd-0001-40c7-a421-cf63e93ba711",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FO - Fine\nFined £1234.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 11/11/2025",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "590c310e-cfd9-4c12-a5c9-f358195718b6",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £432.00. ",
+            "isFinancial": true
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3720936"
+    ]
+}
