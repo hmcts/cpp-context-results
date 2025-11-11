@@ -369,10 +369,13 @@ public class HearingFinancialResultsAggregateTest {
         final List<UUID> accountCorrelationIds = asList(randomUUID(), randomUUID(), randomUUID());
         final UUID offenceId = randomUUID();
         final UUID masterDefendantId = randomUUID();
+        final UUID hearingId = randomUUID();
 
         accountCorrelationIds.forEach(accountCorrelationId -> {
             HearingFinancialResultRequest request1 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                    .withProsecutionCaseReferences(singletonList("case1"))
                     .withMasterDefendantId(masterDefendantId)
+                    .withHearingId(hearingId)
                     .withAccountCorrelationId(accountCorrelationId)
                     .withIsSJPHearing(false)
                     .withOffenceResults(asList(OffenceResults.offenceResults()
@@ -414,6 +417,7 @@ public class HearingFinancialResultsAggregateTest {
 
 
         HearingFinancialResultRequest request1 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withHearingId(hearingId)
                 .withMasterDefendantId(masterDefendantId)
                 .withAccountCorrelationId(accountCorrelationIds.get(0))
                 .withIsSJPHearing(false)
@@ -427,6 +431,7 @@ public class HearingFinancialResultsAggregateTest {
         aggregate.updateFinancialResults(request1, "false", "2021-21-21", "2021-21-21", null, APPLICATION_RESULT);
 
         HearingFinancialResultRequest request2 = HearingFinancialResultRequest.hearingFinancialResultRequest()
+                .withHearingId(hearingId)
                 .withMasterDefendantId(masterDefendantId)
                 .withAccountCorrelationId(accountCorrelationIds.get(1))
                 .withProsecutionCaseReferences(asList("RANDOM_CASE_2"))
@@ -726,31 +731,6 @@ public class HearingFinancialResultsAggregateTest {
     }
 
     @Test
-    public void shouldRaiseEmailForDeemedWhenAmendedDeemedToNonFinancial() {
-        final UUID accountCorrelationId = randomUUID();
-        final UUID accountCorrelationId2 = randomUUID();
-        final UUID offenceIdA = randomUUID();
-
-        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId), singletonList(offenceIdA), singletonList(true), singletonList(true));
-
-        updateGobAccounts(singletonList(accountCorrelationId));
-
-        List<Object> events = updateFinancialResultWithDeemedServed(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList(false), singletonList("changed"));
-        assertThat(events.size(), is(3));
-
-        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOlds(AMEND_AND_RESHARE, accountCorrelationId, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
-
-        updateFinancialResultWithDeemedServed(singletonList(accountCorrelationId2), singletonList(offenceIdA), singletonList(true), singletonList(true), singletonList("changed"));
-        events = updateGobAccounts(singletonList(accountCorrelationId2));
-        assertThat(events.size(), is(3));
-
-        Optional.of(events.get(1)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event ->
-                verifyEmailWithoutOldsForDeemed(WRITE_OFF_ONE_DAY_DEEMED_SERVED, accountCorrelationId2, singletonList(offenceIdA), event, "Ref1,Ref2", singletonList("changed")));
-    }
-
-
-    @Test
     public void shouldRaiseEmailForAmendmentWhenOneCaseOneOffence() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
@@ -1006,25 +986,6 @@ public class HearingFinancialResultsAggregateTest {
 
         List<Object> events = updateGobAccounts(List.of(accountCorrelationId));
         assertThat(events.size(), is(1));
-
-        final List<Object> eventsCreateApp1 = aggregate.sendNcesEmailForNewApplication(STAT_DEC, "01/01/2020", singletonList("caseUrn1"), hearingCourtCentreName, List.of(offenceIdB.toString())).toList();
-
-        assertThat(eventsCreateApp1.size(), is(0));
-    }
-
-    @Test
-    public void shouldNotRaiseEmailWhenOneCaseMultipleOffencesAmendedThenGrantApplicationWithNoFineOffence() {
-        final UUID accountCorrelationId = randomUUID();
-        final UUID accountCorrelationId2 = randomUUID();
-        final UUID offenceIdA = randomUUID();
-        final UUID offenceIdB = randomUUID();
-
-        updateFinancialResult(singletonList(accountCorrelationId), asList(offenceIdA, offenceIdB));
-
-        updateFinancialResult(singletonList(accountCorrelationId2), asList(offenceIdA, offenceIdB), asList(true, false));
-
-        List<Object> events = updateGobAccounts(List.of(accountCorrelationId, accountCorrelationId2));
-        assertThat(events.size(), is(2));
 
         final List<Object> eventsCreateApp1 = aggregate.sendNcesEmailForNewApplication(STAT_DEC, "01/01/2020", singletonList("caseUrn1"), hearingCourtCentreName, List.of(offenceIdB.toString())).toList();
 

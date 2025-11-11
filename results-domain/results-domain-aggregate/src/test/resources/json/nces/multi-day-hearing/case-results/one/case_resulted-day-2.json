@@ -1,0 +1,36 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "56saon 56Police House StreetDescription1 Locality1 Town2 TW14 9XD",
+  "defendantContactNumber": "0917894278022",
+  "defendantDateOfBirth": "1997-08-08",
+  "defendantEmail": "robert@gmail.com",
+  "defendantName": "Hershel Pagac74",
+  "hearingCourtCentreName": "Kingston upon Thames Crown Court",
+  "hearingId": "eaea6da9-74e2-48a6-8c1f-c2a14575a477",
+  "hearingSittingDay": "2025-10-27T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "96e584a2-b090-49cb-91d2-7c78ee13f7a5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-10-27",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00, conditional discharge",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "2eeba63f-78ae-4dc7-99aa-257a0be730fd",
+      "offenceTitle": "Attempt robbery"
+    },
+    {
+      "dateOfResult": "2025-10-27",
+      "impositionOffenceDetails": "non financials",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "feeba63f-78ae-4dc7-99aa-257a0be730fd",
+      "offenceTitle": "Attempt robbery"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "25OctVTC422"
+  ]
+}

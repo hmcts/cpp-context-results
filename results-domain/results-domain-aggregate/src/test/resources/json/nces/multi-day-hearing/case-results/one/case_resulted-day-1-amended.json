@@ -1,0 +1,29 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "56saon 56Police House StreetDescription1 Locality1 Town2 TW14 9XD",
+  "defendantContactNumber": "0917894278022",
+  "defendantDateOfBirth": "1997-08-08",
+  "defendantEmail": "robert@gmail.com",
+  "defendantName": "Hershel Pagac74",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e4497b89-7142-43b1-b53e-790731d056bb",
+  "hearingSittingDay": "2025-10-25T17:01:01.001Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "96e584a2-b090-49cb-91d2-7c78ee13f7a5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-11-11",
+      "dateOfResult": "2025-10-25",
+      "impositionOffenceDetails": "financials and surcharge changes",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "3e8bea6b-4e12-497e-b682-0b5d6f1c9a4b",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "25OctVTC422"
+  ]
+}
