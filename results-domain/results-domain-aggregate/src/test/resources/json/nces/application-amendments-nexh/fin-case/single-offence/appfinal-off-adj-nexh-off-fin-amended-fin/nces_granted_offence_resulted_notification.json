@@ -6,7 +6,7 @@
   "defendantDateOfBirth": "1972-11-01",
   "defendantEmail": "firstName.lastName2911105@gmail.com",
   "defendantName": "Bennett Brown",
-  "divisionCode": "10",
+  "divisionCode": "47",
   "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "hearingSittingDay": "2025-05-15",
@@ -19,6 +19,7 @@
     }
   ],
   "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "e391646d-d6ce-4df4-a974-84cc76d01faa",
   "materialId": "{{materialId}}",
@@ -30,7 +31,7 @@
   },
   "newOffenceByResult": [
     {
-      "details": "FO - Fine\nFined £45.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "details": "A - Adjournment Adjourned for hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing. To attend or a warrant to issue hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
       "offenceDate": "2019-11-28",
       "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
       "title": "Theft from a shop"
@@ -38,7 +39,6 @@
   ],
   "notificationId": "{{notificationId}}",
   "oldDivisionCode": "47",
-  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

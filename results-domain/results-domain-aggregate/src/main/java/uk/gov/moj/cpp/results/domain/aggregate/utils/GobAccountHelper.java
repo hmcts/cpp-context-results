@@ -57,7 +57,8 @@ public class GobAccountHelper {
                     final UUID applicationId = correlationItem.getOffenceResultsDetailsList().stream()
                             .map(OffenceResultsDetails::getApplicationId)
                             .filter(Objects::nonNull).findFirst().orElse(null);
-                    return !isApplicationDenied(applicationResultsDetails.get(applicationId));
+                    final List<OffenceResultsDetails> prevAppDetails = applicationId == null ? null : applicationResultsDetails.get(applicationId);
+                    return !isApplicationDenied(prevAppDetails);
                 })
                 .filter(correlationItem -> correlationItem.getOffenceResultsDetailsList().stream().anyMatch(o -> o.getOffenceId().equals(offenceId)))
                 .findFirst()
@@ -65,7 +66,8 @@ public class GobAccountHelper {
                     if (correlationItem.getOffenceResultsDetailsList().stream()
                             .filter(o -> o.getOffenceId().equals(offenceId))
                             .findFirst()
-                            .filter(offenceResultsMatch -> Boolean.TRUE.equals(offenceResultsMatch.getIsFinancial())).isPresent()) {
+                            .filter(offenceResultsMatch -> Boolean.TRUE.equals(offenceResultsMatch.getIsFinancial())).isPresent()
+                    ) {
                         return correlationItem;
                     }
                     return null;

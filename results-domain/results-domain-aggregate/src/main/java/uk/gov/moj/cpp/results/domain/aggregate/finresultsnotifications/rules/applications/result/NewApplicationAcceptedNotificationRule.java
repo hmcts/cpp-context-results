@@ -38,7 +38,7 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
                 && input.isValidApplicationTypeWithAllowedResultCode()
-                && isNewApplicationGranted(input.request());
+                && isNewApplicationGranted(input.request(), input.prevApplicationResultsDetails());
     }
 
     @Override

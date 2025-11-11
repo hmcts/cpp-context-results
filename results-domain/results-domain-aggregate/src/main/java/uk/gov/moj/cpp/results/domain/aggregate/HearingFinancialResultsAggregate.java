@@ -434,8 +434,11 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final Stream.Builder<Object> builder = Stream.builder();
 
         markedAggregateSendEmailWhenAccountReceivedList.stream()
-                .filter(marked -> correlationItemList.stream().anyMatch(item -> (item.getAccountCorrelationId().equals(marked.getAccountCorrelationId()))
-                        || Objects.equals(marked.getOldAccountCorrelationId(), item.getAccountCorrelationId())))
+                .filter(marked ->
+                        correlationItemList.stream().anyMatch(item ->
+                                (item.getAccountCorrelationId().equals(marked.getAccountCorrelationId()))
+                                        || Objects.equals(marked.getOldAccountCorrelationId(), item.getAccountCorrelationId()))
+                )
                 .forEach(marked -> {
                     final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived().withValuesFrom(marked);
 
