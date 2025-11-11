@@ -1,0 +1,46 @@
+{
+  "amendmentDate": "2025-10-16",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "16OCTVTC779",
+  "defendantDateOfBirth": "1997-08-08",
+  "defendantName": "Emile Legros66",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £20.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
+      "title": "Drive / move vehicle making 'u' turn on the motorway"
+    },
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £100.00. , FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "91655195-c76c-4860-bc81-d955123f56d6",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £20.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
+      "title": "Drive / move vehicle making 'u' turn on the motorway"
+    },
+    {
+      "details": "he defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

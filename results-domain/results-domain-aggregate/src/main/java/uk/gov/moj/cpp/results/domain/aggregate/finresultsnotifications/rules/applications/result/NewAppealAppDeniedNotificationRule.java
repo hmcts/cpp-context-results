@@ -110,14 +110,14 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
             final String ncesEmail,
             final LinkedList<CorrelationItem> correlationItemList,
             final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-        
+
         if (hasSentenceVaried(newResultByOffenceList) || !newResultByOffenceList.isEmpty()) {
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                     .buildMarkedAggregateWithOlds(hearingFinancialResultRequest,
-                            impositionOffenceDetailsForApplication, 
-                            applicationResult, 
+                            impositionOffenceDetailsForApplication,
+                            applicationResult,
                             buildNewOffenceResultForSV(newResultByOffenceList),
-                            originalApplicationResults, 
+                            originalApplicationResults,
                             null,
                             APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
                             prevApplicationResultsDetails));
@@ -125,10 +125,9 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
                             APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
-                            correlationItemList.peekLast(), 
-                            impositionOffenceDetailsForApplication, 
-                            ncesEmail, 
-                            isWrittenOffExists, 
+                            impositionOffenceDetailsForApplication,
+                            ncesEmail,
+                            isWrittenOffExists,
                             originalDateOfOffenceList,
                             originalDateOfSentenceList, 
                             newResultByOffenceList, 

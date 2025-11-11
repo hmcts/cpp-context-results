@@ -82,7 +82,6 @@ public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationR
                         markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(request,
                                         APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
-                                        correlationItems.peekLast(),
                                         impositionOffenceDetailsForApplication,
                                         ncesEmail,
                                         writtenOffExists,
