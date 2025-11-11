@@ -1,0 +1,59 @@
+{
+  "caseReferences": "28DI2179703",
+  "dateDecisionMade": "2025-06-30",
+  "defendantAddress": "n Fisher Tunnel2179703 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Alivia Klein",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £5000.00, FVS - Surcharge\nTo pay a surcharge of £1000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+      "title": "Robbery"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "5a6b2295-e9b6-4048-ab9e-21e6073843d5",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £500.00\nFVS - Surcharge\nTo pay a surcharge of £59.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 23/06/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
+      "title": "Robbery"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £560.00\nFVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

@@ -1,0 +1,98 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "DIVCODE",
+  "defendantAddress": "n Fisher Tunnel3899442 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "John Doe",
+  "hearingCourtCentreName": "Croydon Crown Court",
+  "hearingId": "d3acde7b-76ab-43d7-9c36-779304656559",
+  "hearingSittingDay": "2025-01-29T10:00:00.000Z",
+  "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationId": "33f3d79a-be0d-4abe-8f72-458d39efda84",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £60.00 to Test\nFO - Fine\nFined £700.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "33f3d79a-be0d-4abe-8f72-458d39efda84",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationResultType": "Granted",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £666.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/06/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-01-10",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Costs",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £60.00 to Test",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "amendmentDate": "2025-01-10",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £700.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "43f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "amendmentDate": "2025-01-10",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "FO - Fine\nFined £666.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-01-10",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-29",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 15/06/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "54f3d79a-be0d-4abe-8f72-458d39efda95",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3899442"
+  ]
+}

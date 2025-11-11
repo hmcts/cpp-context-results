@@ -1,0 +1,37 @@
+{
+  "caseReferences": "RL91080687",
+  "dateDecisionMade": "2025-08-04",
+  "defendantAddress": "9999A9999AAAA Schowalter Manor Port Trudie Avon DA61 7ND",
+  "defendantContactNumber": "231-832-9294",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Xander Miller",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £13131.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9aacbfb4-a17f-49a8-8511-2790f0870ac3",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £2323.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c292b149-ffc5-40ce-97ec-2b1f400474c6",
+      "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "f1e85ce6-94c3-4f6b-8eb0-ed8ef821b21b",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Refused"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION REFUSED"
+}

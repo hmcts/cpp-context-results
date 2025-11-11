@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI2179703",
+  "defendantAddress": "n Fisher Tunnel2179703 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Alivia Klein",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "01/07/2025",
+  "masterDefendantId": "5a6b2295-e9b6-4048-ab9e-21e6073843d5",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "30/06/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

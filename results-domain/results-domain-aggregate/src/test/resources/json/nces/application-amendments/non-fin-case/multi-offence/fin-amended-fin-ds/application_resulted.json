@@ -1,0 +1,111 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0204515073",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST014515073@gmail.com",
+  "defendantName": "Waldo Abshire",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "4ccc5e2b-24d0-4755-a4e2-f4bb6cf7538f",
+  "hearingSittingDay": "2025-03-05T00:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6a113ed7-9274-41ff-8e02-b1f02d370bc4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "3a0c2b57-7495-480b-861f-3a29c7e78ed4",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "3a0c2b57-7495-480b-861f-3a29c7e78ed4",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3e731cb8-8a79-4a43-860a-6279126000c5",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "3a0c2b57-7495-480b-861f-3a29c7e78ed4",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "ef473c48-7ef0-4e9a-8eac-f04ee8f3005c",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "3a0c2b57-7495-480b-861f-3a29c7e78ed4",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/03/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationId": "3a0c2b57-7495-480b-861f-3a29c7e78ed4",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3e731cb8-8a79-4a43-860a-6279126000c5",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationId": "3a0c2b57-7495-480b-861f-3a29c7e78ed4",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "ef473c48-7ef0-4e9a-8eac-f04ee8f3005c",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f67f7d37-5931-4405-988f-9d7aac35c015",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "38DI4515073"
+  ]
+}

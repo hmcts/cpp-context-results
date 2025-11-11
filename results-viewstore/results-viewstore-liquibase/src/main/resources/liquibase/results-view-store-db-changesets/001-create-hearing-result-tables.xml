@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="1" author="CCR" logicalFilePath="001-create-hearing-result-tables.xml">
+        <createTable tableName="hearing_result">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="offence_id" type="uuid"/>
+            <column name="case_id" type="uuid"/>
+            <column name="result_level" type="text"/>
+            <column name="result_label" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="CCR" logicalFilePath="001-create-hearing-result-tables.xml">
+        <createTable tableName="result_prompt">
+            <column name="label" type="text"/>
+            <column name="value" type="text"/>
+            <column name="hearing_result_id" type="uuid"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="CCR" logicalFilePath="001-create-hearing-result-tables.xml">
+        <addPrimaryKey tableName="result_prompt" columnNames="hearing_result_id, label"
+                       constraintName="result_prompt_pk"/>
+    </changeSet>
+
+</databaseChangeLog>

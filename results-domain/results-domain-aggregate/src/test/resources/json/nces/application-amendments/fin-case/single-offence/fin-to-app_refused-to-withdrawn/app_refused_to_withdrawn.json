@@ -1,0 +1,34 @@
+{
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205751349",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5751349@gmail.com",
+  "defendantName": "Benny Dickens",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "23c7b247-ee56-4020-b833-df77eef98959",
+  "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+  "masterDefendantId": "53e5602c-e4b3-4866-8758-c65babf505a1",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-05",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "af79cc53-5df0-4088-8b63-760dcf5024b3",
+      "applicationResultType": "Withdrawn",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "WDRN - Withdrawn\nComplaint withdrawn. Reasons: withdrwan fro fun",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1578c199-34f0-43ba-ad00-fbd3faf31611",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "WDRN"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS5751349"
+  ]
+}

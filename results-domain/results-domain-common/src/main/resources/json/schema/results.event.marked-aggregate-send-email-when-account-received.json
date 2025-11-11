@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/marked-aggregate-send-email-when-account-received.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "accountCorrelationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "oldAccountCorrelationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "gobAccountNumber": {
+      "type": "string"
+    },
+    "divisionCode": {
+      "type": "string"
+    },
+    "caseReferences": {
+      "type": "string"
+    },
+    "hearingSittingDay": {
+      "type": "string"
+    },
+    "hearingCourtCentreName": {
+      "type": "string"
+    },
+    "masterDefendantId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "listedDate": {
+      "type": "string",
+      "description": "This will passed only for statutory declaration, reopen or appeal"
+    },
+    "dateDecisionMade": {
+      "type": "string",
+      "description": "The date when hearing was resulted"
+    },
+    "defendantName": {
+      "type": "string"
+    },
+    "defendantDateOfBirth": {
+      "type": "string",
+      "format": "date"
+    },
+    "isFinancialPenaltiesWrittenOff": {
+      "type": "string"
+    },
+    "originalDateOfOffence": {
+      "type": "string"
+    },
+    "originalDateOfSentence": {
+      "type": "string"
+    },
+    "defendantAddress": {
+      "type": "string"
+    },
+    "defendantEmail": {
+      "type": "string",
+      "format": "email"
+    },
+    "defendantContactNumber": {
+      "type": "string"
+    },
+    "isSJPHearing": {
+      "type": "boolean"
+    },
+    "applicationResult": {
+      "type": "string"
+    },
+    "impositionOffenceDetails": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/offenceResults"
+      }
+    },
+    "newOffenceByResult": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/offenceResults"
+      }
+    },
+    "originalApplicationResults": {
+      "$ref": "#/definitions/applicationResults"
+    },
+    "newApplicationResults": {
+      "$ref": "#/definitions/applicationResults"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "sendTo": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/email"
+    },
+    "oldGobAccountNumber": {
+      "type": "string"
+    },
+    "oldDivisionCode": {
+      "type": "string"
+    },
+    "amendmentReason": {
+      "type": "string",
+      "description": "This will passed only for when there is amend and re-share"
+    },
+    "amendmentDate": {
+      "type": "string",
+      "description": "This will passed only for when there is amend and re-share"
+    }
+  },
+  "definitions": {
+    "offenceResults": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "offenceId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "offenceDate": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "applicationResults": {
+      "type": "object",
+      "properties": {
+        "applicationTitle": {
+          "type": "string"
+        },
+        "applicationResult": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "accountCorrelationId",
+    "sendTo",
+    "subject",
+    "defendantName",
+    "caseReferences",
+    "masterDefendantId"
+  ]
+}

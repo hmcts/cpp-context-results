@@ -1,0 +1,67 @@
+package uk.gov.moj.cpp.results.query.api.accesscontrol;
+
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+public enum UserGroupType {
+
+    CJSE("CJSE"),
+    LEGAL_ADVISERS("Legal Advisers"),
+    PRISON_ADMIN("Prison Admin"),
+    PROBATION_ADMIN("Probation Admin"),
+    POLICE_ADMIN("Police Admin"),
+    VICTIMS_AND_WITNESS_CARE_ADMIN("Victims & Witness Care Admin"),
+    YOUTH_OFFENDING_SERVICE_ADMIN("Youth Offending Service Admin"),
+    LEGAL_AID_AGENCY_ADMIN("Legal Aid Agency Admin"),
+    COURT_CLERKS("Court Clerks"),
+    COURT_ASSOCIATE("Court Associate"),
+    SYSTEM_USERS("System Users"),
+    CPPI_CONSUMERS("CPPI Consumers"),
+    CROWN_COURT_ADMINS("Crown Court Admin"),
+    COURT_ADMINISTRATORS("Court Administrators"),
+    LISTING_OFFICERS("Listing Officers"),
+    JUDICIARY("Judiciary"),
+    MAGISTRATES("Magistrates");
+
+    private final String name;
+
+    UserGroupType(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public static List<String> personDetailsGroups() {
+        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
+                .map(UserGroupType::getName).collect(toList());
+    }
+
+    public static List<String> hearingDetailsGroups() {
+        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
+                .map(UserGroupType::getName).collect(toList());
+    }
+
+    public static List<String> resultsDetailsGroups() {
+        return Stream.of(CJSE, LEGAL_ADVISERS, PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE, SYSTEM_USERS, MAGISTRATES)
+                .map(UserGroupType::getName).collect(toList());
+    }
+
+    public static List<String> resultsSummaryGroups() {
+        return Stream.of(PRISON_ADMIN, PROBATION_ADMIN, POLICE_ADMIN, VICTIMS_AND_WITNESS_CARE_ADMIN, YOUTH_OFFENDING_SERVICE_ADMIN, LEGAL_AID_AGENCY_ADMIN, COURT_CLERKS, COURT_ASSOCIATE)
+                .map(UserGroupType::getName).collect(toList());
+    }
+
+    public static List<String> defendantsTrackingStatusGroups() {
+        return Stream.of(COURT_ADMINISTRATORS, CROWN_COURT_ADMINS, LISTING_OFFICERS, JUDICIARY, LEGAL_ADVISERS, COURT_CLERKS, COURT_ASSOCIATE)
+                .map(UserGroupType::getName).collect(toList());
+    }
+}

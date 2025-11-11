@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208549222",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8549222@gmail.com",
+  "defendantName": "May Prohaska",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "3040a29a-781a-4631-82ee-4f271efa5b8b",
+  "hearingSittingDay": "2025-03-14T23:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "97200696-c989-4c3b-bced-465ad086abd2",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-03-14",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "54a88be2-572f-452a-bbce-a5d2b7c4564f",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS8549222"
+  ]
+}

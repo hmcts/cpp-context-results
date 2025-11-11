@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "21 Furnburry Park Road London TA1 1AT",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Michele Crona",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "673bd0b9-dd98-421f-a9a0-f09377ec9793",
+  "hearingSittingDay": "2025-10-21T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "85c21da8-865d-4bda-8ed8-57f0cb2fed6f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-10-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £40.00.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2027.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
+      "resultCode": "ACON"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2405263"
+  ]
+}

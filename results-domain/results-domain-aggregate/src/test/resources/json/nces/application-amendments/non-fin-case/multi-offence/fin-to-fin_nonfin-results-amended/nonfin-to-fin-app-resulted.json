@@ -1,0 +1,69 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5752669 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "9875752669",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Simone Kertzmann",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "ea5c84ab-757a-48c3-aa19-fe7a7f4ea84c",
+  "hearingSittingDay": "2025-03-03T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "8d7f5c76-4f74-43cf-ad96-a397fc3f6203",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "09830003-f09d-49c8-baf5-07f3a2c15e14",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "8a69876d-6f3a-4cfa-9ec1-2439793c730a",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "09830003-f09d-49c8-baf5-07f3a2c15e14",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "c51e0fd6-f310-4fe9-92f2-ad3333c79267",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "8a69876d-6f3a-4cfa-9ec1-2439793c730a",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-03",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "c51e0fd6-f310-4fe9-92f2-ad3333c79267",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "29NS5752669"
+  ]
+}

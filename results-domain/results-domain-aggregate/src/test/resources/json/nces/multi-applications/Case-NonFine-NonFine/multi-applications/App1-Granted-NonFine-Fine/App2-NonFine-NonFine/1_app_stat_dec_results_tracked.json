@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3594325 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eden Von",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "fa82c8fa-5fb8-4759-8f0f-9c7e081fcb6d",
+  "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "17a4833a-7daa-425f-b579-f425ee75453f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
+      "offenceTitle": "Theft from a shop",
+      "dateOfResult": "2025-06-27",
+      "isFinancial": true,
+      "isDeemedServed": false,
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £877.00 to org test, FO - Fine\nFined £7777.00"
+    },
+    {
+      "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
+      "offenceTitle": "Robbery",
+      "isFinancial": false,
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 6 Years.",
+      "dateOfResult": "2025-06-27",
+      "isDeemedServed": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3594325"
+  ]
+}

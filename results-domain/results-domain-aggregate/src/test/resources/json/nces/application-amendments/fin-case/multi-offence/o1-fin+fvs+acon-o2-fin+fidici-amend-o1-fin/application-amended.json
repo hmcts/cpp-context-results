@@ -1,0 +1,120 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel2324843 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Eusebio Kautzer",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "3cb4f831-71c1-41ed-949b-de2c1c9c015a",
+  "hearingSittingDay": "2025-03-20T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "1dd9ed9f-f422-4cb7-841e-e97b1b4949dd",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-03-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £1119.00\nFVS - Surcharge\nTo pay a surcharge of £45.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "22fa8a87-8477-4903-ad43-885cb72ac4e8",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £50.00.\nFO - Fine\nFined £222.00",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationId": "22fa8a87-8477-4903-ad43-885cb72ac4e8",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "amendmentDate": "2025-03-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £1119.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "amendmentDate": "2025-03-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Consolidated",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery",
+      "resultCode": "ACON"
+    },
+    {
+      "amendmentDate": "2025-03-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-03-20",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2324843"
+  ]
+}

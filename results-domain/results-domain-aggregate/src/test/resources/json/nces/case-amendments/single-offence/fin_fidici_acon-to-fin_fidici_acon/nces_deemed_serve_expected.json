@@ -1,0 +1,27 @@
+{
+  "caseReferences": "28NS2163286",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202163286",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2163286@gmail.com",
+  "defendantName": "Georgette Russel",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-11",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £200.00.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable. Additional reasons: no collection order additional reason.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "88841816-bc6f-4afb-b5a1-bcb21289d6ef",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "5c7cd470-8295-4b03-a58d-72fd76796aee",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "11/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

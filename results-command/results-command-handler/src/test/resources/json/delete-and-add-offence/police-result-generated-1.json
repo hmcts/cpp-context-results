@@ -1,0 +1,502 @@
+{
+  "caseId": "ae95c017-a1a4-43ae-b811-e54ffb9d0a2d",
+  "courtCentreWithLJA": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "courtHearingLocation": "B01LY01",
+    "psaCode": 2577
+  },
+  "defendant": {
+    "associatedPerson": [],
+    "attendanceDays": [
+      {
+        "attendanceType": "IN_PERSON",
+        "day": "2024-09-25"
+      }
+    ],
+    "defendantId": "8b357a96-4094-431d-aa20-b90b0d6f316b",
+    "individualDefendant": {
+      "bailConditions": "",
+      "bailStatus": {
+        "code": "A",
+        "description": "Not applicable",
+        "id": "86009c70-759d-3308-8de4-194886ff9a77"
+      },
+      "person": {
+        "address": {
+          "address1": "9999A9999AAAA",
+          "address2": "Woodlane",
+          "address3": "addressline 3",
+          "address4": "Bristol",
+          "address5": "Avon"
+        },
+        "contact": {
+          "home": "0117995999",
+          "mobile": "07771305897",
+          "primaryEmail": "auto.test1069934@gmail.com"
+        },
+        "dateOfBirth": "1983-09-25",
+        "firstName": "John1KT4u",
+        "gender": "MALE",
+        "lastName": "Bot9031",
+        "title": "Mr"
+      },
+      "presentAtHearing": "Y"
+    },
+    "offences": [
+      {
+        "arrestDate": "2021-01-01",
+        "chargeDate": "2020-12-29",
+        "finalDisposal": "Y",
+        "id": "70a18136-16b5-4b0d-a477-a58da55b10a7",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": true,
+            "canBeSubjectOfVariation": true,
+            "category": "FINAL",
+            "cjsCode": "1116",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "durationElement": {
+              "durationEndDate": "12/12/2024"
+            },
+            "dvlaCode": "M",
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": true,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "3b1d3422-7d59-4495-a2cc-e0f496460abc",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isDurationEndDate": true,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d6caa3c4-ec9d-41ec-8f86-2c617ef0d5d9",
+                "label": "End Date",
+                "promptReference": "endDate",
+                "promptSequence": 100,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "12/12/2024",
+                "welshLabel": "Dyddiad terfyn",
+                "welshValue": "12/12/2024"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "29f5b3c7-8d15-4606-9dcf-23f32a21b5ef",
+                "label": "Responsible officer",
+                "promptReference": "responsibleOfficer",
+                "promptSequence": 200,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "an officer of a provider of probation services",
+                "welshLabel": "Swyddog cyfrifol",
+                "welshValue": "swyddog darparwr gwasanaethau prawf"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "f4a4f159-779e-4f35-822a-b559a2415ecb",
+                "label": "Supervising Court",
+                "promptReference": "supervisingCourt",
+                "promptSequence": 300,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "Amersham Magistrates' Court",
+                "welshLabel": "Llys sy’n Goruchwylio",
+                "welshValue": "Amersham Magistrates' Court"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                "label": "Probation team to be notified organisation name",
+                "promptReference": "probationteamtobenotifiedOrganisationName",
+                "promptSequence": 700,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "North East Division NPS",
+                "welshValue": "North East Division NPS"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                "label": "Probation team to be notified email address 1",
+                "promptReference": "probationteamtobenotifiedEmailAddress1",
+                "promptSequence": 700,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "nenps.court@justice.gov.uk",
+                "welshValue": "nenps.court@justice.gov.uk"
+              }
+            ],
+            "judicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+            "label": "Community order England / Wales",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "23446318-221c-4dff-a059-53784697c0e0",
+            "policeSubjectLineTitle": "Final Sentence",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 64000,
+            "resultText": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 12/12/2024. ",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "3b1d3422-7d59-4495-a2cc-e0f496460abc",
+            "rootJudicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": true,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "cjsCode": "3101",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "c0440af1-1d42-4d7f-84a6-822a435772f6",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "72413aef-ecb9-4e9b-a143-31d1e9c11584",
+                "label": "Number of hours",
+                "promptReference": "numberOfHours",
+                "promptSequence": 100,
+                "type": "INT",
+                "usergroups": [],
+                "value": "80 Hours",
+                "welshLabel": "Nifer yr oriau",
+                "welshValue": "80 Hours"
+              }
+            ],
+            "judicialResultTypeId": "9bec5977-1796-4645-9b9e-687d4f23d37d",
+            "label": "Unpaid work. Requirement to be completed within 12 months.",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "23446318-221c-4dff-a059-53784697c0e0",
+            "parentJudicialResultId": "416dd35f-fc2d-4de0-acac-7c714f1515dc",
+            "parentJudicialResultTypeId": "b2dab2b7-3edd-4223-b1be-3819173ec54d",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 68500,
+            "resultDefinitionGroup": "Community Requirement",
+            "resultText": "UPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 80 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "3b1d3422-7d59-4495-a2cc-e0f496460abc",
+            "rootJudicialResultTypeId": "418b3aa7-65ab-4a4a-bab9-2f96b698118c",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "Either Way",
+        "offenceCode": "TH68010",
+        "offenceDateCode": 1,
+        "offenceSequenceNumber": 1,
+        "startDate": "2022-05-29",
+        "wording": "Shoplifting at Debenhams"
+      },
+      {
+        "chargeDate": "2024-09-25",
+        "finalDisposal": "Y",
+        "id": "08ca7097-72df-4aa2-b3c4-deb6a163a20a",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "1030",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "492075b4-a837-45be-8c4f-e28b71343e5c",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "0eba630e-a486-439f-8d76-b49b1363067c",
+                "label": "Court that made the original order",
+                "promptReference": "courtThatMadeTheOriginalOrder",
+                "promptSequence": 100,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "Antrim Magistrates' Court",
+                "welshLabel": "Y llys a wnaeth y gorchymyn gwreiddiol",
+                "welshValue": "Antrim Magistrates' Court"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "39355876-d028-48fa-82d8-ccedbe4312f8",
+                "label": "Date original order made",
+                "promptReference": "dateOriginalOrderMade",
+                "promptSequence": 200,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "11/12/2024",
+                "welshLabel": "Dyddiad y gwnaethpwyd y gorchymyn gwreiddiol",
+                "welshValue": "11/12/2024"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "361cee65-0550-4c9a-9fbd-3a234e9431f1",
+                "label": "The end date of the order has been changed and the requirements must be complied with by",
+                "promptReference": "theEndDateOfTheOrderHasBeenChangedAndTheRequirementsMustBeCompliedWithBy",
+                "promptSequence": 800,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "11/11/2024",
+                "welshValue": "11/11/2024"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "27bf0204-a185-4e82-8c34-7317287513c8",
+                "label": "Responsible officer for the order",
+                "promptReference": "responsibleOfficerForTheOrder",
+                "promptSequence": 1000,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "the electronic monitoring supervisor",
+                "welshValue": "y goruchwyliwr monitro electronig"
+              },
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "f4a4f159-779e-4f35-822a-b559a2415ecb",
+                "label": "Supervising Court",
+                "promptReference": "supervisingCourt",
+                "promptSequence": 1020,
+                "type": "FIXL",
+                "usergroups": [],
+                "value": "Amersham Magistrates' Court",
+                "welshLabel": "Llys sy’n Goruchwylio",
+                "welshValue": "Amersham Magistrates' Court"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                "label": "Probation team to be notified organisation name",
+                "promptReference": "probationteamtobenotifiedOrganisationName",
+                "promptSequence": 1200,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "North East Division NPS",
+                "welshValue": "North East Division NPS"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "68c92035-27fd-4ee6-b03c-fe18ea6dbcb0",
+                "label": "Probation team to be notified email address 1",
+                "promptReference": "probationteamtobenotifiedEmailAddress1",
+                "promptSequence": 1200,
+                "type": "NAMEADDRESS",
+                "usergroups": [],
+                "value": "nenps.court@justice.gov.uk",
+                "welshValue": "nenps.court@justice.gov.uk"
+              }
+            ],
+            "judicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "label": "Community order varied",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "23446318-221c-4dff-a059-53784697c0e0",
+            "policeSubjectLineTitle": "Final Sentence",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 196800,
+            "resultText": "COV - Community order varied\nOrder made on 11/12/2024 by Antrim Magistrates' Court varied. The end date of the order has been changed and the requirements must be complied with by 11/11/2024. The new and amended requirements are shown below. The responsible officer nominated is the electronic monitoring supervisor. The supervising court is Amersham Magistrates' Court. ",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "492075b4-a837-45be-8c4f-e28b71343e5c",
+            "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": true,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "cjsCode": "3101",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "e383fd49-1eb3-4819-b382-e47d932aa945",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "72413aef-ecb9-4e9b-a143-31d1e9c11584",
+                "label": "Number of hours",
+                "promptReference": "numberOfHours",
+                "promptSequence": 100,
+                "type": "INT",
+                "usergroups": [],
+                "value": "80 Hours",
+                "welshLabel": "Nifer yr oriau",
+                "welshValue": "80 Hours"
+              }
+            ],
+            "judicialResultTypeId": "9bec5977-1796-4645-9b9e-687d4f23d37d",
+            "label": "Unpaid work. Requirement to be completed within 12 months.",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "23446318-221c-4dff-a059-53784697c0e0",
+            "parentJudicialResultId": "68832dbd-e8e0-48f9-bb4b-023ad767b47e",
+            "parentJudicialResultTypeId": "b2dab2b7-3edd-4223-b1be-3819173ec54d",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 68500,
+            "resultDefinitionGroup": "Community Requirement",
+            "resultText": "UPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 80 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "492075b4-a837-45be-8c4f-e28b71343e5c",
+            "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "173aba14-16f8-42da-92fd-f2ab8996663b",
+            "judicialResultTypeId": "346edadd-5b2f-4e52-9d71-cd2296508cdf",
+            "label": "The new and amended requirements are",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "23446318-221c-4dff-a059-53784697c0e0",
+            "parentJudicialResultId": "492075b4-a837-45be-8c4f-e28b71343e5c",
+            "parentJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": true,
+            "publishedForNows": true,
+            "rank": 36100,
+            "resultText": "The new and amended requirements are shown below.",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "492075b4-a837-45be-8c4f-e28b71343e5c",
+            "rootJudicialResultTypeId": "4a026ff3-e1aa-407e-aafa-015723c1dbd0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "",
+        "offenceCode": "BA76504",
+        "offenceDateCode": 1,
+        "offenceSequenceNumber": 0,
+        "startDate": "2024-09-25",
+        "wording": ""
+      }
+    ],
+    "prosecutorReference": "2391NX000001069934"
+  },
+  "id": "23446318-221c-4dff-a059-53784697c0e0",
+  "sessionDays": [
+    {
+      "listedDurationMinutes": 1,
+      "listingSequence": 0,
+      "sittingDay": "2024-09-25T13:00:00.000Z"
+    }
+  ],
+  "urn": "31DI1069934"
+}

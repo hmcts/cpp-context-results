@@ -1,0 +1,36 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7404759 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Jakob Ritchie",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "9fe32acf-38e6-46b2-b89f-2cfa786de6bb",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bd821e9e-a819-4ee6-b692-9679dbe0b5c6",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "FO - Fine\nFined £9999.00, FVS - Surcharge\nTo pay a surcharge of £677.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 14 days",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "dateOfResult": "2025-06-27",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £7878.00. \nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £7654.00.",
+            "isDeemedServed": true,
+            "isFinancial": true,
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "FIDICI"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7404759"
+    ]
+}

@@ -1,0 +1,19 @@
+{
+  "defendants": [
+    {
+      "defendantId": "7aff2f55-a3bb-480d-8871-4962a56d4c43",
+      "trackingStatus": [
+        {
+          "offenceId": "b470d0c8-a7ab-4ce5-8e06-81967f81cad8",
+          "emLastModifiedTime": "2015-01-12T05:27:19.210Z",
+          "emStatus": true
+        },
+        {
+          "offenceId": "b470d0c8-a7ab-4ce5-8e06-81967f81cad7",
+          "woaLastModifiedTime": "2015-01-12T05:27:19.210Z",
+          "woaStatus": true
+        }
+      ]
+    }
+  ]
+}

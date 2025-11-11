@@ -1,0 +1,45 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0209390803",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName9390803@gmail.com",
+  "defendantName": "Cade Hermiston",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "3dffea9e-d370-4140-b7b4-9b066bee17a0",
+  "hearingSittingDay": "2025-02-21T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "e746903e-f717-42b0-86d5-4b9eceb251a0",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "933cd4fb-9276-4cc1-a2c9-cfb8e75a861a",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-02-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "d503dafb-8996-4e88-a162-d571f83ab97e",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9390803"
+  ]
+}

@@ -1,0 +1,139 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+    "defendantContactNumber": "01231231230",
+    "defendantDateOfBirth": "2000-01-01",
+    "defendantEmail": "FlmUFO2hSmithIAkjp@email.com",
+    "defendantName": "FlmUFO2h SmithIAkjp",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "380f73d9-2eca-48dd-9f91-26f260009b59",
+    "hearingSittingDay": "2025-07-16T14:51:09.892Z",
+    "isSJPHearing": true,
+    "masterDefendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "d35fdc65-5f4d-4538-98bc-88b849dbd493",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (SJP case)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Vehicle Excise Back Duty\nAmount of back duty £340.30\nExcise penalty\nAmount of excise penalty £220.00\nCompensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nSurcharge\nAmount of surcharge £176.00\nPay by date\nDate to pay in full by 30/07/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "d35fdc65-5f4d-4538-98bc-88b849dbd493",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (SJP case)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Fine\nAmount of fine £220.00\nCompensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+            "offenceTitle": "Cause use of motor vehicle with no insurance",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "d35fdc65-5f4d-4538-98bc-88b849dbd493",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (SJP case)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Fine\nAmount of fine £220.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd",
+            "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationResultType": "Vehicle Excise Back Duty",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Vehicle Excise Back Duty\nAmount of back duty £340.30",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+        },
+        {
+            "applicationResultType": "Excise penalty",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Excise penalty\nAmount of excise penalty £220.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Surcharge\nAmount of surcharge £176.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+            "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Fine\nAmount of fine £220.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+            "offenceTitle": "Cause use of motor vehicle with no insurance"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+            "offenceTitle": "Cause use of motor vehicle with no insurance"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-07-16",
+            "impositionOffenceDetails": "Fine\nAmount of fine £220.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd",
+            "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "SJ918778267"
+    ]
+}

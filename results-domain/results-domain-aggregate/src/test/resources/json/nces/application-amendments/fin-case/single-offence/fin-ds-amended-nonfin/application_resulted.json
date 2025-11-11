@@ -1,0 +1,101 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "47",
+    "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+    "defendantContactNumber": "0207587940",
+    "defendantDateOfBirth": "1972-11-01",
+    "defendantEmail": "firstName.lastName7587940@gmail.com",
+    "defendantName": "Lorenz Metz",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "ae2abbfc-a788-4612-823a-ba6a4e1150da",
+    "hearingSittingDay": "2025-03-03T10:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+    "ncesEmail": "av.qet@justice.gov.uk",
+    "offenceResults": [
+      {
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £300.00 to test ss\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £300.00\nFO - Fine\nFined £440.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/11/2025.",
+        "isDeemedServed": true,
+        "isFinancial": true,
+        "isParentFlag": true,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "FIDIPI"
+      },
+      {
+        "applicationId": "73d51107-3258-465f-af66-0df296632ac9",
+        "applicationResultType": "Granted",
+        "applicationTitle": "Appearance to make statutory declaration",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "G"
+      },
+      {
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £300.00 to test ss\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £300.00\nFO - Fine\nFined £440.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/11/2025.",
+        "isDeemedServed": true,
+        "isFinancial": true,
+        "isParentFlag": true,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "FIDIPI"
+      },
+      {
+        "applicationId": "73d51107-3258-465f-af66-0df296632ac9",
+        "applicationResultType": "Statutory Declaration",
+        "applicationTitle": "Appearance to make statutory declaration",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "isDeemedServed": false,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "STDEC"
+      },
+      {
+        "applicationResultType": "Costs",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £300.00 to test ss",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop"
+      },
+      {
+        "applicationResultType": "Fined and detained in default of payment in police station",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "isDeemedServed": true,
+        "isFinancial": false,
+        "isParentFlag": false,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop",
+        "resultCode": "FIDIPI"
+      },
+      {
+        "applicationResultType": "Fine",
+        "applicationType": "STAT_DEC",
+        "dateOfResult": "2025-03-03",
+        "impositionOffenceDetails": "FO - Fine\nFined £440.00",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "isParentFlag": false,
+        "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
+        "offenceTitle": "Theft from a shop"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI7587940"
+    ]
+}

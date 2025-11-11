@@ -1,0 +1,60 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel5296047 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "07983211256",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantEmail": "defendant@test.com",
+  "defendantName": "Alicia Sporer",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "1359aa84-4c3f-4673-9f15-d636304097c9",
+  "hearingSittingDay": "2025-03-13T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "0a8b7a0a-a62b-40ed-bcce-73000a52730f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "07f2b8dc-7bd3-4350-810a-40f982ef196a",
+      "applicationResultType": "Appeal withdrawn",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FO - Fine\nFined £99.00\nSV - Sentence varied\nAppeal heard on: 02/04/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "resultCode": "AW",
+      "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "applicationId": "07f2b8dc-7bd3-4350-810a-40f982ef196a",
+      "applicationResultType": "Appeal withdrawn",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £400.00 to Org test\nFO - Fine\nFined £199.00\nSV - Sentence varied\nAppeal heard on: 05/05/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-03-13",
+      "amendmentReason": "Error or Omission in result announced in court (Amendment under the Slip rule)",
+      "applicationResultType": "Costs",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £400.00 to Org test",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5296047"
+  ]
+}

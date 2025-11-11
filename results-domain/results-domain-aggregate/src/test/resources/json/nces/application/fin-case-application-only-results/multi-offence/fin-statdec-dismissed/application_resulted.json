@@ -1,0 +1,43 @@
+{
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Dismissed",
+      "offenceId": "c784a6ca-5bc0-453a-af44-0c4a4d2eea65",
+      "offenceTitle": "Robbery",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationId": "d63020f0-0e9c-4991-b983-57e9ba8e7e60",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "DISM",
+      "isDeemedServed": false,
+      "isFinancial": false
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "applicationResultType": "Dismissed",
+      "offenceId": "caf796a1-8fe0-4896-8b12-de51fa2bd867",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationId": "d63020f0-0e9c-4991-b983-57e9ba8e7e60",
+      "isParentFlag": false,
+      "dateOfResult": "2025-03-12",
+      "resultCode": "DISM",
+      "isDeemedServed": false,
+      "isFinancial": false
+    }
+  ],
+  "hearingId": "3f09693f-02c7-4da8-9d6b-2470d542b25c",
+  "masterDefendantId": "78e56abe-7c3a-4329-b4a4-e99a3184b6b6",
+  "defendantName": "Emelia Donnelly",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantAddress": "n Fisher Tunnel6412553 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "accountDivisionCode": "30",
+  "ncesEmail": "ljae@xyz.com",
+  "prosecutionCaseReferences": [
+    "28DI6412553"
+  ],
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-03-12T10:00:00.000Z"
+}

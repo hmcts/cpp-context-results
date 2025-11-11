@@ -1,0 +1,90 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208914227",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8914227@gmail.com",
+  "defendantName": "Lorenz Metz",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b7b84656-f61b-4a06-be67-225135224c51",
+  "hearingSittingDay": "2025-03-05T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "bf6b5639-dc5d-4ff6-ac1e-db5677e0714d",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationId": "b031c1e4-d9a3-43c4-bfed-3c7b642dfbdc",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationId": "b031c1e4-d9a3-43c4-bfed-3c7b642dfbdc",
+      "applicationResultType": "Statutory Declaration",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "STDEC"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £40.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "84b8a057-a7f8-42a2-aa48-d30e20088fa2",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8914227"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "caseReferences": "28DI975224,28DI975223",
+  "defendantAddress": "9999H9999QQQJ WplfoqqP addressline 4 BtfgstQQ Elfo YO43 4DF",
+  "defendantContactNumber": "02012345679",
+  "defendantDateOfBirth": "1995-04-30",
+  "defendantEmail": "test02@gmail.com",
+  "defendantName": "CCT-2390caseextra matchdefendentscenarionew1",
+  "divisionCode": "96",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-10-20",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "07/10/2025",
+  "masterDefendantId": "d20583d8-d159-4f26-89ec-a235cb9048c7",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "20/10/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN RECEIVED"
+}

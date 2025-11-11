@@ -1,0 +1,44 @@
+{
+  "amendmentDate": "2025-07-17",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "RQ126157841",
+  "defendantDateOfBirth": "1994-07-17",
+  "defendantName": "Katia Tremblay",
+  "divisionCode": "105",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 28/07/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+      "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "e0bcb42a-25a4-449f-914f-f171d3e70fed",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 1 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
+      "title": "Drive whilst unfit through drink"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 1 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
+      "title": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

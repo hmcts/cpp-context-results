@@ -1,0 +1,310 @@
+{
+    "hearing": {
+        "courtApplications": [
+            {
+                "applicant": {
+                    "id": "081d6d78-6902-4b9f-a064-8f2b55096665",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "374c4c57-fa56-4e25-aeaf-de5fab62ab61",
+                                "caseReference": "SJ918778267",
+                                "defendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca"
+                            }
+                        ],
+                        "masterDefendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "ASN1857892",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "FLAT - 25A",
+                                    "address2": "Constable Street",
+                                    "address3": "Bristol",
+                                    "address4": "England",
+                                    "address5": "UK",
+                                    "postcode": "IG1 1YY"
+                                },
+                                "contact": {
+                                    "home": "01231231230",
+                                    "mobile": "78231231230",
+                                    "primaryEmail": "FlmUFO2hSmithIAkjp@email.com"
+                                },
+                                "dateOfBirth": "2000-01-01",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "firstName": "FlmUFO2h",
+                                "gender": "MALE",
+                                "lastName": "SmithIAkjp",
+                                "nationalInsuranceNumber": "AB123456C",
+                                "occupation": "TA",
+                                "occupationCode": "666",
+                                "specificRequirements": "no special needs",
+                                "title": "MR"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "applicationReceivedDate": "2025-07-16",
+                "applicationReference": "OPMTU7GE6C",
+                "applicationStatus": "FINALISED",
+                "courtApplicationCases": [
+                    {
+                        "caseStatus": "INACTIVE",
+                        "isSJP": true,
+                        "offences": [
+                            {
+                                "chargeDate": "2025-06-19",
+                                "convictionDate": "2025-07-16",
+                                "count": 0,
+                                "id": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
+                                "notifiedPlea": {
+                                    "notifiedPleaDate": "2025-07-16",
+                                    "notifiedPleaValue": "NO_NOTIFICATION",
+                                    "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c"
+                                },
+                                "offenceCode": "VE94015",
+                                "offenceDateCode": 1,
+                                "offenceDefinitionId": "80f3d9f2-f651-3f01-9f9f-995f54c1216d",
+                                "offenceLegislation": "Contrary to section 29(1) and (3) of the Vehicle Excise and    Registration Act 1994.",
+                                "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+                                "orderIndex": 0,
+                                "startDate": "2025-06-19",
+                                "wording": "Keep a vehicle without a valid vehicle licence",
+                                "wordingWelsh": "offenceWordingWelsh"
+                            },
+                            {
+                                "chargeDate": "2025-06-19",
+                                "convictionDate": "2025-07-16",
+                                "count": 1,
+                                "dvlaOffenceCode": "IN14",
+                                "id": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
+                                "notifiedPlea": {
+                                    "notifiedPleaDate": "2025-07-16",
+                                    "notifiedPleaValue": "NO_NOTIFICATION",
+                                    "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe"
+                                },
+                                "offenceCode": "RA88002",
+                                "offenceDateCode": 2,
+                                "offenceDefinitionId": "e63c2b35-4936-3750-89d4-87f943bbc43e",
+                                "offenceLegislation": "Contrary to section143(2) of, the Road Traffic Act 1988 and Schedule 2 to, the Road TrafficOffenders Act 1988.",
+                                "offenceTitle": "Cause use of motor vehicle with no insurance",
+                                "orderIndex": 0,
+                                "startDate": "2025-06-19",
+                                "wording": "Cause use of motor vehicle with no insurance",
+                                "wordingWelsh": "offenceWordingWelsh"
+                            },
+                            {
+                                "chargeDate": "2025-05-30",
+                                "convictionDate": "2025-07-16",
+                                "count": 2,
+                                "dvlaOffenceCode": "CU10",
+                                "id": "201d2d48-5395-4173-837b-4accd2f340dd",
+                                "notifiedPlea": {
+                                    "notifiedPleaDate": "2025-07-16",
+                                    "notifiedPleaValue": "NO_NOTIFICATION",
+                                    "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd"
+                                },
+                                "offenceCode": "RC86851",
+                                "offenceDateCode": 3,
+                                "offenceDefinitionId": "a9223eee-f3de-3b8a-b6bb-f0feb6f7f737",
+                                "offenceLegislation": "Contrary to regulation 18(1) of the Road Vehicles    (Construction and Use) Regulations 1986, section 41A of the Road    Traffic Act 1988 and Schedule 2 to the Road Traffic Offenders Act 1988.",
+                                "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+                                "orderIndex": 0,
+                                "startDate": "2025-05-25",
+                                "wording": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+                            }
+                        ],
+                        "prosecutionCaseId": "374c4c57-fa56-4e25-aeaf-de5fab62ab61",
+                        "prosecutionCaseIdentifier": {
+                            "prosecutionAuthorityCode": "BTP",
+                            "prosecutionAuthorityId": "433ab45d-bfb6-3c38-a6a5-a30e114c9a5f",
+                            "caseURN": "SJ918778267"
+                        }
+                    }
+                ],
+                "id": "7f1f16ee-d265-4618-b879-d761881e7697",
+                "judicialResults": [
+                    {
+                        "alwaysPublished": false,
+                        "canBeSubjectOfBreach": false,
+                        "canBeSubjectOfVariation": false,
+                        "category": "FINAL",
+                        "d20": false,
+                        "excludedFromResults": false,
+                        "isAdjournmentResult": false,
+                        "isAvailableForCourtExtract": true,
+                        "isConvictedResult": false,
+                        "isFinancialResult": false,
+                        "isUnscheduled": false,
+                        "judicialResultId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+                        "judicialResultPrompts": [
+                            {
+                                "courtExtract": "Y",
+                                "durationSequence": 0,
+                                "isFinancialImposition": false,
+                                "judicialResultPromptTypeId": "318c9eb2-cf3c-4592-a353-1b2166c15f81",
+                                "label": "Reasons",
+                                "promptReference": "reasons",
+                                "promptSequence": 100,
+                                "type": "TXT",
+                                "usergroups": [],
+                                "value": "Reject the reopen application",
+                                "welshLabel": "Rhesymau"
+                            }
+                        ],
+                        "judicialResultTypeId": "d3902789-4cc8-4753-a15f-7e26dd39f6ae",
+                        "label": "Application refused",
+                        "level": "O",
+                        "lifeDuration": false,
+                        "orderedDate": "2025-07-16",
+                        "orderedHearingId": "a0df40ae-4d79-4cc0-bb8c-1fcc86fb82cd",
+                        "postHearingCustodyStatus": "A",
+                        "publishedAsAPrompt": false,
+                        "publishedForNows": false,
+                        "rank": 212300,
+                        "resultText": "Application refused\nReasons Reject the reopen application",
+                        "resultWording": "",
+                        "rollUpPrompts": true,
+                        "terminatesOffenceProceedings": false,
+                        "urgent": false,
+                        "welshLabel": "Gwrthodwyd y cais"
+                    }
+                ],
+                "subject": {
+                    "id": "081d6d78-6902-4b9f-a064-8f2b55096665",
+                    "masterDefendant": {
+                        "defendantCase": [
+                            {
+                                "caseId": "374c4c57-fa56-4e25-aeaf-de5fab62ab61",
+                                "caseReference": "SJ918778267",
+                                "defendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca"
+                            }
+                        ],
+                        "masterDefendantId": "9973bb1e-2cfa-476e-8ea6-8861f4e54aca",
+                        "personDefendant": {
+                            "arrestSummonsNumber": "ASN1857892",
+                            "personDetails": {
+                                "address": {
+                                    "address1": "FLAT - 25A",
+                                    "address2": "Constable Street",
+                                    "address3": "Bristol",
+                                    "address4": "England",
+                                    "address5": "UK",
+                                    "postcode": "IG1 1YY"
+                                },
+                                "contact": {
+                                    "home": "01231231230",
+                                    "mobile": "78231231230",
+                                    "primaryEmail": "FlmUFO2hSmithIAkjp@email.com"
+                                },
+                                "dateOfBirth": "2000-01-01",
+                                "documentationLanguageNeeds": "ENGLISH",
+                                "firstName": "FlmUFO2h",
+                                "gender": "MALE",
+                                "lastName": "SmithIAkjp",
+                                "nationalInsuranceNumber": "AB123456C",
+                                "occupation": "TA",
+                                "occupationCode": "666",
+                                "specificRequirements": "no special needs",
+                                "title": "MR"
+                            }
+                        }
+                    },
+                    "notificationRequired": true,
+                    "summonsRequired": false
+                },
+                "thirdParties": [
+                    {
+                        "id": "cb1c372a-3828-429a-8261-5e1da8d269fc",
+                        "notificationRequired": true,
+                        "prosecutingAuthority": {
+                            "address": {
+                                "address1": "Albany House",
+                                "address2": "98 Petty France",
+                                "address3": "London",
+                                "postcode": "SW1H 9EA"
+                            },
+                            "contact": {
+                                "primaryEmail": "BTP-Justice-Unit@btp.police.uk"
+                            },
+                            "majorCreditorCode": "BTPO",
+                            "name": "British Transport Police",
+                            "prosecutionAuthorityCode": "BTP",
+                            "prosecutionAuthorityId": "433ab45d-bfb6-3c38-a6a5-a30e114c9a5f",
+                            "prosecutionAuthorityOUCode": "0930000",
+                            "welshName": "Heddlu Trafnidiaeth Prydeinig"
+                        },
+                        "summonsRequired": true
+                    }
+                ],
+                "type": {
+                    "appealFlag": false,
+                    "applicantAppellantFlag": false,
+                    "applicationWording": "Application to reopen a case following conviction {1}. Original case number: {2}",
+                    "applicationWordingWelsh": "Cais i ailagor achos yn dilyn euogfarn <[am y trosedd <Original Offence>][am y troseddau <Original Offences>]>. Rhif yr Achos Gwreiddiol: <Original case number>",
+                    "boxworkNotifTemplate": "NOT_APPLICABLE",
+                    "breachType": "NOT_APPLICABLE",
+                    "categoryCode": "CR",
+                    "changeDate": "2025-03-17T10:29:09",
+                    "code": "MC80524",
+                    "commrOfOathFlag": false,
+                    "contestedFeeApplicable": false,
+                    "courtExtractAvlFlag": true,
+                    "courtOfAppealFlag": false,
+                    "exParte": false,
+                    "hearingCode": "APN",
+                    "id": "9d2ae0fe-d4d0-43ca-ab7a-7a2556cafe5e",
+                    "initialFeeApplicable": false,
+                    "jurisdiction": "MAGISTRATES",
+                    "lastModified": "2025-03-17T14:00:38.015Z",
+                    "legislation": "In accordance with section 142 of the Magistrates' Courts Act 1980.",
+                    "legislationWelsh": "Yn unol ag adran 142 Deddf Llysoedd Ynadon 1980.",
+                    "linkType": "SJP",
+                    "listingNotifTemplate": "POSTAL_NOTIFICATION",
+                    "offenceActiveOrder": "OFFENCE",
+                    "pleaApplicableFlag": true,
+                    "prosecutorThirdPartyFlag": true,
+                    "pssId": 601835,
+                    "sowRef": "APPS",
+                    "spiOutApplicableFlag": true,
+                    "summonsTemplateType": "NOT_APPLICABLE",
+                    "type": "Application to reopen case",
+                    "typeWelsh": "Cais i ailagor achos",
+                    "validFrom": "2000-01-06"
+                }
+            }
+        ],
+        "courtCentre": {
+            "address": {
+                "address1": "Norwich Place",
+                "address2": "Bexleyheath",
+                "address3": "Kent",
+                "postcode": "DA6 7ND"
+            },
+            "code": "B01BH00",
+            "id": "7e967376-eacf-4fca-9b30-21b0c5aad427",
+            "lja": {
+                "ljaCode": "2575",
+                "ljaName": "Bexley Magistrates' Court",
+                "welshLjaName": "Llys Ynadon Bexley"
+            },
+            "name": "Bexley Magistrates' Court"
+        },
+        "hasSharedResults": false,
+        "hearingDays": [
+            {
+                "listedDurationMinutes": 360,
+                "sittingDay": "2025-07-16T14:55:13.775Z"
+            }
+        ],
+        "hearingLanguage": "ENGLISH",
+        "id": "a0df40ae-4d79-4cc0-bb8c-1fcc86fb82cd",
+        "isBoxHearing": false,
+        "isSJPHearing": true,
+        "jurisdictionType": "MAGISTRATES"
+    },
+    "hearingDay": "2025-07-16",
+    "isReshare": false,
+    "sharedTime": "2025-07-16T14:55:40.220Z"
+}

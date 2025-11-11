@@ -1,0 +1,342 @@
+{
+  "currentHearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "e4180cd2-1867-4480-b6dd-04732f99707c",
+          "masterDefendant": {
+            "masterDefendantId": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+            "personDefendant": {
+              "arrestSummonsNumber": "ARREST_1234",
+              "personDetails": {
+                "firstName": "John",
+                "gender": "NOT_KNOWN",
+                "lastName": "Smith",
+                "nationalityId": "dddd4444-1e20-4c21-916a-81a6c90239e5",
+                "title": "Baroness"
+              }
+            }
+          },
+          "notificationRequired": false,
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2029-05-07",
+        "applicationStatus": "DRAFT",
+        "id": "f8c12cf9-00fc-4a4c-b115-065b88bc428c",
+        "subject": {
+          "id": "fb9d0ea3-002f-439d-aacc-866f6a8a0c75",
+          "masterDefendant": {
+            "masterDefendantId": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+            "personDefendant": {
+              "arrestSummonsNumber": "ARREST_1234",
+              "personDetails": {
+                "firstName": "John",
+                "gender": "NOT_KNOWN",
+                "lastName": "Smith",
+                "nationalityId": "dddd4444-1e20-4c21-916a-81a6c90239e5",
+                "title": "Baroness"
+              }
+            }
+          },
+          "notificationRequired": false,
+          "summonsRequired": false
+        },
+        "type": {
+          "appealFlag": false,
+          "applicantAppellantFlag": false,
+          "breachType": "GENERIC_BREACH",
+          "categoryCode": "H3ZzHYaRYX",
+          "code": "hAaJDL6lNc",
+          "commrOfOathFlag": false,
+          "courtExtractAvlFlag": false,
+          "courtOfAppealFlag": false,
+          "id": "5df2e875-34ad-4c34-8d80-ba58a3e40f59",
+          "jurisdiction": "CROWN",
+          "legislation": "DxqCOOMGl9",
+          "linkType": "LINKED",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": false,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "BREACH",
+          "type": "HCqrvxgmxl"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "18DLooEoeZ",
+        "address2": "fpVkuo9Iwv",
+        "address3": "vPZmyYU5PV",
+        "address4": "9KIV8VEl8y",
+        "address5": "TrwkgxD8eC",
+        "postcode": "AA1 1AA"
+      },
+      "id": "4914550e-9f2e-4f4b-9ede-224a9f407459",
+      "name": "courtName",
+      "roomId": "c7abaf07-0324-4c04-b15c-b8216d99145c",
+      "roomName": "REKQllvaB7",
+      "welshName": "m4zxYANI5F",
+      "welshRoomName": "DBpWyE8piS"
+    },
+    "defenceCounsels": [
+      {
+        "attendanceDays": [
+          "2025-06-05"
+        ],
+        "defendants": [
+          "7cb8974a-6a6a-4854-a447-58f804c3af4b",
+          "597b078d-8f0a-4d1d-b540-84f3300c4154",
+          "dddd1111-1e20-4c21-916a-81a6c90239e5"
+        ],
+        "id": "3f9b0e49-6fff-409b-9499-15c12bb0eebd"
+      },
+      {
+        "attendanceDays": [
+          "2018-05-02"
+        ],
+        "defendants": [
+          "813e81c4-288c-4069-bcc0-b1b52a5981fe",
+          "dddd3333-1e20-4c21-916a-81a6c90239e5",
+          "0655af4d-d647-4268-bf57-db330787b9a2"
+        ],
+        "id": "6bfd12a3-fbff-43a1-b85b-6420ff0f5f7d"
+      }
+    ],
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2018-05-02"
+          }
+        ],
+        "defendantId": "dddd1111-1e20-4c21-916a-81a6c90239e5"
+      },
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "NOT_PRESENT",
+            "day": "2019-01-02"
+          }
+        ],
+        "defendantId": "dddd2222-1e20-4c21-916a-81a6c90239e5"
+      },
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "NOT_PRESENT",
+            "day": "2018-05-02"
+          }
+        ],
+        "defendantId": "dddd3333-1e20-4c21-916a-81a6c90239e5"
+      },
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2018-05-02"
+          }
+        ],
+        "defendantId": "dddd4444-1e20-4c21-916a-81a6c90239e5"
+      }
+    ],
+    "defendantJudicialResults": [
+      {
+        "judicialResult": {
+          "alwaysPublished": false,
+          "category": "FINAL",
+          "cjsCode": "cjsCode",
+          "d20": false,
+          "excludedFromResults": false,
+          "isAdjournmentResult": false,
+          "isAvailableForCourtExtract": false,
+          "isConvictedResult": false,
+          "isFinancialResult": false,
+          "judicialResultId": "8052a84e-b904-4e3f-99f4-d23166bd3889",
+          "judicialResultPrompts": [
+            {
+              "courtExtract": "Y",
+              "isFinancialImposition": true,
+              "judicialResultPromptTypeId": "41ee44e3-b499-49be-8600-4bc41407866e",
+              "label": "label",
+              "totalPenaltyPoints": 10,
+              "value": "value"
+            }
+          ],
+          "judicialResultTypeId": "b62698dc-428a-4726-92dc-4602011f0cca",
+          "label": "hearingLabel",
+          "lifeDuration": false,
+          "orderedDate": "2025-06-05",
+          "orderedHearingId": "e25d10f7-4f32-443c-8f00-ff1108fd71db",
+          "publishedAsAPrompt": false,
+          "publishedForNows": false,
+          "rank": 0,
+          "resultText": "resultText",
+          "rollUpPrompts": false,
+          "terminatesOffenceProceedings": false,
+          "urgent": false,
+          "welshLabel": "welshLabel"
+        },
+        "masterDefendantId": "34082979-20ae-4163-a539-880287bdc98b"
+      }
+    ],
+    "hearingDays": [
+      {
+        "listedDurationMinutes": 100,
+        "listingSequence": 10,
+        "sittingDay": "2018-05-02T12:01:01.000Z"
+      },
+      {
+        "listedDurationMinutes": 100,
+        "listingSequence": 10,
+        "sittingDay": "2018-04-03T12:00:00.000Z"
+      },
+      {
+        "listedDurationMinutes": 100,
+        "listingSequence": 10,
+        "sittingDay": "2018-02-02T12:00:00.000Z"
+      }
+    ],
+    "id": "5dd8ce6f-ebee-4062-a1b4-fbe5ac936962",
+    "isSJPHearing": false,
+    "judiciary": [
+      {
+        "judicialId": "62b7e546-e99a-4bb3-9b22-f235038c9b0e",
+        "judicialRoleType": {
+          "judicialRoleTypeId": "dd686b62-b4dc-4028-a9ce-018802ba6589",
+          "judiciaryType": "CIRCUIT_JUDGE"
+        }
+      }
+    ],
+    "jurisdictionType": "MAGISTRATES",
+    "prosecutionCases": [
+      {
+        "caseStatus": "ACTIVE",
+        "defendants": [
+          {
+            "associatedPersons": [
+              {
+                "person": {
+                  "firstName": "Tina",
+                  "gender": "MALE",
+                  "lastName": "Smith",
+                  "nationalityId": "dddd4444-1e20-4c21-916a-81a6c90239e5",
+                  "title": "Baroness"
+                },
+                "role": "parentGuardian"
+              }
+            ],
+            "courtProceedingsInitiated": "2025-06-05T21:37:05.572Z",
+            "id": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+            "masterDefendantId": "dddd1111-1e20-4c21-916a-81a6c90239e5",
+            "offences": [
+              {
+                "allocationDecision": {
+                  "allocationDecisionDate": "2024-01-22",
+                  "courtIndicatedSentence": {
+                    "courtIndicatedSentenceDescription": "xXArYJqbq4",
+                    "courtIndicatedSentenceTypeId": "7d092877-487b-4e8b-8526-ff078af1d4c3"
+                  },
+                  "motReasonCode": "PdEkbREMZZ",
+                  "motReasonDescription": "gKSxDX441J",
+                  "motReasonId": "4ca98536-e2ed-4f9f-a9b9-25070b8966c5",
+                  "offenceId": "2bc0837f-50b5-4058-bbd3-b20fcefd35ca",
+                  "originatingHearingId": "92650c37-c85b-4a11-bd8c-5456510b2d47",
+                  "sequenceNumber": 1
+                },
+                "arrestDate": "2025-06-05",
+                "chargeDate": "2025-06-05",
+                "convictionDate": "2025-06-05",
+                "count": 434,
+                "endDate": "2025-06-05",
+                "id": "5ea8007d-da4c-4988-a282-c6475603c8be",
+                "indicatedPlea": {
+                  "indicatedPleaDate": "2025-06-05",
+                  "indicatedPleaValue": "INDICATED_GUILTY",
+                  "offenceId": "e25d10f7-4f32-443c-8f00-ff1108fd71db",
+                  "source": "IN_COURT"
+                },
+                "introducedAfterInitialProceedings": true,
+                "isDiscontinued": true,
+                "isDisposed": true,
+                "judicialResults": [
+                  {
+                    "alwaysPublished": false,
+                    "category": "FINAL",
+                    "cjsCode": "cjsCode",
+                    "d20": false,
+                    "excludedFromResults": false,
+                    "isAdjournmentResult": false,
+                    "isAvailableForCourtExtract": false,
+                    "isConvictedResult": false,
+                    "isFinancialResult": false,
+                    "judicialResultId": "d73fc32f-0682-468e-b6bb-ff9f23d1a6ae",
+                    "judicialResultTypeId": "28e1d407-cf98-4e78-8140-f974aca103f7",
+                    "label": "label",
+                    "lifeDuration": false,
+                    "orderedDate": "2025-06-05",
+                    "orderedHearingId": "e25d10f7-4f32-443c-8f00-ff1108fd71db",
+                    "publishedAsAPrompt": false,
+                    "publishedForNows": false,
+                    "rank": 0,
+                    "resultText": "resultText",
+                    "rollUpPrompts": false,
+                    "terminatesOffenceProceedings": false,
+                    "urgent": false,
+                    "welshLabel": "label"
+                  }
+                ],
+                "modeOfTrial": "1010",
+                "offenceCode": "offenceCode",
+                "offenceDefinitionId": "e6384741-48b1-4c65-93d2-6b943cb8ba59",
+                "offenceTitle": "ZmrJM1vZx6",
+                "orderIndex": 65,
+                "plea": {
+                  "offenceId": "e25d10f7-4f32-443c-8f00-ff1108fd71db",
+                  "pleaDate": "2025-06-05",
+                  "pleaValue": "NOT_GUILTY"
+                },
+                "proceedingsConcluded": true,
+                "startDate": "2025-06-05",
+                "wording": "6v9FDHqg0y"
+              }
+            ],
+            "personDefendant": {
+              "bailReasons": "reason",
+              "bailStatus": {
+                "code": "Bail status code",
+                "description": "Bail status description",
+                "id": "cc29d884-1dc8-4fc3-aced-4265bedc6e5a"
+              },
+              "personDetails": {
+                "firstName": "John",
+                "gender": "NOT_KNOWN",
+                "lastName": "Smith",
+                "nationalityId": "dddd4444-1e20-4c21-916a-81a6c90239e5",
+                "title": "Baroness"
+              }
+            },
+            "pncId": "pncId",
+            "prosecutionCaseId": "d7594512-5be2-4367-a4c1-23efc3eb8c7f"
+          }
+        ],
+        "id": "cccc1111-1e20-4c21-916a-81a6c90239e5",
+        "initiationCode": "C",
+        "originatingOrganisation": "w2Fs2bDETr",
+        "prosecutionCaseIdentifier": {
+          "prosecutionAuthorityCode": "iomJypJRJY",
+          "prosecutionAuthorityId": "62b19a6d-b0cc-41a9-9e51-88ace1293151",
+          "prosecutionAuthorityReference": "authorityReference"
+        }
+      }
+    ],
+    "type": {
+      "description": "Trial",
+      "id": "30aab832-77eb-45a5-b568-d6ce5f2b74e6"
+    }
+  },
+  "sharedTime": "2021-06-15T10:35:10.000Z",
+  "hearingDay": "2018-05-02",
+  "isReshare": false
+}

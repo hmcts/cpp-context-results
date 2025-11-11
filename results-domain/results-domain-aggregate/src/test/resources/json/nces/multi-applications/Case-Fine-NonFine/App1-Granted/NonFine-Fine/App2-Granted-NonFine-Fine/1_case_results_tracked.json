@@ -1,0 +1,35 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3216769 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Trystan Rice",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "22f3461a-0c89-40e1-9940-d608f34ee551",
+    "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "85ca22d6-2b74-4347-8bed-fc99c3b036f4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
+            "offenceTitle": "Robbery",
+            "isFinancial": true,
+            "impositionOffenceDetails": "FO - Fine\nFined £7878.00, FVS - Surcharge\nTo pay a surcharge of £5444.00\nIMP - Imprisonment\nCommitted to prison for 9 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/04/2026.\nTotal custodial period is life.",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false
+        },
+        {
+            "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
+            "offenceTitle": "Theft from a shop",
+            "dateOfResult": "2025-06-27",
+            "isDeemedServed": false,
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+            "isFinancial": false
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3216769"
+    ]
+}

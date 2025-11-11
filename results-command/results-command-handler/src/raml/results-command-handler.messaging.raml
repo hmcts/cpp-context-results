@@ -1,0 +1,58 @@
+#%RAML 0.8
+title: Results command handler
+baseUri: message://command/handler/message/results
+
+/results.handler.command:
+  post:
+    body:
+      application/vnd.results.command.add-hearing-result+json:
+        schema: !include json/schema/results.command.add-hearing-result.json
+        example: !include json/results.command.add-hearing-result.json
+      application/vnd.results.command.add-hearing-result-for-day+json:
+        schema: !include json/schema/results.command.add-hearing-result-for-day.json
+        example: !include json/results.command.add-hearing-result-for-day.json
+      application/vnd.results.case-or-application-ejected+json:
+        schema: !include  json/schema/results.case-or-application-ejected.json
+        example: !include json/results.case-or-application-ejected.json
+      application/vnd.results.create-results+json:
+        schema: !include json/schema/results.create-results.json
+        example: !include json/results.create-results.json
+      application/vnd.results.command.create-results-for-day+json:
+        schema: !include json/schema/results.command.create-results-for-day.json
+        example: !include json/results.command.create-results-for-day.json
+      application/vnd.results.command.track-results+json:
+        schema: !include json/schema/results.track-results.json
+        example: !include json/results.track-results.json
+      application/vnd.results.command.generate-police-results-for-a-defendant+json:
+        schema: !include json/schema/results.command.generate-police-results-for-a-defendant.json
+        example: !include json/results.command.generate-police-results-for-a-defendant.json
+      application/vnd.result.command.update-gob-account+json:
+        example:  !include json/results.command.update-gob-account.json
+        schema: !include json/schema/results.command.update-gob-account.json
+      application/vnd.result.command.add-correlation-id+json:
+        example:  !include json/results.command.add-correlation-id.json
+        schema: !include json/schema/results.command.add-correlation-id.json
+      application/vnd.result.command.send-nces-email-for-application+json:
+        example:  !include json/result.command.send-nces-email-for-application.json
+        schema: !include json/schema/result.command.send-nces-email-for-application.json
+      application/vnd.result.command.update-defendant-address-for-application+json:
+        example: !include json/result.command.update-defendant-address-for-application.json
+        schema: !include json/schema/result.command.update-defendant-address-for-application.json
+      application/vnd.results.command.add-informant-register+json:
+        schema: !include json/schema/results.command.add-informant-register.json
+        example: !include json/results.command.add-informant-register.json
+      application/vnd.results.command.generate-informant-register+json:
+        example: !include json/results.command.generate-informant-register.json
+        schema:  !include json/schema/results.command.generate-informant-register.json
+      application/vnd.results.command.generate-informant-register-by-date+json:
+        example: !include json/results.command.generate-informant-register-by-date.json
+        schema:  !include json/schema/results.command.generate-informant-register-by-date.json
+      application/vnd.results.command.notify-informant-register+json:
+        example: !include json/results.command.notify-informant-register.json
+        schema:  !include json/schema/results.command.notify-informant-register.json
+      application/vnd.results.command.nces-document-notification+json:
+        example: !include json/results.command.nces-document-notification.json
+        schema:  !include json/schema/results.command.nces-document-notification.json
+      application/vnd.results.command.update-defendant-tracking-status+json:
+        example: !include json/results.command.update-defendant-tracking-status.json
+        schema:  !include json/schema/results.command.update-defendant-tracking-status.json

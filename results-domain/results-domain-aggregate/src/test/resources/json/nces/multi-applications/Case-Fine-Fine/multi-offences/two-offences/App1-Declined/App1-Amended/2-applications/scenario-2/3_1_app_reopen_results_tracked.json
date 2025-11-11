@@ -1,0 +1,50 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel3955007 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Davonte Hammes",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "ec6691d2-d810-4868-8b56-7ea1fdfec73e",
+  "hearingSittingDay": "2025-08-14T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "4444cb82-b50e-49fd-9c07-8b844489d4e4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "a07b1863-0d6d-4a07-a931-9224e963fd68",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
+      "offenceTitle": "Robbery",
+      "resultCode": "RFSD"
+    },
+    {
+      "amendmentDate": "2025-08-14",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationId": "a07b1863-0d6d-4a07-a931-9224e963fd68",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2025-08-14",
+      "impositionOffenceDetails": "RFSD - Application refused",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "RFSD"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3955007"
+  ]
+}

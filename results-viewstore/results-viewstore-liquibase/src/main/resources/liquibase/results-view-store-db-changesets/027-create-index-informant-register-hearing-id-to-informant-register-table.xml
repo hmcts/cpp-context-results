@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="27" author="sridhar.girimaji"
+               logicalFilePath="027-create-index-informant-register-hearing-id-to-informant-register-table.xml">
+
+        <createIndex tableName="informant_register"
+                     indexName="informant_register_hearing_id_idx">
+            <column name="hearing_id"/>
+        </createIndex>
+
+        <rollback>
+            <dropIndex indexName="informant_register_hearing_id_idx"
+                       tableName="informant_register"/>
+        </rollback>
+
+    </changeSet>
+
+
+</databaseChangeLog>

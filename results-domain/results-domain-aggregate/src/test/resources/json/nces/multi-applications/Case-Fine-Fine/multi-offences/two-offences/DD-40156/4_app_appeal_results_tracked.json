@@ -1,0 +1,81 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "5",
+  "defendantAddress": "1 High Street High Street Cambridge Cambridgeshire CB2 1TN",
+  "defendantContactNumber": "0338137227",
+  "defendantDateOfBirth": "1969-09-01",
+  "defendantEmail": "daina.gutkowski@example.com",
+  "defendantName": "Daina Gutkowski",
+  "hearingCourtCentreName": "Southwark Crown Court",
+  "hearingId": "85968184-8a38-4052-a9ed-7711ca32f694",
+  "hearingSittingDay": "2025-09-02T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "098698ad-4d30-4b72-89c0-aa427fcb4d62",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "6c808b10-33c9-48ea-adba-c5dd43ca9b7e",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £350.00. \nFO - Fine\nFined £150.00\nFVS - Surcharge\nTo pay a surcharge of £75.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/09/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink",
+      "resultCode": "RFSD"
+    },
+    {
+      "applicationId": "6c808b10-33c9-48ea-adba-c5dd43ca9b7e",
+      "applicationResultType": "Refused",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "OATS - Offence not dealt with as part of application - original adjudication to stand\nOffence not dealt with as part of application - original adjudication to stand",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "5d228682-2dda-4545-98d6-9890f3dafe7c",
+      "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+      "resultCode": "RFSD"
+    },
+    {
+      "applicationResultType": "Compensation",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £350.00. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FO - Fine\nFined £150.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink"
+    },
+    {
+      "applicationResultType": "Surcharge",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-09-02",
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £75.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
+      "offenceTitle": "Drive whilst unfit through drink"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "RQ121236318"
+  ]
+}

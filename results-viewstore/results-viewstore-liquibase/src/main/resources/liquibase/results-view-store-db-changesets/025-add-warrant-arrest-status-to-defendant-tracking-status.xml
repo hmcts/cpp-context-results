@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="25" author="jive"
+               logicalFilePath="025-add-warrant-arrest-status-to-defendant-tracking-status.xml">
+
+        <addColumn tableName="defendant_tracking_status">
+            <column name="woa_status" type="boolean" defaultValue="false"/>
+        </addColumn>
+
+        <addColumn tableName="defendant_tracking_status">
+            <column name="woa_last_modified_time" type="datetime"/>
+        </addColumn>
+
+        <renameColumn tableName="defendant_tracking_status" oldColumnName="last_modified_time"
+                      newColumnName="em_last_modified_time"/>
+
+        <dropNotNullConstraint columnName="em_last_modified_time"
+                               tableName="defendant_tracking_status"/>
+    </changeSet>
+
+</databaseChangeLog>

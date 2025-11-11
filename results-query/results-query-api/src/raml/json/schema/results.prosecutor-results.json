@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Response schema for prosecutor results",
+  "id": "http://justice.gov.uk/results/courts/informant-register/prosecutor-result.json",
+  "type": "object",
+  "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/prosecutorResult.json"
+}

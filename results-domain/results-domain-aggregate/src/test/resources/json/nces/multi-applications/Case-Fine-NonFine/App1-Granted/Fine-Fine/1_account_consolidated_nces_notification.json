@@ -1,0 +1,22 @@
+{
+  "caseReferences": "28DI3316700",
+  "dateDecisionMade": "2025-06-27",
+  "defendantName": "Katharina Pfannerstill",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £7898.00, FVS - Surcharge\nTo pay a surcharge of £76543.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
+      "offenceDate": "2019-11-28",
+      "offenceId": "25475aa3-0b0c-444f-b8e2-e8f572f14e9c",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "3ec0d24e-7c1e-49fb-a8b9-c87d49a224bb",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

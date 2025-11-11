@@ -1,0 +1,46 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0202542207",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName2542207@gmail.com",
+  "defendantName": "John Doe",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "cea8d4a6-c118-418f-bfa5-3f561886dac0",
+  "hearingSittingDay": "2025-01-30T10:00:00.000Z",
+  "masterDefendantId": "74f3d79a-be0d-4abe-8f82-458d39efda95",
+  "ncesEmail": "John.Doe@xxx.com",
+  "offenceResults": [
+    {
+      "applicationResultType": "Granted",
+      "applicationId": "22f3d79a-be0d-4abe-8f82-458d39efda95",
+      "applicationTitle": "applicationTitle",
+      "applicationTitle": "stat dec",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-28",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £50.00 to be paid monthly. Instalment start date: 15/02/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "54f3d79a-be0d-4abe-8f82-458d39efda95",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-01-28",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "54f3d79a-be0d-4abe-8f82-458d39efda95",
+      "offenceTitle": "Theft from a shop",
+      "applicationTitle": "applicationTitle"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI2542207"
+  ]
+}

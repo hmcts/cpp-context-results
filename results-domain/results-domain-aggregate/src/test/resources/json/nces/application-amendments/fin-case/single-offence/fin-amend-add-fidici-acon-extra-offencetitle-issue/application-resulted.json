@@ -1,0 +1,87 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Madisen Cummerata",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "f8738e20-78c6-4e71-bf16-a1b20bb4c2c2",
+  "hearingSittingDay": "2025-04-16T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "424c21fb-0c91-4b85-9d10-2d430755a660",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-16",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £11.00.\nFO - Fine\nFined £100.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/07/2026.",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-16",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "ccfe3b59-95f1-4e12-9bb0-06436479d0c2",
+      "applicationResultType": "Granted",
+      "applicationTitle": "Appearance to make statutory declaration",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-16",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-16",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "FIDICI"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-16",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "offenceTitle": "Theft of motor vehicle"
+    },
+    {
+      "applicationResultType": "Consolidated",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-04-16",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+      "offenceTitle": "Theft of motor vehicle",
+      "resultCode": "ACON"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6329491"
+  ]
+}

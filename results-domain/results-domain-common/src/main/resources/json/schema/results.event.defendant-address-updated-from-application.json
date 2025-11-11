@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/results.event.defendant-address-updated-from-application.json",
+  "type": "object",
+  "properties": {
+    "defendantId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "defendantAddress": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "defendantId",
+    "defendantAddress"
+  ],
+  "additionalProperties": false
+}

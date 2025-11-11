@@ -1,0 +1,80 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel3064249 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Neva Cassin",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "6f6b4b50-3537-426c-b161-02e1cb4e0111",
+    "hearingSittingDay": "2025-07-17T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "8c72aa50-4c4c-41fe-bc3a-1edea04de0c9",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "4b630395-b36b-4fba-adc8-79ed0e91649a",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4564.00\nFO - Fine\nFined £87654.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/12/2025",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "e61a28ae-f380-4313-8f1b-058bc6b09cc8",
+            "offenceTitle": "Robbery",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationId": "4b630395-b36b-4fba-adc8-79ed0e91649a",
+            "applicationResultType": "Allowed",
+            "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £65432.00. ",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "699b4033-b375-4fa8-8e98-bd3299d3fc51",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "AACA"
+        },
+        {
+            "applicationResultType": "Excise penalty",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4564.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e61a28ae-f380-4313-8f1b-058bc6b09cc8",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FO - Fine\nFined £87654.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "e61a28ae-f380-4313-8f1b-058bc6b09cc8",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "APPEAL",
+            "dateOfResult": "2025-07-17",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £65432.00. ",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "699b4033-b375-4fa8-8e98-bd3299d3fc51",
+            "offenceTitle": "Theft from a shop"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI3064249"
+    ]
+}

@@ -1,0 +1,73 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0203110385",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName3110385@gmail.com",
+  "defendantName": "Kira Powlowski",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e6c83ba6-1174-4957-8f7c-2a08552bdaed",
+  "hearingSittingDay": "2025-03-13T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "854235dc-70bc-449d-9672-275fcc56051d",
+  "ncesEmail": "av.qet@justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "4bfee23a-2f22-4de6-ac79-b63dde1b4762",
+      "applicationResultType": "Dismissed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £200.00 to test org\nFO - Fine\nFined £599.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nSV - Sentence varied\nAppeal heard on: 11/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "AASD"
+    },
+    {
+      "amendmentDate": "2025-03-13",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Costs",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £200.00 to test org",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-03-13",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "FO - Fine\nFined £599.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "amendmentDate": "2025-03-13",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Pay by date",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-03-13",
+      "impositionOffenceDetails": "PDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI3110385"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "caseReferences": "38DI3064614",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0203064614",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST013064614@gmail.com",
+  "defendantName": "Alexander Langworth",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-04",
+  "impositionOffenceDetails": [
+    {
+      "details": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £15.00\nFO - Fine\nFined £51.00\nFVS - Surcharge\nTo pay a surcharge of £11.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 03/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "68cfd013-a279-4ac5-9a5e-3ddfe2f8c683",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £100.00.\nFO - Fine\nFined £52.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "78b46590-cf91-446a-b437-29b73f66646e",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 12:00. Total amount enforced £300.00.\nFO - Fine\nFined £53.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "e9ce8db2-b079-4c10-b964-010570a224c3",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "ff578407-214a-4f57-a251-f8155b5c7ed1",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "04/03/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

@@ -1,0 +1,27 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+    "defendantContactNumber": "015325443756",
+    "defendantDateOfBirth": "1991-02-18",
+    "defendantName": "Madisen Cummerata",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "28e6df29-1b4a-4a53-950c-5d04b99c5721",
+    "hearingSittingDay": "2025-04-17T22:30:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "424c21fb-0c91-4b85-9d10-2d430755a660",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+      {
+        "dateOfResult": "2025-04-17",
+        "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/08/2027.",
+        "isDeemedServed": false,
+        "isFinancial": true,
+        "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
+        "offenceTitle": "Theft of motor vehicle"
+      }
+    ],
+    "prosecutionCaseReferences": [
+      "28DI6329491"
+    ]
+}

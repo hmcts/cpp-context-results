@@ -1,0 +1,121 @@
+{
+    "accountCorrelationId": "{{accountCorrelationId}}",
+    "accountDivisionCode": "77",
+    "defendantAddress": "n Fisher Tunnel7404759 South Lillie Avon DA6 7ND",
+    "defendantContactNumber": "987-204-0324",
+    "defendantDateOfBirth": "1981-10-02",
+    "defendantName": "Jakob Ritchie",
+    "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+    "hearingId": "9af0db1d-0f38-41a8-a52e-9b0924cb7118",
+    "hearingSittingDay": "2025-06-30T09:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "bd821e9e-a819-4ee6-b692-9679dbe0b5c6",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "applicationId": "6beaa937-dcc5-4008-90f6-ff29df019688",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £3222.00. \nFO - Fine\nFined £4333.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "6beaa937-dcc5-4008-90f6-ff29df019688",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "impositionOffenceDetails": "Fine Impositions App1 ",
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "G"
+        },
+        {
+            "applicationId": "6beaa937-dcc5-4008-90f6-ff29df019688",
+            "applicationResultType": "Granted",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "impositionOffenceDetails": "Fine Impositions App1",
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "6beaa937-dcc5-4008-90f6-ff29df019688",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £3222.00. \nFO - Fine\nFined £4333.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": true,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationId": "6beaa937-dcc5-4008-90f6-ff29df019688",
+            "applicationResultType": "Statutory Declaration",
+            "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "isParentFlag": false,
+            "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
+            "offenceTitle": "Theft from a shop",
+            "resultCode": "STDEC"
+        },
+        {
+            "applicationResultType": "Compensation",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £3222.00. ",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Fine",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FO - Fine\nFined £4333.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery"
+        },
+        {
+            "applicationResultType": "Surcharge",
+            "applicationType": "STAT_DEC",
+            "dateOfResult": "2025-06-30",
+            "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £432.00",
+            "isDeemedServed": false,
+            "isFinancial": true,
+            "isParentFlag": false,
+            "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
+            "offenceTitle": "Robbery"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "28DI7404759"
+    ]
+}

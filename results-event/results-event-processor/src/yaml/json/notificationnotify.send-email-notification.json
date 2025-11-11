@@ -1,0 +1,8 @@
+{
+  "templateId": "384416a9-ef20-4500-a9c1-f64b87b424a0",
+  "sendToAddress": "fred@bloggs.com",
+  "personalisation": {
+    "URN": "Fred",
+    "common_platform_url": "http://xxx.xxx.com"
+  }
+}

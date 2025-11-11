@@ -1,0 +1,321 @@
+{
+  "caseId": "f5de93f3-01c9-4e05-b311-e6e4338cedf5",
+  "courtCentreWithLJA": {
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "courtHearingLocation": "B01LY01",
+    "psaCode": 2577
+  },
+  "defendant": {
+    "associatedPerson": [],
+    "attendanceDays": [
+      {
+        "attendanceType": "IN_PERSON",
+        "day": "2024-09-25"
+      }
+    ],
+    "defendantId": "8a0a0c25-5cac-40be-a123-a5bd47b5721b",
+    "individualDefendant": {
+      "bailConditions": "",
+      "bailStatus": {
+        "code": "A",
+        "description": "Not applicable",
+        "id": "86009c70-759d-3308-8de4-194886ff9a77"
+      },
+      "person": {
+        "address": {
+          "address1": "56saon",
+          "address2": "56Police House",
+          "address3": "StreetDescription1",
+          "address4": "Locality1",
+          "address5": "Town2",
+          "postcode": "TW14 9XD"
+        },
+        "contact": {
+          "home": "0917894278022",
+          "mobile": "0917894278022",
+          "primaryEmail": "robert@gmail.com",
+          "secondaryEmail": "ormsby@gmail.com",
+          "work": "0917894278022"
+        },
+        "dateOfBirth": "1997-08-08",
+        "firstName": "Daron",
+        "gender": "MALE",
+        "lastName": "Hettinger34",
+        "title": "MR"
+      },
+      "presentAtHearing": "Y"
+    },
+    "offences": [
+      {
+        "allocationDecision": {
+          "allocationDecisionDate": "2024-09-25",
+          "motReasonCode": "02",
+          "motReasonDescription": "Indictable-only offence",
+          "motReasonId": "4ba29b9f-9e57-32ed-b376-1840f4ba6c53",
+          "offenceId": "9eaf66fc-4be4-4e4a-b6f8-740a911423bc",
+          "originatingHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+          "sequenceNumber": 100
+        },
+        "arrestDate": "2023-06-13",
+        "chargeDate": "2023-06-13",
+        "convictionDate": "2024-09-25",
+        "endDate": "2023-04-12",
+        "finalDisposal": "Y",
+        "finding": "G",
+        "id": "9eaf66fc-4be4-4e4a-b6f8-740a911423bc",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": true,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "1018",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "durationElement": {
+              "primaryDurationUnit": "Y",
+              "primaryDurationValue": 1
+            },
+            "dvlaCode": "E",
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": true,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "deb1c76b-1b53-4787-a88b-6f8f8149e6e4",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "durationSequence": 1,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                "label": "Period of conditional discharge",
+                "promptReference": "periodofConditionalDischarge",
+                "promptSequence": 100,
+                "type": "INT",
+                "usergroups": [],
+                "value": "1 Years",
+                "welshLabel": "Cyfnod o ryddhad amodol",
+                "welshValue": "1 Years"
+              }
+            ],
+            "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+            "label": "Conditional discharge",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+            "policeSubjectLineTitle": "Final Sentence",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 73800,
+            "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "deb1c76b-1b53-4787-a88b-6f8f8149e6e4",
+            "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Rhyddhad Amodol"
+          }
+        ],
+        "modeOfTrial": "Indictable",
+        "offenceCode": "TH68023A",
+        "offenceDateCode": 4,
+        "offenceFacts": {
+          "alcoholReadingAmount": 500,
+          "alcoholReadingMethodCode": "A",
+          "alcoholReadingMethodDescription": "Blood",
+          "vehicleCode": "LARGE_GOODS_VEHICLE",
+          "vehicleRegistration": "TE4654"
+        },
+        "offenceSequenceNumber": 1,
+        "plea": {
+          "offenceId": "9eaf66fc-4be4-4e4a-b6f8-740a911423bc",
+          "originatingHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+          "pleaDate": "2024-09-25",
+          "pleaValue": "GUILTY"
+        },
+        "startDate": "2023-04-12",
+        "wording": "Has a violent past and fear that he will commit further offences and interfere with witnesse"
+      },
+      {
+        "chargeDate": "2024-09-25",
+        "finalDisposal": "Y",
+        "id": "ebc7d708-7efc-4dba-b750-322a40223998",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "3501",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "34758a0e-85d7-472d-826a-ab89b157ec9c",
+            "judicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+            "label": "No adjudication - dealt with for original offence",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 36100,
+            "resultText": "BRO - No adjudication - dealt with for original offence",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "34758a0e-85d7-472d-826a-ab89b157ec9c",
+            "rootJudicialResultTypeId": "1c70f1e0-7674-4acb-8710-1c5233e984c0",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "",
+        "offenceCode": "PC00509",
+        "offenceDateCode": 1,
+        "offenceSequenceNumber": 0,
+        "startDate": "2024-09-25",
+        "wording": ""
+      },
+      {
+        "arrestDate": "2023-06-13",
+        "chargeDate": "2023-06-13",
+        "endDate": "2023-04-12",
+        "finalDisposal": "Y",
+        "id": "d30aac62-66c0-4319-bf64-3635d85d08f0",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": true,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "1018",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "31ec3a16-8721-498c-8da5-f099390ee254"
+            },
+            "d20": false,
+            "durationElement": {
+              "primaryDurationUnit": "Y",
+              "primaryDurationValue": 1
+            },
+            "dvlaCode": "E",
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": true,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "04b0579d-4482-4c93-8e9b-31be2539cc1e",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "durationSequence": 1,
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "d3205319-84cf-4c5b-9d7a-7e4bb1865054",
+                "label": "Period of conditional discharge",
+                "promptReference": "periodofConditionalDischarge",
+                "promptSequence": 100,
+                "type": "INT",
+                "usergroups": [],
+                "value": "1 Years",
+                "welshLabel": "Cyfnod o ryddhad amodol",
+                "welshValue": "1 Years"
+              }
+            ],
+            "judicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+            "label": "Conditional discharge",
+            "lastSharedDateTime": "2024-09-25",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2024-09-25",
+            "orderedHearingId": "f4a455fb-be78-4c3a-9354-8536528f016f",
+            "policeSubjectLineTitle": "Final Sentence",
+            "postHearingCustodyStatus": "A",
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 73800,
+            "resultText": "CD - Conditional discharge\nDischarged conditionally for 1 Years.",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "04b0579d-4482-4c93-8e9b-31be2539cc1e",
+            "rootJudicialResultTypeId": "554c2622-c1cc-459e-a98d-b7f317ab065c",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": [],
+            "welshLabel": "Rhyddhad Amodol"
+          }
+        ],
+        "modeOfTrial": "Indictable",
+        "offenceCode": "CJ03522",
+        "offenceDateCode": 4,
+        "offenceFacts": {
+          "alcoholReadingAmount": 500,
+          "alcoholReadingMethodCode": "A",
+          "alcoholReadingMethodDescription": "Blood",
+          "vehicleCode": "LARGE_GOODS_VEHICLE",
+          "vehicleRegistration": "TE4654"
+        },
+        "offenceSequenceNumber": 1,
+        "startDate": "2023-04-12",
+        "wording": "Original CaseURN: 25SepVTC749, Re-sentenced Original code : TH68023, Original details: Has a violent past and fear that he will commit further offences and interfere with witnesse"
+      }
+    ],
+    "pncId": "PNCidentifier",
+    "prosecutorReference": "170909936254731460"
+  },
+  "id": "f4a455fb-be78-4c3a-9354-8536528f016f",
+  "sessionDays": [
+    {
+      "listedDurationMinutes": 20,
+      "listingSequence": 0,
+      "sittingDay": "2024-09-25T17:01:01.000Z"
+    }
+  ],
+  "urn": "25SepVTC301"
+}

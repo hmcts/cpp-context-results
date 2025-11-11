@@ -1,0 +1,393 @@
+{
+  "hearing": {
+    "courtApplications": [
+      {
+        "applicant": {
+          "id": "8a996dca-0305-4dca-b2df-3e74f88f3711",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "d0621131-aa90-4653-af63-bdfeec1271cc",
+                "caseReference": "28NS5174320",
+                "defendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe"
+              }
+            ],
+            "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01125174320",
+              "bailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9899AAAA",
+                  "address2": "Woodlane4",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon",
+                  "postcode": "BS1 1JQ"
+                },
+                "contact": {
+                  "home": "0205174320",
+                  "mobile": "07775174320",
+                  "primaryEmail": "firstName.lastName5174320@gmail.com"
+                },
+                "dateOfBirth": "1972-11-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "1",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Woodrow",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Block",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "applicationReceivedDate": "2025-03-11",
+        "applicationReference": "28NS5174320",
+        "applicationStatus": "UN_ALLOCATED",
+        "commissionerOfOath": false,
+        "courtApplicationCases": [
+          {
+            "caseStatus": "INACTIVE",
+            "isSJP": false,
+            "offences": [
+              {
+                "arrestDate": "2021-01-01",
+                "chargeDate": "2020-12-28",
+                "count": 0,
+                "endorsableFlag": false,
+                "id": "fc2c2255-c564-42e4-9b8b-2c6d8ec48278",
+                "isDisposed": false,
+                "listingNumber": 1,
+                "maxPenalty": "EW:6M &/or Ultd Fine",
+                "modeOfTrial": "Either Way",
+                "offenceCode": "TH68010",
+                "offenceDateCode": 1,
+                "offenceDefinitionId": "c8b42f54-833a-37de-982e-e62fca7540dd",
+                "offenceLegislation": "Contrary to section 1(1) and 7 of the Theft    Act 1968.",
+                "offenceLegislationWelsh": "Yn groes i adran 1(1) a 7 Deddf Dwyn 1968.",
+                "offenceTitle": "Theft from a shop",
+                "offenceTitleWelsh": "Dwyn o siop - siop-ladrad",
+                "orderIndex": 1,
+                "proceedingsConcluded": true,
+                "startDate": "2019-11-28",
+                "wording": "Theft of pedal cycle."
+              }
+            ],
+            "prosecutionCaseId": "d0621131-aa90-4653-af63-bdfeec1271cc",
+            "prosecutionCaseIdentifier": {
+              "address": {
+                "address1": "Finance Operations",
+                "address2": "C3 East",
+                "address3": "DVLA",
+                "address4": "Longview Road",
+                "address5": "Swansea",
+                "postcode": "SA6 7JL"
+              },
+              "contact": {
+                "primaryEmail": "sjp@dvla.gov.uk"
+              },
+              "majorCreditorCode": "DVL2",
+              "prosecutionAuthorityCode": "DVLA",
+              "prosecutionAuthorityId": "6ae4b163-658b-3ae2-a66d-43401cac2f96",
+              "prosecutionAuthorityName": "Driver and Vehicle Licensing Agency",
+              "prosecutionAuthorityOUCode": "G94DV00",
+              "caseURN": "28NS5174320"
+            }
+          }
+        ],
+        "id": "7e8aa3f7-22e2-4538-9395-233c001e627a",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "FINAL",
+            "cjsCode": "3045",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "98c87ac3-4499-4b6e-91dc-155945eef6ca",
+            "judicialResultPrompts": [
+              {
+                "courtExtract": "Y",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "c946a5df-5849-4cca-b425-ecbd6bd704dc",
+                "label": "Date sentence was imposed",
+                "promptReference": "dateSentenceWasImposed",
+                "promptSequence": 100,
+                "type": "DATE",
+                "usergroups": [],
+                "value": "11/11/2025",
+                "welshValue": "11/11/2025"
+              },
+              {
+                "courtExtract": "N",
+                "isFinancialImposition": false,
+                "judicialResultPromptTypeId": "c10b4c83-1856-4ca9-9592-d8b8183a0324",
+                "label": "Reasons",
+                "promptReference": "reasons",
+                "promptSequence": 200,
+                "type": "TXT",
+                "usergroups": [
+                  "CPS",
+                  "Defence",
+                  "Judiciary",
+                  "NCES",
+                  "Probation",
+                  "Prosecuting Authorities",
+                  "YOTs"
+                ],
+                "value": "Reasons tests",
+                "welshValue": "Reasons tests"
+              },
+              {
+                "courtExtract": "Y",
+                "judicialResultPromptTypeId": "4ad82d44-41cc-4e47-a2f5-e0dd147320ee",
+                "label": "Driving disqualification stands",
+                "promptReference": "b1497cc0-ff83-4ee6-bbf4-3455c860fedc",
+                "promptSequence": 300,
+                "usergroups": [],
+                "value": ""
+              }
+            ],
+            "judicialResultTypeId": "573b195d-5795-43f1-92bb-204de1305b8b",
+            "label": "Appeal against sentence dismissed ",
+            "lastSharedDateTime": "2025-03-11",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2025-03-11",
+            "orderedHearingId": "e6b9e289-75ed-4771-8b3b-c0b62d48e223",
+            "postHearingCustodyStatus": "A",
+            "preserveActiveOrder": false,
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 46300,
+            "resultText": "AASD - Appeal against sentence dismissed \nDate sentence was imposed: 11/11/2025. ",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "98c87ac3-4499-4b6e-91dc-155945eef6ca",
+            "rootJudicialResultTypeId": "573b195d-5795-43f1-92bb-204de1305b8b",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          },
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "category": "ANCILLARY",
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+            },
+            "d20": true,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "b1497cc0-ff83-4ee6-bbf4-3455c860fedc",
+            "judicialResultTypeId": "4ad82d44-41cc-4e47-a2f5-e0dd147320ee",
+            "label": "Driving disqualification stands",
+            "lastSharedDateTime": "2025-03-11",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2025-03-11",
+            "orderedHearingId": "e6b9e289-75ed-4771-8b3b-c0b62d48e223",
+            "parentJudicialResultId": "224373ef-735e-479b-ae6d-e83b9b24569f",
+            "parentJudicialResultTypeId": "05074fb3-3ad9-4d94-ba0e-27e27a46b7d6",
+            "postHearingCustodyStatus": "A",
+            "preserveActiveOrder": false,
+            "publishedAsAPrompt": true,
+            "publishedForNows": true,
+            "rank": 25800,
+            "resultText": "Driving disqualification stands",
+            "rollUpPrompts": false,
+            "rootJudicialResultId": "98c87ac3-4499-4b6e-91dc-155945eef6ca",
+            "rootJudicialResultTypeId": "573b195d-5795-43f1-92bb-204de1305b8b",
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "subject": {
+          "id": "8a996dca-0305-4dca-b2df-3e74f88f3711",
+          "masterDefendant": {
+            "defendantCase": [
+              {
+                "caseId": "d0621131-aa90-4653-af63-bdfeec1271cc",
+                "caseReference": "28NS5174320",
+                "defendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe"
+              }
+            ],
+            "masterDefendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe",
+            "personDefendant": {
+              "arrestSummonsNumber": "D28GC01125174320",
+              "bailConditions": "",
+              "bailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              },
+              "driverNumber": "VANFL002222OW9PH",
+              "personDetails": {
+                "address": {
+                  "address1": "9999A9899AAAA",
+                  "address2": "Woodlane4",
+                  "address3": "addressline 3",
+                  "address4": "Bristol",
+                  "address5": "Avon",
+                  "postcode": "BS1 1JQ"
+                },
+                "contact": {
+                  "home": "0205174320",
+                  "mobile": "07775174320",
+                  "primaryEmail": "firstName.lastName5174320@gmail.com"
+                },
+                "dateOfBirth": "1972-11-01",
+                "documentationLanguageNeeds": "ENGLISH",
+                "ethnicity": {
+                  "observedEthnicityCode": "1",
+                  "observedEthnicityDescription": "1",
+                  "observedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b",
+                  "selfDefinedEthnicityCode": "W1",
+                  "selfDefinedEthnicityDescription": "British",
+                  "selfDefinedEthnicityId": "c4ca4238-a0b9-3382-8dcc-509a6f75849b"
+                },
+                "firstName": "Woodrow",
+                "gender": "MALE",
+                "hearingLanguageNeeds": "ENGLISH",
+                "lastName": "Block",
+                "title": "Mr"
+              },
+              "policeBailStatus": {
+                "code": "C",
+                "description": "Custody",
+                "id": "12e69486-4d01-3403-a50a-7419ca040635"
+              }
+            }
+          },
+          "notificationRequired": true,
+          "summonsRequired": false
+        },
+        "type": {
+          "appealFlag": true,
+          "applicantAppellantFlag": true,
+          "boxworkNotifTemplate": "NOT_APPLICABLE",
+          "breachType": "NOT_APPLICABLE",
+          "categoryCode": "CC",
+          "code": "MC80802",
+          "commrOfOathFlag": false,
+          "contestedFeeApplicable": false,
+          "courtExtractAvlFlag": true,
+          "courtOfAppealFlag": false,
+          "exParte": false,
+          "hearingCode": "APL",
+          "id": "57810183-a5c2-3195-8748-c6b97eda1ebd",
+          "initialFeeApplicable": false,
+          "jurisdiction": "CROWN",
+          "lastModified": "2022-03-15T15:16:56.219Z",
+          "legislation": "section 108 of the Magistrates Courts Act 1980",
+          "legislationWelsh": "adran 108 Deddf Llysoedd Ynadon 1980",
+          "linkType": "SJP",
+          "listingNotifTemplate": "POSTAL_NOTIFICATION",
+          "offenceActiveOrder": "OFFENCE",
+          "pleaApplicableFlag": false,
+          "prosecutorThirdPartyFlag": false,
+          "spiOutApplicableFlag": true,
+          "summonsTemplateType": "NOT_APPLICABLE",
+          "type": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+          "typeWelsh": "Apelio i Lys y Goron yn erbyn euogfarn gan Lys Ynadon"
+        }
+      }
+    ],
+    "courtCentre": {
+      "address": {
+        "address1": "176A Lavender Hill",
+        "address2": "London",
+        "address3": "",
+        "address4": "",
+        "address5": "",
+        "postcode": "SW11 1JU"
+      },
+      "code": "B01LY00",
+      "courtHearingLocation": "B01LY01",
+      "id": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+      "lja": {
+        "ljaCode": "2577",
+        "ljaName": "South West London Magistrates' Court"
+      },
+      "name": "Lavender Hill Magistrates' Court",
+      "roomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+      "roomName": "Courtroom 01"
+    },
+    "defendantAttendance": [
+      {
+        "attendanceDays": [
+          {
+            "attendanceType": "IN_PERSON",
+            "day": "2025-03-11"
+          }
+        ],
+        "defendantId": "f20143ad-9e86-4be7-b72c-c8e589ad1fbe"
+      }
+    ],
+    "hasSharedResults": true,
+    "hearingDays": [
+      {
+        "courtCentreId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
+        "courtRoomId": "9e4932f7-97b2-3010-b942-ddd2624e4dd8",
+        "hasSharedResults": true,
+        "isCancelled": false,
+        "listedDurationMinutes": 1,
+        "listingSequence": 0,
+        "sittingDay": "2025-03-11T10:00:00.000Z"
+      }
+    ],
+    "hearingLanguage": "ENGLISH",
+    "id": "e6b9e289-75ed-4771-8b3b-c0b62d48e223",
+    "jurisdictionType": "MAGISTRATES",
+    "shadowListedOffences": [],
+    "type": {
+      "description": "Appeal",
+      "id": "bd30a723-a375-3ae9-9332-871724cd8edd"
+    }
+  },
+  "hearingDay": "2025-03-11",
+  "isReshare": false,
+  "sharedTime": "2025-03-11T18:36:00.601Z"
+}

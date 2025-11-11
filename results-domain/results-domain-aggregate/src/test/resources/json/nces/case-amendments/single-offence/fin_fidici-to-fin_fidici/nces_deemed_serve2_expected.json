@@ -1,0 +1,27 @@
+{
+  "caseReferences": "28NS8137872",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0208137872",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName8137872@gmail.com",
+  "defendantName": "Martine Brakus",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-03-10",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £199.00. Reason for decision: fidici 2.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "af82882b-de9c-466e-a8d5-5168f1b5af53",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "79cdef69-6c35-462b-8532-e53a169929e6",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "10/03/2025",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

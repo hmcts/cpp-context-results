@@ -1,0 +1,46 @@
+{
+  "caseReferences": "28DI7664890",
+  "dateDecisionMade": "2025-06-30",
+  "defendantAddress": "n Fisher Tunnel7664890 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Ena Pouros",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-06-30",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £9999.00\nFVS - Surcharge\nTo pay a surcharge of £888.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+      "title": "Robbery"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "3c35f322-0651-4256-8843-eed1dbb8209e",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £2000.00.\nFO - Fine\nFined £8877.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 11/05/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
+      "title": "Robbery"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}
