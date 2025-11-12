@@ -533,5 +533,60 @@ class CaseFinToFinAccWriteOffRuleTest {
 
         assertThat("Rule should not apply for non-financial amendments", rule.appliesTo(input), is(false));
     }
+
+    @Test
+    @DisplayName("Should not generate A&R for 2ndAmendment overall NF-F")
+    void shouldNotGenerateDuplicateWriteOffForNonFinacialToFinancials() {
+        final UUID offenceId1 = randomUUID();
+        final UUID offenceId2 = randomUUID();
+        final UUID hearingId = randomUUID();
+        final UUID accountCorrelationId2 = randomUUID();
+        final UUID accountCorrelationId1 = randomUUID();
+
+        HearingFinancialResultRequest trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withAccountCorrelationId(accountCorrelationId2)
+                .withHearingId(hearingId)
+                .withOffenceResults(List.of(
+                        offenceResults()
+                                .withOffenceId(offenceId1)
+                                .withIsFinancial(true)
+                                .withAmendmentDate("2023-01-01")
+                                .build(),
+                        offenceResults()
+                                .withOffenceId(offenceId2)
+                                .withIsFinancial(true)
+                                .withAmendmentDate("2023-01-01")
+                                .build()))
+                .build();
+        final ResultNotificationRule.RuleInput input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest)
+                .withPrevOffenceResultsDetails(Map.of(
+                        offenceId1,
+                        offenceResultsDetails()
+                                .withIsFinancial(false)
+                                .withOffenceId(offenceId1)
+                                .withCreatedTime(ZonedDateTime.now().minusHours(1))
+                                .withImpositionOffenceDetails("Previous non-financial offence1 details")
+                                .build(),
+                        offenceId2,
+                        offenceResultsDetails()
+                                .withIsFinancial(false)
+                                .withOffenceId(offenceId1)
+                                .withCreatedTime(ZonedDateTime.now().minusHours(1))
+                                .withImpositionOffenceDetails("Previous non-financial offence2 details")
+                                .build()))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                        .withHearingId(hearingId)
+                                        .withCreatedTime(ZonedDateTime.now().minusDays(4))
+                                        .withAccountCorrelationId(accountCorrelationId1)
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(true).build()))
+                                        .withAccountNumber("AC123456789_FIRST")
+                                        .build()))
+                .build();
+
+        assertThat("Rule should not apply for non-financial amendments", rule.appliesTo(input), is(false));
+    }
 }
 
