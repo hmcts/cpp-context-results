@@ -281,7 +281,7 @@ public class GobAccountHelperTest {
     }
 
     @Test
-    public void shouldNotReturnPreviousCorrelationFalseForDifferentHearing() {
+    public void shouldReturnPreviousCorrelationFalseForDifferentHearing() {
         final UUID currentAccountCorrelationId = randomUUID();
         final UUID previousAccountCorrelationId = randomUUID();
         final UUID hearingId = randomUUID();
