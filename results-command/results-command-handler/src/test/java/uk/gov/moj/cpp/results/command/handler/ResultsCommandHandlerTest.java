@@ -327,8 +327,14 @@ public class ResultsCommandHandlerTest {
                                         withJsonPath("$.hearing.id", is(hearingId.toString())),
                                         withJsonPath("$.hearingDay", is(hearingDay.toString()))
                                 )
-                        ))
-              ));
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.publish-to-dcs"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.currentHearing.id", is(hearingId.toString())),
+                                        withJsonPath("$.hearingDay", is(hearingDay.toString()))
+                                )
+                        ))));
 
     }
 
