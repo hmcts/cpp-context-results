@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications;
 
-import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -111,28 +110,6 @@ public interface ResultNotificationRule {
                             ofNullable(prevOffenceResultsDetails.get(offenceResult.getOffenceId()))
                                     .map(prevOffenceResult -> !Objects.equals(prevOffenceResult.getIsDeemedServed(), offenceResult.getIsDeemedServed()))
                                     .orElse(false));
-        }
-
-        public boolean isOverallFinancialToFinancialAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap, final UUID hearingId) {
-
-            return offenceResults.stream()
-                    .anyMatch(offenceResult -> TRUE.equals(offenceResult.getIsFinancial()))
-                    && prevOffenceResultsDetailsMap.values().stream()
-                    .filter(prevOffenceResult -> nonNull(prevOffenceResult) &&
-                            nonNull(prevOffenceResult.getHearingId())
-                            && prevOffenceResult.getHearingId().equals(hearingId))
-                    .anyMatch(prev -> TRUE.equals(prev.getIsFinancial()));
-        }
-
-        public boolean isOverallFinancialToNonFinancialAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap, final UUID hearingId) {
-
-            return offenceResults.stream()
-                    .allMatch(offenceResult -> !TRUE.equals(offenceResult.getIsFinancial()))
-                    && prevOffenceResultsDetailsMap.values().stream()
-                    .filter(prevOffenceResult -> nonNull(prevOffenceResult) &&
-                            nonNull(prevOffenceResult.getHearingId())
-                            && prevOffenceResult.getHearingId().equals(hearingId))
-                    .anyMatch(prev -> TRUE.equals(prev.getIsFinancial()));
         }
     }
 }
