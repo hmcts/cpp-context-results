@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ca
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.hasOldGobAccount;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.hasPreviousCorrelation;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsCaseAmendment;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsCaseAmendment;
 
@@ -33,10 +33,10 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
                 .map(OffenceResults::getOffenceId)
                 .collect(Collectors.toList());
 
-        final Boolean hasPreviousCorrelation = hasOldGobAccount(input.correlationItemList(),
+        final Boolean hasPreviousAccountCorrelation = hasPreviousCorrelation(input.correlationItemList(),
                 request.getAccountCorrelationId(), offenceIdList, input.prevApplicationResultsDetails(), request.getHearingId());
 
-        return !input.hasCorrelation() && hasPreviousCorrelation;
+        return !input.hasAccountCorrelation() && hasPreviousAccountCorrelation;
     }
 
     @Override

@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.domain.aggregate.utils;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
-import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -35,19 +34,14 @@ public class GobAccountHelper {
                 .toList();
     }
 
-    public static Boolean hasOldGobAccount(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
-                                           final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final UUID hearingId) {
-
+    public static Boolean hasPreviousCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
+                                                 final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final UUID hearingId) {
         correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
 
-        final Map<UUID, List<CorrelationItem>> hearingIdCorrelationItemsMap = offenceIdList.stream()
+        return offenceIdList.stream()
                 .map(offenceId -> getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
                 .filter(Objects::nonNull)
-                .distinct()
-                .collect(groupingBy(CorrelationItem::getHearingId));
-
-        final List<CorrelationItem> correlationItems = hearingIdCorrelationItemsMap.get(hearingId);
-        return isNotEmpty(correlationItems);
+                .anyMatch(ci -> ci.getHearingId().equals(hearingId));
     }
 
     private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
@@ -63,7 +57,7 @@ public class GobAccountHelper {
     }
 
     private static CorrelationItem getOldCorrelationItemMatch(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,
-                                                             final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
+                                                              final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
 
         //find previous matching correlationItem by offenceId; then ensure the offence isFinancial to return valid GobAccountNumber
         return correlationItemList.stream()

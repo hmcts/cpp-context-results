@@ -37,7 +37,7 @@ public class ApplicationAmendmentFinToFinAccWriteOffRule extends AbstractApplica
         final UUID currentApplicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
 
         return input.hasValidApplicationType() && input.isAmendmentFlow()
-                && input.hasCorrelation()
+                && input.hasAccountCorrelation()
                 && isFineToFineApplicationAmendment(input, request, currentApplicationId);
     }
 

@@ -30,7 +30,7 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow() && !input.hasCorrelation();
+        return input.hasValidApplicationType() && input.isAmendmentFlow() && !input.hasAccountCorrelation();
     }
 
     @Override

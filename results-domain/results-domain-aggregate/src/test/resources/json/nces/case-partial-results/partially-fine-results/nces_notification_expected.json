@@ -1,5 +1,5 @@
 {
-  "amendmentDate": "2025-11-11",
+  "amendmentDate": "2025-11-12",
   "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
   "caseReferences": "GD55946965",
   "defendantDateOfBirth": "1978-11-11",
@@ -17,7 +17,7 @@
   "isSJPHearing": false,
   "isWriteOff": true,
   "masterDefendantId": "a86d5345-27c2-4fb5-8a49-2fe4df126f27",
-  "materialId": "943467bc-a117-44f0-a8b1-d26979004649",
+  "materialId": "{{materialId}}",
   "newOffenceByResult": [
     {
       "details": "FO - Fine\nFined £100.10, FVS - Surcharge\nTo pay a surcharge of £90.02, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £113.00 to be paid monthly from 11/12/2025",
