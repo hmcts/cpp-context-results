@@ -34,16 +34,6 @@ public class GobAccountHelper {
                 .toList();
     }
 
-    public static Boolean hasPreviousCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
-                                                 final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final UUID hearingId) {
-        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-
-        return offenceIdList.stream()
-                .map(offenceId -> getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
-                .filter(Objects::nonNull)
-                .anyMatch(ci -> ci.getHearingId().equals(hearingId));
-    }
-
     private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
         ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         return ciList.get(0).getAccountNumber();
