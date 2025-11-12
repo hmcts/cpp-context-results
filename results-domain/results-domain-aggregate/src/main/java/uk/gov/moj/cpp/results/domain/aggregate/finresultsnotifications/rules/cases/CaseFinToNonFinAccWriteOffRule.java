@@ -3,12 +3,10 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ca
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.hasPreviousCorrelation;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsCaseAmendment;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsCaseAmendment;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -16,8 +14,6 @@ import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * This class implements a notification rule for case amendments with financial imposition changes. If there are
@@ -29,14 +25,8 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
     public boolean appliesTo(RuleInput input) {
 
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
-        final List<UUID> offenceIdList = request.getOffenceResults().stream()
-                .map(OffenceResults::getOffenceId)
-                .collect(Collectors.toList());
-
-        final Boolean hasPreviousAccountCorrelation = hasPreviousCorrelation(input.correlationItemList(),
-                request.getAccountCorrelationId(), offenceIdList, input.prevApplicationResultsDetails(), request.getHearingId());
-
-        return !input.hasAccountCorrelation() && hasPreviousAccountCorrelation;
+        final boolean hasTransitionedToNonFinancial = input.isOverallFinancialToNonFinancialAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), request.getHearingId());
+        return !input.hasAccountCorrelation() && hasTransitionedToNonFinancial;
     }
 
     @Override

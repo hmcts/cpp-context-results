@@ -1,26 +1,18 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases;
 
-import static java.lang.Boolean.TRUE;
-import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.hasPreviousCorrelation;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsCaseAmendment;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalOffenceResultsCaseAmendment;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
-import uk.gov.justice.hearing.courts.OffenceResults;
-import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * This class implements a notification rule for case amendments with financial imposition changes. If there are
@@ -37,16 +29,9 @@ public class CaseFinToFinAccWriteOffRule extends AbstractCaseResultNotificationR
     public boolean appliesTo(RuleInput input) {
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
 
-        final List<UUID> offenceIdList = request.getOffenceResults().stream()
-                .map(OffenceResults::getOffenceId)
-                .collect(Collectors.toList());
+        final boolean hasTransitionedToFinancial = input.isOverallFinancialToFinancialAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), request.getHearingId());
 
-        final Boolean hasPreviousAccountCorrelation = hasPreviousCorrelation(input.correlationItemList(),
-                request.getAccountCorrelationId(), offenceIdList, input.prevApplicationResultsDetails(), request.getHearingId());
-
-        final boolean hasTransitionedToFinancial = isOverallFinancialToFinancialAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails());
-
-        return input.hasAccountCorrelation() && hasPreviousAccountCorrelation  && hasTransitionedToFinancial;
+        return input.hasAccountCorrelation()  && hasTransitionedToFinancial;
     }
 
     @Override
@@ -75,10 +60,5 @@ public class CaseFinToFinAccWriteOffRule extends AbstractCaseResultNotificationR
                                 AMEND_AND_RESHARE,
                                 input.prevApplicationResultsDetails()));
 
-    }
-
-    private boolean isOverallFinancialToFinancialAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
-        return offenceResults.stream().anyMatch(o -> TRUE.equals(o.getIsFinancial()))
-                && nonNull(prevOffenceResultsDetailsMap) && prevOffenceResultsDetailsMap.values().stream().anyMatch(o -> TRUE.equals(o.getIsFinancial()));
     }
 }

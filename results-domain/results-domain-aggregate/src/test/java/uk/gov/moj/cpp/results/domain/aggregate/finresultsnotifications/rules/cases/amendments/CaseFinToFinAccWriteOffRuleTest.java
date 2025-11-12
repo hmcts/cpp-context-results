@@ -55,6 +55,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                         trackRequest.getOffenceResults().get(0).getOffenceId(),
                         offenceResultsDetails()
                                 .withIsFinancial(true)
+                                .withHearingId(hearingId)
                                 .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
@@ -157,6 +158,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                 .withPrevOffenceResultsDetails(Map.of(
                         offenceId1,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId1)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -164,6 +166,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                                 .build(),
                         offenceId2,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(false)
                                 .withOffenceId(offenceId2)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -225,6 +228,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                 .withPrevOffenceResultsDetails(Map.of(
                         offenceId1,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId1)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -232,6 +236,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                                 .build(),
                         offenceId2,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId2)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -296,6 +301,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                 .withRequest(trackRequest)
                 .withPrevOffenceResultsDetails(Map.of(offenceId1,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId1)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -339,6 +345,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                 .withPrevOffenceResultsDetails(Map.of(
                         offenceId,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(false)
                                 .withOffenceId(offenceId)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -393,6 +400,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                 .withPrevOffenceResultsDetails(Map.of(
                         offenceId1,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId1)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -400,6 +408,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                                 .build(),
                         offenceId2,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId2)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -407,6 +416,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                                 .build(),
                         offenceId3,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId3)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))
@@ -482,6 +492,7 @@ class CaseFinToFinAccWriteOffRuleTest {
                 .withPrevOffenceResultsDetails(Map.of(
                         offenceId,
                         offenceResultsDetails()
+                                .withHearingId(hearingId)
                                 .withIsFinancial(true)
                                 .withOffenceId(offenceId)
                                 .withCreatedTime(ZonedDateTime.now().minusHours(1))

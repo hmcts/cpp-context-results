@@ -9,20 +9,14 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldGobAccounts;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -212,113 +206,6 @@ public class GobAccountHelperTest {
         final List<String> oldGobAccountsForApp4 = getOldGobAccounts(correlationItemList, correlationItemsAllOffences.getAccountCorrelationId(), List.of(offenceId1, offenceId2, offenceId3, offenceId4), EMPTY_MAP);
         assertThat(oldGobAccountsForApp4.size(), is(2));
         assertThat(oldGobAccountsForApp4, containsInAnyOrder("GOB3", "GOB5"));
-    }
-
-    @Test
-    public void hasPreviousCorrelationTrueForApplicationSameHearing() {
-        final UUID currentAccountCorrelationId = randomUUID();
-        final UUID previousAccountCorrelationId = randomUUID();
-        final UUID hearingId = randomUUID();
-        final UUID offenceId = randomUUID();
-        final UUID applicationId = randomUUID();
-
-        final OffenceResultsDetails prevOffenceWithApp = offenceResultsDetails()
-                .withOffenceId(offenceId)
-                .withIsFinancial(true)
-                .withApplicationId(applicationId)
-                .withCreatedTime(ZonedDateTime.now())
-                .build();
-
-        final CorrelationItem previousCorrelation = CorrelationItem.correlationItem()
-                .withAccountCorrelationId(previousAccountCorrelationId)
-                .withHearingId(hearingId)
-                .withAccountDivisionCode("DIV")
-                .withAccountNumber("GOBAC1")
-                .withCreatedTime(ZonedDateTime.now().minusDays(1))
-                .withProsecutionCaseReferences(of("CASEREF"))
-                .withOffenceResultsDetailsList(of(prevOffenceWithApp))
-                .build();
-
-        final LinkedList<CorrelationItem> correlationItemList = new LinkedList<>();
-        correlationItemList.add(previousCorrelation);
-
-        final OffenceResultsDetails prevAppResult = offenceResultsDetails()
-                .withApplicationId(applicationId)
-                .withApplicationType("APPEAL")
-                .withResultCode("AACA")
-                .withCreatedTime(ZonedDateTime.now().minusDays(2))
-                .build();
-
-        final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails = new HashMap<>();
-        applicationResultsDetails.put(applicationId, List.of(prevAppResult));
-
-        final Boolean result = GobAccountHelper.hasPreviousCorrelation(correlationItemList, currentAccountCorrelationId, List.of(offenceId), applicationResultsDetails, hearingId);
-
-        assertThat(result, is(true));
-    }
-
-    @Test
-    public void shouldReturnPreviousCorrelationTrueForSameHearing() {
-        final UUID currentAccountCorrelationId = randomUUID();
-        final UUID previousAccountCorrelationId = randomUUID();
-        final UUID hearingId = randomUUID();
-        final UUID offenceId = randomUUID();
-
-        final CorrelationItem previousCorrelation = CorrelationItem.correlationItem()
-                .withAccountCorrelationId(previousAccountCorrelationId)
-                .withHearingId(hearingId)
-                .withAccountDivisionCode("DIV01")
-                .withAccountNumber("GOBAccount")
-                .withCreatedTime(ZonedDateTime.now().minusDays(1))
-                .withProsecutionCaseReferences(of("CASEREF1"))
-                .withOffenceResultsDetailsList(of(getOffenceResultsDetails(offenceId, true)))
-                .build();
-
-        final LinkedList<CorrelationItem> correlationItemList = new LinkedList<>();
-        correlationItemList.add(previousCorrelation);
-
-        final Boolean result = GobAccountHelper.hasPreviousCorrelation(correlationItemList, currentAccountCorrelationId, List.of(offenceId), Collections.emptyMap(), hearingId);
-
-        assertThat(result, is(true));
-    }
-
-    @Test
-    public void hasPreviousCorrelation_picksLatestCorrelationForHearing() {
-        final UUID hearingId = UUID.randomUUID();
-        final UUID currentAccountCorrelationId = UUID.randomUUID();
-
-        final CorrelationItem older = CorrelationItem.correlationItem()
-                .withAccountCorrelationId(UUID.randomUUID())
-                .withHearingId(hearingId)
-                .withAccountNumber("OLD")
-                .withCreatedTime(ZonedDateTime.now().minusDays(2))
-                .withOffenceResultsDetailsList(List.of(getOffenceResultsDetails(randomUUID(), true)))
-                .build();
-
-        final CorrelationItem newer = CorrelationItem.correlationItem()
-                .withAccountCorrelationId(UUID.randomUUID())
-                .withHearingId(hearingId)
-                .withAccountNumber("NEW")
-                .withCreatedTime(ZonedDateTime.now().minusDays(1))
-                .withOffenceResultsDetailsList(List.of(getOffenceResultsDetails(randomUUID(), true)))
-                .build();
-
-        final CorrelationItem current = CorrelationItem.correlationItem()
-                .withAccountCorrelationId(currentAccountCorrelationId)
-                .withHearingId(UUID.randomUUID())
-                .withAccountNumber("CURRENT")
-                .withCreatedTime(ZonedDateTime.now())
-                .withOffenceResultsDetailsList(List.of(getOffenceResultsDetails(randomUUID(), true)))
-                .build();
-
-        final LinkedList<CorrelationItem> correlationItems = new LinkedList<>(Arrays.asList(older, newer, current));
-
-        final var applicationResults = java.util.Collections.<UUID, List<OffenceResultsDetails>>emptyMap();
-        final List<UUID> offenceIds = List.of(newer.getOffenceResultsDetailsList().get(0).getOffenceId());
-        final boolean result = GobAccountHelper.hasPreviousCorrelation(correlationItems, currentAccountCorrelationId, offenceIds, applicationResults, hearingId);
-        assertTrue(result, "Expected to find a previous correlation for the hearingId");
-        final boolean noMatch = GobAccountHelper.hasPreviousCorrelation(correlationItems, currentAccountCorrelationId, offenceIds, applicationResults, UUID.randomUUID());
-        assertFalse(noMatch, "Expected no previous correlation for an unrelated hearingId");
     }
 
     private static OffenceResultsDetails getOffenceResultsDetails(final UUID offenceId1, final boolean isFinancial) {
