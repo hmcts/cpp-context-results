@@ -1,0 +1,32 @@
+{
+  "amendmentDate": "2025-10-13",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "BB8NYLHBIUS",
+  "defendantDateOfBirth": "1970-01-14",
+  "defendantName": "Cooper Langosh",
+  "divisionCode": "77",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCPC - Costs to Crown Prosecution Service\nTo pay costs of £500.00 to the Crown Prosecution Service, FCOMP - Compensation\nTo pay compensation of £500.00. , FVS - Surcharge\nTo pay a surcharge of £114.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 13/03/2027. \nPR - Programme\nProgramme Requirement: Participate in an accredited programme for 12 Days. \nRAR - Rehabilitation activity\nRehabilitation Activity Requirement: Offender to comply with any instructions of the responsible officer to attend appointments (with the responsible officer or someone else nominated by them), or to participate in any activity as required by the responsible officer up to a maximum of 12 Days. \nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 12 Hours within the next twelve months. This work will be supervised by the responsible officer.\nRESTRAO - Restraining order\nRestraining order made for the defendant in the following terms: test. This order lasts until 13/09/2027. This order is made on conviction.\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £50.00 to be paid monthly. Instalment start date: 31/07/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5f1b6fc4-8d57-4dc1-a0a5-e2adb1932c32",
+      "title": "Engage in activity requiring a licence when not a licensee"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "c0e68cfb-bc7c-418a-b2c0-df72f1de26bf",
+  "materialId": "19274224-4fe3-4d32-af60-8f5113755fae",
+  "newOffenceByResult": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 13/03/2027.\nPR - Programme\nProgramme Requirement: Participate in an accredited programme for 12 Days.\nRAR - Rehabilitation activity\nRehabilitation Activity Requirement: Offender to comply with any instructions of the responsible officer to attend appointments (with the responsible officer or someone else nominated by them), or to participate in any activity as required by the responsible officer up to a maximum of 12 Days.\nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 12 Hours within the next twelve months. This work will be supervised by the responsible officer.\nNORDRC - Notification of electronic monitoring order (requirement)",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5f1b6fc4-8d57-4dc1-a0a5-e2adb1932c32",
+      "title": "Engage in activity requiring a licence when not a licensee"
+    }
+  ],
+  "notificationId": "795b7234-f9ee-4fe6-a37c-8a3d41af22dc",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

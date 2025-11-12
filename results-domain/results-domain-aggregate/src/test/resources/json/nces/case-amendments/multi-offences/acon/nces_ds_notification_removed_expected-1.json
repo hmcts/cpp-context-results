@@ -1,0 +1,23 @@
+{
+  "amendmentDate": "2025-10-20",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI2405263",
+  "defendantName": "Michele Crona",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 20/05/2026.\nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 30 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "c1599913-53d9-4b76-8f84-573c13aa597e",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "85c21da8-865d-4bda-8ed8-57f0cb2fed6f",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED REMOVED"
+}

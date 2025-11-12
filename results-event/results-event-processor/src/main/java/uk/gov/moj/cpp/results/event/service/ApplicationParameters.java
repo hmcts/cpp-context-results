@@ -10,31 +10,31 @@ import javax.inject.Inject;
 public class ApplicationParameters {
 
     @Inject
-    @Value(key = "police.email.template.id", defaultValue = "781b970d-a13e-4440-97c3-ecf22a4540d5")
+    @Value(key = "police.email.template.id")
     private String emailTemplateId;
 
     @Inject
-    @Value(key = "police_email_hearing_results_template_id", defaultValue = "efc18c42-bea2-4124-8c02-7a7ae4556b73")
+    @Value(key = "police_email_hearing_results_template_id")
     private String policeEmailHearingResultsTemplateId;
 
     @Inject
-    @Value(key = "police_email_hearing_results_with_application_template_id", defaultValue = "f6c999fd-0495-4502-90d6-f6dc4676da6f")
+    @Value(key = "police_email_hearing_results_with_application_template_id")
     private String policeEmailHearingResultsWithApplicationTemplateId;
 
     @Inject
-    @Value(key = "policeNotificationHearingResultsAmendedTemplateId", defaultValue = "5d4f46ba-a4e4-4367-b63a-97240cd314c1")
+    @Value(key = "policeNotificationHearingResultsAmendedTemplateId")
     private String policeNotificationHearingResultsAmendedTemplateId;
 
     @Inject
-    @Value(key = "ncesEmailNotificationTemplateId", defaultValue = "d3ce1ce3-5233-4b9d-b881-3857351fbfb0")
+    @Value(key = "ncesEmailNotificationTemplateId")
     private String ncesEmailNotificationTemplateId;
 
     @Inject
-    @Value(key = "appeal_update_notification_template_id", defaultValue = "a316a21e-1911-4b77-97fc-ee0118d533af")
+    @Value(key = "appeal_update_notification_template_id")
     private String appealUpdateNotificationTemplateId;
 
     @Inject
-    @Value(key = "common.platform.url", defaultValue = "http://steccm12wrpxy01.cpp.nonlive/")
+    @Value(key = "common.platform.url")
     private String commonPlatformUrl;
 
     @Inject

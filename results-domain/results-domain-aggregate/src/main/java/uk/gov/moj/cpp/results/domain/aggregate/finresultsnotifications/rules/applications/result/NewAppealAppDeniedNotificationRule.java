@@ -89,7 +89,8 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                         impositionOffenceDetailsForApplication,
                         originalApplicationResults,
                         ncesEmail,
-                        correlationItems);
+                        correlationItems,
+                        input.prevApplicationResultsDetails());
             }
         }
         return Optional.empty();
@@ -107,7 +108,8 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication,
             final OriginalApplicationResults originalApplicationResults,
             final String ncesEmail,
-            final LinkedList<CorrelationItem> correlationItemList) {
+            final LinkedList<CorrelationItem> correlationItemList,
+            final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
         
         if (hasSentenceVaried(newResultByOffenceList) || !newResultByOffenceList.isEmpty()) {
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
@@ -117,7 +119,8 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                             buildNewOffenceResultForSV(newResultByOffenceList),
                             originalApplicationResults, 
                             null,
-                            APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode())));
+                            APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
+                            prevApplicationResultsDetails));
         } else {
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
@@ -131,7 +134,8 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                             newResultByOffenceList, 
                             applicationResult, 
                             originalApplicationResults, 
-                            null));
+                            null,
+                            prevApplicationResultsDetails));
         }
     }
 }

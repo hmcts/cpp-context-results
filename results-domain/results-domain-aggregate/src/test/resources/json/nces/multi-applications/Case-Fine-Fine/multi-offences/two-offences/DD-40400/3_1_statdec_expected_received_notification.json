@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI4364195",
+  "defendantAddress": "21 Furnburry Park Road London TA1 1AT",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Korey Dicki",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-09-29",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "65263065-8860-49db-b0f4-d5c284ab89eb",
+  "materialId": "8d17f824-d2e5-4c6f-a7c6-5970a52ae086",
+  "notificationId": "9dddb376-cc91-46f8-9aee-9cc2769fcfbb",
+  "originalDateOfSentence": "29/09/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION FOR A STATUTORY DECLARATION RECEIVED"
+}

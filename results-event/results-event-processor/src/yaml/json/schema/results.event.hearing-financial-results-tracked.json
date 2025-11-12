@@ -48,6 +48,9 @@
         "accountNumber": {
           "type": "string"
         },
+        "isSJPHearing": {
+          "type": "boolean"
+        },
         "offenceResults": {
           "type": "array",
           "minItems": 1,

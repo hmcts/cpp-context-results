@@ -263,7 +263,7 @@ public class ResultsEventProcessorTest {
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataOf(randomUUID(), "results.hearing-results-added").build(), resultPayload);
 
-        final JsonEnvelope envelopeForCourt = envelopeFrom(metadataOf(randomUUID(), "referencedata.query.local-justice-area-national-court-code-and-oucode-mapping").build(), createObjectBuilder().
+        final JsonEnvelope envelopeForCourt = envelopeFrom(metadataOf(randomUUID(), "referencedata.query.justice-area-national-court-code-and-oucode-mapping").build(), createObjectBuilder().
                 add("nationalCourtCode", "1234")
                 .add("oucode", "B22KS00")
                 .build());

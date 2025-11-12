@@ -38,7 +38,6 @@ import java.util.UUID;
 
 public class NCESDecisionHelper {
 
-
     public static boolean hasSentenceVaried(final List<NewOffenceByResult> newResultByOffence) {
         return newResultByOffence.stream().anyMatch(newOffenceByResult ->
                 newOffenceByResult.getDetails().contains(SV_SENTENCE_VARIED));
@@ -138,32 +137,6 @@ public class NCESDecisionHelper {
                 .build())
         );
         return applicationResults;
-    }
-
-    public static List<NewOffenceByResult> buildNewOffenceResultsFromTrackRequest(final List<OffenceResults> offenceResultsDetails, final Map<UUID, String> offenceDateMap) {
-        List<NewOffenceByResult> newImpositionOffenceDetails;
-
-        newImpositionOffenceDetails = offenceResultsDetails.stream()
-                .filter(o -> isNull(o.getApplicationType()))
-                .map(offenceResults -> buildNewImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap))
-                .toList();
-
-        if (newImpositionOffenceDetails.isEmpty()) {
-            newImpositionOffenceDetails = offenceResultsDetails.stream()
-                    .filter(o -> nonNull(o.getApplicationType()))
-                    .filter(o -> nonNull(o.getIsParentFlag()) && (o.getIsParentFlag()))
-                    .filter(o -> nonNull(o.getImpositionOffenceDetails()))
-                    .map(offenceResults -> buildNewImpositionOffenceDetailsFromRequest(offenceResults, offenceDateMap)).distinct()
-                    .toList();
-        }
-        return newImpositionOffenceDetails;
-    }
-
-    public static boolean hasNoCorrelationIdForAmendedApplication(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return isNull(hearingFinancialResultRequest.getAccountCorrelationId()) && (hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .filter(offence -> nonNull(offence.getApplicationType()))
-                .anyMatch(offence -> nonNull(offence.getAmendmentDate())));
     }
 
 }

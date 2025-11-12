@@ -5,7 +5,7 @@
   "defendantDateOfBirth": "1991-02-18",
   "defendantName": "Christina Feest",
   "divisionCode": "77",
-  "gobAccountNumber": "{{gobAccountNumber}}",
+  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingSittingDay": "2025-04-15",
   "impositionOffenceDetails": [
     {
@@ -13,13 +13,25 @@
       "offenceDate": "2019-11-28",
       "offenceId": "2c7cc1f9-fc39-442f-acf2-28a8534207de",
       "title": "Theft of motor vehicle"
+    },
+    {
+      "details": "FO - Fine\nFined £250.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "21541103-1872-427a-8fca-735a863d5568",
+      "title": "Theft from a shop"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "326bba91-abd3-4afc-a7a7-ea43f7d652fe",
+      "title": "Robbery"
     }
   ],
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "8e5f6779-795a-4893-b056-aee4134213ed",
-  "materialId": "{{materialId}}",
-  "notificationId": "{{notificationId}}",
+  "materialId": "6f1928e7-5520-4ec7-b68b-725e57820146",
+  "notificationId": "3253297d-91dc-4d84-a502-725ba4123f82",
   "originalDateOfSentence": "15/04/2025",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "WRITE OFF ONE DAY DEEMED SERVED"

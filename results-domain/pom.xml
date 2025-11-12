@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>17.0.81-DLRM6-SNAPSHOT</version>
+        <version>17.0.82-SNAPSHOT</version>
     </parent>
     <artifactId>results-domain</artifactId>
     <packaging>pom</packaging>
@@ -13,7 +13,6 @@
         <module>results-domain-event</module>
         <module>results-domain-aggregate</module>
         <module>results-domain-common</module>
-        <module>results-domain-transformations</module>
     </modules>
 
 </project>

@@ -1,0 +1,58 @@
+{
+  "caseReferences": "28DI975229,28DI975227",
+  "dateDecisionMade": "2025-10-07",
+  "defendantAddress": "9999H9999QQQJ WplfoqqP addressline 4 BtfgstQQ Elfo YO43 4DF",
+  "defendantContactNumber": "02012345679",
+  "defendantDateOfBirth": "1996-01-30",
+  "defendantEmail": "test02@gmail.com",
+  "defendantName": "CCT-2390casenew matchdefendentscenarionew",
+  "divisionCode": "96",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Kingston upon Thames Crown Court",
+  "hearingSittingDay": "2025-10-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £40.00. , FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "fef4866b-3c66-4403-8bcc-5adae3ca07e0",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £400.00, FVS - Surcharge\nTo pay a surcharge of £600.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2027.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9fb9221b-f66e-46f4-8e2e-1ab57209b6a8",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "11afaf89-db69-450f-909f-9ceb70d52dc7",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 08/10/2025 at 10:00 in Courtroom 01, Kingston upon Thames Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 08/10/2025 at 10:00 in Courtroom 01, Kingston upon Thames Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "offenceDate": "2019-11-28",
+      "offenceId": "fef4866b-3c66-4403-8bcc-5adae3ca07e0",
+      "title": "Robbery"
+    },
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 08/10/2025 at 10:00 in Courtroom 01, Kingston upon Thames Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 08/10/2025 at 10:00 in Courtroom 01, Kingston upon Thames Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9fb9221b-f66e-46f4-8e2e-1ab57209b6a8",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "96",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL ALLOWED"
+}
