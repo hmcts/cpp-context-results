@@ -31,8 +31,8 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
     public boolean appliesTo(RuleInput input) {
 
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
-        final boolean hasTransitionedToNonFinancial = isOverallFinancialToNonFinancialAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), request.getHearingId());
-        return !input.hasAccountCorrelation() && hasTransitionedToNonFinancial;
+        final boolean hasOverallFinancialToNonFinancial = isOverallFinancialToNonFinancialAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), request.getHearingId());
+        return !input.hasAccountCorrelation() && hasOverallFinancialToNonFinancial;
     }
 
     @Override
