@@ -55,9 +55,11 @@ import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.LjaDetails;
+import uk.gov.justice.core.courts.MigrationSourceSystem;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
+import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.YouthCourt;
@@ -98,9 +100,10 @@ public class ResultsAggregate implements Aggregate {
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
     private static final String INVALID_EMAIL_ID = "Police Email Address is not Available";
-    private static final long serialVersionUID = 106L;
+    private static final long serialVersionUID = 107L;
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
+    private static final String XHIBIT = "XHIBIT";
     private UUID id;
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
@@ -177,6 +180,7 @@ public class ResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> saveHearingResultsForDay(final PublicHearingResulted payload, final LocalDate hearingDay) {
+        final Stream.Builder<Object> builder = builder();
         Boolean isReshare = Boolean.FALSE;
         final Optional<Boolean> isReshareFromPayload = payload.getIsReshare();
         if (nonNull(isReshareFromPayload) && isReshareFromPayload.isPresent()) {
@@ -185,15 +189,38 @@ public class ResultsAggregate implements Aggregate {
 
         final HearingResultsAddedForDay hearingResultsAddedForDay = new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime());
 
-        PublishToDcs publishToDcs =  PublishToDcs.publishToDcs()
-                .withPreviousHearing(hearing)
-                .withCurrentHearing(payload.getHearing())
-                .withHearingDay(hearingDay)
-                .withIsReshare(isReshare)
-                .withSharedTime(payload.getSharedTime())
-                .build();
+        List<ProsecutionCase> nonXhibitCases = getNonExhibitCases(payload);
 
-        return apply(Stream.of(hearingResultsAddedForDay, publishToDcs));
+
+        builder.add(hearingResultsAddedForDay);
+        if (!nonXhibitCases.isEmpty()) {
+            final Hearing builtHearing = Hearing.hearing()
+                    .withValuesFrom(payload.getHearing())
+                    .withProsecutionCases(nonXhibitCases)
+                    .build();
+            PublishToDcs publishToDcs = PublishToDcs.publishToDcs()
+                    .withPreviousHearing(hearing)
+                    .withCurrentHearing(builtHearing)
+                    .withHearingDay(hearingDay)
+                    .withIsReshare(isReshare)
+                    .withSharedTime(payload.getSharedTime())
+                    .build();
+            builder.add(publishToDcs);
+        }
+        return apply(builder.build());
+    }
+
+    private List<ProsecutionCase> getNonExhibitCases(final PublicHearingResulted payload) {
+        return ofNullable(payload.getHearing())
+                .stream()
+                .flatMap(e -> ofNullable(e.getProsecutionCases())
+                        .stream()
+                        .flatMap(List::stream))
+                .filter(e -> ofNullable(e.getMigrationSourceSystem())
+                        .map(MigrationSourceSystem::getMigrationSourceSystemName)
+                        .filter(XHIBIT::equals)
+                        .isEmpty())
+                .toList();
     }
 
     public Stream<Object> ejectCaseOrApplication(final UUID hearingId, final JsonObject payload) {
