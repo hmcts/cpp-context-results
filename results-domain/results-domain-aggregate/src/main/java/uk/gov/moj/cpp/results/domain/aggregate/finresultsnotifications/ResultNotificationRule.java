@@ -90,7 +90,7 @@ public interface ResultNotificationRule {
             return request.getOffenceResults().stream().anyMatch(o -> nonNull(o.getAmendmentDate()));
         }
 
-        public boolean hasFinancialAmendments() {
+        public boolean hasAccountCorrelation() {
             return nonNull(request.getAccountCorrelationId());
         }
 

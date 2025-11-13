@@ -1,0 +1,26 @@
+{
+  "caseReferences": "GD55946965",
+  "defendantAddress": "9999A9999AAAA Mayer Groves Bergstrommouth Avon DA61 7ND",
+  "defendantContactNumber": "322-402-3488",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Gus Herzog",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingSittingDay": "2025-11-07",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.10, FVS - Surcharge\nTo pay a surcharge of £90.02, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £113.00 to be paid monthly from 11/12/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d3627716-33c9-4675-bb34-8cbdde255d15",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "a86d5345-27c2-4fb5-8a49-2fe4df126f27",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalDateOfSentence": "07/11/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED"
+}

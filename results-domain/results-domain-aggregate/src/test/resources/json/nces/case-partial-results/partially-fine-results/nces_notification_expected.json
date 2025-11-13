@@ -1,0 +1,46 @@
+{
+  "amendmentDate": "2025-11-12",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "GD55946965",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Gus Herzog",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.10, FVS - Surcharge\nTo pay a surcharge of £90.02, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £113.00 to be paid monthly from 11/12/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d3627716-33c9-4675-bb34-8cbdde255d15",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "a86d5345-27c2-4fb5-8a49-2fe4df126f27",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £100.10, FVS - Surcharge\nTo pay a surcharge of £90.02, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £113.00 to be paid monthly from 11/12/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d3627716-33c9-4675-bb34-8cbdde255d15",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £900.10\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/12/2025. \nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 20 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bbf3f2b4-deb8-4f3c-a6fb-21183cb6f40d",
+      "title": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "details": "NSP - No separate penalty",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b2280889-61f1-41f6-9207-6e52afec40eb",
+      "title": "Attempt to cause a male aged 13 or over to engage in sexual activity - no penetration"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

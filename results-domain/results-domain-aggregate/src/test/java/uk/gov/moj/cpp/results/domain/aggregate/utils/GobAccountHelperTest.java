@@ -13,7 +13,6 @@ import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResults
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldGobAccounts;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
@@ -222,12 +221,6 @@ public class GobAccountHelperTest {
                 .collect(Collectors.toList());
     }
 
-    private static List<ImpositionOffenceDetails> getImpositionOffenceDetails(final List<UUID> offenceIds) {
-        return offenceIds.stream()
-                .map(offenceId -> ImpositionOffenceDetails.impositionOffenceDetails().withOffenceId(offenceId).build())
-                .collect(Collectors.toList());
-    }
-
     private static CorrelationItem getCorrelation(final UUID hearingId, final List<OffenceResultsDetails> caseOffences, final String gobAccount) {
         return CorrelationItem.correlationItem()
                 .withAccountCorrelationId(randomUUID())
@@ -239,5 +232,5 @@ public class GobAccountHelperTest {
                 .withOffenceResultsDetailsList(caseOffences)
                 .build();
     }
-
 }
+

@@ -287,7 +287,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         updateApplicationResults(request);
         if (request.getAccountCorrelationId() != null) {
             final List<OffenceResultsDetails> offenceResultsDetailsList = request.getOffenceResults().stream()
-                    .map(this::buildOffenceResultsDetailsFromOffenceResults).toList();
+                    .map((OffenceResults resultFromRequest) -> buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())).toList();
 
             correlationItemList.add(CorrelationItem.correlationItem()
                     .withAccountCorrelationId(request.getAccountCorrelationId())
@@ -305,7 +305,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(result -> nonNull(result.getApplicationType()) && nonNull(result.getImpositionOffenceDetails()))
                 .filter(result -> Boolean.TRUE.equals(result.getIsParentFlag()))
                 .distinct()
-                .map(this::buildOffenceResultsDetailsFromOffenceResults).toList();
+                .map((OffenceResults resultFromRequest) -> buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())).toList();
 
         final UUID applicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
         if (nonNull(applicationId)) {
@@ -331,10 +331,10 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         request.getOffenceResults().stream()
                 .filter(result -> isNull(result.getApplicationType()))
                 .forEach(resultFromRequest ->
-                        this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
+                        this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())));
     }
 
-    private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest) {
+    private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest, final UUID hearingId) {
         return offenceResultsDetails()
                 .withAmendmentReason(resultFromRequest.getAmendmentReason())
                 .withAmendmentDate(resultFromRequest.getAmendmentDate())
@@ -345,6 +345,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withImpositionOffenceDetails(resultFromRequest.getImpositionOffenceDetails())
                 .withOffenceTitle(resultFromRequest.getOffenceTitle())
                 .withOffenceId(resultFromRequest.getOffenceId())
+                .withHearingId(hearingId)
                 .withResultId(resultFromRequest.getResultId())
                 .withIsDeemedServed(resultFromRequest.getIsDeemedServed())
                 .withResultCode(resultFromRequest.getResultCode())
@@ -514,7 +515,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     public String getNcesEmail() {
         return ncesEmail;
     }
-
 
     public List<String> getProsecutionCaseReferences() {
         return prosecutionCaseReferences;

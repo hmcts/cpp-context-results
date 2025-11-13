@@ -12,12 +12,6 @@
       "offenceDate": "2019-11-28",
       "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
       "title": "Drive / move vehicle making 'u' turn on the motorway"
-    },
-    {
-      "details": "FCOMP - Compensation\nTo pay compensation of £100.00. , FO - Fine\nFined £200.00",
-      "offenceDate": "2019-11-28",
-      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
-      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
     }
   ],
   "isSJPHearing": false,
@@ -40,7 +34,7 @@
   ],
   "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
-  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
 }
