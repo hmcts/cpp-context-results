@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,16 +35,46 @@ public class GobAccountHelper {
                 .toList();
     }
 
-    private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
-        ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        return ciList.get(0).getAccountNumber();
-    }
-
     public static String getOldGobAccount(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,
                                           final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
         correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         final CorrelationItem oldCorrelationItemMatch = getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails);
         return nonNull(oldCorrelationItemMatch) ? oldCorrelationItemMatch.getAccountNumber() : null;
+    }
+
+    public static OldAccountCorrelationsWrapper getOldAccountCorrelations(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
+                                                                         final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
+
+        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
+        final Map<UUID, List<CorrelationItem>> hearingIdCorrelationItemsMap = offenceIdList.stream()
+                .map(offenceId -> getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(groupingBy(CorrelationItem::getHearingId));
+
+        final List<OldAccountCorrelations> oldAccountCorrelations = hearingIdCorrelationItemsMap.values().stream()
+                .filter(CollectionUtils::isNotEmpty)
+                .map(GobAccountHelper::toOldAccountCorrelations)
+                .distinct()
+                .toList();
+
+        return new OldAccountCorrelationsWrapper(oldAccountCorrelations);
+    }
+
+    private static OldAccountCorrelations toOldAccountCorrelations(final List<CorrelationItem> ciList) {
+        ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
+        final CorrelationItem correlationItem = ciList.get(0);
+        return OldAccountCorrelations.oldAccountCorrelations()
+                .withAccountCorrelationId(correlationItem.getAccountCorrelationId())
+                .withGobAccountNumber(correlationItem.getAccountNumber())
+                .withDivisionCode(correlationItem.getAccountDivisionCode())
+                .withCreatedTime(correlationItem.getCreatedTime())
+                .build();
+    }
+
+    private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
+        ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
+        return ciList.get(0).getAccountNumber();
     }
 
     private static CorrelationItem getOldCorrelationItemMatch(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,
@@ -72,30 +103,5 @@ public class GobAccountHelper {
                     }
                     return null;
                 }).orElse(null);
-    }
-
-    public static CorrelationItem getOldCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final List<UUID> currentOffenceIdList) {
-        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        return currentOffenceIdList.stream()
-                .map(offenceId -> getOldCorrelation(correlationItemList, currentCorrelationId, offenceId))
-                .filter(Objects::nonNull)
-                .findFirst().orElse(null);
-    }
-
-    public static List<CorrelationItem> getOldCorrelations(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final List<UUID> currentOffenceIdList) {
-        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        return currentOffenceIdList.stream()
-                .map(offenceId -> getOldCorrelation(correlationItemList, currentCorrelationId, offenceId))
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-    }
-
-    private static CorrelationItem getOldCorrelation(final LinkedList<CorrelationItem> correlationItemList, final UUID currentCorrelationId, final UUID offenceId) {
-        return correlationItemList.stream()
-                .filter(correlationItem -> !correlationItem.getAccountCorrelationId().equals(currentCorrelationId))
-                .filter(correlationItem ->
-                        correlationItem.getOffenceResultsDetailsList().stream().anyMatch(o -> o.getOffenceId().equals(offenceId)))
-                .findFirst().orElse(null);
     }
 }
