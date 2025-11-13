@@ -510,7 +510,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         if (nonNull(marked.getOldAccountCorrelationId())) {
             final List<UUID> offenceIdList = marked.getImpositionOffenceDetails().stream().map(ImpositionOffenceDetails::getOffenceId).toList();
 
-            final OldAccountCorrelationsWrapper correlationsWrapper = getOldAccountCorrelations(correlationItemList, marked.getAccountCorrelationId(), offenceIdList, applicationResultsDetails);
+            final OldAccountCorrelationsWrapper correlationsWrapper = getOldAccountCorrelations(new LinkedList<>(correlationItemList), marked.getAccountCorrelationId(), offenceIdList, applicationResultsDetails);
             markedBuilder.withOldGobAccountNumber(correlationsWrapper.getOldGobAccounts());
         }
     }
