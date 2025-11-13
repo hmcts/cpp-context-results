@@ -39,6 +39,8 @@
     }
   ],
   "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
 }

@@ -1,5 +1,5 @@
 {
-  "amendmentDate": "2025-11-12",
+  "amendmentDate": "{{CURRENT_DATE}}",
   "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
   "caseReferences": "GD55946965",
   "defendantDateOfBirth": "1978-11-11",
