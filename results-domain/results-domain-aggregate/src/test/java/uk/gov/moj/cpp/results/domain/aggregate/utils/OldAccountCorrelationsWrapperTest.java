@@ -9,6 +9,7 @@ import static uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations.oldAcco
 
 import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,42 @@ public class OldAccountCorrelationsWrapperTest {
         final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
 
         assertThat(oldAccountCorrelationsWrapper.getOldGobAccounts(), is("AC1,AC2"));
+    }
+
+    @Test
+    public void shouldUniqueGetDivCodes() {
+        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build(),
+                oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build());
+
+        final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
+
+        assertThat(oldAccountCorrelationsWrapper.getOldDivisionCodes(), is("DIV1"));
+    }
+
+    @Test
+    public void shouldMultipleGetDivCodes() {
+        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build(),
+                oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV2").build());
+
+        final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
+
+        assertThat(oldAccountCorrelationsWrapper.getOldDivisionCodes(), is("DIV1,DIV2"));
+    }
+
+    @Test
+    public void shouldGetRecentAccountCorrelation() {
+        final UUID accountCorrelationId1 = randomUUID();
+        final UUID accountCorrelationId2 = randomUUID();
+        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations()
+                        .withAccountCorrelationId(accountCorrelationId1)
+                        .withCreatedTime(ZonedDateTime.now().minusHours(1)).build(),
+                oldAccountCorrelations()
+                        .withAccountCorrelationId(accountCorrelationId2)
+                        .withCreatedTime(ZonedDateTime.now()).build());
+
+        final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
+
+        assertThat(oldAccountCorrelationsWrapper.getRecentAccountCorrelationId(), is(accountCorrelationId2));
     }
 
 }
