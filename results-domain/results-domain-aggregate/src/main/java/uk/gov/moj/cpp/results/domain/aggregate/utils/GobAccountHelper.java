@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.utils;
 
 import static java.util.Comparator.comparing;
-import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
@@ -18,32 +17,8 @@ import org.apache.commons.collections.CollectionUtils;
 
 public class GobAccountHelper {
 
-    public static List<String> getOldGobAccounts(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
-                                                 final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
-
-        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        final Map<UUID, List<CorrelationItem>> hearingIdCorrelationItemsMap = offenceIdList.stream()
-                .map(offenceId -> getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails))
-                .filter(Objects::nonNull)
-                .distinct()
-                .collect(groupingBy(CorrelationItem::getHearingId));
-
-        return hearingIdCorrelationItemsMap.values().stream()
-                .filter(CollectionUtils::isNotEmpty)
-                .map(GobAccountHelper::getRecentAccountNumber)
-                .distinct()
-                .toList();
-    }
-
-    public static String getOldGobAccount(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,
-                                          final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
-        correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        final CorrelationItem oldCorrelationItemMatch = getOldCorrelationItemMatch(correlationItemList, accountCorrelationId, offenceId, applicationResultsDetails);
-        return nonNull(oldCorrelationItemMatch) ? oldCorrelationItemMatch.getAccountNumber() : null;
-    }
-
     public static OldAccountCorrelationsWrapper getOldAccountCorrelations(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
-                                                                         final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
+                                                                          final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
 
         correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         final Map<UUID, List<CorrelationItem>> hearingIdCorrelationItemsMap = offenceIdList.stream()
@@ -70,11 +45,6 @@ public class GobAccountHelper {
                 .withDivisionCode(correlationItem.getAccountDivisionCode())
                 .withCreatedTime(correlationItem.getCreatedTime())
                 .build();
-    }
-
-    private static String getRecentAccountNumber(final List<CorrelationItem> ciList) {
-        ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-        return ciList.get(0).getAccountNumber();
     }
 
     private static CorrelationItem getOldCorrelationItemMatch(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final UUID offenceId,
