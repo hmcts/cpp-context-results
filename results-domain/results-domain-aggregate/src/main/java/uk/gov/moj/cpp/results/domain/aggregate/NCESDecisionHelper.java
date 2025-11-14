@@ -7,17 +7,21 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AACA;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AACD;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AASA;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AASD;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ACSD;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APA;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ASV;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AW;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.DISM;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.G;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.RFSD;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ROPENED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.SENTENCE_VARIED;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STDEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.SV_SENTENCE_VARIED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WDRN;
@@ -38,7 +42,10 @@ import java.util.UUID;
 
 public class NCESDecisionHelper {
 
-    private static final List<String> grantResultCodes = asList(G, STDEC, ROPENED, AACA, AASA);
+    private static final List<String> accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
+    private static final List<String> stadec_reoopen_denied_result_codes = asList(DISM, RFSD, WDRN);
+    private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD);
+
 
     public static boolean hasSentenceVaried(final List<NewOffenceByResult> newOffenceByResults) {
         return newOffenceByResults.stream().anyMatch(newOffenceByResult ->
@@ -86,7 +93,7 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equalsIgnoreCase(offence.getApplicationType()))
                 .filter(offence -> nonNull(offence.getApplicationId()) && NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> asList(ASV, APA, AW, AASD, RFSD, DISM).contains(offence.getResultCode()));
+                .anyMatch(offence -> appeal_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -95,7 +102,17 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> grantResultCodes.contains(offence.getResultCode()));
+                .anyMatch(offence -> accepted_result_codes.contains(offence.getResultCode()));
+    }
+
+    public static boolean isNewStatdecReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        return hearingFinancialResultRequest
+                .getOffenceResults().stream()
+                .filter(result -> nonNull(result.getApplicationId()))
+                .filter(offence -> nonNull(offence.getApplicationType()) && STAT_DEC.equalsIgnoreCase(offence.getApplicationType()) || REOPEN.equalsIgnoreCase(offence.getApplicationType()))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
+                .anyMatch(offence -> stadec_reoopen_denied_result_codes.contains(offence.getResultCode()));
     }
 
     /**
@@ -136,7 +153,7 @@ public class NCESDecisionHelper {
         return prevAppList.stream()
                 .map(OffenceResultsDetails::getResultCode)
                 .filter(Objects::nonNull)
-                .anyMatch(grantResultCodes::contains);
+                .anyMatch(accepted_result_codes::contains);
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
