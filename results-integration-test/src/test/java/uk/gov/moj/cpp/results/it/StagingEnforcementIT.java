@@ -446,7 +446,6 @@ public class StagingEnforcementIT {
     }
 
     @Test
-    @Disabled("to be enabled as part of CCT-2389")
     public void shouldSendNcesEmailForNewApplicationThatWasUpdated() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
@@ -462,8 +461,6 @@ public class StagingEnforcementIT {
 
         initiateResultBeforeAmendment(TRACE_RESULT, masterDefendantId, accountCorrelationId, false, true, hearingId);
 
-        initiateResultForGranted(TRACE_RESULT_UPDATED, masterDefendantId, hearingId, accountCorrelationId);
-
         final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
@@ -478,9 +475,9 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
 
+        initiateResultForUpdated(TRACE_RESULT_UPDATED, masterDefendantId, hearingId);
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        messages.forEach(jsonPath -> System.out.println("subject = " + jsonPath.getString(SUBJECT)));
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT)
                         .equalsIgnoreCase(APPEAL_APPLICATION_UPDATED))
                 .findFirst()
@@ -681,6 +678,20 @@ public class StagingEnforcementIT {
         JsonPath jsonResponse = QueueUtil.retrieveMessage(correlationIdAndMasterDefendantIdAddedConsumer);
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+    }
+
+    private void initiateResultForUpdated(final String traceResultType, final String masterDefendantId, final String hearingId) {
+        final String payload = getPayload(traceResultType)
+                .replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
+                .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
+                .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
+                .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
+                .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
+                .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE)
+                .replaceAll("HEARING_ID", hearingId);
+
+        whenResultsAreTraced(payload);
     }
 
     private void initiateResultForApplicationGranted(final String traceResultType, final String masterDefendantId, final String hearingId, final String accountCorrelationId, final String offenceId, final String applicationId) {
