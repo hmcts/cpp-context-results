@@ -406,11 +406,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final Stream.Builder<Object> builder = Stream.builder();
 
         markedAggregateSendEmailWhenAccountReceivedList.stream()
-                .filter(marked ->
-                        correlationItemList.stream().anyMatch(item ->
-                                (item.getAccountCorrelationId().equals(marked.getAccountCorrelationId()))
-                                        || Objects.equals(marked.getOldAccountCorrelationId(), item.getAccountCorrelationId()))
-                )
+                .filter(marked -> isAccountCorrelationMatch(marked.getAccountCorrelationId(), marked.getOldAccountCorrelationId()))
                 .forEach(marked -> {
                     final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived().withValuesFrom(marked);
 
@@ -418,11 +414,10 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
                     final MarkedAggregateSendEmailWhenAccountReceived finalMarked = markedBuilder.build();
 
-                    if (nonNull(finalMarked.getGobAccountNumber()) && finalMarked.getIsValidOldCorrelationAndAccount()) {//(isNull(finalMarked.getOldAccountCorrelationId()) || nonNull(finalMarked.getOldGobAccountNumber()))) {
+                    if (nonNull(finalMarked.getGobAccountNumber()) && finalMarked.getIsValidOldCorrelationAndAccount()) {
                         builder.add(buildNcesApplicationMail(finalMarked));
                         idsToBeUnmarked.add(finalMarked.getId());
                     }
-
                 });
 
         idsToBeUnmarked.forEach(id -> builder.add(UnmarkedAggregateSendEmailWhenAccountReceived.unmarkedAggregateSendEmailWhenAccountReceived()
@@ -489,6 +484,12 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
     public List<String> getProsecutionCaseReferences() {
         return prosecutionCaseReferences;
+    }
+
+    private boolean isAccountCorrelationMatch(final UUID markedAccountCorrelationId, final UUID markedOldAccountCorrelationId) {
+        return correlationItemList.stream()
+                .anyMatch(item -> item.getAccountCorrelationId().equals(markedAccountCorrelationId)
+                        || item.getAccountCorrelationId().equals(markedOldAccountCorrelationId));
     }
 
     private void updateOldAndNewGobAccounts(final MarkedAggregateSendEmailWhenAccountReceived marked, final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder) {
