@@ -76,10 +76,10 @@
         "$ref": "#/definitions/offenceResults"
       }
     },
-    "oldAccountCorrelations": {
+    "oldAccountCorrelation": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/oldAccountCorrelations"
+        "$ref": "#/definitions/oldAccountCorrelation"
       }
     },
     "newOffenceByResult": {
@@ -149,7 +149,7 @@
       },
       "additionalProperties": false
     },
-    "oldAccountCorrelations": {
+    "oldAccountCorrelation": {
       "type": "object",
       "properties": {
         "accountCorrelationId": {

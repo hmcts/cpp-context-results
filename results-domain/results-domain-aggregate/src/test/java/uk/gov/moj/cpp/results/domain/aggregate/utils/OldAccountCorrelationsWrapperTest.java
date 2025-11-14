@@ -5,9 +5,9 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations.oldAccountCorrelations;
+import static uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation.oldAccountCorrelation;
 
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations;
+import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -26,8 +26,8 @@ public class OldAccountCorrelationsWrapperTest {
 
     @Test
     public void shouldUniqueGetGobAccounts() {
-        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC1").build(),
-                oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC1").build());
+        final List<OldAccountCorrelation> oldAccountCorrelations = List.of(oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC1").build(),
+                oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC1").build());
 
         final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
 
@@ -36,8 +36,8 @@ public class OldAccountCorrelationsWrapperTest {
 
     @Test
     public void shouldMultipleGetGobAccounts() {
-        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC1").build(),
-                oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC2").build());
+        final List<OldAccountCorrelation> oldAccountCorrelations = List.of(oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC1").build(),
+                oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withGobAccountNumber("AC2").build());
 
         final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
 
@@ -46,8 +46,8 @@ public class OldAccountCorrelationsWrapperTest {
 
     @Test
     public void shouldUniqueGetDivCodes() {
-        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build(),
-                oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build());
+        final List<OldAccountCorrelation> oldAccountCorrelations = List.of(oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build(),
+                oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build());
 
         final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
 
@@ -56,8 +56,8 @@ public class OldAccountCorrelationsWrapperTest {
 
     @Test
     public void shouldMultipleGetDivCodes() {
-        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build(),
-                oldAccountCorrelations().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV2").build());
+        final List<OldAccountCorrelation> oldAccountCorrelations = List.of(oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV1").build(),
+                oldAccountCorrelation().withAccountCorrelationId(randomUUID()).withDivisionCode("DIV2").build());
 
         final OldAccountCorrelationsWrapper oldAccountCorrelationsWrapper = new OldAccountCorrelationsWrapper(oldAccountCorrelations);
 
@@ -68,10 +68,10 @@ public class OldAccountCorrelationsWrapperTest {
     public void shouldGetRecentAccountCorrelation() {
         final UUID accountCorrelationId1 = randomUUID();
         final UUID accountCorrelationId2 = randomUUID();
-        final List<OldAccountCorrelations> oldAccountCorrelations = List.of(oldAccountCorrelations()
+        final List<OldAccountCorrelation> oldAccountCorrelations = List.of(oldAccountCorrelation()
                         .withAccountCorrelationId(accountCorrelationId1)
                         .withCreatedTime(ZonedDateTime.now().minusHours(1)).build(),
-                oldAccountCorrelations()
+                oldAccountCorrelation()
                         .withAccountCorrelationId(accountCorrelationId2)
                         .withCreatedTime(ZonedDateTime.now()).build());
 

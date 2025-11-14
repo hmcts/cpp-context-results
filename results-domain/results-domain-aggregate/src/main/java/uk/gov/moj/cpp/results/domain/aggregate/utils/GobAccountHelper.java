@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations;
+import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class GobAccountHelper {
                 .distinct()
                 .collect(groupingBy(CorrelationItem::getHearingId));
 
-        final List<OldAccountCorrelations> oldAccountCorrelations = hearingIdCorrelationItemsMap.values().stream()
+        final List<OldAccountCorrelation> oldAccountCorrelations = hearingIdCorrelationItemsMap.values().stream()
                 .filter(CollectionUtils::isNotEmpty)
                 .map(GobAccountHelper::toOldAccountCorrelations)
                 .distinct()
@@ -36,10 +36,10 @@ public class GobAccountHelper {
         return new OldAccountCorrelationsWrapper(oldAccountCorrelations);
     }
 
-    private static OldAccountCorrelations toOldAccountCorrelations(final List<CorrelationItem> ciList) {
+    private static OldAccountCorrelation toOldAccountCorrelations(final List<CorrelationItem> ciList) {
         ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         final CorrelationItem correlationItem = ciList.get(0);
-        return OldAccountCorrelations.oldAccountCorrelations()
+        return OldAccountCorrelation.oldAccountCorrelation()
                 .withAccountCorrelationId(correlationItem.getAccountCorrelationId())
                 .withGobAccountNumber(correlationItem.getAccountNumber())
                 .withDivisionCode(correlationItem.getAccountDivisionCode())
