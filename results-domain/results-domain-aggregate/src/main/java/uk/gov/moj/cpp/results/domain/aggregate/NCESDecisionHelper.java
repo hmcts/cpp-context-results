@@ -40,12 +40,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableMap;
+
 public class NCESDecisionHelper {
 
     private static final List<String> application_accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
     private static final List<String> stadec_reoopen_denied_result_codes = asList(DISM, RFSD, WDRN);
-    private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD);
-
+    private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
 
     public static boolean hasSentenceVaried(final List<NewOffenceByResult> newOffenceByResults) {
         return newOffenceByResults.stream().anyMatch(newOffenceByResult ->
