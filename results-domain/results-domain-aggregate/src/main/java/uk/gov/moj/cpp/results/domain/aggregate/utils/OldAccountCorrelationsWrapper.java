@@ -3,8 +3,6 @@ package uk.gov.moj.cpp.results.domain.aggregate.utils;
 import static java.util.Comparator.comparing;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

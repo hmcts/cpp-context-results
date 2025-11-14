@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
 
 import java.util.LinkedList;
 import java.util.List;

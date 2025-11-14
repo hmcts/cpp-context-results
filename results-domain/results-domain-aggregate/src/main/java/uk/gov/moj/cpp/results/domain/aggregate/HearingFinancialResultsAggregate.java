@@ -15,7 +15,6 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.builder;
 import static java.util.stream.Stream.empty;
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.HearingFinancialResultsUpdated.hearingFinancialResultsUpdated;
@@ -58,7 +57,6 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 import java.time.LocalDate;
@@ -200,7 +198,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
         markedEvents.stream()
                 .filter(hasNewGobAccountIfExistOrNull)
-                .filter(e -> isEmpty(e.getOldAccountCorrelation()) || hasAccountNumberForCorrelation(e.getOldAccountCorrelation()))
+                .filter(MarkedAggregateSendEmailWhenAccountReceived::getIsValidOldCorrelationAndAccount)
                 .toList()
                 .forEach(e -> {
                     LOGGER.info(":: Build Nces Application Mail ::");
@@ -211,13 +209,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return apply(builder.build());
     }
 
-    /**
-     * returns true when all the accountCorrelationItems have old AccountCorrelationId & old GobAccountNumber OR old AccountCorrelationId & old GobAccountNumber are null
-     **/
-    private static boolean hasAccountNumberForCorrelation(final List<OldAccountCorrelation> oldAccountCorrelations) {
-        return oldAccountCorrelations.stream()
-                .allMatch(oac -> Objects.isNull(oac.getAccountCorrelationId()) == Objects.isNull(oac.getGobAccountNumber()));
-    }
 
     /**
      * Processes the tracked event for hearing financial results.
@@ -427,7 +418,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
                     final MarkedAggregateSendEmailWhenAccountReceived finalMarked = markedBuilder.build();
 
-                    if (nonNull(finalMarked.getGobAccountNumber()) && (isNull(finalMarked.getOldAccountCorrelationId()) || nonNull(finalMarked.getOldGobAccountNumber()))) {
+                    if (nonNull(finalMarked.getGobAccountNumber()) && finalMarked.getIsValidOldCorrelationAndAccount()) {//(isNull(finalMarked.getOldAccountCorrelationId()) || nonNull(finalMarked.getOldGobAccountNumber()))) {
                         builder.add(buildNcesApplicationMail(finalMarked));
                         idsToBeUnmarked.add(finalMarked.getId());
                     }
@@ -560,6 +551,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withImpositionOffenceDetails(ncesEmailNotificationRequested.getImpositionOffenceDetails())
                 .withAmendmentReason(ncesEmailNotificationRequested.getAmendmentReason())
                 .withAmendmentDate(ncesEmailNotificationRequested.getAmendmentDate())
+                .withIsValidOldCorrelationAndAccount(nonNull(correlationItem.getAccountCorrelationId()))
                 .build();
     }
 
