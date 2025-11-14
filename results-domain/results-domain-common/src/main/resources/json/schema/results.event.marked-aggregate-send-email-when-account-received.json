@@ -76,11 +76,8 @@
         "$ref": "#/definitions/offenceResults"
       }
     },
-    "oldAccountCorrelation": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/oldAccountCorrelation"
-      }
+    "isValidOldCorrelationAndAccount": {
+      "type": "boolean"
     },
     "newOffenceByResult": {
       "type": "array",
@@ -145,24 +142,6 @@
           "items": {
             "type": "string"
           }
-        }
-      },
-      "additionalProperties": false
-    },
-    "oldAccountCorrelation": {
-      "type": "object",
-      "properties": {
-        "accountCorrelationId": {
-          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
-        },
-        "gobAccountNumber": {
-          "type": "string"
-        },
-        "divisionCode": {
-          "type": "string"
-        },
-        "createdTime": {
-          "format": "date-time"
         }
       },
       "additionalProperties": false

@@ -5,9 +5,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation.oldAccountCorrelation;
-
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.OldAccountCorrelation.oldAccountCorrelation;
 
 import java.time.ZonedDateTime;
 import java.util.List;
