@@ -59,7 +59,6 @@ import org.hamcrest.Matcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class StagingEnforcementIT {
@@ -476,6 +475,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
+
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT)
