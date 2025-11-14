@@ -42,7 +42,7 @@ import java.util.UUID;
 
 public class NCESDecisionHelper {
 
-    private static final List<String> accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
+    private static final List<String> application_accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
     private static final List<String> stadec_reoopen_denied_result_codes = asList(DISM, RFSD, WDRN);
     private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD);
 
@@ -102,7 +102,7 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> accepted_result_codes.contains(offence.getResultCode()));
+                .anyMatch(offence -> application_accepted_result_codes.contains(offence.getResultCode()));
     }
 
     public static boolean isNewStatdecReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -153,7 +153,7 @@ public class NCESDecisionHelper {
         return prevAppList.stream()
                 .map(OffenceResultsDetails::getResultCode)
                 .filter(Objects::nonNull)
-                .anyMatch(accepted_result_codes::contains);
+                .anyMatch(application_accepted_result_codes::contains);
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
