@@ -58,7 +58,7 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
-import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelations;
+import uk.gov.moj.cpp.results.domain.event.OldAccountCorrelation;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 import java.time.LocalDate;
@@ -200,7 +200,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
         markedEvents.stream()
                 .filter(hasNewGobAccountIfExistOrNull)
-                .filter(e -> isEmpty(e.getOldAccountCorrelations()) || hasAccountNumberForCorrelation(e.getOldAccountCorrelations()))
+                .filter(e -> isEmpty(e.getOldAccountCorrelation()) || hasAccountNumberForCorrelation(e.getOldAccountCorrelation()))
                 .toList()
                 .forEach(e -> {
                     LOGGER.info(":: Build Nces Application Mail ::");
@@ -214,7 +214,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     /**
      * returns true when all the accountCorrelationItems have old AccountCorrelationId & old GobAccountNumber OR old AccountCorrelationId & old GobAccountNumber are null
      **/
-    private static boolean hasAccountNumberForCorrelation(final List<OldAccountCorrelations> oldAccountCorrelations) {
+    private static boolean hasAccountNumberForCorrelation(final List<OldAccountCorrelation> oldAccountCorrelations) {
         return oldAccountCorrelations.stream()
                 .allMatch(oac -> Objects.isNull(oac.getAccountCorrelationId()) == Objects.isNull(oac.getGobAccountNumber()));
     }

@@ -164,7 +164,7 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
                 .withOldDivisionCode(correlationsWrapper.getOldDivisionCodes())
                 .withImpositionOffenceDetails(impositionOffenceDetails)
-                .withOldAccountCorrelations(correlationsWrapper.getOldAccountCorrelationsList());
+                .withOldAccountCorrelation(correlationsWrapper.getOldAccountCorrelationsList());
 
         if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
             builder.withAccountCorrelationId(correlationsWrapper.getRecentAccountCorrelationId());
@@ -215,7 +215,7 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
                 .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
                 .withImpositionOffenceDetails(impositionOffenceDetails)
-                .withOldAccountCorrelations(correlationsWrapper.getOldAccountCorrelationsList());
+                .withOldAccountCorrelation(correlationsWrapper.getOldAccountCorrelationsList());
 
         if (Boolean.TRUE.equals(includeOldAccountInfoIfAvailable) && isNotEmpty(correlationsWrapper.getOldAccountCorrelationsList())) {
             builder.withGobAccountNumber(correlationsWrapper.getOldGobAccounts())
@@ -268,7 +268,7 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withNewOffenceByResult(newResultByOffenceList)
                 .withOriginalApplicationResults(originalApplicationResults)
                 .withNewApplicationResults(newApplicationResults)
-                .withOldAccountCorrelations(correlationsWrapper.getOldAccountCorrelationsList());
+                .withOldAccountCorrelation(correlationsWrapper.getOldAccountCorrelationsList());
 
         if (isNotEmpty(correlationsWrapper.getOldAccountCorrelationsList())) {
             builder.withOldAccountCorrelationId(correlationsWrapper.getRecentAccountCorrelationId());
