@@ -76,6 +76,9 @@
         "$ref": "#/definitions/offenceResults"
       }
     },
+    "isValidOldCorrelationAndAccount": {
+      "type": "boolean"
+    },
     "newOffenceByResult": {
       "type": "array",
       "items": {

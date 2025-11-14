@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -32,6 +33,7 @@ class NewApplicationAcceptedNotificationRuleTest {
     @Test
     void shouldGenerateStatutoryDeclarationGrantedNotification() {
 
+        final UUID hearingId = randomUUID();
         final UUID offenceId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
@@ -59,12 +61,14 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withPrevOffenceResultsDetails(prevOffenceResultsDetails)
                 .withCorrelationItemList(
                         List.of(correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(randomUUID())
                                         .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withIsFinancial(TRUE).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
                                         .withCreatedTime(ZonedDateTime.now())
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
@@ -82,6 +86,7 @@ class NewApplicationAcceptedNotificationRuleTest {
 
     @Test
     void shouldGenerateApplicationToReopenGrantedNotification() {
+        final UUID hearingId = randomUUID();
         final UUID offenceId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
@@ -110,12 +115,14 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withPrevOffenceResultsDetails(prevOffenceResultsDetails)
                 .withCorrelationItemList(
                         List.of(correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(randomUUID())
                                         .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withIsFinancial(TRUE).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
                                         .withCreatedTime(ZonedDateTime.now())
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
@@ -133,6 +140,7 @@ class NewApplicationAcceptedNotificationRuleTest {
 
     @Test
     void shouldGenerateAppealAllowedNotification() {
+        final UUID hearingId = randomUUID();
         final UUID offenceId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
@@ -160,12 +168,14 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withPrevOffenceResultsDetails(prevOffenceResultsDetails)
                 .withCorrelationItemList(
                         List.of(correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(randomUUID())
                                         .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withIsFinancial(TRUE).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
                                         .withCreatedTime(ZonedDateTime.now())
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
@@ -269,6 +279,7 @@ class NewApplicationAcceptedNotificationRuleTest {
     @Test
     void shouldHandleGrantedApplicationWithPreviousOffenceResults() {
         UUID offenceId = randomUUID();
+        UUID hearingId = randomUUID();
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -298,12 +309,14 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withPrevOffenceResultsDetails(prevOffenceResultsDetails)
                 .withCorrelationItemList(
                         List.of(correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(randomUUID())
                                         .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withIsFinancial(TRUE).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
+                                        .withHearingId(hearingId)
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
                                         .withCreatedTime(ZonedDateTime.now())
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))

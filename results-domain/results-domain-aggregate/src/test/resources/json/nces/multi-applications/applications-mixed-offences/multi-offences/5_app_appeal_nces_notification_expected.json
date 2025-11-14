@@ -60,7 +60,7 @@
     }
   ],
   "notificationId": "{{notificationId}}",
-  "oldDivisionCode": "77",
+  "oldDivisionCode": "77,30",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
