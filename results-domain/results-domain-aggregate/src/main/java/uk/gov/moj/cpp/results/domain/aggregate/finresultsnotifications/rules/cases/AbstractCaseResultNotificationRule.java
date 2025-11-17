@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases;
 
-import static java.lang.Boolean.TRUE;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -23,9 +22,6 @@ import java.util.function.Predicate;
 public abstract class AbstractCaseResultNotificationRule implements ResultNotificationRule {
     public static final Predicate<OffenceResults> isCaseAmended = o -> isNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
     private static final String ACON = "ACON";
-
-    private static final Boolean IS_FINANCIAL = TRUE;
-
 
     protected ImpositionOffenceDetails buildImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
         return ImpositionOffenceDetails.impositionOffenceDetails()
@@ -67,13 +63,6 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
                 .anyMatch(offenceFromRequest ->
                         ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId()))
                                 .map(OffenceResultsDetails::getIsFinancial).orElse(false));
-    }
-
-    protected boolean isNonFinToFinImposition(final HearingFinancialResultRequest request, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails) {
-        return request.getOffenceResults().stream()
-                .filter(isCaseAmended)
-                .filter(OffenceResults::getIsFinancial)
-                .allMatch(offenceFromRequest -> ofNullable(prevOffenceResultsDetails.get(offenceFromRequest.getOffenceId())).map(ofr -> !TRUE.equals(ofr.getIsFinancial())).orElse(false));
     }
 
     protected List<ImpositionOffenceDetails> getCaseFinancialImpositionOffenceDetails(final RuleInput input, final HearingFinancialResultRequest request) {
@@ -126,10 +115,5 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
     protected boolean isPrevOffenceResultDeemedServed(final UUID offenceId, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap) {
         return prevOffenceResultsDetailsMap.containsKey(offenceId) &&
                 prevOffenceResultsDetailsMap.get(offenceId).getIsDeemedServed();
-    }
-
-    private static boolean previousFinancialState(final Boolean financial, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap, final OffenceResults o) {
-        return isNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) ||
-                nonNull(prevOffenceResultsDetailsMap.get(o.getOffenceId())) && financial.equals(prevOffenceResultsDetailsMap.get(o.getOffenceId()).getIsFinancial());
     }
 }

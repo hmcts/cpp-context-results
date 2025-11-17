@@ -40,14 +40,9 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
 
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
 
-        // Check if there are financial to non-financial amendments that require processing
         final boolean hasFineToNonFineAmendments = isFineToNonFineCaseAmendments(request, input.prevOffenceResultsDetails(), input.offenceDateMap());
 
-        // Generate notification if there are financial to non-financial amendments
-        // This rule handles cases where financial offences are being changed to non-financial
         if (hasFineToNonFineAmendments) {
-
-            // Get original imposition offence details from the aggregate when needed
             final List<ImpositionOffenceDetails> originalImpositions = getOriginalOffenceResultsCaseAmendment(input.prevOffenceResultsDetails(), request.getOffenceResults()).stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
                     .distinct().toList();
@@ -71,8 +66,6 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
                             null,
                             input.prevApplicationResultsDetails()));
         }
-
-        //if offences has fin+nonfin and amendement happens to only non fine  - no correlation and no marked event required
         return Optional.empty();
     }
 
