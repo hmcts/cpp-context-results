@@ -190,7 +190,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                         newResultByOffenceList,
                         applicationResult,
                         offenceDateMap,
-                        ncesEmail,
+                        ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail),
                         caseOffenceResultsDetails,
                         applicationResultsDetails,
                         applicationOffenceResultsDetails,
