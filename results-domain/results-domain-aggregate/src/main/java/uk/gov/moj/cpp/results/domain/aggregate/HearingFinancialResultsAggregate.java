@@ -597,11 +597,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             ncesNotification.withOriginalApplicationResults(marked.getOriginalApplicationResults());
             ncesNotification.withNewApplicationResults(marked.getNewApplicationResults());
             ncesNotification.withIsWriteOff(Boolean.TRUE);
-            //AccountWriteoff email is triggerred even when there no new GOB account number and OldGOB will be considered the latest GOB
-//            if (isNull(marked.getGobAccountNumber()) && nonNull(marked.getOldGobAccountNumber())) {
-//                ncesNotification.withGobAccountNumber(marked.getOldGobAccountNumber())
-//                        .withOldGobAccountNumber(null);
-//            }
             return ncesNotification.build();
         } else if (getApplicationAppealSubjects().contains(marked.getSubject())
                 || getApplicationNonGrantedSubjects().contains(marked.getSubject())) {
