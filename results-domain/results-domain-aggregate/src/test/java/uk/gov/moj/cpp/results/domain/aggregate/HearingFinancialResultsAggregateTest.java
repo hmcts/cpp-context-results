@@ -30,6 +30,7 @@ import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
+import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 import java.io.InputStream;
@@ -66,7 +67,6 @@ public class HearingFinancialResultsAggregateTest {
     public static final String RFSD = "RFSD";
     public static final String WDRN = "WDRN";
     public static final String APPEAL_DISMISSED = "APPEAL DISMISSED";
-    public static final String APPEAL_DISMISSED_SENTENCE_VARIED = "APPEAL DISMISSED SENTENCE VARIED";
     public static final String STATUTORY_DECLARATION_WITHDRAWN = "STATUTORY DECLARATION WITHDRAWN";
     public static final String WRITE_OFF_ONE_DAY_DEEMED_SERVED = "WRITE OFF ONE DAY DEEMED SERVED";
     public static final String AMEND_AND_RESHARE = "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED";
@@ -147,55 +147,12 @@ public class HearingFinancialResultsAggregateTest {
         };
     }
 
-    public static Object[][] subjects() {
-        return new String[][]{
-                {STAT_DEC, RFSD, "STATUTORY DECLARATION REFUSED"},
-                {STAT_DEC, WDRN, STATUTORY_DECLARATION_WITHDRAWN},
-                {STAT_DEC, G, STATUTORY_DECLARATION_GRANTED},
-                {STAT_DEC, "STDEC", STATUTORY_DECLARATION_GRANTED},
-                {REOPEN, RFSD, "APPLICATION TO REOPEN REFUSED"},
-                {REOPEN, WDRN, "APPLICATION TO REOPEN WITHDRAWN"},
-                {REOPEN, G, APPLICATION_TO_REOPEN_GRANTED},
-                {REOPEN, "ROPENED", APPLICATION_TO_REOPEN_GRANTED},
-                {APPEAL, "AACD", APPEAL_DISMISSED},
-                {APPEAL, "AASD", APPEAL_DISMISSED},
-                {APPEAL, "ACSD", APPEAL_DISMISSED},
-                {APPEAL, "ASV", "APPEAL DISMISSED SENTENCE VARIED"},
-                {APPEAL, "APA", "APPEAL ABANDONED"},
-                {APPEAL, WDRN, "APPEAL WITHDRAWN"},
-                {APPEAL, "AACA", APPEAL_ALLOWED},
-                {APPEAL, "AASA", APPEAL_ALLOWED}
-        };
-    }
-
     public static Object[][] applicationUpdateSubjects() {
         return new String[][]{
                 {STAT_DEC, "ABC", STATUTORY_DECLARATION_UPDATED},
                 {REOPEN, "ROPENED1", APPLICATION_TO_REOPEN_UPDATED},
                 {APPEAL, "APPEAL", APPEAL_APPLICATION_UPDATED}
         };
-    }
-
-    private static JsonObject stringToObject(final String request) {
-        final JsonReader reader = createReader(new StringReader(request));
-        return reader.readObject();
-    }
-
-    public static String getPayloadAsString(final String path) {
-        String request = null;
-        try {
-            final InputStream inputStream = HearingFinancialResultsAggregateTest.class.getClassLoader().getResourceAsStream(path);
-            assertThat(inputStream, IsNull.notNullValue());
-            request = IOUtils.toString(inputStream, defaultCharset());
-        } catch (final Exception e) {
-            fail("Error consuming file from location " + path);
-        }
-        return request;
-    }
-
-    public static JsonObject convertStringToJson(String str) {
-        final JsonReader reader = createReader(new StringReader(str));
-        return reader.readObject();
     }
 
     @BeforeEach
@@ -212,17 +169,6 @@ public class HearingFinancialResultsAggregateTest {
         assertThat(aggregate.getCaseOffenceResultsDetails().get(OFFENCE_ID_1), is(notNullValue()));
         assertThat(aggregate.getCaseOffenceResultsDetails().get(OFFENCE_ID_2), is(notNullValue()));
         assertAdditionalData(aggregate);
-    }
-
-    private List<OffenceResults> getOffenceResults(final UUID offenceId) {
-        List<OffenceResults> offenceResults = new ArrayList<>();
-        offenceResults.add(OffenceResults.offenceResults().withIsFinancial(true)
-                .withDateOfResult("24/05/2024")
-                .withOffenceId(offenceId)
-                .withOffenceTitle("Title")
-                .withImpositionOffenceDetails("impositionOffenceDetails")
-                .build());
-        return offenceResults;
     }
 
     public void assertAdditionalData(HearingFinancialResultsAggregate aggregate) {
@@ -268,7 +214,7 @@ public class HearingFinancialResultsAggregateTest {
                 .withDefendantEmail(defendantEmail)
                 .withDefendantContactNumber(defendantContactNumber)
                 .withIsSJPHearing(false)
-                .withOldDivisionCode(oldDivisionCode)
+                .withOldAccountDetails(List.of(OldAccountDetails.oldAccountDetails().withDivisionCode(oldDivisionCode).build()))
                 .withMasterDefendantId(masterDefendantId)
                 .build();
         final List<Object> eventStream = aggregate.ncesEmailNotFound(accountReceived).collect(toList());

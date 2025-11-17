@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +17,8 @@ import org.apache.commons.collections.CollectionUtils;
 
 public class GobAccountHelper {
 
-    public static OldAccountCorrelationsWrapper getOldAccountCorrelations(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
-                                                                          final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
+    public static OldAccountDetailsWrapper getOldAccountCorrelations(final LinkedList<CorrelationItem> correlationItemList, final UUID accountCorrelationId, final List<UUID> offenceIdList,
+                                                                     final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
 
         correlationItemList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         final Map<UUID, List<CorrelationItem>> hearingIdCorrelationItemsMap = offenceIdList.stream()
@@ -26,19 +27,19 @@ public class GobAccountHelper {
                 .distinct()
                 .collect(groupingBy(CorrelationItem::getHearingId));
 
-        final List<OldAccountCorrelation> oldAccountCorrelations = hearingIdCorrelationItemsMap.values().stream()
+        final List<OldAccountDetails> oldAccountDetails = hearingIdCorrelationItemsMap.values().stream()
                 .filter(CollectionUtils::isNotEmpty)
                 .map(GobAccountHelper::toOldAccountCorrelations)
                 .distinct()
                 .toList();
 
-        return new OldAccountCorrelationsWrapper(oldAccountCorrelations);
+        return new OldAccountDetailsWrapper(oldAccountDetails);
     }
 
-    private static OldAccountCorrelation toOldAccountCorrelations(final List<CorrelationItem> ciList) {
+    private static OldAccountDetails toOldAccountCorrelations(final List<CorrelationItem> ciList) {
         ciList.sort(comparing(CorrelationItem::getCreatedTime).reversed());
         final CorrelationItem correlationItem = ciList.get(0);
-        return OldAccountCorrelation.oldAccountCorrelation()
+        return OldAccountDetails.oldAccountDetails()
                 .withAccountCorrelationId(correlationItem.getAccountCorrelationId())
                 .withGobAccountNumber(correlationItem.getAccountNumber())
                 .withDivisionCode(correlationItem.getAccountDivisionCode())

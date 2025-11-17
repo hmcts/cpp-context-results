@@ -15,6 +15,7 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToFinAccWriteOffRule;
+import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -83,7 +84,7 @@ class CaseFinToFinAccWriteOffRuleTest {
         output.ifPresentOrElse(notification -> {
             assertThat("subject should match", notification.getSubject(), is(NCESDecisionConstants.AMEND_AND_RESHARE));
             assertThat("There should be one imposition offence detail for Acc Write Off", notification.getImpositionOffenceDetails().size(), is(1));
-            assertThat("There should be one latest GOB for Acc Write Off", notification.getOldGobAccountNumber(), is("AC123456789"));
+            assertThat("There should be one latest GOB for Acc Write Off", notification.getOldAccountDetails().stream().map(OldAccountDetails::getGobAccountNumber).findFirst().get(), is("AC123456789"));
         }, () -> fail("Expected Acc Write Off notification to be present"));
     }
 
@@ -442,7 +443,7 @@ class CaseFinToFinAccWriteOffRuleTest {
         output.ifPresentOrElse(notification -> {
             assertThat("subject should match", notification.getSubject(), is(NCESDecisionConstants.AMEND_AND_RESHARE));
             assertThat("There should be one imposition offence detail for Acc Write Off", notification.getImpositionOffenceDetails().size(), is(3));
-            assertThat("There should be one latest GOB for Acc Write Off", notification.getOldGobAccountNumber(), is("AC123456789"));
+            assertThat("There should be one latest GOB for Acc Write Off", notification.getOldAccountDetails().stream().map(OldAccountDetails::getGobAccountNumber).findFirst().get(), is("AC123456789"));
         }, () -> fail("Expected Acc Write Off notification to be present"));
 
     }
@@ -513,7 +514,7 @@ class CaseFinToFinAccWriteOffRuleTest {
         output.ifPresentOrElse(notification -> {
             assertThat("subject should match", notification.getSubject(), is(NCESDecisionConstants.AMEND_AND_RESHARE));
             assertThat("There should be one imposition offence detail for Acc Write Off", notification.getImpositionOffenceDetails().size(), is(1));
-            assertThat("There should be one latest GOB for Acc Write Off", notification.getOldGobAccountNumber(), is("AC123456789"));
+            assertThat("There should be one latest GOB for Acc Write Off", notification.getOldAccountDetails().stream().map(OldAccountDetails::getGobAccountNumber).findFirst().get(), is("AC123456789"));
         }, () -> fail("Expected Acc Write Off notification to be present"));
     }
 

@@ -63,7 +63,7 @@ public class GobAccountHelperTest {
         final CorrelationItem correlationItemApp4 = getCorrelation(hearingId, application4Offences, "GOB5");
         correlationItemList.add(correlationItemApp4);
 
-        final OldAccountCorrelationsWrapper oldAccountCorrelations = getOldAccountCorrelations(correlationItemList, correlationItemApp4.getAccountCorrelationId(), of(offenceId2, offenceId3), EMPTY_MAP);
+        final OldAccountDetailsWrapper oldAccountCorrelations = getOldAccountCorrelations(correlationItemList, correlationItemApp4.getAccountCorrelationId(), of(offenceId2, offenceId3), EMPTY_MAP);
         assertThat(oldAccountCorrelations.getOldGobAccounts(), is("GOB4"));
     }
 
@@ -91,7 +91,7 @@ public class GobAccountHelperTest {
                 getOffenceResultsDetails(offenceId3, true)), "GOB3");
         correlationItemList.add(correlationItemApp2);
 
-        final OldAccountCorrelationsWrapper oldAccountCorrelations = getOldAccountCorrelations(correlationItemList, correlationItemApp2.getAccountCorrelationId(), List.of(offenceId1, offenceId2, offenceId3), EMPTY_MAP);
+        final OldAccountDetailsWrapper oldAccountCorrelations = getOldAccountCorrelations(correlationItemList, correlationItemApp2.getAccountCorrelationId(), List.of(offenceId1, offenceId2, offenceId3), EMPTY_MAP);
         assertThat(Arrays.stream(oldAccountCorrelations.getOldGobAccounts().split(",")).toList(), containsInAnyOrder("GOB1", "GOB2"));
     }
 
@@ -134,7 +134,7 @@ public class GobAccountHelperTest {
                 getOffenceResultsDetails(offenceId4, true)), "GOB6");
         correlationItemList.add(correlationItemsAllOffences);
 
-        final OldAccountCorrelationsWrapper oldAccountCorrelations = getOldAccountCorrelations(correlationItemList, correlationItemsAllOffences.getAccountCorrelationId(), List.of(offenceId1, offenceId2, offenceId3, offenceId4), EMPTY_MAP);
+        final OldAccountDetailsWrapper oldAccountCorrelations = getOldAccountCorrelations(correlationItemList, correlationItemsAllOffences.getAccountCorrelationId(), List.of(offenceId1, offenceId2, offenceId3, offenceId4), EMPTY_MAP);
         assertThat(Arrays.stream(oldAccountCorrelations.getOldGobAccounts().split(",")).toList(), containsInAnyOrder("GOB3", "GOB5"));
     }
 

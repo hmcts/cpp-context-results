@@ -3,27 +3,29 @@ package uk.gov.moj.cpp.results.domain.aggregate.utils;
 import static java.util.Comparator.comparing;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
+import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class OldAccountCorrelationsWrapper {
+public class OldAccountDetailsWrapper {
 
-    private final List<OldAccountCorrelation> oldAccountCorrelationsList;
+    private final List<OldAccountDetails> oldAccountDetails;
 
-    public OldAccountCorrelationsWrapper(final List<OldAccountCorrelation> oldAccountCorrelationsList) {
-        this.oldAccountCorrelationsList = oldAccountCorrelationsList;
+    public OldAccountDetailsWrapper(final List<OldAccountDetails> oldAccountDetails) {
+        this.oldAccountDetails = oldAccountDetails;
     }
 
-    public List<OldAccountCorrelation> getOldAccountCorrelationsList() {
-        return oldAccountCorrelationsList;
+    public List<OldAccountDetails> getOldAccountDetails() {
+        return oldAccountDetails;
     }
 
     public String getOldGobAccounts() {
-        if (isNotEmpty(oldAccountCorrelationsList)) {
-            final List<String> oldGobAccounts = oldAccountCorrelationsList.stream()
-                    .map(OldAccountCorrelation::getGobAccountNumber)
+        if (isNotEmpty(oldAccountDetails)) {
+            final List<String> oldGobAccounts = oldAccountDetails.stream()
+                    .map(OldAccountDetails::getGobAccountNumber)
                     .filter(Objects::nonNull)
                     .distinct()
                     .toList();
@@ -36,9 +38,9 @@ public class OldAccountCorrelationsWrapper {
     }
 
     public String getOldDivisionCodes() {
-        if (isNotEmpty(oldAccountCorrelationsList)) {
-            final List<String> oldDivisionCodes = oldAccountCorrelationsList.stream()
-                    .map(OldAccountCorrelation::getDivisionCode)
+        if (isNotEmpty(oldAccountDetails)) {
+            final List<String> oldDivisionCodes = oldAccountDetails.stream()
+                    .map(OldAccountDetails::getDivisionCode)
                     .filter(Objects::nonNull)
                     .distinct()
                     .toList();
@@ -51,10 +53,9 @@ public class OldAccountCorrelationsWrapper {
     }
 
     public UUID getRecentAccountCorrelationId() {
-
-        if (isNotEmpty(oldAccountCorrelationsList)) {
-            List<OldAccountCorrelation> oldAccountCorrelationsCopy = new ArrayList<>(oldAccountCorrelationsList);
-            oldAccountCorrelationsCopy.sort(comparing(OldAccountCorrelation::getCreatedTime).reversed());
+        if (isNotEmpty(oldAccountDetails)) {
+            List<OldAccountDetails> oldAccountCorrelationsCopy = new ArrayList<>(oldAccountDetails);
+            oldAccountCorrelationsCopy.sort(comparing(OldAccountDetails::getCreatedTime).reversed());
             return oldAccountCorrelationsCopy.get(0).getAccountCorrelationId();
         }
         return null;
