@@ -662,7 +662,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private NcesEmailNotificationRequested.Builder getNcesEmailNotificationRequested(MarkedAggregateSendEmailWhenAccountReceived marked) {
 
         final OldAccountDetailsWrapper oldAccountDetailsWrapper = new OldAccountDetailsWrapper(marked.getOldAccountDetails());
-
         return ncesEmailNotificationRequested()
                 .withNotificationId(randomUUID())
                 .withMaterialId(randomUUID())
@@ -677,9 +676,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withGobAccountNumber(marked.getGobAccountNumber())
                 .withAmendmentDate(marked.getAmendmentDate())
                 .withAmendmentReason(marked.getAmendmentReason())
-//                .withOldDivisionCode(marked.getOldDivisionCode())
-//                .withOldGobAccountNumber(marked.getOldGobAccountNumber())
-
                 .withOldDivisionCode(oldAccountDetailsWrapper.getOldDivisionCodes())
                 .withOldGobAccountNumber(oldAccountDetailsWrapper.getOldGobAccounts())
 
