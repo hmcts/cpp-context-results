@@ -408,9 +408,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final Set<UUID> idsToBeUnmarked = new HashSet<>();
         final Stream.Builder<Object> builder = Stream.builder();
 
-        markedAggregateSendEmailWhenAccountReceivedList.stream()
-                .filter(marked -> isAccountCorrelationMatch(marked.getAccountCorrelationId(), marked.getOldAccountDetails()))
-                .forEach(marked -> {
+        markedAggregateSendEmailWhenAccountReceivedList.forEach(marked -> {
                     final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived().withValuesFrom(marked);
 
                     final MarkedAggregateSendEmailWhenAccountReceived finalMarked = getMarkedWithUpdatedOldAndNewGobAccounts(marked, markedBuilder);
@@ -487,12 +485,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return prosecutionCaseReferences;
     }
 
-    private boolean isAccountCorrelationMatch(final UUID markedAccountCorrelationId, final List<OldAccountDetails> oldAccountDetails) {
-        return correlationItemList.stream()
-                .anyMatch(item -> item.getAccountCorrelationId().equals(markedAccountCorrelationId)
-                        || nonNull(oldAccountDetails) && oldAccountDetails.stream().anyMatch(ad -> item.getAccountCorrelationId().equals(ad.getAccountCorrelationId())));
-    }
-
     private MarkedAggregateSendEmailWhenAccountReceived getMarkedWithUpdatedOldAndNewGobAccounts(final MarkedAggregateSendEmailWhenAccountReceived marked, final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder) {
 
         final String accountNumber = correlationItemList.stream()
@@ -500,7 +492,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .findFirst().map(CorrelationItem::getAccountNumber).orElse(null);
         markedBuilder.withGobAccountNumber(accountNumber);
 
-        if (isNotEmpty(marked.getOldAccountDetails())) {
+        if (nonNull(marked.getOldAccountCorrelationId()) || isNotEmpty(marked.getOldAccountDetails())) {
             final List<UUID> offenceIdList = marked.getImpositionOffenceDetails().stream().map(ImpositionOffenceDetails::getOffenceId).toList();
 
             final OldAccountDetailsWrapper oldAccountDetailsWrapper = getOldAccountCorrelations(new LinkedList<>(correlationItemList), marked.getAccountCorrelationId(), offenceIdList, applicationResultsDetails);
