@@ -59,7 +59,6 @@ import org.hamcrest.Matcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class StagingEnforcementIT {
@@ -446,7 +445,7 @@ public class StagingEnforcementIT {
         verifyNcesEmailNotificationDetails(userId, ncesEmailNotificationRequested);
     }
 
-    @Disabled("to be enabled as part of CCT-2389")
+    @Test
     public void shouldSendNcesEmailForNewApplicationThatWasUpdated() {
         final String masterDefendantId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
