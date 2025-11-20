@@ -104,31 +104,21 @@ public class NCESDecisionConstants  implements Serializable {
                 );
     }
 
-    public static List<String> getApplicationAcceptedSubjects() {
+    public static List<String> getApplicationGrantedSubjects() {
         return Arrays.asList(NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.G),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.STDEC),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.G),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.ROPENED),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.G),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACA),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AASA));
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.G));
     }
 
-    public static List<String> getApplicationDeniedSubjects() {
+    public static List<String> getApplicationNonGrantedSubjects() {
         return Arrays.asList(
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.RFSD),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.WDRN),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.DISM),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.RFSD),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.WDRN),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.DISM),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.ASV),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AASD),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AW),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.APA),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACD),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.ACSD),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.DISM),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.RFSD));
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.DISM));
     }
 }

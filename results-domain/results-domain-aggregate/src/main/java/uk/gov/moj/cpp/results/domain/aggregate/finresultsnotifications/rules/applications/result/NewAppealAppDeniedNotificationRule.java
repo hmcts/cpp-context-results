@@ -124,6 +124,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
                             subject,
                             impositionOffenceDetailsForApplication,
+                            ncesEmail,
                             isWrittenOffExists,
                             originalDateOfOffenceList,
                             originalDateOfSentenceList, 

@@ -6,10 +6,12 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.AbstractApplicationResultNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +53,7 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         request,
                                         NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT.get(offence.getApplicationType()),
                                         impositionOffenceDetailsForApplication,
+                                        ncesEmail,
                                         writtenOffExists,
                                         input.originalDateOfOffenceList(),
                                         input.originalDateOfSentenceList(),

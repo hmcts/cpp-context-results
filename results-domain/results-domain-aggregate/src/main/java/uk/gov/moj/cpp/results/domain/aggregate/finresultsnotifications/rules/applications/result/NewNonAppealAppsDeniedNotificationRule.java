@@ -4,6 +4,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewApplicationGranted;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecReopenApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
@@ -80,6 +81,7 @@ public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationR
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(request,
                                         APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
                                         impositionOffenceDetailsForApplication,
+                                        ncesEmail,
                                         writtenOffExists,
                                         originalDateOfOffenceList,
                                         originalDateOfSentenceList,
