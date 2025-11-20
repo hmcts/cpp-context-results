@@ -53,7 +53,6 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         request,
                                         NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT.get(offence.getApplicationType()),
                                         impositionOffenceDetailsForApplication,
-                                        ncesEmail,
                                         writtenOffExists,
                                         input.originalDateOfOffenceList(),
                                         input.originalDateOfSentenceList(),

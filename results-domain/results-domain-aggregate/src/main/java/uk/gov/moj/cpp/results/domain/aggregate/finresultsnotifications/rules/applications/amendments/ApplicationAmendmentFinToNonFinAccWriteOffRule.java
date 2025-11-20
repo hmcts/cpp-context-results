@@ -60,7 +60,8 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
             final MarkedAggregateSendEmailEventBuilder markedAggregateSendEmailEventBuilder = markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList());
 
             return Optional.of(markedAggregateSendEmailEventBuilder
-                    .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
+                    .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
+                            request,
                             NCESDecisionConstants.AMEND_AND_RESHARE,
                             originalImpositionDetails,
                             input.isWrittenOffExists(),

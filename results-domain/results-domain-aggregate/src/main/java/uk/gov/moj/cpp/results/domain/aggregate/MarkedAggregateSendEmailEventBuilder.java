@@ -21,6 +21,7 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.OldAccountDetailsWrapper;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
@@ -55,28 +56,10 @@ public class MarkedAggregateSendEmailEventBuilder {
     }
 
     @SuppressWarnings("java:S107")
-    public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOldsForSpecificCorrelationId(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                                                                                               final String subject,
-                                                                                                               final List<ImpositionOffenceDetails> impositionOffenceDetails,
-                                                                                                               final String isWrittenOffExists,
-                                                                                                               final String originalDateOfOffenceList,
-                                                                                                               final String originalDateOfSentenceList,
-                                                                                                               final List<NewOffenceByResult> newResultByOffenceList,
-                                                                                                               final String applicationResult,
-                                                                                                               final OriginalApplicationResults originalApplicationResults,
-                                                                                                               final NewApplicationResults newApplicationResults,
-                                                                                                               final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails
-    ) {
-        return buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest, subject, impositionOffenceDetails,
-                ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail), isWrittenOffExists, originalDateOfOffenceList,
-                originalDateOfSentenceList, newResultByOffenceList, applicationResult, originalApplicationResults, newApplicationResults, prevApplicationResultsDetails);
-    }
-
-    @SuppressWarnings("java:S107")
     public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                                                                                                         final String subject,
                                                                                                                         final List<ImpositionOffenceDetails> impositionOffenceDetails,
-                                                                                                                        final String ncesEMail, final String isFinancialPenaltiesWrittenOff,
+                                                                                                                        final String isFinancialPenaltiesWrittenOff,
                                                                                                                         final String originalDateOfOffenceList, final String originalDateOfSentenceList,
                                                                                                                         final List<NewOffenceByResult> newResultByOffence, final String applicationResult,
                                                                                                                         final OriginalApplicationResults originalApplicationResults, final NewApplicationResults newApplicationResults,
@@ -95,7 +78,7 @@ public class MarkedAggregateSendEmailEventBuilder {
             builder.withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
         }
         builder.withId(randomUUID())
-                .withSendTo(ncesEMail)
+                .withSendTo(ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail))
                 .withSubject(subject)
                 .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
                 .withDefendantName(hearingFinancialResultRequest.getDefendantName())
