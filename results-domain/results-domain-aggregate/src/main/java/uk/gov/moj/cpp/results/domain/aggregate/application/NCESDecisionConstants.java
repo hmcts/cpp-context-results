@@ -104,12 +104,14 @@ public class NCESDecisionConstants  implements Serializable {
                 );
     }
 
-    public static List<String> getApplicationGrantedSubjects() {
+    public static List<String> getApplicationAcceptedSubjects() {
         return Arrays.asList(NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.G),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.STDEC),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.G),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.ROPENED),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.G));
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.G),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACA),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AASA));
     }
 
     public static List<String> getApplicationNonGrantedSubjects() {

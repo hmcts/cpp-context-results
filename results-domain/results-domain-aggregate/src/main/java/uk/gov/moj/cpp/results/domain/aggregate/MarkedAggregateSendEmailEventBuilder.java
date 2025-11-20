@@ -12,7 +12,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealAllowedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAcceptedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldAccountCorrelations;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
@@ -21,7 +21,6 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.OldAccountDetailsWrapper;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
@@ -104,7 +103,7 @@ public class MarkedAggregateSendEmailEventBuilder {
             builder.withNewApplicationResults(newApplicationResults);
             builder.withOriginalApplicationResults(originalApplicationResults);
 
-        } else if (getApplicationGrantedSubjects().contains(subject) || getApplicationAppealAllowedSubjects().contains(subject)) {
+        } else if (getApplicationAcceptedSubjects().contains(subject) || getApplicationAppealAllowedSubjects().contains(subject)) {
             builder.withIsFinancialPenaltiesWrittenOff(isFinancialPenaltiesWrittenOff);
             builder.withOriginalDateOfOffence(originalDateOfOffenceList);
             builder.withOriginalDateOfSentence(originalDateOfSentenceList);
@@ -121,55 +120,15 @@ public class MarkedAggregateSendEmailEventBuilder {
     }
 
     @SuppressWarnings("java:S107")
-    public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateGranted(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject,
-                                                                                   final List<ImpositionOffenceDetails> impositionOffenceDetails,
-                                                                                   final String ncesEMail, final String isFinancialPenaltiesWrittenOff,
-                                                                                   final String originalDateOfOffenceList, final String originalDateOfSentenceList,
-                                                                                   final List<NewOffenceByResult> newResultByOffence, final NewApplicationResults applicationResults,
-                                                                                   final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-        final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
-        final OldAccountDetailsWrapper correlationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
-
-        final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
-                .withId(randomUUID())
-                .withSendTo(ncesEMail)
-                .withSubject(subject)
-                .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
-                .withDefendantName(hearingFinancialResultRequest.getDefendantName())
-                .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
-                .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
-                .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
-                .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
-                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
-                .withNewApplicationResults(applicationResults)
-                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
-                .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
-                .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
-                .withImpositionOffenceDetails(impositionOffenceDetails);
-
-        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
-            builder.withAccountCorrelationId(correlationsWrapper.getRecentAccountCorrelationId());
-            builder.withGobAccountNumber(correlationsWrapper.getOldGobAccounts());
-        } else {
-            builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
-                    .withOldAccountDetails(correlationsWrapper.getOldAccountDetails());
-        }
-
-        ofNullable(hearingFinancialResultRequest.getHearingSittingDay())
-                .ifPresent(a -> builder.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
-
-        if (getApplicationGrantedSubjects().contains(subject) || getApplicationAppealAllowedSubjects().contains(subject)) {
-            builder.withIsFinancialPenaltiesWrittenOff(isFinancialPenaltiesWrittenOff);
-            builder.withOriginalDateOfOffence(originalDateOfOffenceList);
-            builder.withOriginalDateOfSentence(originalDateOfSentenceList);
-            builder.withNewOffenceByResult(newResultByOffence);
-            hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getDateOfResult())).findFirst().ifPresent(offence ->
-                    builder.withDateDecisionMade(offence.getDateOfResult()));
-        } else {
-            buildDecisionMade(hearingFinancialResultRequest, builder);
-        }
-        return builder.build();
+    public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateForApplicationAccepted(final HearingFinancialResultRequest hearingFinancialResultRequest, final String subject,
+                                                                                                  final List<ImpositionOffenceDetails> impositionOffenceDetails,
+                                                                                                  final String ncesEMail, final String isFinancialPenaltiesWrittenOff,
+                                                                                                  final String originalDateOfOffenceList, final String originalDateOfSentenceList,
+                                                                                                  final List<NewOffenceByResult> newResultByOffence, final NewApplicationResults applicationResults,
+                                                                                                  final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
+        return buildMarkedAggregateWithAccountDetails(hearingFinancialResultRequest, subject, impositionOffenceDetails,
+                ncesEMail, null, isFinancialPenaltiesWrittenOff, originalDateOfOffenceList, originalDateOfSentenceList,
+                newResultByOffence, null, applicationResults, prevApplicationResultsDetails, true);
     }
 
     public MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithoutOlds(final HearingFinancialResultRequest hearingFinancialResultRequest,
@@ -224,42 +183,82 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                     final OriginalApplicationResults originalApplicationResults,
                                                                                     final NewApplicationResults newApplicationResults,
                                                                                     final String subject, final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
+        return buildMarkedAggregateWithAccountDetails(hearingFinancialResultRequest, subject, impositionOffenceDetails,
+                null, applicationResult, null, null, null, newResultByOffenceList, originalApplicationResults,
+                newApplicationResults, prevApplicationResultsDetails, false);
+    }
+
+    @SuppressWarnings("java:S107")
+    private MarkedAggregateSendEmailWhenAccountReceived buildMarkedAggregateWithAccountDetails(
+            final HearingFinancialResultRequest hearingFinancialResultRequest,
+            final String subject,
+            final List<ImpositionOffenceDetails> impositionOffenceDetails,
+            final String ncesEMail,
+            final String applicationResult,
+            final String isFinancialPenaltiesWrittenOff,
+            final String originalDateOfOffenceList,
+            final String originalDateOfSentenceList,
+            final List<NewOffenceByResult> newResultByOffence,
+            final OriginalApplicationResults originalApplicationResults,
+            final NewApplicationResults newApplicationResults,
+            final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
+            final boolean isApplicationAccepeted) {
 
         final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
         final OldAccountDetailsWrapper correlationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
 
-        final Optional<OffenceResults> offenceResult = hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getAmendmentDate())).findFirst();
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
                 .withId(randomUUID())
-                .withSendTo(ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail))
+                .withSendTo(ofNullable(ncesEMail).orElse(ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail)))
                 .withSubject(subject)
                 .withDefendantName(hearingFinancialResultRequest.getDefendantName())
                 .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
                 .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
                 .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
                 .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
+                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
                 .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
                 .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
-                .withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
                 .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
-                .withImpositionOffenceDetails(impositionOffenceDetails)
-                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
-                .withNewOffenceByResult(newResultByOffenceList)
-                .withOriginalApplicationResults(originalApplicationResults)
-                .withNewApplicationResults(newApplicationResults);
+                .withImpositionOffenceDetails(impositionOffenceDetails);
 
-        if (isNotEmpty(correlationsWrapper.getOldAccountDetails())) {
-            builder.withOldAccountDetails(correlationsWrapper.getOldAccountDetails());
+        if (isApplicationAccepeted) {
+            if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
+                builder.withAccountCorrelationId(correlationsWrapper.getRecentAccountCorrelationId());
+                builder.withGobAccountNumber(correlationsWrapper.getOldGobAccounts());
+            } else {
+                builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
+                        .withOldAccountDetails(correlationsWrapper.getOldAccountDetails());
+            }
+            builder.withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName());
+            buildDecisionMade(hearingFinancialResultRequest, builder);
+        } else {
+            builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId());
+            if (isNotEmpty(correlationsWrapper.getOldAccountDetails())) {
+                builder.withOldAccountDetails(correlationsWrapper.getOldAccountDetails());
+            }
         }
+        ofNullable(newApplicationResults).ifPresent(builder::withNewApplicationResults);
+        ofNullable(originalApplicationResults).ifPresent(builder::withOriginalApplicationResults);
+        ofNullable(newResultByOffence).ifPresent(builder::withNewOffenceByResult);
+        ofNullable(hearingFinancialResultRequest.getHearingSittingDay())
+                .ifPresent(a -> builder.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
 
         if (AMEND_AND_RESHARE.equals(subject)) {
             builder.withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName());
-            builder.withApplicationResult(applicationResult);
+            ofNullable(applicationResult).ifPresent(builder::withApplicationResult);
+            final Optional<OffenceResults> offenceResult = hearingFinancialResultRequest.getOffenceResults().stream()
+                    .filter(offence -> nonNull(offence.getAmendmentDate())).findFirst();
             builder.withAmendmentDate(offenceResult.map(OffenceResults::getAmendmentDate).orElse(LocalDate.now().toString()));
             builder.withAmendmentReason(offenceResult.map(OffenceResults::getAmendmentReason).orElse(AMENDMENT_REASON));
+        } else if (getApplicationAcceptedSubjects().contains(subject)) {
+            ofNullable(isFinancialPenaltiesWrittenOff).ifPresent(builder::withIsFinancialPenaltiesWrittenOff);
+            ofNullable(originalDateOfOffenceList).ifPresent(builder::withOriginalDateOfOffence);
+            ofNullable(originalDateOfSentenceList).ifPresent(builder::withOriginalDateOfSentence);
+            hearingFinancialResultRequest.getOffenceResults().stream()
+                    .filter(offence -> nonNull(offence.getDateOfResult())).findFirst()
+                    .ifPresent(offence -> builder.withDateDecisionMade(offence.getDateOfResult()));
         }
-        ofNullable(hearingFinancialResultRequest.getHearingSittingDay())
-                .ifPresent(a -> builder.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
         return builder.build();
     }
 

@@ -82,7 +82,7 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
                                 input.prevOffenceResultsDetails(), 
                                 input.prevApplicationOffenceResultsMap())) {
                     return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
-                            .buildMarkedAggregateGranted(request,
+                            .buildMarkedAggregateForApplicationAccepted(request,
                                     getSubject(request, offence),
                                     impositionOffenceDetailsForApplication,
                                     ncesEmail,
