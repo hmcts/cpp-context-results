@@ -66,7 +66,7 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
                             originalImpositionDetails,
                             input.isWrittenOffExists(),
                             input.originalDateOfOffenceList(),
-                            input.originalDateOfOffenceList(),
+                            input.originalDateOfSentenceList(),
                             newOffenceResults,
                             input.applicationResult(),
                             originalApplicationResults.orElse(null),
