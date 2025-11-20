@@ -30,7 +30,6 @@ import java.util.function.Predicate;
  */
 public abstract class AbstractApplicationResultNotificationRule implements ResultNotificationRule {
     private static final Predicate<OffenceResults> isApplicationAmended = o -> nonNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
-    private static final Boolean IS_FINANCIAL = TRUE;
 
     protected HearingFinancialResultRequest filteredApplicationResults(HearingFinancialResultRequest request) {
         final HearingFinancialResultRequest filtered = HearingFinancialResultRequest.hearingFinancialResultRequest()

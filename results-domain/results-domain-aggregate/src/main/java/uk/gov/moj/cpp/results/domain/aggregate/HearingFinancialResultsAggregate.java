@@ -28,10 +28,8 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealAllowedSubjects;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAcceptedSubjects;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationDeniedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRuleEngine.resultNotificationRuleEngine;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldAccountCorrelations;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
@@ -565,7 +563,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             return ncesNotification.withHearingSittingDay(marked.getHearingSittingDay())
                     .withOriginalDateOfSentence(getFormattedDates(marked.getHearingSittingDay()))
                     .build();
-        } else if (getApplicationGrantedSubjects().contains(marked.getSubject()) || getApplicationAppealAllowedSubjects().contains(marked.getSubject())) {
+        } else if (getApplicationAcceptedSubjects().contains(marked.getSubject())) {
             ncesNotification.withHearingSittingDay(marked.getHearingSittingDay());
             ncesNotification.withOriginalDateOfOffence(marked.getOriginalDateOfOffence());
             ncesNotification.withHearingCourtCentreName(marked.getHearingCourtCentreName());
@@ -590,8 +588,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             ncesNotification.withNewApplicationResults(marked.getNewApplicationResults());
             ncesNotification.withIsWriteOff(Boolean.TRUE);
             return ncesNotification.build();
-        } else if (getApplicationAppealSubjects().contains(marked.getSubject())
-                || getApplicationNonGrantedSubjects().contains(marked.getSubject())) {
+        } else if (getApplicationDeniedSubjects().contains(marked.getSubject())) {
             buildDefendantParameters(ncesNotification, marked);
             ncesNotification.withNewOffenceByResult(groupedByOffenceId(marked.getNewOffenceByResult()));
             ncesNotification.withOriginalApplicationResults(marked.getOriginalApplicationResults());
