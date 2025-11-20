@@ -31,7 +31,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealAllowedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAcceptedSubjects;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationDeniedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRuleEngine.resultNotificationRuleEngine;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldAccountCorrelations;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
@@ -590,8 +590,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             ncesNotification.withNewApplicationResults(marked.getNewApplicationResults());
             ncesNotification.withIsWriteOff(Boolean.TRUE);
             return ncesNotification.build();
-        } else if (getApplicationAppealSubjects().contains(marked.getSubject())
-                || getApplicationNonGrantedSubjects().contains(marked.getSubject())) {
+        } else if (getApplicationDeniedSubjects().contains(marked.getSubject())) {
             buildDefendantParameters(ncesNotification, marked);
             ncesNotification.withNewOffenceByResult(groupedByOffenceId(marked.getNewOffenceByResult()));
             ncesNotification.withOriginalApplicationResults(marked.getOriginalApplicationResults());

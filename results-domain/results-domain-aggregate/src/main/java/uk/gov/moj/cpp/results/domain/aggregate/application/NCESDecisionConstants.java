@@ -114,13 +114,21 @@ public class NCESDecisionConstants  implements Serializable {
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AASA));
     }
 
-    public static List<String> getApplicationNonGrantedSubjects() {
+    public static List<String> getApplicationDeniedSubjects() {
         return Arrays.asList(
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.RFSD),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.WDRN),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.STAT_DEC).get(NCESDecisionConstants.DISM),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.RFSD),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.WDRN),
-                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.DISM));
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.REOPEN).get(NCESDecisionConstants.DISM),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.ASV),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AASD),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AW),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.APA),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACD),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.ACSD),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.DISM),
+                NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.RFSD));
     }
 }
