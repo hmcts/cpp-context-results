@@ -54,13 +54,12 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
                     .toList();
 
             return Optional.of(
-                    markedAggregateSendEmailEventBuilder.buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
-                            request,
+                    markedAggregateSendEmailEventBuilder.buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             AMEND_AND_RESHARE,
                             originalImpositions,
                             input.isWrittenOffExists(),
                             input.originalDateOfOffenceList(),
-                            input.originalDateOfSentenceList(),
+                            input.originalDateOfOffenceList(),
                             newOffenceResults,
                             input.applicationResult(),
                             null,
