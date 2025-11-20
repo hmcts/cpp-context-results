@@ -565,7 +565,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             return ncesNotification.withHearingSittingDay(marked.getHearingSittingDay())
                     .withOriginalDateOfSentence(getFormattedDates(marked.getHearingSittingDay()))
                     .build();
-        } else if (getApplicationAcceptedSubjects().contains(marked.getSubject()) || getApplicationAppealAllowedSubjects().contains(marked.getSubject())) {
+        } else if (getApplicationAcceptedSubjects().contains(marked.getSubject())) {
             ncesNotification.withHearingSittingDay(marked.getHearingSittingDay());
             ncesNotification.withOriginalDateOfOffence(marked.getOriginalDateOfOffence());
             ncesNotification.withHearingCourtCentreName(marked.getHearingCourtCentreName());
