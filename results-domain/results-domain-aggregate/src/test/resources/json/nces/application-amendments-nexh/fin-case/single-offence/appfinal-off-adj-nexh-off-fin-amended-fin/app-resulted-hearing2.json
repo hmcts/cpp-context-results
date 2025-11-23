@@ -12,6 +12,8 @@
       "isParentFlag": true,
       "dateOfResult": "2025-05-15",
       "resultCode": "G",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory": "FINAL",
       "isDeemedServed": false
     },
     {
@@ -23,6 +25,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £45.00",
       "isFinancial": true,
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory": "FINAL",
       "isParentFlag": false
     }
   ],

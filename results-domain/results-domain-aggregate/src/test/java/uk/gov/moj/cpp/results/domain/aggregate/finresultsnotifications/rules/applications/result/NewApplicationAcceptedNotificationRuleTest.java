@@ -9,13 +9,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AASA;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.G;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STDEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.INTERMEDIARY;
 
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -74,7 +75,8 @@ class NewApplicationAcceptedNotificationRuleTest {
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
-                .build();;
+                .build();
+        ;
 
         assertTrue(rule.appliesTo(input), "Rule should apply for appeal application type with allowed result");
         var output = rule.apply(input);
@@ -181,7 +183,8 @@ class NewApplicationAcceptedNotificationRuleTest {
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
-                .build();;
+                .build();
+        ;
 
         assertTrue(rule.appliesTo(input), "Rule should apply for appeal application type with allowed result");
         var output = rule.apply(input);
@@ -294,16 +297,16 @@ class NewApplicationAcceptedNotificationRuleTest {
                                 .build()
                 ))
                 .withAccountCorrelationId(randomUUID());
-        
+
         // Create previous offence results details
         OffenceResultsDetails previousOffenceDetails = OffenceResultsDetails.offenceResultsDetails()
                 .withOffenceId(offenceId)
                 .withIsFinancial(true)
                 .withImpositionOffenceDetails("Previous imposition details")
                 .build();
-        
+
         Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails = Map.of(offenceId, previousOffenceDetails);
-        
+
         var input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest.build())
                 .withPrevOffenceResultsDetails(prevOffenceResultsDetails)
@@ -415,6 +418,9 @@ class NewApplicationAcceptedNotificationRuleTest {
         var input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest.build())
                 .withPrevApplicationResultsDetails(prevApplicationResultsDetails)
+                .withPrevApplicationOffenceResultsMap(Map.of(applicationId, List.of(offenceResultsDetails().withOffenceId(offenceId)
+                        .withApplicationId(applicationId)
+                        .withOffenceResultsCategory(INTERMEDIARY.name()).build())))
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                 .withAccountCorrelationId(randomUUID())

@@ -135,6 +135,12 @@
         },
         "applicationTitle": {
           "type": "string"
+        },
+        "applicationResultsCategory": {
+          "type": "string"
+        },
+        "offenceResultsCategory": {
+          "type": "string"
         }
       }
     }
