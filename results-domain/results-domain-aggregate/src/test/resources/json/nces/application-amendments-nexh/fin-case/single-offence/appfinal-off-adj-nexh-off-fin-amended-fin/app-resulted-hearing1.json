@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "G"
+      "resultCode": "G",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory": "INTERMEDIARY"
     }
   ],
   "prosecutionCaseReferences": [

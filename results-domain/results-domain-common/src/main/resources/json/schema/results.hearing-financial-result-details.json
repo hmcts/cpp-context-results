@@ -79,6 +79,12 @@
         "createdTime": {
           "type": "string",
           "format": "date-time"
+        },
+        "applicationResultsCategory": {
+          "type": "string"
+        },
+        "offenceResultsCategory": {
+          "type": "string"
         }
       }
     }

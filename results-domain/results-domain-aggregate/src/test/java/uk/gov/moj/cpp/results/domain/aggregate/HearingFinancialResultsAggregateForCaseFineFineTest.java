@@ -81,7 +81,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/NonFine-NonFine/App2-Granted-Fine-NonFine/3_app_appeal_results_tracked.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated")
-                                        )
+                                )
 
 
                 ),
@@ -2121,6 +2121,114 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                 );
     }
 
+    private static Stream<Arguments> caseFineApplicationAdjournedScenarios() {
+        return Stream.of(
+                Arguments.of("AC1 - CC Case 3 Offences 2FP 1NFP > App1 statdec Granted, 3 offences Adj > App1 statdec o1(f), o2(nf) & o3(withdrawn)  [STE77/DD-39535]",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-granted-offences-adjourned-resulted/1_case_results_tracked.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newNcesEmailForNewApplicationStep("app1 statdec received", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-granted-offences-adjourned-resulted/2_app_stat_dec_1_send_nces_request.json")
+                                        .withExpectedEventNames("NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION FOR A STATUTORY DECLARATION RECEIVED\".*")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-granted-offences-adjourned-resulted/2_app1_expected_app_for_statdec_received_notification.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                .newStep(newResultTrackedStep("app1 statdec resulted application")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-granted-offences-adjourned-resulted/2_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-granted-offences-adjourned-resulted/2_app1_granted_nces_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
+                                .newStep(newResultTrackedStep("app1 statdec resulted offences")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-granted-offences-adjourned-resulted/3_app_stat_dec_results_tracked.json",
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated")
+                                )
+                ),
+                Arguments.of("AC3 - CC Case 3 Offences 2FP 1NFP > AH1 App1 statdec and 3 offences Adj > AH2 App1 statdec Granted and 3 offences Adj again > AH3 App1 statdec and 3 offences Adj again to AH4 [STE77/DD-39535]",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/1_case_results_tracked.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newNcesEmailForNewApplicationStep("app1 statdec received", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/2_app_stat_dec_1_send_nces_request.json")
+                                        .withExpectedEventNames("NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION FOR A STATUTORY DECLARATION RECEIVED\".*")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/2_app1_expected_app_for_statdec_received_notification.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                .newStep(newResultTrackedStep("app1 statdec resulted adj all")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/2_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/2_app1_updated_nces_notification_expected.json",
+                                                comparison()))
+                                .newStep(newResultTrackedStep("app1 statdec G, 3 offences adj")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/3_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/3_app1_granted_nces_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
+                                .newStep(newResultTrackedStep("app1 statdec, 3 offences adj again")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-app-granted-offences-adjourned/4_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
+                                )
+                ),
+                Arguments.of("AC3 - CC Case 3 Offences 2FP 1NFP > AH1 App1 statdec and 3 offences Adj > AH2 App1 statdec Granted and 3 offences Adj again > AH3 App1 statdec and 3 offences Adj again to AH4 [STE77/DD-39535]",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/1_case_results_tracked.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newNcesEmailForNewApplicationStep("app1 statdec received", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/2_app_stat_dec_1_send_nces_request.json")
+                                        .withExpectedEventNames("NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION FOR A STATUTORY DECLARATION RECEIVED\".*")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
+                                                "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/2_app1_expected_app_for_statdec_received_notification.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                .newStep(newResultTrackedStep("app1 statdec resulted adj all")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/2_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/2_app1_updated_nces_notification_expected.json",
+                                                comparison()))
+                                .newStep(newResultTrackedStep("app1 statdec resulted adj all again")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/2_1_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                .newStep(newResultTrackedStep("app1 statdec G, 3 offences adj")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/3_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/3_app1_granted_nces_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                )
+                                .newStep(newResultTrackedStep("app1 statdec, 3 offences adj again")
+                                        .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/4_app1_statdec_results_tracked.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
+                                )
+                )
+        );
+    }
+
     @ParameterizedTest(name = "{index} => {0}")
     @MethodSource("caseFineFineMultiApplicationScenarios")
     void shouldCreateNCESNotificationForCaseFineFineMultiApplication(final String name, final Scenario scenario) {
@@ -2136,6 +2244,12 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
     @ParameterizedTest(name = "{index} => {0}")
     @MethodSource("caseFinMixedOffencesOnMultiMixedApplicationResults")
     void shouldCreateNCESNotificationForcaseFinMixedOApplicationResults(final String name, final Scenario scenario) {
+        assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
+    }
+
+    @ParameterizedTest(name = "{index} => {0}")
+    @MethodSource("caseFineApplicationAdjournedScenarios")
+    void shouldCreateNCESNotificationForCaseFinalAndApplicationWithAdjournedOffences(final String name, final Scenario scenario) {
         assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
     }
 
