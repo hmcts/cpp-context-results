@@ -142,7 +142,7 @@ public class NCESDecisionHelper {
                 return isApplicationAdjourned(offenceResult.getApplicationId(), prevApplicationResultsDetails)
                         && isApplicationOffencesAdjourned(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
             } else {
-                return isApplicationAlreadyGranted(prevApplicationResultsDetails, offenceResult)
+                return isApplicationAlreadyGranted(prevApplicationResultsDetails, offenceResult.getApplicationId())
                         && isApplicationOffencesAdjourned(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
             }
         }
@@ -214,19 +214,19 @@ public class NCESDecisionHelper {
 
         if (nonNull(offenceResult) && nonNull(offenceResult.getApplicationId())) {
             if (STAT_DEC.equals(offenceResult.getApplicationType())) {
-                return !(isApplicationAlreadyGranted(prevApplicationResultsDetails, offenceResult)
+                return !(isApplicationAlreadyGranted(prevApplicationResultsDetails, offenceResult.getApplicationId())
                         && isApplicationOffencesAdjourned(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap));
             } else {
-                return !(isApplicationAlreadyGranted(prevApplicationResultsDetails, offenceResult)
+                return !(isApplicationAlreadyGranted(prevApplicationResultsDetails, offenceResult.getApplicationId())
                         && isApplicationOffencesFinal(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap));
             }
         }
         return false;
     }
 
-    private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final OffenceResults result) {
+    private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
 
-        final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(result.getApplicationId());
+        final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
 
         return isNotEmpty(prevAppResultList) && prevAppResultList.stream()
                 .map(OffenceResultsDetails::getResultCode)
