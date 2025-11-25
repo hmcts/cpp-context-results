@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-viewstore</artifactId>
-        <version>17.0.88-SNAPSHOT</version>
+        <version>17.103.0-PEG-2739-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-viewstore-persistence</artifactId>
@@ -104,6 +104,13 @@
             <artifactId>deltaspike-cdictrl-openejb</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 
