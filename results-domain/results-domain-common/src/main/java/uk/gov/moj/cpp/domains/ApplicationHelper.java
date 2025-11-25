@@ -30,6 +30,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_SJP_ORDER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_YOUTH;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULT_TYPE_ID;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAA_APPLN_REFERENCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LABEL;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LEGAL_ENTITY_DEFENDANT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.MASTER_DEFENDANT;
@@ -108,6 +109,10 @@ public class ApplicationHelper {
 
         if (application.containsKey(APPLICATION_REFERENCE)) {
             transformApplicationBuilder.add(APPLICATION_REFERENCE, application.getString(APPLICATION_REFERENCE));
+        }
+
+        if (application.containsKey(LAA_APPLN_REFERENCE)) {
+            transformApplicationBuilder.add(LAA_APPLN_REFERENCE, application.getJsonObject(LAA_APPLN_REFERENCE));
         }
 
         if (application.containsKey(RESPONDENTS)) {
