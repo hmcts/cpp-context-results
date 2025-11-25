@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-event</artifactId>
-        <version>17.0.88-SNAPSHOT</version>
+        <version>17.103.0-PEG-2739-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-event-processor</artifactId>
@@ -72,12 +72,6 @@
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>test-utils-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -259,6 +253,12 @@
                         <artifactId>notificationnotify-command-api</artifactId>
                         <version>${notification.notify.version}</version>
                         <classifier>raml</classifier>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>*</groupId>
+                                <artifactId>*</artifactId>
+                            </exclusion>
+                        </exclusions>
                     </dependency>
                     <dependency>
                         <groupId>uk.gov.moj.cpp.systemdocgenerator</groupId>
