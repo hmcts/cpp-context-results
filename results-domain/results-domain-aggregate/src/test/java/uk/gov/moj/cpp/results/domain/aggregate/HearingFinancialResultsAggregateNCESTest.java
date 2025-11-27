@@ -2492,7 +2492,7 @@ class HearingFinancialResultsAggregateNCESTest {
     public static Stream<Arguments> multiDayHearingCaseScenarios() {
         return Stream.of(
                 Arguments.of("DD-39223-AC7b: Should not raise duplicate write off - Multi-Day hearing resulted each offences separately " +
-                                "with fine in multiple hearing day\n",
+                                "with fine in multiple hearing day - amend day-1 hearing should generate duplicate writeoff\n",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted-day 1")
                                         .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/case_resulted-day-1.json",
