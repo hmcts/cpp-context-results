@@ -2491,43 +2491,32 @@ class HearingFinancialResultsAggregateNCESTest {
 
     public static Stream<Arguments> multiDayHearingCaseScenarios() {
         return Stream.of(
-                Arguments.of("DD-39223-AC7b: Should not raise duplicate write off - Multi-Day hearing resulted each offences separately " +
-                                "with fine in multiple hearing day - amend day-1 hearing should generate duplicate writeoff\n",
+                Arguments.of("DD-39223-AC7b-DD-41094: Should not raise duplicate write off - Multi-Day hearing resulted each offences separately " +
+                                "with fine in multiple hearing day\n",
                         newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/case_resulted-day.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                                 .newStep(newResultTrackedStep("case resulted-day 1")
-                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/case_resulted-day-1.json",
+                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/case_resulted-day-1.json",
                                                 accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
                                 .newStep(newResultTrackedStep("case resulted -day 2")
-                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/case_resulted-day-2.json",
+                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/case_resulted-day-2.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
-                                .newStep(newResultTrackedStep("case amended")
-                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/case_resulted-day-1-amended.json",
+                                .newStep(newResultTrackedStep("case amended day 1")
+                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/case-amended-result-day-1.json",
                                                 accountInfo("33c39541-e8e0-45b3-af99-532b33646b69", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
                                         .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
-                                                "json/nces/multi-day-hearing/case-results/one/nces_notification_expected.json",
+                                                "json/nces/multi-day-hearing/case-results/nces_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                )),
-                Arguments.of("SRI:::DD-41094: Should not raise duplicate write off - Multi-Day hearing resulted each offences separately " +
-                                "with fine in multiple hearing day\n",
-                        newScenario()
-                                .newStep(newResultTrackedStep("case resulted")
-                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/scenario-1/case_resulted-day.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
-                                .newStep(newResultTrackedStep("case resulted-day 1")
-                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/scenario-1/case_resulted-day-1.json",
-                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
-                                .newStep(newResultTrackedStep("case resulted -day 2")
-                                        .withResultTrackedEvent("json/nces/multi-day-hearing/case-results/one/scenario-1/case_resulted-day-2.json",
-                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                )
                 )
         );
     }
