@@ -1,0 +1,42 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Armani Junctions Remingtonbury Avon DA61 7ND",
+  "defendantContactNumber": "771-406-6682",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Twila Kuhn",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "7bb8c9db-58bf-4432-a9ad-6e53afe060dd",
+  "hearingSittingDay": "2025-11-26T15:15:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ba1ed04b-9c39-48fa-b4b4-1ee5ca064e9e",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-11-26",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 26/11/2025 at 10:00 in Courtroom 01, Central Criminal Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 26/11/2025 at 10:00 in Courtroom 01, Central Criminal Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "d4d21ea8-e8da-4410-983f-593e63ee1cf2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "dateOfResult": "2025-11-26",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 26/11/2025 at 10:00 in Courtroom 01, Central Criminal Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 26/11/2025 at 10:00 in Courtroom 01, Central Criminal Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "e96f9073-49ac-4623-b0f0-44668d54501e",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "dateOfResult": "2025-11-26",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 26/11/2025 at 10:00 in Courtroom 01, Central Criminal Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 26/11/2025 at 10:00 in Courtroom 01, Central Criminal Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "244b7df5-1fe5-45ce-9913-674ce1c89c53",
+      "offenceTitle": "Attempt to cause a male aged 13 or over to engage in sexual activity - no penetration"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD21148277"
+  ]
+}
