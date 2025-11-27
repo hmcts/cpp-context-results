@@ -23,11 +23,11 @@ import java.util.UUID;
 /**
  * This class implements a notification rule for case amendments with financial imposition changes. If there are
  * financial to financial, it builds a notification event with the updated imposition details.
- * <p>
+ *
  * Rule to handle notifications for
  * 1. Case -> offence amendments with financial to financial changes
  * 2. Case -> Partial offences result in financial penalties first,
- * and the remaining offences are processed later without altering the financial penalties that were already applied.
+ *            and the remaining offences are processed later without altering the financial penalties that were already applied.
  */
 public class CaseFinToFinAccWriteOffRule extends AbstractCaseResultNotificationRule {
 
@@ -37,7 +37,7 @@ public class CaseFinToFinAccWriteOffRule extends AbstractCaseResultNotificationR
 
         final boolean hasOverallFinancialToFinancial = isOverallFinancialToFinancialAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails(), request.getHearingId());
 
-        return input.hasAccountCorrelation() && hasOverallFinancialToFinancial;
+        return input.hasAccountCorrelation()  && hasOverallFinancialToFinancial;
     }
 
     @Override
