@@ -95,8 +95,7 @@ public abstract class AbstractCaseResultNotificationRule implements ResultNotifi
         return request.getOffenceResults().stream()
                 .anyMatch(o -> isValidCaseOffence(o) &&
                         o.getIsFinancial() &&
-                        ACON.equals(o.getResultCode()) &&
-                        nonNull(o.getAmendmentDate()));
+                        ACON.equals(o.getResultCode()));
     }
 
     protected boolean hasDeemedServedAmendmentOffences(HearingFinancialResultRequest request) {
