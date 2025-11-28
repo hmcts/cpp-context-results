@@ -15,6 +15,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_MEMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_GROUP_PROCEEDINGS;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.IS_RESPONDENT;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.JUDICIAL_RESULTS;
+import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LAA_APPLN_REFERENCE;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.LISTING_NUMBER;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.OFFENCES;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.PROSECUTION_CASES;
@@ -75,6 +76,7 @@ public class HearingHelperTest {
         assertThat(defendantJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(offenceJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
         assertThat(applicationJson.getJsonArray(JUDICIAL_RESULTS).size(), is(2));
+        assertThat(applicationJson.getJsonObject(LAA_APPLN_REFERENCE).size(), is(6));
         assertThat(offenceJson.getJsonNumber(LISTING_NUMBER).intValue(), is(2));
         assertThat(defendantWithWelshTranslationJson, is(notNullValue()));
 
