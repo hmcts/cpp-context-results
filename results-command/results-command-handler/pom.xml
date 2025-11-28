@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-command</artifactId>
-        <version>17.103.89-SNAPSHOT</version>
+        <version>17.103.89</version>
     </parent>
     <artifactId>results-command-handler</artifactId>
     <packaging>war</packaging>
