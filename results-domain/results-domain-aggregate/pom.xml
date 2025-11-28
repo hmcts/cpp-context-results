@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-domain</artifactId>
-        <version>17.0.88-SNAPSHOT</version>
+        <version>17.103.88-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-domain-aggregate</artifactId>
@@ -27,12 +27,6 @@
         <dependency>
             <groupId>uk.gov.justice.utils</groupId>
             <artifactId>utilities-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.justice.utils</groupId>
-            <artifactId>test-utils-logging-simple</artifactId>
-            <type>pom</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>

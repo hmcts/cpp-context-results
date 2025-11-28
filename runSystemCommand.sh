@@ -17,7 +17,7 @@
 #
 ##################################################################################################
 
-FRAMEWORK_VERSION=17.101.6
+FRAMEWORK_VERSION=$(mvn help:evaluate -Dexpression=framework.version -q -DforceStdout)
 CONTEXT_NAME="results"
 USER_NAME="admin"
 PASSWORD="admin"
