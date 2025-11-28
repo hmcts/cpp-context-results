@@ -1,0 +1,27 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Armani Junctions Remingtonbury Avon DA61 7ND",
+  "defendantContactNumber": "771-406-6682",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Twila Kuhn",
+  "hearingCourtCentreName": "Central Criminal Court",
+  "hearingId": "cfe37b01-fce6-4a73-afc8-462c3dcf9e75",
+  "hearingSittingDay": "2025-11-26T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ba1ed04b-9c39-48fa-b4b4-1ee5ca064e9e",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-11-26",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00, FVS - Surcharge\nTo pay a surcharge of £111.00\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "d4d21ea8-e8da-4410-983f-593e63ee1cf2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD21148277"
+  ]
+}
