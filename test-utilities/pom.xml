@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>17.0.88-SNAPSHOT</version>
+        <version>17.103.89-SNAPSHOT</version>
     </parent>
 
     <artifactId>test-utilities</artifactId>
@@ -14,10 +14,6 @@
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-domain-common</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
         </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
@@ -32,6 +28,10 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
         </dependency>
     </dependencies>
 
