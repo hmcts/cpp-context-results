@@ -48,7 +48,7 @@
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty.version>4.1.113.Final</netty.version>
         <!-- Downgrade h2 until deltaspike tests have been updated to work with latest h2 version -->
-        <h2.version>1.4.196</h2.version>
+        <h2.version>2.2.220</h2.version>
         <sjp.version>17.0.140</sjp.version>
         <staging.dcs.version>17.101.1</staging.dcs.version>
         <sonar.coverage.exclusions>
