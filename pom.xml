@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.moj.cpp.results</groupId>
     <artifactId>results-parent</artifactId>
-    <version>17.103.1-PEG-2739-SNAPSHOT</version>
+    <version>17.103.88-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Results Service - Parent Module</name>
@@ -41,7 +41,7 @@
         <referencedata.version>17.0.113</referencedata.version>
         <notification.notify.version>17.0.24</notification.notify.version>
         <systemdocgenerator.version>17.0.64</systemdocgenerator.version>
-        <progression.version>17.0.209</progression.version>
+        <progression.version>17.0.211</progression.version>
         <material.version>17.0.57</material.version>
         <usersgroups.version>17.0.33</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
@@ -49,7 +49,7 @@
         <netty.version>4.1.113.Final</netty.version>
         <!-- Downgrade h2 until deltaspike tests have been updated to work with latest h2 version -->
         <h2.version>1.4.196</h2.version>
-        <sjp.version>17.0.129</sjp.version>
+        <sjp.version>17.0.140</sjp.version>
         <staging.dcs.version>17.101.1</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
