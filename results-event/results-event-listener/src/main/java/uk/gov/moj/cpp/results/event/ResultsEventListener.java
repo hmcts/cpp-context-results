@@ -130,6 +130,7 @@ public class ResultsEventListener {
             if (!childApplicationOrCaseNode.isMissingNode() && childApplicationOrCaseNode.asText().equals(caseOrApplicationId)) {
                 node.put(CASE_STATUS, EJECTED);
                 node.put(IS_EJECTED, true);
+                LOGGER.error("SETTING CASE STATUS ON EJECTION  =====>>>" + node.toPrettyString());
             }
         });
     }
@@ -161,8 +162,10 @@ public class ResultsEventListener {
                 });
 
                 try {
-                    document.setPayload(mapper.readValue(hearingResultNode.toString(), JsonValue.class).toString());
+                    final String docPayload = mapper.readValue(hearingResultNode.toString(), JsonValue.class).toString();
+                    document.setPayload(docPayload);
                     hearingResultedDocumentRepository.save(document);
+                    LOGGER.error("Hearing Result Document  =====>>>" + docPayload);
                 } catch (IOException e) {
                     LOGGER.error("Hearing Result Document " + hearingResultNode.toString() + " unable to parse: " + e.getMessage(), e.getCause());
                     throw new IllegalStateException("Hearing Result Document " + hearingResultNode.toString() + " unable to parse: " + e.getMessage());
