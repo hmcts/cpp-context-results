@@ -46,6 +46,13 @@ public class CaseFinToFinAccWriteOffRule extends AbstractCaseResultNotificationR
         final HearingFinancialResultRequest request = filteredCaseResults(input.request());
 
         final List<NewOffenceByResult> newOffenceResults = getNewOffenceResultsCaseAmendment(request.getOffenceResults(), input.prevOffenceResultsDetails()).stream()
+                .filter(offenceResult -> {
+                    if (!TRUE.equals(offenceResult.getIsFinancial())) {
+                        final OffenceResultsDetails prevOffence = input.prevOffenceResultsDetails().get(offenceResult.getOffenceId());
+                        return nonNull(prevOffence);
+                    }
+                    return true;
+                })
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
                 .toList();
 
