@@ -185,8 +185,7 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                 .anyMatch(o -> isValidApplicationOffence(o) &&
                         o.getIsFinancial() &&
                         nonNull(o.getImpositionOffenceDetails()) &&
-                        o.getImpositionOffenceDetails().contains("ACON") &&
-                        Objects.nonNull(o.getAmendmentDate()));
+                        o.getImpositionOffenceDetails().contains("ACON"));
     }
 
     protected boolean hasDeemedServedAmendmentOffences(HearingFinancialResultRequest request) {
