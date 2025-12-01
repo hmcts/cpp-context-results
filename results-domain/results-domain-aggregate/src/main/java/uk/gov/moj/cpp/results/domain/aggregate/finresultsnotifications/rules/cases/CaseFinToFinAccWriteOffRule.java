@@ -70,12 +70,20 @@ public class CaseFinToFinAccWriteOffRule extends AbstractCaseResultNotificationR
 
     private boolean isOverallFinancialToFinancialAmendment(final List<OffenceResults> offenceResults, final Map<UUID, OffenceResultsDetails> prevOffenceResultsDetailsMap, final UUID hearingId) {
 
-        return offenceResults.stream()
-                .anyMatch(offenceResult -> TRUE.equals(offenceResult.getIsFinancial()))
-                && prevOffenceResultsDetailsMap.values().stream()
-                .filter(prevOffenceResult -> nonNull(prevOffenceResult) &&
-                        nonNull(prevOffenceResult.getHearingId())
-                        && prevOffenceResult.getHearingId().equals(hearingId))
-                .anyMatch(prev -> TRUE.equals(prev.getIsFinancial()));
+        final Boolean hasFinancial = offenceResults.stream()
+                .anyMatch(offenceResult -> TRUE.equals(offenceResult.getIsFinancial()));
+
+        if(!hasFinancial) return false;
+
+        final Boolean hasPreviousFinancials = offenceResults.stream()
+                .anyMatch(offenceResult -> {
+                    final OffenceResultsDetails prevOffence = prevOffenceResultsDetailsMap.get(offenceResult.getOffenceId());
+                    return  nonNull(prevOffence) &&
+                            nonNull(prevOffence.getHearingId()) &&
+                            prevOffence.getHearingId().equals(hearingId) &&
+                            TRUE.equals(prevOffence.getIsFinancial());
+                });
+
+        return hasFinancial && hasPreviousFinancials;
     }
 }

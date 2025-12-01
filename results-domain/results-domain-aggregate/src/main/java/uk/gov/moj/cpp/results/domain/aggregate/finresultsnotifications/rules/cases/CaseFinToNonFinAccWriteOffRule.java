@@ -59,7 +59,7 @@ public class CaseFinToNonFinAccWriteOffRule extends AbstractCaseResultNotificati
                             originalImpositions,
                             input.isWrittenOffExists(),
                             input.originalDateOfOffenceList(),
-                            input.originalDateOfOffenceList(),
+                            input.originalDateOfSentenceList(),
                             newOffenceResults,
                             input.applicationResult(),
                             null,
