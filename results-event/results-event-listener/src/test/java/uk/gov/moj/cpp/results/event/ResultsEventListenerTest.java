@@ -248,6 +248,11 @@ public class ResultsEventListenerTest {
                         caseNode.path("isEjected").asText(),
                         "Check if the application status is ejected"
                 );
+                assertEquals(
+                        "EJECTED",
+                        caseNode.path("caseStatus").asText(),
+                        "Check if the case status is EJECTED"
+                );
             }
         });
     }
@@ -300,6 +305,11 @@ public class ResultsEventListenerTest {
                         caseNode.path("isEjected").asText(),
                         "Check if the case status is ejected"
                 );
+                assertEquals(
+                        "EJECTED",
+                        caseNode.path("caseStatus").asText(),
+                        "Check if the case status is EJECTED"
+                );
             }
         });
         final ArrayNode applicationArrayNode = (ArrayNode) hearingNode.path(HEARING).path(COURT_APPLICATIONS);
@@ -343,6 +353,11 @@ public class ResultsEventListenerTest {
                         applicationNode.path("isEjected").asText(),
                         "Check if the application status is ejected"
                 );
+                assertEquals(
+                        "EJECTED",
+                        applicationNode.path("caseStatus").asText(),
+                        "Check if the application caseStatus is EJECTED"
+                );
             }
         });
     }
@@ -374,6 +389,10 @@ public class ResultsEventListenerTest {
                         "true",
                         applicationNode.path("isEjected").asText(),
                         "Check if the application status is ejected");
+                assertEquals(
+                        "EJECTED",
+                        applicationNode.path("caseStatus").asText(),
+                        "Check if the application caseStatus is EJECTED");
             }
         });
     }
