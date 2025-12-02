@@ -354,6 +354,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withIsFinancial(resultFromRequest.getIsFinancial())
                 .withIsParentFlag(resultFromRequest.getIsParentFlag())
                 .withCreatedTime(ZonedDateTime.now())
+                .withApplicationResultsCategory(resultFromRequest.getApplicationResultsCategory())
+                .withOffenceResultsCategory(resultFromRequest.getOffenceResultsCategory())
                 .build();
     }
 

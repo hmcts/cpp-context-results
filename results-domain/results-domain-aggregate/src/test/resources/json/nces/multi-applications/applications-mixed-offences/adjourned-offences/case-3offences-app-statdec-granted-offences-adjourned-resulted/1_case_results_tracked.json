@@ -1,0 +1,43 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel4306863 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Vida Cormier",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d4832abc-bed9-410d-81ad-283541a2ab9b",
+  "hearingSittingDay": "2025-06-27T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceTitle": "Robbery",
+      "isFinancial": true,
+      "impositionOffenceDetails": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/10/2026.",
+      "dateOfResult": "2025-06-27",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceTitle": "Theft from a shop",
+      "isFinancial": true,
+      "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £50.00\nIMP - Imprisonment\nCommitted to prison for 6 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nTotal custodial period is life.",
+      "dateOfResult": "2025-06-27",
+      "isDeemedServed": false
+    },
+    {
+      "offenceId": "5541a6a6-671b-430b-ab07-994a35f1156c",
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "isFinancial": false,
+      "impositionOffenceDetails": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 10/10/2026. \nRR - Residence\nResidence Requirement: Live at 35 test for 8 Years.",
+      "dateOfResult": "2025-06-27",
+      "isDeemedServed": false
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI4306863"
+  ]
+}
