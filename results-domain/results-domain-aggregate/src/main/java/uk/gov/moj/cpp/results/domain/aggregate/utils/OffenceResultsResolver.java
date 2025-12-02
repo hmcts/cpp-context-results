@@ -85,6 +85,13 @@ public class OffenceResultsResolver {
                     return hasFinancialChanges(newOffenceResult, previousOffenceResultsDetails) ? newOffenceResult : null;
                 })
                 .filter(Objects::nonNull)
+                .filter(offenceResult -> {
+                    if (!TRUE.equals(offenceResult.getIsFinancial())) {
+                        final OffenceResultsDetails prevOffence = previousCaseOffenceResultsMap.get(offenceResult.getOffenceId());
+                        return nonNull(prevOffence);
+                    }
+                    return true;
+                })
                 .toList();
     }
 
