@@ -24,17 +24,11 @@
       "offenceDate": "2019-11-28",
       "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
       "title": "Drive / move vehicle making 'u' turn on the motorway"
-    },
-    {
-      "details": "he defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
-      "offenceDate": "2019-11-28",
-      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
-      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
     }
   ],
   "notificationId": "{{notificationId}}",
   "oldDivisionCode": "77",
-  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
 }
