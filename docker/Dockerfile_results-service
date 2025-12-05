@@ -1,5 +1,3 @@
-#ARG base_image=crmdvrepo01.azurecr.io/wildfly:310122
-
 ARG baseImageTag
 ARG baseImageUri
 FROM ${baseImageUri}:${baseImageTag}
