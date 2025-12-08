@@ -557,6 +557,7 @@ public class ResultsEventProcessor {
                 .withName(commandName)
                 .build();
         final JsonObject payload = resultJsonPayload.build();
+        LOGGER.info("processResultsAdded for hearingId : {}, payload : {}",publicHearingResulted.getHearing().getId(),payload);
         sender.sendAsAdmin(envelopeFrom(metadata, payload));
     }
 
