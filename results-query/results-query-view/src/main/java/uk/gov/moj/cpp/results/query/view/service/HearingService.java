@@ -3,8 +3,6 @@ package uk.gov.moj.cpp.results.query.view.service;
 import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.function.Supplier;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
@@ -64,15 +62,11 @@ public class HearingService {
         if (isNull(urn)) {
             final String prosecutionAuthorityReference = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityReference();
             return new HearingResultSummaryView(hearing.getId(), hearingTypeDescription,
-                    getLocalLondonZoneDate(hearing.getHearingDays().get(0).getSittingDay()), asList(prosecutionAuthorityReference), defendantView, hearing.getCourtCentre().getId());
+                    hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(prosecutionAuthorityReference), defendantView, hearing.getCourtCentre().getId());
         }
 
         return new HearingResultSummaryView(hearing.getId(), hearingTypeDescription,
-                getLocalLondonZoneDate(hearing.getHearingDays().get(0).getSittingDay()), asList(urn), defendantView, hearing.getCourtCentre().getId());
-    }
-
-    private LocalDate getLocalLondonZoneDate(ZonedDateTime utcDateTime){
-        return utcDateTime.withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate();
+                hearing.getHearingDays().get(0).getSittingDay().toLocalDate(), asList(urn), defendantView, hearing.getCourtCentre().getId());
     }
 
     public HearingResultSummariesView findHearingResultSummariesFromDate(final LocalDate fromDate) {
