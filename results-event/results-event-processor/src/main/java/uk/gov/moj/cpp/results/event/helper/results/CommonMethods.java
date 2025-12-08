@@ -17,8 +17,6 @@ import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +36,7 @@ public class CommonMethods {
     private static final String N = "N";
     private static final String Y = "Y";
     private static final String PATTERN_URN = "\\d{2}[a-z |A-Z]{2}\\d{7}";
-    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
+
     private CommonMethods() {
     }
 
@@ -46,7 +44,7 @@ public class CommonMethods {
         String result = N;
         final Optional<ZonedDateTime> sittingDayOptional = hearing.getHearingDays().stream().map(HearingDay::getSittingDay).findFirst();
         if (null != attendanceDays && sittingDayOptional.isPresent()) {
-            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(getLocalLondonZoneDate(sittingDayOptional.get())) && a.getAttendanceType() != AttendanceType.NOT_PRESENT).findFirst();
+            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(sittingDayOptional.get().toLocalDate()) && a.getAttendanceType() != AttendanceType.NOT_PRESENT).findFirst();
             if (attendanceDay.isPresent()) {
                 result = Y;
             }
@@ -61,7 +59,7 @@ public class CommonMethods {
         String result = N;
         final Optional<ZonedDateTime> sittingDayOptional = hearing.getHearingDays().stream().map(HearingDay::getSittingDay).findFirst();
         if (null != attendanceDays && sittingDayOptional.isPresent()) {
-            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(getLocalLondonZoneDate(sittingDayOptional.get())) && a.getAttendanceType() != AttendanceType.NOT_PRESENT).findFirst();
+            final Optional<AttendanceDay> attendanceDay = attendanceDays.stream().filter(a -> a.getDay().equals(sittingDayOptional.get().toLocalDate()) && a.getAttendanceType() != AttendanceType.NOT_PRESENT).findFirst();
             if (attendanceDay.isPresent()) {
                 result = Y;
             }
@@ -76,7 +74,7 @@ public class CommonMethods {
         Optional<UUID> defendantDefenceCounsel = empty();
         if (null != hearing.getDefenceCounsels() && sittingDayOptional.isPresent()) {
             defendantDefenceCounsel = hearing.getDefenceCounsels().stream()
-                    .filter(d -> d.getAttendanceDays().contains(getLocalLondonZoneDate(sittingDayOptional.get())))
+                    .filter(d -> d.getAttendanceDays().contains(sittingDayOptional.get().toLocalDate()))
                     .map(DefenceCounsel::getDefendants)
                     .flatMap(Collection::stream)
                     .filter(a -> a.equals(defendant.getId())).findFirst();
@@ -84,15 +82,11 @@ public class CommonMethods {
         return defendantDefenceCounsel;
     }
 
-    private static LocalDate getLocalLondonZoneDate(ZonedDateTime utcDateTime){
-        return utcDateTime.withZoneSameInstant(UK_TIME_ZONE).toLocalDate();
-    }
-
     private static Optional<UUID> getDefenceCounsel(final Hearing hearing, final MasterDefendant defendant, final Optional<ZonedDateTime> sittingDayOptional) {
         Optional<UUID> defendantDefenceCounsel = empty();
         if (null != hearing.getDefenceCounsels() && sittingDayOptional.isPresent()) {
             defendantDefenceCounsel = hearing.getDefenceCounsels().stream()
-                    .filter(d -> d.getAttendanceDays().contains(getLocalLondonZoneDate(sittingDayOptional.get())))
+                    .filter(d -> d.getAttendanceDays().contains(sittingDayOptional.get().toLocalDate()))
                     .map(DefenceCounsel::getDefendants)
                     .flatMap(Collection::stream)
                     .filter(a -> a.equals(defendant.getMasterDefendantId())).findFirst();
