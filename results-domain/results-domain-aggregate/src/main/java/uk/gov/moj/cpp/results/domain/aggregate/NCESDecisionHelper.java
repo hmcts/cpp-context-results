@@ -47,6 +47,8 @@ public class NCESDecisionHelper {
     private static final List<String> application_accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
     private static final List<String> stadec_reoopen_denied_result_codes = asList(DISM, RFSD, WDRN);
     private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
+    private static final List<String> application_denied_result_codes = asList(APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
+
 
     public static boolean hasSentenceVaried(final List<NewOffenceByResult> newOffenceByResults) {
         return newOffenceByResults.stream().anyMatch(newOffenceByResult ->
@@ -159,9 +161,8 @@ public class NCESDecisionHelper {
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
         return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
-                .filter(offence -> nonNull(offence.getApplicationType()))
-                .filter(offence -> !APPEAL.equalsIgnoreCase(offence.getApplicationType()))
-                .anyMatch(offence -> asList(RFSD, WDRN, DISM).contains(offence.getResultCode()));
+                .anyMatch(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode())
+                        && application_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static boolean isAppealApplicationWithNoOffenceResults(
