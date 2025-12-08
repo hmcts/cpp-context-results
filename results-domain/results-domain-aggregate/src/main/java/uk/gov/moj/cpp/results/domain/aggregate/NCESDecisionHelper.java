@@ -161,22 +161,8 @@ public class NCESDecisionHelper {
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
         return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
-                .anyMatch(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode())
-                        && application_denied_result_codes.contains(offence.getResultCode()));
-    }
-
-    public static boolean isAppealApplicationWithNoOffenceResults(
-            final UUID currentApplicationId,
-            final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
-            final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-        final List<OffenceResultsDetails> offenceResultsDetails = prevApplicationResultsDetails.get(currentApplicationId);
-
-        final List<OffenceResultsDetails> offenceResultsOnTheApplication = prevApplicationOffenceResultsMap.get(currentApplicationId);
-        return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
-                .filter(offence -> nonNull(offence.getApplicationType()))
-                .anyMatch(offence -> APPEAL.equalsIgnoreCase(offence.getApplicationType()))
-                && (isNull(offenceResultsOnTheApplication) || offenceResultsOnTheApplication.isEmpty());
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .anyMatch(offence -> application_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static NewOffenceByResult buildNewImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {

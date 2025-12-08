@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isAppealApplicationWithNoOffenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResults;
@@ -66,7 +65,7 @@ public class OffenceResultsResolver {
                                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
                                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
 
-        if (isApplicationDenied(prevApplicationResultsDetails.get(currentApplicationId)) || (isAppealApplicationWithNoOffenceResults(currentApplicationId, prevApplicationOffenceResultsMap, prevApplicationResultsDetails))) {
+        if (isApplicationDenied(prevApplicationResultsDetails.get(currentApplicationId))) {
             return getPreviousOffenceResultsDetails(offenceId, previousCaseOffenceResultsMap, prevApplicationOffenceResultsMap, currentApplicationId);
         }
 

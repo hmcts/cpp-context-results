@@ -1422,6 +1422,7 @@ public class ResultsCommandHandlerTest {
                 .withImpositionOffenceDetails("FO 500 Pay By date 15/04/2025").build());
         applicationResultsDetails.put(UUID.fromString(applicationId), singletonList(OffenceResultsDetails.offenceResultsDetails()
                 .withOffenceId(fromString(applicationId))
+                .withApplicationType("APPEAL")
                 .withApplicationTitle("Application title")
                 .withApplicationResultType("G").build()));
         setField(this.hearingFinancialResultsAggregateSpy, "caseOffenceResultsDetails", offenceResultsDetails);
