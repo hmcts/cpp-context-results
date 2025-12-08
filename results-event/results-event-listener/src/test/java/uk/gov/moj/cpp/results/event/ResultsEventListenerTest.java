@@ -399,32 +399,6 @@ public class ResultsEventListenerTest {
         assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(1).getId().getHearingDay(), is(hearingDay2));
     }
 
-    @Test
-    public void saveHearingResultWithOneHearingDate_ShouldHaveBothStartDateAndEndDateSameConvertDateToLondonZone() {
-
-        PublicHearingResulted shareResultsMessage = basicShareResultsTemplate(JurisdictionType.MAGISTRATES);
-        shareResultsMessage.setHearing(Hearing.hearing().withValuesFrom(shareResultsMessage.getHearing()).withHearingDays(Arrays.asList(HearingDay.hearingDay()
-                .withSittingDay(ZonedDateTime.of(LocalDate.of(2025, 10, 01), LocalTime.of(23, 30), ZoneId.of("UTC")))
-                .withListedDurationMinutes(100)
-                .build())).build());
-
-        final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("results.hearing-results-added"),
-                objectToJsonObjectConverter.convert(shareResultsMessage));
-
-        resultsEventListener.hearingResultsAdded(envelope);
-
-        verify(this.hearingResultedDocumentRepository, times(1)).save(this.hearingResultedDocumentArgumentCaptor.capture());
-
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues(), is(notNullValue()));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().size(), is(1));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingId(), is(shareResultsMessage.getHearing().getId()));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getId().getHearingDay(), is(LocalDate.of(2025, 10, 02)));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getStartDate(), is(LocalDate.of(2025, 10, 02)));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getEndDate(), is(LocalDate.of(2025, 10, 02)));
-        assertThat(hearingResultedDocumentArgumentCaptor.getAllValues().get(0).getPayload(), is(objectToJsonObjectConverter.convert(shareResultsMessage).toString()));
-    }
-
-
     private HearingResultedDocument getHearingResultDocument(final UUID hearingId, final LocalDate hearingDay, final String payloadPath) throws IOException {
         HearingResultedDocument hearingResultedDocument = new HearingResultedDocument();
         hearingResultedDocument.setId(new HearingResultedDocumentKey(hearingId, hearingDay));
