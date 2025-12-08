@@ -1,8 +1,7 @@
 {
+  "amendmentDate": "2025-12-04",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
   "caseReferences": "GD05929125",
-  "dateDecisionMade": "2025-12-04",
-  "defendantAddress": "9999A9999AAAA Hellen Prairie Bergnaumchester Avon DA61 7ND",
-  "defendantContactNumber": "798-615-0079",
   "defendantDateOfBirth": "1978-11-11",
   "defendantName": "Mya Hermiston",
   "divisionCode": "77",
@@ -22,16 +21,23 @@
     }
   ],
   "isSJPHearing": false,
-  "isWriteOff": false,
+  "isWriteOff": true,
   "masterDefendantId": "ef09511c-5888-4505-b03e-f1325431dac4",
   "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [],
   "notificationId": "{{notificationId}}",
   "originalApplicationResults": {
     "applicationResult": [
-      "Appeal against conviction dismissed"
+      "Allowed"
     ],
     "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
   },
   "sendTo": "LCCCCancellations@Justice.gov.uk",
-  "subject": "APPEAL DISMISSED"
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
 }

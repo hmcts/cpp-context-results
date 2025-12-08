@@ -161,6 +161,7 @@ public class NCESDecisionHelper {
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
         return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
+                .filter(offence -> nonNull(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .anyMatch(offence -> application_denied_result_codes.contains(offence.getResultCode()));
     }

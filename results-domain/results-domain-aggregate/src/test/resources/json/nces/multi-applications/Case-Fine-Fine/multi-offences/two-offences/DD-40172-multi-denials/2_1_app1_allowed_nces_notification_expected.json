@@ -7,6 +7,8 @@
   "defendantName": "Mya Hermiston",
   "divisionCode": "77",
   "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Blackfriars Crown Court",
+  "hearingSittingDay": "2025-12-04",
   "impositionOffenceDetails": [
     {
       "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
@@ -21,17 +23,36 @@
       "title": "Provide money / property for use in acts of terrorism"
     }
   ],
+  "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "ef09511c-5888-4505-b03e-f1325431dac4",
   "materialId": "{{materialId}}",
-  "notificationId": "{{notificationId}}",
-  "originalApplicationResults": {
+  "newApplicationResults": {
     "applicationResult": [
       "Allowed"
     ],
     "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
   },
+  "newOffenceByResult": [
+    {
+      "details": "fine 1",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "fine 2 ",
+      "offenceDate": "2019-11-28",
+      "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
-  "subject": "APPEAL DISMISSED"
+  "subject": "APPEAL ALLOWED"
 }

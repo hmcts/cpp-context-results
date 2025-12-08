@@ -11,13 +11,13 @@
   "hearingSittingDay": "2025-12-05",
   "impositionOffenceDetails": [
     {
-      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "details": "fine 1",
       "offenceDate": "2019-11-28",
       "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
       "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
     },
     {
-      "details": "FO - Fine\nFined £200.00",
+      "details": "fine 2 ",
       "offenceDate": "2019-11-28",
       "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
       "title": "Provide money / property for use in acts of terrorism"
