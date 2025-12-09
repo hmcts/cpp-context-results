@@ -1,0 +1,37 @@
+{
+  "caseReferences": "GD05929125",
+  "dateDecisionMade": "2025-12-04",
+  "defendantAddress": "9999A9999AAAA Hellen Prairie Bergnaumchester Avon DA61 7ND",
+  "defendantContactNumber": "798-615-0079",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Mya Hermiston",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "fine 1",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "fine 2 ",
+      "offenceDate": "2019-11-28",
+      "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "ef09511c-5888-4505-b03e-f1325431dac4",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed"
+    ],
+    "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL DISMISSED"
+}

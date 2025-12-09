@@ -8,16 +8,16 @@
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
-      "details": "FO - Fine\nFined £100.00\nAppeal heard on: 11/11/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2025.",
+      "details": "FO - Fine\nFined £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2025.",
       "offenceDate": "2019-11-28",
       "offenceId": "39e7bc87-2c6f-498c-8f29-206970e83f67",
-      "title": "Robbery\nSentence varied"
+      "title": "Robbery"
     },
     {
-      "details": "FO - Fine\nFined £200.00\nAppeal heard on: 10/12/2025",
+      "details": "FO - Fine\nFined £32.00",
       "offenceDate": "2019-11-28",
       "offenceId": "038dec57-3e5b-446b-846b-008ac06c709a",
-      "title": "Theft from a shop\nSentence varied"
+      "title": "Theft from a shop"
     }
   ],
   "isSJPHearing": false,
