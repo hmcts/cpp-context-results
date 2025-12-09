@@ -423,9 +423,14 @@ public class ResultsAggregate implements Aggregate {
 
     @SuppressWarnings("java:S107")
     public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre, final Optional<Boolean> isReshare) {
+        return handleDefendants(caseDetailsFromRequest, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre, isReshare, "");
+    }
+
+    @SuppressWarnings("java:S107")
+    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre, final Optional<Boolean> isReshare, String applicationId) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre,isReshare));
+        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre,isReshare, applicationId));
         return apply(builder.build());
     }
 
@@ -444,7 +449,7 @@ public class ResultsAggregate implements Aggregate {
     private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate,
                                          final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress,
                                          final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre,
-                                         final Optional<Boolean> isReshare) {
+                                         final Optional<Boolean> isReshare, String applicationId) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
         final String hearingDate = hearingDay.map(LocalDate::toString).orElse(EMPTY);
         final String caseId = caseDetailsFromRequest.getCaseId().toString();
@@ -481,6 +486,7 @@ public class ResultsAggregate implements Aggregate {
                             .withApplicationTypeForCase(applicationTypeForCase)
                             .withUrn(caseDetailsFromRequest.getUrn())
                             .withCaseId(caseId)
+                            .withApplicationId(applicationId)
                             .withCourtCentre(courtCentre)
                             .withCaseResultDetails(caseResultDetailsForEmail)
                             .build());

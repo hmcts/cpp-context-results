@@ -12,6 +12,9 @@
     "caseId": {
       "type": "string"
     },
+    "applicationId": {
+      "type": "string"
+    },
     "applicationTypeForCase": {
       "type": "string"
     },

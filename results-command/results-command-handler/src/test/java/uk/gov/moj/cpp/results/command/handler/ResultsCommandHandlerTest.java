@@ -790,7 +790,7 @@ public class ResultsCommandHandlerTest {
 
         verify(resultsAggregateSpy).handleSession(eq(sessionId), eq(courtCentreWithLJA), eq(sessionDays));
         verify(resultsAggregateSpy).handleCase(eq(caseDetails));
-        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(empty()), any(), any(), any());
+        verify(resultsAggregateSpy).handleDefendants(eq(caseDetails), anyBoolean(), any(), any(), anyBoolean(), eq(empty()), any(), any(), any(),any());
     }
 
     @Test
@@ -1300,6 +1300,7 @@ public class ResultsCommandHandlerTest {
                 .findFirst();
 
         assertThat(policeNotificationEnv2.isPresent(), is(true));
+        assertThat(policeNotificationEnv2.get().payloadAsJsonObject().getString("applicationId"), is(notNullValue()));
         assertThat(policeNotificationEnv2.get().payloadAsJsonObject().getString("applicationTypeForCase"), is("Only Breach, Breach of a supervision default order, Sorry Application"));
     }
 
@@ -1796,7 +1797,8 @@ public class ResultsCommandHandlerTest {
                 payloadIsJson(allOf(
                                 withJsonPath("$.amendReshare", is(payload.getString("amendReshare"))),
                                 withJsonPath("$.applicationTypeForCase", is(payload.getString("applicationTypeForCase"))),
-                                withJsonPath("$.caseId", is(payload.getString("caseId")))
+                                withJsonPath("$.caseId", is(payload.getString("caseId"))),
+                                withJsonPath("$.applicationId", is(notNullValue()))
                         )
                 ));
     }
