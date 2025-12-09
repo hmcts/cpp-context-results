@@ -8,10 +8,10 @@
   "gobAccountNumber": "{{gobAccountNumber}}",
   "impositionOffenceDetails": [
     {
-      "details": "FO - Fine\nFined £299.00\nFVS - Surcharge\nTo pay a surcharge of £33.00\nAppeal heard on: 11/12/2025\nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2026.",
+      "details": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 14/04/2025.",
       "offenceDate": "2019-11-28",
       "offenceId": "e13f07df-863b-4502-a668-dbc810eaceb9",
-      "title": "Theft from a shop\nSentence varied"
+      "title": "Theft from a shop"
     }
   ],
   "isSJPHearing": false,
