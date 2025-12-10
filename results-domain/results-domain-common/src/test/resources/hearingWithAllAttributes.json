@@ -665,6 +665,14 @@
       },
       "applicationParticulars": "testing ability to add an application",
       "applicationReference": "TVL3158537IHU-1",
+      "laaApplnReference": {
+        "applicationReference": "LAA-SIT-001",
+        "offenceLevelStatus": "Refused",
+        "statusCode": "FM",
+        "statusDate": "2019-07-15",
+        "statusDescription": "Failed on Means",
+        "statusId": "4218b955-7bf8-3972-a37b-b0f921f5e5e4"
+      },
       "parentApplicationId": "c18b095c-f2da-4c44-a0d0-936d7d3b4fa9",
       "courtOrder": {
         "canBeSubjectOfBreachProceedings": true,

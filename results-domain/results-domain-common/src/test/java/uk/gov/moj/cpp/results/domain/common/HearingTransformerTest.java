@@ -28,6 +28,7 @@ import uk.gov.moj.cpp.domains.JudicialRoleTypeEnum;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.json.JsonObject;
 
@@ -229,6 +230,9 @@ public class HearingTransformerTest {
         assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getLastName(),is("LN"));
         assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getName(),isEmptyOrNullString());
         assertThat(apiHearing.getCourtApplications().get(0).getApplicant().getProsecutingAuthority().getProsecutorCategory(),is("PC"));
+        assertThat(apiHearing.getCourtApplications().get(0).getLaaApplnReference().getApplicationReference(),is("LAA-SIT-001"));
+        assertThat(apiHearing.getCourtApplications().get(0).getLaaApplnReference().getStatusCode(),is("FM"));
+        assertThat(apiHearing.getCourtApplications().get(0).getLaaApplnReference().getStatusId(), is(UUID.fromString("4218b955-7bf8-3972-a37b-b0f921f5e5e4")));
         assertThat(apiHearing.getProsecutionCases().get(0).getProsecutionCaseIdentifier().getProsecutorCategory(),is("PCIPC"));
         assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(0).getJudicialRoleType().getJudiciaryType()),is(Optional.of(JudicialRoleTypeEnum.CIRCUIT_JUDGE)));
         assertThat(JudicialRoleTypeEnum.valueFor(apiHearing.getJudiciary().get(1).getJudicialRoleType().getJudiciaryType()),is(Optional.of(JudicialRoleTypeEnum.DISTRICT_JUDGE)));
