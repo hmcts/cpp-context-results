@@ -634,7 +634,7 @@ public class ResultsEventProcessor {
                     .anyMatch(applicationResultDetails -> isNotEmpty(applicationResultDetails.getJudicialResultDetails()));
 
             personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject, policeNotificationRequestedV2.getCourtCentre(), isApplicationAmended));
-            if (isNotEmpty(applicationPropValue) && isNotEmpty(policeNotificationRequestedV2.getApplicationId())){
+            if (isNotEmpty(caseApplication) && isNotEmpty(policeNotificationRequestedV2.getApplicationId())){
                 personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_APPLICATION_AT_A_GLANCE).concat(policeNotificationRequestedV2.getApplicationId()));
             } else{
                 personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
