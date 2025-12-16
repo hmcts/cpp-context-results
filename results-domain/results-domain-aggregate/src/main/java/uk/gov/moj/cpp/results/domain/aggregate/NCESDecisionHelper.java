@@ -46,6 +46,8 @@ import java.util.UUID;
 public class NCESDecisionHelper {
 
     private static final List<String> application_accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
+    private static final List<String> appeal_reopen_application_accepted_result_codes = asList(G, ROPENED, AACA, AASA);
+    private static final List<String> statdec_application_accepted_result_codes = asList(G, STDEC);
     private static final List<String> stadec_reoopen_denied_result_codes = asList(DISM, RFSD, WDRN);
     private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
     private static final List<String> application_denied_result_codes = asList(APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
@@ -132,6 +134,11 @@ public class NCESDecisionHelper {
             return false;
         }
 
+        if (!(isNewAppealReopenApplicationOffencesAreAdjourned(hearingFinancialResultRequest) 
+                || isNewStatdecApplicationAdjourned(hearingFinancialResultRequest))) {
+            return false;
+        }
+
         final OffenceResults offenceResult = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationId()))
                 .filter(result -> isNull(result.getAmendmentDate()))
@@ -203,9 +210,14 @@ public class NCESDecisionHelper {
             return false;
         }
 
-        if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
-            return true;
+        if (!(isNewStatdecApplicationConcluded(hearingFinancialResultRequest) 
+                || isNewAppealReopenApplicationOffencesAreConcluded(hearingFinancialResultRequest))) {
+            return false;
         }
+
+       /* if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
+            return true;
+        }*/
 
         final OffenceResults offenceResult = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationId()))
@@ -265,6 +277,55 @@ public class NCESDecisionHelper {
                 .build())
         );
         return applicationResults;
+    }
+
+    public static boolean isNewAppealReopenApplicationOffencesAreConcluded(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        final var filtered = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType())
+                        && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .filter(offence -> isNull(offence.getAmendmentDate()))
+                .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
+                .toList();
+
+        return !filtered.isEmpty() && filtered.stream()
+                .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+    }
+
+
+    public static boolean isNewStatdecApplicationConcluded(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType()) && (STAT_DEC.equals(offence.getApplicationType())))
+                .filter(offence -> isNull(offence.getAmendmentDate()))
+                .filter(offence -> statdec_application_accepted_result_codes.contains(offence.getResultCode())).toList();
+        final Boolean statdecApplicationConcluded = isNotEmpty(offenceResults);
+        final Boolean offencesConcluded = !offenceResults.isEmpty() &&
+                offenceResults.stream().allMatch(offenceResult -> FINAL.name().equals(offenceResult.getOffenceResultsCategory()));
+        return statdecApplicationConcluded || offencesConcluded;
+    }
+
+        public static boolean isNewAppealReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType())
+                        && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .filter(offence -> isNull(offence.getAmendmentDate()))
+                .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
+                .toList();
+
+        return !offenceResults.isEmpty() &&
+                offenceResults.stream().allMatch(offenceResult -> INTERMEDIARY.name().equals(offenceResult.getOffenceResultsCategory()));
+    }
+
+    public static boolean isNewStatdecApplicationAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType()) && (STAT_DEC.equals(offence.getApplicationType())))
+                .filter(offence -> isNull(offence.getAmendmentDate()))
+                .toList();
+
+        return !offenceResults.isEmpty() && offenceResults.stream()
+                .allMatch(offence -> INTERMEDIARY.name().equals(offence.getApplicationResultsCategory())
+                        && INTERMEDIARY.name().equals(offence.getOffenceResultsCategory()));
     }
 
 }
