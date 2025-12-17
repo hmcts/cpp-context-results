@@ -1114,7 +1114,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("TBD:CCT-2390::single offence > case fin > app fin,ds > nonfin DD-36848 SC6",
+                Arguments.of("single offence > case fin > app fin,ds > nonfin DD-36848 SC6",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-ds-amended-nonfin/case_resulted.json",
@@ -1255,11 +1255,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("app adjourned")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-adjourned_app-amend-adjrn_date/app_adjrned.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/single-offence/fin-adjourned_app-amend-adjrn_date/app_updated_notification.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                                 .newStep(newResultTrackedStep("app adjournment amended")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-adjourned_app-amend-adjrn_date/app_adjrn-data_amended.json",
                                                 emptyAccountInfo())
@@ -1317,7 +1313,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
 
                 ),
-                Arguments.of("TBD::CCT-2357 - single offence > case fin > app fin > add cd",
+                Arguments.of("single offence > case fin > app fin > add cd",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application-amendments/fin-case/single-offence/fin-amend-add-cd/case-resulted.json",
