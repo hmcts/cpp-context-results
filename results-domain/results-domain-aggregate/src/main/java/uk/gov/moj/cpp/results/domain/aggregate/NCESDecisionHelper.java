@@ -273,7 +273,7 @@ public class NCESDecisionHelper {
         final var filtered = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType())
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
-                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode())) //???Narayan
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
                 .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
                 .toList();
