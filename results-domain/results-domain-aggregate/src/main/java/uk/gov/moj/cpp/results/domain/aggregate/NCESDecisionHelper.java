@@ -292,7 +292,7 @@ public class NCESDecisionHelper {
                 offenceResults.stream().allMatch(offenceResult -> FINAL.name().equals(offenceResult.getApplicationResultsCategory()));
     }
 
-        public static boolean isNewAppealReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+    public static boolean isNewAppealReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType())
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
