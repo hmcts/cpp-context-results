@@ -104,15 +104,6 @@ public class NCESDecisionHelper {
                 .orElse(false);
     }
 
-    public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .filter(offence -> nonNull(offence.getApplicationType()))
-                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
-                .filter(offence -> isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> application_accepted_result_codes.contains(offence.getResultCode()));
-    }
-
     public static boolean previousGrantedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         return hearingFinancialResultRequest
                 .getOffenceResults().stream()
@@ -140,7 +131,6 @@ public class NCESDecisionHelper {
                 .filter(offence -> isNull(offence.getAmendmentDate()))
                 .anyMatch(offence -> stadec_reoopen_denied_result_codes.contains(offence.getResultCode()));
     }
-
 
     /**
      * Update notification would have sent out if the application previously resulted with ADJ with all cloned offences ADJ
@@ -170,7 +160,6 @@ public class NCESDecisionHelper {
                         && isApplicationOffencesAdjourned(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
             }
         }
-
         return false;
     }
 
