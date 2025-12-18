@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
             "offenceTitle": "Robbery",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "33a2f91b-32b5-46ff-a098-53b2c2f4ba39",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "33a2f91b-32b5-46ff-a098-53b2c2f4ba39",
@@ -52,7 +56,9 @@
             "isParentFlag": true,
             "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
             "offenceTitle": "Robbery",
-            "resultCode": "ROPENED"
+            "resultCode": "ROPENED",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "33a2f91b-32b5-46ff-a098-53b2c2f4ba39",
@@ -66,7 +72,9 @@
             "isParentFlag": true,
             "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "ROPENED"
+            "resultCode": "ROPENED",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -77,7 +85,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
-            "offenceTitle": "Robbery"
+            "offenceTitle": "Robbery",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -88,7 +97,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "1b5d7d64-2ecd-4152-8cd2-2b16c6fb97b8",
-            "offenceTitle": "Robbery"
+            "offenceTitle": "Robbery",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Compensation",
@@ -99,7 +109,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Vehicle Excise Back Duty",
@@ -110,7 +121,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "05b76770-7d34-4d08-92ff-0da19b46c364",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

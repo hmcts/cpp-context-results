@@ -94,12 +94,14 @@ public class NCESDecisionHelper {
     }
 
     public static boolean isNewAppealApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equalsIgnoreCase(offence.getApplicationType()))
-                .filter(offence -> nonNull(offence.getApplicationId()) && NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+        return hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equals(offence.getApplicationType()))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> appeal_denied_result_codes.contains(offence.getResultCode()));
+                .filter(offence -> appeal_denied_result_codes.contains(offence.getResultCode()))
+                .map(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()))
+                .reduce(Boolean::logicalAnd)
+                .orElse(false);
     }
 
     public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -109,6 +111,24 @@ public class NCESDecisionHelper {
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
                 .anyMatch(offence -> application_accepted_result_codes.contains(offence.getResultCode()));
+    }
+
+    public static boolean previousGrantedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        return hearingFinancialResultRequest
+                .getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType()))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .filter(offence -> isNull(offence.getAmendmentDate()))
+                .anyMatch(offence -> application_accepted_result_codes.contains(offence.getResultCode()));
+    }
+
+    public static boolean previousDeniedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        return hearingFinancialResultRequest
+                .getOffenceResults().stream()
+                .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equalsIgnoreCase(offence.getApplicationType()))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .filter(offence -> isNull(offence.getAmendmentDate()))
+                .anyMatch(offence -> appeal_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static boolean isNewStatdecReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -196,14 +216,9 @@ public class NCESDecisionHelper {
      * Overloaded check which also checks previous application results to avoid sending duplicate application notifications
      * when a notification for the same application has already been generated from aggregate state.
      */
-    public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                                  final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
-                                                  final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
-
-        final boolean incomingRequestIndicatesGrant = isNewApplicationGranted(hearingFinancialResultRequest);
-        if (!incomingRequestIndicatesGrant) {
-            return false;
-        }
+    public static boolean previousGrantedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
+                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
 
         if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
             return true;
@@ -228,6 +243,32 @@ public class NCESDecisionHelper {
         return false;
     }
 
+    /**
+     * Overloaded check which also checks previous application results to avoid sending duplicate application notifications
+     * when a notification for the same application has already been generated from aggregate state.
+     */
+    public static boolean previousDeniedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
+                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+
+        if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
+            return true;
+        }
+
+        final OffenceResults offenceResult = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(result -> nonNull(result.getApplicationId()))
+                .filter(result -> isNull(result.getAmendmentDate()))
+                .filter(result -> nonNull(result.getApplicationType()) && APPEAL.equalsIgnoreCase(result.getApplicationType()))
+                .filter(result -> NCESDecisionConstants.APPLICATION_SUBJECT.get(result.getApplicationType()).containsKey(result.getResultCode()))
+                .findFirst().orElse(null);
+
+        if (nonNull(offenceResult) && nonNull(offenceResult.getApplicationId())) {
+                return !(isApplicationAlreadyDenied(prevApplicationResultsDetails, offenceResult.getApplicationId())
+                        && isApplicationOffencesFinal(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap));
+        }
+        return false;
+    }
+
     private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
 
         final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
@@ -236,6 +277,16 @@ public class NCESDecisionHelper {
                 .map(OffenceResultsDetails::getResultCode)
                 .filter(Objects::nonNull)
                 .anyMatch(application_accepted_result_codes::contains);
+    }
+
+    private static boolean isApplicationAlreadyDenied(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
+
+        final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
+
+        return isNotEmpty(prevAppResultList) && prevAppResultList.stream()
+                .map(OffenceResultsDetails::getResultCode)
+                .filter(Objects::nonNull)
+                .anyMatch(application_denied_result_codes::contains);
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
@@ -269,50 +320,47 @@ public class NCESDecisionHelper {
         return applicationResults;
     }
 
-    public static boolean isNewAppealReopenApplicationOffencesAreConcluded(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        final var filtered = hearingFinancialResultRequest.getOffenceResults().stream()
+    public static boolean isNewAppealReopenApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        return hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType())
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
                 .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
-                .toList();
-
-        return !filtered.isEmpty() && filtered.stream()
-                .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+                .map(offenceResult -> FINAL.name().equals(offenceResult.getOffenceResultsCategory()))
+                .reduce(Boolean::logicalAnd)
+                .orElse(false);
     }
 
-
-    public static boolean isNewStatdecApplicationConcluded(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
+    public static boolean isNewStatdecApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        return hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType()) && (STAT_DEC.equals(offence.getApplicationType())))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .filter(offence -> statdec_application_accepted_result_codes.contains(offence.getResultCode())).toList();
-        return !offenceResults.isEmpty() &&
-                offenceResults.stream().allMatch(offenceResult -> FINAL.name().equals(offenceResult.getApplicationResultsCategory()));
+                .filter(offence -> statdec_application_accepted_result_codes.contains(offence.getResultCode()))
+                .map(offenceResult -> FINAL.name().equals(offenceResult.getApplicationResultsCategory()))
+                .reduce(Boolean::logicalAnd)
+                .orElse(false);
     }
 
     public static boolean isNewAppealReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
+        return hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType())
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
                 .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
-                .toList();
-
-        return !offenceResults.isEmpty() &&
-                offenceResults.stream().allMatch(offenceResult -> INTERMEDIARY.name().equals(offenceResult.getOffenceResultsCategory()));
+                .map(offenceResult -> INTERMEDIARY.name().equals(offenceResult.getOffenceResultsCategory()))
+                .reduce(Boolean::logicalAnd)
+                .orElse(false);
     }
 
     public static boolean isNewStatdecApplicationAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
+        return hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType()) && (STAT_DEC.equals(offence.getApplicationType())))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .toList();
-
-        return !offenceResults.isEmpty() && offenceResults.stream()
-                .allMatch(offence -> INTERMEDIARY.name().equals(offence.getApplicationResultsCategory()));
+                .map(offence -> INTERMEDIARY.name().equals(offence.getApplicationResultsCategory()))
+                .reduce(Boolean::logicalAnd)
+                .orElse(false);
     }
 
 }

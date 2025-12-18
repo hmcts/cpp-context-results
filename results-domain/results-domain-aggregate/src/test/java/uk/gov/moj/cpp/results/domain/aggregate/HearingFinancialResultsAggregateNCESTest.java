@@ -901,7 +901,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
-                Arguments.of("TBD:CCT-2357:DD-40592 : Legacy unit test case 1 : APPEAL > asv, o1:NF, O2:Fine > O1",
+                Arguments.of("DD-40592 : Legacy unit test case 1 : APPEAL > asv, o1:NF, O2:Fine > O1",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/legacy-1/case_resulted.json",
@@ -963,7 +963,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("TBD:CCT-2357:DD-40592 :Legacy unit test case 3 : APPEAL > asv, o1:NF, O2:F+ACON > O1:F",
+                Arguments.of("DD-40592 :Legacy unit test case 3 : APPEAL > asv, o1:NF, O2:F+ACON > O1:F",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/legacy-3/case_resulted.json",

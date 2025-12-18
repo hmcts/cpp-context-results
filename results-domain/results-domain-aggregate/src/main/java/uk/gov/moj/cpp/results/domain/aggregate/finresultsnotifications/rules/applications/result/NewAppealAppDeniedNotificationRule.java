@@ -6,6 +6,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEv
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewOffenceResultForSV;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealApplicationDenied;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousDeniedNotificationSent;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -35,8 +36,8 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isNewApplication()
-                && isNewAppealApplicationDenied(input.request());
+        return isNewAppealApplicationDenied(input.request()) &&
+                previousDeniedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override
@@ -52,20 +53,20 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                 .findFirst();
 
         if (offenceForApplication.isPresent()) {
-            final String subject =  APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
+            final String subject = APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
             final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
-                    input.prevOffenceResultsDetails(), 
-                    input.prevApplicationOffenceResultsMap(), 
+                    input.prevOffenceResultsDetails(),
+                    input.prevApplicationOffenceResultsMap(),
                     request.getOffenceResults());
-            
+
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication = originalOffenceResults.stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                     .distinct().toList();
-            
+
             final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
-                    request.getOffenceResults(), 
-                    input.prevOffenceResultsDetails(), 
+                    request.getOffenceResults(),
+                    input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap()).stream()
                     .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap))
                     .distinct().toList();
@@ -127,10 +128,10 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                             ncesEmail,
                             isWrittenOffExists,
                             originalDateOfOffenceList,
-                            originalDateOfSentenceList, 
-                            newResultByOffenceList, 
-                            applicationResult, 
-                            originalApplicationResults, 
+                            originalDateOfSentenceList,
+                            newResultByOffenceList,
+                            applicationResult,
+                            originalApplicationResults,
                             null,
                             prevApplicationResultsDetails));
         }

@@ -5,9 +5,9 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealReopenApplicationOffencesAreConcluded;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewApplicationGranted;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationConcluded;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealReopenApplicationGranted;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousGrantedNotificationSent;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationGranted;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -36,12 +36,21 @@ import java.util.UUID;
  */
 public class NewApplicationAcceptedNotificationRule extends AbstractApplicationResultNotificationRule {
 
+    private static String getSubject(final HearingFinancialResultRequest request, final OffenceResults offence) {
+        return request.getOffenceResults().stream()
+                .filter(applicationResults -> applicationResults.getApplicationId() != null && applicationResults.getResultCode() != null)
+                .map(r -> APPLICATION_SUBJECT
+                        .get(offence.getApplicationType())
+                        .get(r.getResultCode()))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isNewApplication()
-                && input.isValidApplicationTypeWithAllowedResultCode()
-                && (isNewStatdecApplicationConcluded(input.request()) || isNewAppealReopenApplicationOffencesAreConcluded(input.request()))
-                && isNewApplicationGranted(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
+        return (isNewStatdecApplicationGranted(input.request()) || isNewAppealReopenApplicationGranted(input.request())) &&
+                previousGrantedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override
@@ -60,17 +69,17 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
             final OffenceResults offence = offenceForApplication.get();
             final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
-                    input.prevOffenceResultsDetails(), 
-                    input.prevApplicationOffenceResultsMap(), 
+                    input.prevOffenceResultsDetails(),
+                    input.prevApplicationOffenceResultsMap(),
                     request.getOffenceResults());
-            
+
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication = originalOffenceResults.stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                     .distinct().toList();
-            
+
             final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
-                    request.getOffenceResults(), 
-                    input.prevOffenceResultsDetails(), 
+                    request.getOffenceResults(),
+                    input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap()).stream()
                     .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap))
                     .distinct().toList();
@@ -81,9 +90,9 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
                 final String originalDateOfSentenceList = input.originalDateOfSentenceList();
 
                 if (isResultedWithOffences(request.getOffenceResults())
-                        && isNcesNotificationForNewApplication(request.getOffenceResults(), 
-                                input.prevOffenceResultsDetails(), 
-                                input.prevApplicationOffenceResultsMap())) {
+                        && isNcesNotificationForNewApplication(request.getOffenceResults(),
+                        input.prevOffenceResultsDetails(),
+                        input.prevApplicationOffenceResultsMap())) {
                     return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
                             .buildMarkedAggregateGranted(request,
                                     getSubject(request, offence),
@@ -99,17 +108,6 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
             }
         }
         return Optional.empty();
-    }
-
-    private static String getSubject(final HearingFinancialResultRequest request, final OffenceResults offence) {
-        return request.getOffenceResults().stream()
-                .filter(applicationResults -> applicationResults.getApplicationId() != null && applicationResults.getResultCode() != null)
-                .map(r -> APPLICATION_SUBJECT
-                        .get(offence.getApplicationType())
-                        .get(r.getResultCode()))
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
     }
 
     private boolean isResultedWithOffences(final List<OffenceResults> offenceResults) {

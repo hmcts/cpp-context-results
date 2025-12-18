@@ -25,9 +25,8 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isNewApplication()
-                && (isNewAppealReopenApplicationOffencesAreAdjourned(input.request()) || isNewStatdecApplicationAdjourned(input.request()))
-                && !previousUpdateNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
+        return (isNewAppealReopenApplicationOffencesAreAdjourned(input.request()) || isNewStatdecApplicationAdjourned(input.request())) &&
+                !previousUpdateNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override
