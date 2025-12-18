@@ -53,7 +53,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                 .findFirst();
 
         if (offenceForApplication.isPresent()) {
-            final String subject = APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
+            final String subject =  APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
             final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
                     input.prevOffenceResultsDetails(),

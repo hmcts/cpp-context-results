@@ -36,17 +36,6 @@ import java.util.UUID;
  */
 public class NewApplicationAcceptedNotificationRule extends AbstractApplicationResultNotificationRule {
 
-    private static String getSubject(final HearingFinancialResultRequest request, final OffenceResults offence) {
-        return request.getOffenceResults().stream()
-                .filter(applicationResults -> applicationResults.getApplicationId() != null && applicationResults.getResultCode() != null)
-                .map(r -> APPLICATION_SUBJECT
-                        .get(offence.getApplicationType())
-                        .get(r.getResultCode()))
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
-    }
-
     @Override
     public boolean appliesTo(RuleInput input) {
         return (isNewStatdecApplicationGranted(input.request()) || isNewAppealReopenApplicationGranted(input.request())) &&
@@ -91,8 +80,8 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
 
                 if (isResultedWithOffences(request.getOffenceResults())
                         && isNcesNotificationForNewApplication(request.getOffenceResults(),
-                        input.prevOffenceResultsDetails(),
-                        input.prevApplicationOffenceResultsMap())) {
+                                input.prevOffenceResultsDetails(),
+                                input.prevApplicationOffenceResultsMap())) {
                     return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
                             .buildMarkedAggregateGranted(request,
                                     getSubject(request, offence),
@@ -108,6 +97,17 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
             }
         }
         return Optional.empty();
+    }
+
+    private static String getSubject(final HearingFinancialResultRequest request, final OffenceResults offence) {
+        return request.getOffenceResults().stream()
+                .filter(applicationResults -> applicationResults.getApplicationId() != null && applicationResults.getResultCode() != null)
+                .map(r -> APPLICATION_SUBJECT
+                        .get(offence.getApplicationType())
+                        .get(r.getResultCode()))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
     }
 
     private boolean isResultedWithOffences(final List<OffenceResults> offenceResults) {

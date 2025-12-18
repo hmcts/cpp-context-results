@@ -114,6 +114,7 @@ public class NCESDecisionHelper {
                 .anyMatch(offence -> stadec_reoopen_denied_result_codes.contains(offence.getResultCode()));
     }
 
+
     /**
      * Update notification would have sent out if the application previously resulted with ADJ with all cloned offences ADJ
      */
@@ -142,6 +143,7 @@ public class NCESDecisionHelper {
                         && isApplicationOffencesAdjourned(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
             }
         }
+
         return false;
     }
 
@@ -188,8 +190,8 @@ public class NCESDecisionHelper {
      * when a notification for the same application has already been generated from aggregate state.
      */
     public static boolean previousGrantedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
-                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+                                                  final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
+                                                  final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
 
         if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
             return true;
