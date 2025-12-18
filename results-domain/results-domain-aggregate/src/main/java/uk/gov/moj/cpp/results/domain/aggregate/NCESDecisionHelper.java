@@ -104,24 +104,6 @@ public class NCESDecisionHelper {
                 .orElse(false);
     }
 
-    public static boolean previousGrantedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .filter(offence -> nonNull(offence.getApplicationType()))
-                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
-                .filter(offence -> isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> application_accepted_result_codes.contains(offence.getResultCode()));
-    }
-
-    public static boolean previousDeniedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-        return hearingFinancialResultRequest
-                .getOffenceResults().stream()
-                .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equalsIgnoreCase(offence.getApplicationType()))
-                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
-                .filter(offence -> isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> appeal_denied_result_codes.contains(offence.getResultCode()));
-    }
-
     public static boolean isNewStatdecReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         return hearingFinancialResultRequest
                 .getOffenceResults().stream()
