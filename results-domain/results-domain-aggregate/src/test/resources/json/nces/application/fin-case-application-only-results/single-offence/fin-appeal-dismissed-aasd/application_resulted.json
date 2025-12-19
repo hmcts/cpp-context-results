@@ -25,7 +25,9 @@
       "dateOfResult": "2025-03-11",
       "resultCode": "AASD",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "APPEAL",
@@ -37,7 +39,8 @@
       "isParentFlag": false,
       "dateOfResult": "2025-03-11",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "offenceResultsCategory": "FINAL"
     }
   ]
 }

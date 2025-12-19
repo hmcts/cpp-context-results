@@ -41,6 +41,7 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                                 .withIsParentFlag(true)
                                 .withIsFinancial(false)
                                 .withApplicationId(randomUUID())
+                                .withApplicationResultsCategory("FINAL")
                                 .build()
                 )).withAccountCorrelationId(randomUUID());
         // Create previous offence results details
@@ -88,6 +89,7 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                                 .withOffenceId(offenceId)
                                 .withApplicationType(STAT_DEC)
                                 .withResultCode(WDRN)
+                                .withApplicationResultsCategory("FINAL")
                                 .withIsParentFlag(true)
                                 .withIsFinancial(false)
                                 .withApplicationId(randomUUID())
@@ -141,6 +143,7 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                                 .withIsParentFlag(true)
                                 .withIsFinancial(false)
                                 .withApplicationId(randomUUID())
+                                .withApplicationResultsCategory("FINAL")
                                 .build()
                 )).withAccountCorrelationId(randomUUID());
         // Create previous offence results details
@@ -191,6 +194,7 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                                 .withIsParentFlag(true)
                                 .withIsFinancial(false)
                                 .withApplicationId(randomUUID())
+                                .withApplicationResultsCategory("FINAL")
                                 .build()
                 )).withAccountCorrelationId(randomUUID());
         // Create previous offence results details
@@ -345,6 +349,8 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                                 .withOffenceId(randomUUID())
                                 .withApplicationType(STAT_DEC)
                                 .withResultCode(RFSD)
+                                .withOffenceResultsCategory("FINAL")
+                                .withApplicationResultsCategory("FINAL")
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Non-financial offence details")
                                 .withIsFinancial(false)
