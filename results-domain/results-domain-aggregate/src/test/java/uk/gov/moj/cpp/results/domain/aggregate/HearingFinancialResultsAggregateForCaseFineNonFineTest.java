@@ -133,7 +133,7 @@ class HearingFinancialResultsAggregateForCaseFineNonFineTest {
                                                         .withParam("oldGobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
-                Arguments.of("TBD-Case-Fine-Non-fine > App1-Granted > Fine-Non-fine > App2-Granted > Fine-Fine [STE77/28DI7582313]",
+                Arguments.of("Case-Fine-Non-fine > App1-Granted > Fine-Non-fine > App2-Granted > Fine-Fine [STE77/28DI7582313]",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-NonFine/App1-Granted/Fine-NonFine/App2-Granted-Fine-Fine/1_case_results_tracked.json",

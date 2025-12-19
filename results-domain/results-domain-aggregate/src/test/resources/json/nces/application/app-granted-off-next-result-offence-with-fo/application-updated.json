@@ -1,0 +1,19 @@
+{
+  "applicationResult": "NEXH --",
+  "caseReferences": "28DI6565771",
+  "dateDecisionMade": "2025-04-04",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Euna Rutherford",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "City of London Magistrates' Court",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "b7ea5d56-7942-479a-9bc2-6b5d3f4b3e4a",
+  "materialId": "b76e7452-8fed-4f9f-a107-223c676d7ba0",
+  "notificationId": "07b50feb-0ecc-47ee-8e7c-c422d306705d",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN UPDATED"
+}

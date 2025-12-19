@@ -1,6 +1,8 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealReopenApplicationOffencesAreAdjourned;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationAdjourned;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousUpdateNotificationSent;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
@@ -23,9 +25,8 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isNewApplication()
-                && !input.isValidApplicationTypeWithAllowedResultCode()
-                && !previousUpdateNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
+        return (isNewAppealReopenApplicationOffencesAreAdjourned(input.request()) || isNewStatdecApplicationAdjourned(input.request())) &&
+                !previousUpdateNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override

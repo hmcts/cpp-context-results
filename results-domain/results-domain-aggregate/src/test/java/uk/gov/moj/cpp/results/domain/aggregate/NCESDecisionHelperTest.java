@@ -8,7 +8,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewApplicationGranted;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousUpdateNotificationSent;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
@@ -108,7 +107,7 @@ public class NCESDecisionHelperTest {
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(INTERMEDIARY.name()).build()));
 
-        final boolean previousUpdateNotificationSent = isNewApplicationGranted(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
+        final boolean previousUpdateNotificationSent = NCESDecisionHelper.previousNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
         assertThat(previousUpdateNotificationSent, is(false));
     }
 
@@ -119,7 +118,7 @@ public class NCESDecisionHelperTest {
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(FINAL.name()).build()));
 
-        final boolean previousUpdateNotificationSent = isNewApplicationGranted(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
+        final boolean previousUpdateNotificationSent = NCESDecisionHelper.previousNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
         assertThat(previousUpdateNotificationSent, is(true));
     }
 
