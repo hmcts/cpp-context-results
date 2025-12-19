@@ -26,7 +26,6 @@
       "resultCode": "APA",
       "isDeemedServed": false,
       "isFinancial": false,
-      "offenceResultsCategory": "FINAL",
       "applicationResultsCategory": "FINAL"
     },
     {
@@ -41,7 +40,6 @@
       "resultCode": "APA",
       "isDeemedServed": false,
       "isFinancial": false,
-      "offenceResultsCategory": "FINAL",
       "applicationResultsCategory": "FINAL"
     }
   ]

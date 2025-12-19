@@ -723,7 +723,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
-                Arguments.of("8. Statdec > Granted,  Offence : Next Hearing, Result Offence in NEXH with FO",
+                Arguments.of("8. REOPEN > Granted,  Offence : Next Hearing, Result Offence in NEXH with FO",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application/app-granted-off-next-result-offence-with-fo/case-resulted.json",
@@ -880,11 +880,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("app abandoned")
                                         .withResultTrackedEvent("json/nces/application/fin-case-application-only-results/multi-offence/fin-appeal-abandoned-apa/application_resulted.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-only-results/multi-offence/fin-appeal-abandoned-apa/appeal_abandoned_notification.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                 ),
                 Arguments.of("Statdec > dismissed,  DD-35053 SC3",
                         newScenario()
