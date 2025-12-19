@@ -73,14 +73,19 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/NonFine-NonFine/App2-Granted-Fine-NonFine/2_app_appeal_results_tracked.json"
                                                 , emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/NonFine-NonFine/App2-Granted-Fine-NonFine/2_app_granted_nces_notification_expected.json",
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/NonFine-NonFine/App2-Granted-Fine-NonFine/2_app_updated_nces_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                                 .newStep(newResultTrackedStep("app1 appeal resulted - h2")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/NonFine-NonFine/App2-Granted-Fine-NonFine/3_app_appeal_results_tracked.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated")
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/NonFine-NonFine/App2-Granted-Fine-NonFine/2_app_granted_nces_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
+                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
 
 
@@ -471,14 +476,6 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
                                                         .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
-                                /*.newStep(newNcesEmailForNewApplicationStep("app2 reopen received", "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/Fine-NonFine/App2-Granted-NonFine-Fine-1/3_app_reopen_1_send_nces_request.json")
-                                        .withExpectedEventNames("NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadRegEx("NcesEmailNotificationRequested", ".*\"subject\":\"APPLICATION TO REOPEN RECEIVED\".*")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested",
-                                                "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/Fine-NonFine/App2-Granted-NonFine-Fine-2/3_app_expected_app_to_reopen_received_notification.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))*/
                                 .newStep(newResultTrackedStep("app2 reopen resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Granted/Fine-NonFine/App2-Granted-NonFine-Fine-2/3_app_reopen_results_tracked.json",
                                                 accountInfo("33c39541-e8e0-45b3-af99-532b33646b69", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
@@ -898,8 +895,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                                 "json/nces/multi-applications/Case-Fine-Fine/multi-offences/two-offences/App1-Declined/App1-Amended/3_app2_statdec_nces_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
-                                                        .withParam("oldGobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                        .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                 ),
                 Arguments.of("Case-Fine-Fine > App1-Declined-No offence results > App1-Amended-Granted-Fine-Fine > App2-Granted-Fine-Fine > App2-Amended-Declined-Delete offence results > App3-Allowed-Fine-Fine > App3-Decline-Delete offence results [SRE77/28DI3955007: DD-39899]",

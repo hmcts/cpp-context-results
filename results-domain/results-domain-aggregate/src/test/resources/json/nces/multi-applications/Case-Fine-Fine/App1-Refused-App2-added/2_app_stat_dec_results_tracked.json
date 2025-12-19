@@ -23,7 +23,8 @@
             "isParentFlag": false,
             "offenceId": "9aacbfb4-a17f-49a8-8511-2790f0870ac3",
             "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "9204ab79-1391-41ba-a368-1c90ec329609",
@@ -37,7 +38,8 @@
             "isParentFlag": false,
             "offenceId": "c292b149-ffc5-40ce-97ec-2b1f400474c6",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

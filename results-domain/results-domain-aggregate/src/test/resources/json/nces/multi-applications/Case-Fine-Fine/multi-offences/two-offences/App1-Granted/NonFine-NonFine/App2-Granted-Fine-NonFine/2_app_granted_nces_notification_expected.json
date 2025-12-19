@@ -1,19 +1,58 @@
 {
-  "applicationResult": "NEXH --",
   "caseReferences": "28DI5984707",
-  "dateDecisionMade": "2025-07-16",
+  "dateDecisionMade": "2025-07-18",
   "defendantAddress": "n Fisher Tunnel5984707 South Lillie Avon DA6 7ND",
   "defendantContactNumber": "987-204-0324",
   "defendantDateOfBirth": "1981-10-02",
   "defendantName": "Patrick Stiedemann",
   "divisionCode": "77",
   "gobAccountNumber": "{{gobAccountNumber}}",
-  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-07-18",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £999999.00, FVS - Surcharge\nTo pay a surcharge of £4567.00\nLUMSI - Payment terms - Lump sum plus instalments\nPayment terms - Lump sum plus instalments. Lump sum amount: £333.00. Instalment amount: £300.00 to be paid monthly from 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £222222.00, FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £4444.00.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6d9424df-cbcb-40df-9b34-5d6a5ec3c3d1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "35952a42-ca0a-459a-a4e3-0f854b926388",
   "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Allowed"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/04/2026. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 45 Hours.\nFVS - Surcharge\nTo pay a surcharge of £5098.00\nSV - Sentence varied\nAppeal heard on: 11/05/2025\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £456.00 to be paid monthly. Instalment start date: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
+      "title": "Robbery"
+    },
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/04/2026. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 45 Hours.\nSV - Sentence varied\nAppeal heard on: 11/05/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "6d9424df-cbcb-40df-9b34-5d6a5ec3c3d1",
+      "title": "Theft from a shop"
+    }
+  ],
   "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
-  "subject": "APPEAL APPLICATION UPDATED"
+  "subject": "APPEAL ALLOWED"
 }
