@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class MaterialService {
 
     public void uploadMaterial(final UUID fileServiceId, final UUID materialId, final JsonEnvelope envelope) {
         LOGGER.info("material being uploaded '{}' file service id '{}'", materialId, fileServiceId);
-        final JsonObject uploadMaterialPayload = Json.createObjectBuilder()
+        final JsonObject uploadMaterialPayload = JsonObjects.createObjectBuilder()
                 .add(FIELD_MATERIAL_ID, materialId.toString())
                 .add("fileServiceId", fileServiceId.toString())
                 .build();

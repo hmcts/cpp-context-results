@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.query.view;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
@@ -158,7 +158,7 @@ public class ResultsQueryViewTest {
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingDetailsByHearingIdDefendantId(HEARING_ID, DEFENDANT_ID)).thenReturn(hearingResultsAdded);
         String dummyVal = randomUUID().toString();
-        final JsonObject jsonResult = Json.createObjectBuilder().add("val", dummyVal).build();
+        final JsonObject jsonResult = JsonObjects.createObjectBuilder().add("val", dummyVal).build();
 
         when(objectToJsonObjectConverter.convert(hearingResultsAdded)).thenReturn(jsonResult);
 
@@ -184,7 +184,7 @@ public class ResultsQueryViewTest {
                 .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
 
         String dummyVal = randomUUID().toString();
-        final JsonObject jsonObject = Json.createObjectBuilder().add("val", dummyVal).build();
+        final JsonObject jsonObject = JsonObjects.createObjectBuilder().add("val", dummyVal).build();
 
 
         when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
@@ -214,7 +214,7 @@ public class ResultsQueryViewTest {
                 .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
 
         String dummyVal = randomUUID().toString();
-        final JsonObject jsonObject = Json.createObjectBuilder().add("val", dummyVal).build();
+        final JsonObject jsonObject = JsonObjects.createObjectBuilder().add("val", dummyVal).build();
 
         when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
         when(objectToJsonObjectConverter.convert(apiHearingBuilder.build())).thenReturn(jsonObject);

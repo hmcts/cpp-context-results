@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +31,7 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
@@ -522,7 +522,7 @@ class DcsCaseHelperTest {
         } catch (final Exception e) {
             fail("Error consuming file from location " + path);
         }
-        final JsonReader reader = Json.createReader(new StringReader(request));
+        final JsonReader reader = JsonObjects.createReader(new StringReader(request));
         return reader.readObject();
     }
 }

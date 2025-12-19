@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.ID;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -150,7 +150,7 @@ public class HearingResultedEventProcessor {
     }
 
     public JsonArray extractCPSProsecutorIds() {
-        final JsonArrayBuilder cpsFlagTrueProscutionIds = Json.createArrayBuilder();
+        final JsonArrayBuilder cpsFlagTrueProscutionIds = JsonObjects.createArrayBuilder();
 
         referenceDataService.getProsecutorIdForCPSFlagTrue().forEach(cpsFlagTrueProscutionIds::add);
         return cpsFlagTrueProscutionIds.build();
@@ -165,7 +165,7 @@ public class HearingResultedEventProcessor {
     public JsonArray extractPoliceCases(JsonObject hearing) {
         LOGGER.info("Results extractPoliceCases hearing {}", hearing.get(ID));
         final JsonArray prosecutionCases = (JsonArray) hearing.get(PROSECUTION_CASES);
-        final JsonArrayBuilder policeCases = Json.createArrayBuilder();
+        final JsonArrayBuilder policeCases = JsonObjects.createArrayBuilder();
         if (null != prosecutionCases && !prosecutionCases.isEmpty()) {
             for (int i = 0; i < prosecutionCases.size(); i++) {
                 final JsonObject prosecutionCase = prosecutionCases.getJsonObject(i);
