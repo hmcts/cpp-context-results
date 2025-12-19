@@ -204,14 +204,12 @@ public class NCESDecisionHelper {
         if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
             return true;
         }
-
         final OffenceResults offenceResult = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationId()))
                 .filter(result -> isNull(result.getAmendmentDate()))
                 .filter(result -> nonNull(result.getApplicationType()))
                 .filter(result -> NCESDecisionConstants.APPLICATION_SUBJECT.get(result.getApplicationType()).containsKey(result.getResultCode()))
                 .findFirst().orElse(null);
-
         if (nonNull(offenceResult) && nonNull(offenceResult.getApplicationId())) {
             if (STAT_DEC.equals(offenceResult.getApplicationType())) {
                 return !areAllApplicationResultsAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
@@ -233,7 +231,6 @@ public class NCESDecisionHelper {
         if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
             return true;
         }
-
         final OffenceResults offenceResult = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationId()))
                 .filter(result -> isNull(result.getAmendmentDate()))
@@ -252,9 +249,7 @@ public class NCESDecisionHelper {
     }
 
     private static boolean areAllApplicationResultsAlreadyFinalised(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
-
         final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
-
         return isNotEmpty(prevAppResultList) && prevAppResultList.stream()
                 .map(OffenceResultsDetails::getApplicationResultsCategory)
                 .filter(Objects::nonNull)
