@@ -25,7 +25,8 @@
       "dateOfResult": "2025-03-12",
       "resultCode": "APA",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "APPEAL",
@@ -38,7 +39,8 @@
       "dateOfResult": "2025-03-12",
       "resultCode": "APA",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     }
   ]
 }
