@@ -26,7 +26,7 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
     @Override
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
-                && !input.isValidApplicationTypeWithAllowedResultCode() // no more valid now for CCt-2389
+                && input.isValidApplicationType()
                 && (isNewAppealReopenApplicationOffencesAreAdjourned(input.request()) || isNewStatdecApplicationAdjourned(input.request()))
                 && !previousUpdateNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }

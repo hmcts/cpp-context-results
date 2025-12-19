@@ -185,10 +185,8 @@ public class NCESDecisionHelper {
                 && resultCategoryList.stream().anyMatch(category -> category.equals(INTERMEDIARY.name()));
     }
 
-    private static boolean isAppealReopenApplicationAlreadyFinalised(final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
-
+    private static boolean areApplicationOffenceResultsAlreadyFinalised(final UUID applicationId, final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
         final List<OffenceResultsDetails> prevAppOffenceResultList = prevApplicationOffenceResultsMap.get(applicationId);
-
         return isNotEmpty(prevAppOffenceResultList) && prevAppOffenceResultList.stream()
                 .map(OffenceResultsDetails::getOffenceResultsCategory)
                 .filter(Objects::nonNull)
@@ -216,9 +214,9 @@ public class NCESDecisionHelper {
 
         if (nonNull(offenceResult) && nonNull(offenceResult.getApplicationId())) {
             if (STAT_DEC.equals(offenceResult.getApplicationType())) {
-                return !isStatDecApplicationAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
+                return !areAllApplicationResultsAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
             } else {
-                return !isAppealReopenApplicationAlreadyFinalised(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
+                return !areApplicationOffenceResultsAlreadyFinalised(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
             }
         }
         return false;
@@ -245,15 +243,15 @@ public class NCESDecisionHelper {
 
         if (nonNull(offenceResult) && nonNull(offenceResult.getApplicationId())) {
             if (STAT_DEC.equals(offenceResult.getApplicationType()) || REOPEN.equals(offenceResult.getApplicationType())) {
-                return !isStatDecApplicationAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
+                return !areAllApplicationResultsAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
             } else {
-                return !isAppealReopenApplicationAlreadyFinalised(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
+                return !areApplicationOffenceResultsAlreadyFinalised(offenceResult.getApplicationId(), prevApplicationOffenceResultsMap);
             }
         }
         return false;
     }
 
-    private static boolean isStatDecApplicationAlreadyFinalised(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
+    private static boolean areAllApplicationResultsAlreadyFinalised(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
 
         final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
 
