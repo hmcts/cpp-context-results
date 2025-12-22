@@ -21,7 +21,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £333.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
       "isFinancial": true,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -35,7 +36,9 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "G",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "G - Granted"
+      "impositionOffenceDetails": "G - Granted",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -46,7 +49,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "DISM - Dismissed",
       "isFinancial": false,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -60,7 +64,9 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "G",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "G - Granted"
+      "impositionOffenceDetails": "G - Granted",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -71,7 +77,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £333.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days",
       "isFinancial": true,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -85,7 +92,9 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "STDEC",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. "
+      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. ",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -96,7 +105,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "DISM - Dismissed",
       "isFinancial": false,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -110,7 +120,9 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "STDEC",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. "
+      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. ",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
@@ -121,7 +133,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £333.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
@@ -133,7 +146,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
@@ -145,7 +159,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "DISM - Dismissed",
       "isFinancial": false,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

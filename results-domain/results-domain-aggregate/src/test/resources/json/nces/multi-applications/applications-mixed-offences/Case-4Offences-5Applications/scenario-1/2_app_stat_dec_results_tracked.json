@@ -23,7 +23,9 @@
             "isParentFlag": true,
             "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
             "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -34,7 +36,8 @@
             "isParentFlag": true,
             "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "DISM"
+            "resultCode": "DISM",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationId": "6ba90451-90fd-44f6-803a-3613784d05ed",
@@ -48,7 +51,9 @@
             "isParentFlag": false,
             "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Dismissed",
@@ -60,7 +65,8 @@
             "isParentFlag": false,
             "offenceId": "e258fe0e-d6b5-465c-9c72-23b80c6e96b5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "DISM"
+            "resultCode": "DISM",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

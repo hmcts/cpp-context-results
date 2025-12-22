@@ -2325,11 +2325,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                 .newStep(newResultTrackedStep("app1 statdec G, 3 offences adj")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/3_app1_statdec_results_tracked.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/3_app1_granted_nces_notification_expected.json",
-                                                comparison()
-                                                        .withPathsExcluded("materialId", "notificationId")
-                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
                                 )
                                 .newStep(newResultTrackedStep("app1 statdec, 3 offences adj again")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/4_app1_statdec_results_tracked.json",
@@ -2337,7 +2333,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                         .withExpectedEventNames("HearingFinancialResultsTracked")
                                 )
                 ),
-                Arguments.of("SRIVANI:::AC1 - CC Case 3 Offences 2FP 1NFP > AH1 App1 Appeal allowed and 3 offences Adj  [STE78/DD-40393]",
+                Arguments.of("AC1 - CC Case 3 Offences 2FP 1NFP > AH1 App1 Appeal allowed and 3 offences Adj  [STE78/DD-40393]",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/application/appeal-adjournments/DD-40393-AC1/1_case_results_tracked.json",

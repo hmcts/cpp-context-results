@@ -352,6 +352,7 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withOffenceResults(List.of(
                         OffenceResults.offenceResults()
                                 .withOffenceId(randomUUID())
+                                .withApplicationId(randomUUID())
                                 .withApplicationType(STAT_DEC)
                                 .withApplicationResultsCategory("FINAL")
                                 .withResultCode(G)

@@ -126,7 +126,7 @@ public class NCESDecisionHelperTest {
     @Test
     public void isApplicationDeniedReturnsTrueWhenApplicationTypeAndResultCodeMatchDeniedList() {
         final List<OffenceResultsDetails> details = List.of(
-                offenceResultsDetails().withApplicationType(APPEAL).withResultCode("APA").build()
+                offenceResultsDetails().withApplicationId(randomUUID()).withApplicationType(APPEAL).withResultCode("APA").build()
         );
 
         final boolean denied = NCESDecisionHelper.isApplicationDenied(details);
@@ -162,7 +162,7 @@ public class NCESDecisionHelperTest {
                 .build();
 
         final boolean adjourned = NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned(request);
-        assertThat(adjourned, is(false));
+        assertThat(adjourned, is(true));
     }
 
     @Test

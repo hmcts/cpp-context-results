@@ -98,10 +98,25 @@ public class NCESDecisionHelper {
                         .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equals(offence.getApplicationType()))
                         .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                         .filter(offence -> isNull(offence.getAmendmentDate()))
-                        .filter(offence -> appeal_denied_result_codes.contains(offence.getResultCode()))
+                        .filter(offence -> nonNull(offence.getApplicationId()) && appeal_denied_result_codes.contains(offence.getResultCode()))
                         .toList();
 
-        return getNewAppealOrReopenApplicationConcluded(offenceResults);
+        if (offenceResults.isEmpty()) {
+            return false;
+        }
+
+        final boolean anyOfHaveOffenceResultsCategory = offenceResults.stream()
+                .anyMatch(offence -> nonNull(offence.getOffenceResultsCategory()));
+
+        if (anyOfHaveOffenceResultsCategory) {
+            return offenceResults.stream()
+                    .filter(offence -> nonNull(offence.getOffenceResultsCategory()))
+                    .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+        } else {
+            return offenceResults.stream()
+                    .allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
+        }
+
     }
 
     public static boolean isNewStatdecApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -109,7 +124,7 @@ public class NCESDecisionHelper {
                         .filter(offence -> nonNull(offence.getApplicationType()) && STAT_DEC.equals(offence.getApplicationType()))
                         .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                         .filter(offence -> isNull(offence.getAmendmentDate()))
-                        .filter(offence -> stadec_reoopen_denied_result_codes.contains(offence.getResultCode()))
+                        .filter(offence -> nonNull(offence.getApplicationId()) && stadec_reoopen_denied_result_codes.contains(offence.getResultCode()))
                         .toList();
 
         return !offenceResults.isEmpty() && offenceResults.stream().allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
@@ -121,7 +136,7 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()) && REOPEN.equals(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .filter(offence -> stadec_reoopen_denied_result_codes.contains(offence.getResultCode()))
+                .filter(offence -> nonNull(offence.getApplicationId()) && stadec_reoopen_denied_result_codes.contains(offence.getResultCode()))
                 .toList();
 
             return !offenceResults.isEmpty() && offenceResults.stream().allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
@@ -260,7 +275,7 @@ public class NCESDecisionHelper {
         return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
                 .filter(offence -> nonNull(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
-                .anyMatch(offence -> application_denied_result_codes.contains(offence.getResultCode()));
+                .anyMatch(offence -> nonNull(offence.getApplicationId()) && application_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static NewOffenceByResult buildNewImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {
@@ -293,18 +308,14 @@ public class NCESDecisionHelper {
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
+                .filter(offence -> nonNull(offence.getApplicationId()) && appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
                 .toList();
 
-        return getNewAppealOrReopenApplicationConcluded(offenceResults);
-    }
-
-    private static boolean getNewAppealOrReopenApplicationConcluded(final List<OffenceResults> offenceResults) {
         if (offenceResults.isEmpty()) {
             return false;
         }
 
-        final Boolean anyOfHaveOffenceResultsCategory = offenceResults.stream()
+        final boolean anyOfHaveOffenceResultsCategory = offenceResults.stream()
                 .anyMatch(offence -> nonNull(offence.getOffenceResultsCategory()));
 
         if (anyOfHaveOffenceResultsCategory) {
@@ -321,7 +332,7 @@ public class NCESDecisionHelper {
         final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType()) && (STAT_DEC.equals(offence.getApplicationType())))
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .filter(offence -> statdec_application_accepted_result_codes.contains(offence.getResultCode()))
+                .filter(offence -> nonNull(offence.getApplicationId()) && statdec_application_accepted_result_codes.contains(offence.getResultCode()))
                 .toList();
 
         return !offenceResults.isEmpty() && offenceResults.stream()
