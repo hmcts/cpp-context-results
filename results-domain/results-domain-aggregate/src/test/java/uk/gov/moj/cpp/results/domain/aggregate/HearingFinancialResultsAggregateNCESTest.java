@@ -880,7 +880,11 @@ class HearingFinancialResultsAggregateNCESTest {
                                 .newStep(newResultTrackedStep("app abandoned")
                                         .withResultTrackedEvent("json/nces/application/fin-case-application-only-results/multi-offence/fin-appeal-abandoned-apa/application_resulted.json",
                                                 emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-only-results/multi-offence/fin-appeal-abandoned-apa/application-nces-expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
                 ),
                 Arguments.of("Statdec > dismissed,  DD-35053 SC3",
                         newScenario()

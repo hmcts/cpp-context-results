@@ -148,7 +148,7 @@ public class NCESDecisionHelperTest {
                 ))
                 .build();
 
-        final boolean adjourned = NCESDecisionHelper.isNewAppealReopenApplicationOffencesAreAdjourned(request);
+        final boolean adjourned = NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned(request);
         assertThat(adjourned, is(true));
     }
 
@@ -161,7 +161,7 @@ public class NCESDecisionHelperTest {
                 ))
                 .build();
 
-        final boolean adjourned = NCESDecisionHelper.isNewAppealReopenApplicationOffencesAreAdjourned(request);
+        final boolean adjourned = NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned(request);
         assertThat(adjourned, is(false));
     }
 

@@ -101,7 +101,7 @@ public class NCESDecisionHelper {
                         .filter(offence -> appeal_denied_result_codes.contains(offence.getResultCode()))
                         .toList();
 
-        return !offenceResults.isEmpty() && offenceResults.stream().allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+        return getNewAppealOrReopenApplicationConcluded(offenceResults);
     }
 
     public static boolean isNewStatdecApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -287,7 +287,7 @@ public class NCESDecisionHelper {
         return applicationResults;
     }
 
-    public static boolean isNewAppealReopenApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+    public static boolean isNewAppealOrReopenApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType())
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
@@ -296,8 +296,25 @@ public class NCESDecisionHelper {
                 .filter(offence -> appeal_reopen_application_accepted_result_codes.contains(offence.getResultCode()))
                 .toList();
 
-        return !offenceResults.isEmpty() && offenceResults.stream()
-                .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+        return getNewAppealOrReopenApplicationConcluded(offenceResults);
+    }
+
+    private static boolean getNewAppealOrReopenApplicationConcluded(final List<OffenceResults> offenceResults) {
+        if (offenceResults.isEmpty()) {
+            return false;
+        }
+
+        final Boolean anyOfHaveOffenceResultsCategory = offenceResults.stream()
+                .anyMatch(offence -> nonNull(offence.getOffenceResultsCategory()));
+
+        if (anyOfHaveOffenceResultsCategory) {
+            return offenceResults.stream()
+                    .filter(offence -> nonNull(offence.getOffenceResultsCategory()))
+                    .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+        } else {
+            return offenceResults.stream()
+                    .allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
+        }
     }
 
     public static boolean isNewStatdecApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -311,7 +328,7 @@ public class NCESDecisionHelper {
                 .allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
     }
 
-    public static boolean isNewAppealReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+    public static boolean isNewAppealOrReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(offence -> nonNull(offence.getApplicationType())
                         && (APPEAL.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType())))
@@ -321,7 +338,7 @@ public class NCESDecisionHelper {
                 .toList();
 
         return !offenceResults.isEmpty() && offenceResults.stream()
-                .allMatch(offence -> INTERMEDIARY.name().equals(offence.getOffenceResultsCategory()));
+                .anyMatch(offence -> INTERMEDIARY.name().equals(offence.getOffenceResultsCategory()));
     }
 
     public static boolean isNewStatdecApplicationAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {

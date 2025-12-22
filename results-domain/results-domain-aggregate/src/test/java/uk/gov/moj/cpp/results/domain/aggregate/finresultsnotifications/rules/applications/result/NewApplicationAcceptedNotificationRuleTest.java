@@ -212,6 +212,8 @@ class NewApplicationAcceptedNotificationRuleTest {
                                 .withResultCode("RFSD")
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Non-granted result details")
+                                .withApplicationResultsCategory("FINAL")
+                                .withOffenceResultsCategory("INTERMEDIARY")
                                 .withIsFinancial(true)
                                 .build()
                 ));
