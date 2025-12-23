@@ -98,7 +98,7 @@ public class ResultsAggregate implements Aggregate {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsAggregate.class);
-    private static final String DEFAULT_URM_FOR_STANDALONE_APPLICATIONS = "00PP0000008";
+    private static final String DEFAULT_URN_FOR_STANDALONE_APPLICATIONS = "00PP0000008";
     public static final String AMEND_RESHARE = "Amend & Reshare";
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
@@ -670,7 +670,7 @@ public class ResultsAggregate implements Aggregate {
                 .withCourtCentreWithLJA(enhancedCourtCenter)
                 .withSessionDays(sessionDayList)
                 .withApplicationId(application.getId())
-                .withUrn(ofNullable(application.getApplicationReference()).orElse(DEFAULT_URM_FOR_STANDALONE_APPLICATIONS))
+                .withUrn(ofNullable(application.getApplicationReference()).orElse(DEFAULT_URN_FOR_STANDALONE_APPLICATIONS))
                 .withDefendant(buildDefendantFromSubject(application, this.hearing))
                 .build();
     }
