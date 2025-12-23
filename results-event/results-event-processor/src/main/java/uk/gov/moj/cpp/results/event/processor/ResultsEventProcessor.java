@@ -149,6 +149,7 @@ public class ResultsEventProcessor {
     private static final String EMAIL_TEMPLATE_ID = "emailTemplateId";
     private static final String SEND_TO_ADDRESS = "sendToAddress";
     public static final String HEARING_DAY = "hearingDay";
+    public static final String PUBLIC_RESULTS_POLICE_RESULT_GENERATED = "public.results.police-result-generated";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -279,10 +280,34 @@ public class ResultsEventProcessor {
         LOGGER.debug("results.event.police-result-generated {}", envelope.toObfuscatedDebugString());
 
         final Metadata metadata = metadataFrom(envelope.metadata())
-                .withName("public.results.police-result-generated")
+                .withName(PUBLIC_RESULTS_POLICE_RESULT_GENERATED)
                 .build();
 
         sender.sendAsAdmin(envelopeFrom(metadata, envelope.payloadAsJsonObject()));
+    }
+
+    @Handles("results.event.police-result-generated-for-standalone-application")
+    public void createResultForStandalone(final JsonEnvelope envelope) {
+        LOGGER.debug("results.event.police-result-generated-for-standalone-application {}", envelope.toObfuscatedDebugString());
+
+        final Metadata metadata = metadataFrom(envelope.metadata())
+                .withName(PUBLIC_RESULTS_POLICE_RESULT_GENERATED)
+                .build();
+
+        sender.sendAsAdmin(envelopeFrom(metadata, replaceFieldName(envelope.payloadAsJsonObject(), APPLICATION_ID, CASE_ID).build()));
+    }
+
+    private static JsonObjectBuilder replaceFieldName(final JsonObject payload, final String from, final String to) {
+        final JsonObjectBuilder payloadBuilder = createObjectBuilder();
+
+        payload.forEach((key, value) -> {
+            if (from.equals(key)) {
+                payloadBuilder.add(to, value);
+            } else {
+                payloadBuilder.add(key, value);
+            }
+        });
+        return payloadBuilder;
     }
 
     @Handles("results.event.nces-email-notification-requested")

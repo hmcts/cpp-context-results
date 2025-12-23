@@ -74,10 +74,12 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static final String PUBLIC_EVENT_HEARING_RESULTED_V2 = "public.events.hearing.hearing-resulted";
     private static final String GET_RESULTS_SUMMARY = "results.get-results-summary";
     private static MessageConsumerClient publicMessageConsumerPoliceResultsGenerated;
+    private static MessageConsumerClient publicMessageConsumerPoliceResultsGeneratedForStandaloneApplication;
 
 
     public static void createMessageConsumers() {
         publicMessageConsumerPoliceResultsGenerated = new MessageConsumerClient();
+        publicMessageConsumerPoliceResultsGeneratedForStandaloneApplication = new MessageConsumerClient();
     }
 
     public static void whenPrisonAdminTriesToViewResultsForThePerson(final UUID userId) {
@@ -343,6 +345,11 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
 
     private static void startListeningToPublicEventPoliceResultsGenerated() {
         publicMessageConsumerPoliceResultsGenerated.startConsumer("public.results.police-result-generated", "jms.topic.public.event");
+    }
+
+
+    public static Optional<String> verifyPublicMessageConsumerPoliceResultsGeneratedPayload() {
+        return publicMessageConsumerPoliceResultsGenerated.retrieveMessage();
     }
 
 }
