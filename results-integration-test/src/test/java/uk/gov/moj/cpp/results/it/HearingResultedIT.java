@@ -280,6 +280,28 @@ public class HearingResultedIT {
     }
 
     @Test
+    public void shouldSendSPIOutForFirstShareForStandaloneApplication() {
+        setupDCSStub();
+        final UUID hearingId = randomUUID();
+        final UUID applicationId = randomUUID();
+        final UUID subjectId = randomUUID();
+        final String payloadString = getPayloadAsString("json/public.events.hearing.hearing-resulted-standalone.json")
+                .replaceAll("HEARING_ID", hearingId.toString())
+                .replaceAll("APPLICATION_ID", applicationId.toString())
+                .replaceAll("SUBJECT_ID", subjectId.toString());
+        final JsonObject payload = jsonStringToJsonObject(payloadString);
+        stubSpiOutFlag(true, true, policeEmailAddress);
+
+        hearingResultsHaveBeenSharedV2(payload);
+
+        Optional<String> response = verifyPublicMessageConsumerPoliceResultsGeneratedPayload();
+        final JSONObject eventPayload = new JSONObject(response.get());
+        assertThat(eventPayload.getJSONObject("_metadata").getString("name"), is("public.results.police-result-generated"));
+        assertThat(eventPayload.getString("caseId"), is(applicationId.toString()));
+        assertThat(eventPayload.getJSONObject("defendant").getString("defendantId"), is(subjectId.toString()));
+    }
+
+    @Test
     public void shouldSendEmailForMultipleShareAndAmendmentsForCrownCourt() {
         setupDCSStub();
         final UUID hearingId = randomUUID();

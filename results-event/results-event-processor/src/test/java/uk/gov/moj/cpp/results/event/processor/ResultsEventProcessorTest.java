@@ -452,6 +452,27 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
+    public void shouldRaiseAPublicEventPoliceResultGeneratedForStandaloneApplications() {
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withName("results.event.police-result-generated-for-standalone-application"))
+                .withPayloadFrom(getPayload("results.event.police-result-generated-for-standalone-application.json"))
+                .build();
+
+        resultsEventProcessor.createResultForStandalone(jsonEnvelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+
+        final JsonObject expectedPayload = getPayload("public.results.police-result-generated_expected-for-standalone.json");
+        assertThat(allValues.metadata().name(), is("public.results.police-result-generated"));
+        assertThat(allValues.payloadAsJsonObject(), is(expectedPayload));
+
+    }
+
+    @Test
     public void shouldHandleTheEventPoliceNotificationRequested() {
         final UUID notificationId = randomUUID();
 
