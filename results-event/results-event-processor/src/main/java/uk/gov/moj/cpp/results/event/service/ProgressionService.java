@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
@@ -56,7 +57,7 @@ public class ProgressionService {
                 .build();
         final Envelope<JsonObject> envelope = envelopeFrom(metadata, payload);
         final Envelope<JsonObject> response = requester.requestAsAdmin(envelope, JsonObject.class);
-        return Optional.of(response.payload());
+        return ofNullable(response.payload());
     }
 
     public JsonObject getProsecutionCaseDetails(final UUID caseId) {
@@ -92,6 +93,6 @@ public class ProgressionService {
                         .withId(randomUUID())
                         .build(),
                 payload);
-        return Optional.ofNullable(requester.requestAsAdmin(envelope, JsonObject.class).payload());
+        return ofNullable(requester.requestAsAdmin(envelope, JsonObject.class).payload());
     }
 }
