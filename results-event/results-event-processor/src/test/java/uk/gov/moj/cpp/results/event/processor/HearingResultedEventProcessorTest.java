@@ -2,8 +2,8 @@ package uk.gov.moj.cpp.results.event.processor;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -369,7 +369,7 @@ public class HearingResultedEventProcessorTest {
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         final String externalCaptor = externalPayloadCaptor.getValue();
-        JsonReader jsonReader = Json.createReader(new StringReader(externalCaptor));
+        JsonReader jsonReader = JsonObjects.createReader(new StringReader(externalCaptor));
         JsonObject externalPayload = jsonReader.readObject();
         jsonReader.close();
 

@@ -12,7 +12,7 @@ import static uk.gov.justice.services.common.http.HeaderConstants.ID;
 
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 
 import org.apache.http.HttpHeaders;
 
@@ -24,7 +24,7 @@ public class SjpStub {
 
     public static void setupSjpQueryStub(final String caseUrn, final UUID caseId) {
 
-        final String payload = Json.createObjectBuilder()
+        final String payload = JsonObjects.createObjectBuilder()
                 .add("id", caseId.toString())
                 .build().toString();
 
