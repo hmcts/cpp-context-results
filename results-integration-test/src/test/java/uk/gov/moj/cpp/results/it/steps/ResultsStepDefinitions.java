@@ -51,7 +51,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.jms.JMSException;
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 
@@ -119,7 +119,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             @Override
             public void describeMismatch(final Object item, final Description description) {
                 final ResponseData responseData = (ResponseData) item;
-                final JsonObject jsonObject = Json.createReader(new StringReader(responseData.getPayload())).readObject();
+                final JsonObject jsonObject = JsonObjects.createReader(new StringReader(responseData.getPayload())).readObject();
                 matcher.describeMismatch(jsonObject, description);
             }
 

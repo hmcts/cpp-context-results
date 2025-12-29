@@ -12,7 +12,7 @@ import uk.gov.justice.services.messaging.Metadata;
 
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -28,14 +28,14 @@ public class Originator {
     }
 
     public static Metadata createMetadataWithProcessIdAndUserId(final String id, final String name, final String userId) {
-        final JsonObjectBuilder builder = Json.createObjectBuilder()
+        final JsonObjectBuilder builder = JsonObjects.createObjectBuilder()
                 .add(ID, id)
                 .add(NAME, name)
                 .add(SOURCE, ORIGINATOR_VALUE)
                 .add(SOURCE_NCES, ORIGINATOR_VALUE_NCES);
 
         if (nonNull(userId)) {
-            builder.add(CONTEXT, Json.createObjectBuilder()
+            builder.add(CONTEXT, JsonObjects.createObjectBuilder()
                    .add(USER_ID, userId));
         }
 
@@ -49,7 +49,7 @@ public class Originator {
     }
 
     private static JsonObject addMetadataToPayload(final JsonObject load, final Metadata metadata) {
-        final JsonObjectBuilder job = Json.createObjectBuilder();
+        final JsonObjectBuilder job = JsonObjects.createObjectBuilder();
         load.entrySet().forEach(entry -> job.add(entry.getKey(), entry.getValue()));
         job.add(JsonEnvelope.METADATA, metadata.asJsonObject());
         return job.build();

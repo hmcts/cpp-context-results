@@ -37,7 +37,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -130,7 +130,7 @@ public class ResultsEventListenerTest {
     public void shouldHearingResultsAddedForDay() {
 
         final UUID hearingId = randomUUID();
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearing", objectToJsonObjectConverter.convert(Hearing.hearing()
                         .withId(hearingId)
                         .withHearingDays(Arrays.asList(HearingDay.hearingDay()
@@ -168,7 +168,7 @@ public class ResultsEventListenerTest {
         final UUID case2Id = randomUUID();
         final UUID case3Id = randomUUID();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearing", objectToJsonObjectConverter.convert(Hearing.hearing()
                         .withId(hearingId)
                         .withIsGroupProceedings(Boolean.TRUE)
@@ -227,7 +227,7 @@ public class ResultsEventListenerTest {
         final String HEARING = "hearing";
         final UUID hearingId = randomUUID();
         final String caseId = "cccc1111-1e20-4c21-916a-81a6c90239e5";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearingId", hearingId.toString())
                 .add("caseId", caseId)
                 .build();
@@ -256,7 +256,7 @@ public class ResultsEventListenerTest {
     public void shouldHearingCaseEjectedWhenMultiDayHearing() throws IOException {
         final UUID hearingId = randomUUID();
         final String caseId = "cccc1111-1e20-4c21-916a-81a6c90239e5";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearingId", hearingId.toString())
                 .add("hearingDay", hearingId.toString())
                 .add("caseId", caseId)
@@ -279,7 +279,7 @@ public class ResultsEventListenerTest {
         final String HEARING = "hearing";
         final UUID hearingId = randomUUID();
         final String caseId = "cccc1111-1e20-4c21-916a-81a6c90239e5";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearingId", hearingId.toString())
                 .add("caseId", caseId)
                 .build();
@@ -322,7 +322,7 @@ public class ResultsEventListenerTest {
         final String HEARING = "hearing";
         final UUID hearingId = randomUUID();
         final String applicationId = "79dbbf11-8108-4834-aff1-f24c3612fb69";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearingId", hearingId.toString())
                 .add("applicationId", applicationId)
                 .build();
@@ -354,7 +354,7 @@ public class ResultsEventListenerTest {
         final String HEARING = "hearing";
         final UUID hearingId = randomUUID();
         final String applicationId = "79dbbf11-8108-4834-aff1-f24c3612fb69";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearingId", hearingId.toString())
                 .add("applicationId", applicationId)
                 .build();
@@ -382,7 +382,7 @@ public class ResultsEventListenerTest {
     public void shouldHearingApplicationEjectedWhenMultiDayHearing() throws IOException {
         final UUID hearingId = randomUUID();
         final String applicationId = "79dbbf11-8108-4834-aff1-f24c3612fb69";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add("hearingId", hearingId.toString())
                 .add("applicationId", applicationId)
                 .build();

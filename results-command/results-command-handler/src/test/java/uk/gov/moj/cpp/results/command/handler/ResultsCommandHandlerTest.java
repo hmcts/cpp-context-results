@@ -9,8 +9,8 @@ import static java.util.Optional.of;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.Json.createReader;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -108,7 +108,7 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
@@ -255,7 +255,7 @@ public class ResultsCommandHandlerTest {
         } catch (final Exception e) {
             fail("Error consuming file from location " + path);
         }
-        final JsonReader reader = Json.createReader(new StringReader(request));
+        final JsonReader reader = JsonObjects.createReader(new StringReader(request));
         return reader.readObject();
     }
 
@@ -311,9 +311,9 @@ public class ResultsCommandHandlerTest {
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
 
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.add-hearing-result-for-day"),
-                Json.createObjectBuilder()
+                JsonObjects.createObjectBuilder()
                         .add("hearingDay", hearingDay.toString())
-                        .add("hearing", Json.createObjectBuilder()
+                        .add("hearing", JsonObjects.createObjectBuilder()
                                 .add("id", hearingId.toString())
                                 .build())
                         .build());
@@ -352,70 +352,70 @@ public class ResultsCommandHandlerTest {
         when(this.aggregateService.get(this.eventStream, ResultsAggregate.class)).thenReturn(new ResultsAggregate());
 
         final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.add-hearing-result-for-day"),
-                Json.createObjectBuilder()
+                JsonObjects.createObjectBuilder()
                         .add("hearingDay", hearingDay.toString())
-                        .add("hearing", Json.createObjectBuilder()
+                        .add("hearing", JsonObjects.createObjectBuilder()
                                 .add("id", hearingId.toString())
                                 .add("isGroupProceedings", Boolean.TRUE)
-                                .add("prosecutionCases", Json.createArrayBuilder()
-                                        .add(Json.createObjectBuilder()
+                                .add("prosecutionCases", JsonObjects.createArrayBuilder()
+                                        .add(JsonObjects.createObjectBuilder()
                                                 .add("id", case1Id.toString())
                                                 .add("isCivil", Boolean.TRUE)
                                                 .add("groupId", groupId.toString())
                                                 .add("isGroupMember", Boolean.TRUE)
                                                 .add("isGroupMaster", Boolean.TRUE)
-                                                .add("defendants", Json.createArrayBuilder()
-                                                        .add(Json.createObjectBuilder()
+                                                .add("defendants", JsonObjects.createArrayBuilder()
+                                                        .add(JsonObjects.createObjectBuilder()
                                                                 .add("id", UUID.randomUUID().toString())
-                                                                .add("offences", Json.createArrayBuilder()
-                                                                        .add(Json.createObjectBuilder()
+                                                                .add("offences", JsonObjects.createArrayBuilder()
+                                                                        .add(JsonObjects.createObjectBuilder()
                                                                                 .add("id", UUID.randomUUID().toString()))
                                                                         .build())
                                                                 .build())
                                                         .build())
                                                 .build())
-                                        .add(Json.createObjectBuilder()
+                                        .add(JsonObjects.createObjectBuilder()
                                                 .add("id", case2Id.toString())
                                                 .add("isCivil", Boolean.TRUE)
                                                 .add("groupId", groupId.toString())
                                                 .add("isGroupMember", Boolean.TRUE)
                                                 .add("isGroupMaster", Boolean.FALSE)
-                                                .add("defendants", Json.createArrayBuilder()
-                                                        .add(Json.createObjectBuilder()
+                                                .add("defendants", JsonObjects.createArrayBuilder()
+                                                        .add(JsonObjects.createObjectBuilder()
                                                                 .add("id", UUID.randomUUID().toString())
-                                                                .add("offences", Json.createArrayBuilder()
-                                                                        .add(Json.createObjectBuilder()
+                                                                .add("offences", JsonObjects.createArrayBuilder()
+                                                                        .add(JsonObjects.createObjectBuilder()
                                                                                 .add("id", UUID.randomUUID().toString()))
                                                                         .build())
                                                                 .build())
                                                         .build())
                                                 .build())
-                                        .add(Json.createObjectBuilder()
+                                        .add(JsonObjects.createObjectBuilder()
                                                 .add("id", case3Id.toString())
                                                 .add("isCivil", Boolean.TRUE)
                                                 .add("groupId", groupId.toString())
                                                 .add("isGroupMember", Boolean.FALSE)
                                                 .add("isGroupMaster", Boolean.FALSE)
-                                                .add("defendants", Json.createArrayBuilder()
-                                                        .add(Json.createObjectBuilder()
+                                                .add("defendants", JsonObjects.createArrayBuilder()
+                                                        .add(JsonObjects.createObjectBuilder()
                                                                 .add("id", UUID.randomUUID().toString())
-                                                                .add("offences", Json.createArrayBuilder()
-                                                                        .add(Json.createObjectBuilder()
+                                                                .add("offences", JsonObjects.createArrayBuilder()
+                                                                        .add(JsonObjects.createObjectBuilder()
                                                                                 .add("id", UUID.randomUUID().toString()))
                                                                         .build())
                                                                 .build())
                                                         .build())
                                                 .build())
-                                        .add(Json.createObjectBuilder()
+                                        .add(JsonObjects.createObjectBuilder()
                                                 .add("id", case4Id.toString())
                                                 .add("isCivil", Boolean.TRUE)
                                                 .add("groupId", groupId.toString())
                                                 .add("isGroupMember", Boolean.FALSE)
-                                                .add("defendants", Json.createArrayBuilder()
-                                                        .add(Json.createObjectBuilder()
+                                                .add("defendants", JsonObjects.createArrayBuilder()
+                                                        .add(JsonObjects.createObjectBuilder()
                                                                 .add("id", UUID.randomUUID().toString())
-                                                                .add("offences", Json.createArrayBuilder()
-                                                                        .add(Json.createObjectBuilder()
+                                                                .add("offences", JsonObjects.createArrayBuilder()
+                                                                        .add(JsonObjects.createObjectBuilder()
                                                                                 .add("id", UUID.randomUUID().toString()))
                                                                         .build())
                                                                 .build())
@@ -514,9 +514,9 @@ public class ResultsCommandHandlerTest {
 
         final String CASE_ID = "caseId";
         final String HEARING_IDS = "hearingIds";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                        JsonObjects.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
                 .add(CASE_ID, caseId.toString())
                 .build();
 
@@ -569,9 +569,9 @@ public class ResultsCommandHandlerTest {
 
         final String APPLICATION_ID = "applicationId";
         final String HEARING_IDS = "hearingIds";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                        JsonObjects.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
                 .add(APPLICATION_ID, applicationId.toString())
                 .build();
 
