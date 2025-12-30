@@ -281,7 +281,6 @@ public class ResultsEventProcessorTest {
         final UUID userId = UUID.randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
-        final JsonObject jsonResult = JsonObjects.createObjectBuilder().add("val", randomUUID().toString()).build();
         final JsonObject transformedHearing = envelope.asJsonObject();
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
