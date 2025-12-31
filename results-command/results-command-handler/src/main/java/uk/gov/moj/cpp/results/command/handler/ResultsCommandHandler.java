@@ -186,7 +186,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final String sourceType = session.getString("sourceType");
         final List<SessionDay> sessionDays = ofNullable((List<JsonObject>) session.get("sessionDays")).orElse(emptyList()).stream()
                 .map(jsonObject -> jsonObjectToObjectConverter.convert(jsonObject, SessionDay.class))
-                .collect(toList());
+                .toList();
         final List<JsonObject> cases = ofNullable((List<JsonObject>) payload.get("cases")).orElse(emptyList());
         final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications")).orElse(emptyList());
         final Optional<Boolean> isReshare = payload.containsKey("isReshare") ? Optional.of(payload.getBoolean("isReshare")) : Optional.empty();
@@ -204,11 +204,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final List<UUID> caseIdsFromAggregate = aggregate.getCaseIds();
         final List<CourtApplication> courtApplicationList = ofNullable(courtApplications).orElse(emptyList()).stream()
                 .map(jsonObject -> jsonObjectToObjectConverter.convert(jsonObject, CourtApplication.class))
-                .collect(toList());
+                .toList();
 
         sendAppealUpdateNotification(commandEnvelope, jurisdictionType, courtApplicationList);
 
-        handleStandaloneApplicationsForSPIOut(courtApplicationList, jurisdictionType, fromString(id), hearingDay, isReshare, courtCentre, commandEnvelope);
+        handleStandaloneApplicationsForSPIOut(courtApplicationList, jurisdictionType, fromString(id), hearingDay, isReshare, commandEnvelope);
 
         for (final JsonObject c : cases) {
 
@@ -253,7 +253,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         }
     }
 
-    private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final CourtCentreWithLJA courtCentre, final JsonEnvelope commandEnvelope) {
+    private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final JsonEnvelope commandEnvelope) {
         if (isCrownCourt(jurisdictionType)) {
             return;
         }
