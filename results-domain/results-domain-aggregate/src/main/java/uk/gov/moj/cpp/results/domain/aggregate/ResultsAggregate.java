@@ -519,7 +519,7 @@ public class ResultsAggregate implements Aggregate {
         final boolean hearingDaysPresent = nonNull(this.hearing) && isNotEmpty(this.hearing.getHearingDays());
         final boolean multiDayHearing = hearingDaysPresent && this.hearing.getHearingDays().size() > 1;
 
-        LOGGER.info("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {} hearingDaysIsNotNull: {} hearingDaysHasMoreThenOneElement: {}",
+        LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {} hearingDaysIsNotNull: {} hearingDaysHasMoreThenOneElement: {}",
             sendSpiOut, isResultNotReshared, isNotEmpty(courtApplication.getJudicialResults()), hearingDaysPresent, multiDayHearing);
         return sendSpiOut &&
                 isResultNotReshared &&

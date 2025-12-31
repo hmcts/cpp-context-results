@@ -147,6 +147,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     @Handles("results.command.create-results-for-day")
     public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
+        if(!envelope.payloadIsNull()){
+            LOGGER.error("results.command.create-results-for-day received: {}", envelope.payloadAsJsonObject());
+        }
+
         final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
         createResults(envelope, of(hearingDay));
     }
@@ -182,7 +186,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final String sourceType = session.getString("sourceType");
         final List<SessionDay> sessionDays = ofNullable((List<JsonObject>) session.get("sessionDays")).orElse(emptyList()).stream()
                 .map(jsonObject -> jsonObjectToObjectConverter.convert(jsonObject, SessionDay.class))
-                .collect(toList());
+                .toList();
         final List<JsonObject> cases = ofNullable((List<JsonObject>) payload.get("cases")).orElse(emptyList());
         final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications")).orElse(emptyList());
         final Optional<Boolean> isReshare = payload.containsKey("isReshare") ? Optional.of(payload.getBoolean("isReshare")) : Optional.empty();
@@ -200,11 +204,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final List<UUID> caseIdsFromAggregate = aggregate.getCaseIds();
         final List<CourtApplication> courtApplicationList = ofNullable(courtApplications).orElse(emptyList()).stream()
                 .map(jsonObject -> jsonObjectToObjectConverter.convert(jsonObject, CourtApplication.class))
-                .collect(toList());
+                .toList();
 
         sendAppealUpdateNotification(commandEnvelope, jurisdictionType, courtApplicationList);
 
-        handleStandaloneApplicationsForSPIOut(courtApplicationList, jurisdictionType, fromString(id), hearingDay, isReshare, courtCentre, commandEnvelope);
+        handleStandaloneApplicationsForSPIOut(courtApplicationList, jurisdictionType, fromString(id), hearingDay, isReshare, commandEnvelope);
 
         for (final JsonObject c : cases) {
 
@@ -249,10 +253,11 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         }
     }
 
-    private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final CourtCentreWithLJA courtCentre, final JsonEnvelope commandEnvelope) {
+    private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final JsonEnvelope commandEnvelope) {
         if (isCrownCourt(jurisdictionType)) {
             return;
         }
+        LOGGER.error("--------- in SPIOut flow for standalone application");
         ofNullable(courtApplicationList).orElse(emptyList()).stream()
                 .filter(courtApplication -> STANDALONE.equals(courtApplication.getType().getLinkType()))
                 .forEach(courtApplication -> {
@@ -266,6 +271,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                             .orElse(null);
 
                     if (isEmpty(originatingOrganisation)) {
+                        LOGGER.error("--------- The value for originatingOrganisation : {}", originatingOrganisation);
                         return;
                     }
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
@@ -275,6 +281,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
                         prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
+                        LOGGER.error("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
                     });
 
                     try {
