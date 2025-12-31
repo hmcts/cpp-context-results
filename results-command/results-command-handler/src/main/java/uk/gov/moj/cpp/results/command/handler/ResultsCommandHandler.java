@@ -147,7 +147,10 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     @Handles("results.command.create-results-for-day")
     public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
-        LOGGER.error("results.command.create-results-for-day received: {}", envelope.payloadAsJsonString());
+        if(!envelope.payloadIsNull()){
+            LOGGER.error("results.command.create-results-for-day received: {}", envelope.payloadAsJsonObject().toString());
+        }
+
         final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
         createResults(envelope, of(hearingDay));
     }
