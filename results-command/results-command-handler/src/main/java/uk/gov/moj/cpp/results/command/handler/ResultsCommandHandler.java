@@ -147,6 +147,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     @Handles("results.command.create-results-for-day")
     public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
+        LOGGER.error("results.command.create-results-for-day received: {}", envelope.payloadAsJsonString());
         final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
         createResults(envelope, of(hearingDay));
     }
@@ -253,6 +254,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         if (isCrownCourt(jurisdictionType)) {
             return;
         }
+        LOGGER.error("--------- in SPIOut flow for standalone application");
         ofNullable(courtApplicationList).orElse(emptyList()).stream()
                 .filter(courtApplication -> STANDALONE.equals(courtApplication.getType().getLinkType()))
                 .forEach(courtApplication -> {
@@ -266,6 +268,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                             .orElse(null);
 
                     if (isEmpty(originatingOrganisation)) {
+                        LOGGER.error("--------- The value for originatingOrganisation : {}", originatingOrganisation);
                         return;
                     }
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
@@ -275,6 +278,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
                         prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
+                        LOGGER.error("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
                     });
 
                     try {
