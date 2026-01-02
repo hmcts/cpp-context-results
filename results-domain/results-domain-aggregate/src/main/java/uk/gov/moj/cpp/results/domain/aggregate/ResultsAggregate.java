@@ -654,6 +654,7 @@ public class ResultsAggregate implements Aggregate {
 
     private PoliceResultGeneratedForStandaloneApplication buildPoliceResultGeneratedForStandaloneApplicationEvent(final CourtApplication application, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
         List<SessionDay> sessionDayList = this.sessionDays;
+
         if (hearingDay.isPresent()) {
             sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).toList();
         }
