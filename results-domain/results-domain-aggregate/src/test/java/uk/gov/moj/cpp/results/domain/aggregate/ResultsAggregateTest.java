@@ -45,6 +45,8 @@ import uk.gov.justice.core.courts.CaseAddedEvent;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.ContactNumber;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationType;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
@@ -61,6 +63,7 @@ import uk.gov.justice.core.courts.HearingResultsAddedForDay;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.LinkType;
 import uk.gov.justice.core.courts.LjaDetails;
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceDetails;
@@ -68,6 +71,7 @@ import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.Plea;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
+import uk.gov.justice.core.courts.PoliceResultGeneratedForStandaloneApplication;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
@@ -150,6 +154,27 @@ public class ResultsAggregateTest {
         assertEquals(input.getHearing(), hearingResultsAdded.getHearing());
         assertEquals(input.getSharedTime(), hearingResultsAdded.getSharedTime());
     }
+
+    @Test
+    public void testHandleStandaloneApplication() {
+        final CourtApplication courtApplication = CourtApplication.courtApplication()
+                .withJudicialResults(singletonList(judicialResult().build()))
+                .withType(CourtApplicationType.courtApplicationType()
+                        .withLinkType(LinkType.STANDALONE)
+                        .build())
+                .build();
+        final boolean sendSpiOut = true;
+        final Optional<LocalDate> hearingDay = Optional.of(LocalDate.now());
+        final Optional<Boolean> isReshare = Optional.of(false);
+        final PoliceResultGeneratedForStandaloneApplication policeResultGeneratedForStandaloneApplication = resultsAggregate.handleStandaloneApplication(courtApplication, sendSpiOut, hearingDay, isReshare)
+                .map(o -> (PoliceResultGeneratedForStandaloneApplication) o)
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(policeResultGeneratedForStandaloneApplication);
+    }
+
+
 
     @Test
     public void testEjectCaseOrApplication_whenPayloadContainsCaseId_expectHearingCaseEjectedEvent() {
