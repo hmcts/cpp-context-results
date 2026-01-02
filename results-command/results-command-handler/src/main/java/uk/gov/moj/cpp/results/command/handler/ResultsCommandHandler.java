@@ -543,7 +543,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             final List<Offence> allOffences = resultsAggregateForInitialCaseHearing.getHearing()
                     .getProsecutionCases().stream()
                     .map(ProsecutionCase::getDefendants).flatMap(List::stream)
-                    .map(Defendant::getOffences).flatMap(List::stream).collect(toList());
+                    .map(Defendant::getOffences).flatMap(List::stream).toList();
 
             final List<OffenceResults> originalOffences = new ArrayList<>(hearingFinancialResultRequest.getOffenceResults());
 
@@ -621,7 +621,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 .filter(judicialResult -> nonNull(judicialResult.getJudicialResultPrompts()))
                 .map(JudicialResult::getJudicialResultPrompts).flatMap(List::stream)
                 .filter(a -> a.getPromptReference().equalsIgnoreCase(FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF))
-                .collect(toList());
+                .toList();
         return judicialResultPromptList.stream().findFirst().map(JudicialResultPrompt::getValue).orElse(null);
     }
 
