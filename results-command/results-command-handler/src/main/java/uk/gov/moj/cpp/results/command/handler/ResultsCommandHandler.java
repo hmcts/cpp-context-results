@@ -10,7 +10,6 @@ import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static javax.json.JsonValue.NULL;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -254,10 +253,9 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final JsonEnvelope commandEnvelope) {
-        if (isCrownCourt(jurisdictionType)) {
+        if (isCrownCourt(jurisdictionType)) { //for standalone applications, jurisdictionType is always MAGISTRATES
             return;
         }
-        LOGGER.error("--------- in SPIOut flow for standalone application");
         ofNullable(courtApplicationList).orElse(emptyList()).stream()
                 .filter(courtApplication -> STANDALONE.equals(courtApplication.getType().getLinkType()))
                 .forEach(courtApplication -> {
@@ -544,7 +542,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             final List<Offence> allOffences = resultsAggregateForInitialCaseHearing.getHearing()
                     .getProsecutionCases().stream()
                     .map(ProsecutionCase::getDefendants).flatMap(List::stream)
-                    .map(Defendant::getOffences).flatMap(List::stream).collect(toList());
+                    .map(Defendant::getOffences).flatMap(List::stream).toList();
 
             final List<OffenceResults> originalOffences = new ArrayList<>(hearingFinancialResultRequest.getOffenceResults());
 
@@ -622,7 +620,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 .filter(judicialResult -> nonNull(judicialResult.getJudicialResultPrompts()))
                 .map(JudicialResult::getJudicialResultPrompts).flatMap(List::stream)
                 .filter(a -> a.getPromptReference().equalsIgnoreCase(FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF))
-                .collect(toList());
+                .toList();
         return judicialResultPromptList.stream().findFirst().map(JudicialResultPrompt::getValue).orElse(null);
     }
 

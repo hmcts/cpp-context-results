@@ -45,6 +45,8 @@ import uk.gov.justice.core.courts.CaseAddedEvent;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.ContactNumber;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationType;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
@@ -61,6 +63,7 @@ import uk.gov.justice.core.courts.HearingResultsAddedForDay;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.LinkType;
 import uk.gov.justice.core.courts.LjaDetails;
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceDetails;
@@ -68,6 +71,7 @@ import uk.gov.justice.core.courts.Person;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.Plea;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
+import uk.gov.justice.core.courts.PoliceResultGeneratedForStandaloneApplication;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
@@ -150,6 +154,27 @@ public class ResultsAggregateTest {
         assertEquals(input.getHearing(), hearingResultsAdded.getHearing());
         assertEquals(input.getSharedTime(), hearingResultsAdded.getSharedTime());
     }
+
+    @Test
+    public void testHandleStandaloneApplication() {
+        final CourtApplication courtApplication = CourtApplication.courtApplication()
+                .withJudicialResults(singletonList(judicialResult().build()))
+                .withType(CourtApplicationType.courtApplicationType()
+                        .withLinkType(LinkType.STANDALONE)
+                        .build())
+                .build();
+        final boolean sendSpiOut = true;
+        final Optional<LocalDate> hearingDay = Optional.of(LocalDate.now());
+        final Optional<Boolean> isReshare = Optional.of(false);
+        final PoliceResultGeneratedForStandaloneApplication policeResultGeneratedForStandaloneApplication = resultsAggregate.handleStandaloneApplication(courtApplication, sendSpiOut, hearingDay, isReshare)
+                .map(o -> (PoliceResultGeneratedForStandaloneApplication) o)
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(policeResultGeneratedForStandaloneApplication);
+    }
+
+
 
     @Test
     public void testEjectCaseOrApplication_whenPayloadContainsCaseId_expectHearingCaseEjectedEvent() {
@@ -763,6 +788,46 @@ public class ResultsAggregateTest {
 
         final UUID defendantId = caseDetails.getDefendants().get(0).getDefendantId();
         final List<Object> objectList = resultsAggregate.generatePoliceResults(caseDetails.getCaseId().toString(), defendantId.toString(), Optional.empty()).collect(toList());
+        final PoliceResultGenerated policeResultGenerated = objectList.stream().filter(e -> e instanceof PoliceResultGenerated)
+                .map(o -> (PoliceResultGenerated) o)
+                .findFirst()
+                .orElse(null);
+        assertThat(policeResultGenerated, notNullValue());
+        assertThat(policeResultGenerated.getCaseId(), is(CASE_ID));
+        assertThat(policeResultGenerated.getUrn(), is(URN));
+        assertThat(policeResultGenerated.getDefendant().getDefendantId(), is(defendantId));
+        assertPoliceResultGeneratedEvent(caseDetails.getDefendants().get(0), objectList);
+
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getPsaCode(), valueOf(1234));
+        assertEquals(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getCode(), courtCode);
+        assertThat(policeResultGenerated.getCourtCentreWithLJA().getCourtCentre().getLja().getLjaCode(), is("1234"));
+
+    }
+
+    @Test
+    public void shouldRaisePoliceResultGeneratedEvent_WhenHearingDayIsNotEmpty() {
+        final CourtCentreWithLJA courtCentre = courtCentreWithLJA()
+                .withCourtCentre(courtCentre()
+                        .withCode(courtCode)
+                        .withLja(LjaDetails.ljaDetails().withLjaCode("123").build())
+                        .withPsaCode(987)
+                        .build())
+                .build();
+        final ZonedDateTime sittingDay = now();
+        final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
+        final List<SessionDay> sessionDays = of(sessionDay);
+
+        resultsAggregate.saveHearingResults(hearingResultedWithYouthCourt);
+        resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
+
+        final CaseDetails caseDetails = createCaseDetails(null, of(offenceDetails().withId(OFFENCE_ID).withAllocationDecision(buildAllocationDecision()).withJudicialResults(of(judicialResult().build())).build()));
+        resultsAggregate.apply(hearingResultsAddedForDay(caseDetails));
+        resultsAggregate.handleCase(caseDetails);
+        resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty(), "", "", Optional.of(Boolean.TRUE));
+
+        final UUID defendantId = caseDetails.getDefendants().get(0).getDefendantId();
+        final List<Object> objectList = resultsAggregate.generatePoliceResults(caseDetails.getCaseId().toString(), defendantId.toString(), Optional.of(LocalDate.now())).collect(toList());
         final PoliceResultGenerated policeResultGenerated = objectList.stream().filter(e -> e instanceof PoliceResultGenerated)
                 .map(o -> (PoliceResultGenerated) o)
                 .findFirst()

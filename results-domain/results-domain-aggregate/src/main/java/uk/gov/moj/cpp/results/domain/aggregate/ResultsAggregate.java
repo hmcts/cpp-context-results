@@ -516,15 +516,12 @@ public class ResultsAggregate implements Aggregate {
 
     private boolean isEligibleForSPIOut(final CourtApplication courtApplication, final boolean sendSpiOut, final Optional<Boolean> isReshare) {
         final boolean isResultNotReshared = !isResultReshared(isReshare, null);
-        final boolean hearingDaysPresent = nonNull(this.hearing) && isNotEmpty(this.hearing.getHearingDays());
-        final boolean multiDayHearing = hearingDaysPresent && this.hearing.getHearingDays().size() > 1;
-
-        LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {} hearingDaysIsNotNull: {} hearingDaysHasMoreThenOneElement: {}",
-            sendSpiOut, isResultNotReshared, isNotEmpty(courtApplication.getJudicialResults()), hearingDaysPresent, multiDayHearing);
+        final boolean isResultsPresent = isNotEmpty(courtApplication.getJudicialResults());
+        LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {}",
+            sendSpiOut, isResultNotReshared, isResultsPresent);
         return sendSpiOut &&
                 isResultNotReshared &&
-                isNotEmpty(courtApplication.getJudicialResults()) &&
-                multiDayHearing;
+                isResultsPresent;
     }
 
     private boolean isResultReshared(final Optional<Boolean> isReshare, final CaseResultDetails caseResultDetails) {
@@ -658,10 +655,10 @@ public class ResultsAggregate implements Aggregate {
     private PoliceResultGeneratedForStandaloneApplication buildPoliceResultGeneratedForStandaloneApplicationEvent(final CourtApplication application, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
         List<SessionDay> sessionDayList = this.sessionDays;
         if (hearingDay.isPresent()) {
-            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).collect(Collectors.toList());
+            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).toList();
         }
         if (nonNull(this.hearing) && Boolean.TRUE.equals(this.hearing.getIsBoxHearing())) {
-            sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).collect(Collectors.toList());
+            sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).toList();
         }
 
 
