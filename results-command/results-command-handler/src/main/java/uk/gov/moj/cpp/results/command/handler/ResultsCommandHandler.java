@@ -254,10 +254,9 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     }
 
     private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final JsonEnvelope commandEnvelope) {
-        if (isCrownCourt(jurisdictionType)) {
+        if (isCrownCourt(jurisdictionType)) { //for standalone applications, jurisdictionType is always MAGISTRATES
             return;
         }
-        LOGGER.error("--------- in SPIOut flow for standalone application");
         ofNullable(courtApplicationList).orElse(emptyList()).stream()
                 .filter(courtApplication -> STANDALONE.equals(courtApplication.getType().getLinkType()))
                 .forEach(courtApplication -> {

@@ -1799,7 +1799,39 @@ public class ResultsCommandHandlerTest {
                 .map(JsonEnvelope::payloadAsJsonObject)
                 .toList();
 
-        assertThat(policeResultGeneratedEvents.size(), is(1)); //TODO : Aykut - update to 0 then police flag query is cleared
+        assertThat(policeResultGeneratedEvents.size(), is(1));
+
+    }
+
+    @Test
+    void givenStandaloneApplicationWhenSingleHearingDayThenPoliceResultGeneratedEventIsRaised() throws EventStreamException, IOException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+        when(eventSource.getStreamById(any())).thenReturn(eventStream);
+        doReturn(resultsAggregate).when(aggregateService).get(any(EventStream.class), eq(ResultsAggregate.class));
+
+        final JsonObject jsonProsecutor = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .build();
+
+        lenient().when(referenceDataService.getSpiOutFlagForOriginatingOrganisation(any())).thenReturn(of(jsonProsecutor));
+        lenient().when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any())).thenReturn(of(jsonProsecutor));
+
+        resultsAggregate.apply(loadHearingResultsAddedForDay("json/hearing-results-added-for-day_single-hearing-day_standalone-application.json"));
+
+        final JsonObject commandPayload = getPayload("json/create-results_standalone-application.json");
+        final JsonEnvelope commandEnvelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), commandPayload);
+        this.resultsCommandHandler.createResultsForDay(commandEnvelope);
+
+        verify(eventStream, atLeast(1)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        final List<JsonObject> policeResultGeneratedEvents = allValues.stream()
+                .filter(envelope -> envelope.metadata().name().equals("results.event.police-result-generated-for-standalone-application"))
+                .map(JsonEnvelope::payloadAsJsonObject)
+                .toList();
+
+        assertThat(policeResultGeneratedEvents.size(), is(1));
 
     }
 

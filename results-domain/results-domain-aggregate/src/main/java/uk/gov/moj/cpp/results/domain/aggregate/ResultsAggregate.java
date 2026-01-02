@@ -517,14 +517,12 @@ public class ResultsAggregate implements Aggregate {
     private boolean isEligibleForSPIOut(final CourtApplication courtApplication, final boolean sendSpiOut, final Optional<Boolean> isReshare) {
         final boolean isResultNotReshared = !isResultReshared(isReshare, null);
         final boolean hearingDaysPresent = nonNull(this.hearing) && isNotEmpty(this.hearing.getHearingDays());
-        final boolean multiDayHearing = hearingDaysPresent && this.hearing.getHearingDays().size() > 1;
 
-        LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {} hearingDaysIsNotNull: {} hearingDaysHasMoreThenOneElement: {}",
-            sendSpiOut, isResultNotReshared, isNotEmpty(courtApplication.getJudicialResults()), hearingDaysPresent, multiDayHearing);
+        LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {} hearingDaysIsNotNull: {}",
+            sendSpiOut, isResultNotReshared, isNotEmpty(courtApplication.getJudicialResults()), hearingDaysPresent);
         return sendSpiOut &&
                 isResultNotReshared &&
-                isNotEmpty(courtApplication.getJudicialResults()) &&
-                multiDayHearing;
+                isNotEmpty(courtApplication.getJudicialResults());
     }
 
     private boolean isResultReshared(final Optional<Boolean> isReshare, final CaseResultDetails caseResultDetails) {
