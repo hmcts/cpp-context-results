@@ -635,7 +635,7 @@ public class ResultsAggregate implements Aggregate {
     private PoliceResultGenerated buildPoliceResultGeneratedEvent(final UUID caseId, final String caseUrn, final CaseDefendant defendant, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
         List<SessionDay> sessionDayList = this.sessionDays;
         if (hearingDay.isPresent()) {
-            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).toList();
+            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).collect(Collectors.toList());
         }
         if (hearing != null && Boolean.TRUE.equals(hearing.getIsBoxHearing())) {
             sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).collect(Collectors.toList());
