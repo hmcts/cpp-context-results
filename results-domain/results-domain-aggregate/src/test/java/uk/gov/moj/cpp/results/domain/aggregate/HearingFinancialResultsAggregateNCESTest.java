@@ -729,20 +729,20 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/application/app-granted-off-next-result-offence-with-fo/case-resulted.json",
                                                 accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
-                                .newStep(newResultTrackedStep("reopen app granted")
-                                        .withResultTrackedEvent("json/nces/application/app-granted-off-next-result-offence-with-fo/application-resulted.json",
+                                .newStep(newResultTrackedStep("reopen app adjourned")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-off-next-result-offence-with-fo/reopen-application-resulted-adj.json",
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-off-next-result-offence-with-fo/application-updated.json",
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-off-next-result-offence-with-fo/reopen_nces_updated_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
                                 .newStep(newResultTrackedStep("app granted with offence fine which is in next hearing ")
-                                        .withResultTrackedEvent("json/nces/application/app-granted-off-next-result-offence-with-fo/offence-resulted.json",
+                                        .withResultTrackedEvent("json/nces/application/app-granted-off-next-result-offence-with-fo/reopen-application-resulted.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-off-next-result-offence-with-fo/application-granted.json",
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-off-next-result-offence-with-fo/reopen_nces_granted_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")
@@ -2258,7 +2258,7 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_appeal_results_tracked.json",
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_allowed_notification_expected.json",
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/matched-defendants/2-cases-resulted-inactive-application-added/2_app_updated_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT,22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")

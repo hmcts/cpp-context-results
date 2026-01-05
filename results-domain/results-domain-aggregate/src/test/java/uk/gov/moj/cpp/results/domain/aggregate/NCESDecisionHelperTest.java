@@ -58,9 +58,9 @@ public class NCESDecisionHelperTest {
     }
 
     @Test
-    public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedAdj_previousUpdateNotificationSentReturnsFalse() {
+    public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedAdj_previousGrantedNotificationSentReturnsFalse() {
         final UUID applicationId = randomUUID();
-        final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).build())).build();
+        final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).withApplicationResultsCategory(FINAL.name()).withOffenceResultsCategory(FINAL.name()).build())).build();
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withApplicationResultsCategory(FINAL.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(INTERMEDIARY.name()).build()));
 
@@ -71,7 +71,7 @@ public class NCESDecisionHelperTest {
     @Test
     public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedAdj_andPreviousApplicationOffencesResultedAdj_previousUpdateNotificationSentReturnsTrue() {
         final UUID applicationId = randomUUID();
-        final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).build())).build();
+        final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).withOffenceResultsCategory(FINAL.name()).withApplicationResultsCategory(FINAL.name()).build())).build();
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withApplicationResultsCategory(INTERMEDIARY.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(INTERMEDIARY.name()).build()));
 
@@ -91,7 +91,7 @@ public class NCESDecisionHelperTest {
     }
 
     @Test
-    public void givenFinancialResultRequestForReopen_whenPreviousApplicationResultedAdj_andPreviousApplicationOffencesResultedAdj_previousUpdateNotificationSentReturnsFalse() {
+    public void givenFinancialResultRequestForReopen_whenPreviousApplicationResultedAdj_andPreviousApplicationOffencesResultedAdj_previousUpdateNotificationSentReturnsTrue() {
         final UUID applicationId = randomUUID();
         final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(REOPEN).withApplicationResultsCategory(INTERMEDIARY.name()).withOffenceResultsCategory(INTERMEDIARY.name()).build())).build();
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withApplicationResultsCategory(INTERMEDIARY.name()).build()));
@@ -104,8 +104,8 @@ public class NCESDecisionHelperTest {
     @Test
     public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedAdj_isNewApplicationGrantedFalse() {
         final UUID applicationId = randomUUID();
-        final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).withResultCode("G").build())).build();
-        final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").build()));
+        final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build())).build();
+        final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(INTERMEDIARY.name()).build()));
 
         final boolean previousUpdateNotificationSent = NCESDecisionHelper.previousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
@@ -126,7 +126,7 @@ public class NCESDecisionHelperTest {
     @Test
     public void isApplicationDeniedReturnsTrueWhenApplicationTypeAndResultCodeMatchDeniedList() {
         final List<OffenceResultsDetails> details = List.of(
-                offenceResultsDetails().withApplicationId(randomUUID()).withApplicationType(APPEAL).withResultCode("APA").build()
+                offenceResultsDetails().withApplicationId(randomUUID()).withApplicationType(APPEAL).withResultCode("APA").withApplicationResultsCategory(FINAL.name()).build()
         );
 
         final boolean denied = NCESDecisionHelper.isApplicationDenied(details);
@@ -143,8 +143,8 @@ public class NCESDecisionHelperTest {
     public void isNewAppealReopenApplicationOffencesAreAdjournedReturnsTrueWhenAllFilteredOffencesAdjourned() {
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withOffenceResults(List.of(
-                        offenceResults().withApplicationType(APPEAL).withResultCode("AASA").withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build(),
-                        offenceResults().withApplicationType(APPEAL).withResultCode("AASA").withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build()
+                        offenceResults().withApplicationType(APPEAL).withResultCode("AASA").withApplicationResultsCategory(FINAL.name()).withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build(),
+                        offenceResults().withApplicationType(APPEAL).withResultCode("AASA").withApplicationResultsCategory(FINAL.name()).withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build()
                 ))
                 .build();
 
