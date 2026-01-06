@@ -23,7 +23,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-15",
       "resultCode": "AACA",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "APPEAL",
@@ -37,7 +39,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-15",
       "resultCode": "AACA",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "APPEAL",
@@ -51,7 +55,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-15",
       "resultCode": "AACA",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
@@ -62,7 +68,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £3000.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
@@ -73,7 +80,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £432.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
@@ -84,7 +92,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £234.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
@@ -95,7 +104,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £3453.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

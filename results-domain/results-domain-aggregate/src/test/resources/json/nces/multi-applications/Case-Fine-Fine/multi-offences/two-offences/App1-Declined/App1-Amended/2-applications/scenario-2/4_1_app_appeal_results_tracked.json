@@ -26,7 +26,9 @@
       "isParentFlag": true,
       "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
       "offenceTitle": "Robbery",
-      "resultCode": "ASV"
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "amendmentDate": "2025-08-14",
@@ -42,7 +44,9 @@
       "isParentFlag": true,
       "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ASV"
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "amendmentDate": "2025-08-14",
@@ -57,7 +61,8 @@
       "isFinancial": false,
       "isParentFlag": false,
       "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "amendmentDate": "2025-08-14",
@@ -72,7 +77,8 @@
       "isFinancial": false,
       "isParentFlag": false,
       "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

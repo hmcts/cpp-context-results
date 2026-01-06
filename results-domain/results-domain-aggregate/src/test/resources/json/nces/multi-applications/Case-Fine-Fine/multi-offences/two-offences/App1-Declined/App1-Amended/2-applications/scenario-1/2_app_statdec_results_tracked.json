@@ -23,7 +23,8 @@
       "isParentFlag": false,
       "offenceId": "506ca795-173e-4e13-986a-bb7d4e948e7b",
       "offenceTitle": "Robbery",
-      "resultCode": "RFSD"
+      "resultCode": "RFSD",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "367c3d7b-d747-4981-991a-f208ea75d004",
@@ -37,7 +38,8 @@
       "isParentFlag": false,
       "offenceId": "0f9898a1-9fc3-4dae-8e77-683e9ec19880",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "RFSD"
+      "resultCode": "RFSD",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

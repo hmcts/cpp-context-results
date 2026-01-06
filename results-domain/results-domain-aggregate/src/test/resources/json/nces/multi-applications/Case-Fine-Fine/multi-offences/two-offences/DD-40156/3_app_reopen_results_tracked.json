@@ -25,7 +25,9 @@
       "isParentFlag": true,
       "offenceId": "9988ba68-7220-4ba6-b895-16efde0ae094",
       "offenceTitle": "Drive whilst unfit through drink",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "701ef507-3fc0-4084-89af-2d7e41471d6c",
@@ -39,7 +41,9 @@
       "isParentFlag": true,
       "offenceId": "5d228682-2dda-4545-98d6-9890f3dafe7c",
       "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -50,7 +54,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "5d228682-2dda-4545-98d6-9890f3dafe7c",
-      "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+      "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

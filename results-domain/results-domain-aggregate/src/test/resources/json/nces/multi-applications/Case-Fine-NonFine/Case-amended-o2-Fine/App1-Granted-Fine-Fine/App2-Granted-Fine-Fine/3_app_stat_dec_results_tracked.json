@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
             "offenceTitle": "Robbery",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
@@ -52,7 +56,9 @@
             "isParentFlag": true,
             "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
             "offenceTitle": "Robbery",
-            "resultCode": "STDEC"
+            "resultCode": "STDEC",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "0210ab47-136b-442e-8e69-966a4cafddf1",
@@ -66,7 +72,9 @@
             "isParentFlag": true,
             "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "STDEC"
+            "resultCode": "STDEC",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -77,7 +85,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
-            "offenceTitle": "Robbery"
+            "offenceTitle": "Robbery",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Slavery and Trafficking Reparation Order",
@@ -88,7 +97,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "e03a4c0a-1390-4967-977f-c91a0c704553",
-            "offenceTitle": "Robbery"
+            "offenceTitle": "Robbery",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -99,7 +109,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -110,7 +121,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "5e7b9e58-f577-4efe-b17d-c6011b0b47dc",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

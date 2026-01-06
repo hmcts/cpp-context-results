@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "875410e5-1024-4be4-83d3-35df6c27e47a",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

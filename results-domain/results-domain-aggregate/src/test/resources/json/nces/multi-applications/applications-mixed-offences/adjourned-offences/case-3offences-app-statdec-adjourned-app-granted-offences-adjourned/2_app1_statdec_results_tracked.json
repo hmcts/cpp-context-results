@@ -14,6 +14,7 @@
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "Adjournment",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -22,11 +23,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Robbery"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "Adjournment",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -35,11 +38,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Theft from a shop"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "Adjournment",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -48,11 +53,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "5541a6a6-671b-430b-ab07-994a35f1156c",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "To attend or a warrant to issue",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -61,11 +68,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Robbery"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "To attend or a warrant to issue",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -74,11 +83,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Theft from a shop"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "To attend or a warrant to issue",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -87,11 +98,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "5541a6a6-671b-430b-ab07-994a35f1156c",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "Next hearing in magistrates' court",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -100,11 +113,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Robbery"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "Next hearing in magistrates' court",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -113,11 +128,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Theft from a shop"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "Next hearing in magistrates' court",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -126,11 +143,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "5541a6a6-671b-430b-ab07-994a35f1156c",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "At request of the prosecution",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -139,11 +158,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Robbery"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "At request of the prosecution",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -152,11 +173,13 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Theft from a shop"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
       "applicationResultType": "At request of the prosecution",
+      "applicationResultsCategory": "INTERMEDIARY",
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-11-21",
@@ -165,6 +188,7 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "5541a6a6-671b-430b-ab07-994a35f1156c",
+      "offenceResultsCategory": "INTERMEDIARY",
       "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
     }
   ],

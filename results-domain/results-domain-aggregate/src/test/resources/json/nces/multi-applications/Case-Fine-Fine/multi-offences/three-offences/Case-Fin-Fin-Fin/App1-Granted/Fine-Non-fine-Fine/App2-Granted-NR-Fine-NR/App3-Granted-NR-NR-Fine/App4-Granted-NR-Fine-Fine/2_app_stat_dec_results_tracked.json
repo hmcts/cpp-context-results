@@ -25,7 +25,9 @@
             "isParentFlag": true,
             "offenceId": "a039b3c1-1134-48fe-a85e-33953793107e",
             "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "85a4dd1f-0a29-47d0-b734-0e075da3f937",
@@ -39,7 +41,9 @@
             "isParentFlag": true,
             "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
             "offenceTitle": "Develop / produce an anti-personnel mine",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "85a4dd1f-0a29-47d0-b734-0e075da3f937",
@@ -53,7 +57,9 @@
             "isParentFlag": true,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
             "offenceTitle": "Drive whilst unfit through drink",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "85a4dd1f-0a29-47d0-b734-0e075da3f937",
@@ -67,7 +73,9 @@
             "isParentFlag": true,
             "offenceId": "a039b3c1-1134-48fe-a85e-33953793107e",
             "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over",
-            "resultCode": "STDEC"
+            "resultCode": "STDEC",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "85a4dd1f-0a29-47d0-b734-0e075da3f937",
@@ -81,7 +89,9 @@
             "isParentFlag": true,
             "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
             "offenceTitle": "Develop / produce an anti-personnel mine",
-            "resultCode": "STDEC"
+            "resultCode": "STDEC",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "85a4dd1f-0a29-47d0-b734-0e075da3f937",
@@ -95,7 +105,9 @@
             "isParentFlag": true,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
             "offenceTitle": "Drive whilst unfit through drink",
-            "resultCode": "STDEC"
+            "resultCode": "STDEC",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -106,7 +118,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "a039b3c1-1134-48fe-a85e-33953793107e",
-            "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+            "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Excise penalty",
@@ -117,7 +130,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -128,7 +142,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

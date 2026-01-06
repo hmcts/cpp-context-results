@@ -24,7 +24,8 @@
             "isParentFlag": false,
             "offenceId": "b7b9844c-44dd-4ac3-97dc-1532583ea24f",
             "offenceTitle": "Robbery",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "b02c4c64-c13e-4bf5-bfec-7b5774fa83ae",
@@ -38,7 +39,8 @@
             "isParentFlag": false,
             "offenceId": "5ec17174-36a2-46df-a573-b7800933f0af",
             "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "b02c4c64-c13e-4bf5-bfec-7b5774fa83ae",
@@ -52,7 +54,8 @@
             "isParentFlag": false,
             "offenceId": "5306dd66-6e1a-46e7-9479-8c2d037021be",
             "offenceTitle": "Robbery",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "b02c4c64-c13e-4bf5-bfec-7b5774fa83ae",
@@ -66,7 +69,8 @@
             "isParentFlag": false,
             "offenceId": "55e33875-adc1-40ec-a219-e01ef3e400dc",
             "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [
