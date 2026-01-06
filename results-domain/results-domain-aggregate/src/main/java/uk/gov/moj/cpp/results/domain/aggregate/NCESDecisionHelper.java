@@ -119,27 +119,16 @@ public class NCESDecisionHelper {
 
     }
 
-    public static boolean isNewStatdecApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+    public static boolean isNewStatdecOrReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
-                        .filter(offence -> nonNull(offence.getApplicationType()) && STAT_DEC.equals(offence.getApplicationType()))
+                        .filter(offence -> nonNull(offence.getApplicationType()))
+                        .filter(offence -> STAT_DEC.equals(offence.getApplicationType()) || REOPEN.equals(offence.getApplicationType()))
                         .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                         .filter(offence -> isNull(offence.getAmendmentDate()))
                         .filter(offence -> nonNull(offence.getApplicationId()) && stadec_reoopen_denied_result_codes.contains(offence.getResultCode()))
                         .toList();
 
         return !offenceResults.isEmpty() && offenceResults.stream().allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
-    }
-
-    public static boolean isNewReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
-
-        final List<OffenceResults> offenceResults = hearingFinancialResultRequest.getOffenceResults().stream()
-                .filter(offence -> nonNull(offence.getApplicationType()) && REOPEN.equals(offence.getApplicationType()))
-                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
-                .filter(offence -> isNull(offence.getAmendmentDate()))
-                .filter(offence -> nonNull(offence.getApplicationId()) && stadec_reoopen_denied_result_codes.contains(offence.getResultCode()))
-                .toList();
-
-            return !offenceResults.isEmpty() && offenceResults.stream().allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
     }
 
     /**
