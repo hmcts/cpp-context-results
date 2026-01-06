@@ -499,6 +499,59 @@ public class ResultsEventProcessorTest {
 
     }
 
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndApplicationAndUncompletedPlatformUrl() {
+        ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestArgumentCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
+        ArgumentCaptor<JsonObject> fileJsonObjectArgumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
+        final List<CaseDefendant> caseDefendants = getDefendants();
+
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", true, APPLICATION_ID);
+        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+        final UUID payloadFileId = randomUUID();
+
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn("http://xxx.xx.com");
+        when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()),eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
+
+        final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
+        final Map<String, String> additionalInformation = documentGenerationRequest.getAdditionalInformation();
+        assertThat(additionalInformation.get(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(additionalInformation.get(FIELD_URN), is(URN));
+        assertThat(additionalInformation.get(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(additionalInformation.get(FIELD_DEFENDANTS), is(AMENDED_DEFENDANTS));
+        assertThat(additionalInformation.get(FIELD_APPLICATIONS), is(AMENDED_APPLICATIONS));
+        assertThat(additionalInformation.get(FILED_SUBJECT), is(SUBJECT));
+        assertThat(additionalInformation.get(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_AAAG));
+
+        final JsonObject fileJsonObject = fileJsonObjectArgumentCaptor.getValue();
+        assertThat(fileJsonObject.getString("defendants"), is(AMENDED_DEFENDANTS));
+        assertThat(fileJsonObject.getString("applications"), is(AMENDED_APPLICATIONS));
+
+    }
+
+
+
+
     @Test
     public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndApplication() {
         ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestArgumentCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
