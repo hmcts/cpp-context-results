@@ -82,11 +82,6 @@ public interface ResultNotificationRule {
                     .anyMatch(offence -> APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()));
         }
 
-        public boolean isValidApplicationType() {
-            return request.getOffenceResults().stream()
-                    .anyMatch(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()));
-        }
-
         public boolean isCaseAmendmentProcess() {
             return isCaseAmendment() || isDeemedServedChangedForCase();
         }
