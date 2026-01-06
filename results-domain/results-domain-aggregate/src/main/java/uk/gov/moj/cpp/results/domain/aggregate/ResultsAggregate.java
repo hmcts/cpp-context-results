@@ -473,7 +473,7 @@ public class ResultsAggregate implements Aggregate {
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
 
-            defendantsFromAggregate.stream().map(Defendant::getId).forEach(id -> LOGGER.error("-----------Defendant ID in aggregate: {}", id));
+            defendantsFromAggregate.stream().map(Defendant::getId).forEach(defendantId -> LOGGER.error("-----------Defendant ID in aggregate: {}", defendantId));
             if (defendantOptional.isEmpty()) {
                 LOGGER.error("------------ defendant not found");
                 buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay, isResultReshared);
