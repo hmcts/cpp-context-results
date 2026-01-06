@@ -2298,7 +2298,7 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
                                         .withExpectedEventNames("HearingFinancialResultsTracked")
                                 )
                 ),
-                Arguments.of("SRIVANI::::AC3 - CC Case 3 Offences 2FP 1NFP > AH1 App1 statdec and 3 offences Adj > AH2 App1 statdec Granted and 3 offences Adj again > AH3 App1 statdec and 3 offences Adj again to AH4 [STE77/DD-39535]",
+                Arguments.of("AC3 - CC Case 3 Offences 2FP 1NFP > AH1 App1 statdec and 3 offences Adj > AH2 App1 statdec Granted and 3 offences Adj again > AH3 App1 statdec and 3 offences Adj again to AH4 [STE77/DD-39535]",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-applications/applications-mixed-offences/adjourned-offences/case-3offences-app-statdec-adjourned-twice-app-granted-offences-adjourned/1_case_results_tracked.json",
