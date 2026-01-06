@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
@@ -434,7 +435,7 @@ public class ResultsAggregate implements Aggregate {
     public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre, final Optional<Boolean> isReshare, String applicationId) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre,isReshare, applicationId));
+        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre, isReshare, applicationId));
         return apply(builder.build());
     }
 
@@ -467,12 +468,17 @@ public class ResultsAggregate implements Aggregate {
 
         defendants = new ArrayList<>();
         final boolean isResultReshared = isResultReshared(isReshare, caseResultDetails);
+        LOGGER.error("------------ isResultReshared {}", isResultReshared);
 
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
+
+            defendantsFromAggregate.stream().map(Defendant::getId).forEach(defendantId -> LOGGER.error("-----------Defendant ID in aggregate: {}", defendantId));
             if (defendantOptional.isEmpty()) {
+                LOGGER.error("------------ defendant not found");
                 buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay, isResultReshared);
             } else {
+                LOGGER.error("------------ defendant found");
                 updateDefendant(hearing, hearingDay, caseDetailsFromRequest, builder, defendantFromRequest, isResultReshared, sendSpiOut, jurisdictionType);
             }
         }
@@ -518,7 +524,7 @@ public class ResultsAggregate implements Aggregate {
         final boolean isResultNotReshared = !isResultReshared(isReshare, null);
         final boolean isResultsPresent = isNotEmpty(courtApplication.getJudicialResults());
         LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {}",
-            sendSpiOut, isResultNotReshared, isResultsPresent);
+                sendSpiOut, isResultNotReshared, isResultsPresent);
         return sendSpiOut &&
                 isResultNotReshared &&
                 isResultsPresent;
@@ -554,11 +560,13 @@ public class ResultsAggregate implements Aggregate {
     @SuppressWarnings({"squid:CommentedOutCodeLine"})
     private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest,
                                      final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay, final boolean isResultReshared) {
+        LOGGER.error("----**-------- isResultPresent {}", isResultPresent(defendantFromRequest));
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {
                 defendants.add(defendantFromRequest);
+                LOGGER.error("----**-------- jurisdictionType {}", jurisdictionType);
                 if (!isCrownCourt(jurisdictionType) && !isResultReshared) {
                     builder.add(
                             buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
@@ -570,6 +578,7 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void updateDefendant(final Hearing hearing, final Optional<LocalDate> hearingDay, final CaseDetails casesDetailsFromRequest,
                                  final Stream.Builder<Object> builder,
                                  final CaseDefendant defendantFromRequest,
@@ -579,10 +588,13 @@ public class ResultsAggregate implements Aggregate {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             defendants.add(defendantFromRequest);
         } else {
+            LOGGER.error("------------ isResultPresent {}", isResultPresent(defendantFromRequest));
+            LOGGER.error("------------ hearing.getHearingDays().size() {}", isNull(hearing.getHearingDays()) ? 0 : hearing.getHearingDays().size());
             if (isResultPresent(defendantFromRequest) && isNotEmpty(hearing.getHearingDays()) && hearing.getHearingDays().size() > 1) {
                 final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
                 if (sendSpiOut) {
                     defendants.add(defendantFromRequest);
+                    LOGGER.error("------------ jurisdictionType {}", jurisdictionType);
                     if (!isCrownCourt(jurisdictionType) && !isResultReshared) {
                         builder.add(
                                 buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)

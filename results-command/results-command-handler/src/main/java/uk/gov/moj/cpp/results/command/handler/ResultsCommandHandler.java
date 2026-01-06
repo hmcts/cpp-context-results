@@ -147,7 +147,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     @Handles("results.command.create-results-for-day")
     public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
         if(!envelope.payloadIsNull()){
-            LOGGER.error("results.command.create-results-for-day received: {}", envelope.payloadAsJsonObject());
+            LOGGER.error("\n results.command.create-results-for-day received: {}\n", envelope.payloadAsJsonObject());
         }
 
         final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
@@ -225,6 +225,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 final AtomicReference<String> prosecutorEmailAddress = new AtomicReference<>("");
 
                 final String originatingOrganisation = getOriginatingOrganisation(caseDetails.getOriginatingOrganisation());
+                LOGGER.error("------------ originatingOrganisation {}", originatingOrganisation);
                 if (isNotEmpty(originatingOrganisation)) {
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
 
@@ -243,7 +244,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                     });
                 }
 
-                LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
+                LOGGER.error("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
                 final String applicationTypeForCase = getApplicationTypeForCase(caseDetails.getCaseId(), courtApplicationList);
                 final String applicationId = !courtApplicationList.isEmpty() ? courtApplicationList.get(0).getId().toString() :"";
                 aggregate(ResultsAggregate.class, fromString(id),

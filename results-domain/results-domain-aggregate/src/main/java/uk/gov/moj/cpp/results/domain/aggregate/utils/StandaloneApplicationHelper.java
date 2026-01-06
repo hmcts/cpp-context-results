@@ -59,7 +59,7 @@ public class StandaloneApplicationHelper {
                 .withOffenceDateCode(1)
                 .withJudicialResults(application.getJudicialResults())
                 .withStartDate(application.getApplicationReceivedDate())
-                .withWording(application.getApplicationParticulars())
+                .withWording(getWording(application))
                 .withAllocationDecision(null)
                 .withArrestDate(null)
                 .withChargeDate(null)
@@ -75,6 +75,16 @@ public class StandaloneApplicationHelper {
                 .withPlea(null)
                 .build()
         );
+    }
+
+    private static String getWording(final CourtApplication application) {
+        if(nonNull(application.getApplicationParticulars())){
+            return application.getApplicationParticulars();
+        }
+        if(nonNull(application.getType().getApplicationWording())){
+            return application.getType().getApplicationWording();
+        }
+        return application.getType().getType();
     }
 
     private static String setFinalDisposal(final List<JudicialResult> judicialResults) {

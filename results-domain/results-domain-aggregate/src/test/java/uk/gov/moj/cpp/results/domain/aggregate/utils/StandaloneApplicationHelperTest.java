@@ -96,7 +96,7 @@ public class StandaloneApplicationHelperTest {
 
         assertThat(offence.getOffenceSequenceNumber(), is(DEFAULT_OFFENCE_SEQ_NUMBER));
         assertThat(offence.getOffenceCode(), is(type.getString("code")));
-        assertThat(offence.getWording(), is(applicationPayload.getString("applicationParticulars")));
+        assertThat(offence.getWording(), is(applicationPayload.getJsonObject("type").getString("applicationWording")));
         assertThat(offence.getStartDate(), is(LocalDate.parse(applicationPayload.getString("applicationReceivedDate"))));
         assertThat(offence.getFinalDisposal(), is("Y"));
         assertThat(offence.getOffenceDateCode(), is(DEFAULT_OFFENCE_DATE_CODE));
