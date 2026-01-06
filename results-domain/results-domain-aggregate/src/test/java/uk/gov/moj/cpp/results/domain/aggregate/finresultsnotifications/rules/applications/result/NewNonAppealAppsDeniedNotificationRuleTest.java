@@ -26,7 +26,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class NewNonAppealAppsDeniedNotificationRuleTest {
-    private final NewNonAppealAppsDeniedNotificationRule rule = new NewNonAppealAppsDeniedNotificationRule();
+    private final NewStatdecOrReopenAppDeniedNotificationRule rule = new NewStatdecOrReopenAppDeniedNotificationRule();
 
     @Test
     void shouldGenerateStatutoryDeclarationRefusedNotification() {

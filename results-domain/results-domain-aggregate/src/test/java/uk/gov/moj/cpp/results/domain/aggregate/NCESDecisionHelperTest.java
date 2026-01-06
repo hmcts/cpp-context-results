@@ -102,25 +102,25 @@ public class NCESDecisionHelperTest {
     }
 
     @Test
-    public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedAdj_isNewApplicationGrantedFalse() {
+    public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedAdj_isNewApplicationGrantedTrue() {
         final UUID applicationId = randomUUID();
         final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build())).build();
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(INTERMEDIARY.name()).build()));
 
-        final boolean previousUpdateNotificationSent = NCESDecisionHelper.previousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
-        assertThat(previousUpdateNotificationSent, is(false));
+        final boolean previousUpdateNotificationSent = NCESDecisionHelper.hasPreviousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
+        assertThat(previousUpdateNotificationSent, is(true));
     }
 
     @Test
-    public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedFine_isNewApplicationGrantedFalse() {
+    public void givenFinancialResultRequestForStatdec_whenPreviousApplicationResultedGranted_andPreviousApplicationOffencesResultedFine_isNewApplicationGrantedTrue() {
         final UUID applicationId = randomUUID();
         final HearingFinancialResultRequest hearingFinancialResultRequest = hearingFinancialResultRequest().withOffenceResults(List.of(offenceResults().withApplicationId(applicationId).withApplicationType(STAT_DEC).withResultCode("G").withOffenceResultsCategory(FINAL.name()).withApplicationResultsCategory(FINAL.name()).build())).build();
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(FINAL.name()).build()));
 
-        final boolean previousUpdateNotificationSent = NCESDecisionHelper.previousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
-        assertThat(previousUpdateNotificationSent, is(false));
+        final boolean previousUpdateNotificationSent = NCESDecisionHelper.hasPreviousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
+        assertThat(previousUpdateNotificationSent, is(true));
     }
 
     @Test

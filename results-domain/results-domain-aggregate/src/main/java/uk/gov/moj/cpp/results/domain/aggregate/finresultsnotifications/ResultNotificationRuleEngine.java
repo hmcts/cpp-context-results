@@ -9,7 +9,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.app
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationAcceptedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewAppealAppDeniedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationUpdatedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewNonAppealAppsDeniedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewStatdecOrReopenAppDeniedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToFinAccWriteOffRule;
@@ -33,7 +33,7 @@ public class ResultNotificationRuleEngine {
         this.rules = new ArrayList<>();
         rules.add(new NewAppealAppDeniedNotificationRule());
         rules.add(new NewApplicationAcceptedNotificationRule());
-        rules.add(new NewNonAppealAppsDeniedNotificationRule());
+        rules.add(new NewStatdecOrReopenAppDeniedNotificationRule());
         rules.add(new NewApplicationUpdatedNotificationRule());
         rules.add(new ApplicationDeemedServedNotificationRule());
         rules.add(new ApplicationAmendmentDeemedServedNotificationRule());
