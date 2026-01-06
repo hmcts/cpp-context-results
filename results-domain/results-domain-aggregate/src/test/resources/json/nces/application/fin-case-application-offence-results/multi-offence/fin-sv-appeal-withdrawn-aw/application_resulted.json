@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-03-11",
       "resultCode": "AW",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "06e8effc-849d-4b1a-ac2b-46dc79d0b0f1",
@@ -37,7 +39,8 @@
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "06e8effc-849d-4b1a-ac2b-46dc79d0b0f1",
@@ -50,7 +53,8 @@
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "06e8effc-849d-4b1a-ac2b-46dc79d0b0f1",
@@ -63,7 +67,8 @@
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -74,7 +79,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "d941fd9e-2df4-480c-84f4-1450670a729b",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Surcharge",
@@ -85,7 +91,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "7094512b-46b6-4f19-9d9a-63db03a1d426",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

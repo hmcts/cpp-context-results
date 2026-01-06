@@ -21,7 +21,8 @@
             "isParentFlag": true,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "ACON"
+            "resultCode": "ACON",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationId": "42378a49-9aa4-4eba-850a-a2e837307480",
@@ -35,7 +36,9 @@
             "isParentFlag": false,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -46,7 +49,8 @@
             "isParentFlag": true,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "FIDICI"
+            "resultCode": "FIDICI",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationId": "42378a49-9aa4-4eba-850a-a2e837307480",
@@ -60,7 +64,9 @@
             "isParentFlag": false,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -71,7 +77,8 @@
             "isParentFlag": true,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "ACON"
+            "resultCode": "ACON",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationId": "42378a49-9aa4-4eba-850a-a2e837307480",
@@ -85,7 +92,9 @@
             "isParentFlag": false,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "ROPENED"
+            "resultCode": "ROPENED",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -96,7 +105,8 @@
             "isParentFlag": true,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "FIDICI"
+            "resultCode": "FIDICI",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationId": "42378a49-9aa4-4eba-850a-a2e837307480",
@@ -110,7 +120,9 @@
             "isParentFlag": false,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "ROPENED"
+            "resultCode": "ROPENED",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -121,7 +133,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -132,7 +145,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Consolidated",
@@ -144,7 +158,8 @@
             "isParentFlag": false,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "ACON"
+            "resultCode": "ACON",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Excise penalty",
@@ -155,7 +170,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fined and detained in default of payment until court rises",
@@ -167,7 +183,8 @@
             "isParentFlag": false,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "FIDICI"
+            "resultCode": "FIDICI",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -178,7 +195,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Vehicle Excise Back Duty",
@@ -189,7 +207,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

@@ -1,0 +1,20 @@
+{
+  "applicationResult": "NEXH --",
+  "caseReferences": "28DI5882659",
+  "dateDecisionMade": "2025-12-15",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0205882659",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST015882659@gmail.com",
+  "defendantName": "Krystal Medhurst",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Croydon Crown Court",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "9049a682-8720-4785-9bb9-8de754e208c5",
+  "materialId": "f1bf3bf7-cd91-4266-99fa-468e9863eb9a",
+  "notificationId": "86ddc1b6-4beb-4846-b206-b12e82b56743",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION UPDATED"
+}

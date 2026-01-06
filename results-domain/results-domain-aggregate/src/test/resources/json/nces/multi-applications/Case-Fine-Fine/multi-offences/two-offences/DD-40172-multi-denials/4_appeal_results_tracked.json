@@ -23,7 +23,8 @@
       "isParentFlag": false,
       "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
       "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
-      "resultCode": "AACD"
+      "resultCode": "AACD",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "aac21dfa-8140-4b25-8d1c-f23b6197a3a8",
@@ -37,7 +38,8 @@
       "isParentFlag": false,
       "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "AACD"
+      "resultCode": "AACD",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

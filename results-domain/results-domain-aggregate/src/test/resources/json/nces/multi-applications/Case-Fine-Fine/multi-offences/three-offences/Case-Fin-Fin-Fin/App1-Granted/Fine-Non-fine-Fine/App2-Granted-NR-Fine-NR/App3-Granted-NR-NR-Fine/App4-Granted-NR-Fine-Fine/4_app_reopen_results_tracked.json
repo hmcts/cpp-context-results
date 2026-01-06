@@ -25,7 +25,9 @@
             "isParentFlag": true,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
             "offenceTitle": "Drive whilst unfit through drink",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "214d29a9-7dfb-49c6-828f-69e1faccff28",
@@ -39,7 +41,9 @@
             "isParentFlag": true,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
             "offenceTitle": "Drive whilst unfit through drink",
-            "resultCode": "ROPENED"
+            "resultCode": "ROPENED",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Compensation",
@@ -50,7 +54,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -61,7 +66,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [
