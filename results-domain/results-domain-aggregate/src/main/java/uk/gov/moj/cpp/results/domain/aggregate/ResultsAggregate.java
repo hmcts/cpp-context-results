@@ -578,6 +578,7 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void updateDefendant(final Hearing hearing, final Optional<LocalDate> hearingDay, final CaseDetails casesDetailsFromRequest,
                                  final Stream.Builder<Object> builder,
                                  final CaseDefendant defendantFromRequest,
