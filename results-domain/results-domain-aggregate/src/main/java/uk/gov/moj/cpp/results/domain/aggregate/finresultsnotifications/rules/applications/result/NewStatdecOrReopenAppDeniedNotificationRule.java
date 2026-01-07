@@ -4,7 +4,9 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecReopenApplicationDenied;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewReopenApplicationDenied;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationDenied;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isPreviousDeniedNotificationSent;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -27,14 +29,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Rule to handle notifications for Non-Appeal Applications(i.e. StatDec/Reopen) that are denied.
+ * Rule to handle notifications for StatDec/Reopen that are denied.
  */
-public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationResultNotificationRule {
+public class NewStatdecOrReopenAppDeniedNotificationRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
-                && isNewStatdecReopenApplicationDenied(input.request());
+                && isNewStatdecApplicationDenied(input.request()) || isNewReopenApplicationDenied(input.request())
+                && !isPreviousDeniedNotificationSent(input.request(), input.prevApplicationResultsDetails());
     }
 
     @Override

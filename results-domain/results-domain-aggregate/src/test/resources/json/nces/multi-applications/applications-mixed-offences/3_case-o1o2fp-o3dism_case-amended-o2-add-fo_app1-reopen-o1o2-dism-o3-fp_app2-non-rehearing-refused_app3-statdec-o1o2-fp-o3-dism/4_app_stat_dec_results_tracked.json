@@ -25,7 +25,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-27",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -39,7 +41,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-27",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -50,7 +54,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -64,7 +69,9 @@
             "dateOfResult": "2025-06-27",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -78,7 +85,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-27",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -92,7 +101,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-27",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -103,7 +114,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -117,7 +129,9 @@
             "dateOfResult": "2025-06-27",
             "resultCode": "STDEC",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. "
+            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. ",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "0fdab706-19e2-463a-9e4b-ba9baa0d9c86",
@@ -128,7 +142,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £666.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "453be853-e9ff-441c-938b-8087320d98aa",
@@ -139,7 +154,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £432.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "453be853-e9ff-441c-938b-8087320d98aa",
@@ -150,7 +166,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "fcf0daa3-5453-468f-9d90-ee654a0904c3",
@@ -162,7 +179,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

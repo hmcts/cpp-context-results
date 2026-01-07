@@ -20,7 +20,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "Application1 offence 1 nonfinancial impositions",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -34,7 +35,9 @@
             "dateOfResult": "2025-07-08",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -48,7 +51,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -59,7 +64,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "Application1 offence 1 nonfinancial impositions",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -73,7 +79,9 @@
             "dateOfResult": "2025-07-08",
             "resultCode": "STDEC",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. "
+            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. ",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -87,7 +95,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -99,7 +109,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "Application1 offence 1 nonfinancial impositions",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -110,7 +121,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "Application1 offence 1 nonfinancial impositions",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -121,7 +133,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "Application1 offence 1 nonfinancial impositions",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

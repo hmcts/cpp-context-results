@@ -25,7 +25,9 @@
       "isParentFlag": false,
       "offenceId": "706e046b-559b-4814-a95f-0cbabf366add",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ASV"
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "APPEAL",
@@ -37,7 +39,8 @@
       "isParentFlag": false,
       "dateOfResult": "2025-03-11",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "offenceResultsCategory": "FINAL"
     }
   ]
 }

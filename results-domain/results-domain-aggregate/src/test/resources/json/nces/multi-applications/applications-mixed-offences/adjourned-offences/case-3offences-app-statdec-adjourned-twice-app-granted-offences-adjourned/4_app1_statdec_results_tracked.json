@@ -23,7 +23,9 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "G",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "A - Adjournment\\nAdjourned for hearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\\nTo attend or a warrant to issue\\nhearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court\""
+      "impositionOffenceDetails": "A - Adjournment\\nAdjourned for hearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\\nTo attend or a warrant to issue\\nhearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court\"",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "applicationResultsCategory": "INTERMEDIARY"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
@@ -36,7 +38,8 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "INTERMEDIARY"
     },
     {
       "applicationId": "68956058-fed4-4aaf-af12-bdd87a6b1d26",
@@ -49,7 +52,8 @@
       "isFinancial": false,
       "isParentFlag": true,
       "offenceId": "5541a6a6-671b-430b-ab07-994a35f1156c",
-      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+      "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+      "offenceResultsCategory": "INTERMEDIARY"
     }
   ],
   "prosecutionCaseReferences": [
