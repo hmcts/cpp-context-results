@@ -6,7 +6,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEv
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewReopenApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationDenied;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.hasPreviousDeniedNotificationSent;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isPreviousDeniedNotificationSent;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -37,7 +37,7 @@ public class NewStatdecOrReopenAppDeniedNotificationRule extends AbstractApplica
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
                 && isNewStatdecApplicationDenied(input.request()) || isNewReopenApplicationDenied(input.request())
-                && !hasPreviousDeniedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
+                && !isPreviousDeniedNotificationSent(input.request(), input.prevApplicationResultsDetails());
     }
 
     @Override

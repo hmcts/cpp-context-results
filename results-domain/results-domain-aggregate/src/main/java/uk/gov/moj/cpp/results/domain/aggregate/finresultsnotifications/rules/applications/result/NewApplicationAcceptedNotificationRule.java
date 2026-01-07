@@ -6,7 +6,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBu
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealOrReopenApplicationGranted;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.hasPreviousGrantedNotificationSent;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isPreviousGrantedNotificationSent;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationGranted;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
@@ -41,7 +41,7 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
         return input.isNewApplication()
                 && input.isValidApplicationTypeWithAllowedResultCode()
                 && (isNewStatdecApplicationGranted(input.request()) || isNewAppealOrReopenApplicationGranted(input.request()))
-                && !hasPreviousGrantedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
+                && !isPreviousGrantedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override

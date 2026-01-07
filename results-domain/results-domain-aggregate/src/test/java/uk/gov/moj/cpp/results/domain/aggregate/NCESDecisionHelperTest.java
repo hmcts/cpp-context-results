@@ -108,7 +108,7 @@ public class NCESDecisionHelperTest {
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(INTERMEDIARY.name()).build()));
 
-        final boolean previousUpdateNotificationSent = NCESDecisionHelper.hasPreviousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
+        final boolean previousUpdateNotificationSent = NCESDecisionHelper.isPreviousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
         assertThat(previousUpdateNotificationSent, is(true));
     }
 
@@ -119,7 +119,7 @@ public class NCESDecisionHelperTest {
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withResultCode("G").withApplicationResultsCategory(FINAL.name()).build()));
         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = Map.of(applicationId, List.of(offenceResultsDetails().withApplicationId(applicationId).withOffenceResultsCategory(FINAL.name()).build()));
 
-        final boolean previousUpdateNotificationSent = NCESDecisionHelper.hasPreviousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
+        final boolean previousUpdateNotificationSent = NCESDecisionHelper.isPreviousGrantedNotificationSent(hearingFinancialResultRequest, prevApplicationResultsDetails, prevApplicationOffenceResultsMap);
         assertThat(previousUpdateNotificationSent, is(true));
     }
 
@@ -141,10 +141,11 @@ public class NCESDecisionHelperTest {
 
     @Test
     public void isNewAppealReopenApplicationOffencesAreAdjournedReturnsTrueWhenAllFilteredOffencesAdjourned() {
+        final UUID applicationId = randomUUID();
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withOffenceResults(List.of(
-                        offenceResults().withApplicationType(APPEAL).withResultCode("AASA").withApplicationResultsCategory(FINAL.name()).withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build(),
-                        offenceResults().withApplicationType(APPEAL).withResultCode("AASA").withApplicationResultsCategory(FINAL.name()).withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build()
+                        offenceResults().withApplicationType(APPEAL).withApplicationId(applicationId).withResultCode("AASA").withApplicationResultsCategory(FINAL.name()).withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build(),
+                        offenceResults().withApplicationType(APPEAL).withApplicationId(applicationId).withResultCode("AASA").withApplicationResultsCategory(FINAL.name()).withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build()
                 ))
                 .build();
 
@@ -153,11 +154,15 @@ public class NCESDecisionHelperTest {
     }
 
     @Test
-    public void isNewAppealReopenApplicationOffencesAreAdjournedReturnsFalseWhenAnyFilteredOffenceNotAdjourned() {
+    public void isNewAppealReopenApplicationOffencesAreAdjournedReturnsTrueWhenAnyFilteredOffenceNotAdjourned() {
+        final UUID applicationId = randomUUID();
+        final UUID offenceId1 = randomUUID();
+        final UUID offenceId2 = randomUUID();
+
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withOffenceResults(List.of(
-                        offenceResults().withApplicationType(REOPEN).withResultCode("G").withAmendmentDate(null).withOffenceResultsCategory(INTERMEDIARY.name()).build(),
-                        offenceResults().withApplicationType(REOPEN).withResultCode("ROPENED").withAmendmentDate(null).withApplicationResultsCategory(FINAL.name()).build()
+                        offenceResults().withApplicationType(REOPEN).withApplicationId(applicationId).withResultCode("G").withAmendmentDate(null).withApplicationResultsCategory(FINAL.name()).withOffenceResultsCategory(INTERMEDIARY.name()).withOffenceId(offenceId1).build(),
+                        offenceResults().withApplicationType(REOPEN).withApplicationId(applicationId).withResultCode("ROPENED").withAmendmentDate(null).withApplicationResultsCategory(FINAL.name()).withOffenceResultsCategory(INTERMEDIARY.name()).withOffenceId(offenceId2).build()
                 ))
                 .build();
 
@@ -167,10 +172,11 @@ public class NCESDecisionHelperTest {
 
     @Test
     public void isNewStatdecApplicationAdjournedReturnsTrueWhenAllApplicationsAdjourned() {
+        final UUID applicationId = randomUUID();
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withOffenceResults(List.of(
-                        offenceResults().withApplicationType(STAT_DEC).withAmendmentDate(null).withApplicationResultsCategory(INTERMEDIARY.name()).build(),
-                        offenceResults().withApplicationType(STAT_DEC).withAmendmentDate(null).withApplicationResultsCategory(INTERMEDIARY.name()).build()
+                        offenceResults().withApplicationType(STAT_DEC).withApplicationId(applicationId).withAmendmentDate(null).withApplicationResultsCategory(INTERMEDIARY.name()).build(),
+                        offenceResults().withApplicationType(STAT_DEC).withApplicationId(applicationId).withAmendmentDate(null).withApplicationResultsCategory(INTERMEDIARY.name()).build()
                 ))
                 .build();
 
@@ -180,10 +186,12 @@ public class NCESDecisionHelperTest {
 
     @Test
     public void isNewStatdecApplicationAdjournedReturnsFalseWhenAnyApplicationNotAdjourned() {
+        final UUID applicationId = randomUUID();
+
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withOffenceResults(List.of(
-                        offenceResults().withApplicationType(STAT_DEC).withAmendmentDate(null).withApplicationResultsCategory(INTERMEDIARY.name()).build(),
-                        offenceResults().withApplicationType(STAT_DEC).withAmendmentDate(null).withApplicationResultsCategory(FINAL.name()).build()
+                        offenceResults().withApplicationType(STAT_DEC).withApplicationId(applicationId).withAmendmentDate(null).withApplicationResultsCategory(INTERMEDIARY.name()).build(),
+                        offenceResults().withApplicationType(STAT_DEC).withApplicationId(applicationId).withAmendmentDate(null).withApplicationResultsCategory(FINAL.name()).build()
                 ))
                 .build();
 
