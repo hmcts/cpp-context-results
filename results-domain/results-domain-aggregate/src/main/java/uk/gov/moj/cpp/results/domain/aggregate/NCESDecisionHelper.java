@@ -105,27 +105,6 @@ public class NCESDecisionHelper {
         return isFinalResultsOnApplicationOrOffences(offenceResults);
     }
 
-    /**
-     * This check is to cover https://tools.hmcts.net/jira/browse/DD-35053 AC2,3A
-     */
-    private static boolean isFinalResultsOnApplicationOrOffences(final List<OffenceResults> offenceResults) {
-        if (offenceResults.isEmpty()) {
-            return false;
-        }
-
-        final boolean hasOffenceResultsCategory = offenceResults.stream()
-                .anyMatch(offence -> nonNull(offence.getOffenceResultsCategory()));
-
-        if (hasOffenceResultsCategory) {
-            return offenceResults.stream()
-                    .filter(offence -> nonNull(offence.getOffenceResultsCategory()))
-                    .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
-        } else {
-            return offenceResults.stream()
-                    .allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
-        }
-    }
-
     public static boolean isNewStatdecApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = getFilteredOffenceResults(hearingFinancialResultRequest, asList(STAT_DEC, REOPEN),
                 stadec_reopen_denied_result_codes);
@@ -220,14 +199,6 @@ public class NCESDecisionHelper {
         }
         final OffenceResults offenceResult = getOffenceResultForApplication(hearingFinancialResultRequest);
         return areAllApplicationResultsAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
-    }
-
-    private static boolean areAllApplicationResultsAlreadyFinalised(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
-        final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
-        return isNotEmpty(prevAppResultList) && prevAppResultList.stream()
-                .map(OffenceResultsDetails::getApplicationResultsCategory)
-                .filter(Objects::nonNull)
-                .allMatch(category -> category.equals(FINAL.name()));
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
@@ -335,6 +306,35 @@ public class NCESDecisionHelper {
                     }
                     return NCESDecisionConstants.APPLICATION_SUBJECT.containsKey(result.getApplicationType());
                 }).findFirst().orElse(null);
+    }
+
+    private static boolean areAllApplicationResultsAlreadyFinalised(final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails, final UUID applicationId) {
+        final List<OffenceResultsDetails> prevAppResultList = prevApplicationResultsDetails.get(applicationId);
+        return isNotEmpty(prevAppResultList) && prevAppResultList.stream()
+                .map(OffenceResultsDetails::getApplicationResultsCategory)
+                .filter(Objects::nonNull)
+                .allMatch(category -> category.equals(FINAL.name()));
+    }
+
+    /**
+     * This check is to cover https://tools.hmcts.net/jira/browse/DD-35053 AC2,3A
+     */
+    private static boolean isFinalResultsOnApplicationOrOffences(final List<OffenceResults> offenceResults) {
+        if (offenceResults.isEmpty()) {
+            return false;
+        }
+
+        final boolean hasOffenceResultsCategory = offenceResults.stream()
+                .anyMatch(offence -> nonNull(offence.getOffenceResultsCategory()));
+
+        if (hasOffenceResultsCategory) {
+            return offenceResults.stream()
+                    .filter(offence -> nonNull(offence.getOffenceResultsCategory()))
+                    .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+        } else {
+            return offenceResults.stream()
+                    .allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
+        }
     }
 
 }
