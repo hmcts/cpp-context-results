@@ -16,26 +16,28 @@
   "offenceResults": [
     {
       "applicationId": "b15593ff-db73-4af9-99ce-b836a6370f76",
-      "applicationResultType": "Adjournment",
       "applicationTitle": "Appeal",
       "applicationType": "APPEAL",
       "dateOfResult": "01/01/2021",
       "isDeemedServed": false,
       "isFinancial": false,
       "isParentFlag": false,
+      "resultCode": "AACA",
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
-      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network"
+      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "b15593ff-db73-4af9-99ce-b836a6370f76",
-      "applicationResultType": "Adjournment",
       "applicationTitle": "Appeal",
       "applicationType": "APPEAL",
       "dateOfResult": "01/01/2021",
       "isDeemedServed" : false,
       "isFinancial" : false,
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
-      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network"
+      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+      "offenceResultsCategory": "INTERMEDIARY"
     }
   ]
 }

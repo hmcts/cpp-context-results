@@ -263,8 +263,8 @@ public class NCESDecisionHelper {
     /**
      * Filters offence results based on application type, result codes, and offence state.
      * - Offence must have a valid application type from the provided list and must be mapped in APPLICATION_SUBJECT
-     * - When resultCodes are provided: - applicationId is mandatory & resultCode must be in the supplied resultCodes list (application-level filtering)
-     * - When resultCodes are null: - applicationId and resultCode checks are skipped (offence-level filtering)
+     * - When resultCodes provided: check if resultCode exists in APPLICATION_SUBJECT for application type (application-level filtering)
+     * - When resultCodes is null: just check APPLICATION_SUBJECT contains application type (offence-level filtering)
      */
     private static List<OffenceResults> getFilteredOffenceResults(final HearingFinancialResultRequest hearingFinancialResultRequest,
                                                                   final List<String> applicationTypes,
@@ -273,17 +273,17 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()) && applicationTypes.contains(offence.getApplicationType()))
                 .filter(offence -> {
                     if (nonNull(resultCodes)) {
-                        if (applicationTypes.contains(STAT_DEC)) {
-                            return Optional.ofNullable(NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()))
-                                    .map(m -> m.containsKey(offence.getResultCode()))
-                                    .orElse(false);
-                        }
+                        final boolean isResultCodeInSubject = Optional.ofNullable(NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()))
+                                .map(m -> m.containsKey(offence.getResultCode()))
+                                .orElse(false);
+                        return isResultCodeInSubject
+                                && nonNull(offence.getApplicationId()) 
+                                && resultCodes.contains(offence.getResultCode());
+                    } else {
                         return NCESDecisionConstants.APPLICATION_SUBJECT.containsKey(offence.getApplicationType());
                     }
-                    return NCESDecisionConstants.APPLICATION_SUBJECT.containsKey(offence.getApplicationType());
                 })
                 .filter(offence -> isNull(offence.getAmendmentDate()))
-                .filter(offence -> isNull(resultCodes) || (nonNull(offence.getApplicationId()) && resultCodes.contains(offence.getResultCode())))
                 .toList();
     }
 
