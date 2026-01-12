@@ -49,6 +49,8 @@ public class ResultsEventListener {
     private static final String PARENT_APPLICATION_ID = "parentApplicationId";
     private static final String LINKED_CASE_ID = "linkedCaseId";
     private static final String IS_EJECTED = "isEjected";
+    private static final String EJECTED = "EJECTED";
+    private static final String CASE_STATUS = "caseStatus";
     private static final String PROSECUTION_CASES = "prosecutionCases";
     private static final String COURT_APPLICATIONS = "courtApplications";
     public static final String HEARING = "hearing";
@@ -131,6 +133,7 @@ public class ResultsEventListener {
     private void updateHearingResultPayload(final HearingResultedDocument document, final String caseOrApplicationId, final String caseOrApplicationNodeLocation) {
         updateHearingResultPayload(document, caseOrApplicationNodeLocation, (node, childApplicationOrCaseNode) -> {
             if (!childApplicationOrCaseNode.isMissingNode() && childApplicationOrCaseNode.asText().equals(caseOrApplicationId)) {
+                node.put(CASE_STATUS, EJECTED);
                 node.put(IS_EJECTED, true);
             }
         });
