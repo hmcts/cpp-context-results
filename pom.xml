@@ -38,19 +38,19 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>17.103.10</coredomain.version>
-        <referencedata.version>17.0.113</referencedata.version>
-        <notification.notify.version>17.0.24</notification.notify.version>
-        <systemdocgenerator.version>17.0.64</systemdocgenerator.version>
-        <progression.version>17.0.216-SNAPSHOT-DTSPO-28548</progression.version>
-        <material.version>17.0.57</material.version>
-        <usersgroups.version>17.0.33</usersgroups.version>
+        <referencedata.version>17.103.122</referencedata.version>
+        <notification.notify.version>17.0.38</notification.notify.version>
+        <systemdocgenerator.version>17.103.103</systemdocgenerator.version>
+        <progression.version>17.0.219</progression.version>
+        <material.version>17.0.75</material.version>
+        <usersgroups.version>17.104.44</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty.version>4.1.113.Final</netty.version>
         <!-- Downgrade h2 until deltaspike tests have been updated to work with latest h2 version -->
         <h2.version>1.4.196</h2.version>
-        <sjp.version>17.0.140</sjp.version>
-        <staging.dcs.version>17.101.1</staging.dcs.version>
+        <sjp.version>17.103.148</sjp.version>
+        <staging.dcs.version>17.103.8</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
             **/uk/gov/justice/api/**/*,
