@@ -801,10 +801,13 @@ public class ResultsEventProcessor {
 
     private String getCaseDefendants(final List<CaseDefendant> caseDefendants, final boolean amended) {
         return caseDefendants.stream()
-                .map(CaseDefendant::getIndividualDefendant)
-                .map(IndividualDefendant::getPerson)
-                .map(individual -> individual.getFirstName().concat(" ")
-                        .concat(individual.getLastName()))
+                .map(caseDefendant -> {
+                    if (nonNull(caseDefendant.getCorporateDefendant())) {
+                        return caseDefendant.getCorporateDefendant().getName();
+                    }
+                    return caseDefendant.getIndividualDefendant().getPerson().getFirstName().concat(" ")
+                            .concat(caseDefendant.getIndividualDefendant().getPerson().getLastName());
+                })
                 .collect(Collectors.joining(", "));
     }
 

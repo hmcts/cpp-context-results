@@ -49,6 +49,7 @@ import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
+import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -165,6 +166,7 @@ public class ResultsEventProcessorTest {
     public static final String NO = "no";
     public static final String COURT_CENTRE = "Croydon Magistrates' Court";
     public static final String AMEND_RESHARE1 = "Amend & Reshare";
+    public static final String ORGANISATION_NAME = "organisationName";
 
     @Spy
     private final Enveloper enveloper = createEnveloper();
@@ -730,6 +732,55 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_APPLICATIONS), is("Application to Vary bail"));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_AAAG));
     }
+
+
+
+
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithCaseAndCorporateDefendant() {
+        final List<CaseDefendant> caseDefendants = getDefendants().stream()
+                .map(caseDefendant -> caseDefendant()
+                        .withValuesFrom(caseDefendant)
+                        .withIndividualDefendant(null)
+                        .withCorporateDefendant(OrganisationDetails.organisationDetails()
+                                .withName(ORGANISATION_NAME)
+                                .build())
+                        .build()
+                )
+                .toList();
+
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false, "");
+        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+        final UUID payloadFileId = randomUUID();
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()),eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(applicationParameters.getEmailTemplateId()).thenReturn(POLICE_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_NOTIFICATION_ID), is(notificationId.toString()));
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL), is(COMMON_PLATFORM_URL));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(ORGANISATION_NAME+", "+ORGANISATION_NAME));
+
+    }
+
 
     @Test
     public void shouldSendEmailWhenNoCaseDefendantsAndOnlyApplicationResults() {
