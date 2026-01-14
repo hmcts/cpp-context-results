@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.it.utils;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
@@ -36,9 +37,10 @@ public class ProgressionServiceStub {
     }
 
 
-    public static void stubQueryInactiveMigratedCases(final String  caseIds) {
+    public static void stubQueryInactiveMigratedCases(final String caseIds) {
         final String queryURI = format(PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_URL, caseIds);
-        stubFor(get(urlPathEqualTo(queryURI))
+
+        stubFor(get(urlEqualTo(queryURI))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
