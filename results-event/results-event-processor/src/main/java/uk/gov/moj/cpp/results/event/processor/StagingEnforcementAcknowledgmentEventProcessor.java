@@ -11,11 +11,19 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.JsonObjects;
+import uk.gov.moj.cpp.results.event.service.ProgressionService;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonString;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +43,22 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String MASTER_DEFENDANT_ID ="masterDefendantId";
     private static final String ACCOUNT_CORRELATION_ID ="accountCorrelationId";
     private static final String HEARING_FINANCIAL_RESULT_REQUEST= "hearingFinancialResultRequest";
+    private static final String CASE_IDS = "caseIds";
+    private static final String INACTIVE_MIGRATED_CASE_SUMMARIES = "inactiveMigratedCaseSummaries";
+    private static final String INACTIVE_CASE_SUMMARY = "inactiveCaseSummary";
+    private static final String MIGRATION_SOURCE_SYSTEM = "migrationSourceSystem";
+    private static final String DEFENDANT_FINE_ACCOUNT_NUMBERS = "defendantFineAccountNumbers";
+    private static final String FINE_ACCOUNT_NUMBER = "fineAccountNumber";
+    private static final String COURT_EMAIL = "courtEmail";
+    private static final String DEFENDANTS = "defendants";
+    private static final String DEFENDANT_ID = "defendantId";
 
 
     @Inject
     private Sender sender;
+
+    @Inject
+    private ProgressionService progressionService;
 
     @Handles("public.stagingenforcement.enforce-financial-imposition-acknowledgement")
     public void processAcknowledgement(final JsonEnvelope event) {
@@ -79,8 +99,63 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     @Handles("public.hearing.nces-email-notification-for-application")
     public void processSendNcesMailForNewApplication(final JsonEnvelope event){ //Analyse for CCT-2266
-        final Envelope<JsonObject> envelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
-        this.sender.sendAsAdmin(envelope);
+            final JsonObject payload = event.payloadAsJsonObject();
+            Envelope<JsonObject> envelope = null;
+
+            final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
+
+            //hearingCourtCentreId
+            final String courtEmail = "court@email.com"; // look up from refdata whats you have sent in the public event.
+
+        final List<String> caseIds = Optional.ofNullable(payload.getJsonArray(CASE_IDS))
+                .map(jsonArray -> jsonArray.stream()
+                        .map(i -> ((JsonString) i).getString())
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList()); // Returns empty list if key is missing
+
+        if(!caseIds.isEmpty()){
+            final Optional<JsonObject> inactiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
+            final List<String> fineAccountNumbers = extractFineAccountNumbers(inactiveMigratedCases, masterDefendantId);
+
+            final JsonObjectBuilder enrichedPayload = createObjectBuilder(payload);
+
+            if (!fineAccountNumbers.isEmpty()) {
+                final JsonObject courtEmailAndFineAccount = createObjectBuilder()
+                        .add(COURT_EMAIL, courtEmail)
+                        .add(FINE_ACCOUNT_NUMBER, fineAccountNumbers.get(0))
+                        .build();
+                enrichedPayload.add("migratedMasterDefendantCourtEmailAndFineAccount", courtEmailAndFineAccount);
+                envelope = envelop(enrichedPayload.build())
+                        .withName("result.command.send-nces-email-for-application")
+                        .withMetadataFrom(event);
+            }
+        } else {
+            envelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
+        }
+            this.sender.sendAsAdmin(envelope);
+    }
+
+    private List<String> extractFineAccountNumbers(final Optional<JsonObject> inactiveMigratedCases, final String masterDefendantId) {
+        return inactiveMigratedCases
+                .map(response -> response.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES))
+                .map(caseSummaries -> caseSummaries.getValuesAs(JsonObject.class).stream())
+                .orElse(Stream.empty())
+                .map(cs -> cs.getJsonObject(INACTIVE_CASE_SUMMARY))
+                .filter(summary -> summary.containsKey(DEFENDANTS) && summary.containsKey(MIGRATION_SOURCE_SYSTEM))
+                .flatMap(summary -> {
+                    final Set<String> matchingDefendantIds = summary.getJsonArray(DEFENDANTS)
+                            .getValuesAs(JsonObject.class).stream()
+                            .filter(def -> masterDefendantId.equals(def.getString(MASTER_DEFENDANT_ID)))
+                            .map(def -> def.getString(DEFENDANT_ID))
+                            .collect(Collectors.toSet());
+                    
+                    return summary.getJsonObject(MIGRATION_SOURCE_SYSTEM)
+                            .getJsonArray(DEFENDANT_FINE_ACCOUNT_NUMBERS)
+                            .getValuesAs(JsonObject.class).stream()
+                            .filter(fa -> matchingDefendantIds.contains(fa.getString(DEFENDANT_ID)))
+                            .map(fa -> fa.getString(FINE_ACCOUNT_NUMBER));
+                })
+                .collect(Collectors.toList());
     }
 
     @Handles("public.progression.defendant-address-changed")
@@ -100,4 +175,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         final Envelope<JsonObject> envelope = envelop(commandPayload).withName("result.command.add-correlation-id").withMetadataFrom(event);
         this.sender.sendAsAdmin(envelope);
     }
+
+
 }

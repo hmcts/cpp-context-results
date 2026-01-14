@@ -16,13 +16,13 @@ import uk.gov.justice.services.eventsourcing.source.core.EventSource;
 import uk.gov.justice.services.eventsourcing.source.core.EventStream;
 import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCourtEmailAndFineAccount;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultGobAccountAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,6 +51,7 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
     public static final String CASE_OFFENCE_ID_LIST = "caseOffenceIdList";
     public static final String IN_FORMAT = "dd/MM/yyyy";
     public static final String EMPTY_STRING = "";
+    public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
 
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -116,8 +117,13 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final String hearingCourtCentreName = envelope.payloadAsJsonObject().containsKey(HEARING_COURT_CENTRE_NAME)
                 ? envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME)
                 : EMPTY_STRING;
+        final MigratedMasterDefendantCourtEmailAndFineAccount migratedMasterDefendantCourtEmailAndFineAccount = envelope.payloadAsJsonObject().containsKey(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT)
+                ? new MigratedMasterDefendantCourtEmailAndFineAccount(
+                        envelope.payloadAsJsonObject().getJsonObject(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT).getString("courtEmail"),
+                        envelope.payloadAsJsonObject().getJsonObject(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT).getString("fineAccountNumber"))
+                : null;
         final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
-                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList));
+                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList, migratedMasterDefendantCourtEmailAndFineAccount));
 
         LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefandantId);
     }
