@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.event.service;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.Integer.valueOf;
 import static java.time.LocalDate.now;
-import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.UUID.randomUUID;
@@ -49,7 +48,6 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -249,7 +247,7 @@ public class ReferenceDataServiceTest {
                         .build()
         );
 
-        referenceDataService.getOrgainsationUnit(courtId, event);
+        referenceDataService.getOrganisationUnit(courtId, event);
 
         verify(requester).requestAsAdmin(envelopeArgumentCaptor.capture(), any());
 

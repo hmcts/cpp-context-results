@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
@@ -12,6 +14,7 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
+import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +28,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +63,9 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     @Inject
     private ProgressionService progressionService;
+
+    @Inject
+    private ReferenceDataService referenceDataService;
 
     @Handles("public.stagingenforcement.enforce-financial-imposition-acknowledgement")
     public void processAcknowledgement(final JsonEnvelope event) {
@@ -99,32 +106,47 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     @Handles("public.hearing.nces-email-notification-for-application")
     public void processSendNcesMailForNewApplication(final JsonEnvelope event){ //Analyse for CCT-2266
-            final JsonObject payload = event.payloadAsJsonObject();
-            Envelope<JsonObject> envelope = null;
+        final JsonObject payload = event.payloadAsJsonObject();
 
-            final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
+        Envelope<JsonObject> envelope = null;
 
-            //hearingCourtCentreId
-            final String courtEmail = "court@email.com"; // look up from refdata whats you have sent in the public event.
+        final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
 
-        final List<String> caseIds = Optional.ofNullable(payload.getJsonArray(CASE_IDS))
+        final String hearingCourtCentreId = payload.getString("hearingCourtCentreId");
+
+        final JsonObject organisationUnitPayload = referenceDataService.getOrganisationUnit(hearingCourtCentreId, event);
+
+        final JsonObject enforcementArea = of("enforcementArea")
+                .filter(organisationUnitPayload::containsKey)
+                .map(organisationUnitPayload::getJsonObject).orElse(createObjectBuilder().build());
+
+        final Optional<String> ncesNotificationEmail = of("ncesNotificationEmail")
+                .filter(enforcementArea::containsKey)
+                .map(enforcementArea::getString);
+
+        final String ncesNotificationEmailAddress = ncesNotificationEmail.orElse(null);
+
+        final List<String> caseIds = ofNullable(payload.getJsonArray(CASE_IDS))
                 .map(jsonArray -> jsonArray.stream()
                         .map(i -> ((JsonString) i).getString())
                         .collect(Collectors.toList()))
                 .orElse(Collections.emptyList()); // Returns empty list if key is missing
 
-        if(!caseIds.isEmpty()){
+        if(CollectionUtils.isNotEmpty(caseIds)) {
             final Optional<JsonObject> inactiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
             final List<String> fineAccountNumbers = extractFineAccountNumbers(inactiveMigratedCases, masterDefendantId);
 
             final JsonObjectBuilder enrichedPayload = createObjectBuilder(payload);
 
-            if (!fineAccountNumbers.isEmpty()) {
+            if (!fineAccountNumbers.isEmpty() && ncesNotificationEmailAddress != null) {
+
                 final JsonObject courtEmailAndFineAccount = createObjectBuilder()
-                        .add(COURT_EMAIL, courtEmail)
+                        .add(COURT_EMAIL, ncesNotificationEmailAddress)
                         .add(FINE_ACCOUNT_NUMBER, fineAccountNumbers.get(0))
                         .build();
+
                 enrichedPayload.add("migratedMasterDefendantCourtEmailAndFineAccount", courtEmailAndFineAccount);
+
                 envelope = envelop(enrichedPayload.build())
                         .withName("result.command.send-nces-email-for-application")
                         .withMetadataFrom(event);

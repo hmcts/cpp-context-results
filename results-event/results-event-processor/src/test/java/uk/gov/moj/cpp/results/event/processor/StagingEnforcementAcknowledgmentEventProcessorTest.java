@@ -4,9 +4,13 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
+import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,17 +24,20 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
+import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import static javax.json.Json.createReader;
 
+import com.google.common.io.Resources;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -100,6 +107,9 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
 
     @Mock
     private ProgressionService progressionService;
+
+    @Mock
+    private ReferenceDataService referenceDataService;
 
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> envelopeArgumentCaptor;
@@ -236,10 +246,12 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
         final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
         final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
         final String caseId3 = "b10acc1c-eb69-4b3c-960e-76be9153125a";
+        final String hearingCourtCentreId = "faa91bb2-19cb-384b-bcc1-06d31d12cc67";
 
         final JsonObject notificationPayload = createObjectBuilder()
                 .add("masterDefendantId", masterDefendantId)
                 .add("caseIds", createCaseIds(caseId1, caseId2, caseId3))
+                .add("hearingCourtCentreId", hearingCourtCentreId)
                 .build();
 
         final JsonReader jsonReader = createReader(new StringReader(JSON_PAYLOAD));
@@ -247,6 +259,10 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
 
         when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3)))
                 .thenReturn(Optional.of(progressionResponse));
+
+        final JsonObject payload = getPayload("organisation-units.json");
+
+        when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(payload);
 
         final JsonEnvelope event = JsonEnvelope.envelopeFrom(
                 metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
@@ -265,7 +281,7 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.caseIds[0]", is(caseId1)),
                                 withJsonPath("$.caseIds[1]", is(caseId2)),
                                 withJsonPath("$.caseIds[2]", is(caseId3)),
-                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.courtEmail", is("court@email.com")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.courtEmail", is("cfuwarrants@justice.gov.uk")),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("12345"))
                         ))));
     }
@@ -274,5 +290,19 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
         final JsonArrayBuilder builder = createArrayBuilder();
         Arrays.stream(caseIds).forEach(builder::add);
         return builder;
+    }
+
+    private static JsonObject getPayload(final String path) {
+        String request = null;
+        try {
+            request = Resources.toString(
+                    Resources.getResource(path),
+                    Charset.defaultCharset()
+            );
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = Json.createReader(new StringReader(request));
+        return reader.readObject();
     }
 }
