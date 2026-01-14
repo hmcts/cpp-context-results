@@ -108,7 +108,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     public void processSendNcesMailForNewApplication(final JsonEnvelope event){ //Analyse for CCT-2266
         final JsonObject payload = event.payloadAsJsonObject();
 
-        Envelope<JsonObject> envelope = null;
+        Envelope<JsonObject> requestEnvelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
 
         final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
 
@@ -130,7 +130,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .map(jsonArray -> jsonArray.stream()
                         .map(i -> ((JsonString) i).getString())
                         .collect(Collectors.toList()))
-                .orElse(Collections.emptyList()); // Returns empty list if key is missing
+                .orElse(Collections.emptyList());
 
         if(CollectionUtils.isNotEmpty(caseIds)) {
             final Optional<JsonObject> inactiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
@@ -147,14 +147,12 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
                 enrichedPayload.add("migratedMasterDefendantCourtEmailAndFineAccount", courtEmailAndFineAccount);
 
-                envelope = envelop(enrichedPayload.build())
+                requestEnvelope = envelop(enrichedPayload.build())
                         .withName("result.command.send-nces-email-for-application")
                         .withMetadataFrom(event);
             }
-        } else {
-            envelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
         }
-            this.sender.sendAsAdmin(envelope);
+            this.sender.sendAsAdmin(requestEnvelope);
     }
 
     private List<String> extractFineAccountNumbers(final Optional<JsonObject> inactiveMigratedCases, final String masterDefendantId) {
