@@ -2118,6 +2118,23 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
                                 )
+                ),
+                Arguments.of("dd-40300: AC3 resulted SJP case refer to CC with REOPEN application. All offences has resulted with financial result in CC and OATS",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-resulted_3.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("reopen application")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopened_3.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","MarkedAggregateSendEmailWhenAccountReceived")
+                                )
+                                .newStep(newResultTrackedStep("case resulted in cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_3.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                )
                 )
         );
     }

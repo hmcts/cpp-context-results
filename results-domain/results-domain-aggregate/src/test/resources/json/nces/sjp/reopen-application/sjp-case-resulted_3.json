@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "af027554-bb42-4935-a988-3f5b69c00294",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmQf2sXSmithpmfR3@email.com",
+  "defendantName": "FlmQf2sX SmithpmfR3",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "63034d46-a551-4973-9e32-26d8e7354835",
+  "hearingSittingDay": "2026-01-09T11:34:38.675Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "a6719946-f379-420b-aacb-1dded7230a5d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name Driver and Vehicle Licensing Agency, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name Driver and Vehicle Licensing Agency, Surcharge\nAmount of surcharge £176.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 23/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "b413d7d9-fc23-4ba0-a9cb-b825ccdf8638",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Fine\nAmount of fine £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name Driver and Vehicle Licensing Agency",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "cda7390e-0604-4e7a-b27d-a6889fdb5243",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Fine\nAmount of fine £220.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "ee3dffb1-cd55-4cb9-bb60-3fcfdf661c90",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ275469325"
+  ]
+}

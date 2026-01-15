@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * This class implements a notification rule for sjp cases which moved to CC with reopen aplication in CC.
@@ -39,7 +41,7 @@ public class SjpReferralReopenApplicationNotificationRule extends AbstractCaseRe
         final boolean allSjpOffenceHasFinancialResult = prevSjpReferralOffenceResultsDetails.entrySet().stream()
                 .allMatch(sjpOffenceResult -> request.getOffenceResults().stream()
                         .filter(offenceResult -> offenceResult.getOffenceId().equals(sjpOffenceResult.getKey()))
-                        .allMatch(OffenceResults::getIsFinancial)
+                        .allMatch(offenceResult -> offenceResult.getIsFinancial() || StringUtils.startsWith(offenceResult.getImpositionOffenceDetails(), "OATS"))
                 );
         if (allSjpOffenceHasFinancialResult) {
             return Optional.of(
