@@ -38,13 +38,15 @@ public class ProgressionServiceStub {
 
 
     public static void stubQueryInactiveMigratedCases(final String caseIds) {
-        final String queryURI = format(PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_URL, caseIds);
+        String jsonBody = getJsonResponse(PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_RESPONSE);
 
-        stubFor(get(urlEqualTo(queryURI))
+        String dynamicJson = jsonBody.replace("DYNAMIC_ID", caseIds);
+
+        stubFor(get(urlEqualTo(format(PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_URL, caseIds)))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_MEDIA_TYPE)
-                        .withBody(getJsonResponse(PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_RESPONSE))));
+                        .withBody(dynamicJson)));
     }
 }

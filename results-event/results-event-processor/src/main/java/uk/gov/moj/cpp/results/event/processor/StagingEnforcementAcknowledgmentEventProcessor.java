@@ -20,6 +20,7 @@ import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -136,8 +137,12 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .orElse(emptyList());
 
         if(CollectionUtils.isNotEmpty(caseIds)) {
-            final Optional<JsonObject> inactiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
-            final List<String> fineAccountNumbers = extractFineAccountNumbers(inactiveMigratedCases, masterDefendantId);
+            final Optional<JsonObject> inActiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
+            List<String> fineAccountNumbers = inActiveMigratedCases
+                    .filter(progressionResponse -> progressionResponse.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES) != null &&
+                            !progressionResponse.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES).isEmpty())
+                    .map(json -> extractFineAccountNumbers(json, masterDefendantId))
+                    .orElse(Collections.emptyList());
 
             final JsonObjectBuilder enrichedPayload = createObjectBuilder(payload);
 
@@ -158,27 +163,38 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
             this.sender.sendAsAdmin(requestEnvelope);
     }
 
-    private List<String> extractFineAccountNumbers(final Optional<JsonObject> inactiveMigratedCases, final String masterDefendantId) {
-        return inactiveMigratedCases
-                .map(response -> response.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES))
-                .map(caseSummaries -> caseSummaries.getValuesAs(JsonObject.class).stream())
+    private List<String> extractFineAccountNumbers(final JsonObject response, final String masterId) {
+        return Optional.ofNullable(response.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES))
+                .map(array -> array.getValuesAs(JsonObject.class).stream())
                 .orElse(Stream.empty())
+                // Navigate to the inner summary object
                 .map(cs -> cs.getJsonObject(INACTIVE_CASE_SUMMARY))
-                .filter(summary -> summary.containsKey(DEFENDANTS) && summary.containsKey(MIGRATION_SOURCE_SYSTEM))
-                .flatMap(summary -> {
-                    final Set<String> matchingDefendantIds = summary.getJsonArray(DEFENDANTS)
-                            .getValuesAs(JsonObject.class).stream()
-                            .filter(def -> masterDefendantId.equals(def.getString(MASTER_DEFENDANT_ID)))
-                            .map(def -> def.getString(DEFENDANT_ID))
-                            .collect(Collectors.toSet());
-                    
-                    return summary.getJsonObject(MIGRATION_SOURCE_SYSTEM)
-                            .getJsonArray(DEFENDANT_FINE_ACCOUNT_NUMBERS)
-                            .getValuesAs(JsonObject.class).stream()
-                            .filter(fa -> matchingDefendantIds.contains(fa.getString(DEFENDANT_ID)))
-                            .map(fa -> fa.getString(FINE_ACCOUNT_NUMBER));
-                })
-                .collect(toList());
+                .filter(Objects::nonNull)
+                // Drill down into the specific fine accounts
+                .flatMap(summary -> findFineAccounts(summary, masterId))
+                .collect(Collectors.toList());
+    }
+
+    private Stream<String> findFineAccounts(JsonObject summary, String masterId) {
+        Set<String> linkedDefendantIds = Optional.ofNullable(summary.getJsonArray(DEFENDANTS))
+                .map(array -> array.getValuesAs(JsonObject.class).stream())
+                .orElse(Stream.empty())
+                .filter(def -> masterId.equals(def.getString(MASTER_DEFENDANT_ID)))
+                .map(def -> def.getString(DEFENDANT_ID))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        if (linkedDefendantIds.isEmpty()) {
+            return Stream.empty();
+        }
+
+        return Optional.ofNullable(summary.getJsonObject(MIGRATION_SOURCE_SYSTEM))
+                .map(sys -> sys.getJsonArray(DEFENDANT_FINE_ACCOUNT_NUMBERS))
+                .map(array -> array.getValuesAs(JsonObject.class).stream())
+                .orElse(Stream.empty())
+                .filter(fa -> linkedDefendantIds.contains(fa.getString(DEFENDANT_ID)))
+                .map(fa -> fa.getString(FINE_ACCOUNT_NUMBER))
+                .filter(Objects::nonNull);
     }
 
     @Handles("public.progression.defendant-address-changed")

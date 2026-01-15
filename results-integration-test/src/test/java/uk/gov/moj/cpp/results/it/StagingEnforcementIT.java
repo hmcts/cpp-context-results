@@ -149,7 +149,6 @@ public class StagingEnforcementIT {
         stubMaterialUploadFile();
         setupSjpQueryStub("caseUrn1", randomUUID());
         stubGetProgressionCaseExistsByUrn("32DN1212262", randomUUID());
-        stubQueryInactiveMigratedCases("b00acc1c-eb69-4b3c-960e-76be9153125a");
         correlationIdAndMasterDefendantIdAddedConsumer = privateEvents.createConsumer(CORRELATION_ID_AND_MASTERDEFENDANT_ADDED);
         hearingFinancialResultsUpdatedConsumer = privateEvents.createConsumer(HEARING_FINANCIAL_RESULT_UPDATED);
         sjpUploadCaseDocumentConsumer = privateEvents.createConsumer(SJP_UPLOAD_CASE_DOCUMENT);
@@ -714,6 +713,7 @@ public class StagingEnforcementIT {
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
         final String accountNumber = "AER123451";
+        stubQueryInactiveMigratedCases(masterDefendantId);
 
         final String payload = getPayload(TRACE_RESULT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId)
@@ -738,7 +738,7 @@ public class StagingEnforcementIT {
                 .add(MASTER_DEFENDANT_ID, masterDefendantId)
                 .add("listingDate", "01/12/2019")
                 .add("caseUrns", createArrayBuilder().add("caseUrn1").build())
-                .add("caseIds", createArrayBuilder().add("b00acc1c-eb69-4b3c-960e-76be9153125a").build())
+                .add("caseIds", createArrayBuilder().add(masterDefendantId).build())
                 .add(HEARING_COURT_CENTRE_NAME, HEARING_COURT_CENTRE_NAME_VALUE)
                 .build();
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
