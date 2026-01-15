@@ -2095,6 +2095,33 @@ class HearingFinancialResultsAggregateNCESTest {
         );
     }
 
+    public static Stream<Arguments> sjpReferralScenarios() {
+        return Stream.of(
+                Arguments.of("dd-40300: AC1 resulted SJP case refer to CC with REOPEN application. All offences has resulted with financial result in CC",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-resulted.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("reopen application")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopened.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","MarkedAggregateSendEmailWhenAccountReceived")
+                                )
+                                .newStep(newResultTrackedStep("case adj in cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-adj.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
+                                )
+                                .newStep(newResultTrackedStep("case resulted in cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                )
+                )
+        );
+    }
+
     @ParameterizedTest(name = "{index} => {0}")
     @MethodSource("appAmendmentsNextHearingScenarios")
     void shouldCreateNCESNotificationForAppAmendmentsNexh(final String name, final Scenario scenario) {
@@ -2148,4 +2175,12 @@ class HearingFinancialResultsAggregateNCESTest {
     void shouldCreateNCESNotificationForNonFinCaseMultiOffenceAppAmendments(final String name, final Scenario scenario) {
         assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
     }
+
+    @ParameterizedTest(name = "{index} => {0}")
+    @MethodSource("sjpReferralScenarios")
+    void shouldCreateNCESNotificationForSjpReferralApplications(final String name, final Scenario scenario) {
+        assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
+    }
+
+
 }

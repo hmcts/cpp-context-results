@@ -57,6 +57,7 @@ public interface ResultNotificationRule {
                      Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
+                     Map<UUID, OffenceResultsDetails> prevSjpReferralOffenceResultsDetails,
                      LinkedList<CorrelationItem> correlationItemList) {
 
         public boolean hasAnyApplicationType() {

@@ -109,6 +109,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private final List<MarkedAggregateSendEmailWhenAccountReceived> markedAggregateSendEmailWhenAccountReceivedList = new ArrayList<>();
     private final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails = new HashMap<>();
     private final Map<UUID, List<OffenceResultsDetails>> applicationOffenceResultsDetails = new HashMap<>();
+    private final Map<UUID, OffenceResultsDetails> sjpReferralOffenceResultsDetails = new HashMap<>();
 
     //returns true when both have new AccountCorrelationId & new GobAccountNumber OR new AccountCorrelationId & new GobAccountNumber are null
     private static final Predicate<MarkedAggregateSendEmailWhenAccountReceived> hasNewGobAccountIfExistOrNull = event -> Objects.isNull(event.getAccountCorrelationId()) == Objects.isNull(event.getGobAccountNumber());
@@ -194,6 +195,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                         caseOffenceResultsDetails,
                         applicationResultsDetails,
                         applicationOffenceResultsDetails,
+                        sjpReferralOffenceResultsDetails,
                         new LinkedList<>(correlationItemList)));
 
         processTrackedEvent(hearingFinancialResultRequest, builder);
@@ -285,6 +287,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         updateCaseLevelOffenceResults(request);
         updateApplicationLevelOffenceResults(request);
         updateApplicationResults(request);
+        updateSjpReferralOffenceResult(request);
         if (request.getAccountCorrelationId() != null) {
             final List<OffenceResultsDetails> offenceResultsDetailsList = request.getOffenceResults().stream()
                     .map(this::buildOffenceResultsDetailsFromOffenceResults).toList();
@@ -332,6 +335,14 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(result -> isNull(result.getApplicationType()))
                 .forEach(resultFromRequest ->
                         this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
+    }
+
+    private void updateSjpReferralOffenceResult(final HearingFinancialResultRequest request) {
+        if (Boolean.TRUE.equals(request.getIsSJPHearing())) {
+            request.getOffenceResults()
+                    .forEach(resultFromRequest ->
+                            this.sjpReferralOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
+        }
     }
 
     private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest) {
