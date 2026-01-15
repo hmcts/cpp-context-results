@@ -1,1 +1,44 @@
-{  "accountCorrelationId": "c7829890-6d78-42a8-a428-3ce7376972a5",  "accountDivisionCode": "77",  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",  "defendantContactNumber": "01231231230",  "defendantDateOfBirth": "2000-01-01",  "defendantEmail": "FlmXDIadSmithB2Igi@email.com",  "defendantName": "FlmXDIad SmithB2Igi",  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",  "hearingId": "8789bb9c-f260-4397-b94b-21c56a0c8b84",  "hearingSittingDay": "2026-01-09T10:00:00.000Z",  "isSJPHearing": false,  "masterDefendantId": "aca50709-3ea9-41bb-8754-23458eae7414",  "ncesEmail": "LCCCCancellations@Justice.gov.uk",  "offenceResults": [    {      "dateOfResult": "2026-01-09",      "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/01/2026.",      "isDeemedServed": false,      "isFinancial": true,      "offenceId": "c8fef4a7-dd5d-41b6-9b70-ce34fec4d01f",      "offenceTitle": "Keep a vehicle without a valid vehicle licence"    },    {      "dateOfResult": "2026-01-09",      "impositionOffenceDetails": "FO - Fine\nFined £400.00",      "isDeemedServed": false,      "isFinancial": true,      "offenceId": "a460934f-7e92-4297-b9aa-53cd440a1a45",      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"    },    {      "dateOfResult": "2026-01-09",      "impositionOffenceDetails": "FO - Fine\nFined £400.00",      "isDeemedServed": false,      "isFinancial": true,      "offenceId": "707a5bdc-2637-4d3e-b88c-c3bd5f515e28",      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"    }  ],  "prosecutionCaseReferences": [    "SJ275499319"  ]}
+{
+  "accountCorrelationId": "c7829890-6d78-42a8-a428-3ce7376972a5",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmXDIadSmithB2Igi@email.com",
+  "defendantName": "FlmXDIad SmithB2Igi",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "8789bb9c-f260-4397-b94b-21c56a0c8b84",
+  "hearingSittingDay": "2026-01-09T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "aca50709-3ea9-41bb-8754-23458eae7414",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/01/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "c8fef4a7-dd5d-41b6-9b70-ce34fec4d01f",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "a460934f-7e92-4297-b9aa-53cd440a1a45",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "707a5bdc-2637-4d3e-b88c-c3bd5f515e28",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ275499319"
+  ]
+}
