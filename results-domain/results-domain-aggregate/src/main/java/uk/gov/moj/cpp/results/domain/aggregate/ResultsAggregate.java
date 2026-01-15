@@ -76,6 +76,7 @@ import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.domain.event.PublishToDcs;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -105,7 +106,7 @@ public class ResultsAggregate implements Aggregate {
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
     private List<CaseDefendant> defendants = new ArrayList<>();
-
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private YouthCourt youthCourt;
     private List<UUID> youthCourtDefendantIds;
     private Map<UUID, CaseResultDetails> caseResultAmendmentDetailsList = new HashedMap();
@@ -592,7 +593,7 @@ public class ResultsAggregate implements Aggregate {
     private PoliceResultGenerated buildPoliceResultGeneratedEvent(final UUID caseId, final String caseUrn, final CaseDefendant defendant, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
         List<SessionDay> sessionDayList = this.sessionDays;
         if (hearingDay.isPresent()) {
-            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().toLocalDate())).collect(Collectors.toList());
+            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(UK_TIME_ZONE).toLocalDate())).collect(Collectors.toList());
         }
         if(hearing != null && Boolean.TRUE.equals(hearing.getIsBoxHearing())){
             sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).collect(Collectors.toList());
