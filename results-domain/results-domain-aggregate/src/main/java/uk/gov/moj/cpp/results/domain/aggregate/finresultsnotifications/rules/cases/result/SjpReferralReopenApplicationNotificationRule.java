@@ -26,7 +26,7 @@ public class SjpReferralReopenApplicationNotificationRule extends AbstractCaseRe
     @Override
     public boolean appliesTo(final RuleInput input) {
         final Map<UUID, OffenceResultsDetails> prevSjpReferralOffenceResultsDetails = input.prevSjpReferralOffenceResultsDetails();
-        return !input.request().getIsSJPHearing() && !prevSjpReferralOffenceResultsDetails.isEmpty() &&
+        return Boolean.FALSE.equals(input.request().getIsSJPHearing()) && !prevSjpReferralOffenceResultsDetails.isEmpty() &&
                 input.request().getOffenceResults().stream()
                         .anyMatch(offenceResult -> isOffenceHasReopened(offenceResult.getOffenceId(), prevSjpReferralOffenceResultsDetails));
     }
