@@ -9,6 +9,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNot
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class ResultNotificationRuleInputBuilder {
     private Map<UUID, String> offenceDateMap;
     private String ncesEmail;
     private Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails;
+    private Map<UUID, OffenceResultsDetails> prevSjpReferralOffenceResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap;
     private LinkedList<CorrelationItem> correlationItemList;
@@ -41,6 +43,7 @@ public class ResultNotificationRuleInputBuilder {
         builder.offenceDateMap = Map.of();
         builder.ncesEmail = "nces@test.com";
         builder.prevOffenceResultsDetails = Map.of();
+        builder.prevSjpReferralOffenceResultsDetails = Map.of();
         builder.prevApplicationResultsDetails = Map.of();
         builder.prevApplicationOffenceResultsMap = Map.of();
         builder.correlationItemList = new LinkedList<>();
@@ -54,6 +57,11 @@ public class ResultNotificationRuleInputBuilder {
                         OffenceResults::getOffenceId,
                         offenceResult -> "2023-03-01"
                 ));
+        return this;
+    }
+
+    public ResultNotificationRuleInputBuilder withPrevSjpReferralOffenceResultsDetails(final Map<UUID, OffenceResultsDetails> prevSjpReferralOffenceResultsDetails) {
+        this.prevSjpReferralOffenceResultsDetails = prevSjpReferralOffenceResultsDetails;
         return this;
     }
 
@@ -75,7 +83,7 @@ public class ResultNotificationRuleInputBuilder {
     public ResultNotificationRule.RuleInput build() {
         return new ResultNotificationRule.RuleInput(request, isWrittenOffExists, originalDateOfOffenceList, originalDateOfSentenceList,
                 newOffenceResultsFromHearing, applicationResult, offenceDateMap, ncesEmail, prevOffenceResultsDetails,
-                prevApplicationResultsDetails, prevApplicationOffenceResultsMap, correlationItemList);
+                prevApplicationResultsDetails, prevApplicationOffenceResultsMap, prevSjpReferralOffenceResultsDetails, correlationItemList);
     }
 
     public ResultNotificationRuleInputBuilder withCorrelationItemList(final List<CorrelationItem> items) {

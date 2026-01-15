@@ -40,6 +40,7 @@ public class NCESDecisionConstants  implements Serializable {
     public static final String SENTENCE_VARIED = "\nSentence varied";
     public static final String APPEAL_WITHDRAWN = "APPEAL WITHDRAWN";
     public static final String APPEAL_ALLOWED = "APPEAL ALLOWED";
+    public static final String APPLICATION_TO_REOPEN_GRANTED = "APPLICATION TO REOPEN GRANTED";
 
     public static final Map<String, String> APPLICATION_TYPES = ImmutableMap.<String, String>builder()
             .put(STAT_DEC, "APPLICATION FOR A STATUTORY DECLARATION RECEIVED")

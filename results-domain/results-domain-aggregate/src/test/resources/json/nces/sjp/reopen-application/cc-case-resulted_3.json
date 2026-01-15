@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "de982242-2d4e-419c-aa80-78d5ff3e16ea",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmQf2sXSmithpmfR3@email.com",
+  "defendantName": "FlmQf2sX SmithpmfR3",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ed678707-0696-4819-8055-1fa8e548d82c",
+  "hearingSittingDay": "2026-01-09T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "a6719946-f379-420b-aacb-1dded7230a5d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/01/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "b413d7d9-fc23-4ba0-a9cb-b825ccdf8638",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "OATS - Offence not dealt with as part of application - original adjudication to stand\nOffence not dealt with as part of application - original adjudication to stand",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "cda7390e-0604-4e7a-b27d-a6889fdb5243",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "OATS - Offence not dealt with as part of application - original adjudication to stand\nOffence not dealt with as part of application - original adjudication to stand",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "ee3dffb1-cd55-4cb9-bb60-3fcfdf661c90",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ275469325"
+  ]
+}

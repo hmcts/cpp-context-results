@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "787af833-485b-4566-81d3-8cfecbe7126a",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmXDIadSmithB2Igi@email.com",
+  "defendantName": "FlmXDIad SmithB2Igi",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "86cae9c6-5ea5-4de6-893a-a061d5d00f45",
+  "hearingSittingDay": "2026-01-09T11:06:58.606Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "aca50709-3ea9-41bb-8754-23458eae7414",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name Driver and Vehicle Licensing Agency, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name Driver and Vehicle Licensing Agency, Surcharge\nAmount of surcharge £88.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 23/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "c8fef4a7-dd5d-41b6-9b70-ce34fec4d01f",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Fine\nAmount of fine £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name Driver and Vehicle Licensing Agency",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "a460934f-7e92-4297-b9aa-53cd440a1a45",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "No separate penalty\nDriving record endorsed (no points)",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "707a5bdc-2637-4d3e-b88c-c3bd5f515e28",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ275499319"
+  ]
+}
