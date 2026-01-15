@@ -1,7 +1,9 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createObjectBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
@@ -56,6 +58,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String COURT_EMAIL = "courtEmail";
     private static final String DEFENDANTS = "defendants";
     private static final String DEFENDANT_ID = "defendantId";
+    public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
 
 
     @Inject
@@ -129,8 +132,8 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         final List<String> caseIds = ofNullable(payload.getJsonArray(CASE_IDS))
                 .map(jsonArray -> jsonArray.stream()
                         .map(i -> ((JsonString) i).getString())
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+                        .collect(toList()))
+                .orElse(emptyList());
 
         if(CollectionUtils.isNotEmpty(caseIds)) {
             final Optional<JsonObject> inactiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
@@ -145,7 +148,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                         .add(FINE_ACCOUNT_NUMBER, fineAccountNumbers.get(0))
                         .build();
 
-                enrichedPayload.add("migratedMasterDefendantCourtEmailAndFineAccount", courtEmailAndFineAccount);
+                enrichedPayload.add(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT, courtEmailAndFineAccount);
 
                 requestEnvelope = envelop(enrichedPayload.build())
                         .withName("result.command.send-nces-email-for-application")
@@ -175,7 +178,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .filter(fa -> matchingDefendantIds.contains(fa.getString(DEFENDANT_ID)))
                             .map(fa -> fa.getString(FINE_ACCOUNT_NUMBER));
                 })
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Handles("public.progression.defendant-address-changed")

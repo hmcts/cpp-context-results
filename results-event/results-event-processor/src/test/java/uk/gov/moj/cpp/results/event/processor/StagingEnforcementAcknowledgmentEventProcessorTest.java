@@ -49,59 +49,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class StagingEnforcementAcknowledgmentEventProcessorTest {
 
-    private static final String JSON_PAYLOAD = """
-        {
-            "inactiveMigratedCaseSummaries": [
-                {
-                    "inactiveCaseSummary": {
-                        "id": "b00acc1c-eb69-4b3c-960e-76be9153125a",
-                        "defendants": [
-                            {
-                                "defendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
-                                "convictingcourtId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
-                                "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab"
-                            }
-                        ],
-                        "migrationSourceSystem": {
-                            "migrationCaseStatus": "INACTIVE",
-                            "migrationSourceSystemName": "XHIBIT",
-                            "defendantFineAccountNumbers": [
-                                {
-                                    "defendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
-                                    "fineAccountNumber": "12345"
-                                }
-                            ],
-                            "migrationSourceSystemCaseIdentifier": "T20250001"
-                        }
-                    }
-                },
-                {
-                    "inactiveCaseSummary": {
-                        "id": "7776f4-3adc-4ea1-a808-26c4632f38ab",
-                        "defendants": [
-                            {
-                                "defendantId": "999176f4-3adc-4ea1-a808-26c4632f38ab",
-                                "convictingcourtId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
-                                "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab"
-                            }
-                        ],
-                        "migrationSourceSystem": {
-                            "migrationCaseStatus": "INACTIVE",
-                            "migrationSourceSystemName": "XHIBIT",
-                            "defendantFineAccountNumbers": [
-                                {
-                                    "defendantId": "999176f4-3adc-4ea1-a808-26c4632f38ab",
-                                    "fineAccountNumber": "67890"
-                                }
-                            ],
-                            "migrationSourceSystemCaseIdentifier": "T20259999"
-                        }
-                    }
-                }
-            ]
-        }
-        """;
-
     @Mock
     private Sender sender;
 
@@ -254,8 +201,7 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                 .add("hearingCourtCentreId", hearingCourtCentreId)
                 .build();
 
-        final JsonReader jsonReader = createReader(new StringReader(JSON_PAYLOAD));
-        final JsonObject progressionResponse = jsonReader.readObject();
+        final JsonObject progressionResponse =getPayload("inactive-migrated-cases.json");
 
         when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3)))
                 .thenReturn(Optional.of(progressionResponse));
