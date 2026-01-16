@@ -31,6 +31,7 @@ import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryInactiveMigratedCases;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.removeMessagesFromQueue;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocumentCreate;
@@ -149,6 +150,7 @@ public class StagingEnforcementIT {
         stubMaterialUploadFile();
         setupSjpQueryStub("caseUrn1", randomUUID());
         stubGetProgressionCaseExistsByUrn("32DN1212262", randomUUID());
+        stubGetOrganisationUnit();
         correlationIdAndMasterDefendantIdAddedConsumer = privateEvents.createConsumer(CORRELATION_ID_AND_MASTERDEFENDANT_ADDED);
         hearingFinancialResultsUpdatedConsumer = privateEvents.createConsumer(HEARING_FINANCIAL_RESULT_UPDATED);
         sjpUploadCaseDocumentConsumer = privateEvents.createConsumer(SJP_UPLOAD_CASE_DOCUMENT);
@@ -710,10 +712,13 @@ public class StagingEnforcementIT {
     @Test
     public void shouldSendNcesEmailForNewApplicationThenRejectAfterReceivedAccountNumber() {
         final String masterDefendantId = randomUUID().toString();
+        final String caseId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
         final String accountNumber = "AER123451";
-        stubQueryInactiveMigratedCases(masterDefendantId);
+        stubQueryInactiveMigratedCases(caseId, masterDefendantId);
+        final String HEARING_COURT_CENTRE_ID = "hearingCourtCentreId";
+        final String hearingCourtCentreId = "f8254db1-1683-483e-afb3-b87fde5a0a26";
 
         final String payload = getPayload(TRACE_RESULT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId)
@@ -738,9 +743,11 @@ public class StagingEnforcementIT {
                 .add(MASTER_DEFENDANT_ID, masterDefendantId)
                 .add("listingDate", "01/12/2019")
                 .add("caseUrns", createArrayBuilder().add("caseUrn1").build())
-                .add("caseIds", createArrayBuilder().add(masterDefendantId).build())
+                .add("caseIds", createArrayBuilder().add(caseId).build())
                 .add(HEARING_COURT_CENTRE_NAME, HEARING_COURT_CENTRE_NAME_VALUE)
+                .add(HEARING_COURT_CENTRE_ID, hearingCourtCentreId)
                 .build();
+
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
 
         final String rejectPayload = getPayload(REJECTED_APPLICATION).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId);

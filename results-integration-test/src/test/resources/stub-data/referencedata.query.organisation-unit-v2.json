@@ -21,5 +21,28 @@
   "address5": "address line 5",
   "postcode": "SW11 1JU",
   "isWelsh": false,
-  "oucodeNotes": "Addresses could / should be separate entity."
+  "oucodeNotes": "Addresses could / should be separate entity.",
+  "enforcementArea": {
+    "bankAccntName": "HMCTS/Plymouth Collections",
+    "bankAccntNum": "27048810",
+    "bankAccntSortCode": "56-00-33",
+    "bankAddressLine1": "NatWest Bank",
+    "bankAddressLine2": "Westminster Branch",
+    "bankAddressLine3": "57 Victoria Street London",
+    "paymentQueriesAddress1": "Plymouth Accounts Team",
+    "paymentQueriesAddress2": "Swindon Cash Office",
+    "paymentQueriesAddress3": "Swindon Magistrates Court",
+    "paymentQueriesAddress4": "Princes Street",
+    "paymentQueriesAddress5": "Swindon",
+    "paymentQueriesPostcode": "SN1 2JB",
+    "paymentQueriesAddress1Welsh": "Uned Gyllid Ganolog Dyfnaint a Chernyw",
+    "paymentQueriesAddress2Welsh": "Swyddfa Ariannu Swindon",
+    "paymentQueriesAddress3Welsh": "Tîm Cyfrifon Swindon",
+    "paymentQueriesAddress4Welsh": "Princes Street",
+    "paymentQueriesAddress5Welsh": "Swindon",
+    "remittanceAdviceEmailAddress": "RMHU-REM@justice.gov.uk",
+    "ncesArea": "Devon and Cornwall",
+    "ncesNotificationEmail": "cfuwarrants@justice.gov.uk",
+    "areaName": "Devon & Cornwall"
+  }
 }

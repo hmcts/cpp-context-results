@@ -106,8 +106,8 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
 
     @Handles("result.command.send-nces-email-for-application")
     public void sendNcesEmailForNewApplication(final JsonEnvelope envelope) throws EventStreamException {
-        final String masterDefandantId = envelope.payloadAsJsonObject().getString(MASTER_DEFENDANT_ID);
-        LOGGER.info("masterDefendantId : {} - sendNcesEmailForNewApplication: {}", masterDefandantId, envelope.toObfuscatedDebugString());
+        final String masterDefendantId = envelope.payloadAsJsonObject().getString(MASTER_DEFENDANT_ID);
+        LOGGER.info("masterDefendantId : {} - sendNcesEmailForNewApplication: {}", masterDefendantId, envelope.toObfuscatedDebugString());
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE),DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
@@ -122,10 +122,13 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
                         envelope.payloadAsJsonObject().getJsonObject(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT).getString("courtEmail"),
                         envelope.payloadAsJsonObject().getJsonObject(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT).getString("fineAccountNumber"))
                 : null;
-        final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
-                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList, migratedMasterDefendantCourtEmailAndFineAccount));
 
-        LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefandantId);
+        aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefendantId),
+                envelope,
+                hearingFinancialResultsAggregate ->
+                        hearingFinancialResultsAggregate.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList, migratedMasterDefendantCourtEmailAndFineAccount));
+
+        LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefendantId);
     }
 
     @Handles("results.event.send-nces-email-not-found")

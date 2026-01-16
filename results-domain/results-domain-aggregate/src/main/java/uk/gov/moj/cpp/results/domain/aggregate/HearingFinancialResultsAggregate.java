@@ -60,6 +60,7 @@ import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -85,6 +86,7 @@ import org.slf4j.Logger;
 public class HearingFinancialResultsAggregate implements Aggregate {
 
     private static final Logger LOGGER = getLogger(HearingFinancialResultsAggregate.class);
+    @Serial
     private static final long serialVersionUID = 1691228462960025058L;
     private static final String HEARING_SITTING_DAY_PATTERN = "yyyy-MM-dd";
     public static final String EMPTY_STRING = "";
