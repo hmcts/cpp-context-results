@@ -6,7 +6,6 @@
         "defendants": [
           {
             "defendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
-            "convictingcourtId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
             "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab"
           }
         ],
@@ -29,7 +28,6 @@
         "defendants": [
           {
             "defendantId": "999176f4-3adc-4ea1-a808-26c4632f38ab",
-            "convictingcourtId": "f8254db1-1683-483e-afb3-b87fde5a0a26",
             "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab"
           }
         ],
