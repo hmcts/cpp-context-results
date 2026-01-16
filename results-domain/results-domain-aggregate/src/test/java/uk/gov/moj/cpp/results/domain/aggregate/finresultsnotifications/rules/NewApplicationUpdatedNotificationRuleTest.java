@@ -8,22 +8,35 @@ import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearin
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationUpdatedNotificationRule;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
 class NewApplicationUpdatedNotificationRuleTest {
     private final NewApplicationUpdatedNotificationRule rule = new NewApplicationUpdatedNotificationRule();
 
-    @Test
-    void shouldGenerateUpdateNotificationForAdjournedApplication() {
+    private static Stream<Arguments> applicationTypesForAdjournment() {
+        return Stream.of(Arguments.of(STAT_DEC, "STATUTORY DECLARATION UPDATED"),
+                Arguments.of(APPEAL, "APPEAL APPLICATION UPDATED"),
+                Arguments.of(REOPEN, "APPLICATION TO REOPEN UPDATED"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("applicationTypesForAdjournment")
+    void shouldGenerateUpdateNotificationForAdjournedApplication(String applicationType, String expectedNotification) {
         final UUID hearingId = randomUUID();
         final UUID offenceId = randomUUID();
         final UUID accountCorrelationId = randomUUID();
@@ -32,7 +45,7 @@ class NewApplicationUpdatedNotificationRuleTest {
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         offenceResults()
-                                .withApplicationType(STAT_DEC)
+                                .withApplicationType(applicationType)
                                 .withApplicationResultType("Adjournment")
                                 .withApplicationResultsCategory("INTERMEDIARY")
                                 .withResultCode(null)
@@ -65,7 +78,7 @@ class NewApplicationUpdatedNotificationRuleTest {
         var output = rule.apply(input);
 
         output.ifPresentOrElse(notification -> {
-            assertThat("subject should match", notification.getSubject(), is("STATUTORY DECLARATION UPDATED"));
+            assertThat("subject should match", notification.getSubject(), is(expectedNotification));
         }, () -> fail("Expected notification to be present"));
     }
 
