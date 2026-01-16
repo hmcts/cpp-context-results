@@ -31,6 +31,7 @@ import uk.gov.moj.cpp.results.event.service.DefendantPerson;
 import uk.gov.moj.cpp.results.event.service.OffenceDetails;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,6 +58,7 @@ public class DcsCaseHelper {
     public static final String STAGING_DCS = "StagingDcs";
     public static final String ADDED_OFFENCES = "addedOffences";
     public static final String DELETED_OFFENCES = "deletedOffences";
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
 
     @Inject
     private DcsService dcsService;
@@ -189,7 +191,7 @@ public class DcsCaseHelper {
                             .map(CourtCentre::getName)
                             .orElse(null);
                     ZonedDateTime listedStartDateTime = nextHearing.getListedStartDateTime();
-                    LocalDate hearingDate = listedStartDateTime != null ? listedStartDateTime.toLocalDate() : null;
+                    LocalDate hearingDate = listedStartDateTime != null ? listedStartDateTime.withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate() : null;
                     hearings.add(Pair.of(courtCentreName, hearingDate));
                 });
 
