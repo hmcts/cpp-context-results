@@ -175,10 +175,8 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         return Optional.ofNullable(response.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES))
                 .map(array -> array.getValuesAs(JsonObject.class).stream())
                 .orElse(Stream.empty())
-                // Navigate to the inner summary object
                 .map(cs -> cs.getJsonObject(INACTIVE_CASE_SUMMARY))
                 .filter(Objects::nonNull)
-                // Drill down into the specific fine accounts
                 .flatMap(summary -> findFineAccounts(summary, masterId))
                 .collect(Collectors.toList());
     }
