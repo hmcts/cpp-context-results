@@ -13,8 +13,10 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -24,6 +26,7 @@ public class ProgressionService {
     private static final String PROGRESSION_QUERY_CASE_EXISTS_BY_CASEURN = "progression.query.case-exist-by-caseurn";
     private static final String PROGRESSION_CASE_DETAILS = "progression.query.prosecutioncase";
     private static final String PROGRESSION_QUERY_APPLICATION = "progression.query.application-only";
+    private static final String SEARCH_INACTIVE_MIGRATED_CASES = "progression.query.search-inactive-migrated-cases";
     public static final String CASE_ID = "caseId";
 
     @Inject
@@ -93,5 +96,16 @@ public class ProgressionService {
                         .build(),
                 payload);
         return Optional.ofNullable(requester.requestAsAdmin(envelope, JsonObject.class).payload());
+    }
+
+    public Optional<JsonObject> getInactiveMigratedCasesByCaseIds(final List<String> caseIds) {
+        final JsonObject payload = createObjectBuilder().add("caseIds", String.join(",", caseIds)).build();
+        final Metadata metadata = JsonEnvelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName(SEARCH_INACTIVE_MIGRATED_CASES)
+                .build();
+        final Envelope<JsonObject> envelope = envelopeFrom(metadata, payload);
+        final Envelope<JsonObject> response = requester.requestAsAdmin(envelope, JsonObject.class);
+        return Optional.of(response.payload());
     }
 }

@@ -112,7 +112,7 @@ public class HearingResultedIT {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
         stubCountryNationalities();
-        stubGetOrgainsationUnit();
+        stubGetOrganisationUnit();
         stubJudicialResults();
         stubBailStatuses();
         stubModeOfTrialReasons();

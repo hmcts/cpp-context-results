@@ -49,6 +49,7 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCourtEmailAndFineAccount;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.RuleInput;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
@@ -59,6 +60,7 @@ import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -84,6 +86,7 @@ import org.slf4j.Logger;
 public class HearingFinancialResultsAggregate implements Aggregate {
 
     private static final Logger LOGGER = getLogger(HearingFinancialResultsAggregate.class);
+    @Serial
     private static final long serialVersionUID = 1691228462960025058L;
     private static final String HEARING_SITTING_DAY_PATTERN = "yyyy-MM-dd";
     public static final String EMPTY_STRING = "";
@@ -365,7 +368,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return apply(builder().add(hearingFinancialResultsUpdated).build());
     }
 
-    public Stream<Object> sendNcesEmailForNewApplication(final String applicationType, final String listingDate, final List<String> caseUrns, final String hearingCourtCentreName, final List<String> clonedOffenceIdList) {
+    public Stream<Object> sendNcesEmailForNewApplication(final String applicationType, final String listingDate, final List<String> caseUrns, final String hearingCourtCentreName, final List<String> clonedOffenceIdList, final MigratedMasterDefendantCourtEmailAndFineAccount migratedMasterDefendantCourtEmailAndFineAccount) {
 
         if (masterDefendantId == null || hasNoPreviousFinancialImposition(clonedOffenceIdList)) {
             return empty();

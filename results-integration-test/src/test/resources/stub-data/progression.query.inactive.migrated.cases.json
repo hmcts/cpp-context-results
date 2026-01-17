@@ -1,0 +1,23 @@
+{
+  "inactiveMigratedCaseSummaries": [
+    {
+      "inactiveCaseSummary": {
+        "id": "CASE_ID",
+        "defendants": [
+          {
+            "defendantId": "b00acc1c-eb69-4b3c-960e-76be9153125a",
+            "masterDefendantId": "MASTER_DEFENDANT_ID"
+          }
+        ],
+        "migrationSourceSystem": {
+          "defendantFineAccountNumbers": [
+            {
+              "defendantId": "b00acc1c-eb69-4b3c-960e-76be9153125a",
+              "fineAccountNumber": "12345"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
