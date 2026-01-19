@@ -91,6 +91,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     public static final String EMPTY_STRING = "";
     public static final String BRITISH_DATE_FORMAT = "dd/MM/yyyy";
     private static final String AMENDMENT_REASON = "Admin error on shared result (a result recorded incorrectly)";
+    private static final String INTERMEDIARY = "INTERMEDIARY";
 
     private UUID hearingId;
     private ZonedDateTime hearingSittingDay;
@@ -331,7 +332,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
     private void updateCaseLevelOffenceResults(final HearingFinancialResultRequest request) {
         request.getOffenceResults().stream()
-                .filter(result -> isNull(result.getApplicationType()))
+                .filter(result -> isNull(result.getApplicationType())
+                        && !INTERMEDIARY.equals(result.getOffenceResultsCategory()))
                 .forEach(resultFromRequest ->
                         this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())));
     }

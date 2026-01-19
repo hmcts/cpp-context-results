@@ -997,9 +997,43 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "33c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                 )
-                )
+                ),
+                Arguments.of("Statdec > accepted,  DD-40056 SC1",
+                        newScenario()
+                                .newStep(newResultTrackedStep("SJP case resulted")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/sjp_case_resulted.json",
+                                                accountInfo("2cc2cf0b-5191-4fc6-96d2-6317a106988e", "2cc2cf0b-5191-4fc6-96d2-6317a106988eACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("app accepted")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/statdec_application_accepted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/statdec_granted_notification_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "2cc2cf0b-5191-4fc6-96d2-6317a106988eACCOUNT")))
+                                .newStep(newResultTrackedStep("app accepted")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/sjp_case_resulted_2.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
+                                )
 
-        );
+                ),
+                Arguments.of("Statdec > G & STDEC,  DD-40056 SC2",
+                        newScenario()
+                                .newStep(newResultTrackedStep("CC case resulted")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/cc_case_resulted.json",
+                                                accountInfo("fe72680d-e40f-4874-aa42-13a8b6422e2f", "fe72680d-e40f-4874-aa42-13a8b6422e2fACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("app resulted")
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/statdec_application_resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/statdec_granted_notification2_expected.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "fe72680d-e40f-4874-aa42-13a8b6422e2fACCOUNT")))
+                ));
     }
 
     public static Stream<Arguments> finCaseSingleOffenceAppAmendmentScenarios() {

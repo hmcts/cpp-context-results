@@ -18,7 +18,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "5c601825-07a1-4e90-bd4a-431eee62fcc4",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [
