@@ -248,7 +248,7 @@ public class NCESDecisionHelper {
 
     public static boolean isNewAppealOrReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = getFilteredOffenceResults(hearingFinancialResultRequest, asList(APPEAL, REOPEN),
-                appeal_reopen_application_accepted_result_codes);
+                null);
         return !offenceResults.isEmpty() && offenceResults.stream()
                 .anyMatch(offence -> INTERMEDIARY.name().equals(offence.getOffenceResultsCategory()));
     }
@@ -277,7 +277,7 @@ public class NCESDecisionHelper {
                                 .map(m -> m.containsKey(offence.getResultCode()))
                                 .orElse(false);
                         return isResultCodeInSubject
-                                && nonNull(offence.getApplicationId()) 
+                                && nonNull(offence.getApplicationId())
                                 && resultCodes.contains(offence.getResultCode());
                     } else {
                         return NCESDecisionConstants.APPLICATION_SUBJECT.containsKey(offence.getApplicationType());
