@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "8c996733-3748-46ed-ac5c-bc49c26ee8cf",
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantName": "Flmaq4Dc SmithHaean",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "9359de76-72e6-4a6d-9de5-a6a011c4af17",
+  "hearingSittingDay": "2026-01-20T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "d47ee27f-7956-43d4-9f5c-fdfb795573aa",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-20",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/01/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "80039bd7-2c32-4ea6-aee1-6a407ae4672b",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Use motor vehicle - mixing tyres on steerable and driven axles"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9147651"
+  ]
+}

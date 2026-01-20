@@ -2212,6 +2212,10 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withPathsExcluded("id")
                                                         .withParam("subject", "APPLICATION TO REOPEN GRANTED"))
                                 )
+                                .newStep(newResultTrackedStep("matchec cc case resulted")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-matched-case-resulted_6.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                 )
         );
     }
