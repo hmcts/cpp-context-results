@@ -2135,6 +2135,47 @@ class HearingFinancialResultsAggregateNCESTest {
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
                                 )
+                ),
+                Arguments.of("dd-40300: AC4 resulted SJP case and then adjourn to sjp then refer to CC with REOPEN application. All offences has resulted with financial result in CC and OATS",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-resulted_4.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("sjp adjourn")
+                                    .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopen-adj-to-sjp_4.json",
+                                            emptyAccountInfo())
+                                .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived"))
+                                .newStep(newResultTrackedStep("case adj to cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopen-adj-to-sjp_4.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","MarkedAggregateSendEmailWhenAccountReceived")
+                                )
+                                .newStep(newResultTrackedStep("case resulted in cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_4.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                )
+                ),
+                Arguments.of("dd-40300: AC5 resulted SJP case and then adjourn to sjp then refer to CC with REOPEN application. All offence has not resulted with financial result in CC ",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-resulted_5.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("sjp adjourn")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopen-adj-to-sjp_5.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived"))
+                                .newStep(newResultTrackedStep("sjp adjourn")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopen-adj-to-sjp2_5.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived"))
+                                .newStep(newResultTrackedStep("case resulted in cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_5.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked")
+                                )
                 )
         );
     }

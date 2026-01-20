@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "7362ac78-786f-4a6b-9814-957ec30fe17f",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1976-01-15",
+  "defendantEmail": "FlmK5FxjSmithGnniW@email.com",
+  "defendantName": "FlmK5Fxj SmithGnniW",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ad238871-65d2-40e7-944f-b9ddbbb08bb9",
+  "hearingSittingDay": "2026-01-15T14:36:58.972Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name British Transport Police, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police, Surcharge\nAmount of surcharge £176.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 29/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "Fine\nAmount of fine £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "Fine\nAmount of fine £220.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ915426836"
+  ]
+}

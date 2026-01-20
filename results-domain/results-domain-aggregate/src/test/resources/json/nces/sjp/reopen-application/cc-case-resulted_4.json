@@ -1,0 +1,47 @@
+{
+  "accountCorrelationId": "f3a19ddc-dcc7-4f2c-bd06-5a40e3fe547b",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1976-01-15",
+  "defendantEmail": "FlmK5FxjSmithGnniW@email.com",
+  "defendantName": "FlmK5Fxj SmithGnniW",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "32d5d151-fb59-4e3c-af20-4b3f10bb7c3c",
+  "hearingSittingDay": "2026-01-15T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "OATS - Offence not dealt with as part of application - original adjudication to stand\nOffence not dealt with as part of application - original adjudication to stand",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/02/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ915426836"
+  ]
+}
