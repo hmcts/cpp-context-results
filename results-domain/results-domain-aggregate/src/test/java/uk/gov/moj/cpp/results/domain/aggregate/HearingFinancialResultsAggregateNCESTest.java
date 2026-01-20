@@ -2117,6 +2117,10 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted.json",
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event.json",
+                                                comparison()
+                                                        .withPathsExcluded("id")
+                                                        .withParam("subject", "APPLICATION TO REOPEN GRANTED"))
                                 )
                 ),
                 Arguments.of("dd-40300: AC3 resulted SJP case refer to CC with REOPEN application. All offences has resulted with financial result in CC and OATS",
@@ -2134,6 +2138,10 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_3.json",
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event_2.json",
+                                                comparison()
+                                                        .withPathsExcluded("id")
+                                                        .withParam("subject", "APPLICATION TO REOPEN GRANTED"))
                                 )
                 ),
                 Arguments.of("dd-40300: AC4 resulted SJP case and then adjourn to sjp then refer to CC with REOPEN application. All offences has resulted with financial result in CC and OATS",
@@ -2155,6 +2163,10 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_4.json",
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event_4.json",
+                                                comparison()
+                                                        .withPathsExcluded("id")
+                                                        .withParam("subject", "APPLICATION TO REOPEN GRANTED"))
                                 )
                 ),
                 Arguments.of("dd-40300: AC5 resulted SJP case and then adjourn to sjp then refer to CC with REOPEN application. All offence has not resulted with financial result in CC ",
@@ -2175,6 +2187,30 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_5.json",
                                                 emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked")
+                                )
+                ),
+                Arguments.of("dd-40300: AC6 resulted SJP case then refer to CC with REOPEN application. Resulted with matched case in CC",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-resulted_6.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("sjp adjourn")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopened_6.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived"))
+                                .newStep(newResultTrackedStep("sjp adjourn")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-reopen-adj-to-cc_6.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
+                                .newStep(newResultTrackedStep("case resulted in cc")
+                                        .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_6.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","MarkedAggregateSendEmailWhenAccountReceived")
+                                        .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event_6.json",
+                                                comparison()
+                                                        .withPathsExcluded("id")
+                                                        .withParam("subject", "APPLICATION TO REOPEN GRANTED"))
                                 )
                 )
         );

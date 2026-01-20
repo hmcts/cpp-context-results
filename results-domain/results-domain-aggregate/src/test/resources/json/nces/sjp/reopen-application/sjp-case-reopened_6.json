@@ -1,0 +1,33 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "Flmaq4DcSmithHaean@email.com",
+  "defendantName": "Flmaq4Dc SmithHaean",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "9c2125bb-ab19-48d2-ad34-2853545a8141",
+  "hearingSittingDay": "2026-01-20T10:24:54.067Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "34431e2d-7a41-4130-bc5f-4efa7d2d7635",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "58f5c799-3c8b-4af9-b565-01cd98f15764",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-20",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 40\nTime of hearing 10:00\nDate of hearing 2026-01-20\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "fc813bf3-d073-4f58-b113-0ffaf7d08fd4",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "resultCode": "ROPENED"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ914887739"
+  ]
+}
