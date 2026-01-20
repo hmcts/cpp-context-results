@@ -1,1 +1,37 @@
-{  "accountCorrelationId": "f3a19ddc-dcc7-4f2c-bd06-5a40e3fe547b",  "caseReferences": "SJ915426836",  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",  "defendantContactNumber": "01231231230",  "defendantDateOfBirth": "1976-01-15",  "defendantEmail": "FlmK5FxjSmithGnniW@email.com",  "defendantName": "FlmK5Fxj SmithGnniW",  "divisionCode": "77",  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",  "hearingSittingDay": "2026-01-15",  "id": "c2200703-6674-4381-9c5b-9cd7999e37af",  "impositionOffenceDetails": [    {      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",      "offenceDate": "2019-11-28",      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",      "title": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"    },    {      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",      "offenceDate": "2019-11-28",      "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",      "title": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"    },    {      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",      "offenceDate": "2019-11-28",      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",      "title": "Keep a vehicle without a valid vehicle licence"    }  ],  "isSJPHearing": false,  "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",  "sendTo": "LCCCCancellations@Justice.gov.uk",  "subject": "APPLICATION TO REOPEN GRANTED"}
+{
+  "accountCorrelationId": "f3a19ddc-dcc7-4f2c-bd06-5a40e3fe547b",
+  "caseReferences": "SJ915426836",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1976-01-15",
+  "defendantEmail": "FlmK5FxjSmithGnniW@email.com",
+  "defendantName": "FlmK5Fxj SmithGnniW",
+  "divisionCode": "77",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2026-01-15",
+  "id": "c2200703-6674-4381-9c5b-9cd7999e37af",
+  "impositionOffenceDetails": [
+    {
+      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
+      "title": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    },
+    {
+      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",
+      "title": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "offenceDate": "2019-11-28",
+      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",
+      "title": "Keep a vehicle without a valid vehicle licence"
+    }
+  ],
+  "isSJPHearing": false,
+  "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN GRANTED"
+}
