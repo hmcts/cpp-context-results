@@ -58,6 +58,7 @@ public class DcsCaseHelper {
     public static final String STAGING_DCS = "StagingDcs";
     public static final String ADDED_OFFENCES = "addedOffences";
     public static final String DELETED_OFFENCES = "deletedOffences";
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
 
     @Inject
     private DcsService dcsService;

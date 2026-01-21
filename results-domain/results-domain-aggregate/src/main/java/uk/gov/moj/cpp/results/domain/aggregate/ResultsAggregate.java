@@ -33,6 +33,9 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ResultReshareHelper.hasRes
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.StandaloneApplicationHelper.buildDefendantFromSubject;
 import static uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested.appealUpdateNotificationRequested;
 
+import com.google.common.base.Functions;
+import org.apache.commons.collections.map.HashedMap;
+
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CaseAddedEvent;
@@ -53,9 +56,11 @@ import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.LjaDetails;
+import uk.gov.justice.core.courts.MigrationSourceSystem;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
+import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.PoliceResultGeneratedForStandaloneApplication;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
@@ -104,14 +109,15 @@ public class ResultsAggregate implements Aggregate {
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
     private static final String INVALID_EMAIL_ID = "Police Email Address is not Available";
-    private static final long serialVersionUID = 106L;
+    private static final long serialVersionUID = 107L;
     private final Set<UUID> hearingIds = new HashSet<>();
     private final List<Case> cases = new ArrayList<>();
+    private static final String XHIBIT = "XHIBIT";
     private UUID id;
     private CourtCentreWithLJA courtCentreWithLJA;
     private List<SessionDay> sessionDays = new ArrayList<>();
     private List<CaseDefendant> defendants = new ArrayList<>();
-
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private YouthCourt youthCourt;
     private List<UUID> youthCourtDefendantIds;
     private Map<UUID, CaseResultDetails> caseResultAmendmentDetailsList = new HashedMap();
@@ -183,6 +189,7 @@ public class ResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> saveHearingResultsForDay(final PublicHearingResulted payload, final LocalDate hearingDay) {
+        final Stream.Builder<Object> builder = builder();
         Boolean isReshare = Boolean.FALSE;
         final Optional<Boolean> isReshareFromPayload = payload.getIsReshare();
         if (nonNull(isReshareFromPayload) && isReshareFromPayload.isPresent()) {
@@ -191,15 +198,38 @@ public class ResultsAggregate implements Aggregate {
 
         final HearingResultsAddedForDay hearingResultsAddedForDay = new HearingResultsAddedForDay(payload.getHearing(), hearingDay, isReshare, payload.getSharedTime());
 
+        List<ProsecutionCase> nonXhibitCases = getNonExhibitCases(payload);
+
+
+        builder.add(hearingResultsAddedForDay);
+        if (!nonXhibitCases.isEmpty()) {
+            final Hearing builtHearing = Hearing.hearing()
+                    .withValuesFrom(payload.getHearing())
+                    .withProsecutionCases(nonXhibitCases)
+                    .build();
         PublishToDcs publishToDcs = PublishToDcs.publishToDcs()
                 .withPreviousHearing(hearing)
-                .withCurrentHearing(payload.getHearing())
-                .withHearingDay(hearingDay)
-                .withIsReshare(isReshare)
-                .withSharedTime(payload.getSharedTime())
-                .build();
+                    .withCurrentHearing(builtHearing)
+                    .withHearingDay(hearingDay)
+                    .withIsReshare(isReshare)
+                    .withSharedTime(payload.getSharedTime())
+                    .build();
+            builder.add(publishToDcs);
+        }
+        return apply(builder.build());
+    }
 
-        return apply(Stream.of(hearingResultsAddedForDay, publishToDcs));
+    private List<ProsecutionCase> getNonExhibitCases(final PublicHearingResulted payload) {
+        return ofNullable(payload.getHearing())
+                .stream()
+                .flatMap(e -> ofNullable(e.getProsecutionCases())
+                        .stream()
+                        .flatMap(List::stream))
+                .filter(e -> ofNullable(e.getMigrationSourceSystem())
+                        .map(MigrationSourceSystem::getMigrationSourceSystemName)
+                        .filter(XHIBIT::equals)
+                        .isEmpty())
+                .toList();
     }
 
     public Stream<Object> ejectCaseOrApplication(final UUID hearingId, final JsonObject payload) {
@@ -540,7 +570,6 @@ public class ResultsAggregate implements Aggregate {
         return isResultReshared;
     }
 
-
     private boolean isEligibleForEmailNotification(final Optional<JurisdictionType> jurisdictionType, final boolean isProsecutorPolice, final boolean isResultAmendedReshared, final boolean sendSpiOut) {
         if (!isProsecutorPolice || !sendSpiOut) {
             return false;
@@ -647,7 +676,7 @@ public class ResultsAggregate implements Aggregate {
     private PoliceResultGenerated buildPoliceResultGeneratedEvent(final UUID caseId, final String caseUrn, final CaseDefendant defendant, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
         List<SessionDay> sessionDayList = this.sessionDays;
         if (hearingDay.isPresent()) {
-            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).collect(Collectors.toList());
+            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(UK_TIME_ZONE).toLocalDate())).collect(Collectors.toList());
         }
         if (hearing != null && Boolean.TRUE.equals(hearing.getIsBoxHearing())) {
             sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).collect(Collectors.toList());
