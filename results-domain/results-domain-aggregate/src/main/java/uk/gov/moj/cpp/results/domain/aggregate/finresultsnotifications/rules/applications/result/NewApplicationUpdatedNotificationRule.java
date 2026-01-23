@@ -1,17 +1,18 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationAdjourned;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousUpdateNotificationSent;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.AbstractApplicationResultNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,7 +25,10 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
 
     @Override
     public boolean appliesTo(RuleInput input) {
-        return input.isNewApplication() && !input.isValidApplicationTypeWithAllowedResultCode();
+        return input.isNewApplication()
+                && input.hasValidApplicationType()
+                && (isNewAppealOrReopenApplicationOffencesAreAdjourned(input.request()) || isNewStatdecApplicationAdjourned(input.request()))
+                && !previousUpdateNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override
@@ -52,7 +56,6 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
                                         request,
                                         NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT.get(offence.getApplicationType()),
-                                        input.correlationItemList().peekLast(),
                                         impositionOffenceDetailsForApplication,
                                         ncesEmail,
                                         writtenOffExists,

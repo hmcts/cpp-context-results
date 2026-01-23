@@ -31,6 +31,9 @@
         "resultId": {
           "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
         },
+        "hearingId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
         "offenceId": {
           "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
         },
@@ -76,6 +79,12 @@
         "createdTime": {
           "type": "string",
           "format": "date-time"
+        },
+        "applicationResultsCategory": {
+          "type": "string"
+        },
+        "offenceResultsCategory": {
+          "type": "string"
         }
       }
     }

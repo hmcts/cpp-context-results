@@ -6,7 +6,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isAppealApplicationWithNoOffenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 
 import uk.gov.justice.hearing.courts.OffenceResults;
@@ -78,7 +77,7 @@ public class OffenceResultsResolver {
                                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
                                                                          final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
 
-        if (isApplicationDenied(prevApplicationResultsDetails.get(currentApplicationId)) || (isAppealApplicationWithNoOffenceResults(currentApplicationId, prevApplicationOffenceResultsMap, prevApplicationResultsDetails))) {
+        if (isApplicationDenied(prevApplicationResultsDetails.get(currentApplicationId))) {
             return getPreviousOffenceResultsDetails(offenceId, previousCaseOffenceResultsMap, prevApplicationOffenceResultsMap, currentApplicationId);
         }
 
@@ -90,7 +89,6 @@ public class OffenceResultsResolver {
 
     public static List<OffenceResults> getNewOffenceResultsCaseAmendment(final List<OffenceResults> newOffenceResults,
                                                                          final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap) {
-
         return newOffenceResults.stream()
                 .filter(o -> isNull(o.getApplicationType()))
                 .map(newOffenceResult -> {
@@ -98,6 +96,13 @@ public class OffenceResultsResolver {
                     return hasFinancialChanges(newOffenceResult, previousOffenceResultsDetails) ? newOffenceResult : null;
                 })
                 .filter(Objects::nonNull)
+                .filter(offenceResult -> {
+                    if (!TRUE.equals(offenceResult.getIsFinancial())) {
+                        final OffenceResultsDetails prevOffence = previousCaseOffenceResultsMap.get(offenceResult.getOffenceId());
+                        return nonNull(prevOffence);
+                    }
+                    return true;
+                })
                 .toList();
     }
 

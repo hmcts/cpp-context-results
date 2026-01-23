@@ -15,6 +15,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.builder;
 import static java.util.stream.Stream.empty;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.slf4j.LoggerFactory.getLogger;
 import static uk.gov.justice.core.courts.HearingFinancialResultsUpdated.hearingFinancialResultsUpdated;
@@ -23,7 +24,6 @@ import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoN
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildApplicationResultsDetailsFromOffenceResults;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT;
@@ -33,7 +33,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRuleEngine.resultNotificationRuleEngine;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldGobAccounts;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldAccountCorrelations;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
 import static uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested.ncesEmailNotificationRequested;
 import static uk.gov.moj.cpp.results.domain.event.NewOffenceByResult.newOffenceByResult;
@@ -52,11 +52,13 @@ import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.RuleInput;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.OldAccountDetailsWrapper;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
+import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
 import java.time.LocalDate;
@@ -89,6 +91,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     public static final String EMPTY_STRING = "";
     public static final String BRITISH_DATE_FORMAT = "dd/MM/yyyy";
     private static final String AMENDMENT_REASON = "Admin error on shared result (a result recorded incorrectly)";
+    private static final String INTERMEDIARY = "INTERMEDIARY";
 
     private UUID hearingId;
     private ZonedDateTime hearingSittingDay;
@@ -113,8 +116,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
     //returns true when both have new AccountCorrelationId & new GobAccountNumber OR new AccountCorrelationId & new GobAccountNumber are null
     private static final Predicate<MarkedAggregateSendEmailWhenAccountReceived> hasNewGobAccountIfExistOrNull = event -> Objects.isNull(event.getAccountCorrelationId()) == Objects.isNull(event.getGobAccountNumber());
-    //returns true when both have old AccountCorrelationId & old GobAccountNumber OR old AccountCorrelationId & old GobAccountNumber are null
-    private static final Predicate<MarkedAggregateSendEmailWhenAccountReceived> hasOldGobAccountIfExistOrNull = event -> Objects.isNull(event.getOldAccountCorrelationId()) == Objects.isNull(event.getOldGobAccountNumber());
 
 
     @Override
@@ -191,7 +192,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                         newResultByOffenceList,
                         applicationResult,
                         offenceDateMap,
-                        ncesEmail,
+                        ofNullable(hearingFinancialResultRequest.getNcesEmail()).orElse(ncesEmail),
                         caseOffenceResultsDetails,
                         applicationResultsDetails,
                         applicationOffenceResultsDetails,
@@ -202,7 +203,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
         markedEvents.stream()
                 .filter(hasNewGobAccountIfExistOrNull)
-                .filter(hasOldGobAccountIfExistOrNull)
+                .filter(e -> isValidOldCorrelationAndAccount(e.getOldAccountDetails()))
                 .toList()
                 .forEach(e -> {
                     LOGGER.info(":: Build Nces Application Mail ::");
@@ -212,6 +213,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         markedEvents.forEach(builder::add);
         return apply(builder.build());
     }
+
 
     /**
      * Processes the tracked event for hearing financial results.
@@ -231,6 +233,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     public Stream<Object> ncesEmailNotFound(final MarkedAggregateSendEmailWhenAccountReceived accountReceived) {
+        final OldAccountDetailsWrapper oldAccountDetailsWrapper = new OldAccountDetailsWrapper(accountReceived.getOldAccountDetails());
         if (accountReceived.getMasterDefendantId() != null) {
             final SendNcesEmailNotFound.Builder result = sendNcesEmailNotFound()
                     .withMasterDefendantId(fromString(accountReceived.getMasterDefendantId().toString()))
@@ -250,8 +253,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .withDivisionCode(accountReceived.getDivisionCode())
                     .withGobAccountNumber(accountReceived.getGobAccountNumber())
                     .withListedDate(accountReceived.getListedDate())
-                    .withOldDivisionCode(accountReceived.getOldDivisionCode())
-                    .withOldGobAccountNumber(accountReceived.getOldGobAccountNumber())
+                    .withOldDivisionCode(oldAccountDetailsWrapper.getOldDivisionCodes())
+                    .withOldGobAccountNumber(oldAccountDetailsWrapper.getOldGobAccounts())
                     .withImpositionOffenceDetails(accountReceived.getImpositionOffenceDetails());
             Optional.ofNullable(accountReceived.getDefendantDateOfBirth()).ifPresent(result::withDefendantDateOfBirth);
             return apply(Stream.of(result.build()));
@@ -290,7 +293,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         updateSjpReferralOffenceResult(request);
         if (request.getAccountCorrelationId() != null) {
             final List<OffenceResultsDetails> offenceResultsDetailsList = request.getOffenceResults().stream()
-                    .map(this::buildOffenceResultsDetailsFromOffenceResults).toList();
+                    .map((OffenceResults resultFromRequest) -> buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())).toList();
 
             correlationItemList.add(CorrelationItem.correlationItem()
                     .withAccountCorrelationId(request.getAccountCorrelationId())
@@ -308,7 +311,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .filter(result -> nonNull(result.getApplicationType()) && nonNull(result.getImpositionOffenceDetails()))
                 .filter(result -> Boolean.TRUE.equals(result.getIsParentFlag()))
                 .distinct()
-                .map(this::buildOffenceResultsDetailsFromOffenceResults).toList();
+                .map((OffenceResults resultFromRequest) -> buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())).toList();
 
         final UUID applicationId = request.getOffenceResults().stream().map(OffenceResults::getApplicationId).filter(Objects::nonNull).findFirst().orElse(null);
         if (nonNull(applicationId)) {
@@ -332,9 +335,10 @@ public class HearingFinancialResultsAggregate implements Aggregate {
 
     private void updateCaseLevelOffenceResults(final HearingFinancialResultRequest request) {
         request.getOffenceResults().stream()
-                .filter(result -> isNull(result.getApplicationType()))
+                .filter(result -> isNull(result.getApplicationType())
+                        && !INTERMEDIARY.equals(result.getOffenceResultsCategory()))
                 .forEach(resultFromRequest ->
-                        this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
+                        this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())));
     }
 
     private void updateSjpReferralOffenceResult(final HearingFinancialResultRequest request) {
@@ -346,6 +350,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest) {
+    private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest, final UUID hearingId) {
         return offenceResultsDetails()
                 .withAmendmentReason(resultFromRequest.getAmendmentReason())
                 .withAmendmentDate(resultFromRequest.getAmendmentDate())
@@ -356,12 +361,15 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withImpositionOffenceDetails(resultFromRequest.getImpositionOffenceDetails())
                 .withOffenceTitle(resultFromRequest.getOffenceTitle())
                 .withOffenceId(resultFromRequest.getOffenceId())
+                .withHearingId(hearingId)
                 .withResultId(resultFromRequest.getResultId())
                 .withIsDeemedServed(resultFromRequest.getIsDeemedServed())
                 .withResultCode(resultFromRequest.getResultCode())
                 .withIsFinancial(resultFromRequest.getIsFinancial())
                 .withIsParentFlag(resultFromRequest.getIsParentFlag())
                 .withCreatedTime(ZonedDateTime.now())
+                .withApplicationResultsCategory(resultFromRequest.getApplicationResultsCategory())
+                .withOffenceResultsCategory(resultFromRequest.getOffenceResultsCategory())
                 .build();
     }
 
@@ -383,34 +391,21 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
 
         final String subject = APPLICATION_TYPES.get(applicationType);
-        final NcesEmailNotificationRequested.Builder ncesEmailNotificationRequested = ncesEmailNotificationRequested()
-                .withNotificationId(randomUUID())
-                .withMaterialId(randomUUID())
-                .withSendTo(ncesEmail)
-                .withSubject(subject)
-                .withHearingCourtCentreName(hearingCourtCentreName.isEmpty() ? this.hearingCourtCentreName : hearingCourtCentreName)
-                .withDefendantName(defendantName)
-                .withDefendantDateOfBirth(defendantDateOfBirth)
-                .withDefendantAddress(defendantAddress)
-                .withDefendantEmail(defendantEmail)
-                .withDefendantContactNumber(defendantContactNumber)
-                .withIsSJPHearing(isSJPHearing)
-                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, caseUrns))
-                .withMasterDefendantId(masterDefendantId)
-                .withListedDate(listingDate)
-                .withIsWriteOff(Boolean.FALSE);
+        final NcesEmailNotificationRequested.Builder ncesEmailNotificationRequested = getNcesEmailNotificationRequested(listingDate, caseUrns, hearingCourtCentreName, subject);
 
-        ofNullable(hearingSittingDay)
-                .ifPresent(a -> ncesEmailNotificationRequested.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN)))
-                        .withOriginalDateOfSentence(a.format(ofPattern(BRITISH_DATE_FORMAT))));
+        ofNullable(hearingSittingDay).ifPresent(a -> ncesEmailNotificationRequested
+                .withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN)))
+                .withOriginalDateOfSentence(a.format(ofPattern(BRITISH_DATE_FORMAT)))
+        );
 
         if (isNotEmpty(correlationItemList)) {
             final List<UUID> offenceIdList = isNotEmpty(clonedOffenceIdList) ? clonedOffenceIdList.stream().map(UUID::fromString).toList() : emptyList();
-            final List<String> gobAccounts = getOldGobAccounts(new LinkedList<>(correlationItemList), null, offenceIdList, applicationResultsDetails);
-            if (isNotEmpty(gobAccounts)) {
+            final OldAccountDetailsWrapper correlationsWrapper = getOldAccountCorrelations(new LinkedList<>(correlationItemList), null, offenceIdList, applicationResultsDetails);
+
+            if (isNotEmpty(correlationsWrapper.getOldAccountDetails())) {
                 return apply(builder().add(ncesEmailNotificationRequested
-                                .withGobAccountNumber(String.join(",", gobAccounts))
-                                .withDivisionCode(getCorrelationItemForDivisionCode().getAccountDivisionCode())
+                                .withGobAccountNumber(correlationsWrapper.getOldGobAccounts())
+                                .withDivisionCode(correlationsWrapper.getOldDivisionCodes())
                                 .build())
                         .build());
             } else {
@@ -422,21 +417,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
     }
 
-    private CorrelationItem getCorrelationItemForDivisionCode() {
-        final LinkedList<CorrelationItem> correlationItemListGob = new LinkedList<>(correlationItemList);
-        correlationItemListGob.sort(comparing(CorrelationItem::getCreatedTime).reversed());
-
-        return correlationItemListGob.stream()
-                //filter to skip correlation if that is for an application that was declined
-                .filter(correlationItem -> {
-                    final UUID applicationId = correlationItem.getOffenceResultsDetailsList().stream()
-                            .map(OffenceResultsDetails::getApplicationId)
-                            .filter(Objects::nonNull).findFirst().orElse(null);
-                    return !isApplicationDenied(applicationResultsDetails.get(applicationId));
-                })
-                .findFirst().orElse(correlationItemList.peekLast());
-    }
-
     public Stream<Object> checkApplicationEmailAndSend() {
         if (markedAggregateSendEmailWhenAccountReceivedList.isEmpty()) {
             return empty();
@@ -444,21 +424,15 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final Set<UUID> idsToBeUnmarked = new HashSet<>();
         final Stream.Builder<Object> builder = Stream.builder();
 
-        markedAggregateSendEmailWhenAccountReceivedList.stream()
-                .filter(marked -> correlationItemList.stream().anyMatch(item -> (item.getAccountCorrelationId().equals(marked.getAccountCorrelationId()))
-                        || Objects.equals(marked.getOldAccountCorrelationId(), item.getAccountCorrelationId())))
-                .forEach(marked -> {
+        markedAggregateSendEmailWhenAccountReceivedList.forEach(marked -> {
                     final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived().withValuesFrom(marked);
 
-                    updateOldAndNewGobAccounts(marked, markedBuilder);
+                    final MarkedAggregateSendEmailWhenAccountReceived finalMarked = getMarkedWithUpdatedOldAndNewGobAccounts(marked, markedBuilder);
 
-                    final MarkedAggregateSendEmailWhenAccountReceived finalMarked = markedBuilder.build();
-
-                    if (nonNull(finalMarked.getGobAccountNumber()) && (isNull(finalMarked.getOldAccountCorrelationId()) || nonNull(finalMarked.getOldGobAccountNumber()))) {
+                    if (nonNull(finalMarked.getGobAccountNumber()) && isValidOldCorrelationAndAccount(finalMarked.getOldAccountDetails())) {
                         builder.add(buildNcesApplicationMail(finalMarked));
                         idsToBeUnmarked.add(finalMarked.getId());
                     }
-
                 });
 
         idsToBeUnmarked.forEach(id -> builder.add(UnmarkedAggregateSendEmailWhenAccountReceived.unmarkedAggregateSendEmailWhenAccountReceived()
@@ -523,24 +497,25 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return ncesEmail;
     }
 
-
     public List<String> getProsecutionCaseReferences() {
         return prosecutionCaseReferences;
     }
 
-    private void updateOldAndNewGobAccounts(final MarkedAggregateSendEmailWhenAccountReceived marked, final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder) {
+    private MarkedAggregateSendEmailWhenAccountReceived getMarkedWithUpdatedOldAndNewGobAccounts(final MarkedAggregateSendEmailWhenAccountReceived marked, final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder) {
 
         final String accountNumber = correlationItemList.stream()
                 .filter(item -> item.getAccountCorrelationId().equals(marked.getAccountCorrelationId()))
                 .findFirst().map(CorrelationItem::getAccountNumber).orElse(null);
         markedBuilder.withGobAccountNumber(accountNumber);
 
-        if (nonNull(marked.getOldAccountCorrelationId())) {
+        if (nonNull(marked.getOldAccountCorrelationId()) || isNotEmpty(marked.getOldAccountDetails())) {
             final List<UUID> offenceIdList = marked.getImpositionOffenceDetails().stream().map(ImpositionOffenceDetails::getOffenceId).toList();
-            final List<String> oldGobAccounts = getOldGobAccounts(new LinkedList<>(correlationItemList), marked.getAccountCorrelationId(), offenceIdList, applicationResultsDetails);
 
-            markedBuilder.withOldGobAccountNumber(oldGobAccounts.isEmpty() ? null : String.join(",", oldGobAccounts));
+            final OldAccountDetailsWrapper oldAccountDetailsWrapper = getOldAccountCorrelations(new LinkedList<>(correlationItemList), marked.getAccountCorrelationId(), offenceIdList, applicationResultsDetails);
+            markedBuilder.withOldAccountDetails(oldAccountDetailsWrapper.getOldAccountDetails());
         }
+
+        return markedBuilder.build();
     }
 
     private boolean hasNoPreviousFinancialImposition(final List<String> clonedOffenceIdList) {
@@ -630,11 +605,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             ncesNotification.withOriginalApplicationResults(marked.getOriginalApplicationResults());
             ncesNotification.withNewApplicationResults(marked.getNewApplicationResults());
             ncesNotification.withIsWriteOff(Boolean.TRUE);
-            //AccountWriteoff email is triggerred even when there no new GOB account number and OldGOB will be considered the latest GOB
-            if (isNull(marked.getGobAccountNumber()) && nonNull(marked.getOldGobAccountNumber())) {
-                ncesNotification.withGobAccountNumber(marked.getOldGobAccountNumber())
-                        .withOldGobAccountNumber(null);
-            }
             return ncesNotification.build();
         } else if (getApplicationAppealSubjects().contains(marked.getSubject())
                 || getApplicationNonGrantedSubjects().contains(marked.getSubject())) {
@@ -698,6 +668,8 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     }
 
     private NcesEmailNotificationRequested.Builder getNcesEmailNotificationRequested(MarkedAggregateSendEmailWhenAccountReceived marked) {
+
+        final OldAccountDetailsWrapper oldAccountDetailsWrapper = new OldAccountDetailsWrapper(marked.getOldAccountDetails());
         return ncesEmailNotificationRequested()
                 .withNotificationId(randomUUID())
                 .withMaterialId(randomUUID())
@@ -712,8 +684,9 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withGobAccountNumber(marked.getGobAccountNumber())
                 .withAmendmentDate(marked.getAmendmentDate())
                 .withAmendmentReason(marked.getAmendmentReason())
-                .withOldDivisionCode(marked.getOldDivisionCode())
-                .withOldGobAccountNumber(marked.getOldGobAccountNumber())
+                .withOldDivisionCode(oldAccountDetailsWrapper.getOldDivisionCodes())
+                .withOldGobAccountNumber(oldAccountDetailsWrapper.getOldGobAccounts())
+
                 .withIsSJPHearing(marked.getIsSJPHearing())
                 .withIsWriteOff(Boolean.FALSE);
     }
@@ -750,5 +723,32 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return addressLines.stream()
                 .filter(Objects::nonNull)
                 .collect(joining(" "));
+    }
+
+    private NcesEmailNotificationRequested.Builder getNcesEmailNotificationRequested(final String listingDate, final List<String> caseUrns, final String hearingCourtCentreName, final String subject) {
+        return ncesEmailNotificationRequested()
+                .withNotificationId(randomUUID())
+                .withMaterialId(randomUUID())
+                .withSendTo(ncesEmail)
+                .withSubject(subject)
+                .withHearingCourtCentreName(hearingCourtCentreName.isEmpty() ? this.hearingCourtCentreName : hearingCourtCentreName)
+                .withDefendantName(defendantName)
+                .withDefendantDateOfBirth(defendantDateOfBirth)
+                .withDefendantAddress(defendantAddress)
+                .withDefendantEmail(defendantEmail)
+                .withDefendantContactNumber(defendantContactNumber)
+                .withIsSJPHearing(isSJPHearing)
+                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, caseUrns))
+                .withMasterDefendantId(masterDefendantId)
+                .withListedDate(listingDate)
+                .withIsWriteOff(Boolean.FALSE);
+    }
+
+    /**
+     * returns true when all the accountCorrelationItems have old AccountCorrelationId & old GobAccountNumber OR old AccountCorrelationId & old GobAccountNumber are null
+     **/
+    private boolean isValidOldCorrelationAndAccount(final List<OldAccountDetails> oldAccountInfo) {
+        return isEmpty(oldAccountInfo) || oldAccountInfo.stream()
+                .allMatch(oac -> Objects.isNull(oac.getAccountCorrelationId()) == Objects.isNull(oac.getGobAccountNumber()));
     }
 }

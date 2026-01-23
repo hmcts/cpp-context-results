@@ -27,7 +27,9 @@
       "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
       "isParentFlag": true,
       "isFinancial": true,
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "resultId": "a02df768-a722-4b0e-b851-7496e13b82f7",
@@ -39,7 +41,8 @@
       "impositionOffenceDetails": "FO - Fine\nFined £50.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 22/12/2023.",
       "isFinancial" : FINANCIAL,
       "isDeemedServed" : DEEMED_SERVED,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     }
   ]
 }

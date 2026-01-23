@@ -24,7 +24,8 @@
             "isParentFlag": false,
             "offenceId": "9db4b1ab-5d8e-419f-82b5-0be084bc685c",
             "offenceTitle": "Keep a vehicle without a valid vehicle licence",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "7f1f16ee-d265-4618-b879-d761881e7697",
@@ -38,7 +39,8 @@
             "isParentFlag": false,
             "offenceId": "b31c083e-3fd7-45c0-8a29-9351f3dd6efe",
             "offenceTitle": "Cause use of motor vehicle with no insurance",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "7f1f16ee-d265-4618-b879-d761881e7697",
@@ -52,11 +54,11 @@
             "isParentFlag": false,
             "offenceId": "201d2d48-5395-4173-837b-4accd2f340dd",
             "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
-            "resultCode": "RFSD"
+            "resultCode": "RFSD",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [
         "SJ918778267"
-    ],
-    "accountCorrelationId": "{{accountCorrelationId}}"
+    ]
 }

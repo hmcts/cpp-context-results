@@ -31,7 +31,7 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        return input.hasValidApplicationType() && input.isAmendmentFlow() && !input.hasFinancialAmendments();
+        return input.hasValidApplicationType() && input.isAmendmentFlow() && !input.hasAccountCorrelation();
     }
 
     @Override
@@ -46,13 +46,10 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap())).distinct()
                 .toList();
 
-        //has application amendments
         final boolean appResultsOnly = originalApplicationResults.isPresent() && shouldNotifyNCESForAppResultAmendment(request) && newOffenceResults.isEmpty();
-        //has financial to non-financial amendments
         final boolean finToNonFin = isFineToNonFineApplicationAmendment(input, request, currentApplicationId) && !isFineToFineApplicationAmendment(input, request, currentApplicationId);
 
         if ((appResultsOnly && !isNonFineToNonFineApplicationAmendment(input, request, currentApplicationId)) || finToNonFin) {
-            // Get original imposition offence details from the aggregate when needed
             final List<ImpositionOffenceDetails> originalImpositionDetails = getOriginalOffenceResultsAppAmendment(input.prevOffenceResultsDetails(), input.prevApplicationOffenceResultsMap(), input.prevApplicationResultsDetails(), request.getOffenceResults())
                     .stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
@@ -65,11 +62,10 @@ public class ApplicationAmendmentFinToNonFinAccWriteOffRule extends AbstractAppl
             return Optional.of(markedAggregateSendEmailEventBuilder
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationId(request,
                             NCESDecisionConstants.AMEND_AND_RESHARE,
-                            input.correlationItemList().peekLast(),
                             originalImpositionDetails,
                             input.isWrittenOffExists(),
                             input.originalDateOfOffenceList(),
-                            input.originalDateOfOffenceList(),
+                            input.originalDateOfSentenceList(),
                             newOffenceResults,
                             input.applicationResult(),
                             originalApplicationResults.orElse(null),

@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
@@ -49,7 +53,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £444.00. ",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
@@ -60,7 +65,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £5000.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
@@ -71,7 +77,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £3333.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
@@ -82,7 +89,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £200.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

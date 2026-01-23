@@ -25,6 +25,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.test.matchers.JsonMatcher;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -121,6 +122,7 @@ class HearingFinancialResultAggregateTestSteps {
                                 logger.warn("<WARNING> USING DEFAULT COMPARISON FOR ALL EXPECTED EVENT PAYLOADS, ADD COMPARISON FOR EACH EXPECTED EVENT PAYLOAD TO AVOID THIS WARNING.");
                             }
                             final Comparison comparator = comparisonMap.getOrDefault(expectedEventPayloadFile, defaultComparison);
+                            comparator.withParam("CURRENT_DATE", LocalDate.now().toString());
                             final String expectedEventPayload = payloadAsString(expectedEventPayloadFile, comparator.parameters);
                             if (expectedEventPayload.isEmpty()) {
                                 fail("Expected event payload is empty: " + expectedEventPayloadFile);

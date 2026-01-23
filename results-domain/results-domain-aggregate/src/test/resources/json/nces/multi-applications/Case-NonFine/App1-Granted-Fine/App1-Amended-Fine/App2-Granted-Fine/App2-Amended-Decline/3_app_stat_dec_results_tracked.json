@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
             "offenceTitle": "Theft of motor vehicle",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "amendmentDate": "2025-07-29",
@@ -37,7 +39,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
-            "offenceTitle": "Theft of motor vehicle"
+            "offenceTitle": "Theft of motor vehicle",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "amendmentDate": "2025-07-29",
@@ -50,7 +53,8 @@
             "isFinancial": false,
             "isParentFlag": false,
             "offenceId": "0c057ad9-69b2-4617-9c9a-8416ce31d3b3",
-            "offenceTitle": "Theft of motor vehicle"
+            "offenceTitle": "Theft of motor vehicle",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

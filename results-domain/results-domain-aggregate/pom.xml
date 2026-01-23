@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-domain</artifactId>
-        <version>17.103.93-SNAPSHOT</version>
+        <version>17.0.97-CCT-2431-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-domain-aggregate</artifactId>
@@ -49,5 +49,11 @@
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
+	    <dependency>
+		    <groupId>uk.gov.justice.utils</groupId>
+		    <artifactId>test-utils-logging-simple</artifactId>
+		    <type>pom</type>
+		    <scope>test</scope>
+	    </dependency>
     </dependencies>
 </project>

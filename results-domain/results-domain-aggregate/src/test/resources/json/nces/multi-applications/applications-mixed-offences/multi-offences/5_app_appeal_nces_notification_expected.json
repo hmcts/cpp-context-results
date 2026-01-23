@@ -32,7 +32,7 @@
   "isFinancialPenaltiesWrittenOff": "false",
   "isWriteOff": false,
   "masterDefendantId": "853f5a94-13ff-4e10-85fa-4705524292d9",
-  "materialId": "0352da64-2e34-40d7-9e61-9a35cf985f1f",
+  "materialId": "{{materialId}}",
   "newApplicationResults": {
     "applicationResult": [
       "Allowed"
@@ -60,7 +60,7 @@
     }
   ],
   "notificationId": "{{notificationId}}",
-  "oldDivisionCode": "77",
+  "oldDivisionCode": "77,30",
   "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
