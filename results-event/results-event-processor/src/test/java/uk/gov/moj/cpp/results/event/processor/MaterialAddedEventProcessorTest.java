@@ -97,4 +97,48 @@ public class MaterialAddedEventProcessorTest {
         assertThat(sentEnvelopes.getValue(), is(outEnvelope));
     }
 
+    @Test
+    public void shouldHandleMigratedInactiveNcesDocumentNotificationWhenOriginatorStartsWithNcesCaseId() {
+        final String materialId = randomUUID().toString();
+        final String materialUrl = "http://localhost:8080/material.pdf";
+        final String masterDefendantId = randomUUID().toString();
+        final String caseId = randomUUID().toString();
+        final String originatorValue = "nces-" + masterDefendantId + "-" + caseId;
+        final JsonObject metaDataJson = Json.createObjectBuilder()
+                .add(Originator.SOURCE_NCES, originatorValue)
+                .add("id", UUID.randomUUID().toString())
+                .add("userId", UUID.randomUUID().toString())
+                .add("name", "dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataFrom(metaDataJson))
+                .withPayloadOf(materialId, "materialId")
+                .build();
+        when(materialUrlGenerator.pdfFileStreamUrlFor(fromString(materialId))).thenReturn(materialUrl);
+        Function<Object, JsonEnvelope> factory = (payload) -> {
+            final JsonObject jsonPayload = (JsonObject) payload;
+            // The implementation splits by "-" and takes splitted[1] and splitted[2]
+            // So for "nces-{uuid1}-{uuid2}", it takes the first two parts after "nces"
+            final String[] splitted = originatorValue.split("-");
+            final String expectedMasterDefendantId = splitted[1];
+            final String expectedCaseId = splitted[2];
+            final JsonObject expectedPayload = Json.createObjectBuilder()
+                    .add("materialId", materialId)
+                    .add("materialUrl", materialUrl)
+                    .add("masterDefendantId", expectedMasterDefendantId)
+                    .add("caseId", expectedCaseId)
+                    .build();
+            assertThat(jsonPayload, is(expectedPayload));
+            return outEnvelope;
+        };
+        when(enveloper.withMetadataFrom(jsonEnvelope, MaterialAddedEventProcessor.RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION))
+                .thenReturn(factory);
+
+        materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
+
+        verify(materialUrlGenerator, times(1)).pdfFileStreamUrlFor(fromString(materialId));
+        verify(enveloper, times(1)).withMetadataFrom(jsonEnvelope, MaterialAddedEventProcessor.RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION);
+        verify(sender, times(1)).send(outEnvelope);
+    }
+
 }

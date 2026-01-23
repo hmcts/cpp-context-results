@@ -6,7 +6,31 @@
         "defendants": [
           {
             "defendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
-            "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab"
+            "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Garfield",
+                "lastName": "Dare",
+                "dateOfBirth": "1998-08-23",
+                "address": {
+                  "address1": "59 Meadow Lane",
+                  "address2": "Huddersfield",
+                  "address3": "West Yorkshire",
+                  "address4": "Vernier",
+                  "address5": "Crescent",
+                  "postcode": "B1 1AA"
+                },
+                "contact": {
+                  "work": "07431234511",
+                  "primaryEmail": "test@gmail.com"
+                }
+              }
+            },
+            "offences": [
+              {
+                "convictionDate": "2025-11-09"
+              }
+            ]
           }
         ],
         "migrationSourceSystem": {
@@ -28,7 +52,31 @@
         "defendants": [
           {
             "defendantId": "999176f4-3adc-4ea1-a808-26c4632f38ab",
-            "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab"
+            "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Garfield",
+                "lastName": "Dare",
+                "dateOfBirth": "1998-08-23",
+                "address": {
+                  "address1": "59 Meadow Lane",
+                  "address2": "Huddersfield",
+                  "address3": "West Yorkshire",
+                  "address4": "Vernier",
+                  "address5": "Crescent",
+                  "postcode": "B1 1AA"
+                },
+                "contact": {
+                  "work": "07431234511",
+                  "primaryEmail": "test@gmail.com"
+                }
+              }
+            },
+            "offences": [
+              {
+                "convictionDate": "2025-11-09"
+              }
+            ]
           }
         ],
         "migrationSourceSystem": {
