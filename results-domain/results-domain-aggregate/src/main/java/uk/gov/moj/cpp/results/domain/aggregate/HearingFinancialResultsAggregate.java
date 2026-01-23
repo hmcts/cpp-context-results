@@ -109,7 +109,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private final List<MarkedAggregateSendEmailWhenAccountReceived> markedAggregateSendEmailWhenAccountReceivedList = new ArrayList<>();
     private final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails = new HashMap<>();
     private final Map<UUID, List<OffenceResultsDetails>> applicationOffenceResultsDetails = new HashMap<>();
-    private final Map<UUID, OffenceResultsDetails> sjpReferralOffenceResultsDetails = new HashMap<>();
+    private final Map<UUID, UUID> sjpReferralOffenceResultsDetails = new HashMap<>();
 
     //returns true when both have new AccountCorrelationId & new GobAccountNumber OR new AccountCorrelationId & new GobAccountNumber are null
     private static final Predicate<MarkedAggregateSendEmailWhenAccountReceived> hasNewGobAccountIfExistOrNull = event -> Objects.isNull(event.getAccountCorrelationId()) == Objects.isNull(event.getGobAccountNumber());
@@ -341,7 +341,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         if (Boolean.TRUE.equals(request.getIsSJPHearing())) {
             request.getOffenceResults()
                     .forEach(resultFromRequest ->
-                            this.sjpReferralOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest)));
+                            this.sjpReferralOffenceResultsDetails.put(resultFromRequest.getOffenceId(), resultFromRequest.getApplicationId()));
         }
     }
 

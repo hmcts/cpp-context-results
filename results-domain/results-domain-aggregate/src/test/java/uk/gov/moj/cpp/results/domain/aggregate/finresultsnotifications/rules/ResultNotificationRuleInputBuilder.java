@@ -25,7 +25,7 @@ public class ResultNotificationRuleInputBuilder {
     private Map<UUID, String> offenceDateMap;
     private String ncesEmail;
     private Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails;
-    private Map<UUID, OffenceResultsDetails> prevSjpReferralOffenceResultsDetails;
+    private Map<UUID, UUID> prevSjpReferralOffenceResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap;
     private LinkedList<CorrelationItem> correlationItemList;
@@ -60,7 +60,7 @@ public class ResultNotificationRuleInputBuilder {
         return this;
     }
 
-    public ResultNotificationRuleInputBuilder withPrevSjpReferralOffenceResultsDetails(final Map<UUID, OffenceResultsDetails> prevSjpReferralOffenceResultsDetails) {
+    public ResultNotificationRuleInputBuilder withPrevSjpReferralOffenceResultsDetails(final Map<UUID, UUID> prevSjpReferralOffenceResultsDetails) {
         this.prevSjpReferralOffenceResultsDetails = prevSjpReferralOffenceResultsDetails;
         return this;
     }

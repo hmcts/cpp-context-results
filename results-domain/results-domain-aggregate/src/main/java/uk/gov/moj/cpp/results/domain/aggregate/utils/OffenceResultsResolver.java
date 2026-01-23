@@ -45,6 +45,18 @@ public class OffenceResultsResolver {
                 .toList();
     }
 
+    public static List<OffenceResultsDetails> getOriginalSjpReferredOffenceResultsApplication(final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap,
+
+                                                                                   final List<OffenceResults> newSjpReferredOffenceResults) {
+
+         return newSjpReferredOffenceResults.stream()
+                .map(newOffenceResult -> ofNullable(previousCaseOffenceResultsMap.get(newOffenceResult.getOffenceId()))
+                        .filter(previousOffenceResult -> hasFinancialChanges(newOffenceResult, previousOffenceResult))
+                        .orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
     public static List<OffenceResultsDetails> getOriginalOffenceResultsAppAmendment(final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap,
                                                                                     final Map<UUID, List<OffenceResultsDetails>> previousApplicationOffenceResultsMap,
                                                                                     final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,

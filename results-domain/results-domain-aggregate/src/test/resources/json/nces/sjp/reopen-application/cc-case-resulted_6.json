@@ -12,6 +12,7 @@
   "isSJPHearing": false,
   "masterDefendantId": "34431e2d-7a41-4130-bc5f-4efa7d2d7635",
   "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "accountCorrelationId": "{{accountCorrelationId}}",
   "offenceResults": [
     {
       "dateOfResult": "2026-01-20",

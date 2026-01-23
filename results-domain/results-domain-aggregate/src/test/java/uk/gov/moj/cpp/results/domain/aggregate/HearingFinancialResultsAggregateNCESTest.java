@@ -2101,12 +2101,13 @@ class HearingFinancialResultsAggregateNCESTest {
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-resulted.json",
-                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked"))
                                 .newStep(newResultTrackedStep("reopen application")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/sjp-case-reopened.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked","MarkedAggregateSendEmailWhenAccountReceived")
+
+                                        accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived","HearingFinancialResultsUpdated")
                                 )
                                 .newStep(newResultTrackedStep("case adj in cc")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-adj.json",
@@ -2115,8 +2116,8 @@ class HearingFinancialResultsAggregateNCESTest {
                                 )
                                 .newStep(newResultTrackedStep("case resulted in cc")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","HearingFinancialResultsUpdated","MarkedAggregateSendEmailWhenAccountReceived","UnmarkedAggregateSendEmailWhenAccountReceived", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event.json",
                                                 comparison()
                                                         .withPathsExcluded("id")
@@ -2136,8 +2137,8 @@ class HearingFinancialResultsAggregateNCESTest {
                                 )
                                 .newStep(newResultTrackedStep("case resulted in cc")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_3.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","HearingFinancialResultsUpdated","MarkedAggregateSendEmailWhenAccountReceived","UnmarkedAggregateSendEmailWhenAccountReceived", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event_2.json",
                                                 comparison()
                                                         .withPathsExcluded("id")
@@ -2161,8 +2162,8 @@ class HearingFinancialResultsAggregateNCESTest {
                                 )
                                 .newStep(newResultTrackedStep("case resulted in cc")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_4.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived")
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","HearingFinancialResultsUpdated","MarkedAggregateSendEmailWhenAccountReceived","UnmarkedAggregateSendEmailWhenAccountReceived", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event_4.json",
                                                 comparison()
                                                         .withPathsExcluded("id")
@@ -2205,8 +2206,8 @@ class HearingFinancialResultsAggregateNCESTest {
                                         .withExpectedEventNames("HearingFinancialResultsTracked"))
                                 .newStep(newResultTrackedStep("case resulted in cc")
                                         .withResultTrackedEvent("json/nces/sjp/reopen-application/cc-case-resulted_6.json",
-                                                emptyAccountInfo())
-                                        .withExpectedEventNames("HearingFinancialResultsTracked","MarkedAggregateSendEmailWhenAccountReceived")
+                                                accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked","HearingFinancialResultsUpdated","MarkedAggregateSendEmailWhenAccountReceived","UnmarkedAggregateSendEmailWhenAccountReceived", "NcesEmailNotificationRequested")
                                         .withExpectedEventPayloadEquals("MarkedAggregateSendEmailWhenAccountReceived", "json/nces/sjp/reopen-application/cc-case-resulted-expected-event_6.json",
                                                 comparison()
                                                         .withPathsExcluded("id")

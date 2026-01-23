@@ -1,6 +1,7 @@
 {
-  "accountCorrelationId": "f3a19ddc-dcc7-4f2c-bd06-5a40e3fe547b",
+  "accountCorrelationId": "22c39541-e8e0-45b3-af99-532b33646b69",
   "caseReferences": "SJ915426836",
+  "dateDecisionMade": "2026-01-15",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
   "defendantContactNumber": "01231231230",
   "defendantDateOfBirth": "1976-01-15",
@@ -9,29 +10,38 @@
   "divisionCode": "77",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "hearingSittingDay": "2026-01-15",
-  "id": "c2200703-6674-4381-9c5b-9cd7999e37af",
+  "id": "fc2a0320-c69f-497c-8657-2a55819d0361",
   "impositionOffenceDetails": [
     {
-      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "details": "Costs\nAmount of costs £320.10\nMajor creditor organisation name British Transport Police, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police, Surcharge\nAmount of surcharge £176.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 29/01/2026",
       "offenceDate": "2019-11-28",
-      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
-      "title": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",
+      "title": "Keep a vehicle without a valid vehicle licence"
     },
     {
-      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "details": "Fine\nAmount of fine £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police",
       "offenceDate": "2019-11-28",
       "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",
       "title": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
     },
     {
-      "details": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "details": "Fine\nAmount of fine £220.00",
       "offenceDate": "2019-11-28",
-      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",
-      "title": "Keep a vehicle without a valid vehicle licence"
+      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
+      "title": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
     }
   ],
+  "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
   "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",
+  "newApplicationResults": {
+    "applicationResult": []
+  },
+  "newOffenceByResult": [],
+  "oldAccountCorrelationId": "7362ac78-786f-4a6b-9814-957ec30fe17f",
+  "oldDivisionCode": "77",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "APPLICATION TO REOPEN GRANTED"
 }
