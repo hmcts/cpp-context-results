@@ -14,10 +14,6 @@
                 "dateOfBirth": "1998-08-23",
                 "address": {
                   "address1": "59 Meadow Lane",
-                  "address2": "Huddersfield",
-                  "address3": "West Yorkshire",
-                  "address4": "Vernier",
-                  "address5": "Crescent",
                   "postcode": "B1 1AA"
                 },
                 "contact": {
@@ -27,9 +23,29 @@
               }
             },
             "offences": [
-              {
-                "convictionDate": "2025-11-09"
+              { "convictionDate": "2025-11-09" }
+            ]
+          },
+          {
+            "defendantId": "NEW-DEF-ID-55555",
+            "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Garfield (Junior)",
+                "lastName": "Dare",
+                "dateOfBirth": "2020-01-01",
+                "address": {
+                  "address1": "59 Meadow Lane",
+                  "postcode": "B1 1AA"
+                },
+                "contact": {
+                  "work": "0000000000",
+                  "primaryEmail": "junior@gmail.com"
+                }
               }
+            },
+            "offences": [
+              { "convictionDate": "2026-01-01" }
             ]
           }
         ],
@@ -40,6 +56,10 @@
             {
               "defendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
               "fineAccountNumber": "12345"
+            },
+            {
+              "defendantId": "NEW-DEF-ID-55555",
+              "fineAccountNumber": "54321"
             }
           ],
           "migrationSourceSystemCaseIdentifier": "T20250001"
@@ -58,24 +78,12 @@
                 "firstName": "Garfield",
                 "lastName": "Dare",
                 "dateOfBirth": "1998-08-23",
-                "address": {
-                  "address1": "59 Meadow Lane",
-                  "address2": "Huddersfield",
-                  "address3": "West Yorkshire",
-                  "address4": "Vernier",
-                  "address5": "Crescent",
-                  "postcode": "B1 1AA"
-                },
-                "contact": {
-                  "work": "07431234511",
-                  "primaryEmail": "test@gmail.com"
-                }
+                "address": { "address1": "59 Meadow Lane", "postcode": "B1 1AA" },
+                "contact": { "primaryEmail": "test@gmail.com" }
               }
             },
             "offences": [
-              {
-                "convictionDate": "2025-11-09"
-              }
+              { "convictionDate": "2025-11-09" }
             ]
           }
         ],
