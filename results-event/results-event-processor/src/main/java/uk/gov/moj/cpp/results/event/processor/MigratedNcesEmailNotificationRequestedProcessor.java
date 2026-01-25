@@ -17,10 +17,8 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.event.helper.Originator;
-import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
-import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -44,11 +42,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     private static final String MASTER_DEFENDANT_ID = "masterDefendantId";
     private static final Logger LOGGER = LoggerFactory.getLogger(MigratedNcesEmailNotificationRequestedProcessor.class);
 
-    @Inject
-    ReferenceDataService referenceDataService;
 
-    @Inject
-    ReferenceCache referenceCache;
     @Inject
     private Sender sender;
 

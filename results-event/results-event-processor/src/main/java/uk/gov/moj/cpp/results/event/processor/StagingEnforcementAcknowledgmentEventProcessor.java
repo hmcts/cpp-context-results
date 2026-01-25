@@ -207,7 +207,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
                     return caseSummary.getJsonArray("defendants").stream()
                             .map(JsonValue::asJsonObject)
-                            .filter(def -> masterId.equals(def.getString("masterDefendantId")))
+                            .filter(def -> masterId.equals(def.getString(MASTER_DEFENDANT_ID)))
                             .flatMap(def -> {
                                 String currentDefId = def.getString("defendantId");
                                 DefendantDetails details = mapToDefendantDetails(def);
@@ -217,7 +217,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                                         // MATCHING STEP: Only pair them if the account belongs to this defendant
                                         .filter(fa -> currentDefId.equals(fa.getString("defendantId")))
                                         .map(fa -> new EnrichedFineDetail(
-                                                new FineAccount(caseId, fa.getString("fineAccountNumber"), caseIdentifier),
+                                                new FineAccount(caseId, fa.getString(FINE_ACCOUNT_NUMBER), caseIdentifier),
                                                 details)
                                         );
                             });
