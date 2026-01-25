@@ -73,6 +73,8 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String DEFENDANTS = "defendants";
     private static final String DEFENDANT_ID = "defendantId";
     public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
+    public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
+
     private record NcesNotificationDetails(String email, String division) {}
     public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier) {}
     public record EnrichedFineDetail(FineAccount fineAccount, DefendantDetails defendant) {}
@@ -155,7 +157,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .add(MASTER_DEFENDANT_ID, masterDefendantId)
                             .add(CASE_ID, item.fineAccount().caseId())
                             .add(FINE_ACCOUNT_NUMBER, item.fineAccount().fineAccountNumber())
-                            .add("migrationSourceSystemCaseIdentifier", item.fineAccount().caseIdentifier())
+                            .add(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER, item.fineAccount().caseIdentifier())
                             .add(COURT_EMAIL, ncesNotificationDetails.email())
                             .add(DIVISION, ncesNotificationDetails.division())
                             .add(DEFENDANT_NAME, item.defendant().defendantName())
@@ -212,7 +214,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .flatMap(caseSummary -> {
                     String caseId = caseSummary.getString("id");
                     JsonObject sourceSystem = caseSummary.getJsonObject("migrationSourceSystem");
-                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier");
+                    String caseIdentifier = sourceSystem.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER);
 
                     return caseSummary.getJsonArray("defendants").stream()
                             .map(JsonValue::asJsonObject)
