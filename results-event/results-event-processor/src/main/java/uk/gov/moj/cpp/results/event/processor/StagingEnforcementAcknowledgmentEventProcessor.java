@@ -22,15 +22,11 @@ import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
@@ -62,16 +58,10 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String ACCOUNT_CORRELATION_ID ="accountCorrelationId";
     private static final String HEARING_FINANCIAL_RESULT_REQUEST= "hearingFinancialResultRequest";
     private static final String CASE_IDS = "caseIds";
-    private static final String INACTIVE_MIGRATED_CASE_SUMMARIES = "inactiveMigratedCaseSummaries";
-    private static final String INACTIVE_CASE_SUMMARY = "inactiveCaseSummary";
-    private static final String MIGRATION_SOURCE_SYSTEM = "migrationSourceSystem";
-    private static final String DEFENDANT_FINE_ACCOUNT_NUMBERS = "defendantFineAccountNumbers";
     private static final String FINE_ACCOUNT_NUMBER = "fineAccountNumber";
     private static final String CASE_ID = "caseId";
     private static final String COURT_EMAIL = "courtEmail";
     private static final String DIVISION = "division";
-    private static final String DEFENDANTS = "defendants";
-    private static final String DEFENDANT_ID = "defendantId";
     public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
     public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
 
@@ -143,7 +133,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
             final Optional<JsonObject> inActiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
             final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
 
-            // This one call now does all the matching and mapping work
             List<EnrichedFineDetail> enrichedDetails = inActiveMigratedCases
                     .map(json -> extractAllEnrichedData(json, masterDefendantId))
                     .orElse(Collections.emptyList());
@@ -220,7 +209,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .map(JsonValue::asJsonObject)
                             .filter(def -> masterId.equals(def.getString("masterDefendantId")))
                             .flatMap(def -> {
-                                String currentDefId = def.getString("defendantId"); // The specific ID (e.g., 1 or 2)
+                                String currentDefId = def.getString("defendantId");
                                 DefendantDetails details = mapToDefendantDetails(def);
 
                                 return sourceSystem.getJsonArray("defendantFineAccountNumbers").stream()

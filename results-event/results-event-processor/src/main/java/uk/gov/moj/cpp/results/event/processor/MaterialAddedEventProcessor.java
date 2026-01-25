@@ -30,7 +30,7 @@ public class MaterialAddedEventProcessor {
     public static final String ORIGINATOR_VALUE = Originator.ORIGINATOR_VALUE_NCES;
     public static final String ORIGINATOR_VALUE_NCES_CASEID = Originator.ORIGINATOR_VALUE_NCES_CASEID;
     public static final String RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION = "result.command.migrated-inactive-nces-document-notification";
-    private static final String MASTER_DEFENDANT_ID = "masterDefendantId";
+    public static final String MATERIAL_ID = "materialId";
 
     @Inject
     private MaterialUrlGenerator materialUrlGenerator;
@@ -61,7 +61,7 @@ public class MaterialAddedEventProcessor {
     @SuppressWarnings("squid:CallToDeprecatedMethod")
     private void processNcesDocumentNotification(JsonEnvelope envelope) {
 
-        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("materialId"));
+        final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
         final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
 
         final NcesDocumentNotification ncesDocumentNotificationCommand = NcesDocumentNotification.ncesDocumentNotification()
@@ -76,14 +76,14 @@ public class MaterialAddedEventProcessor {
     @SuppressWarnings("squid:CallToDeprecatedMethod")
     private void processMigratedInactiveNcesDocumentNotification(JsonEnvelope envelope) {
         final JsonObject payload = envelope.payloadAsJsonObject();
-        final UUID materialId = UUID.fromString(payload.getString("materialId"));
+        final UUID materialId = UUID.fromString(payload.getString(MATERIAL_ID));
         final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
 
         final String originator = envelope.metadata().asJsonObject().getString(ORIGINATOR);
         final String[] splitted = originator.split("-");
 
         final JsonObject enrichedPayload = createObjectBuilder()
-                .add("materialId", materialId.toString())
+                .add(MATERIAL_ID, materialId.toString())
                 .add("materialUrl", materialUrl)
                 .add("masterDefendantId", splitted[1])
                 .add("caseId", splitted[2])
