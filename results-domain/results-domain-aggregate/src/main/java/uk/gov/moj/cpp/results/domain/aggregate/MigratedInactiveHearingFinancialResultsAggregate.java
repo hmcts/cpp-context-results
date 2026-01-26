@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static java.util.stream.Stream.empty;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoNothing;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
@@ -14,7 +13,6 @@ import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
-import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 
 import java.io.Serial;
 import java.util.List;
@@ -29,6 +27,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
     private UUID materialId;
     private String sendToAddress;
     private String subject;
+    private boolean isEventRaisedEarlier = false;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -49,7 +48,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
         this.materialId = migratedInactiveNcesEmailNotificationRequested.getMaterialId();
         this.sendToAddress = migratedInactiveNcesEmailNotificationRequested.getSendTo();
         this.subject = migratedInactiveNcesEmailNotificationRequested.getSubject();
-
+        this.isEventRaisedEarlier = true;
     }
 
     public Stream<Object> sendNcesEmailForMigratedApplication(
@@ -59,7 +58,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
             final String hearingCourtCentreName,
             final MigratedMasterDefendantCaseDetails migratedCaseDetails) {
 
-        if (migratedCaseDetails == null) {
+        if (migratedCaseDetails == null || isEventRaisedEarlier) {
             return Stream.empty();
         }
 
@@ -123,5 +122,9 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
 
     String getSubject() {
         return subject;
+    }
+
+    boolean isEventRaisedEarlier() {
+        return isEventRaisedEarlier;
     }
 }

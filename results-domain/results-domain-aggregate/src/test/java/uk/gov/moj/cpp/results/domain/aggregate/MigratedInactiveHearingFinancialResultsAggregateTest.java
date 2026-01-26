@@ -101,6 +101,51 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
     }
 
     @Test
+    public void shouldReturnEmptyStreamWhenEventRaisedEarlier() {
+        final UUID masterDefendantId = randomUUID();
+        final UUID notificationId = randomUUID();
+        final UUID materialId = randomUUID();
+        final String sendToAddress = "test@example.com";
+        final String subject = "TEST SUBJECT";
+
+        final MigratedInactiveNcesEmailNotificationRequested event = migratedInactiveNcesEmailNotificationRequested()
+                .withMasterDefendantId(masterDefendantId)
+                .withNotificationId(notificationId)
+                .withMaterialId(materialId)
+                .withSendTo(sendToAddress)
+                .withSubject(subject)
+                .build();
+
+        aggregate.apply(event);
+        assertThat(aggregate.isEventRaisedEarlier(), is(true));
+
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = new MigratedMasterDefendantCaseDetails(
+                MASTER_DEFENDANT_ID,
+                CASE_ID,
+                FINE_ACCOUNT_NUMBER,
+                COURT_EMAIL,
+                DIVISION,
+                DEFENDANT_NAME,
+                DEFENDANT_ADDRESS,
+                ORIGINAL_DATE_OF_CONVICTION,
+                DEFENDANT_EMAIL,
+                DEFENDANT_DATE_OF_BIRTH,
+                DEFENDANT_CONTACT_NUMBER,
+                "CASE123"
+        );
+
+        final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
+                STAT_DEC,
+                LISTING_DATE,
+                singletonList("caseUrn"),
+                HEARING_COURT_CENTRE_NAME,
+                migratedCaseDetails);
+
+        final List<Object> events = result.collect(toList());
+        assertThat(events.size(), is(0));
+    }
+
+    @Test
     public void shouldSaveMigratedInactiveNcesEmailNotificationDetails() {
         final UUID masterDefendantId = randomUUID();
         final UUID notificationId = randomUUID();
