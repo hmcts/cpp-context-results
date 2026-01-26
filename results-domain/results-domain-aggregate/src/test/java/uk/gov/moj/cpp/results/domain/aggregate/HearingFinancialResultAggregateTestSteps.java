@@ -95,7 +95,6 @@ class HearingFinancialResultAggregateTestSteps {
         void run(final HearingFinancialResultsAggregate aggregate) {
             final String stepName = this.getClass().getSimpleName();
             logger.info("Executing Step {}(\"{}\")", stepName, name);
-            System.out.println(String.format("Executing Step %s(\"%s\")", stepName, name));
             final Map<String, List<Object>> actualEvents = execute(aggregate);
             assertExpectedEvents(actualEvents);
             logger.info("Finished Step {}(\"{}\")", stepName, name);

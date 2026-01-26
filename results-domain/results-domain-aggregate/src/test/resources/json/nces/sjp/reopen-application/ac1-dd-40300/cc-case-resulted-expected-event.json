@@ -1,5 +1,4 @@
 {
-  "accountCorrelationId": "22c39541-e8e0-45b3-af99-532b33646b69",
   "caseReferences": "SJ275499319",
   "dateDecisionMade": "2026-01-09",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
@@ -8,9 +7,9 @@
   "defendantEmail": "FlmXDIadSmithB2Igi@email.com",
   "defendantName": "FlmXDIad SmithB2Igi",
   "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "hearingSittingDay": "2026-01-09",
-  "id": "68089538-fcba-4021-a236-d593b751ce0e",
   "impositionOffenceDetails": [
     {
       "details": "A - Adjournment\nAdjourned for hearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
@@ -33,13 +32,16 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "aca50709-3ea9-41bb-8754-23458eae7414",
+  "materialId": "12173d88-50b1-4ab8-9701-84ccfea999c5",
   "newApplicationResults": {
     "applicationResult": []
   },
   "newOffenceByResult": [],
-  "oldAccountCorrelationId": "787af833-485b-4566-81d3-8cfecbe7126a",
+  "notificationId": "30f11399-3ca1-4703-82bc-31f9a50a931d",
   "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

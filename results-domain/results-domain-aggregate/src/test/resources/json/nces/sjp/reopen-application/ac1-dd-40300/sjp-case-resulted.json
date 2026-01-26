@@ -1,5 +1,4 @@
 {
-  "accountCorrelationId": "787af833-485b-4566-81d3-8cfecbe7126a",
   "accountDivisionCode": "77",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
   "defendantContactNumber": "01231231230",
@@ -12,6 +11,7 @@
   "isSJPHearing": true,
   "masterDefendantId": "aca50709-3ea9-41bb-8754-23458eae7414",
   "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "accountCorrelationId": "{{accountCorrelationId}}",
   "offenceResults": [
     {
       "dateOfResult": "2026-01-09",

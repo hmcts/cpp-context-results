@@ -1,5 +1,5 @@
 {
-  "accountCorrelationId": "d39a8389-0bd5-40af-8985-260e13c18e05",
+  "accountCorrelationId": "{{accountCorrelationId}}",
   "accountDivisionCode": "77",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
   "defendantContactNumber": "01231231230",

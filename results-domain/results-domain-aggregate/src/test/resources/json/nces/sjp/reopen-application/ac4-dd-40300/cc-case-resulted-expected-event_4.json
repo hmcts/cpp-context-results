@@ -1,5 +1,4 @@
 {
-  "accountCorrelationId": "22c39541-e8e0-45b3-af99-532b33646b69",
   "caseReferences": "SJ915426836",
   "dateDecisionMade": "2026-01-15",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
@@ -8,9 +7,9 @@
   "defendantEmail": "FlmK5FxjSmithGnniW@email.com",
   "defendantName": "FlmK5Fxj SmithGnniW",
   "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "hearingSittingDay": "2026-01-15",
-  "id": "fc2a0320-c69f-497c-8657-2a55819d0361",
   "impositionOffenceDetails": [
     {
       "details": "Costs\nAmount of costs £320.10\nMajor creditor organisation name British Transport Police, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name British Transport Police, Surcharge\nAmount of surcharge £176.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 29/01/2026",
@@ -33,13 +32,16 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",
+  "materialId": "38d8b5db-b261-4ff8-b5d5-4f980df36615",
   "newApplicationResults": {
     "applicationResult": []
   },
   "newOffenceByResult": [],
-  "oldAccountCorrelationId": "7362ac78-786f-4a6b-9814-957ec30fe17f",
+  "notificationId": "d721c8c3-a969-4fd8-b50b-fb2bacec4b5f",
   "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

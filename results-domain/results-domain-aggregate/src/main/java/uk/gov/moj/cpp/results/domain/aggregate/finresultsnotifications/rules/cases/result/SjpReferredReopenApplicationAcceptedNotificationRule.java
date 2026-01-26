@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * This class implements a notification rule for sjp cases which moved to CC with reopen aplication in CC.
  */
-public class SjpReferralReopenApplicationNotificationRule extends AbstractCaseResultNotificationRule {
+public class SjpReferredReopenApplicationAcceptedNotificationRule extends AbstractCaseResultNotificationRule {
 
     public static final String REOPEN_APPLICATION_TYPE = "REOPEN";
 
@@ -36,7 +36,7 @@ public class SjpReferralReopenApplicationNotificationRule extends AbstractCaseRe
         final Map<UUID,List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = input.prevApplicationOffenceResultsMap();
         return Boolean.FALSE.equals(input.request().getIsSJPHearing()) && !prevSjpReferralOffenceResultsDetails.isEmpty() &&
                 input.request().getOffenceResults().stream()
-                        .anyMatch(offenceResult -> isOffenceHasReopened(offenceResult.getOffenceId(), prevSjpReferralOffenceResultsDetails, prevApplicationOffenceResultsMap));
+                        .anyMatch(offenceResult -> isPrevSJPReopenApplication(offenceResult.getOffenceId(), prevSjpReferralOffenceResultsDetails, prevApplicationOffenceResultsMap));
     }
 
     @Override
@@ -85,12 +85,10 @@ public class SjpReferralReopenApplicationNotificationRule extends AbstractCaseRe
         }
     }
 
-    private boolean isOffenceHasReopened(final UUID offenceId, final Map<UUID, UUID> prevSjpReferralOffenceResultsDetails,
-                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+    private boolean isPrevSJPReopenApplication(final UUID offenceId, final Map<UUID, UUID> prevSjpReferralOffenceResultsDetails,
+                                               final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
         return prevSjpReferralOffenceResultsDetails.containsKey(offenceId) &&
                 prevApplicationOffenceResultsMap.get(prevSjpReferralOffenceResultsDetails.get(offenceId))
                         .stream().anyMatch(offenceResultsDetails -> REOPEN_APPLICATION_TYPE.equals(offenceResultsDetails.getApplicationType()));
-
-
     }
 }

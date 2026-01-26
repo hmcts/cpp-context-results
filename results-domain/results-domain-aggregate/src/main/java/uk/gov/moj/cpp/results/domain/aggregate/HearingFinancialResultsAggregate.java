@@ -349,8 +349,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         }
     }
 
-    private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest) {
-    private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest, final UUID hearingId) {
+     private OffenceResultsDetails buildOffenceResultsDetailsFromOffenceResults(OffenceResults resultFromRequest, final UUID hearingId) {
         return offenceResultsDetails()
                 .withAmendmentReason(resultFromRequest.getAmendmentReason())
                 .withAmendmentDate(resultFromRequest.getAmendmentDate())

@@ -1,5 +1,5 @@
 {
-  "accountCorrelationId": "af027554-bb42-4935-a988-3f5b69c00294",
+  "accountCorrelationId": "{{accountCorrelationId}}",
   "accountDivisionCode": "77",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
   "defendantContactNumber": "01231231230",
@@ -19,7 +19,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "b413d7d9-fc23-4ba0-a9cb-b825ccdf8638",
-      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "offenceResultsCategory":"FINAL"
     },
     {
       "dateOfResult": "2026-01-09",
@@ -27,7 +28,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "cda7390e-0604-4e7a-b27d-a6889fdb5243",
-      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment",
+      "offenceResultsCategory":"FINAL"
     },
     {
       "dateOfResult": "2026-01-09",
@@ -35,7 +37,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "ee3dffb1-cd55-4cb9-bb60-3fcfdf661c90",
-      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+      "offenceResultsCategory":"FINAL"
     }
   ],
   "prosecutionCaseReferences": [

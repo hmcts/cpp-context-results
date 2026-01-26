@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "fc813bf3-d073-4f58-b113-0ffaf7d08fd4",
       "offenceTitle": "Keep a vehicle without a valid vehicle licence",
-      "resultCode": "ROPENED"
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
     }
   ],
   "prosecutionCaseReferences": [

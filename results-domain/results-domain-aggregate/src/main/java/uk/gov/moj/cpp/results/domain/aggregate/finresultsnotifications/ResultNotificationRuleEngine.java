@@ -16,7 +16,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cas
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToNonFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseDeemedServedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.SjpReferralReopenApplicationNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.SjpReferredReopenApplicationAcceptedNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class ResultNotificationRuleEngine {
         rules.add(new CaseACONNotificationRule());
         rules.add(new CaseAmendmentDeemedServedNotificationRule());
         rules.add(new CaseDeemedServedNotificationRule());
-        rules.add(new SjpReferralReopenApplicationNotificationRule());
+        rules.add(new SjpReferredReopenApplicationAcceptedNotificationRule());
     }
 
     public static ResultNotificationRuleEngine resultNotificationRuleEngine() {

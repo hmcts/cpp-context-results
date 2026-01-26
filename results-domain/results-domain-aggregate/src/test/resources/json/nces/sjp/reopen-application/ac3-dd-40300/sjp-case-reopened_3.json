@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "b413d7d9-fc23-4ba0-a9cb-b825ccdf8638",
       "offenceTitle": "Keep a vehicle without a valid vehicle licence",
-      "resultCode": "ROPENED"
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
     },
     {
       "applicationId": "7e5f95e2-2645-4154-86bb-7579c3c1378c",
@@ -38,7 +40,9 @@
       "isParentFlag": true,
       "offenceId": "cda7390e-0604-4e7a-b27d-a6889fdb5243",
       "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment",
-      "resultCode": "ROPENED"
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
     },
     {
       "applicationId": "7e5f95e2-2645-4154-86bb-7579c3c1378c",
@@ -52,7 +56,9 @@
       "isParentFlag": true,
       "offenceId": "ee3dffb1-cd55-4cb9-bb60-3fcfdf661c90",
       "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
-      "resultCode": "ROPENED"
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
     }
   ],
   "prosecutionCaseReferences": [

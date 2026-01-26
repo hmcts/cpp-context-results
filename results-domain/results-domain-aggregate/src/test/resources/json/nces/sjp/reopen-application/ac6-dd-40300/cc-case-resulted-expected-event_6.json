@@ -1,5 +1,4 @@
 {
-  "accountCorrelationId": "22c39541-e8e0-45b3-af99-532b33646b69",
   "caseReferences": "SJ914887739",
   "dateDecisionMade": "2026-01-20",
   "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
@@ -8,12 +7,12 @@
   "defendantEmail": "Flmaq4DcSmithHaean@email.com",
   "defendantName": "Flmaq4Dc SmithHaean",
   "divisionCode": "77",
+  "gobAccountNumber": "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "hearingSittingDay": "2026-01-20",
-  "id": "1af48e5d-c6f0-4d79-868f-485e214c21e7",
   "impositionOffenceDetails": [
     {
-      "details": "A - Adjournment\nAdjourned for hearing on 20/01/2026 at 22:30 in Courtroom 01, Bexley Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 20/01/2026 at 22:30 in Courtroom 01, Bexley Magistrates' Court",
+      "details": "Costs\nAmount of costs £320.10\nMajor creditor organisation name Driver and Vehicle Licensing Agency, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name Driver and Vehicle Licensing Agency\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 03/02/2026",
       "offenceDate": "2019-11-28",
       "offenceId": "fc813bf3-d073-4f58-b113-0ffaf7d08fd4",
       "title": "Keep a vehicle without a valid vehicle licence"
@@ -21,13 +20,16 @@
   ],
   "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
+  "isWriteOff": false,
   "masterDefendantId": "34431e2d-7a41-4130-bc5f-4efa7d2d7635",
+  "materialId": "2c306cf9-0dc4-4eee-8793-c62974ce095c",
   "newApplicationResults": {
     "applicationResult": []
   },
   "newOffenceByResult": [],
-  "oldAccountCorrelationId": "d39a8389-0bd5-40af-8985-260e13c18e05",
+  "notificationId": "af14f1b6-112d-4625-852f-784cbe843061",
   "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
