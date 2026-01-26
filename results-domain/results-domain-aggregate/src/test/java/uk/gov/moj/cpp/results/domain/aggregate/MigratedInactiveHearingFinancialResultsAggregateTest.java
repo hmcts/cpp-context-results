@@ -72,7 +72,8 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 ORIGINAL_DATE_OF_CONVICTION,
                 DEFENDANT_EMAIL,
                 DEFENDANT_DATE_OF_BIRTH,
-                DEFENDANT_CONTACT_NUMBER
+                DEFENDANT_CONTACT_NUMBER,
+                "CASE123"
         );
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(

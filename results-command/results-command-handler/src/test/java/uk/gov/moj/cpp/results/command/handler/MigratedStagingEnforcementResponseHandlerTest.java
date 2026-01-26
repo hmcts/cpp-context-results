@@ -116,6 +116,7 @@ public class MigratedStagingEnforcementResponseHandlerTest {
                                 .add("defendantName", defendantName)
                                 .add("defendantEmail", defendantEmail)
                                 .add("defendantDateOfBirth", defendantDateOfBirth)
+                                .add("migrationSourceSystemCaseIdentifier", "CASE123")
                                 .build())
                         .build());
 
@@ -128,7 +129,7 @@ public class MigratedStagingEnforcementResponseHandlerTest {
         verify(eventStream, times(1)).append(eventStreamArgumentCaptor.capture());
 
         final MigratedMasterDefendantCaseDetails expectedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                masterDefendantId, caseId, fineAccountNumber, courtEmail, division, defendantName, "", "", defendantEmail, defendantDateOfBirth, "");
+                masterDefendantId, caseId, fineAccountNumber, courtEmail, division, defendantName, "", "", defendantEmail, defendantDateOfBirth, "", "CASE123");
 
         verify(spyAggregate).sendNcesEmailForMigratedApplication(
                 eq(applicationType),

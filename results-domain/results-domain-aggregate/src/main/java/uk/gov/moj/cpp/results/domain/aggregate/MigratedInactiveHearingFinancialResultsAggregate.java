@@ -84,6 +84,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                 .withDefendantEmail(migratedCaseDetails.defendantEmail())
                 .withDefendantDateOfBirth(migratedCaseDetails.defendantDateOfBirth())
                 .withDefendantContactNumber(migratedCaseDetails.defendantContactNumber())
+                .withLegacyCaseReference(migratedCaseDetails.migrationSourceSystemCaseIdentifier())
                 .build();
 
          return apply(Stream.of(requested));

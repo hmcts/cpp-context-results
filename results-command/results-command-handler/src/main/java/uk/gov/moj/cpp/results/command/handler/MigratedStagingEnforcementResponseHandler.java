@@ -55,6 +55,7 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public static final String DEFENDANT_EMAIL = "defendantEmail";
     public static final String DEFENDANT_DATE_OF_BIRTH = "defendantDateOfBirth";
     public static final String DEFENDANT_CONTACT_NUMBER = "defendantContactNumber";
+    public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
     private static final String MATERIAL_ID = "materialId";
     private static final String MATERIAL_URL = "materialUrl";
 
@@ -100,7 +101,8 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
                 fineAccountInfo.containsKey(ORIGINAL_DATE_OF_CONVICTION) ? fineAccountInfo.getString(ORIGINAL_DATE_OF_CONVICTION) : EMPTY_STRING,
                 fineAccountInfo.containsKey(DEFENDANT_EMAIL) ? fineAccountInfo.getString(DEFENDANT_EMAIL) : EMPTY_STRING,
                 fineAccountInfo.containsKey(DEFENDANT_DATE_OF_BIRTH) ? fineAccountInfo.getString(DEFENDANT_DATE_OF_BIRTH) : EMPTY_STRING,
-                fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : EMPTY_STRING
+                fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : EMPTY_STRING,
+                fineAccountInfo.containsKey(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) ? fineAccountInfo.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) : EMPTY_STRING
         );
 
 
@@ -118,17 +120,13 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public void processMigratedInativeNcesEmailNotification(final JsonEnvelope envelope) throws EventStreamException {
         LOGGER.info("Received MigratedInativeNcesEmailNotification {}", envelope.toObfuscatedDebugString());
 
-        // 1. Extract fields from the payload
         final JsonObject payload = envelope.payloadAsJsonObject();
         final String materialId = payload.getString(MATERIAL_ID);
         final String materialUrl = payload.getString(MATERIAL_URL);
 
-        // 2. Extract fields from the payload that we added during the split (masterDefendantId and caseId)
-        // These were added to the JSON body in the previous step
         final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
         final String caseId = payload.getString(CASE_ID);
 
-        // Now you have all 4 "as is" strings to use for your email logic
 
         final String rootAggregateId = masterDefendantId + "-" + caseId;
         final UUID rootAggregateUUID = nameUUIDFromBytes(rootAggregateId.getBytes(StandardCharsets.UTF_8));
