@@ -109,6 +109,69 @@ public class StandaloneApplicationHelperTest {
     }
 
     @Test
+    public void givenStandaloneApplication_whenIndividualSubject_withASN_shouldBuildDefendantFromSubject() {
+
+        final JsonObject applicationPayload = getPayload("json/application-payload_standalone_person-defendant-with-asn.json");
+        final CourtApplication application = jsonObjectToObjectConverter.convert(applicationPayload, CourtApplication.class);
+        final Hearing hearing = Hearing.hearing()
+                .withDefendantAttendance(singletonList(DefendantAttendance.defendantAttendance()
+                        .withDefendantId(fromString("5a39fe5a-c07f-4b1c-abfe-31c1bff71658"))
+                        .withAttendanceDays(singletonList(AttendanceDay.attendanceDay()
+                                .withDay(now())
+                                .withAttendanceType(AttendanceType.IN_PERSON)
+                                .build()))
+                        .build()))
+                .build();
+
+        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing);
+
+        final JsonObject subject = applicationPayload.getJsonObject("subject");
+        final JsonObject personDetails = subject.getJsonObject("personDetails");
+        final JsonObject addressJson = personDetails.getJsonObject("address");
+        final JsonObject type = applicationPayload.getJsonObject("type");
+        final JsonObject judicialResultJson = applicationPayload.getJsonArray("judicialResults").getJsonObject(0);
+
+        assertThat(caseDefendant.getDefendantId(), is(fromString(subject.getString("id"))));
+        assertThat(caseDefendant.getProsecutorReference(), is(application.getDefendantASN()));
+        assertThat(caseDefendant.getAttendanceDays().size(), is(1));
+        assertThat(caseDefendant.getAttendanceDays().get(0).getAttendanceType(), is(AttendanceType.IN_PERSON));
+        assertThat(caseDefendant.getAttendanceDays().get(0).getDay(), is(LocalDate.now()));
+
+        final IndividualDefendant individualDefendant = caseDefendant.getIndividualDefendant();
+        assertThat(individualDefendant, notNullValue());
+        assertThat(individualDefendant.getBailStatus().getCode(), is(judicialResultJson.getString("postHearingCustodyStatus")));
+
+        assertThat(individualDefendant.getPerson().getFirstName(), is(personDetails.getString("firstName")));
+        assertThat(individualDefendant.getPerson().getLastName(), is(personDetails.getString("lastName")));
+        assertThat(individualDefendant.getPerson().getDateOfBirth(), is(LocalDate.parse(personDetails.getString("dateOfBirth"))));
+        assertThat(individualDefendant.getPerson().getGender(), is(Gender.valueOf(personDetails.getString("gender"))));
+
+        final Address address = individualDefendant.getPerson().getAddress();
+        assertThat(address.getAddress1(), is(addressJson.getString("address1")));
+        assertThat(address.getAddress2(), is(addressJson.getString("address2")));
+        assertThat(address.getAddress3(), is(addressJson.getString("address3")));
+        assertThat(address.getAddress4(), is(addressJson.getString("address4")));
+        assertThat(address.getAddress5(), is(addressJson.getString("address5")));
+        assertThat(address.getPostcode(), is(addressJson.getString("postcode")));
+
+        assertThat(caseDefendant.getOffences(), hasSize(1));
+        final OffenceDetails offence = caseDefendant.getOffences().get(0);
+
+        assertThat(offence.getOffenceSequenceNumber(), is(DEFAULT_OFFENCE_SEQ_NUMBER));
+        assertThat(offence.getOffenceCode(), is(type.getString("code")));
+        assertThat(offence.getWording(), is(applicationPayload.getJsonObject("type").getString("applicationWording")));
+        assertThat(offence.getStartDate(), is(LocalDate.parse(applicationPayload.getString("applicationReceivedDate"))));
+        assertThat(offence.getFinalDisposal(), is("Y"));
+        assertThat(offence.getOffenceDateCode(), is(DEFAULT_OFFENCE_DATE_CODE));
+
+        assertThat(offence.getJudicialResults(), hasSize(1));
+        final JudicialResult judicialResult = offence.getJudicialResults().get(0);
+        assertThat(judicialResult.getJudicialResultId(), is(fromString(judicialResultJson.getString("judicialResultId"))));
+        assertThat(judicialResult.getLabel(), is(judicialResultJson.getString("label")));
+        assertThat(judicialResult.getResultText(), is(judicialResultJson.getString("resultText")));
+    }
+
+    @Test
     public void givenStandaloneApplication_whenIndividualSubject_NoFinalResults_shouldBuildDefendantFromSubject() {
 
         final JsonObject applicationPayload = getPayload("json/application-payload_standalone_person-defendant_no-final-result.json");
