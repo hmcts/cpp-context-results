@@ -2579,7 +2579,7 @@ class HearingFinancialResultsAggregateNCESTest {
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
                                         .withResultTrackedEvent("json/nces/multi-day-hearing/case-fine-nonfine/case_resulted-day.json",
-                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                                emptyAccountInfo())
                                         .withExpectedEventNames("HearingFinancialResultsTracked"))
                                 .newStep(newResultTrackedStep("case resulted-day 1")
                                         .withResultTrackedEvent("json/nces/multi-day-hearing/case-fine-nonfine/case_resulted-day-1.json",
