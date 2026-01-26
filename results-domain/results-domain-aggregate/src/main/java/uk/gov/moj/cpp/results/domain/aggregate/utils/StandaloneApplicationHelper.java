@@ -42,7 +42,7 @@ public class StandaloneApplicationHelper {
                 .withCorporateDefendant(buildCorporateDefendant(application.getSubject()))
                 .withIndividualDefendant(buildIndividualDefendant(application.getSubject()))
                 .withAttendanceDays(ofNullable(hearing.getDefendantAttendance()).map(defendantAttendances -> buildAttendance(defendantAttendances, application.getSubject().getId())).orElse(emptyList()))
-                .withProsecutorReference(POLICE_ASN_DEFAULT_VALUE)//Police flag already checked in upper level. If the flow reaches upto here, prosecutor should be police.
+                .withProsecutorReference(ofNullable(application.getDefendantASN()).orElse(POLICE_ASN_DEFAULT_VALUE))//Police flag already checked in upper level. If the flow reaches upto here, prosecutor should be police.
                 .withOffences(buildOffenceList(application))
                 .withPncId(null)
                 .withAssociatedPerson(null)
