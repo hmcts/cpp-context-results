@@ -14,6 +14,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.corr
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.ApplicationTypeRuleInput;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.util.HashMap;
@@ -37,15 +38,15 @@ class SjpReferredReopenApplicationAcceptedNotificationRuleTest {
         final UUID applicationId = randomUUID();
         final UUID offenceId = randomUUID();
         final UUID offence2Id = randomUUID();
-        final Map<UUID, UUID> sjpMap = new HashMap<>();
+        final Map<UUID, ApplicationTypeRuleInput> sjpMap = new HashMap<>();
         final Map<UUID, List<OffenceResultsDetails>> applicationOffenceResultsMap = new HashMap<>();
         applicationOffenceResultsMap.put(applicationId, List.of(offenceResultsDetails()
                 .withIsFinancial(true)
                 .withApplicationType("REOPEN")
                 .withImpositionOffenceDetails("Previous Offence details")
                 .build()));
-        sjpMap.put(offenceId, applicationId);
-        sjpMap.put(offence2Id, applicationId);
+        sjpMap.put(offenceId, new ApplicationTypeRuleInput(applicationId,"REOPEN"));
+        sjpMap.put(offence2Id, new ApplicationTypeRuleInput(applicationId,"REOPEN"));
 
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withIsSJPHearing(false)
@@ -89,15 +90,15 @@ class SjpReferredReopenApplicationAcceptedNotificationRuleTest {
         final UUID applicationId = randomUUID();
         final UUID offenceId = randomUUID();
         final UUID offence2Id = randomUUID();
-        final Map<UUID, UUID> sjpMap = new HashMap<>();
+        final Map<UUID, ApplicationTypeRuleInput> sjpMap = new HashMap<>();
         final Map<UUID, List<OffenceResultsDetails>> applicationOffenceResultsMap = new HashMap<>();
         applicationOffenceResultsMap.put(applicationId, List.of(offenceResultsDetails()
                 .withIsFinancial(true)
                 .withApplicationType("REOPEN")
                 .withImpositionOffenceDetails("Previous Offence details")
                 .build()));
-        sjpMap.put(offenceId, applicationId);
-        sjpMap.put(offence2Id, applicationId);
+        sjpMap.put(offenceId, new ApplicationTypeRuleInput(applicationId,"REOPEN"));
+        sjpMap.put(offence2Id, new ApplicationTypeRuleInput(applicationId,"REOPEN"));
 
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withIsSJPHearing(false)
@@ -140,14 +141,14 @@ class SjpReferredReopenApplicationAcceptedNotificationRuleTest {
         final UUID applicationId = randomUUID();
         final UUID offenceId = randomUUID();
         final UUID offence2Id = randomUUID();
-        final Map<UUID, UUID> sjpMap = new HashMap<>();
+        final Map<UUID, ApplicationTypeRuleInput> sjpMap = new HashMap<>();
         final Map<UUID, List<OffenceResultsDetails>> applicationOffenceResultsMap = new HashMap<>();
         applicationOffenceResultsMap.put(applicationId, List.of(offenceResultsDetails()
                 .withIsFinancial(true)
                 .withApplicationType("REOPEN")
                 .withImpositionOffenceDetails("Previous Offence details")
                 .build()));
-        sjpMap.put(offenceId, applicationId);
+        sjpMap.put(offenceId, new ApplicationTypeRuleInput(applicationId,"REOPEN"));
 
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withIsSJPHearing(false)

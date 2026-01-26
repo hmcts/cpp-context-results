@@ -56,7 +56,7 @@ public interface ResultNotificationRule {
                      Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
-                     Map<UUID, UUID> prevSjpReferralOffenceResultsDetails,
+                     Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences,
                      LinkedList<CorrelationItem> correlationItemList) {
 
         public boolean hasAnyApplicationType() {
@@ -112,5 +112,9 @@ public interface ResultNotificationRule {
                                     .map(prevOffenceResult -> !Objects.equals(prevOffenceResult.getIsDeemedServed(), offenceResult.getIsDeemedServed()))
                                     .orElse(false));
         }
+    }
+
+    record ApplicationTypeRuleInput( UUID applicationId, String applicationType ) {
+
     }
 }

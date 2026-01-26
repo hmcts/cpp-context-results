@@ -50,6 +50,7 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.ApplicationTypeRuleInput;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.RuleInput;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.OldAccountDetailsWrapper;
@@ -112,7 +113,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
     private final List<MarkedAggregateSendEmailWhenAccountReceived> markedAggregateSendEmailWhenAccountReceivedList = new ArrayList<>();
     private final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails = new HashMap<>();
     private final Map<UUID, List<OffenceResultsDetails>> applicationOffenceResultsDetails = new HashMap<>();
-    private final Map<UUID, UUID> sjpReferralOffenceResultsDetails = new HashMap<>();
+    private final Map<UUID, ApplicationTypeRuleInput> sjpApplicationOffences = new HashMap<>();
 
     //returns true when both have new AccountCorrelationId & new GobAccountNumber OR new AccountCorrelationId & new GobAccountNumber are null
     private static final Predicate<MarkedAggregateSendEmailWhenAccountReceived> hasNewGobAccountIfExistOrNull = event -> Objects.isNull(event.getAccountCorrelationId()) == Objects.isNull(event.getGobAccountNumber());
@@ -196,7 +197,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                         caseOffenceResultsDetails,
                         applicationResultsDetails,
                         applicationOffenceResultsDetails,
-                        sjpReferralOffenceResultsDetails,
+                        sjpApplicationOffences,
                         new LinkedList<>(correlationItemList)));
 
         processTrackedEvent(hearingFinancialResultRequest, builder);
@@ -290,7 +291,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         updateCaseLevelOffenceResults(request);
         updateApplicationLevelOffenceResults(request);
         updateApplicationResults(request);
-        updateSjpReferralOffenceResult(request);
+        updateSjpApplicationOffences(request);
         if (request.getAccountCorrelationId() != null) {
             final List<OffenceResultsDetails> offenceResultsDetailsList = request.getOffenceResults().stream()
                     .map((OffenceResults resultFromRequest) -> buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())).toList();
@@ -341,11 +342,15 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                         this.caseOffenceResultsDetails.put(resultFromRequest.getOffenceId(), buildOffenceResultsDetailsFromOffenceResults(resultFromRequest, request.getHearingId())));
     }
 
-    private void updateSjpReferralOffenceResult(final HearingFinancialResultRequest request) {
+    private void updateSjpApplicationOffences(final HearingFinancialResultRequest request) {
         if (Boolean.TRUE.equals(request.getIsSJPHearing())) {
             request.getOffenceResults()
-                    .forEach(resultFromRequest ->
-                            this.sjpReferralOffenceResultsDetails.put(resultFromRequest.getOffenceId(), resultFromRequest.getApplicationId()));
+                    .forEach(resultFromRequest -> {
+                        if (nonNull(resultFromRequest.getApplicationId())) {
+                            this.sjpApplicationOffences.put(resultFromRequest.getOffenceId(),
+                                    new ApplicationTypeRuleInput(resultFromRequest.getApplicationId(), resultFromRequest.getApplicationType()));
+                        }
+                    });
         }
     }
 
