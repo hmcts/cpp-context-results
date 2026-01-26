@@ -33,7 +33,7 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
     @Override
     public boolean appliesTo(final RuleInput input) {
         final Map<UUID, UUID> prevSjpReferralOffenceResultsDetails = input.prevSjpReferralOffenceResultsDetails();
-        final Map<UUID,List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = input.prevApplicationOffenceResultsMap();
+        final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap = input.prevApplicationOffenceResultsMap();
         return Boolean.FALSE.equals(input.request().getIsSJPHearing()) && !prevSjpReferralOffenceResultsDetails.isEmpty() &&
                 input.request().getOffenceResults().stream()
                         .anyMatch(offenceResult -> isPrevSJPReopenApplication(offenceResult.getOffenceId(), prevSjpReferralOffenceResultsDetails, prevApplicationOffenceResultsMap));
