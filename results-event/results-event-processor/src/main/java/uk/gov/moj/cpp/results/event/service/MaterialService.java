@@ -28,7 +28,7 @@ public class MaterialService {
     @ServiceComponent(EVENT_PROCESSOR)
     private Sender sender;
 
-    public void uploadMaterial(final UUID fileServiceId, final UUID materialId, final JsonEnvelope envelope, final String ncesOriginatorValue) {
+    public void uploadMaterial(final UUID fileServiceId, final UUID materialId, final JsonEnvelope envelope) {
         LOGGER.info("material being uploaded '{}' file service id '{}'", materialId, fileServiceId);
         final JsonObject uploadMaterialPayload = createObjectBuilder()
                 .add(FIELD_MATERIAL_ID, materialId.toString())
@@ -39,9 +39,9 @@ public class MaterialService {
 
         final Optional<String> userId = envelope.metadata().userId();
         if (userId.isPresent()) {
-            sender.send(assembleEnvelopeWithPayloadAndMetaDetails(uploadMaterialPayload, UPLOAD_MATERIAL, userId.get(), ncesOriginatorValue));
+            sender.send(assembleEnvelopeWithPayloadAndMetaDetails(uploadMaterialPayload, UPLOAD_MATERIAL, userId.get()));
         } else {
-            final Metadata metadata = createMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), UPLOAD_MATERIAL, null, ncesOriginatorValue);
+            final Metadata metadata = createMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), UPLOAD_MATERIAL, null);
             sender.sendAsAdmin(Envelope.envelopeFrom(metadata, uploadMaterialPayload));
         }
     }

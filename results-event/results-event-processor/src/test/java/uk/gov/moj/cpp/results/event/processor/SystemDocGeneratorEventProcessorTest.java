@@ -106,11 +106,11 @@ public class SystemDocGeneratorEventProcessorTest {
                         .add("documentFileServiceId", UUID.randomUUID().toString())
                         .build());
 
-        doNothing().when(uploadMaterialService).uploadMaterial(any(), eq("nces"));
+        doNothing().when(uploadMaterialService).uploadMaterial(any());
 
         systemDocGeneratorEventProcessor.handleDocumentAvailable(jsonEnvelope);
 
-        verify(uploadMaterialService).uploadMaterial(any(), eq("nces"));
+        verify(uploadMaterialService).uploadMaterial(any());
     }
 
     @Test
@@ -154,13 +154,13 @@ public class SystemDocGeneratorEventProcessorTest {
                         .add("additionalInformation", infoArrayBuilder.build())
                         .build());
 
-        doNothing().when(uploadMaterialService).uploadMaterial(any(), eq("nces"));
+        doNothing().when(uploadMaterialService).uploadMaterial(any());
         final String url = "http://matarial.url";
         when(materialUrlGenerator.fileStreamUrlFor(eq(notificationId), eq(true))).thenReturn(url);
 
         systemDocGeneratorEventProcessor.handleDocumentAvailable(jsonEnvelope);
 
-        verify(uploadMaterialService).uploadMaterial(any(), eq("nces"));
+        verify(uploadMaterialService).uploadMaterial(any());
 
 
         verify(notificationNotifyService).sendEmailNotification(any(), argumentCaptor.capture());
