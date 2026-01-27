@@ -9,6 +9,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.ApplicationMetadata;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
@@ -56,7 +57,7 @@ public interface ResultNotificationRule {
                      Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
                      Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
-                     Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences,
+                     Map<UUID, ApplicationMetadata> prevSjpApplicationOffences,
                      LinkedList<CorrelationItem> correlationItemList) {
 
         public boolean hasAnyApplicationType() {
@@ -112,9 +113,5 @@ public interface ResultNotificationRule {
                                     .map(prevOffenceResult -> !Objects.equals(prevOffenceResult.getIsDeemedServed(), offenceResult.getIsDeemedServed()))
                                     .orElse(false));
         }
-    }
-
-    record ApplicationTypeRuleInput( UUID applicationId, String applicationType ) {
-
     }
 }

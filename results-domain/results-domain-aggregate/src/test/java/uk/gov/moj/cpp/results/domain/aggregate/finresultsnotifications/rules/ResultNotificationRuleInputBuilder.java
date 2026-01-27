@@ -6,7 +6,7 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.ApplicationTypeRuleInput;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.ApplicationMetadata;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
@@ -25,7 +25,7 @@ public class ResultNotificationRuleInputBuilder {
     private Map<UUID, String> offenceDateMap;
     private String ncesEmail;
     private Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails;
-    private Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences;
+    private Map<UUID, ApplicationMetadata> prevSjpApplicationOffences;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap;
     private LinkedList<CorrelationItem> correlationItemList;
@@ -60,7 +60,7 @@ public class ResultNotificationRuleInputBuilder {
         return this;
     }
 
-    public ResultNotificationRuleInputBuilder withPrevSjpReferralOffenceResultsDetails(final Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences) {
+    public ResultNotificationRuleInputBuilder withPrevSjpReferralOffenceResultsDetails(final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences) {
         this.prevSjpApplicationOffences = prevSjpApplicationOffences;
         return this;
     }

@@ -12,6 +12,7 @@ import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.AbstractCaseResultNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.ApplicationMetadata;
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
@@ -31,11 +32,11 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
 
     @Override
     public boolean appliesTo(final RuleInput input) {
-        final Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences = input.prevSjpApplicationOffences();
+        final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences = input.prevSjpApplicationOffences();
         final List<OffenceResults> offenceResults = input.request().getOffenceResults();
         return Boolean.FALSE.equals(input.request().getIsSJPHearing()) && !prevSjpApplicationOffences.isEmpty() &&
-                offenceResults.stream().noneMatch(isCaseAmended) &&
-                isAllSjpApplicationOffencesAreExistInRequestAndFinalAndReopen(prevSjpApplicationOffences, offenceResults) &&
+                !input.isCaseAmendment() &&
+               isAllSjpApplicationOffencesInRequestAreFinalAndReopen(prevSjpApplicationOffences, offenceResults) &&
                 isAnyOffenceResultsinPrevSjpApplicationOffences(prevSjpApplicationOffences, offenceResults);
 
     }
@@ -43,8 +44,7 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(final RuleInput input) {
         final HearingFinancialResultRequest request = input.request();
-        final Map<UUID, ApplicationTypeRuleInput> prevSjpReferralOffenceResultsDetails = input.prevSjpApplicationOffences();
-
+        final Map<UUID, ApplicationMetadata> prevSjpReferralOffenceResultsDetails = input.prevSjpApplicationOffences();
         final List<OffenceResults> sjpReferredOffences = request.getOffenceResults().stream()
                 .filter(offenceResult -> prevSjpReferralOffenceResultsDetails.containsKey(offenceResult.getOffenceId()))
                 .toList();
@@ -78,16 +78,16 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
 
     }
 
-    private static boolean isAllSjpApplicationOffencesAreExistInRequestAndFinalAndReopen(final Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences, final List<OffenceResults> offenceResults) {
-        return prevSjpApplicationOffences.entrySet().stream()
-                .allMatch(map ->
-                        offenceResults.stream()
-                                .filter(result -> result.getOffenceId().equals(map.getKey()))
-                                .allMatch(result -> FINAL.name().equals(result.getOffenceResultsCategory())) &&
-                                REOPEN_APPLICATION_TYPE.equals(map.getValue().applicationType()));
+    private static boolean isAllSjpApplicationOffencesInRequestAreFinalAndReopen(final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences, final List<OffenceResults> offenceResults) {
+        return offenceResults.stream()
+                .filter(result -> prevSjpApplicationOffences.containsKey(result.getOffenceId()))
+                .allMatch(result -> FINAL.name().equals(result.getOffenceResultsCategory()) &&
+                        REOPEN_APPLICATION_TYPE.equals(prevSjpApplicationOffences.get(result.getOffenceId()).applicationType()));
     }
 
-    private static boolean isAnyOffenceResultsinPrevSjpApplicationOffences(final Map<UUID, ApplicationTypeRuleInput> prevSjpApplicationOffences, final List<OffenceResults> offenceResults) {
+
+
+    private static boolean isAnyOffenceResultsinPrevSjpApplicationOffences(final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences, final List<OffenceResults> offenceResults) {
         return offenceResults.stream().anyMatch(offenceResult -> prevSjpApplicationOffences.containsKey(offenceResult.getOffenceId()));
     }
 }
