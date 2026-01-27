@@ -1,0 +1,67 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmQf2sXSmithpmfR3@email.com",
+  "defendantName": "FlmQf2sX SmithpmfR3",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "f72fe8c5-9743-4d6b-af80-a105719f06e4",
+  "hearingSittingDay": "2026-01-09T11:37:05.945Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "a6719946-f379-420b-aacb-1dded7230a5d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "7e5f95e2-2645-4154-86bb-7579c3c1378c",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 45\nTime of hearing 10:00\nDate of hearing 2026-01-09\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "b413d7d9-fc23-4ba0-a9cb-b825ccdf8638",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
+    },
+    {
+      "applicationId": "7e5f95e2-2645-4154-86bb-7579c3c1378c",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 45\nTime of hearing 10:00\nDate of hearing 2026-01-09\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "cda7390e-0604-4e7a-b27d-a6889fdb5243",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment",
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
+    },
+    {
+      "applicationId": "7e5f95e2-2645-4154-86bb-7579c3c1378c",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 45\nTime of hearing 10:00\nDate of hearing 2026-01-09\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "ee3dffb1-cd55-4cb9-bb60-3fcfdf661c90",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ275469325"
+  ]
+}
