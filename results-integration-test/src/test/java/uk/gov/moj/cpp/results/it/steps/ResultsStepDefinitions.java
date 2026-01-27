@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.http.RestPoller.poll;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
@@ -33,7 +34,6 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPriso
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 import uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient;
@@ -119,7 +119,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             @Override
             public void describeMismatch(final Object item, final Description description) {
                 final ResponseData responseData = (ResponseData) item;
-                final JsonObject jsonObject = JsonObjects.createReader(new StringReader(responseData.getPayload())).readObject();
+                final JsonObject jsonObject = createReader(new StringReader(responseData.getPayload())).readObject();
                 matcher.describeMismatch(jsonObject, description);
             }
 
