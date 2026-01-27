@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 
 /**
@@ -36,9 +37,7 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
         final List<OffenceResults> offenceResults = input.request().getOffenceResults();
         return Boolean.FALSE.equals(input.request().getIsSJPHearing()) && !prevSjpApplicationOffences.isEmpty() &&
                 !input.isCaseAmendment() &&
-               isAllSjpApplicationOffencesInRequestAreFinalAndReopen(prevSjpApplicationOffences, offenceResults) &&
-                isAnyOffenceResultsinPrevSjpApplicationOffences(prevSjpApplicationOffences, offenceResults);
-
+                isAllSjpApplicationOffencesInRequestAreFinalAndReopen(prevSjpApplicationOffences, offenceResults);
     }
 
     @Override
@@ -63,7 +62,6 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
                 .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap()))
                 .distinct().toList();
 
-
         return Optional.of(markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                 .buildMarkedAggregateGranted(request,
                         NCESDecisionConstants.APPLICATION_TO_REOPEN_GRANTED,
@@ -75,19 +73,15 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
                         newApplicationOffenceResults,
                         buildNewApplicationResultsFromTrackRequest(sjpReferredOffences),
                         input.prevApplicationResultsDetails()));
-
     }
 
     private static boolean isAllSjpApplicationOffencesInRequestAreFinalAndReopen(final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences, final List<OffenceResults> offenceResults) {
-        return offenceResults.stream()
+        final List<OffenceResults> sjpOffenceResults = offenceResults.stream()
                 .filter(result -> prevSjpApplicationOffences.containsKey(result.getOffenceId()))
+                .toList();
+        return !sjpOffenceResults.isEmpty() && sjpOffenceResults.stream()
                 .allMatch(result -> FINAL.name().equals(result.getOffenceResultsCategory()) &&
                         REOPEN_APPLICATION_TYPE.equals(prevSjpApplicationOffences.get(result.getOffenceId()).applicationType()));
     }
 
-
-
-    private static boolean isAnyOffenceResultsinPrevSjpApplicationOffences(final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences, final List<OffenceResults> offenceResults) {
-        return offenceResults.stream().anyMatch(offenceResult -> prevSjpApplicationOffences.containsKey(offenceResult.getOffenceId()));
-    }
 }
