@@ -7,8 +7,6 @@ import static java.time.ZoneId.of;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.Json.createReader;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -19,6 +17,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.core.courts.Hearing.hearing;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted.publicHearingResulted;
@@ -28,7 +28,6 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.courtApplicationPartyTem
 import static uk.gov.moj.cpp.results.test.TestTemplates.courtApplicationTypeTemplates;
 import static uk.gov.moj.cpp.results.test.TestTemplates.createCourtApplicationCaseWithoutOffences;
 
-import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.justice.core.courts.ApplicationStatus;
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceDay;
@@ -69,7 +68,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -81,6 +79,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -219,7 +218,7 @@ public class CasesConverterTest {
             final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
             final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
             final boolean isUrnValid = CommonMethods.checkURNValidity(prosecutionCaseIdentifier.getCaseURN());
-            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) &&  isUrnValid) {
+            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) && isUrnValid) {
                 assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
             } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
                 assertThat(caseDetails.getUrn(), is(NON_POLICE_URN_DEFAULT_VALUE));
@@ -250,7 +249,7 @@ public class CasesConverterTest {
             final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
             final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
             final boolean isUrnValid = CommonMethods.checkURNValidity(prosecutionCaseIdentifier.getCaseURN());
-            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) ) {
+            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN())) {
                 assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
             } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
                 assertThat(caseDetails.getUrn(), is(POLICE_URN_DEFAULT_VALUE));
@@ -287,7 +286,7 @@ public class CasesConverterTest {
         final Hearing hearing = publicHearingResulted.getHearing();
         final UUID caseId = randomUUID();
         when(progressionService.getProsecutionCaseDetails(any())).thenReturn(getProsecutionCase("32DN1212262", caseId));
-        when(progressionService.caseExistsByCaseUrn("32DN1212262")).thenReturn(Optional.of(Json.createObjectBuilder()
+        when(progressionService.caseExistsByCaseUrn("32DN1212262")).thenReturn(Optional.of(createObjectBuilder()
                 .add("caseId", caseId.toString())
                 .build()));
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
@@ -371,11 +370,11 @@ public class CasesConverterTest {
     @Test
     void convertStandaloneApplicationWithNoProsecutionCaseDetailsShouldReturnEmptyCaseDetailsList() {
         when(progressionService.caseExistsByCaseUrn(anyString()))
-                .thenReturn(Optional.of(Json.createObjectBuilder()
+                .thenReturn(Optional.of(createObjectBuilder()
                         .add("caseId", randomUUID().toString())
                         .build()));
         when(progressionService.getProsecutionCaseDetails(any()))
-                .thenReturn(Json.createObjectBuilder().build());
+                .thenReturn(createObjectBuilder().build());
 
         final CourtApplication courtApplication = CourtApplication.courtApplication()
                 .withId(randomUUID())
@@ -543,7 +542,7 @@ public class CasesConverterTest {
     }
 
     private JsonObject getProsecutionCase(final String caseUrn, final UUID caseId) {
-        ProsecutionCase prosecutionCase =  ProsecutionCase.prosecutionCase()
+        ProsecutionCase prosecutionCase = ProsecutionCase.prosecutionCase()
                 .withId(caseId)
                 .withCaseStatus("ACTIVE")
                 .withInitiationCode(InitiationCode.C)
@@ -553,7 +552,7 @@ public class CasesConverterTest {
                         .withProsecutionAuthorityReference("CITYPF")
                         .build())
                 .build();
-        return Json.createObjectBuilder().add("prosecutionCase",objectToJsonObjectConverter.convert(prosecutionCase)).build();
+        return createObjectBuilder().add("prosecutionCase", objectToJsonObjectConverter.convert(prosecutionCase)).build();
     }
 
 }

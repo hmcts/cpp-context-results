@@ -3,6 +3,8 @@ package uk.gov.moj.cpp.results.it;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.getHearingDetails;
@@ -28,7 +30,6 @@ import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
@@ -88,9 +89,9 @@ public class EjectCaseIT {
         final UUID hearingId = hearingIn.getId();
         final UUID caseId = hearingIn.getProsecutionCases().stream().findFirst().get().getId();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId.toString()).build())
+                        createArrayBuilder().add(hearingId.toString()).build())
                 .add(PROSECUTION_CASE_ID, caseId.toString())
                 .add(REMOVAL_REASON, "legal")
                 .build();
@@ -129,9 +130,9 @@ public class EjectCaseIT {
         final UUID hearingId = hearingIn.getId();
         final UUID applicationId = hearingIn.getCourtApplications().stream().findFirst().get().getId();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId.toString()).build())
+                        createArrayBuilder().add(hearingId.toString()).build())
                 .add(APPLICATION_ID, applicationId.toString())
                 .add(REMOVAL_REASON, "legal")
                 .build();

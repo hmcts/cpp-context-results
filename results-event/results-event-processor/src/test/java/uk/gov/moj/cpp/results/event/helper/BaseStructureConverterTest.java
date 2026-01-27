@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplateWithApplication;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template;
 
@@ -27,7 +29,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
@@ -112,15 +113,15 @@ public class BaseStructureConverterTest {
     }
 
     private JsonObject getJsonObjectWithNationalCourtCodeAndOuCode() {
-        return Json.createObjectBuilder()
+        return createObjectBuilder()
                 .add(FIELD_NATIONAL_COURT_CODE, "2574")
                 .add(FIELD_OU_CODE, "B01BH00")
                 .build();
     }
 
     private JsonObject getJsonObjectForCourtRoomRefDataResponse() {
-        return Json.createObjectBuilder()
-                .add("ouCourtRoomCodes", Json.createArrayBuilder().add(COURT_ROOM_OUCODE_FROM_REFDATA).build())
+        return createObjectBuilder()
+                .add("ouCourtRoomCodes", createArrayBuilder().add(COURT_ROOM_OUCODE_FROM_REFDATA).build())
                 .build();
     }
 

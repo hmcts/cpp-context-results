@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.event.service;
 
 import static java.lang.String.format;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static javax.transaction.Transactional.TxType.REQUIRES_NEW;
 
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;

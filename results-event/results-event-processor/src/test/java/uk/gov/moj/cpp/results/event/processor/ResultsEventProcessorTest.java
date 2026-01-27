@@ -6,8 +6,6 @@ import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,6 +26,9 @@ import static uk.gov.justice.core.courts.Individual.individual;
 import static uk.gov.justice.core.courts.IndividualDefendant.individualDefendant;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
@@ -38,9 +39,6 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.event.service.TemplateIdentifier.POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE;
 
-import com.google.common.io.Resources;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.ContactNumber;
@@ -83,14 +81,14 @@ import uk.gov.moj.cpp.results.event.service.DocumentGenerationRequest;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
-import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 import uk.gov.moj.cpp.results.test.TestTemplates;
-import uk.gov.moj.cpp.results.event.service.SjpService;
 
 import java.io.StringReader;
 import java.nio.charset.Charset;
@@ -102,12 +100,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 
+import com.google.common.io.Resources;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -270,7 +270,7 @@ public class ResultsEventProcessorTest {
         when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
         when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
         when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
-        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(Json.createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
     }
 
     @Test
@@ -281,7 +281,7 @@ public class ResultsEventProcessorTest {
         final UUID userId = UUID.randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
-        final JsonObject jsonResult = Json.createObjectBuilder().add("val", randomUUID().toString()).build();
+        final JsonObject jsonResult = createObjectBuilder().add("val", randomUUID().toString()).build();
         final JsonObject transformedHearing = envelope.asJsonObject();
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
@@ -414,7 +414,7 @@ public class ResultsEventProcessorTest {
                 jsonEnvelope(
                         metadata().withName("results.command.create-results-for-day"),
                         payloadIsJson(allOf(
-                                withJsonPath("$.courtApplications.[0].type.appealFlag", is(true))
+                                        withJsonPath("$.courtApplications.[0].type.appealFlag", is(true))
                                 )
                         )));
     }
@@ -500,12 +500,12 @@ public class ResultsEventProcessorTest {
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
-        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()),eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
         verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -547,12 +547,12 @@ public class ResultsEventProcessorTest {
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
-        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".pdf"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()),eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
         verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -600,8 +600,8 @@ public class ResultsEventProcessorTest {
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
-        verify(notificationNotifyService, times(0)).sendEmailNotification(any(),any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), eq(ConversionFormat.THYMELEAF));
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -712,13 +712,13 @@ public class ResultsEventProcessorTest {
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
-        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".pdf"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
         verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -759,13 +759,13 @@ public class ResultsEventProcessorTest {
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
-        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".pdf"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
         verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -803,12 +803,12 @@ public class ResultsEventProcessorTest {
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
-        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".pdf"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
-        verify(notificationNotifyService, times(0)).sendEmailNotification(any(),any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -847,12 +847,12 @@ public class ResultsEventProcessorTest {
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
-        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
 
         verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
-        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(), any());
         verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
 
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
@@ -918,7 +918,7 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void handleGetCaseSubject(){
+    public void handleGetCaseSubject() {
         List<CaseDefendant> caseDefendantsList = getDefendantsWithNoIsNewAmendmentBooleanInJudicialResult();
         final String subject = resultsEventProcessor.getCaseSubject(caseDefendantsList);
         assertThat(subject, is("Final Sentence,Warrant Withdrawn,Bail without conditions"));
@@ -930,7 +930,7 @@ public class ResultsEventProcessorTest {
                 .withNotificationId(randomUUID())
                 .withCaseId(CASE_ID)
                 .withPoliceEmailAddress(EMAIL_ADDRESS)
-                .withAmendReshare(amendAndReshare ? AMEND_RESHARE1: "")
+                .withAmendReshare(amendAndReshare ? AMEND_RESHARE1 : "")
                 .withDateOfHearing(LocalDate.of(2023, 06, 6).toString())
                 .withUrn(URN)
                 .withCaseDefendants(caseDefendants)
@@ -1136,11 +1136,12 @@ public class ResultsEventProcessorTest {
         assertEquals(hearing.getId(), shareResultsMessage.getHearing().getId());
     }
 
-    private void setSjpServiceMock(){
+    private void setSjpServiceMock() {
         JsonObject sjpPayload = createObjectBuilder().add("id", randomUUID().toString()).build();
         when(sjpService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(sjpPayload));
 
     }
+
     @Test
     public void shouldHandleTheNcesEmailNotificationRequestedWhenSjpCase() {
         final String materialId = randomUUID().toString();
@@ -1293,9 +1294,9 @@ public class ResultsEventProcessorTest {
         final UUID caseId = randomUUID();
         final String PROSECUTION_CASE_ID = "prosecutionCaseId";
         final String HEARING_IDS = "hearingIds";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                        createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
                 .add(PROSECUTION_CASE_ID, caseId.toString())
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.progression.events.case-or-application-ejected"), payload);
@@ -1323,9 +1324,9 @@ public class ResultsEventProcessorTest {
         final UUID applicationId = randomUUID();
         final String APPLICATION_ID = "applicationId";
         final String HEARING_IDS = "hearingIds";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                        createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
                 .add(APPLICATION_ID, applicationId.toString())
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.progression.events.case-or-application-ejected"), payload);
@@ -1370,7 +1371,7 @@ public class ResultsEventProcessorTest {
                 objectToJsonObjectConverter.convert(shareResultsMessage));
 
         final JsonObject payload = envelope.asJsonObject();
-        final JsonObject internalPayload = Json.createObjectBuilder()
+        final JsonObject internalPayload = createObjectBuilder()
                 .add("hearing", payload.getJsonObject("hearing"))
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
@@ -1380,7 +1381,7 @@ public class ResultsEventProcessorTest {
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing")))
                 .thenReturn(transformedHearing);
 
-        final JsonObject externalPayload = Json.createObjectBuilder()
+        final JsonObject externalPayload = createObjectBuilder()
                 .add("hearing", transformedHearing)
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
@@ -1417,7 +1418,7 @@ public class ResultsEventProcessorTest {
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing")))
                 .thenReturn(transformedHearing);
 
-        final JsonObject externalPayload = Json.createObjectBuilder()
+        final JsonObject externalPayload = createObjectBuilder()
                 .add("hearing", transformedHearing)
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
@@ -1437,7 +1438,7 @@ public class ResultsEventProcessorTest {
 
 
     private JsonObjectBuilder jsonObjectToBuilder(JsonObject jo) {
-        JsonObjectBuilder builder = Json.createObjectBuilder();
+        JsonObjectBuilder builder = createObjectBuilder();
         for (Map.Entry<String, JsonValue> entry : jo.entrySet()) {
             builder.add(entry.getKey(), entry.getValue());
         }
@@ -1545,7 +1546,7 @@ public class ResultsEventProcessorTest {
         } catch (final Exception e) {
             fail("Error consuming file from location " + path);
         }
-        final JsonReader reader = Json.createReader(new StringReader(request));
+        final JsonReader reader = createReader(new StringReader(request));
         return reader.readObject();
     }
 
@@ -1714,7 +1715,7 @@ public class ResultsEventProcessorTest {
         final String materialId = randomUUID().toString();
         final String caseUrn1 = "urn1";
         final String caseUrn2 = "urn2";
-        final String caseReferences = " , ," + caseUrn1 + ", ," + caseUrn2  + ",, ";
+        final String caseReferences = " , ," + caseUrn1 + ", ," + caseUrn2 + ",, ";
         final JsonEnvelope jsonEnvelope = envelope()
                 .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
                 .withPayloadOf(materialId, "materialId")

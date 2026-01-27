@@ -7,8 +7,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
-import static javax.ws.rs.core.Response.Status.OK;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static javax.ws.rs.core.Response.Status.OK;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.not;
@@ -33,6 +33,7 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPriso
 
 import uk.gov.justice.core.courts.HearingResultsAdded;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder;
 import uk.gov.justice.services.test.utils.core.http.ResponseData;
 import uk.gov.justice.services.test.utils.core.messaging.MessageConsumerClient;
@@ -51,7 +52,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.jms.JMSException;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 
@@ -119,7 +119,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             @Override
             public void describeMismatch(final Object item, final Description description) {
                 final ResponseData responseData = (ResponseData) item;
-                final JsonObject jsonObject = Json.createReader(new StringReader(responseData.getPayload())).readObject();
+                final JsonObject jsonObject = JsonObjects.createReader(new StringReader(responseData.getPayload())).readObject();
                 matcher.describeMismatch(jsonObject, description);
             }
 
@@ -296,7 +296,7 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
         assertThat(response, is(empty()));
     }
 
-    public static void verifyAppealUpdateEmail(final String url){
+    public static void verifyAppealUpdateEmail(final String url) {
         await().atMost(30, SECONDS).pollInterval(5, SECONDS).until(() -> {
             final RequestPatternBuilder requestPatternBuilder = postRequestedFor(urlPathMatching(url));
             Arrays.asList("Appeal Update").forEach(

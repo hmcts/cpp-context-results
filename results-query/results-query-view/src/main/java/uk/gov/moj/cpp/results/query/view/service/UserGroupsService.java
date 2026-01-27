@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.query.view.service;
 
 import static uk.gov.justice.services.core.annotation.Component.QUERY_VIEW;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.enveloper.Enveloper;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
@@ -27,7 +27,7 @@ public class UserGroupsService {
 
     public List<String> findUserGroupsByUserId(JsonEnvelope query) {
         final JsonEnvelope requestEnvelope = enveloper.withMetadataFrom(query, "usersgroups.get-groups-by-user")
-                .apply(Json.createObjectBuilder().add("userId", query.metadata().userId().get()).build());
+                .apply(createObjectBuilder().add("userId", query.metadata().userId().get()).build());
         final JsonEnvelope responseEnvelope = requester.requestAsAdmin(requestEnvelope);
         final JsonObject responsePayload = responseEnvelope.payloadAsJsonObject();
         final JsonArray groups = responsePayload.getJsonArray("groups");
