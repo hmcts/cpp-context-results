@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static javax.json.Json.createObjectBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,6 +9,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 
 import uk.gov.justice.core.courts.JurisdictionType;
@@ -28,10 +29,8 @@ import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.io.StringReader;
 import java.nio.charset.Charset;
-import java.util.Collections;
 import java.util.List;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
@@ -65,7 +64,7 @@ class DcsCaseHelperTest {
     private DcsCaseHelper dcsCaseHelper;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         when(featureControlGuard.isFeatureEnabled("StagingDcs")).thenReturn(true);
     }
 
@@ -143,6 +142,7 @@ class DcsCaseHelperTest {
         assertEquals(0, secondOffencesFromFirstDefendantSecondCase.getRemovedOffences().size());
 
     }
+
     @Test
     void givenPublishToDcsWithNoResultsButPrevQR_prepareAndSendToDCSIfEligible_shouldCallDCSWithDeletedOffences() {
 
@@ -194,6 +194,7 @@ class DcsCaseHelperTest {
         assertEquals(0, firstOffencesFromFirstDefendant.getRemovedOffences().size());
 
     }
+
     @Test
     void givenPublishToDcsWithMultipleResultsNQrAndQrAmendedNqrToQr_prepareAndSendToDCSIfEligible_shouldNotCallDCS() {
 
@@ -361,6 +362,7 @@ class DcsCaseHelperTest {
         assertEquals(0, offenceDetails.getRemovedOffences().size());
 
     }
+
     @Test
     void givenPublishToDcsWithTwoDefendantsWithTwoOffencesEachAndQRsEachWithNoPrevResults_prepareAndSendToDCSIfEligible_shouldCallDCSAddedOffences() {
 
@@ -443,7 +445,7 @@ class DcsCaseHelperTest {
         ArgumentCaptor<DcsCreateCaseRequest> captor = ArgumentCaptor.forClass(DcsCreateCaseRequest.class);
         verify(dcsService, times(1)).createCase(captor.capture(), any());
         List<DcsCreateCaseRequest> allValues = captor.getAllValues();
-        assertEquals( 1, allValues.size());
+        assertEquals(1, allValues.size());
 
         DcsCreateCaseRequest dcsRequest = allValues.get(0);
         assertEquals("cccc1111-1e20-4c21-916a-81a6c90239e5", dcsRequest.getCaseId().toString());
@@ -522,7 +524,7 @@ class DcsCaseHelperTest {
         } catch (final Exception e) {
             fail("Error consuming file from location " + path);
         }
-        final JsonReader reader = Json.createReader(new StringReader(request));
+        final JsonReader reader = createReader(new StringReader(request));
         return reader.readObject();
     }
 }

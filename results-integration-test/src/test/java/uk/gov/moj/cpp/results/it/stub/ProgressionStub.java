@@ -9,12 +9,11 @@ import static java.text.MessageFormat.format;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.SC_OK;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 
 import java.util.Map;
 import java.util.UUID;
-
-import javax.json.Json;
 
 public class ProgressionStub {
 
@@ -52,13 +51,13 @@ public class ProgressionStub {
                         .withBody(payload)));
     }
 
-    public static void stubGetProgressionProsecutionCase_WhichHasLikedCases_AndHearings(final String filepath, final Map<String,String> caseIdMap, final Map<String,String> urnMap, final Map<String,String> hearingIdMap, final Map<String,String> applicationIdMap) {
+    public static void stubGetProgressionProsecutionCase_WhichHasLikedCases_AndHearings(final String filepath, final Map<String, String> caseIdMap, final Map<String, String> urnMap, final Map<String, String> hearingIdMap, final Map<String, String> applicationIdMap) {
         final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_QUERY_URL, caseIdMap.get("MAIN_CASE_ID"));
         String payload = getPayload(filepath);
-        payload = updateKeyValueInString(caseIdMap,payload);
-        payload = updateKeyValueInString(urnMap,payload);
-        payload = updateKeyValueInString(applicationIdMap,payload);
-        payload = updateKeyValueInString(hearingIdMap,payload);
+        payload = updateKeyValueInString(caseIdMap, payload);
+        payload = updateKeyValueInString(urnMap, payload);
+        payload = updateKeyValueInString(applicationIdMap, payload);
+        payload = updateKeyValueInString(hearingIdMap, payload);
         stubFor(get(urlPathEqualTo(stringUrl))
                 .willReturn(aResponse()
                         .withStatus(SC_OK)
@@ -69,7 +68,7 @@ public class ProgressionStub {
 
     public static void stubGetProgressionCaseExistsByUrn(final String caseUrn, final UUID caseId) {
         final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_URN_URL);
-        final String payload = Json.createObjectBuilder()
+        final String payload = createObjectBuilder()
                 .add("caseId", caseId.toString())
                 .build().toString();
         stubFor(get(urlPathEqualTo(stringUrl))

@@ -9,10 +9,9 @@ import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.SC_OK;
 import static uk.gov.justice.services.common.http.HeaderConstants.ID;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 
 import java.util.UUID;
-
-import javax.json.Json;
 
 import org.apache.http.HttpHeaders;
 
@@ -24,7 +23,7 @@ public class SjpStub {
 
     public static void setupSjpQueryStub(final String caseUrn, final UUID caseId) {
 
-        final String payload = Json.createObjectBuilder()
+        final String payload = createObjectBuilder()
                 .add("id", caseId.toString())
                 .build().toString();
 

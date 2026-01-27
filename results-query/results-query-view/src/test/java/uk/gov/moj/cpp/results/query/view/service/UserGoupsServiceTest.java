@@ -1,13 +1,14 @@
 package uk.gov.moj.cpp.results.query.view.service;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.withMetadataEnvelopedFrom;
@@ -22,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
@@ -55,7 +55,7 @@ public class UserGoupsServiceTest {
     }
 
     private JsonEnvelope setupMocksAndStubData(List<String> userGroupNames) {
-        final JsonArrayBuilder groupsArray = Json.createArrayBuilder();
+        final JsonArrayBuilder groupsArray = createArrayBuilder();
         Arrays.stream(userGroupNames.toArray()).forEach(userGroup ->
                 groupsArray
                         .add(createObjectBuilder()

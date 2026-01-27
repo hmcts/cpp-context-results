@@ -13,6 +13,7 @@ import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegi
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
 import static uk.gov.justice.results.courts.InformantRegisterNotified.informantRegisterNotified;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
@@ -36,7 +37,6 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.google.common.collect.Lists;
@@ -92,7 +92,7 @@ public class InformantRegisterEventListenerTest {
         final ArgumentCaptor<InformantRegisterEntity> informantRegisterRequestEntity = forClass(InformantRegisterEntity.class);
         verify(this.informantRegisterRepository).save(informantRegisterRequestEntity.capture());
         final InformantRegisterEntity savedInformantRegisterEntity = informantRegisterRequestEntity.getValue();
-        final JsonObject jsonPayload = Json.createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
+        final JsonObject jsonPayload = createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
         final InformantRegisterDocumentRequest informantRegisterRequestSaved = jsonObjectToObjectConverter.convert(jsonPayload, InformantRegisterDocumentRequest.class);
 
         assertThat(savedInformantRegisterEntity.getProsecutionAuthorityId(), is(prosecutionAuthId));

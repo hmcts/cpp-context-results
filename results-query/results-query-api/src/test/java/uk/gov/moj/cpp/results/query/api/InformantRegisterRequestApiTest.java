@@ -1,12 +1,12 @@
 package uk.gov.moj.cpp.results.query.api;
 
 import static org.mockito.Mockito.verify;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory;
 import uk.gov.moj.cpp.results.query.view.InformantRegisterDocumentRequestQueryView;
 
-import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class InformantRegisterRequestApiTest {
 
     @Test
     public void getInformantRegisterDocumentRequest() {
-        final JsonObjectBuilder informantRegisterDocumentPayload = Json.createObjectBuilder();
+        final JsonObjectBuilder informantRegisterDocumentPayload = createObjectBuilder();
         final JsonEnvelope response = JsonEnvelope.envelopeFrom(
                 MetadataBuilderFactory.metadataWithRandomUUID("results.query.informant-register-document-request"),
                 informantRegisterDocumentPayload);
@@ -35,7 +35,7 @@ public class InformantRegisterRequestApiTest {
 
     @Test
     public void getInformantRegisterDocumentRequestByMaterial() {
-        final JsonObjectBuilder informantRegisterDocumentPayload = Json.createObjectBuilder();
+        final JsonObjectBuilder informantRegisterDocumentPayload = createObjectBuilder();
         final JsonEnvelope response = JsonEnvelope.envelopeFrom(
                 MetadataBuilderFactory.metadataWithRandomUUID("results.query.informant-register-document-by-material"),
                 informantRegisterDocumentPayload);
@@ -46,7 +46,7 @@ public class InformantRegisterRequestApiTest {
 
     @Test
     public void getInformantRegisterDocumentRequestByDate() {
-        final JsonObjectBuilder informantRegisterDocumentPayload = Json.createObjectBuilder();
+        final JsonObjectBuilder informantRegisterDocumentPayload = createObjectBuilder();
         final JsonEnvelope response = JsonEnvelope.envelopeFrom(
                 MetadataBuilderFactory.metadataWithRandomUUID("results.query.informant-register-document-by-request-date"),
                 informantRegisterDocumentPayload);

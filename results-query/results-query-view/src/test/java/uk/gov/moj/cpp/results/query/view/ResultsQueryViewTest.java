@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.query.view;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,6 +10,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUIDAndName;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.INTEGER;
@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
@@ -158,7 +157,7 @@ public class ResultsQueryViewTest {
         HearingResultsAdded hearingResultsAdded = templateHearingResultsAdded();
         when(hearingService.findHearingDetailsByHearingIdDefendantId(HEARING_ID, DEFENDANT_ID)).thenReturn(hearingResultsAdded);
         String dummyVal = randomUUID().toString();
-        final JsonObject jsonResult = Json.createObjectBuilder().add("val", dummyVal).build();
+        final JsonObject jsonResult = createObjectBuilder().add("val", dummyVal).build();
 
         when(objectToJsonObjectConverter.convert(hearingResultsAdded)).thenReturn(jsonResult);
 
@@ -184,7 +183,7 @@ public class ResultsQueryViewTest {
                 .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
 
         String dummyVal = randomUUID().toString();
-        final JsonObject jsonObject = Json.createObjectBuilder().add("val", dummyVal).build();
+        final JsonObject jsonObject = createObjectBuilder().add("val", dummyVal).build();
 
 
         when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
@@ -214,7 +213,7 @@ public class ResultsQueryViewTest {
                 .withCourtCentre(ApiCourtCentre.apiCourtCentre().withId(hearingResultsAdded.getHearing().getCourtCentre().getId()).build());
 
         String dummyVal = randomUUID().toString();
-        final JsonObject jsonObject = Json.createObjectBuilder().add("val", dummyVal).build();
+        final JsonObject jsonObject = createObjectBuilder().add("val", dummyVal).build();
 
         when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
         when(objectToJsonObjectConverter.convert(apiHearingBuilder.build())).thenReturn(jsonObject);
@@ -307,7 +306,7 @@ public class ResultsQueryViewTest {
         assertThat(trackingJO2.getString(FIELD_WOA_LAST_MODIFIED_TIME), is(WOA_LAST_MODIFIED_TIME.toString()));
         assertThat(trackingJO2.getBoolean(FIELD_WOA_STATUS), is(true));
     }
-    
+
     @Test
     public void shouldReturnDefendantTrackingStatusWhenWoaStatusIsNull() {
         final List<UUID> defendantIds = new ArrayList<>();
