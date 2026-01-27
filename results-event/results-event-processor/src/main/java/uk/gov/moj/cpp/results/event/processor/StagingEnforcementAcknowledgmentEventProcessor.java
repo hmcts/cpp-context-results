@@ -199,25 +199,29 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     private List<EnrichedFineDetail> extractAllEnrichedData(JsonObject json, String masterId) {
         return json.getJsonArray("inactiveMigratedCaseSummaries").stream()
-                .map(val -> val.asJsonObject().getJsonObject("inactiveCaseSummary"))
+                .map(JsonValue::asJsonObject) // Convert JsonValue to JsonObject
+                .filter(obj -> obj.containsKey("inactiveCaseSummary")) // Safety check
+                .map(obj -> obj.getJsonObject("inactiveCaseSummary"))  // Now safe to call
                 .flatMap(caseSummary -> {
                     String caseId = caseSummary.getString("id");
+
+                    // Navigate into migrationSourceSystem
                     JsonObject sourceSystem = caseSummary.getJsonObject("migrationSourceSystem");
-                    String caseIdentifier = sourceSystem.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER);
+                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier", "N/A"); // Use default if missing
 
                     return caseSummary.getJsonArray("defendants").stream()
                             .map(JsonValue::asJsonObject)
-                            .filter(def -> masterId.equals(def.getString(MASTER_DEFENDANT_ID)))
+                            .filter(def -> masterId.equals(def.getString("masterDefendantId")))
                             .flatMap(def -> {
                                 String currentDefId = def.getString("defendantId");
                                 DefendantDetails details = mapToDefendantDetails(def);
 
                                 return sourceSystem.getJsonArray("defendantFineAccountNumbers").stream()
                                         .map(JsonValue::asJsonObject)
-                                        // MATCHING STEP: Only pair them if the account belongs to this defendant
+                                        // This matches the defendantId from the account to the defendant in the loop
                                         .filter(fa -> currentDefId.equals(fa.getString("defendantId")))
                                         .map(fa -> new EnrichedFineDetail(
-                                                new FineAccount(caseId, fa.getString(FINE_ACCOUNT_NUMBER), caseIdentifier),
+                                                new FineAccount(caseId, fa.getString("fineAccountNumber"), caseIdentifier),
                                                 details)
                                         );
                             });

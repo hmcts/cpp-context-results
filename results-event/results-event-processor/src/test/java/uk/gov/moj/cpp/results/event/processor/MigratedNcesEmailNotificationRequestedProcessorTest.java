@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.is;
@@ -16,10 +15,8 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
-import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
-import uk.gov.justice.core.courts.CourtDocument;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.core.sender.Sender;
@@ -32,7 +29,6 @@ import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.JsonObject;
@@ -78,6 +74,9 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> envelopeCaptor;
 
+    @Captor
+    private ArgumentCaptor<JsonEnvelope> jsonEnvelopeCaptor;
+
     @BeforeEach
     public void setUp() {
         setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
@@ -94,6 +93,20 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final String fileName = "test-document.pdf";
         final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID.toString() + "-" + caseUUID.toString();
 
+        final String subject = "APPEAL APPLICATION RECEIVED";
+        final String finAccountNumber = "12345";
+        final String divisionCode = "6";
+        final String legacyCaseReference = "N/A";
+        final String caseReferences = "caseUrn1";
+        final String originalDateOfConviction = "2025-11-09";
+        final String listedDate = "2019-12-01";
+        final String hearingCourtCentreName = "South West London Magistrates Court";
+        final String defendantName = "Garfield Dare";
+        final String defendantDateOfBirth = "1998-08-23";
+        final String defendantAddress = "59 Meadow Lane Huddersfield";
+        final String defendantEmail = "test@gmail.com";
+        final String defendantContactNumber = "07431234511";
+
         final Metadata metadata = metadataFrom(createObjectBuilder()
                 .add(ID, randomUUID().toString())
                 .add(NAME, "results.event.migrated-inactive-nces-email-notification-requested")
@@ -106,10 +119,23 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .add(CASE_ID, caseUUID.toString())
                         .add(MASTER_DEFENDANT_ID, masterDefendantUUID.toString())
                         .add(MATERIAL_ID, materialId.toString())
+                        .add("subject", subject)
+                        .add("finAccountNumber", finAccountNumber)
+                        .add("divisionCode", divisionCode)
+                        .add("legacyCaseReference", legacyCaseReference)
+                        .add("caseReferences", caseReferences)
+                        .add("originalDateOfConviction", originalDateOfConviction)
+                        .add("listedDate", listedDate)
+                        .add("hearingCourtCentreName", hearingCourtCentreName)
+                        .add("defendantName", defendantName)
+                        .add("defendantDateOfBirth", defendantDateOfBirth)
+                        .add("defendantAddress", defendantAddress)
+                        .add("defendantEmail", defendantEmail)
+                        .add("defendantContactNumber", defendantContactNumber)
                         .build());
 
         final FileParams fileParams = new FileParams(fileId, fileName);
-        when(documentGeneratorService.generateNcesDocument(any(), eq(jsonEnvelope), eq(userId), eq(materialId), eq(expectedOriginator)))
+        when(documentGeneratorService.generateNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
                 .thenReturn(fileParams);
 
         // When
@@ -117,8 +143,33 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
         // Then
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(Sender.class), eq(jsonEnvelope), eq(userId), eq(materialId), eq(expectedOriginator));
+                any(Sender.class), jsonEnvelopeCaptor.capture(), eq(userId), eq(materialId), eq(expectedOriginator));
         verify(sender, times(1)).send(envelopeCaptor.capture());
+
+        // Verify transformed envelope
+        final JsonEnvelope capturedEnvelope = jsonEnvelopeCaptor.getValue();
+        final JsonObject transformedPayload = capturedEnvelope.payloadAsJsonObject();
+
+        assertThat(transformedPayload.getString("subject"), is(subject));
+        assertThat(transformedPayload.getString("fineAccountNumber"), is(finAccountNumber));
+        assertThat(transformedPayload.getString("divisionCode"), is(divisionCode));
+        assertThat(transformedPayload.getString("legacyCaseReference"), is(legacyCaseReference));
+        assertThat(transformedPayload.getString("caseReferences"), is(caseReferences));
+        assertThat(transformedPayload.getString("dateOfConviction"), is(originalDateOfConviction));
+        assertThat(transformedPayload.getString("listedDate"), is(listedDate));
+        assertThat(transformedPayload.getString("hearingCourtCentreName"), is(hearingCourtCentreName));
+        assertThat(transformedPayload.getString("defendantName"), is(defendantName));
+        assertThat(transformedPayload.getString("defendantDateOfBirth"), is(defendantDateOfBirth));
+        assertThat(transformedPayload.getString("defendantAddress"), is(defendantAddress));
+        assertThat(transformedPayload.getString("defendantEmail"), is(defendantEmail));
+        assertThat(transformedPayload.getString("defendantContactNumber"), is(defendantContactNumber));
+
+        // Verify removed fields are not present
+        assertThat(transformedPayload.containsKey("finAccountNumber"), is(false));
+        assertThat(transformedPayload.containsKey("originalDateOfConviction"), is(false));
+        assertThat(transformedPayload.containsKey("caseId"), is(false));
+        assertThat(transformedPayload.containsKey("masterDefendantId"), is(false));
+        assertThat(transformedPayload.containsKey("materialId"), is(false));
 
         final Envelope<JsonObject> sentEnvelope = envelopeCaptor.getValue();
         assertThat(sentEnvelope.metadata().name(), is(PROGRESSION_ADD_COURT_DOCUMENT));
@@ -179,7 +230,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .build());
 
         final FileParams fileParams = new FileParams(fileId, fileName);
-        when(documentGeneratorService.generateNcesDocument(any(), eq(jsonEnvelope), eq(userId), eq(materialId), eq(expectedOriginator)))
+        when(documentGeneratorService.generateNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
                 .thenReturn(fileParams);
 
         // When
@@ -228,7 +279,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .build());
 
         final FileParams fileParams = new FileParams(fileId, fileName);
-        when(documentGeneratorService.generateNcesDocument(any(), eq(jsonEnvelope), eq(userId), eq(materialId), eq(expectedOriginator)))
+        when(documentGeneratorService.generateNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
                 .thenReturn(fileParams);
 
         // When
@@ -236,6 +287,6 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
         // Then
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(Sender.class), eq(jsonEnvelope), eq(userId), eq(materialId), eq(expectedOriginator));
+                any(Sender.class), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator));
     }
 }

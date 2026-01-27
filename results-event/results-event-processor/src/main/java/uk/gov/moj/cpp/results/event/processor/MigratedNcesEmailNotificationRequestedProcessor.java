@@ -61,11 +61,34 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
 
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
-        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
+        final JsonEnvelope transformedEnvelope = transformEnvelope(envelope);
+        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, transformedEnvelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
 
         addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
         LOGGER.info("In CC case Nces notification requested payload for add court document- fileid {} case UUID {}", fileParams.getFileId(), caseUUID);
 
+    }
+
+    private JsonEnvelope transformEnvelope(final JsonEnvelope envelope) {
+        final JsonObject originalPayload = envelope.payloadAsJsonObject();
+
+        final JsonObject transformedPayload = createObjectBuilder()
+                .add("subject", originalPayload.getString("subject", ""))
+                .add("fineAccountNumber", originalPayload.getString("finAccountNumber", ""))
+                .add("divisionCode", originalPayload.getString("divisionCode", ""))
+                .add("legacyCaseReference", originalPayload.getString("legacyCaseReference", ""))
+                .add("caseReferences", originalPayload.getString("caseReferences", ""))
+                .add("dateOfConviction", originalPayload.getString("originalDateOfConviction", ""))
+                .add("listedDate", originalPayload.getString("listedDate", ""))
+                .add("hearingCourtCentreName", originalPayload.getString("hearingCourtCentreName", ""))
+                .add("defendantName", originalPayload.getString("defendantName", ""))
+                .add("defendantDateOfBirth", originalPayload.getString("defendantDateOfBirth", ""))
+                .add("defendantAddress", originalPayload.getString("defendantAddress", ""))
+                .add("defendantEmail", originalPayload.getString("defendantEmail", ""))
+                .add("defendantContactNumber", originalPayload.getString("defendantContactNumber", ""))
+                .build();
+
+        return JsonEnvelope.envelopeFrom(envelope.metadata(), transformedPayload);
     }
 
     private void addCourtDocumentForCCCase(final JsonEnvelope envelope, final UUID caseUUID, final UUID materialId, final String fileName) {
