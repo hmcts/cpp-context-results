@@ -76,7 +76,6 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
     private static MessageConsumerClient publicMessageConsumerPoliceResultsGenerated;
     private static MessageConsumerClient publicMessageConsumerPoliceResultsGeneratedForStandaloneApplication;
 
-
     public static void createMessageConsumers() {
         publicMessageConsumerPoliceResultsGenerated = new MessageConsumerClient();
         publicMessageConsumerPoliceResultsGeneratedForStandaloneApplication = new MessageConsumerClient();
