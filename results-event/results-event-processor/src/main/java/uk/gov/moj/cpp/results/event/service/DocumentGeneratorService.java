@@ -61,7 +61,7 @@ public class DocumentGeneratorService {
 
     @Transactional(REQUIRES_NEW)
     public FileParams generateNcesDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
-                                           final UUID userId, UUID materialId ) {
+                                           final UUID userId, UUID materialId, final String ncesOriginatorValue) {
         FileParams fileParams = new FileParams();
         final String fileName = getTimeStampAmendedFileName(ENF_DOCUMENT_ORDER) ;
         try {
@@ -69,7 +69,7 @@ public class DocumentGeneratorService {
             final DocumentGeneratorClient documentGeneratorClient = documentGeneratorClientProducer.documentGeneratorClient();
             final byte[] resultOrderAsByteArray = documentGeneratorClient.generatePdfDocument(ncesDocumentJson, NCES_DOCUMENT_TEMPLATE_NAME, getSystemUserUuid());
             final UUID fileId = addDocumentToMaterial(sender, originatingEnvelope, fileName,
-                    new ByteArrayInputStream(resultOrderAsByteArray), userId,  materialId);
+                    new ByteArrayInputStream(resultOrderAsByteArray), userId,  materialId, ncesOriginatorValue);
             fileParams.setFileId(fileId);
             fileParams.setFilename(fileName);
         } catch (IOException | RuntimeException e) {
@@ -80,7 +80,7 @@ public class DocumentGeneratorService {
 
     private UUID addDocumentToMaterial(Sender sender, JsonEnvelope originatingEnvelope, final String filename, final InputStream fileContent,
                                        final UUID userId,
-                                       final UUID materialId) {
+                                       final UUID materialId, final String ncesOriginatorValue) {
         final UUID fileId ;
         try {
             //Uploading the file
@@ -93,7 +93,7 @@ public class DocumentGeneratorService {
                     .setUserId(userId)
                     .setMaterialId(materialId)
                     .setFileId(fileId)
-                    .build());
+                    .build(), ncesOriginatorValue);
 
         } catch (final FileServiceException e) {
             LOGGER.error("Error while uploading file {}", filename);

@@ -6,7 +6,31 @@
         "defendants": [
           {
             "defendantId": "b00acc1c-eb69-4b3c-960e-76be9153125a",
-            "masterDefendantId": "MASTER_DEFENDANT_ID"
+            "masterDefendantId": "MASTER_DEFENDANT_ID",
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Garfield",
+                "lastName": "Dare",
+                "dateOfBirth": "1998-08-23",
+                "address": {
+                  "address1": "59 Meadow Lane",
+                  "address2": "Huddersfield",
+                  "address3": "West Yorkshire",
+                  "address4": "Vernier",
+                  "address5": "Crescent",
+                  "postcode": "B1 1AA"
+                },
+                "contact": {
+                  "work": "07431234511",
+                  "primaryEmail": "test@gmail.com"
+                }
+              }
+            },
+            "offences": [
+              {
+                "convictionDate": "2025-11-09"
+              }
+            ]
           }
         ],
         "migrationSourceSystem": {

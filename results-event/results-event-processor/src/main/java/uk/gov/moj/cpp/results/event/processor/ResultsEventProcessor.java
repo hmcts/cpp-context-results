@@ -53,6 +53,7 @@ import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.DcsCaseHelper;
 import uk.gov.moj.cpp.results.event.helper.FixedListComparator;
+import uk.gov.moj.cpp.results.event.helper.Originator;
 import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
@@ -296,7 +297,7 @@ public class ResultsEventProcessor {
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
         final List<String> caseUrns = extractCaseUrns(envelope.payloadAsJsonObject().getString(CASE_REFERENCES));
-        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
+        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES);
 
         for (final String caseUrn : caseUrns) {
             if (isSJPHearing) {

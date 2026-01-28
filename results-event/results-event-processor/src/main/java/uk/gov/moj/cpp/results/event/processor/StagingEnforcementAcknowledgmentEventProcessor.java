@@ -20,10 +20,9 @@ import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,6 +30,7 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
+import javax.json.JsonValue;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
@@ -49,18 +49,27 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String ACCOUNT_NUMBER = "accountNumber";
     private static final String CORRELATION_ID ="correlationId";
     private static final String MASTER_DEFENDANT_ID ="masterDefendantId";
+    private static final String DEFENDANT_NAME = "defendantName";
+    private static final String DEFENDANT_ADDRESS = "defendantAddress";
+    private static final String ORIGINAL_DATE_OF_CONVICTION = "originalDateOfConviction";
+    private static final String DEFENDANT_EMAIL = "defendantEmail";
+    private static final String DEFENDANT_DATE_OF_BIRTH = "defendantDateOfBirth";
+    private static final String DEFENDANT_CONTACT_NUMBER = "defendantContactNumber";
     private static final String ACCOUNT_CORRELATION_ID ="accountCorrelationId";
     private static final String HEARING_FINANCIAL_RESULT_REQUEST= "hearingFinancialResultRequest";
     private static final String CASE_IDS = "caseIds";
-    private static final String INACTIVE_MIGRATED_CASE_SUMMARIES = "inactiveMigratedCaseSummaries";
-    private static final String INACTIVE_CASE_SUMMARY = "inactiveCaseSummary";
-    private static final String MIGRATION_SOURCE_SYSTEM = "migrationSourceSystem";
-    private static final String DEFENDANT_FINE_ACCOUNT_NUMBERS = "defendantFineAccountNumbers";
     private static final String FINE_ACCOUNT_NUMBER = "fineAccountNumber";
+    private static final String CASE_ID = "caseId";
     private static final String COURT_EMAIL = "courtEmail";
-    private static final String DEFENDANTS = "defendants";
-    private static final String DEFENDANT_ID = "defendantId";
+    private static final String DIVISION = "division";
     public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
+    public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
+
+    private record NcesNotificationDetails(String email, String division) {}
+    public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier) {}
+    public record EnrichedFineDetail(FineAccount fineAccount, DefendantDetails defendant) {}
+    public record DefendantDetails(String defendantName, String defendantAddress, String originalDateOfConviction,
+                                   String defendantEmail, String defendantDateOfBirth, String defendantContactNumber) {}
 
     @Inject
     private Sender sender;
@@ -109,10 +118,10 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     }
 
     @Handles("public.hearing.nces-email-notification-for-application")
-    public void processSendNcesMailForNewApplication(final JsonEnvelope event){ //Analyse for CCT-2266
+    public void processSendNcesMailForNewApplication(final JsonEnvelope event) { //Analyse for CCT-2266
         final JsonObject payload = event.payloadAsJsonObject();
 
-        Envelope<JsonObject> requestEnvelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
+        final Envelope<JsonObject> requestEnvelope = envelop(event.payloadAsJsonObject()).withName("result.command.send-nces-email-for-application").withMetadataFrom(event);
 
         final List<String> caseIds = ofNullable(payload.getJsonArray(CASE_IDS))
                 .map(jsonArray -> jsonArray.stream()
@@ -120,41 +129,50 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                         .collect(toList()))
                 .orElse(emptyList());
 
-        if(isNotEmpty(caseIds)) {
-
+        if (isNotEmpty(caseIds)) {
             final Optional<JsonObject> inActiveMigratedCases = progressionService.getInactiveMigratedCasesByCaseIds(caseIds);
-
             final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);
 
-            List<String> fineAccountNumbers = inActiveMigratedCases
-                    .filter(progressionResponse -> progressionResponse.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES) != null &&
-                            !progressionResponse.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES).isEmpty())
-                    .map(json -> extractFineAccountNumbers(json, masterDefendantId))
-                    .orElse(emptyList());
+            List<EnrichedFineDetail> enrichedDetails = inActiveMigratedCases
+                    .map(json -> extractAllEnrichedData(json, masterDefendantId))
+                    .orElse(Collections.emptyList());
 
-            final JsonObjectBuilder enrichedPayload = createObjectBuilder(payload);
+            final NcesNotificationDetails ncesNotificationDetails = extractNcesNotificationEmail(event, payload);
 
-            final String ncesNotificationEmailAddress = extractNcesNotificationEmail(event, payload);
+            if (isNotEmpty(enrichedDetails) && nonNull(ncesNotificationDetails) && nonNull(ncesNotificationDetails.email())) {
+                for (EnrichedFineDetail item : enrichedDetails) {
 
-            if (isNotEmpty(fineAccountNumbers) && nonNull(ncesNotificationEmailAddress)) {
+                    final JsonObject fineAccountInfo = createObjectBuilder()
+                            .add(MASTER_DEFENDANT_ID, masterDefendantId)
+                            .add(CASE_ID, item.fineAccount().caseId())
+                            .add(FINE_ACCOUNT_NUMBER, item.fineAccount().fineAccountNumber())
+                            .add(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER, item.fineAccount().caseIdentifier())
+                            .add(COURT_EMAIL, ncesNotificationDetails.email())
+                            .add(DIVISION, ncesNotificationDetails.division())
+                            .add(DEFENDANT_NAME, item.defendant().defendantName())
+                            .add(DEFENDANT_ADDRESS, item.defendant().defendantAddress())
+                            .add(ORIGINAL_DATE_OF_CONVICTION, item.defendant().originalDateOfConviction())
+                            .add(DEFENDANT_EMAIL, item.defendant().defendantEmail())
+                            .add(DEFENDANT_DATE_OF_BIRTH, item.defendant().defendantDateOfBirth())
+                            .add(DEFENDANT_CONTACT_NUMBER, item.defendant().defendantContactNumber())
+                            .build();
 
-                final JsonObject courtEmailAndFineAccount = createObjectBuilder()
-                        .add(COURT_EMAIL, ncesNotificationEmailAddress)
-                        .add(FINE_ACCOUNT_NUMBER, fineAccountNumbers.get(0))
-                        .build();
+                    final JsonObjectBuilder migratedInactivePayload = createObjectBuilder(payload);
+                    migratedInactivePayload.add(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT, fineAccountInfo);
 
-                enrichedPayload.add(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT, courtEmailAndFineAccount);
-
-                requestEnvelope = envelop(enrichedPayload.build())
-                        .withName("result.command.send-nces-email-for-application")
-                        .withMetadataFrom(event);
+                    this.sender.sendAsAdmin(envelop(migratedInactivePayload.build())
+                            .withName("result.command.send-migrated-inactive-nces-email-for-application")
+                            .withMetadataFrom(event));
+                }
             }
-        }
+            this.sender.sendAsAdmin(requestEnvelope);
+        } else {
+            this.sender.sendAsAdmin(requestEnvelope);
 
-        this.sender.sendAsAdmin(requestEnvelope);
+        }
     }
 
-    private @Nullable String extractNcesNotificationEmail(final JsonEnvelope event, final JsonObject payload) {
+    private @Nullable NcesNotificationDetails extractNcesNotificationEmail(final JsonEnvelope event, final JsonObject payload) {
 
         final String hearingCourtCentreId = payload.getString("hearingCourtCentreId");
 
@@ -168,39 +186,83 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .filter(enforcementArea::containsKey)
                 .map(enforcementArea::getString);
 
-        return ncesNotificationEmail.orElse(null);
+        final Optional<String> divisionCode = of("divisionCode")
+                .filter(organisationUnitPayload::containsKey)
+                .map(organisationUnitPayload::getString);
+
+        if (ncesNotificationEmail.isPresent() && divisionCode.isPresent()) {
+            return new NcesNotificationDetails(ncesNotificationEmail.get(), divisionCode.get());
+        }
+
+        return null;
     }
 
-    private List<String> extractFineAccountNumbers(final JsonObject response, final String masterId) {
-        return Optional.ofNullable(response.getJsonArray(INACTIVE_MIGRATED_CASE_SUMMARIES))
-                .map(array -> array.getValuesAs(JsonObject.class).stream())
-                .orElse(Stream.empty())
-                .map(cs -> cs.getJsonObject(INACTIVE_CASE_SUMMARY))
-                .filter(Objects::nonNull)
-                .flatMap(summary -> findFineAccounts(summary, masterId))
+    private List<EnrichedFineDetail> extractAllEnrichedData(JsonObject json, String masterId) {
+        return json.getJsonArray("inactiveMigratedCaseSummaries").stream()
+                .map(JsonValue::asJsonObject) // Convert JsonValue to JsonObject
+                .filter(obj -> obj.containsKey("inactiveCaseSummary")) // Safety check
+                .map(obj -> obj.getJsonObject("inactiveCaseSummary"))  // Now safe to call
+                .flatMap(caseSummary -> {
+                    String caseId = caseSummary.getString("id");
+
+                    // Navigate into migrationSourceSystem
+                    JsonObject sourceSystem = caseSummary.getJsonObject("migrationSourceSystem");
+                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier", "N/A"); // Use default if missing
+
+                    return caseSummary.getJsonArray("defendants").stream()
+                            .map(JsonValue::asJsonObject)
+                            .filter(def -> masterId.equals(def.getString("masterDefendantId")))
+                            .flatMap(def -> {
+                                String currentDefId = def.getString("defendantId");
+                                DefendantDetails details = mapToDefendantDetails(def);
+
+                                return sourceSystem.getJsonArray("defendantFineAccountNumbers").stream()
+                                        .map(JsonValue::asJsonObject)
+                                        // This matches the defendantId from the account to the defendant in the loop
+                                        .filter(fa -> currentDefId.equals(fa.getString("defendantId")))
+                                        .map(fa -> new EnrichedFineDetail(
+                                                new FineAccount(caseId, fa.getString("fineAccountNumber"), caseIdentifier),
+                                                details)
+                                        );
+                            });
+                })
                 .collect(Collectors.toList());
     }
 
-    private Stream<String> findFineAccounts(JsonObject summary, String masterId) {
-        Set<String> linkedDefendantIds = Optional.ofNullable(summary.getJsonArray(DEFENDANTS))
-                .map(array -> array.getValuesAs(JsonObject.class).stream())
-                .orElse(Stream.empty())
-                .filter(def -> masterId.equals(def.getString(MASTER_DEFENDANT_ID)))
-                .map(def -> def.getString(DEFENDANT_ID))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-
-        if (linkedDefendantIds.isEmpty()) {
-            return Stream.empty();
+    private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
+        if (defendantJson == null) {
+            return new DefendantDetails("", "", "", "", "", "");
         }
 
-        return Optional.ofNullable(summary.getJsonObject(MIGRATION_SOURCE_SYSTEM))
-                .map(sys -> sys.getJsonArray(DEFENDANT_FINE_ACCOUNT_NUMBERS))
+        final JsonObject details = Optional.of(defendantJson)
+                .map(d -> d.getJsonObject("personDefendant"))
+                .map(pd -> pd.getJsonObject("personDetails"))
+                .orElse(JsonValue.EMPTY_JSON_OBJECT);
+
+        final String defendantName = (details.getString("firstName", "") + " " + details.getString("lastName", "")).trim();
+
+        final String defendantAddress = Optional.ofNullable(details.getJsonObject("address"))
+                .map(addr -> Stream.of("address1", "address2", "address3", "address4", "address5", "postcode")
+                        .map(key -> addr.getString(key, ""))
+                        .filter(val -> !val.isEmpty())
+                        .collect(Collectors.joining(" ")))
+                .orElse("");
+
+        final String originalDateOfConviction = Optional.ofNullable(defendantJson.getJsonArray("offences"))
                 .map(array -> array.getValuesAs(JsonObject.class).stream())
                 .orElse(Stream.empty())
-                .filter(fa -> linkedDefendantIds.contains(fa.getString(DEFENDANT_ID)))
-                .map(fa -> fa.getString(FINE_ACCOUNT_NUMBER))
-                .filter(Objects::nonNull);
+                .map(offence -> offence.getString("convictionDate", ""))
+                .filter(date -> !date.isEmpty())
+                .collect(Collectors.joining(" "));
+
+        final JsonObject contact = details.getJsonObject("contact");
+        final String email = Optional.ofNullable(contact).map(c -> c.getString("primaryEmail", "")).orElse("");
+        final String dob = details.getString("dateOfBirth", "");
+        final String phone = Optional.ofNullable(contact)
+                .map(c -> c.getString("work", c.getString("mobile", c.getString("home", ""))))
+                .orElse("");
+
+        return new DefendantDetails(defendantName, defendantAddress, originalDateOfConviction, email, dob, phone);
     }
 
     @Handles("public.progression.defendant-address-changed")
