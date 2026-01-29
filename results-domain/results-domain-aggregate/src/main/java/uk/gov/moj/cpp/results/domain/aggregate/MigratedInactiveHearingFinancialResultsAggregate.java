@@ -104,25 +104,6 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
 
     }
 
-    UUID getMasterDefendantId() {
-        return masterDefendantId;
-    }
-
-    UUID getNotificationId() {
-        return notificationId;
-    }
-
-    UUID getMaterialId() {
-        return materialId;
-    }
-
-    String getSendToAddress() {
-        return sendToAddress;
-    }
-
-    String getSubject() {
-        return subject;
-    }
 
     boolean isEventRaisedEarlier() {
         return isEventRaisedEarlier;
