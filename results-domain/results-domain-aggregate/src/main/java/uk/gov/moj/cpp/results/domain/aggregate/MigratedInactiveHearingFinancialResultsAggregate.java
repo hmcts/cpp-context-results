@@ -69,7 +69,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                 .withSendTo(migratedCaseDetails.courtEmail())
                 .withSubject(subject)
                 .withHearingCourtCentreName(hearingCourtCentreName)
-                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, caseUrns))
+                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, migratedCaseDetails.caseURN()))
                 .withMasterDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
                 .withListedDate(listingDate)
                 .withIsWriteOff(Boolean.FALSE)

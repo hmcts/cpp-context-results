@@ -73,7 +73,8 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 DEFENDANT_EMAIL,
                 DEFENDANT_DATE_OF_BIRTH,
                 DEFENDANT_CONTACT_NUMBER,
-                "CASE123"
+                "CASE123",
+                "caseUrn1"
         );
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
@@ -95,7 +96,7 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         assertThat(event.getSendTo(), is(COURT_EMAIL));
         assertThat(event.getSubject(), is(APPLICATION_TYPES.get(STAT_DEC)));
         assertThat(event.getHearingCourtCentreName(), is(HEARING_COURT_CENTRE_NAME));
-        assertThat(event.getCaseReferences(), is("caseUrn"));
+        assertThat(event.getCaseReferences(), is("caseUrn1"));
         assertThat(event.getListedDate(), is(LISTING_DATE));
         assertThat(event.getIsWriteOff(), is(Boolean.FALSE));
     }
@@ -131,7 +132,8 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 DEFENDANT_EMAIL,
                 DEFENDANT_DATE_OF_BIRTH,
                 DEFENDANT_CONTACT_NUMBER,
-                "CASE123"
+                "CASE123",
+                "caseUrn1"
         );
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(

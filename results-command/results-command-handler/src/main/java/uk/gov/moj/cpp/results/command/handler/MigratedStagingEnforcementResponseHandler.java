@@ -56,6 +56,7 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public static final String DEFENDANT_DATE_OF_BIRTH = "defendantDateOfBirth";
     public static final String DEFENDANT_CONTACT_NUMBER = "defendantContactNumber";
     public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
+    public static final String CASE_URN = "caseURN";
     private static final String MATERIAL_ID = "materialId";
     private static final String MATERIAL_URL = "materialUrl";
 
@@ -102,7 +103,8 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
                 fineAccountInfo.containsKey(DEFENDANT_EMAIL) ? fineAccountInfo.getString(DEFENDANT_EMAIL) : EMPTY_STRING,
                 fineAccountInfo.containsKey(DEFENDANT_DATE_OF_BIRTH) ? fineAccountInfo.getString(DEFENDANT_DATE_OF_BIRTH) : EMPTY_STRING,
                 fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : EMPTY_STRING,
-                fineAccountInfo.containsKey(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) ? fineAccountInfo.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) : EMPTY_STRING
+                fineAccountInfo.containsKey(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) ? fineAccountInfo.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) : EMPTY_STRING,
+                fineAccountInfo.containsKey(CASE_URN) ? fineAccountInfo.getString(CASE_URN) : EMPTY_STRING
         );
 
 

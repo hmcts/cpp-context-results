@@ -60,13 +60,14 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String CASE_IDS = "caseIds";
     private static final String FINE_ACCOUNT_NUMBER = "fineAccountNumber";
     private static final String CASE_ID = "caseId";
+    private static final String CASE_URN = "caseURN";
     private static final String COURT_EMAIL = "courtEmail";
     private static final String DIVISION = "division";
     public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
     public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
 
     private record NcesNotificationDetails(String email, String division) {}
-    public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier) {}
+    public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier, String caseURN) {}
     public record EnrichedFineDetail(FineAccount fineAccount, DefendantDetails defendant) {}
     public record DefendantDetails(String defendantName, String defendantAddress, String originalDateOfConviction,
                                    String defendantEmail, String defendantDateOfBirth, String defendantContactNumber) {}
@@ -155,6 +156,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .add(DEFENDANT_EMAIL, item.defendant().defendantEmail())
                             .add(DEFENDANT_DATE_OF_BIRTH, item.defendant().defendantDateOfBirth())
                             .add(DEFENDANT_CONTACT_NUMBER, item.defendant().defendantContactNumber())
+                            .add(CASE_URN,item.fineAccount().caseURN())
                             .build();
 
                     final JsonObjectBuilder migratedInactivePayload = createObjectBuilder(payload);
@@ -199,15 +201,16 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     private List<EnrichedFineDetail> extractAllEnrichedData(JsonObject json, String masterId) {
         return json.getJsonArray("inactiveMigratedCaseSummaries").stream()
-                .map(JsonValue::asJsonObject) // Convert JsonValue to JsonObject
-                .filter(obj -> obj.containsKey("inactiveCaseSummary")) // Safety check
-                .map(obj -> obj.getJsonObject("inactiveCaseSummary"))  // Now safe to call
+                .map(JsonValue::asJsonObject)
+                .filter(obj -> obj.containsKey("inactiveCaseSummary"))
+                .map(obj -> obj.getJsonObject("inactiveCaseSummary"))
                 .flatMap(caseSummary -> {
                     String caseId = caseSummary.getString("id");
+                    String caseURN = caseSummary.getString(CASE_URN);
 
                     // Navigate into migrationSourceSystem
                     JsonObject sourceSystem = caseSummary.getJsonObject("migrationSourceSystem");
-                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier", "N/A"); // Use default if missing
+                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier", "N/A");
 
                     return caseSummary.getJsonArray("defendants").stream()
                             .map(JsonValue::asJsonObject)
@@ -221,7 +224,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                                         // This matches the defendantId from the account to the defendant in the loop
                                         .filter(fa -> currentDefId.equals(fa.getString("defendantId")))
                                         .map(fa -> new EnrichedFineDetail(
-                                                new FineAccount(caseId, fa.getString("fineAccountNumber"), caseIdentifier),
+                                                new FineAccount(caseId, fa.getString("fineAccountNumber"), caseIdentifier, caseURN),
                                                 details)
                                         );
                             });
