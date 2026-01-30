@@ -138,7 +138,10 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                     .map(json -> extractAllEnrichedData(json, masterDefendantId))
                     .orElse(Collections.emptyList());
 
-            final NcesNotificationDetails ncesNotificationDetails = extractNcesNotificationEmail(event, payload);
+            NcesNotificationDetails ncesNotificationDetails = null;
+            if (isNotEmpty(enrichedDetails)) {
+                ncesNotificationDetails = extractNcesNotificationEmail(event, payload);
+            }
 
             if (isNotEmpty(enrichedDetails) && nonNull(ncesNotificationDetails) && nonNull(ncesNotificationDetails.email())) {
                 for (EnrichedFineDetail item : enrichedDetails) {
@@ -176,6 +179,9 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     private @Nullable NcesNotificationDetails extractNcesNotificationEmail(final JsonEnvelope event, final JsonObject payload) {
 
+        if (!payload.containsKey("hearingCourtCentreId") || payload.isNull("hearingCourtCentreId")) {
+            return null;
+        }
         final String hearingCourtCentreId = payload.getString("hearingCourtCentreId");
 
         final JsonObject organisationUnitPayload = referenceDataService.getOrganisationUnit(hearingCourtCentreId, event);
