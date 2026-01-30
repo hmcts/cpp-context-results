@@ -23,7 +23,7 @@ public class Originator {
     public static final String ORIGINATOR_VALUE = "court";
     public static final String SOURCE_NCES = "originator-nces";
     public static final String ORIGINATOR_VALUE_NCES = "nces";
-    public static final String ORIGINATOR_VALUE_NCES_CASEID = "nces-";
+    public static final String ORIGINATOR_VALUE_NCES_CASEID = "nces:";
 
     private Originator() {
     }

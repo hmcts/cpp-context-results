@@ -57,7 +57,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
         final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
         final UUID caseUUID = fromString(envelope.payloadAsJsonObject().getString(CASE_ID));
         final UUID masterDefendsntUUID = fromString(envelope.payloadAsJsonObject().getString(MASTER_DEFENDANT_ID));
-        final String rootAggregateId = masterDefendsntUUID.toString() + "-" + caseUUID.toString();
+        final String rootAggregateId = masterDefendsntUUID.toString() + ":" + caseUUID.toString();
 
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));

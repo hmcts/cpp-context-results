@@ -103,7 +103,7 @@ public class MaterialAddedEventProcessorTest {
         final String materialUrl = "http://localhost:8080/material.pdf";
         final String masterDefendantId = randomUUID().toString();
         final String caseId = randomUUID().toString();
-        final String originatorValue = "nces-" + masterDefendantId + "-" + caseId;
+        final String originatorValue = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantId + ":" + caseId;
         final JsonObject metaDataJson = Json.createObjectBuilder()
                 .add(Originator.SOURCE_NCES, originatorValue)
                 .add("id", UUID.randomUUID().toString())
@@ -117,9 +117,7 @@ public class MaterialAddedEventProcessorTest {
         when(materialUrlGenerator.pdfFileStreamUrlFor(fromString(materialId))).thenReturn(materialUrl);
         Function<Object, JsonEnvelope> factory = (payload) -> {
             final JsonObject jsonPayload = (JsonObject) payload;
-            // The implementation splits by "-" and takes splitted[1] and splitted[2]
-            // So for "nces-{uuid1}-{uuid2}", it takes the first two parts after "nces"
-            final String[] splitted = originatorValue.split("-");
+            final String[] splitted = originatorValue.split(":");
             final String expectedMasterDefendantId = splitted[1];
             final String expectedCaseId = splitted[2];
             final JsonObject expectedPayload = Json.createObjectBuilder()

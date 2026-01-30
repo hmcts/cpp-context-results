@@ -80,7 +80,7 @@ public class MaterialAddedEventProcessor {
         final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
 
         final String originator = envelope.metadata().asJsonObject().getString(ORIGINATOR);
-        final String[] splitted = originator.split("-");
+        final String[] splitted = originator.split(":");
 
         final JsonObject enrichedPayload = createObjectBuilder()
                 .add(MATERIAL_ID, materialId.toString())

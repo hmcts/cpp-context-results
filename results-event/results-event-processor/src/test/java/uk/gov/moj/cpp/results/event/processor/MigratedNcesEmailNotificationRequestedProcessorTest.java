@@ -91,7 +91,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final UUID materialId = randomUUID();
         final UUID fileId = randomUUID();
         final String fileName = "test-document.pdf";
-        final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID.toString() + "-" + caseUUID.toString();
+        final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID.toString() + ":" + caseUUID.toString();
 
         final String subject = "APPEAL APPLICATION RECEIVED";
         final String finAccountNumber = "12345";
@@ -213,7 +213,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final UUID materialId = randomUUID();
         final UUID fileId = randomUUID();
         final String fileName = "test-document.pdf";
-        final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID.toString() + "-" + caseUUID.toString();
+        final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID.toString() + ":" + caseUUID.toString();
 
         final Metadata metadata = metadataFrom(createObjectBuilder()
                 .add(ID, randomUUID().toString())
@@ -261,7 +261,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final UUID materialId = randomUUID();
         final UUID fileId = randomUUID();
         final String fileName = "test-document.pdf";
-        final String expectedRootAggregateId = masterDefendantUUID.toString() + "-" + caseUUID.toString();
+        final String expectedRootAggregateId = masterDefendantUUID.toString() + ":" + caseUUID.toString();
         final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + expectedRootAggregateId;
 
         final Metadata metadata = metadataFrom(createObjectBuilder()
