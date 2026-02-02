@@ -7,6 +7,20 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.CASE_REFERENCES;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DATE_OF_CONVICTION;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DEFENDANT_ADDRESS;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DEFENDANT_CONTACT_NUMBER;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DEFENDANT_DATE_OF_BIRTH;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DEFENDANT_EMAIL;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DEFENDANT_NAME;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.DIVISION_CODE;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.FINE_ACCOUNT_NUMBER;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.HEARING_COURT_CENTRE_NAME;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.LEGACY_CASE_REFERENCE;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.LISTED_DATE;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.ORIGINAL_DATE_OF_CONVICTION;
+import static uk.gov.moj.cpp.results.event.processor.MigratedNcesMappingConstants.SUBJECT;
 
 import uk.gov.justice.core.courts.CaseDocument;
 import uk.gov.justice.core.courts.CourtDocument;
@@ -20,7 +34,6 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
-import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.event.helper.Originator;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
@@ -108,19 +121,19 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
         final JsonObject originalPayload = envelope.payloadAsJsonObject();
 
         final JsonObject transformedPayload = createObjectBuilder()
-                .add("subject", originalPayload.getString("subject", ""))
-                .add("fineAccountNumber", originalPayload.getString("fineAccountNumber", ""))
-                .add("divisionCode", originalPayload.getString("divisionCode", ""))
-                .add("legacyCaseReference", originalPayload.getString("legacyCaseReference", ""))
-                .add("caseReferences", originalPayload.getString("caseReferences", ""))
-                .add("dateOfConviction", originalPayload.getString("originalDateOfConviction", ""))
-                .add("listedDate", originalPayload.getString("listedDate", ""))
-                .add("hearingCourtCentreName", originalPayload.getString("hearingCourtCentreName", ""))
-                .add("defendantName", originalPayload.getString("defendantName", ""))
-                .add("defendantDateOfBirth", originalPayload.getString("defendantDateOfBirth", ""))
-                .add("defendantAddress", originalPayload.getString("defendantAddress", ""))
-                .add("defendantEmail", originalPayload.getString("defendantEmail", ""))
-                .add("defendantContactNumber", originalPayload.getString("defendantContactNumber", ""))
+                .add(SUBJECT, originalPayload.getString(SUBJECT, ""))
+                .add(FINE_ACCOUNT_NUMBER, originalPayload.getString(FINE_ACCOUNT_NUMBER, ""))
+                .add(DIVISION_CODE, originalPayload.getString(DIVISION_CODE, ""))
+                .add(LEGACY_CASE_REFERENCE, originalPayload.getString(LEGACY_CASE_REFERENCE, ""))
+                .add(CASE_REFERENCES, originalPayload.getString(CASE_REFERENCES, ""))
+                .add(DATE_OF_CONVICTION, originalPayload.getString(ORIGINAL_DATE_OF_CONVICTION, ""))
+                .add(LISTED_DATE, originalPayload.getString(LISTED_DATE, ""))
+                .add(HEARING_COURT_CENTRE_NAME, originalPayload.getString(HEARING_COURT_CENTRE_NAME, ""))
+                .add(DEFENDANT_NAME, originalPayload.getString(DEFENDANT_NAME, ""))
+                .add(DEFENDANT_DATE_OF_BIRTH, originalPayload.getString(DEFENDANT_DATE_OF_BIRTH, ""))
+                .add(DEFENDANT_ADDRESS, originalPayload.getString(DEFENDANT_ADDRESS, ""))
+                .add(DEFENDANT_EMAIL, originalPayload.getString(DEFENDANT_EMAIL, ""))
+                .add(DEFENDANT_CONTACT_NUMBER, originalPayload.getString(DEFENDANT_CONTACT_NUMBER, ""))
                 .build();
 
         return JsonEnvelope.envelopeFrom(envelope.metadata(), transformedPayload);
