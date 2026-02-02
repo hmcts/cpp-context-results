@@ -17,8 +17,10 @@ import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.test.utils.framework.api.JsonObjectConvertersFactory;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -26,7 +28,9 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.event.helper.Originator;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
+import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
+import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.util.UUID;
@@ -63,10 +67,16 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
     private Sender sender;
 
     @Spy
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
+    private ObjectToJsonObjectConverter objectToJsonObjectConverter = new JsonObjectConvertersFactory().objectToJsonObjectConverter();
+
+    @Spy
+    private JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectConvertersFactory().jsonObjectToObjectConverter();
 
     @Mock
     private DocumentGeneratorService documentGeneratorService;
+
+    @Mock
+    private NotificationNotifyService notificationNotifyService;
 
     @InjectMocks
     private MigratedNcesEmailNotificationRequestedProcessor processor;
@@ -77,9 +87,13 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
     @Captor
     private ArgumentCaptor<JsonEnvelope> jsonEnvelopeCaptor;
 
+    @Captor
+    private ArgumentCaptor<EmailNotification> emailNotificationCaptor;
+
     @BeforeEach
     public void setUp() {
         setField(objectToJsonObjectConverter, "mapper", new ObjectMapperProducer().objectMapper());
+        setField(jsonObjectToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
     }
 
     @Test
@@ -288,5 +302,42 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         // Then
         verify(documentGeneratorService, times(1)).generateMigratedInactiveNcesDocument(
                 any(Sender.class), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator));
+    }
+
+    @Test
+    public void shouldHandleSendNcesEmailNotification() {
+        // Given
+        final UUID notificationId = randomUUID();
+        final UUID templateId = randomUUID();
+        final String sendToAddress = "mail@email.com";
+        final String subject = "Migrated inactive NCES notification";
+        final String materialUrl = "http://localhost:1234/material";
+
+        final Metadata metadata = metadataFrom(createObjectBuilder()
+                .add(ID, randomUUID().toString())
+                .add(NAME, "results.event.migrated-inactive-nces-email-notification")
+                .build()).build();
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata,
+                createObjectBuilder()
+                        .add("notificationId", notificationId.toString())
+                        .add("templateId", templateId.toString())
+                        .add("sendToAddress", sendToAddress)
+                        .add("subject", subject)
+                        .add("materialUrl", materialUrl)
+                        .build());
+
+        // When
+        processor.handleSendNcesEmailNotification(jsonEnvelope);
+
+        // Then
+        verify(notificationNotifyService, times(1)).sendNcesEmail(
+                emailNotificationCaptor.capture(), eq(jsonEnvelope));
+        final EmailNotification capturedEmailNotification = emailNotificationCaptor.getValue();
+        assertThat(capturedEmailNotification.getNotificationId(), is(notificationId));
+        assertThat(capturedEmailNotification.getTemplateId(), is(templateId));
+        assertThat(capturedEmailNotification.getSendToAddress(), is(sendToAddress));
+        assertThat(capturedEmailNotification.getSubject().orElse(null), is(subject));
+        assertThat(capturedEmailNotification.getMaterialUrl(), is(materialUrl));
     }
 }
