@@ -135,14 +135,14 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .build());
 
         final FileParams fileParams = new FileParams(fileId, fileName);
-        when(documentGeneratorService.generateNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
+        when(documentGeneratorService.generateMigratedInactiveNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
                 .thenReturn(fileParams);
 
         // When
         processor.handleMigratedNcesEmailNotificationRequested(jsonEnvelope);
 
         // Then
-        verify(documentGeneratorService, times(1)).generateNcesDocument(
+        verify(documentGeneratorService, times(1)).generateMigratedInactiveNcesDocument(
                 any(Sender.class), jsonEnvelopeCaptor.capture(), eq(userId), eq(materialId), eq(expectedOriginator));
         verify(sender, times(1)).send(envelopeCaptor.capture());
 
@@ -230,7 +230,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .build());
 
         final FileParams fileParams = new FileParams(fileId, fileName);
-        when(documentGeneratorService.generateNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
+        when(documentGeneratorService.generateMigratedInactiveNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
                 .thenReturn(fileParams);
 
         // When
@@ -279,14 +279,14 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .build());
 
         final FileParams fileParams = new FileParams(fileId, fileName);
-        when(documentGeneratorService.generateNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
+        when(documentGeneratorService.generateMigratedInactiveNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
                 .thenReturn(fileParams);
 
         // When
         processor.handleMigratedNcesEmailNotificationRequested(jsonEnvelope);
 
         // Then
-        verify(documentGeneratorService, times(1)).generateNcesDocument(
+        verify(documentGeneratorService, times(1)).generateMigratedInactiveNcesDocument(
                 any(Sender.class), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator));
     }
 }

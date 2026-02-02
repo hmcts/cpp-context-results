@@ -78,7 +78,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
         final JsonEnvelope transformedEnvelope = transformEnvelope(envelope);
-        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, transformedEnvelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
+        final FileParams fileParams = documentGeneratorService.generateMigratedInactiveNcesDocument(sender, transformedEnvelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
 
         addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
         LOGGER.info("In CC migrated inactive case Nces notification requested payload for add court document- fileid {} case UUID {}", fileParams.getFileId(), caseUUID);
