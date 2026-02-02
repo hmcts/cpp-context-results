@@ -216,7 +216,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
                     // Navigate into migrationSourceSystem
                     JsonObject sourceSystem = caseSummary.getJsonObject("migrationSourceSystem");
-                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier", "N/A");
+                    String caseIdentifier = sourceSystem.getString("migrationSourceSystemCaseIdentifier");
 
                     return caseSummary.getJsonArray("defendants").stream()
                             .map(JsonValue::asJsonObject)
