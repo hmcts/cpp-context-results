@@ -3,22 +3,29 @@ package uk.gov.moj.cpp.results.event.processor;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createObjectBuilder;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 
 import uk.gov.justice.core.courts.CaseDocument;
 import uk.gov.justice.core.courts.CourtDocument;
 import uk.gov.justice.core.courts.DocumentCategory;
 import uk.gov.justice.core.courts.Material;
+import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
+import uk.gov.moj.cpp.results.domain.event.NcesEmailNotification;
 import uk.gov.moj.cpp.results.event.helper.Originator;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
+import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
+import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -26,6 +33,8 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +52,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(MigratedNcesEmailNotificationRequestedProcessor.class);
 
 
+
     @Inject
     private Sender sender;
 
@@ -51,6 +61,12 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
 
     @Inject
     private DocumentGeneratorService documentGeneratorService;
+
+    @Inject
+    private JsonObjectToObjectConverter jsonObjectToObjectConverter;
+
+    @Inject
+    private NotificationNotifyService notificationNotifyService;
 
     @Handles("results.event.migrated-inactive-nces-email-notification-requested")
     public void handleMigratedNcesEmailNotificationRequested(final JsonEnvelope envelope) {
@@ -67,6 +83,25 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
         addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
         LOGGER.info("In CC migrated inactive case Nces notification requested payload for add court document- fileid {} case UUID {}", fileParams.getFileId(), caseUUID);
 
+    }
+
+    @Handles("results.event.migrated-inactive-nces-email-notification")
+    public void handleSendNcesEmailNotification(final JsonEnvelope envelope) {
+        final JsonObject requestJson = envelope.payloadAsJsonObject();
+        final MigratedInactiveNcesEmailNotification ncesEmailNotification = jsonObjectToObjectConverter.convert(requestJson, MigratedInactiveNcesEmailNotification.class);
+        LOGGER.info("Migrated inactive Nces email notification event - {}", envelope.toObfuscatedDebugString());
+
+        final EmailNotification emailNotification = EmailNotification.emailNotification()
+                .withNotificationId(ncesEmailNotification.getNotificationId())
+                .withTemplateId(ncesEmailNotification.getTemplateId())
+                .withSendToAddress(ncesEmailNotification.getSendToAddress())
+                .withSubject(ncesEmailNotification.getSubject())
+                .withMaterialUrl(ncesEmailNotification.getMaterialUrl())
+                .build();
+
+        //Send Email
+        LOGGER.info("send migrated inactive email notification - {}", emailNotification.getNotificationId());
+        notificationNotifyService.sendNcesEmail(emailNotification, envelope);
     }
 
     private JsonEnvelope transformEnvelope(final JsonEnvelope envelope) {

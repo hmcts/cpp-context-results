@@ -33,6 +33,8 @@ subscriptions_descriptor:
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/results.event.publish-to-dcs.json
         - name: results.event.migrated-inactive-nces-email-notification-requested
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/migrated-inactive-nces-email-notification-requested.json
+        - name: results.event.migrated-inactive-nces-email-notification
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/migrated-inactive-nces-email-notification.json
 
       event_source_name: results
 
