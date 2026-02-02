@@ -108,7 +108,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID.toString() + ":" + caseUUID.toString();
 
         final String subject = "APPEAL APPLICATION RECEIVED";
-        final String finAccountNumber = "12345";
+        final String fineAccountNumber = "12345";
         final String divisionCode = "6";
         final String legacyCaseReference = "N/A";
         final String caseReferences = "caseUrn1";
@@ -134,7 +134,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .add(MASTER_DEFENDANT_ID, masterDefendantUUID.toString())
                         .add(MATERIAL_ID, materialId.toString())
                         .add("subject", subject)
-                        .add("finAccountNumber", finAccountNumber)
+                        .add("fineAccountNumber", fineAccountNumber)
                         .add("divisionCode", divisionCode)
                         .add("legacyCaseReference", legacyCaseReference)
                         .add("caseReferences", caseReferences)
@@ -165,7 +165,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final JsonObject transformedPayload = capturedEnvelope.payloadAsJsonObject();
 
         assertThat(transformedPayload.getString("subject"), is(subject));
-        assertThat(transformedPayload.getString("fineAccountNumber"), is(finAccountNumber));
+        assertThat(transformedPayload.getString("fineAccountNumber"), is(fineAccountNumber));
         assertThat(transformedPayload.getString("divisionCode"), is(divisionCode));
         assertThat(transformedPayload.getString("legacyCaseReference"), is(legacyCaseReference));
         assertThat(transformedPayload.getString("caseReferences"), is(caseReferences));

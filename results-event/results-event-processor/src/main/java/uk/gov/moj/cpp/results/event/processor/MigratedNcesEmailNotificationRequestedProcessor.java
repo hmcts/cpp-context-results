@@ -109,7 +109,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
 
         final JsonObject transformedPayload = createObjectBuilder()
                 .add("subject", originalPayload.getString("subject", ""))
-                .add("fineAccountNumber", originalPayload.getString("finAccountNumber", ""))
+                .add("fineAccountNumber", originalPayload.getString("fineAccountNumber", ""))
                 .add("divisionCode", originalPayload.getString("divisionCode", ""))
                 .add("legacyCaseReference", originalPayload.getString("legacyCaseReference", ""))
                 .add("caseReferences", originalPayload.getString("caseReferences", ""))

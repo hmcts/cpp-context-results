@@ -73,7 +73,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                 .withMasterDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
                 .withListedDate(listingDate)
                 .withIsWriteOff(Boolean.FALSE)
-                .withFinAccountNumber(migratedCaseDetails.fineAccountNumber())
+                .withFineAccountNumber(migratedCaseDetails.fineAccountNumber())
                 .withCaseId(fromString(migratedCaseDetails.caseId()))
                 .withDivisionCode(migratedCaseDetails.division())
                 .withDefendantName(migratedCaseDetails.defendantName())

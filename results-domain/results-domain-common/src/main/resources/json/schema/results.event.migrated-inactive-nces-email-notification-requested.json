@@ -108,7 +108,7 @@
     "isWriteOff": {
       "type": "boolean"
     },
-    "finAccountNumber": {
+    "fineAccountNumber": {
       "type": "string"
     },
     "legacyCaseReference": {
