@@ -31,6 +31,9 @@ public class MaterialAddedEventProcessor {
     public static final String ORIGINATOR_VALUE_NCES_CASEID = Originator.ORIGINATOR_VALUE_NCES_CASEID;
     public static final String RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION = "result.command.migrated-inactive-nces-document-notification";
     public static final String MATERIAL_ID = "materialId";
+    public static final String MATERIAL_URL = "materialUrl";
+    public static final String MASTER_DEFENDANT_ID = "masterDefendantId";
+    public static final String CASE_ID = "caseId";
 
     @Inject
     private MaterialUrlGenerator materialUrlGenerator;
@@ -84,9 +87,9 @@ public class MaterialAddedEventProcessor {
 
         final JsonObject enrichedPayload = createObjectBuilder()
                 .add(MATERIAL_ID, materialId.toString())
-                .add("materialUrl", materialUrl)
-                .add("masterDefendantId", splitted[1])
-                .add("caseId", splitted[2])
+                .add(MATERIAL_URL, materialUrl)
+                .add(MASTER_DEFENDANT_ID, splitted[1])
+                .add(CASE_ID, splitted[2])
                 .build();
 
         this.sender.send(this.enveloper
