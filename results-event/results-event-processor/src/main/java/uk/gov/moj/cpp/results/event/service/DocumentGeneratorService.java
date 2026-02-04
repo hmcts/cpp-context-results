@@ -35,7 +35,7 @@ public class DocumentGeneratorService {
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
     private static final String ERROR_MESSAGE = "Error while uploading document generation or upload ";
     public static final String NCES_DOCUMENT_TEMPLATE_NAME = "NCESNotification";
-    public static final String NCES_DLRM_DOC_TEMPLATE_NAME = "NCESDLRMNotificationTemplate";
+    public static final String NCES_DLRM_DOC_TEMPLATE_NAME = "NCESDLRMNotification";
     public static final String ENF_DOCUMENT_ORDER = "ENFDocumentOrder";
 
     private final DocumentGeneratorClientProducer documentGeneratorClientProducer;
