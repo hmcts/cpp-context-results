@@ -34,6 +34,7 @@ public class MaterialAddedEventProcessor {
     public static final String MATERIAL_URL = "materialUrl";
     public static final String MASTER_DEFENDANT_ID = "masterDefendantId";
     public static final String CASE_ID = "caseId";
+    public static final String SEPARATOR = ":";
 
     @Inject
     private MaterialUrlGenerator materialUrlGenerator;
@@ -83,7 +84,7 @@ public class MaterialAddedEventProcessor {
         final String materialUrl = materialUrlGenerator.pdfFileStreamUrlFor(materialId);
 
         final String originator = envelope.metadata().asJsonObject().getString(ORIGINATOR);
-        final String[] splitted = originator.split(":");
+        final String[] splitted = originator.split(SEPARATOR);
 
         final JsonObject enrichedPayload = createObjectBuilder()
                 .add(MATERIAL_ID, materialId.toString())
