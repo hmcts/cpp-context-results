@@ -101,6 +101,7 @@ public class InformantRegisterHandlerTest {
     private static final String RESULT_TYPE_OFFENCE = "offence";
     private static final UUID PROSECUTION_AUTHORITY_ID = randomUUID();
 
+
     private static final ZonedDateTime REGISTER_DATE = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
     private static final UUID GROUP_ID = randomUUID();
 
