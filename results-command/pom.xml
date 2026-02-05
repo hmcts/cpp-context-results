@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>17.104.96-CHD-1784-SNAPSHOT</version>
+        <version>17.104.97-CHD-1784-SNAPSHOT</version>
     </parent>
     <artifactId>results-command</artifactId>
     <packaging>pom</packaging>
