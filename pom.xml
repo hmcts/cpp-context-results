@@ -31,6 +31,7 @@
         <module>results-healthchecks</module>
     </modules>
 
+
     <properties>
         <jgitflow.maven.developBranchName>main</jgitflow.maven.developBranchName>
         <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
