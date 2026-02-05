@@ -22,7 +22,7 @@ public class OriginatorTest {
     public void shouldCreateMetadataWithProcessIdAndUserId() {
         final String userId = randomUUID().toString();
         final JsonObject payload = Json.createObjectBuilder().add("key1", "value1").build();
-        final JsonEnvelope envelope = assembleEnvelopeWithPayloadAndMetaDetails(payload, "application/json", userId);
+        final JsonEnvelope envelope = assembleEnvelopeWithPayloadAndMetaDetails(payload, "application/json", userId, "nces");
         assertEquals(envelope.metadata().userId().get(), userId);
         assertEquals (ORIGINATOR_VALUE,envelope.metadata().asJsonObject().getString(SOURCE) );
         assertEquals(ORIGINATOR_VALUE_NCES,envelope.metadata().asJsonObject().getString(SOURCE_NCES));

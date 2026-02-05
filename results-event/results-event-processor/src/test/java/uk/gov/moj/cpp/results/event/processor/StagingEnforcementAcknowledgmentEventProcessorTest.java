@@ -8,6 +8,7 @@ import static javax.json.Json.createReader;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -189,6 +190,7 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
 
     @Test
     void shouldProcessSendNcesMailForNewApplication() {
+        // GIVEN
         final String masterDefendantId = "1a9176f4-3adc-4ea1-a808-26c4632f38ab";
         final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
         final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
@@ -201,35 +203,67 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                 .add("hearingCourtCentreId", hearingCourtCentreId)
                 .build();
 
-        final JsonObject progressionResponse =getPayload("inactive-migrated-cases.json");
+        final JsonObject progressionResponse = getPayload("inactive-migrated-cases.json");
 
         when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3)))
                 .thenReturn(Optional.of(progressionResponse));
 
         final JsonObject payload = getPayload("organisation-units.json");
-
         when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(payload);
 
         final JsonEnvelope event = JsonEnvelope.envelopeFrom(
                 metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
+
+        // WHEN
         stagingEnforcementAcknowledgmentEventProcessor.processSendNcesMailForNewApplication(event);
 
+        // THEN
         verify(progressionService).getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3));
-        
-        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-        final Envelope<JsonObject> capturedEnvelope = envelopeArgumentCaptor.getValue();
-        final JsonEnvelope allValues = envelopeFrom(capturedEnvelope.metadata(), capturedEnvelope.payload());
-        assertThat(allValues,
+
+        // We expect 4: (Senior Case 1) + (Junior Case 1) + (Senior Case 2) + (Original Request)
+        verify(sender, times(4)).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
+
+        // 1. Assert Garfield Senior (Case 1)
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(0).metadata(), allEnvelopes.get(0).payload()),
                 jsonEnvelope(
-                        metadata().withName("result.command.send-nces-email-for-application"),
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.masterDefendantId", is(masterDefendantId)),
-                                withJsonPath("$.caseIds[0]", is(caseId1)),
-                                withJsonPath("$.caseIds[1]", is(caseId2)),
-                                withJsonPath("$.caseIds[2]", is(caseId3)),
-                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.courtEmail", is("cfuwarrants@justice.gov.uk")),
-                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("12345"))
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("12345")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare")),
+                                // Fixed address to match JSON data exactly
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantAddress", is("59 Meadow Lane B1 1AA")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("test@gmail.com")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantDateOfBirth", is("1998-08-23"))
                         ))));
+
+        // 2. Assert Garfield Junior (Case 1) - PROVES THE MULTI-DEFENDANT FIX
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(1).metadata(), allEnvelopes.get(1).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("54321")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield (Junior) Dare")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantDateOfBirth", is("2020-01-01")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("junior@gmail.com"))
+                        ))));
+
+        // 3. Assert Garfield Senior (Case 2)
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(2).metadata(), allEnvelopes.get(2).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId2)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("67890")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare"))
+                        ))));
+
+        // 4. Assert Original Request Envelope
+        assertThat(allEnvelopes.get(3).metadata().name(), is("result.command.send-nces-email-for-application"));
     }
 
     private JsonArrayBuilder createCaseIds(String... caseIds) {

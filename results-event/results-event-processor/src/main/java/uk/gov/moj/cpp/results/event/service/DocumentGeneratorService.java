@@ -35,6 +35,7 @@ public class DocumentGeneratorService {
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
     private static final String ERROR_MESSAGE = "Error while uploading document generation or upload ";
     public static final String NCES_DOCUMENT_TEMPLATE_NAME = "NCESNotification";
+    public static final String NCES_DLRM_DOC_TEMPLATE_NAME = "NCESDLRMNotification";
     public static final String ENF_DOCUMENT_ORDER = "ENFDocumentOrder";
 
     private final DocumentGeneratorClientProducer documentGeneratorClientProducer;
@@ -61,26 +62,44 @@ public class DocumentGeneratorService {
 
     @Transactional(REQUIRES_NEW)
     public FileParams generateNcesDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
-                                           final UUID userId, UUID materialId ) {
+                                           final UUID userId, UUID materialId, final String ncesOriginatorValue) {
+        return generateDocument(sender, originatingEnvelope, userId, materialId, ncesOriginatorValue, NCES_DOCUMENT_TEMPLATE_NAME);
+    }
+
+    @Transactional(REQUIRES_NEW)
+    public FileParams generateMigratedInactiveNcesDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
+                                                           final UUID userId, UUID materialId, final String ncesOriginatorValue) {
+        return generateDocument(sender, originatingEnvelope, userId, materialId, ncesOriginatorValue, NCES_DLRM_DOC_TEMPLATE_NAME);
+    }
+
+
+    private FileParams generateDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
+                                        final UUID userId, final UUID materialId,
+                                        final String ncesOriginatorValue, final String templateName) {
         FileParams fileParams = new FileParams();
-        final String fileName = getTimeStampAmendedFileName(ENF_DOCUMENT_ORDER) ;
+        final String fileName = getTimeStampAmendedFileName(ENF_DOCUMENT_ORDER);
+
         try {
             final JsonObject ncesDocumentJson = originatingEnvelope.payloadAsJsonObject();
             final DocumentGeneratorClient documentGeneratorClient = documentGeneratorClientProducer.documentGeneratorClient();
-            final byte[] resultOrderAsByteArray = documentGeneratorClient.generatePdfDocument(ncesDocumentJson, NCES_DOCUMENT_TEMPLATE_NAME, getSystemUserUuid());
+
+            // Generate the PDF using the specific template provided
+            final byte[] resultOrderAsByteArray = documentGeneratorClient.generatePdfDocument(ncesDocumentJson, templateName, getSystemUserUuid());
+
             final UUID fileId = addDocumentToMaterial(sender, originatingEnvelope, fileName,
-                    new ByteArrayInputStream(resultOrderAsByteArray), userId,  materialId);
+                    new ByteArrayInputStream(resultOrderAsByteArray), userId, materialId, ncesOriginatorValue);
+
             fileParams.setFileId(fileId);
             fileParams.setFilename(fileName);
         } catch (IOException | RuntimeException e) {
             LOGGER.error(ERROR_MESSAGE, e);
         }
-        return fileParams ;
+        return fileParams;
     }
 
     private UUID addDocumentToMaterial(Sender sender, JsonEnvelope originatingEnvelope, final String filename, final InputStream fileContent,
                                        final UUID userId,
-                                       final UUID materialId) {
+                                       final UUID materialId, final String ncesOriginatorValue) {
         final UUID fileId ;
         try {
             //Uploading the file
@@ -93,7 +112,7 @@ public class DocumentGeneratorService {
                     .setUserId(userId)
                     .setMaterialId(materialId)
                     .setFileId(fileId)
-                    .build());
+                    .build(), ncesOriginatorValue);
 
         } catch (final FileServiceException e) {
             LOGGER.error("Error while uploading file {}", filename);

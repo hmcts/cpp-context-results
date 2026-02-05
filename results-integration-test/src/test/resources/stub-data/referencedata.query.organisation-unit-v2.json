@@ -21,6 +21,7 @@
   "address5": "address line 5",
   "postcode": "SW11 1JU",
   "isWelsh": false,
+  "divisionCode": "6",
   "oucodeNotes": "Addresses could / should be separate entity.",
   "enforcementArea": {
     "bankAccntName": "HMCTS/Plymouth Collections",
