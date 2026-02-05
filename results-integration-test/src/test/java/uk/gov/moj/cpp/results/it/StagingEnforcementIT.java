@@ -28,10 +28,8 @@ import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionC
 import static uk.gov.moj.cpp.results.it.stub.SjpStub.setupSjpQueryStub;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.convertStringToJson;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
-import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryInactiveMigratedCases;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.removeMessagesFromQueue;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtilForPrivateEvents.privateEvents;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocGeneratorEndPoint;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubDocumentCreate;
@@ -105,7 +103,6 @@ public class StagingEnforcementIT {
     private static final String PUBLIC_EVENT_STAGINGENFORCEMENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT = "public.stagingenforcement.enforce-financial-imposition-acknowledgement";
     private static final String PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION = "public.hearing.nces-email-notification-for-application";
     private static final String HEARING_FINANCIAL_RESULT_UPDATED = "results.event.hearing-financial-results-updated";
-    private static final String MIGRATED_INACTIVE_NCES_EMAIL_NOTIFICATION_REQUESTED = "results.event.migrated-inactive-nces-email-notification-requested";
     private static final String SJP_UPLOAD_CASE_DOCUMENT = "sjp.upload-case-document";
     private static final String PRIVATE_EMAIL_EVENT = "results.event.nces-email-notification-requested";
     public static final String WRITE_OFF_ONE_DAY_DEEMED_SERVED = "WRITE OFF ONE DAY DEEMED SERVED";
@@ -138,7 +135,6 @@ public class StagingEnforcementIT {
     static MessageConsumer hearingFinancialResultsUpdatedConsumer;
     static MessageConsumer sjpUploadCaseDocumentConsumer;
     static MessageConsumer ncesEmailEventConsumer;
-    static MessageConsumer migratedInactiveNcesEmailEventConsumer;
     static NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
 
     private UUID userId;
@@ -152,12 +148,11 @@ public class StagingEnforcementIT {
         stubMaterialUploadFile();
         setupSjpQueryStub("caseUrn1", randomUUID());
         stubGetProgressionCaseExistsByUrn("32DN1212262", randomUUID());
-        stubGetOrganisationUnit();
         correlationIdAndMasterDefendantIdAddedConsumer = privateEvents.createConsumer(CORRELATION_ID_AND_MASTERDEFENDANT_ADDED);
         hearingFinancialResultsUpdatedConsumer = privateEvents.createConsumer(HEARING_FINANCIAL_RESULT_UPDATED);
         sjpUploadCaseDocumentConsumer = privateEvents.createConsumer(SJP_UPLOAD_CASE_DOCUMENT);
         ncesEmailEventConsumer = privateEvents.createConsumer(PRIVATE_EMAIL_EVENT);
-        migratedInactiveNcesEmailEventConsumer = privateEvents.createConsumer(MIGRATED_INACTIVE_NCES_EMAIL_NOTIFICATION_REQUESTED);
+
     }
 
     @BeforeEach
@@ -714,13 +709,9 @@ public class StagingEnforcementIT {
     @Test
     public void shouldSendNcesEmailForNewApplicationThenRejectAfterReceivedAccountNumber() {
         final String masterDefendantId = randomUUID().toString();
-        final String caseId = randomUUID().toString();
         final String hearingId = randomUUID().toString();
         final String accountCorrelationId = randomUUID().toString();
         final String accountNumber = "AER123451";
-        stubQueryInactiveMigratedCases(caseId, masterDefendantId);
-        final String HEARING_COURT_CENTRE_ID = "hearingCourtCentreId";
-        final String hearingCourtCentreId = "f8254db1-1683-483e-afb3-b87fde5a0a26";
 
         final String payload = getPayload(TRACE_RESULT).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
                 .replaceAll("CORRELATION_ID", accountCorrelationId)
@@ -745,11 +736,8 @@ public class StagingEnforcementIT {
                 .add(MASTER_DEFENDANT_ID, masterDefendantId)
                 .add("listingDate", "01/12/2019")
                 .add("caseUrns", createArrayBuilder().add("caseUrn1").build())
-                .add("caseIds", createArrayBuilder().add(caseId).build())
                 .add(HEARING_COURT_CENTRE_NAME, HEARING_COURT_CENTRE_NAME_VALUE)
-                .add(HEARING_COURT_CENTRE_ID, hearingCourtCentreId)
                 .build();
-
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
 
         final String rejectPayload = getPayload(REJECTED_APPLICATION).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId);
@@ -768,11 +756,6 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(CORRELATION_ID), is(accountCorrelationId));
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
-
-        final List<JsonPath> migratedInactiveNcesEmailMessages = QueueUtil.retrieveMessages(migratedInactiveNcesEmailEventConsumer, 1);
-        jsonResponse = migratedInactiveNcesEmailMessages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
-        assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
-        assertThat(jsonResponse.getString(DIVISION_CODE), is("6"));
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 3);
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
