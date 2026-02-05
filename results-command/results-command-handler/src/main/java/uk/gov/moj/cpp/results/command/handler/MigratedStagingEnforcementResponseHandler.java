@@ -1,11 +1,8 @@
 package uk.gov.moj.cpp.results.command.handler;
 
-import static java.util.Collections.emptyList;
 import static java.util.UUID.nameUUIDFromBytes;
 
 import uk.gov.justice.services.common.configuration.Value;
-import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.aggregate.AggregateService;
 import uk.gov.justice.services.core.annotation.Component;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -41,7 +38,6 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public static final String HEARING_COURT_CENTRE_NAME = "hearingCourtCentreName";
     public static final String LISTING_DATE = "listingDate";
     public static final String CASE_URNS = "caseUrns";
-    public static final String CASE_OFFENCE_ID_LIST = "caseOffenceIdList";
     public static final String IN_FORMAT = "dd/MM/yyyy";
     public static final String EMPTY_STRING = "";
     public static final String MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT = "migratedMasterDefendantCourtEmailAndFineAccount";
@@ -57,23 +53,15 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public static final String DEFENDANT_CONTACT_NUMBER = "defendantContactNumber";
     public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
     public static final String CASE_URN = "caseURN";
-    private static final String MATERIAL_ID = "materialId";
     private static final String MATERIAL_URL = "materialUrl";
-
-    @Inject
-    private ObjectToJsonObjectConverter objectToJsonObjectConverter;
-    @Inject
-    private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
     @Inject
     @Value(key = "ncesEmailNotificationTemplateId")
     private String ncesEmailNotificationTemplateId;
 
     @Inject
-    public MigratedStagingEnforcementResponseHandler(final EventSource eventSource, final Enveloper enveloper, final AggregateService aggregateService, final ObjectToJsonObjectConverter objectToJsonObjectConverter, final JsonObjectToObjectConverter jsonObjectToObjectConverter) {
+    public MigratedStagingEnforcementResponseHandler(final EventSource eventSource, final Enveloper enveloper, final AggregateService aggregateService) {
         super(eventSource, enveloper, aggregateService);
-        this.objectToJsonObjectConverter = objectToJsonObjectConverter;
-        this.jsonObjectToObjectConverter = jsonObjectToObjectConverter;
     }
 
     @Handles("result.command.send-migrated-inactive-nces-email-for-application")
@@ -83,9 +71,6 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE), DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
-        final List<String> clonedOffenceIdList = envelope.payloadAsJsonObject().containsKey(CASE_OFFENCE_ID_LIST)
-                ? envelope.payloadAsJsonObject().getJsonArray(CASE_OFFENCE_ID_LIST).stream().map(i -> ((JsonString) i).getString()).toList()
-                : emptyList();
         final String hearingCourtCentreName = envelope.payloadAsJsonObject().containsKey(HEARING_COURT_CENTRE_NAME)
                 ? envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME)
                 : EMPTY_STRING;
@@ -119,11 +104,10 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     }
 
     @Handles("result.command.migrated-inactive-nces-document-notification")
-    public void processMigratedInativeNcesEmailNotification(final JsonEnvelope envelope) throws EventStreamException {
-        LOGGER.info("Received MigratedInativeNcesEmailNotification {}", envelope.toObfuscatedDebugString());
+    public void processMigratedInactiveNcesEmailNotification(final JsonEnvelope envelope) throws EventStreamException {
+        LOGGER.info("Received MigratedInactiveNcesEmailNotification {}", envelope.toObfuscatedDebugString());
 
         final JsonObject payload = envelope.payloadAsJsonObject();
-        final String materialId = payload.getString(MATERIAL_ID);
         final String materialUrl = payload.getString(MATERIAL_URL);
 
         final String masterDefendantId = payload.getString(MASTER_DEFENDANT_ID);

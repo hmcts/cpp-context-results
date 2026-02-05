@@ -158,7 +158,7 @@ public class MigratedStagingEnforcementResponseHandlerTest {
         final MigratedInactiveHearingFinancialResultsAggregate spyAggregate = spy(new MigratedInactiveHearingFinancialResultsAggregate());
         when(aggregateService.get(eventStream, MigratedInactiveHearingFinancialResultsAggregate.class)).thenReturn(spyAggregate);
 
-        migratedStagingEnforcementResponseHandler.processMigratedInativeNcesEmailNotification(envelope);
+        migratedStagingEnforcementResponseHandler.processMigratedInactiveNcesEmailNotification(envelope);
 
         verify(eventSource, times(1)).getStreamById(eventSourceArgumentCaptor.capture());
         verify(eventStream, times(1)).append(eventStreamArgumentCaptor.capture());
