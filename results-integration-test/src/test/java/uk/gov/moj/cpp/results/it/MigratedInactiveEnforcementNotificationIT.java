@@ -51,7 +51,6 @@ public class MigratedInactiveEnforcementNotificationIT {
 
     private static final String MATERIAL_MATERIAL_ADDED = "material.material-added";
 
-    public static final String CORRELATION_ID_AND_MASTERDEFENDANT_ADDED = "results.event.correlation-id-and-masterdefendant-added";
     public static final String CORRELATION_ID = "correlationId";
     public static final String MASTER_DEFENDANT_ID = "masterDefendantId";
     public static final String SUBJECT = "subject";
@@ -68,26 +67,8 @@ public class MigratedInactiveEnforcementNotificationIT {
 
     private static final String PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION = "public.hearing.nces-email-notification-for-application";
     private static final String MIGRATED_INACTIVE_NCES_EMAIL_NOTIFICATION_REQUESTED = "results.event.migrated-inactive-nces-email-notification-requested";
-    private static final String SJP_UPLOAD_CASE_DOCUMENT = "sjp.upload-case-document";
-    private static final String PRIVATE_EMAIL_EVENT = "results.event.nces-email-notification-requested";
-    public static final String WRITE_OFF_ONE_DAY_DEEMED_SERVED = "WRITE OFF ONE DAY DEEMED SERVED";
-    public static final String WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED = "WRITE OFF ONE DAY DEEMED SERVED REMOVED";
-    public static final String AMEND_AND_RESHARE = "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED";
     private static final String PUBLIC_EVENT_TOPIC = "public.event";
-    private static final String ACON_SUBJECT = "ACCOUNTS TO BE CONSOLIDATED";
 
-    private static final String TRACE_RESULT = "json/results.api.trace-results.json";
-    private static final String TRACE_RESULT_SJP = "json/results.api.trace-results-sjp.json";
-    private static final String TRACE_RESULT_GRANTED = "json/results.api.granted-application.json";
-    private static final String TRACE_RESULT_GRANTED_SJP = "json/results.api.granted-application-sjp.json";
-    private static final String TRACE_RESULT_APPLICATION_TO_REOPEN_GRANTED = "json/results.api.application-reopen-granted.json";
-    private static final String TRACE_RESULT_UPDATED = "json/results.api.updated-application.json";
-    private static final String TRACE_RESULT_AMENDMENT = "json/results.api.trace-results-amendment.json";
-    private static final String REJECTED_APPLICATION = "json/results.api.rejected-application.json";
-    public static final String DATE_DECISION_MADE = "dateDecisionMade";
-
-    private static final String TRACE_AMENDED_RESULT = "json/results.api.trace-amended-results.json";
-    private static final String TRACE_APPLICATION_AMENDED_RESULT = "json/results.api.trace-application-amended-results.json";
 
     private final String HEARING_COURT_CENTRE_NAME_VALUE = "South West London Magistrates Court";
 
