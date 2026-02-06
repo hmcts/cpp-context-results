@@ -45,6 +45,7 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public static final String FINE_ACCOUNT_NUMBER = "fineAccountNumber";
     public static final String COURT_EMAIL = "courtEmail";
     public static final String DIVISION = "division";
+    public static final String DEFENDANT_ID = "defendantId";
     public static final String DEFENDANT_NAME = "defendantName";
     public static final String DEFENDANT_ADDRESS = "defendantAddress";
     public static final String ORIGINAL_DATE_OF_CONVICTION = "originalDateOfConviction";
@@ -76,23 +77,22 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
                 : EMPTY_STRING;
         
         final JsonObject fineAccountInfo = envelope.payloadAsJsonObject().getJsonObject(MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT);
-        final MigratedMasterDefendantCaseDetails migratedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                fineAccountInfo.getString(MASTER_DEFENDANT_ID),
-                fineAccountInfo.getString(CASE_ID),
-                fineAccountInfo.getString(FINE_ACCOUNT_NUMBER),
-                fineAccountInfo.getString(COURT_EMAIL),
-                fineAccountInfo.getString(DIVISION),
-                fineAccountInfo.containsKey(DEFENDANT_NAME) ? fineAccountInfo.getString(DEFENDANT_NAME) : EMPTY_STRING,
-                fineAccountInfo.containsKey(DEFENDANT_ADDRESS) ? fineAccountInfo.getString(DEFENDANT_ADDRESS) : EMPTY_STRING,
-                fineAccountInfo.containsKey(ORIGINAL_DATE_OF_CONVICTION) ? fineAccountInfo.getString(ORIGINAL_DATE_OF_CONVICTION) : EMPTY_STRING,
-
-                fineAccountInfo.containsKey(DEFENDANT_EMAIL) ? fineAccountInfo.getString(DEFENDANT_EMAIL) : null,
-                fineAccountInfo.containsKey(DEFENDANT_DATE_OF_BIRTH) ? fineAccountInfo.getString(DEFENDANT_DATE_OF_BIRTH) : null,
-                fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : null,
-
-                fineAccountInfo.containsKey(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) ? fineAccountInfo.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) : EMPTY_STRING,
-                fineAccountInfo.containsKey(CASE_URN) ? fineAccountInfo.getString(CASE_URN) : EMPTY_STRING
-        );
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(fineAccountInfo.getString(MASTER_DEFENDANT_ID))
+                .withCaseId(fineAccountInfo.getString(CASE_ID))
+                .withFineAccountNumber(fineAccountInfo.getString(FINE_ACCOUNT_NUMBER))
+                .withCourtEmail(fineAccountInfo.getString(COURT_EMAIL))
+                .withDivision(fineAccountInfo.getString(DIVISION))
+                .withDefendantId(fineAccountInfo.containsKey(DEFENDANT_ID) ? fineAccountInfo.getString(DEFENDANT_ID) : EMPTY_STRING)
+                .withDefendantName(fineAccountInfo.containsKey(DEFENDANT_NAME) ? fineAccountInfo.getString(DEFENDANT_NAME) : EMPTY_STRING)
+                .withDefendantAddress(fineAccountInfo.containsKey(DEFENDANT_ADDRESS) ? fineAccountInfo.getString(DEFENDANT_ADDRESS) : EMPTY_STRING)
+                .withOriginalDateOfConviction(fineAccountInfo.containsKey(ORIGINAL_DATE_OF_CONVICTION) ? fineAccountInfo.getString(ORIGINAL_DATE_OF_CONVICTION) : EMPTY_STRING)
+                .withDefendantEmail(fineAccountInfo.containsKey(DEFENDANT_EMAIL) ? fineAccountInfo.getString(DEFENDANT_EMAIL) : null)
+                .withDefendantDateOfBirth(fineAccountInfo.containsKey(DEFENDANT_DATE_OF_BIRTH) ? fineAccountInfo.getString(DEFENDANT_DATE_OF_BIRTH) : null)
+                .withDefendantContactNumber(fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : null)
+                .withMigrationSourceSystemCaseIdentifier(fineAccountInfo.containsKey(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) ? fineAccountInfo.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) : EMPTY_STRING)
+                .withCaseURN(fineAccountInfo.containsKey(CASE_URN) ? fineAccountInfo.getString(CASE_URN) : EMPTY_STRING)
+                .build();
 
 
         final String rootAggregateId = masterDefendantId + "-" + migratedCaseDetails.caseId();

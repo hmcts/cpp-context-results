@@ -55,7 +55,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private record NcesNotificationDetails(String email, String division) {}
     public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier, String caseURN) {}
     public record EnrichedFineDetail(FineAccount fineAccount, DefendantDetails defendant) {}
-    public record DefendantDetails(String defendantName, String defendantAddress, String originalDateOfConviction,
+    public record DefendantDetails(String defendantId, String defendantName, String defendantAddress, String originalDateOfConviction,
                                    String defendantEmail, String defendantDateOfBirth, String defendantContactNumber) {}
 
     @Inject
@@ -139,6 +139,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .add(MigrationConstants.InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER, item.fineAccount().caseIdentifier())
                             .add(MigrationConstants.Case.COURT_EMAIL, ncesNotificationDetails.email())
                             .add(MigrationConstants.Case.DIVISION, ncesNotificationDetails.division())
+                            .add(MigrationConstants.Defendant.ID, item.defendant().defendantId())
                             .add(MigrationConstants.Defendant.NAME, item.defendant().defendantName())
                             .add(MigrationConstants.Defendant.ADDRESS, item.defendant().defendantAddress())
                             .add(MigrationConstants.Defendant.ORIGINAL_DATE_OF_CONVICTION, item.defendant().originalDateOfConviction())
@@ -233,8 +234,10 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
         if (defendantJson == null) {
-            return new DefendantDetails("", "", "", "", "", "");
+            return new DefendantDetails("", "", "", "", "", "", "");
         }
+
+        final String defendantId = defendantJson.getString(MigrationConstants.Defendant.ID, "");
 
         final JsonObject details = Optional.of(defendantJson)
                 .map(d -> d.getJsonObject(MigrationConstants.PersonDetails.PERSON_DEFENDANT))
@@ -271,7 +274,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                                 c.getString(MigrationConstants.PersonDetails.HOME, null))))
                 .orElse(null);
 
-        return new DefendantDetails(defendantName, defendantAddress, originalDateOfConviction, email, dob, phone);
+        return new DefendantDetails(defendantId, defendantName, defendantAddress, originalDateOfConviction, email, dob, phone);
     }
 
     @Handles("public.progression.defendant-address-changed")

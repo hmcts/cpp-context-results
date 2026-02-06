@@ -116,7 +116,8 @@ public class MigratedInactiveEnforcementNotificationIT {
     public void shouldProcessSendNcesMailForNewApplication() {
         final String masterDefendantId = randomUUID().toString();
         final String caseId = randomUUID().toString();
-        stubQueryInactiveMigratedCases(caseId, masterDefendantId);
+        final String caseId_1 = randomUUID().toString();
+        stubQueryInactiveMigratedCases(caseId, masterDefendantId, caseId_1);
         final UUID userId = getUserId();
         setupAsSystemUser(userId);
         final String HEARING_COURT_CENTRE_ID = "hearingCourtCentreId";
@@ -128,7 +129,7 @@ public class MigratedInactiveEnforcementNotificationIT {
                 .add(MASTER_DEFENDANT_ID, masterDefendantId)
                 .add("listingDate", "01/12/2019")
                 .add("caseUrns", createArrayBuilder().add("caseUrn1").build())
-                .add("caseIds", createArrayBuilder().add(caseId).build())
+                .add("caseIds", createArrayBuilder().add(caseId).add(caseId_1).build())
                 .add(HEARING_COURT_CENTRE_NAME, HEARING_COURT_CENTRE_NAME_VALUE)
                 .add(HEARING_COURT_CENTRE_ID, hearingCourtCentreId)
                 .build();
@@ -136,21 +137,52 @@ public class MigratedInactiveEnforcementNotificationIT {
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
 
 
-        final List<JsonPath> migratedInactiveNcesEmailMessages = QueueUtil.retrieveMessages(migratedInactiveNcesEmailEventConsumer, 1);
-        JsonPath jsonResponse = migratedInactiveNcesEmailMessages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
-        assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
-        assertThat(jsonResponse.getString(DIVISION_CODE), is("6"));
-        assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponse.getString(CASE_ID), is(caseId));
-        String materialId = jsonResponse.getString(MATERIAL_ID);
+        final List<JsonPath> migratedInactiveNcesEmailMessages = QueueUtil.retrieveMessages(migratedInactiveNcesEmailEventConsumer, 2);
+
+        JsonPath response1 = migratedInactiveNcesEmailMessages.stream()
+                .filter(json -> caseId.equals(json.getString(CASE_ID)))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Missing message for Primary Case ID: " + caseId));
+
+        assertThat(response1.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
+        assertThat(response1.getString(DIVISION_CODE), is("6"));
+        assertThat(response1.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+        assertThat(response1.getString(CASE_ID), is(caseId));
+        String materialId = response1.getString(MATERIAL_ID);
         assertThat(materialId, notNullValue());
 
-        sendMaterialFileUploadedPublicEvent(UUID.fromString(materialId), userId, masterDefendantId, caseId);
+        JsonPath response2 = migratedInactiveNcesEmailMessages.stream()
+                .filter(json -> caseId_1.equals(json.getString(CASE_ID)))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Missing message for Secondary Case ID: " + caseId_1));
 
-        final List<JsonPath> migratedInactiveMaterialMessages = QueueUtil.retrieveMessages(migratedInactiveNccesEventNotificationConsumer, 1);
-        jsonResponse = migratedInactiveMaterialMessages.stream().filter(jsonPath -> jsonPath.getString(MATERIAL_ID).equalsIgnoreCase(materialId)).findFirst().orElseGet(() -> JsonPath.from("{}"));
-        assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
-        assertThat(jsonResponse.getString(MATERIAL_ID), is(materialId));
+        assertThat(response2.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
+        assertThat(response2.getString(DIVISION_CODE), is("6"));
+        assertThat(response2.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+        assertThat(response2.getString(CASE_ID), is(caseId_1));
+        String materialId_1 = response2.getString(MATERIAL_ID); // Capture the second material ID
+        assertThat(materialId_1, notNullValue());
+
+        sendMaterialFileUploadedPublicEvent(UUID.fromString(materialId), userId, masterDefendantId, caseId);
+        sendMaterialFileUploadedPublicEvent(UUID.fromString(materialId_1), userId, masterDefendantId, caseId_1);
+
+        final List<JsonPath> migratedInactiveMaterialMessages = QueueUtil.retrieveMessages(migratedInactiveNccesEventNotificationConsumer, 2);
+
+        JsonPath materialResponse1 = migratedInactiveMaterialMessages.stream()
+                .filter(json -> materialId.equalsIgnoreCase(json.getString(MATERIAL_ID)))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Missing material message for ID: " + materialId));
+
+        assertThat(materialResponse1.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+        assertThat(materialResponse1.getString(MATERIAL_ID), is(materialId));
+
+        JsonPath materialResponse2 = migratedInactiveMaterialMessages.stream()
+                .filter(json -> materialId_1.equalsIgnoreCase(json.getString(MATERIAL_ID)))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Missing material message for ID: " + materialId_1));
+
+        assertThat(materialResponse2.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
+        assertThat(materialResponse2.getString(MATERIAL_ID), is(materialId_1));
 
     }
 

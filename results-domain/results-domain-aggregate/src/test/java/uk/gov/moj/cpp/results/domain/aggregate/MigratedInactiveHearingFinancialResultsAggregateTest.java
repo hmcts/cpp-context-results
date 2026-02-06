@@ -32,6 +32,7 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
     private static final String FINE_ACCOUNT_NUMBER = "FINE123";
     private static final String COURT_EMAIL = "court@example.com";
     private static final String DIVISION = "6";
+    private static final String DEFENDANT_ID = "defendant-id-1";
     private static final String DEFENDANT_NAME = "defendantName";
     private static final String DEFENDANT_ADDRESS = "defendantAddress";
     private static final String ORIGINAL_DATE_OF_CONVICTION = "OriginalDateOfConviction";
@@ -66,21 +67,22 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
 
     @Test
     public void shouldSendNcesEmailForMigratedApplication() {
-        final MigratedMasterDefendantCaseDetails migratedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                MASTER_DEFENDANT_ID,
-                CASE_ID,
-                FINE_ACCOUNT_NUMBER,
-                COURT_EMAIL,
-                DIVISION,
-                DEFENDANT_NAME,
-                DEFENDANT_ADDRESS,
-                ORIGINAL_DATE_OF_CONVICTION,
-                DEFENDANT_EMAIL,
-                DEFENDANT_DATE_OF_BIRTH,
-                DEFENDANT_CONTACT_NUMBER,
-                "CASE123",
-                "caseUrn1"
-        );
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(MASTER_DEFENDANT_ID)
+                .withCaseId(CASE_ID)
+                .withFineAccountNumber(FINE_ACCOUNT_NUMBER)
+                .withCourtEmail(COURT_EMAIL)
+                .withDivision(DIVISION)
+                .withDefendantId(DEFENDANT_ID)
+                .withDefendantName(DEFENDANT_NAME)
+                .withDefendantAddress(DEFENDANT_ADDRESS)
+                .withOriginalDateOfConviction(ORIGINAL_DATE_OF_CONVICTION)
+                .withDefendantEmail(DEFENDANT_EMAIL)
+                .withDefendantDateOfBirth(DEFENDANT_DATE_OF_BIRTH)
+                .withDefendantContactNumber(DEFENDANT_CONTACT_NUMBER)
+                .withMigrationSourceSystemCaseIdentifier("CASE123")
+                .withCaseURN("caseUrn1")
+                .build();
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
                 STAT_DEC,
@@ -125,21 +127,22 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         aggregate.apply(event);
         assertThat(aggregate.isEventRaisedEarlier(), is(true));
 
-        final MigratedMasterDefendantCaseDetails migratedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                MASTER_DEFENDANT_ID,
-                CASE_ID,
-                FINE_ACCOUNT_NUMBER,
-                COURT_EMAIL,
-                DIVISION,
-                DEFENDANT_NAME,
-                DEFENDANT_ADDRESS,
-                ORIGINAL_DATE_OF_CONVICTION,
-                DEFENDANT_EMAIL,
-                DEFENDANT_DATE_OF_BIRTH,
-                DEFENDANT_CONTACT_NUMBER,
-                "CASE123",
-                "caseUrn1"
-        );
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(MASTER_DEFENDANT_ID)
+                .withCaseId(CASE_ID)
+                .withFineAccountNumber(FINE_ACCOUNT_NUMBER)
+                .withCourtEmail(COURT_EMAIL)
+                .withDivision(DIVISION)
+                .withDefendantId(DEFENDANT_ID)
+                .withDefendantName(DEFENDANT_NAME)
+                .withDefendantAddress(DEFENDANT_ADDRESS)
+                .withOriginalDateOfConviction(ORIGINAL_DATE_OF_CONVICTION)
+                .withDefendantEmail(DEFENDANT_EMAIL)
+                .withDefendantDateOfBirth(DEFENDANT_DATE_OF_BIRTH)
+                .withDefendantContactNumber(DEFENDANT_CONTACT_NUMBER)
+                .withMigrationSourceSystemCaseIdentifier("CASE123")
+                .withCaseURN("caseUrn1")
+                .build();
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
                 STAT_DEC,

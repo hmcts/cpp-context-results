@@ -113,6 +113,7 @@ public class MigratedStagingEnforcementResponseHandlerTest {
                                 .add("fineAccountNumber", fineAccountNumber)
                                 .add("courtEmail", courtEmail)
                                 .add("division", division)
+                                .add("defendantId", "defendant-id-1")
                                 .add("defendantName", defendantName)
                                 .add("defendantEmail", defendantEmail)
                                 .add("defendantDateOfBirth", defendantDateOfBirth)
@@ -128,8 +129,22 @@ public class MigratedStagingEnforcementResponseHandlerTest {
         verify(eventSource, times(1)).getStreamById(eventSourceArgumentCaptor.capture());
         verify(eventStream, times(1)).append(eventStreamArgumentCaptor.capture());
 
-        final MigratedMasterDefendantCaseDetails expectedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                masterDefendantId, caseId, fineAccountNumber, courtEmail, division, defendantName, "", "", defendantEmail, defendantDateOfBirth, null, "CASE123", "");
+        final MigratedMasterDefendantCaseDetails expectedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(masterDefendantId)
+                .withCaseId(caseId)
+                .withFineAccountNumber(fineAccountNumber)
+                .withCourtEmail(courtEmail)
+                .withDivision(division)
+                .withDefendantId("defendant-id-1")
+                .withDefendantName(defendantName)
+                .withDefendantAddress("")
+                .withOriginalDateOfConviction("")
+                .withDefendantEmail(defendantEmail)
+                .withDefendantDateOfBirth(defendantDateOfBirth)
+                .withDefendantContactNumber(null)
+                .withMigrationSourceSystemCaseIdentifier("CASE123")
+                .withCaseURN("")
+                .build();
 
         verify(spyAggregate).sendNcesEmailForMigratedApplication(
                 eq(applicationType),
