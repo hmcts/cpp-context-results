@@ -68,7 +68,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                     .withCaseId(this.caseId)
                     .withDescription("Event earlier or migratedCaseDetails is null")
                     .build();
-            return Stream.empty();
+            return apply(Stream.of(event));
         }
 
         final String subject = APPLICATION_TYPES.get(applicationType);

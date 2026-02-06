@@ -11,6 +11,7 @@ import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotif
 
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,7 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
     private static final String DEFENDANT_EMAIL = "defendant@email.com";
     private static final String DEFENDANT_DATE_OF_BIRTH = "21/10/1978";
     private static final String DEFENDANT_CONTACT_NUMBER = "089776687";
+    public static final String EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL = "Event earlier or migratedCaseDetails is null";
 
     @InjectMocks
     private MigratedInactiveHearingFinancialResultsAggregate aggregate;
@@ -55,8 +57,11 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 HEARING_COURT_CENTRE_NAME,
                 null);
 
-        final List<Object> events = result.collect(toList());
-        assertThat(events.size(), is(0));
+        final List<Object> events = result.toList();
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesEmailNotificationRequestedExists.class));
+        assertThat(((MigratedInactiveNcesEmailNotificationRequestedExists) events.get(0)).getDescription(),
+                is(EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL));
     }
 
     @Test
@@ -143,8 +148,11 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 HEARING_COURT_CENTRE_NAME,
                 migratedCaseDetails);
 
-        final List<Object> events = result.collect(toList());
-        assertThat(events.size(), is(0));
+        final List<Object> events = result.toList();
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesEmailNotificationRequestedExists.class));
+        assertThat(((MigratedInactiveNcesEmailNotificationRequestedExists) events.get(0)).getDescription(),
+                is(EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL));
     }
 
     @Test
