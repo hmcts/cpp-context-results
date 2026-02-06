@@ -85,9 +85,11 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
                 fineAccountInfo.containsKey(DEFENDANT_NAME) ? fineAccountInfo.getString(DEFENDANT_NAME) : EMPTY_STRING,
                 fineAccountInfo.containsKey(DEFENDANT_ADDRESS) ? fineAccountInfo.getString(DEFENDANT_ADDRESS) : EMPTY_STRING,
                 fineAccountInfo.containsKey(ORIGINAL_DATE_OF_CONVICTION) ? fineAccountInfo.getString(ORIGINAL_DATE_OF_CONVICTION) : EMPTY_STRING,
-                fineAccountInfo.containsKey(DEFENDANT_EMAIL) ? fineAccountInfo.getString(DEFENDANT_EMAIL) : EMPTY_STRING,
-                fineAccountInfo.containsKey(DEFENDANT_DATE_OF_BIRTH) ? fineAccountInfo.getString(DEFENDANT_DATE_OF_BIRTH) : EMPTY_STRING,
-                fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : EMPTY_STRING,
+
+                fineAccountInfo.containsKey(DEFENDANT_EMAIL) ? fineAccountInfo.getString(DEFENDANT_EMAIL) : null,
+                fineAccountInfo.containsKey(DEFENDANT_DATE_OF_BIRTH) ? fineAccountInfo.getString(DEFENDANT_DATE_OF_BIRTH) : null,
+                fineAccountInfo.containsKey(DEFENDANT_CONTACT_NUMBER) ? fineAccountInfo.getString(DEFENDANT_CONTACT_NUMBER) : null,
+
                 fineAccountInfo.containsKey(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) ? fineAccountInfo.getString(MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER) : EMPTY_STRING,
                 fineAccountInfo.containsKey(CASE_URN) ? fineAccountInfo.getString(CASE_URN) : EMPTY_STRING
         );

@@ -132,7 +132,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
             if (isNotEmpty(enrichedDetails) && nonNull(ncesNotificationDetails) && nonNull(ncesNotificationDetails.email())) {
                 for (EnrichedFineDetail item : enrichedDetails) {
 
-                    final JsonObject fineAccountInfo = createObjectBuilder()
+                    final JsonObjectBuilder builder = createObjectBuilder()
                             .add(MASTER_DEFENDANT_ID, masterDefendantId)
                             .add(MigrationConstants.Case.ID, item.fineAccount().caseId())
                             .add(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER, item.fineAccount().fineAccountNumber())
@@ -142,11 +142,13 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .add(MigrationConstants.Defendant.NAME, item.defendant().defendantName())
                             .add(MigrationConstants.Defendant.ADDRESS, item.defendant().defendantAddress())
                             .add(MigrationConstants.Defendant.ORIGINAL_DATE_OF_CONVICTION, item.defendant().originalDateOfConviction())
-                            .add(MigrationConstants.Defendant.EMAIL, item.defendant().defendantEmail())
-                            .add(MigrationConstants.Defendant.DATE_OF_BIRTH, item.defendant().defendantDateOfBirth())
-                            .add(MigrationConstants.Defendant.CONTACT_NUMBER, item.defendant().defendantContactNumber())
-                            .add(MigrationConstants.Case.URN,item.fineAccount().caseURN())
-                            .build();
+                            .add(MigrationConstants.Case.URN, item.fineAccount().caseURN());
+
+                    addIfNotNull(builder, MigrationConstants.Defendant.EMAIL, item.defendant().defendantEmail());
+                    addIfNotNull(builder, MigrationConstants.Defendant.DATE_OF_BIRTH, item.defendant().defendantDateOfBirth());
+                    addIfNotNull(builder, MigrationConstants.Defendant.CONTACT_NUMBER, item.defendant().defendantContactNumber());
+
+                    final JsonObject fineAccountInfo = builder.build();
 
                     final JsonObjectBuilder migratedInactivePayload = createObjectBuilder(payload);
                     migratedInactivePayload.add(MigrationConstants.MIGRATED_MASTER_DEFENDANT_COURT_EMAIL_AND_FINE_ACCOUNT, fineAccountInfo);
@@ -160,6 +162,11 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         } else {
             this.sender.sendAsAdmin(requestEnvelope);
 
+        }
+    }
+    private void addIfNotNull(final JsonObjectBuilder builder, final String key, final String value) {
+        if (value != null) {
+            builder.add(key, value);
         }
     }
 
@@ -226,6 +233,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
         if (defendantJson == null) {
+            // Keeping this as EMPTY_STRING to match your original guard clause
             return new DefendantDetails("", "", "", "", "", "");
         }
 
@@ -251,11 +259,18 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .collect(Collectors.joining(" "));
 
         final JsonObject contact = details.getJsonObject(MigrationConstants.PersonDetails.CONTACT);
-        final String email = Optional.ofNullable(contact).map(c -> c.getString(MigrationConstants.PersonDetails.PRIMARY_EMAIL, "")).orElse("");
-        final String dob = details.getString(MigrationConstants.PersonDetails.DATE_OF_BIRTH, "");
+
+        final String email = Optional.ofNullable(contact)
+                .map(c -> c.getString(MigrationConstants.PersonDetails.PRIMARY_EMAIL, null))
+                .orElse(null);
+
+        final String dob = details.getString(MigrationConstants.PersonDetails.DATE_OF_BIRTH, null);
+
         final String phone = Optional.ofNullable(contact)
-                .map(c -> c.getString(MigrationConstants.PersonDetails.WORK, c.getString(MigrationConstants.PersonDetails.MOBILE, c.getString(MigrationConstants.PersonDetails.HOME, ""))))
-                .orElse("");
+                .map(c -> c.getString(MigrationConstants.PersonDetails.WORK,
+                        c.getString(MigrationConstants.PersonDetails.MOBILE,
+                                c.getString(MigrationConstants.PersonDetails.HOME, null))))
+                .orElse(null);
 
         return new DefendantDetails(defendantName, defendantAddress, originalDateOfConviction, email, dob, phone);
     }
