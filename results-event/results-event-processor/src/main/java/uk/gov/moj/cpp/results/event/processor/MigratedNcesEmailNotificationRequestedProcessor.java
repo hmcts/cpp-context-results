@@ -118,7 +118,6 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     private JsonEnvelope transformEnvelope(final JsonEnvelope envelope) {
         final JsonObject originalPayload = envelope.payloadAsJsonObject();
 
-        // 1. Start the builder with the guaranteed/non-nullable fields
         final JsonObjectBuilder builder = createObjectBuilder()
                 .add(SUBJECT, originalPayload.getString(SUBJECT, ""))
                 .add(FINE_ACCOUNT_NUMBER, originalPayload.getString(FINE_ACCOUNT_NUMBER, ""))
@@ -131,7 +130,6 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
                 .add(DEFENDANT_NAME, originalPayload.getString(DEFENDANT_NAME, ""))
                 .add(DEFENDANT_ADDRESS, originalPayload.getString(DEFENDANT_ADDRESS, ""));
 
-        // 2. Add these three only if they are not null (using null as the fallback now)
         addIfNotNull(builder, DEFENDANT_DATE_OF_BIRTH, originalPayload.getString(DEFENDANT_DATE_OF_BIRTH, null));
         addIfNotNull(builder, DEFENDANT_EMAIL, originalPayload.getString(DEFENDANT_EMAIL, null));
         addIfNotNull(builder, DEFENDANT_CONTACT_NUMBER, originalPayload.getString(DEFENDANT_CONTACT_NUMBER, null));
@@ -141,7 +139,6 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
         return JsonEnvelope.envelopeFrom(envelope.metadata(), transformedPayload);
     }
 
-    // 3. The safety helper method
     private void addIfNotNull(final JsonObjectBuilder builder, final String key, final String value) {
         if (value != null) {
             builder.add(key, value);
