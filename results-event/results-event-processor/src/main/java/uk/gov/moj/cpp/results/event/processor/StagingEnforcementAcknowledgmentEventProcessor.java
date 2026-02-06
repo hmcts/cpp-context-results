@@ -233,7 +233,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
     private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
         if (defendantJson == null) {
-            // Keeping this as EMPTY_STRING to match your original guard clause
             return new DefendantDetails("", "", "", "", "", "");
         }
 

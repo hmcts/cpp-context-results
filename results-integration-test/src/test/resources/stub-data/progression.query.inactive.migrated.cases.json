@@ -32,6 +32,34 @@
                 "convictionDate": "2025-11-09"
               }
             ]
+          },
+          {
+            "defendantId": "c11bdd2d-fc70-5c4d-071f-87cf0264236b",
+            "masterDefendantId": "MASTER_DEFENDANT_ID",
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Sylvester",
+                "lastName": "Scratch",
+                "dateOfBirth": "1992-05-14",
+                "address": {
+                  "address1": "12 Grimalkin Road",
+                  "address2": "London",
+                  "address3": "Greater London",
+                  "address4": "",
+                  "address5": "",
+                  "postcode": "SW1A 1AA"
+                },
+                "contact": {
+                  "mobile": "07700900123",
+                  "primaryEmail": "sylvester.s@example.com"
+                }
+              }
+            },
+            "offences": [
+              {
+                "convictionDate": "2025-12-01"
+              }
+            ]
           }
         ],
         "migrationSourceSystem": {
@@ -39,6 +67,10 @@
             {
               "defendantId": "b00acc1c-eb69-4b3c-960e-76be9153125a",
               "fineAccountNumber": "12345"
+            },
+            {
+              "defendantId": "c11bdd2d-fc70-5c4d-071f-87cf0264236b",
+              "fineAccountNumber": "67890"
             }
           ],
           "migrationSourceSystemCaseIdentifier": "T20250004"
