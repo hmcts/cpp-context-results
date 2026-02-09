@@ -13,6 +13,7 @@ import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
 
 import java.io.Serial;
 import java.util.List;
@@ -31,6 +32,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
 
     @Serial
     private static final long serialVersionUID = 1L;
+    private UUID caseId;
 
 
     @Override
@@ -48,6 +50,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
         this.materialId = migratedInactiveNcesEmailNotificationRequested.getMaterialId();
         this.sendToAddress = migratedInactiveNcesEmailNotificationRequested.getSendTo();
         this.subject = migratedInactiveNcesEmailNotificationRequested.getSubject();
+        this.caseId = migratedInactiveNcesEmailNotificationRequested.getCaseId();
         this.isEventRaisedEarlier = true;
     }
 
@@ -59,7 +62,13 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
             final MigratedMasterDefendantCaseDetails migratedCaseDetails) {
 
         if (migratedCaseDetails == null || isEventRaisedEarlier) {
-            return Stream.empty();
+            MigratedInactiveNcesEmailNotificationRequestedExists event = MigratedInactiveNcesEmailNotificationRequestedExists
+                    .migratedInactiveNcesEmailNotificationRequestedExists()
+                    .withMasterDefendantId(this.masterDefendantId)
+                    .withCaseId(this.caseId)
+                    .withDescription("Event earlier or migratedCaseDetails is null")
+                    .build();
+            return apply(Stream.of(event));
         }
 
         final String subject = APPLICATION_TYPES.get(applicationType);

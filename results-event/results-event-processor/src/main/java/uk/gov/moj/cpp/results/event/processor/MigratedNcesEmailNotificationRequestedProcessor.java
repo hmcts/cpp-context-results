@@ -44,7 +44,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
-
+import javax.json.JsonObjectBuilder;
 
 
 import org.slf4j.Logger;
@@ -118,7 +118,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     private JsonEnvelope transformEnvelope(final JsonEnvelope envelope) {
         final JsonObject originalPayload = envelope.payloadAsJsonObject();
 
-        final JsonObject transformedPayload = createObjectBuilder()
+        final JsonObjectBuilder builder = createObjectBuilder()
                 .add(SUBJECT, originalPayload.getString(SUBJECT, ""))
                 .add(FINE_ACCOUNT_NUMBER, originalPayload.getString(FINE_ACCOUNT_NUMBER, ""))
                 .add(DIVISION_CODE, originalPayload.getString(DIVISION_CODE, ""))
@@ -128,13 +128,21 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
                 .add(LISTED_DATE, originalPayload.getString(LISTED_DATE, ""))
                 .add(HEARING_COURT_CENTRE_NAME, originalPayload.getString(HEARING_COURT_CENTRE_NAME, ""))
                 .add(DEFENDANT_NAME, originalPayload.getString(DEFENDANT_NAME, ""))
-                .add(DEFENDANT_DATE_OF_BIRTH, originalPayload.getString(DEFENDANT_DATE_OF_BIRTH, ""))
-                .add(DEFENDANT_ADDRESS, originalPayload.getString(DEFENDANT_ADDRESS, ""))
-                .add(DEFENDANT_EMAIL, originalPayload.getString(DEFENDANT_EMAIL, ""))
-                .add(DEFENDANT_CONTACT_NUMBER, originalPayload.getString(DEFENDANT_CONTACT_NUMBER, ""))
-                .build();
+                .add(DEFENDANT_ADDRESS, originalPayload.getString(DEFENDANT_ADDRESS, ""));
+
+        addIfNotNull(builder, DEFENDANT_DATE_OF_BIRTH, originalPayload.getString(DEFENDANT_DATE_OF_BIRTH, null));
+        addIfNotNull(builder, DEFENDANT_EMAIL, originalPayload.getString(DEFENDANT_EMAIL, null));
+        addIfNotNull(builder, DEFENDANT_CONTACT_NUMBER, originalPayload.getString(DEFENDANT_CONTACT_NUMBER, null));
+
+        final JsonObject transformedPayload = builder.build();
 
         return JsonEnvelope.envelopeFrom(envelope.metadata(), transformedPayload);
+    }
+
+    private void addIfNotNull(final JsonObjectBuilder builder, final String key, final String value) {
+        if (value != null) {
+            builder.add(key, value);
+        }
     }
 
     private void addCourtDocumentForCCCase(final JsonEnvelope envelope, final UUID caseUUID, final UUID materialId, final String fileName) {

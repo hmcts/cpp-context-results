@@ -11,6 +11,7 @@ import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotif
 
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,12 +32,14 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
     private static final String FINE_ACCOUNT_NUMBER = "FINE123";
     private static final String COURT_EMAIL = "court@example.com";
     private static final String DIVISION = "6";
+    private static final String DEFENDANT_ID = "defendant-id-1";
     private static final String DEFENDANT_NAME = "defendantName";
     private static final String DEFENDANT_ADDRESS = "defendantAddress";
     private static final String ORIGINAL_DATE_OF_CONVICTION = "OriginalDateOfConviction";
     private static final String DEFENDANT_EMAIL = "defendant@email.com";
     private static final String DEFENDANT_DATE_OF_BIRTH = "21/10/1978";
     private static final String DEFENDANT_CONTACT_NUMBER = "089776687";
+    public static final String EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL = "Event earlier or migratedCaseDetails is null";
 
     @InjectMocks
     private MigratedInactiveHearingFinancialResultsAggregate aggregate;
@@ -55,27 +58,31 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 HEARING_COURT_CENTRE_NAME,
                 null);
 
-        final List<Object> events = result.collect(toList());
-        assertThat(events.size(), is(0));
+        final List<Object> events = result.toList();
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesEmailNotificationRequestedExists.class));
+        assertThat(((MigratedInactiveNcesEmailNotificationRequestedExists) events.get(0)).getDescription(),
+                is(EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL));
     }
 
     @Test
     public void shouldSendNcesEmailForMigratedApplication() {
-        final MigratedMasterDefendantCaseDetails migratedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                MASTER_DEFENDANT_ID,
-                CASE_ID,
-                FINE_ACCOUNT_NUMBER,
-                COURT_EMAIL,
-                DIVISION,
-                DEFENDANT_NAME,
-                DEFENDANT_ADDRESS,
-                ORIGINAL_DATE_OF_CONVICTION,
-                DEFENDANT_EMAIL,
-                DEFENDANT_DATE_OF_BIRTH,
-                DEFENDANT_CONTACT_NUMBER,
-                "CASE123",
-                "caseUrn1"
-        );
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(MASTER_DEFENDANT_ID)
+                .withCaseId(CASE_ID)
+                .withFineAccountNumber(FINE_ACCOUNT_NUMBER)
+                .withCourtEmail(COURT_EMAIL)
+                .withDivision(DIVISION)
+                .withDefendantId(DEFENDANT_ID)
+                .withDefendantName(DEFENDANT_NAME)
+                .withDefendantAddress(DEFENDANT_ADDRESS)
+                .withOriginalDateOfConviction(ORIGINAL_DATE_OF_CONVICTION)
+                .withDefendantEmail(DEFENDANT_EMAIL)
+                .withDefendantDateOfBirth(DEFENDANT_DATE_OF_BIRTH)
+                .withDefendantContactNumber(DEFENDANT_CONTACT_NUMBER)
+                .withMigrationSourceSystemCaseIdentifier("CASE123")
+                .withCaseURN("caseUrn1")
+                .build();
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
                 STAT_DEC,
@@ -120,21 +127,22 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         aggregate.apply(event);
         assertThat(aggregate.isEventRaisedEarlier(), is(true));
 
-        final MigratedMasterDefendantCaseDetails migratedCaseDetails = new MigratedMasterDefendantCaseDetails(
-                MASTER_DEFENDANT_ID,
-                CASE_ID,
-                FINE_ACCOUNT_NUMBER,
-                COURT_EMAIL,
-                DIVISION,
-                DEFENDANT_NAME,
-                DEFENDANT_ADDRESS,
-                ORIGINAL_DATE_OF_CONVICTION,
-                DEFENDANT_EMAIL,
-                DEFENDANT_DATE_OF_BIRTH,
-                DEFENDANT_CONTACT_NUMBER,
-                "CASE123",
-                "caseUrn1"
-        );
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(MASTER_DEFENDANT_ID)
+                .withCaseId(CASE_ID)
+                .withFineAccountNumber(FINE_ACCOUNT_NUMBER)
+                .withCourtEmail(COURT_EMAIL)
+                .withDivision(DIVISION)
+                .withDefendantId(DEFENDANT_ID)
+                .withDefendantName(DEFENDANT_NAME)
+                .withDefendantAddress(DEFENDANT_ADDRESS)
+                .withOriginalDateOfConviction(ORIGINAL_DATE_OF_CONVICTION)
+                .withDefendantEmail(DEFENDANT_EMAIL)
+                .withDefendantDateOfBirth(DEFENDANT_DATE_OF_BIRTH)
+                .withDefendantContactNumber(DEFENDANT_CONTACT_NUMBER)
+                .withMigrationSourceSystemCaseIdentifier("CASE123")
+                .withCaseURN("caseUrn1")
+                .build();
 
         final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
                 STAT_DEC,
@@ -143,8 +151,11 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
                 HEARING_COURT_CENTRE_NAME,
                 migratedCaseDetails);
 
-        final List<Object> events = result.collect(toList());
-        assertThat(events.size(), is(0));
+        final List<Object> events = result.toList();
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesEmailNotificationRequestedExists.class));
+        assertThat(((MigratedInactiveNcesEmailNotificationRequestedExists) events.get(0)).getDescription(),
+                is(EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL));
     }
 
     @Test
