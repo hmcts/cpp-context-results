@@ -1,0 +1,34 @@
+{
+  "amendmentDate": "2025-10-20",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "GD25910423",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Shirley Mante",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £560.45, FVS - Surcharge\nTo pay a surcharge of £234.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "953ee85c-d7d5-441c-afb4-7815f9b51cb5",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "5f17b665-ffb3-4728-a146-a8f2389051f2",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £560.45, FVS - Surcharge\nTo pay a surcharge of £234.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "953ee85c-d7d5-441c-afb4-7815f9b51cb5",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

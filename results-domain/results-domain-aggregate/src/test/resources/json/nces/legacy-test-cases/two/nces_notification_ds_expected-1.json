@@ -1,0 +1,23 @@
+{
+  "amendmentDate": "2025-11-07",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "GD55946965",
+  "defendantName": "Gus Herzog",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "non financials",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d3627716-33c9-4675-bb34-8cbdde255d15",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "a86d5345-27c2-4fb5-8a49-2fe4df126f27",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "WRITE OFF ONE DAY DEEMED SERVED REMOVED"
+}

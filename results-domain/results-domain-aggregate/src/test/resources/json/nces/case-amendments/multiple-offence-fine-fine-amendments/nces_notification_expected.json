@@ -1,0 +1,42 @@
+{
+  "amendmentDate": "2025-02-12",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI4845975",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantName": "Louisa Wyman",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £10.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 12 Hours.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/11/2025.",
+      "offenceDate": "2019-11-28",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "adfed0bc-9c36-47f4-af27-e25203990880",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "COEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. ",
+      "offenceDate": "2019-11-28",
+      "title": "Theft from a shop"
+    },
+    {
+      "details": "ACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.",
+      "offenceDate": "2019-11-28",
+      "title": "Theft from a shop"
+    },
+    {
+      "details": "FO - Fine\nFined £10.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 01/11/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 10 Hours.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/10/2025.",
+      "offenceDate": "2019-11-28",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "47",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}
