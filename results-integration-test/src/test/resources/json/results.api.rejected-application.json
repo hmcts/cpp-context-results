@@ -6,6 +6,7 @@
   "prosecutionCaseReferences" : ["caseUrn1"],
   "ncesEmail" : "John.Doe@xxx.com",
   "offenceResults" : [{
+    "applicationId" : "c02df768-a722-4b0e-b851-7496e13b82d4",
     "applicationType": "APPEAL",
     "applicationResultType": "Withdrawn",
     "resultId" : "a02df768-a722-4b0e-b851-7496e13b82d7",

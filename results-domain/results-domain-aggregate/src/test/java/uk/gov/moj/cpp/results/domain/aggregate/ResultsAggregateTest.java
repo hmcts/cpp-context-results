@@ -51,6 +51,7 @@ import uk.gov.justice.core.courts.DefendantAddedEvent;
 import uk.gov.justice.core.courts.DefendantRejectedEvent;
 import uk.gov.justice.core.courts.DefendantUpdatedEvent;
 import uk.gov.justice.core.courts.DelegatedPowers;
+import uk.gov.justice.core.courts.DeletedJudicialResults;
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingApplicationEjected;
@@ -70,6 +71,7 @@ import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.Plea;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
 import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.ProsecutionCaseResults;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
@@ -412,12 +414,12 @@ public class ResultsAggregateTest {
         final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
 
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
-                .setHearing(createHearing(caseDetails.getCaseId(), caseDefendant.getDefendantId(), offences.get(0).getId(), judicialResult, null)), LocalDate.now());
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDefendant.getDefendantId(), offences.get(0).getId(), judicialResult, null, null)), LocalDate.now());
 
         resultsAggregate.handleCase(caseDetails);
 
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
-                .setHearing(createHearing(caseDetails.getCaseId(), caseDefendant.getDefendantId(), offences.get(0).getId(), judicialResult, null)), LocalDate.now());
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDefendant.getDefendantId(), offences.get(0).getId(), judicialResult, null, null)), LocalDate.now());
 
         resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty(), "", "", Optional.of(Boolean.TRUE));
 
@@ -585,7 +587,7 @@ public class ResultsAggregateTest {
         resultsAggregate.apply(hearingResultsAddedForDay(caseDetails));
         resultsAggregate.handleCase(caseDetails);
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
-                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offences.get(0).getId(), judicialResult1, null)), LocalDate.now());
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offences.get(0).getId(), judicialResult1, null, null)), LocalDate.now());
         resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty(), "", "", Optional.of(Boolean.TRUE));
 
         final List<OffenceDetails> offences2 = new ArrayList<>();
@@ -859,7 +861,7 @@ public class ResultsAggregateTest {
 
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
                 .setSharedTime(ZonedDateTime.now())
-                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1, null)), LocalDate.now());
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1, null, null)), LocalDate.now());
         resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
         resultsAggregate.handleCase(caseDetails);
         final List<Object> objectList = resultsAggregate.handleDefendants(caseDetails, true, Optional.of(JurisdictionType.MAGISTRATES), EMAIL_ADDRESS, true, Optional.empty(), "", "", Optional.of(Boolean.FALSE)).collect(toList());
@@ -921,7 +923,7 @@ public class ResultsAggregateTest {
 
         final Stream<Object> result = resultsAggregate.saveHearingResultsForDay(publicHearingResulted()
                 .setSharedTime(now())
-                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1, migrationSourceSystem)), LocalDate.now());
+                .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1, null, migrationSourceSystem)), LocalDate.now());
         assertEquals(numberOfEvents, result.count());
     }
 
@@ -978,23 +980,57 @@ public class ResultsAggregateTest {
         assertEquals(LocalDate.now(), policeResultGenerated1.getSessionDays().get(0).getSittingDay().toLocalDate());
     }
 
-    private Hearing createHearing(UUID caseId, UUID defendantId, UUID offenceId, JudicialResult judicialResult, final MigrationSourceSystem migrationSourceSystem) {
-        return hearing().withIsBoxHearing(true).withProsecutionCases(Arrays.asList(
-                ProsecutionCase.prosecutionCase()
-                        .withId(caseId)
-                        .withDefendants(singletonList(Defendant.defendant()
-                                .withId(defendantId)
-                                .withPersonDefendant(PersonDefendant.personDefendant()
-                                        .withPersonDetails(Person.person().withFirstName(FIRST_NAME).withLastName(LAST_NAME).build())
-                                        .build())
-                                .withOffences(singletonList(Offence.offence()
-                                        .withId(offenceId)
-                                        .withJudicialResults(singletonList(judicialResult))
+    @Test
+    public void shouldRaiseHearingResultsAddedForDayWithDeletedJudicialResultsWhen_WhenHearingResultedWithDeletedResults() {
+        final List<OffenceDetails> offenceDetailsList = new ArrayList<>();
+        offenceDetailsList.add(offenceDetails().withId(OFFENCE_ID).withJudicialResults(of(judicialResult().build())).build());
+        final JudicialResult judicialResult1 = judicialResult().withJudicialResultId(UUID.fromString("e0a49380-71ce-4426-85b6-9bf0e3f9ce1a"))
+                .withLevel("FINAL")
+                .withIsUnscheduled(false)
+                .withIsNewAmendment(true)
+                .withLabel("Conditional discharge")
+                .build();
+        final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
+        final JudicialResult judicialResult = judicialResult().withJudicialResultId(randomUUID()).withIsNewAmendment(true).build();
+        final CaseDefendant caseDefendant = caseDetails.getDefendants().get(0);
+
+        final DeletedJudicialResults deletedJudicialResults = DeletedJudicialResults.deletedJudicialResults()
+                .withProsecutionCaseResults(List.of(ProsecutionCaseResults.prosecutionCaseResults().withDefendantId(caseDefendant.getDefendantId()).build())).build();
+
+        final Hearing hearing = createHearing(caseDetails.getCaseId(), caseDefendant.getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult, deletedJudicialResults, null);
+
+        resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted().setHearing(hearing), LocalDate.now());
+
+        final Stream<Object> eventStream = resultsAggregate.saveHearingResultsForDay(publicHearingResulted()
+                        .setHearing(hearing)
+                        .setSharedTime(now())
+                        .setIsReshare(Optional.of(Boolean.FALSE)),
+                LocalDate.of(2025, 9, 9));
+
+        final List<Object> eventsList = eventStream.toList();
+        assertThat(eventsList.size(), is(2));
+        assertThat(((HearingResultsAddedForDay) eventsList.get(0)).getHearing().getDeletedJudicialResults(), is(deletedJudicialResults));
+    }
+
+    private Hearing createHearing(final UUID caseId, final UUID defendantId, final UUID offenceId, final JudicialResult judicialResult, final DeletedJudicialResults deletedJudicialResults, final MigrationSourceSystem migrationSourceSystem) {
+        return hearing().withIsBoxHearing(true)
+                .withDeletedJudicialResults(deletedJudicialResults)
+                .withProsecutionCases(Arrays.asList(
+                        ProsecutionCase.prosecutionCase()
+                                .withId(caseId)
+                                .withDefendants(singletonList(Defendant.defendant()
+                                        .withId(defendantId)
+                                        .withPersonDefendant(PersonDefendant.personDefendant()
+                                                .withPersonDetails(Person.person().withFirstName(FIRST_NAME).withLastName(LAST_NAME).build())
+                                                .build())
+                                        .withOffences(singletonList(Offence.offence()
+                                                .withId(offenceId)
+                                                .withJudicialResults(singletonList(judicialResult))
+                                                .build()))
                                         .build()))
-                                .build()))
-                        .withMigrationSourceSystem(migrationSourceSystem)
-                        .build()
-        )).build();
+                                .withMigrationSourceSystem(migrationSourceSystem)
+                                .build()
+                )).build();
     }
 
     private Hearing createMultiDayHearing(UUID caseId, UUID defendantId, UUID offenceId, JudicialResult judicialResult) {

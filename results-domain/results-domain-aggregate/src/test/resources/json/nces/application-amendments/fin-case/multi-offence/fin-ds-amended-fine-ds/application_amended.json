@@ -44,12 +44,13 @@
       "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-03-04",
-      "impositionOffenceDetails": "FO - Fine\nFined £33.00",
-      "isDeemedServed": false,
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 12:11. Total amount enforced: £2229.00\nFO - Fine\nFined £33.00",
+      "isDeemedServed": true,
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
-      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "FIDIPI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -67,12 +68,13 @@
     {
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-03-04",
-      "impositionOffenceDetails": "FO - Fine\nFined £33.00",
-      "isDeemedServed": false,
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £3333.00.\nFO - Fine\nFined £33.00",
+      "isDeemedServed": true,
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
-      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "FIDICI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -118,12 +120,13 @@
       "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-03-04",
-      "impositionOffenceDetails": "FO - Fine\nFined £33.00",
-      "isDeemedServed": false,
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 12:11. Total amount enforced: £2229.00\nFO - Fine\nFined £33.00",
+      "isDeemedServed": true,
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
-      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "FIDIPI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -141,12 +144,13 @@
     {
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-03-04",
-      "impositionOffenceDetails": "FO - Fine\nFined £33.00",
-      "isDeemedServed": false,
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £3333.00.\nFO - Fine\nFined £33.00",
+      "isDeemedServed": true,
       "isFinancial": true,
       "isParentFlag": true,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
-      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "FIDICI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -184,6 +188,31 @@
       "isParentFlag": false,
       "offenceId": "6b024e66-e25a-4960-a599-3cbb02d3003c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "amendmentDate": "2025-03-04",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "applicationResultType": "Fined and detained in default of payment in police station",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-04",
+      "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 12:11. Total amount enforced: £2229.00",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "FIDIPI"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2025-03-04",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "FIDICI"
     }
   ],
   "prosecutionCaseReferences": [

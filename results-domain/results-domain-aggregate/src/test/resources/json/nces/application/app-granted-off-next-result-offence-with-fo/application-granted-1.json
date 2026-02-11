@@ -1,14 +1,14 @@
 {
   "caseReferences": "28DI6565771",
-  "dateDecisionMade": "2025-04-05",
+  "dateDecisionMade": "2025-04-04",
   "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
   "defendantContactNumber": "015325443756",
   "defendantDateOfBirth": "1991-02-18",
   "defendantName": "Euna Rutherford",
   "divisionCode": "77",
   "gobAccountNumber": "{{gobAccountNumber}}",
-  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
-  "hearingSittingDay": "2025-04-05",
+  "hearingCourtCentreName": "City of London Magistrates' Court",
+  "hearingSittingDay": "2025-04-04",
   "impositionOffenceDetails": [
     {
       "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2026.",
@@ -30,15 +30,13 @@
   },
   "newOffenceByResult": [
     {
-      "details": "FO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2026.",
+      "details": "A - Adjournment Adjourned for hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing. To attend or a warrant to issue hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
       "offenceDate": "2019-11-28",
       "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
       "title": "Theft of motor vehicle"
     }
   ],
   "notificationId": "{{notificationId}}",
-  "oldDivisionCode": "77",
-  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
   "sendTo": "LCCCCancellations@Justice.gov.uk",

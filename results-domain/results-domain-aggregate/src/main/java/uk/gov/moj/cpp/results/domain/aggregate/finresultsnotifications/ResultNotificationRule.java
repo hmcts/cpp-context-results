@@ -13,7 +13,6 @@ import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -91,12 +90,12 @@ public interface ResultNotificationRule {
             return request.getOffenceResults().stream().anyMatch(o -> nonNull(o.getAmendmentDate()));
         }
 
-        public boolean hasFinancialAmendments() {
+        public boolean hasAccountCorrelation() {
             return nonNull(request.getAccountCorrelationId());
         }
 
         public boolean isFinancial() {
-            return request.getOffenceResults().stream().anyMatch(o -> o.getIsFinancial());
+            return request.getOffenceResults().stream().anyMatch(OffenceResults::getIsFinancial);
         }
 
         public boolean isCaseAmendment() {
