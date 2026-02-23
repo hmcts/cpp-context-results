@@ -327,7 +327,7 @@ class HearingFinancialResultAggregateTestSteps {
 
         @Override
         public Map<String, List<Object>> execute(final HearingFinancialResultsAggregate aggregate) {
-            final Stream<Object> eventStream = aggregate.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, courtCenterName, clonedOffenceIdList, null);
+            final Stream<Object> eventStream = aggregate.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, courtCenterName, clonedOffenceIdList);
             return eventStream
                     .peek(e -> logEvent(name, e))
                     .collect(Collectors.groupingBy(

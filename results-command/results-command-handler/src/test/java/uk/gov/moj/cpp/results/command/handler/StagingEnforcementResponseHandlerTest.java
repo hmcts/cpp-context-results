@@ -57,7 +57,6 @@ import uk.gov.justice.services.eventsourcing.source.core.EventStream;
 import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.MetadataBuilder;
-import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCourtEmailAndFineAccount;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultGobAccountAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
@@ -248,10 +247,6 @@ public class StagingEnforcementResponseHandlerTest {
                         .add("caseUrns", createCaseUrns())
                         .add("caseIds", createCaseIds())
                         .add("hearingCourtCentreName", "Croydon Crown Court")
-                        .add("migratedMasterDefendantCourtEmailAndFineAccount", Json.createObjectBuilder()
-                                .add("courtEmail", "court@email.com")
-                                .add("fineAccountNumber", "12345")
-                                .build())
                         .build());
         HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
@@ -283,8 +278,7 @@ public class StagingEnforcementResponseHandlerTest {
 
         stagingEnforcementResponseHandler.sendNcesEmailForNewApplication(envelope);
 
-        final MigratedMasterDefendantCourtEmailAndFineAccount expectedMigratedData = new MigratedMasterDefendantCourtEmailAndFineAccount("court@email.com", "12345");
-        verify(spyAggregate).sendNcesEmailForNewApplication(eq("applicationType"), eq("2021-12-28"), any(), eq("Croydon Crown Court"), any(), eq(expectedMigratedData));
+        verify(spyAggregate).sendNcesEmailForNewApplication(eq("applicationType"), eq("2021-12-28"), any(), eq("Croydon Crown Court"), any());
 
         verify(eventSource, times(1)).getStreamById(eventSourceArgumentCaptor.capture());
 
