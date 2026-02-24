@@ -13,6 +13,7 @@ import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STR
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubDocumentCreateWithStatusOk;
+import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubPostForAddCourtDocument;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryInactiveMigratedCases;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.removeMessagesFromQueue;
@@ -92,6 +93,7 @@ public class MigratedInactiveEnforcementNotificationIT {
         stubDocumentCreateWithStatusOk(STRING.next());
         stubMaterialUploadFile();
         stubGetOrganisationUnit();
+        stubPostForAddCourtDocument();
         migratedInactiveNcesEmailEventConsumer = privateEvents.createConsumer(MIGRATED_INACTIVE_NCES_EMAIL_NOTIFICATION_REQUESTED);
         migratedInactiveNccesEventNotificationConsumer = privateEvents.createConsumer(RESULTS_INACTIVE_MIGRATED_NCES_EMAIL_NOTIFICATION);
         messageProducerClientPublic = publicEvents.createPublicProducer();

@@ -1,10 +1,12 @@
 package uk.gov.moj.cpp.results.it.utils;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static java.text.MessageFormat.format;
 import static java.util.UUID.randomUUID;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
@@ -54,5 +56,12 @@ public class ProgressionServiceStub {
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, PROGRESSION_QUERY_INACTIVE_MIGRATED_CASES_MEDIA_TYPE)
                         .withBody(dynamicJson)));
+    }
+
+    public static void stubPostForAddCourtDocument() {
+
+        stubFor(post(urlPathMatching(".*courtdocument.*"))
+                .withHeader("Content-Type", containing("application/vnd.progression.add-court-document+json"))
+                .willReturn(aResponse().withStatus(202)));
     }
 }
