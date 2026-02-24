@@ -3,6 +3,7 @@
   "masterDefendantId": "MASTER_DEFENDANT_ID",
   "defendantName": "John Doe",
   "accountDivisionCode": "DIV01",
+  "accountCorrelationId": "CORRELATION_ID",
   "prosecutionCaseReferences": [
     "caseUrn1"
   ],
@@ -15,27 +16,26 @@
   "ncesEmail": "John.Doe@xxx.com",
   "offenceResults": [
     {
-      "applicationId": "b15593ff-db73-4af9-99ce-b836a6370f76",
-      "applicationResultType": "Adjournment",
-      "applicationTitle": "Appeal",
       "applicationType": "APPEAL",
-      "dateOfResult": "01/01/2021",
-      "isDeemedServed": false,
-      "isFinancial": false,
-      "isParentFlag": false,
+      "applicationResultType": "Updated",
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82d8",
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
-      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network"
+      "resultCode": "ROPENED1",
+      "dateOfResult": "01/01/2021",
+      "impositionOffenceDetails": "Amount of fine: £155",
+      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
+      "isFinancial": true,
+      "isDeemedServed": false
     },
     {
-      "applicationId": "b15593ff-db73-4af9-99ce-b836a6370f76",
-      "applicationResultType": "Adjournment",
-      "applicationTitle": "Appeal",
-      "applicationType": "APPEAL",
-      "dateOfResult": "01/01/2021",
-      "isDeemedServed" : false,
-      "isFinancial" : false,
+      "resultId": "a02df768-a722-4b0e-b851-7496e13b82f7",
       "offenceId": "a02df768-a722-4b0e-b851-7496e13b82d8",
-      "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network"
+      "offenceTitle": "Title 3",
+      "resultCode": "ACON",
+      "dateOfResult": "01/01/2021",
+      "impositionOffenceDetails": "Amount of surcharge: £200",
+      "isFinancial" : FINANCIAL,
+      "isDeemedServed" : DEEMED_SERVED
     }
   ]
 }

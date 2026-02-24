@@ -341,7 +341,6 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
                         OffenceResults.offenceResults()
-                                .withApplicationId(randomUUID())
                                 .withOffenceId(randomUUID())
                                 .withApplicationType(STAT_DEC)
                                 .withResultCode(RFSD)
