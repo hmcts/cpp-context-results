@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications;
 
-import static java.lang.Boolean.TRUE;
 import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -30,7 +29,6 @@ import java.util.function.Predicate;
  */
 public abstract class AbstractApplicationResultNotificationRule implements ResultNotificationRule {
     private static final Predicate<OffenceResults> isApplicationAmended = o -> nonNull(o.getApplicationType()) && nonNull(o.getAmendmentDate());
-    private static final Boolean IS_FINANCIAL = TRUE;
 
     protected HearingFinancialResultRequest filteredApplicationResults(HearingFinancialResultRequest request) {
         final HearingFinancialResultRequest filtered = HearingFinancialResultRequest.hearingFinancialResultRequest()
@@ -101,16 +99,15 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
      */
     protected boolean isFineToFineApplicationAmendment(final RuleInput input, final HearingFinancialResultRequest request, final UUID currentApplicationId) {
         return request.getOffenceResults().stream()
-                .anyMatch(o -> TRUE.equals(o.getIsFinancial()))
-                &&
-                request.getOffenceResults().stream()
-                        .map(offenceFromRequest -> getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(),
+                .filter(isApplicationAmended)
+                .filter(OffenceResults::getIsFinancial)
+                .anyMatch(offenceFromRequest ->
+                        ofNullable(getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(),
                                 currentApplicationId,
                                 input.prevOffenceResultsDetails(),
                                 input.prevApplicationOffenceResultsMap(),
                                 input.prevApplicationResultsDetails()))
-                        .filter(Objects::nonNull)
-                        .anyMatch(o -> TRUE.equals(o.getIsFinancial()));
+                                .map(OffenceResultsDetails::getIsFinancial).orElse(false));
     }
 
     /**
@@ -185,7 +182,8 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
                 .anyMatch(o -> isValidApplicationOffence(o) &&
                         o.getIsFinancial() &&
                         nonNull(o.getImpositionOffenceDetails()) &&
-                        o.getImpositionOffenceDetails().contains("ACON"));
+                        o.getImpositionOffenceDetails().contains("ACON") &&
+                        Objects.nonNull(o.getAmendmentDate()));
     }
 
     protected boolean hasDeemedServedAmendmentOffences(HearingFinancialResultRequest request) {

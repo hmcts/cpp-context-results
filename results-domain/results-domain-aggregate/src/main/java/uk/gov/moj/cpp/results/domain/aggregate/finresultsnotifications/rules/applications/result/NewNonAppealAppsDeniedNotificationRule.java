@@ -4,8 +4,8 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewApplicationGranted;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecReopenApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -35,7 +35,9 @@ public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationR
     @Override
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
-                && isNewStatdecReopenApplicationDenied(input.request());
+                && input.isValidApplicationTypeWithAllowedResultCode()
+                && !isNewAppealApplicationDenied(input.request())
+                && !isNewApplicationGranted(input.request());
     }
 
     @Override
@@ -80,6 +82,7 @@ public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationR
                         markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(request,
                                         APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
+                                        correlationItems.peekLast(),
                                         impositionOffenceDetailsForApplication,
                                         ncesEmail,
                                         writtenOffExists,
