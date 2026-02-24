@@ -5,6 +5,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBu
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewOffenceResultForSV;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.hasSentenceVaried;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
@@ -36,6 +37,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
     @Override
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
+                && input.isValidApplicationTypeWithAllowedResultCode()
                 && isNewAppealApplicationDenied(input.request());
     }
 
@@ -52,7 +54,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                 .findFirst();
 
         if (offenceForApplication.isPresent()) {
-            final String subject =  APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
+            final OffenceResults offence = offenceForApplication.get();
             final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
                     input.prevOffenceResultsDetails(), 
@@ -83,7 +85,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                         originalDateOfSentenceList,
                         newApplicationOffenceResults,
                         applicationResult,
-                        subject,
+                        offence,
                         impositionOffenceDetailsForApplication,
                         originalApplicationResults,
                         ncesEmail,
@@ -102,30 +104,31 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
             final String originalDateOfSentenceList,
             final List<NewOffenceByResult> newResultByOffenceList,
             final String applicationResult,
-            final String subject,
+            final OffenceResults offence,
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication,
             final OriginalApplicationResults originalApplicationResults,
             final String ncesEmail,
             final LinkedList<CorrelationItem> correlationItemList,
             final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-        if (!newResultByOffenceList.isEmpty()) {
+        
+        if (hasSentenceVaried(newResultByOffenceList) || !newResultByOffenceList.isEmpty()) {
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                     .buildMarkedAggregateWithOlds(hearingFinancialResultRequest,
-                            impositionOffenceDetailsForApplication,
-                            applicationResult,
+                            impositionOffenceDetailsForApplication, 
+                            applicationResult, 
                             buildNewOffenceResultForSV(newResultByOffenceList),
-                            originalApplicationResults,
+                            originalApplicationResults, 
                             null,
-                            subject,
+                            APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
                             prevApplicationResultsDetails));
         } else {
             return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
                     .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
-                            subject,
-                            impositionOffenceDetailsForApplication,
-                            ncesEmail,
-                            isWrittenOffExists,
+                            APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
+                            correlationItemList.peekLast(), 
+                            impositionOffenceDetailsForApplication, 
+                            ncesEmail, 
+                            isWrittenOffExists, 
                             originalDateOfOffenceList,
                             originalDateOfSentenceList, 
                             newResultByOffenceList, 

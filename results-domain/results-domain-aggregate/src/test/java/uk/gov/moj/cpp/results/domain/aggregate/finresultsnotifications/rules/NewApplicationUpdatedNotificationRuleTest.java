@@ -15,7 +15,6 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.app
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,10 +23,6 @@ class NewApplicationUpdatedNotificationRuleTest {
 
     @Test
     void shouldGenerateUpdateNotificationForAdjournedApplication() {
-        final UUID hearingId = randomUUID();
-        final UUID offenceId = randomUUID();
-        final UUID accountCorrelationId = randomUUID();
-
         var trackRequest = hearingFinancialResultRequest()
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(
@@ -36,9 +31,8 @@ class NewApplicationUpdatedNotificationRuleTest {
                                 .withApplicationResultType("Adjournment")
                                 .withResultCode(null)
                                 .withAmendmentDate(null)
-                                .withImpositionOffenceDetails("Adjourn offences")
                                 .withApplicationId(randomUUID())
-                                .withOffenceId(offenceId)
+                                .withOffenceId(randomUUID())
                                 .build()))
                 .build();
         var input = resultNotificationRuleInputBuilder()
@@ -52,10 +46,8 @@ class NewApplicationUpdatedNotificationRuleTest {
                 .withPrevApplicationResultsDetails(Map.of())
                 .withCorrelationItemList(
                         List.of(correlationItem()
-                                .withAccountCorrelationId(accountCorrelationId)
-                                .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).build()))
+                                .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
                                 .withAccountNumber("AC123456789")
-                                .withHearingId(hearingId)
                                 .build()))
                 .build();
 

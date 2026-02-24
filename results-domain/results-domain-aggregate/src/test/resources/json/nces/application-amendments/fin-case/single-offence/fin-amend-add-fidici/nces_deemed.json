@@ -19,7 +19,7 @@
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "56171796-d1cd-4e99-918b-c608607b304b",
-  "materialId": "220cd1be-48ab-46f0-a33d-8540ee4340fa",
+  "materialId": "{{materialId}}",
   "notificationId": "{{notificationId}}",
   "originalDateOfSentence": "21/03/2025",
   "sendTo": "av.qet@justice.gov.uk",

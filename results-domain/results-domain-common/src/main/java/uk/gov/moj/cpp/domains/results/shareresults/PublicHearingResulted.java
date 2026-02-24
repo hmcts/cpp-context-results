@@ -64,5 +64,4 @@ public class PublicHearingResulted {
         isReshare = reshare;
         return this;
     }
-
 }
