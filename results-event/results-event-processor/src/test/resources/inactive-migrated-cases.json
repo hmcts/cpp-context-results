@@ -24,7 +24,8 @@
               }
             },
             "offences": [
-              { "convictionDate": "2025-11-09" }
+              { "convictionDate": "2025-11-09" },
+              { "convictionDate": "2025-11-10" }
             ]
           },
           {
