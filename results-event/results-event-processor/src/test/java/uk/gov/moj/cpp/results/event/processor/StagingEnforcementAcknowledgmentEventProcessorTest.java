@@ -220,12 +220,10 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
         // THEN
         verify(progressionService).getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3));
 
-        // We expect 4: (Senior Case 1) + (Junior Case 1) + (Senior Case 2) + (Original Request)
         verify(sender, times(4)).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
 
-        // 1. Assert Garfield Senior (Case 1)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(0).metadata(), allEnvelopes.get(0).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -234,13 +232,12 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("12345")),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare")),
-                                // Fixed address to match JSON data exactly
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantAddress", is("59 Meadow Lane B1 1AA")),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("test@gmail.com")),
-                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantDateOfBirth", is("1998-08-23"))
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantDateOfBirth", is("1998-08-23")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.originalDateOfConviction", is("2025-11-09, 2025-11-10"))
                         ))));
 
-        // 2. Assert Garfield Junior (Case 1) - PROVES THE MULTI-DEFENDANT FIX
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(1).metadata(), allEnvelopes.get(1).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -252,7 +249,6 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("junior@gmail.com"))
                         ))));
 
-        // 3. Assert Garfield Senior (Case 2)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(2).metadata(), allEnvelopes.get(2).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -262,7 +258,6 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare"))
                         ))));
 
-        // 4. Assert Original Request Envelope
         assertThat(allEnvelopes.get(3).metadata().name(), is("result.command.send-nces-email-for-application"));
     }
 

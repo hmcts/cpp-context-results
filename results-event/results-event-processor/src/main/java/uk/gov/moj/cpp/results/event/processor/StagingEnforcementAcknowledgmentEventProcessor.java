@@ -264,7 +264,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .orElse(Stream.empty())
                 .map(offence -> offence.getString(Offence.CONVICTION_DATE, ""))
                 .filter(date -> !date.isEmpty())
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining(", "));
 
         final JsonObject contact = details.getJsonObject(PersonDetails.CONTACT);
 
