@@ -1,10 +1,10 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 import static javax.json.Json.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
@@ -26,6 +26,8 @@ import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,16 +55,28 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String REQUEST_ID = "requestId";
     private static final String ERROR_CODE = "errorCode";
     private static final String ACCOUNT_NUMBER = "accountNumber";
-    private static final String CORRELATION_ID ="correlationId";
-    private static final String MASTER_DEFENDANT_ID ="masterDefendantId";
-    private static final String ACCOUNT_CORRELATION_ID ="accountCorrelationId";
-    private static final String HEARING_FINANCIAL_RESULT_REQUEST= "hearingFinancialResultRequest";
+    private static final String CORRELATION_ID = "correlationId";
+    private static final String MASTER_DEFENDANT_ID = "masterDefendantId";
+    private static final String ACCOUNT_CORRELATION_ID = "accountCorrelationId";
+    private static final String HEARING_FINANCIAL_RESULT_REQUEST = "hearingFinancialResultRequest";
+    private static final DateTimeFormatter ISO_FORMATTER = ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = ofPattern("dd/MM/yyyy");
 
-    private record NcesNotificationDetails(String email, String division) {}
-    public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier, String caseURN) {}
-    public record EnrichedFineDetail(FineAccount fineAccount, DefendantDetails defendant) {}
-    public record DefendantDetails(String defendantId, String defendantName, String defendantAddress, String originalDateOfConviction,
-                                   String defendantEmail, String defendantDateOfBirth, String defendantContactNumber) {}
+    private record NcesNotificationDetails(String email, String division) {
+    }
+
+    public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier,
+                              String caseURN) {
+    }
+
+    public record EnrichedFineDetail(FineAccount fineAccount, DefendantDetails defendant) {
+    }
+
+    public record DefendantDetails(String defendantId, String defendantName,
+                                   String defendantAddress, String originalDateOfConviction,
+                                   String defendantEmail, String defendantDateOfBirth,
+                                   String defendantContactNumber) {
+    }
 
     @Inject
     private Sender sender;
@@ -98,12 +112,12 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     }
 
     @Handles("results.event.hearing-financial-results-tracked")
-    public void processHearingFinancialResultsTracked(final JsonEnvelope event){
+    public void processHearingFinancialResultsTracked(final JsonEnvelope event) {
         final JsonObject enforcementResponsePayload = event.payloadAsJsonObject();
         final JsonObject hearingFinancialResultRequest = enforcementResponsePayload.getJsonObject(HEARING_FINANCIAL_RESULT_REQUEST);
         final String masterDefendantId = hearingFinancialResultRequest.getString(MASTER_DEFENDANT_ID);
 
-        if(hearingFinancialResultRequest.containsKey(ACCOUNT_CORRELATION_ID)){
+        if (hearingFinancialResultRequest.containsKey(ACCOUNT_CORRELATION_ID)) {
             final String correlationId = hearingFinancialResultRequest.getString(ACCOUNT_CORRELATION_ID);
             updaterCorrelationId(event, correlationId, masterDefendantId);
         }
@@ -119,7 +133,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         final List<String> caseIds = ofNullable(payload.getJsonArray(Case.CASE_IDS))
                 .map(jsonArray -> jsonArray.stream()
                         .map(i -> ((JsonString) i).getString())
-                        .collect(toList()))
+                        .toList())
                 .orElse(emptyList());
 
         if (isNotEmpty(caseIds)) {
@@ -171,6 +185,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
         }
     }
+
     private void addIfNotNull(final JsonObjectBuilder builder, final String key, final String value) {
         if (value != null) {
             builder.add(key, value);
@@ -214,7 +229,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                     String caseId = caseSummary.getString(InactiveMigratedCase.ID);
                     String caseURN = caseSummary.getString(Case.URN);
 
-                    // Navigate into migrationSourceSystem
                     JsonObject sourceSystem = caseSummary.getJsonObject(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM);
                     String caseIdentifier = sourceSystem.getString(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER);
 
@@ -227,7 +241,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
 
                                 return sourceSystem.getJsonArray(InactiveMigratedCase.DEFENDANT_FINE_ACCOUNT_NUMBERS).stream()
                                         .map(JsonValue::asJsonObject)
-                                        // This matches the defendantId from the account to the defendant in the loop
                                         .filter(fa -> currentDefId.equals(fa.getString(Defendant.ID)))
                                         .map(fa -> new EnrichedFineDetail(
                                                 new FineAccount(caseId, fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER), caseIdentifier, caseURN),
@@ -235,7 +248,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                                         );
                             });
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
@@ -264,6 +277,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .orElse(Stream.empty())
                 .map(offence -> offence.getString(Offence.CONVICTION_DATE, ""))
                 .filter(date -> !date.isEmpty())
+                .map(e -> LocalDate.parse(e, ISO_FORMATTER).format(OUTPUT_FORMATTER))
                 .collect(Collectors.joining(", "));
 
         final JsonObject contact = details.getJsonObject(PersonDetails.CONTACT);
@@ -284,15 +298,15 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     }
 
     @Handles("public.progression.defendant-address-changed")
-    public void updateDefendantAddressInAggregateForNewApplication(final JsonEnvelope event){
+    public void updateDefendantAddressInAggregateForNewApplication(final JsonEnvelope event) {
         final Envelope<JsonObject> envelope = envelop(event.payloadAsJsonObject()).withName("result.command.update-defendant-address-for-application").withMetadataFrom(event);
         this.sender.sendAsAdmin(envelope);
     }
 
     private void updateGobAccount(JsonEnvelope event, String accountNumber, String correlationId) {
-            final JsonObject commandPayload = createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber).add(CORRELATION_ID, correlationId).build();
-            final Envelope<JsonObject> envelope = envelop(commandPayload).withName("result.command.update-gob-account").withMetadataFrom(event);
-            this.sender.sendAsAdmin(envelope);
+        final JsonObject commandPayload = createObjectBuilder().add(ACCOUNT_NUMBER, accountNumber).add(CORRELATION_ID, correlationId).build();
+        final Envelope<JsonObject> envelope = envelop(commandPayload).withName("result.command.update-gob-account").withMetadataFrom(event);
+        this.sender.sendAsAdmin(envelope);
     }
 
     private void updaterCorrelationId(JsonEnvelope event, String correlationId, String masterDefendantId) {
