@@ -26,6 +26,8 @@ import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +59,9 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String MASTER_DEFENDANT_ID ="masterDefendantId";
     private static final String ACCOUNT_CORRELATION_ID ="accountCorrelationId";
     private static final String HEARING_FINANCIAL_RESULT_REQUEST= "hearingFinancialResultRequest";
+    public static final String IN_FORMAT = "dd/MM/yyyy";
+    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern(IN_FORMAT);
 
     private record NcesNotificationDetails(String email, String division) {}
     public record FineAccount(String caseId, String fineAccountNumber, String caseIdentifier, String caseURN) {}
@@ -264,6 +269,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .orElse(Stream.empty())
                 .map(offence -> offence.getString(Offence.CONVICTION_DATE, ""))
                 .filter(date -> !date.isEmpty())
+                .map(e -> LocalDate.parse(e, ISO_FORMATTER).format(OUTPUT_FORMATTER))
                 .collect(Collectors.joining(", "));
 
         final JsonObject contact = details.getJsonObject(PersonDetails.CONTACT);
