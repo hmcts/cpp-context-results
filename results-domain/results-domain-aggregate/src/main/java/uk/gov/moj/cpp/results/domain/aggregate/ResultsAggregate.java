@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
@@ -33,9 +32,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ResultReshareHelper.hasRes
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.StandaloneApplicationHelper.buildDefendantFromSubject;
 import static uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested.appealUpdateNotificationRequested;
 
-import com.google.common.base.Functions;
-import org.apache.commons.collections.map.HashedMap;
-
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CaseAddedEvent;
@@ -60,8 +56,8 @@ import uk.gov.justice.core.courts.MigrationSourceSystem;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
-import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.PoliceResultGeneratedForStandaloneApplication;
+import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.core.courts.YouthCourt;
@@ -96,14 +92,11 @@ import javax.json.JsonObject;
 
 import com.google.common.base.Functions;
 import org.apache.commons.collections.map.HashedMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class ResultsAggregate implements Aggregate {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResultsAggregate.class);
     private static final String DEFAULT_URN_FOR_STANDALONE_APPLICATIONS = "00PP0000008";
     public static final String AMEND_RESHARE = "Amend & Reshare";
     private static final String CASE_ID = "caseId";
@@ -498,17 +491,13 @@ public class ResultsAggregate implements Aggregate {
 
         defendants = new ArrayList<>();
         final boolean isResultReshared = isResultReshared(isReshare, caseResultDetails);
-        LOGGER.error("------------ isResultReshared {}", isResultReshared);
 
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
 
-            defendantsFromAggregate.stream().map(Defendant::getId).forEach(defendantId -> LOGGER.error("-----------Defendant ID in aggregate: {}", defendantId));
             if (defendantOptional.isEmpty()) {
-                LOGGER.error("------------ defendant not found");
                 buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay, isResultReshared);
             } else {
-                LOGGER.error("------------ defendant found");
                 updateDefendant(hearing, hearingDay, caseDetailsFromRequest, builder, defendantFromRequest, isResultReshared, sendSpiOut, jurisdictionType);
             }
         }
@@ -553,8 +542,6 @@ public class ResultsAggregate implements Aggregate {
     private boolean isEligibleForSPIOut(final CourtApplication courtApplication, final boolean sendSpiOut, final Optional<Boolean> isReshare) {
         final boolean isResultNotReshared = !isResultReshared(isReshare, null);
         final boolean isResultsPresent = isNotEmpty(courtApplication.getJudicialResults());
-        LOGGER.error("-------------- sendSpiOut: {} isResultNotReshared: {} isResultsPresent: {}",
-                sendSpiOut, isResultNotReshared, isResultsPresent);
         return sendSpiOut &&
                 isResultNotReshared &&
                 isResultsPresent;
@@ -589,13 +576,11 @@ public class ResultsAggregate implements Aggregate {
     @SuppressWarnings({"squid:CommentedOutCodeLine"})
     private void buildDefendantEvent(final CaseDetails casesDetailsFromRequest, final Stream.Builder<Object> builder, final CaseDefendant defendantFromRequest,
                                      final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final Optional<LocalDate> hearingDay, final boolean isResultReshared) {
-        LOGGER.error("----**-------- isResultPresent {}", isResultPresent(defendantFromRequest));
         if (isResultPresent(defendantFromRequest)) {
             builder.add(defendantAddedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
             if (sendSpiOut) {
                 defendants.add(defendantFromRequest);
-                LOGGER.error("----**-------- jurisdictionType {}", jurisdictionType);
                 if (!isCrownCourt(jurisdictionType) && !isResultReshared) {
                     builder.add(
                             buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
@@ -617,13 +602,10 @@ public class ResultsAggregate implements Aggregate {
             builder.add(defendantUpdatedEvent().withCaseId(casesDetailsFromRequest.getCaseId()).withDefendant(defendantFromRequest).build());
             defendants.add(defendantFromRequest);
         } else {
-            LOGGER.error("------------ isResultPresent {}", isResultPresent(defendantFromRequest));
-            LOGGER.error("------------ hearing.getHearingDays().size() {}", isNull(hearing.getHearingDays()) ? 0 : hearing.getHearingDays().size());
             if (isResultPresent(defendantFromRequest) && isNotEmpty(hearing.getHearingDays()) && hearing.getHearingDays().size() > 1) {
                 final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter(defendantFromRequest.getDefendantId());
                 if (sendSpiOut) {
                     defendants.add(defendantFromRequest);
-                    LOGGER.error("------------ jurisdictionType {}", jurisdictionType);
                     if (!isCrownCourt(jurisdictionType) && !isResultReshared) {
                         builder.add(
                                 buildPoliceResultGeneratedEvent(casesDetailsFromRequest.getCaseId(), casesDetailsFromRequest.getUrn(), defendantFromRequest, hearingDay, enhancedCourtCenter)
