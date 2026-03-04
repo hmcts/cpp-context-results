@@ -634,7 +634,7 @@ public class ResultsEventProcessor {
                     .anyMatch(applicationResultDetails -> isNotEmpty(applicationResultDetails.getJudicialResultDetails()));
 
             personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject, policeNotificationRequestedV2.getCourtCentre(), isApplicationAmended));
-            personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, applicationParameters.getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
+            personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
         }
 
         personalisationProperties.put(NOTIFICATION_ID, policeNotificationRequestedV2.getNotificationId().toString());
@@ -643,13 +643,13 @@ public class ResultsEventProcessor {
         return personalisationProperties;
     }
 
+    private String getCommonPlatformUrl() {
+        return applicationParameters.getCommonPlatformUrl().endsWith("/") ? applicationParameters.getCommonPlatformUrl() : applicationParameters.getCommonPlatformUrl() + "/";
+    }
+
     private Notification buildAppealUpdateNotification(final AppealUpdateNotificationRequested appealUpdateNotificationRequested){
         final Map<String, String> personalisationProperties = new HashMap<>();
-        String commonPlatformUrl = applicationParameters.getCommonPlatformUrl();
-
-        if (!commonPlatformUrl.endsWith("/")) {
-            commonPlatformUrl = commonPlatformUrl + "/";
-        }
+        String commonPlatformUrl = getCommonPlatformUrl();
 
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
         personalisationProperties.put(COMMON_PLATFORM_URL_AAAG, commonPlatformUrl
