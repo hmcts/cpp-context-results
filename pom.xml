@@ -43,7 +43,7 @@
         <systemdocgenerator.version>17.103.103</systemdocgenerator.version>
         <progression.version>17.0.219</progression.version>
         <material.version>17.0.75</material.version>
-        <usersgroups.version>17.104.44</usersgroups.version>
+        <usersgroups.version>17.104.46</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <netty.version>4.1.113.Final</netty.version>
