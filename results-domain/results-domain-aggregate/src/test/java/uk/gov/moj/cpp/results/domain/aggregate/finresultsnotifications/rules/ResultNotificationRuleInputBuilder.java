@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ResultNotificationRuleInputBuilder {
+    public static final String OFFENCE_DATE = "2023-03-01";
     private HearingFinancialResultRequest request;
     private String isWrittenOffExists;
     private String originalDateOfOffenceList;
@@ -55,7 +56,7 @@ public class ResultNotificationRuleInputBuilder {
         this.offenceDateMap = request.getOffenceResults().stream().
                 collect(toMap(
                         OffenceResults::getOffenceId,
-                        offenceResult -> "2023-03-01"
+                        offenceResult -> OFFENCE_DATE
                 ));
         return this;
     }
