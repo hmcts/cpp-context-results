@@ -38,7 +38,20 @@
   "newApplicationResults": {
     "applicationResult": []
   },
-  "newOffenceByResult": [],
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/02/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",
+      "title": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment"
+    },
+    {
+      "details": "FO - Fine\nFined £500.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
+      "title": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
   "notificationId": "d721c8c3-a969-4fd8-b50b-fb2bacec4b5f",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",

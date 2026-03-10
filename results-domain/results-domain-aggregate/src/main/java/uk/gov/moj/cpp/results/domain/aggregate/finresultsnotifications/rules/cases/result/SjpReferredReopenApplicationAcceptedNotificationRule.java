@@ -2,8 +2,6 @@ package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ca
 
 import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelper.buildNewApplicationResultsFromTrackRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getOriginalSjpReferredOffenceResultsApplication;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.FINAL;
 
@@ -55,11 +53,15 @@ public class SjpReferredReopenApplicationAcceptedNotificationRule extends Abstra
                 .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
                 .distinct().toList();
 
-        final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
-                sjpReferredOffences,
-                input.prevOffenceResultsDetails(),
-                input.prevApplicationOffenceResultsMap()).stream()
-                .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap()))
+        final List<NewOffenceByResult> newApplicationOffenceResults = sjpReferredOffences.stream()
+                .filter(sjpReferredOffence -> Boolean.TRUE.equals(sjpReferredOffence.getIsFinancial()))
+                .map(nor ->
+                        NewOffenceByResult.newOffenceByResult()
+                                .withOffenceId(nor.getOffenceId())
+                                .withDetails(nor.getImpositionOffenceDetails())
+                                .withOffenceDate(input.offenceDateMap().get(nor.getOffenceId()))
+                                .withTitle(nor.getOffenceTitle())
+                                .build())
                 .distinct().toList();
 
         return Optional.of(markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())

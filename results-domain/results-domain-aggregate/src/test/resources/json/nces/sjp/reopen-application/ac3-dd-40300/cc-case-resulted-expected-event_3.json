@@ -38,7 +38,14 @@
   "newApplicationResults": {
     "applicationResult": []
   },
-  "newOffenceByResult": [],
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/01/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b413d7d9-fc23-4ba0-a9cb-b825ccdf8638",
+      "title": "Keep a vehicle without a valid vehicle licence"
+    }
+  ],
   "notificationId": "83b788d7-c62c-4fcd-a101-f3acb08e0c3f",
   "oldDivisionCode": "77",
   "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
