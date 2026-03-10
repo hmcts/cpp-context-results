@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
+import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.OFFENCE_DATE;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.FINAL;
@@ -50,13 +51,16 @@ class SjpReferredReopenApplicationAcceptedNotificationRuleTest {
         sjpMap.put(offenceId, new ApplicationMetadata(applicationId, "REOPEN"));
         sjpMap.put(offence2Id, new ApplicationMetadata(applicationId, "REOPEN"));
 
+        final String offenceDetails = "some offence details";
+        final String offenceTitle = "Offence title";
         final HearingFinancialResultRequest request = hearingFinancialResultRequest()
                 .withIsSJPHearing(false)
                 .withProsecutionCaseReferences(List.of("CaseId1"))
                 .withOffenceResults(List.of(offenceResults()
                                 .withIsFinancial(true)
-                                .withImpositionOffenceDetails("some offence details")
+                                .withImpositionOffenceDetails(offenceDetails)
                                 .withOffenceId(offenceId)
+                                .withOffenceTitle(offenceTitle)
                                 .withOffenceResultsCategory(FINAL.name())
                                 .build(),
                         offenceResults()
@@ -82,7 +86,14 @@ class SjpReferredReopenApplicationAcceptedNotificationRuleTest {
         assertThat("Rule should apply to cc case result", rule.appliesTo(input));
         final Optional<MarkedAggregateSendEmailWhenAccountReceived> result = rule.apply(input);
 
-        result.ifPresentOrElse(notification -> assertThat("subject should match", notification.getSubject(), is("APPLICATION TO REOPEN GRANTED"))
+        result.ifPresentOrElse(notification -> {
+                    assertThat("subject should match", notification.getSubject(), is("APPLICATION TO REOPEN GRANTED"));
+                    assertThat(notification.getNewOffenceByResult().size(), is(1));
+                    assertThat(notification.getNewOffenceByResult().get(0).getOffenceId(), is(offenceId));
+                    assertThat(notification.getNewOffenceByResult().get(0).getOffenceDate(), is(OFFENCE_DATE));
+                    assertThat(notification.getNewOffenceByResult().get(0).getDetails(), is(offenceDetails));
+                    assertThat(notification.getNewOffenceByResult().get(0).getTitle(), is(offenceTitle));
+                }
                 , () -> fail("Expected notification to be present"));
     }
 
