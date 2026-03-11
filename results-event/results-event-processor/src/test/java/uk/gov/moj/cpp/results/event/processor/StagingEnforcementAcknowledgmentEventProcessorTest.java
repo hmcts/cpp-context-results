@@ -259,6 +259,55 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
         assertThat(allEnvelopes.get(3).metadata().name(), is("result.command.send-nces-email-for-application"));
     }
 
+    @Test
+    void shouldProcessSendNcesMailForNewApplicationWhenDefendantFineAccountNumbersMissing() {
+        // GIVEN - first case has no defendantFineAccountNumbers in migrationSourceSystem
+        final String masterDefendantId = "1a9176f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
+        final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId3 = "b10acc1c-eb69-4b3c-960e-76be9153125a";
+        final String hearingCourtCentreId = "faa91bb2-19cb-384b-bcc1-06d31d12cc67";
+
+        final JsonObject notificationPayload = createObjectBuilder()
+                .add("masterDefendantId", masterDefendantId)
+                .add("caseIds", createCaseIds(caseId1, caseId2, caseId3))
+                .add("hearingCourtCentreId", hearingCourtCentreId)
+                .build();
+
+        final JsonObject progressionResponse = getPayload("inactive-migrated-cases-without-defendant-fine-account-numbers.json");
+
+        when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3)))
+                .thenReturn(Optional.of(progressionResponse));
+
+        final JsonObject payload = getPayload("organisation-units.json");
+        when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(payload);
+
+        final JsonEnvelope event = JsonEnvelope.envelopeFrom(
+                metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
+
+        // WHEN
+        stagingEnforcementAcknowledgmentEventProcessor.processSendNcesMailForNewApplication(event);
+
+        // THEN - only 1 migrated-inactive email (from second case) + 1 send-nces-email; first case has no defendantFineAccountNumbers so produces no emails
+        verify(progressionService).getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3));
+
+        verify(sender, times(2)).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
+
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(0).metadata(), allEnvelopes.get(0).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.masterDefendantId", is(masterDefendantId)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId2)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("67890")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare"))
+                        ))));
+
+        assertThat(allEnvelopes.get(1).metadata().name(), is("result.command.send-nces-email-for-application"));
+    }
+
     private JsonArrayBuilder createCaseIds(String... caseIds) {
         final JsonArrayBuilder builder = createArrayBuilder();
         Arrays.stream(caseIds).forEach(builder::add);
