@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.inject.Inject;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
@@ -225,30 +226,37 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .map(JsonValue::asJsonObject)
                 .filter(obj -> obj.containsKey(InactiveMigratedCase.INACTIVE_CASE_SUMMARY))
                 .map(obj -> obj.getJsonObject(InactiveMigratedCase.INACTIVE_CASE_SUMMARY))
-                .flatMap(caseSummary -> {
-                    String caseId = caseSummary.getString(InactiveMigratedCase.ID);
-                    String caseURN = caseSummary.getString(Case.URN);
-
-                    JsonObject sourceSystem = caseSummary.getJsonObject(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM);
-                    String caseIdentifier = sourceSystem.getString(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER);
-
-                    return caseSummary.getJsonArray(Defendant.DEFENDANTS).stream()
-                            .map(JsonValue::asJsonObject)
-                            .filter(def -> masterId.equals(def.getString(MASTER_DEFENDANT_ID)))
-                            .flatMap(def -> {
-                                String currentDefId = def.getString(Defendant.ID);
-                                DefendantDetails details = mapToDefendantDetails(def);
-
-                                return sourceSystem.getJsonArray(InactiveMigratedCase.DEFENDANT_FINE_ACCOUNT_NUMBERS).stream()
-                                        .map(JsonValue::asJsonObject)
-                                        .filter(fa -> currentDefId.equals(fa.getString(Defendant.ID)))
-                                        .map(fa -> new EnrichedFineDetail(
-                                                new FineAccount(caseId, fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER), caseIdentifier, caseURN),
-                                                details)
-                                        );
-                            });
-                })
+                .flatMap(caseSummary -> processCaseSummary(caseSummary, masterId))
                 .toList();
+    }
+
+    private Stream<EnrichedFineDetail> processCaseSummary(JsonObject caseSummary, String masterId) {
+        String caseId = caseSummary.getString(InactiveMigratedCase.ID);
+        String caseURN = caseSummary.getString(Case.URN);
+
+        JsonObject sourceSystem = caseSummary.getJsonObject(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM);
+        String caseIdentifier = sourceSystem.getString(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER);
+
+        return caseSummary.getJsonArray(Defendant.DEFENDANTS).stream()
+                .map(JsonValue::asJsonObject)
+                .filter(def -> masterId.equals(def.getString(MASTER_DEFENDANT_ID)))
+                .flatMap(def -> enrichFineDetails(def, sourceSystem, caseId, caseURN, caseIdentifier));
+    }
+
+    private Stream<EnrichedFineDetail> enrichFineDetails(JsonObject def, JsonObject sourceSystem,
+                                                         String caseId, String caseURN, String caseIdentifier) {
+        String currentDefId = def.getString(Defendant.ID);
+        DefendantDetails details = mapToDefendantDetails(def);
+
+        return Optional.ofNullable(sourceSystem.getJsonArray(InactiveMigratedCase.DEFENDANT_FINE_ACCOUNT_NUMBERS))
+                .stream()
+                .flatMap(JsonArray::stream)
+                .map(JsonValue::asJsonObject)
+                .filter(fa -> currentDefId.equals(fa.getString(Defendant.ID)))
+                .map(fa -> new EnrichedFineDetail(
+                        new FineAccount(caseId, fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER), caseIdentifier, caseURN),
+                        details)
+                );
     }
 
     private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
