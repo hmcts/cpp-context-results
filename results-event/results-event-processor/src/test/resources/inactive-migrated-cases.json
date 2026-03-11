@@ -13,14 +13,8 @@
                 "firstName": "Garfield",
                 "lastName": "Dare",
                 "dateOfBirth": "1998-08-23",
-                "address": {
-                  "address1": "59 Meadow Lane",
-                  "postcode": "B1 1AA"
-                },
-                "contact": {
-                  "work": "07431234511",
-                  "primaryEmail": "test@gmail.com"
-                }
+                "address": { "address1": "59 Meadow Lane", "postcode": "B1 1AA" },
+                "contact": { "work": "07431234511", "primaryEmail": "test@gmail.com" }
               }
             },
             "offences": [
@@ -36,18 +30,28 @@
                 "firstName": "Garfield (Junior)",
                 "lastName": "Dare",
                 "dateOfBirth": "2020-01-01",
-                "address": {
-                  "address1": "59 Meadow Lane",
-                  "postcode": "B1 1AA"
-                },
-                "contact": {
-                  "work": "0000000000",
-                  "primaryEmail": "junior@gmail.com"
-                }
+                "address": { "address1": "59 Meadow Lane", "postcode": "B1 1AA" },
+                "contact": { "work": "0000000000", "primaryEmail": "junior@gmail.com" }
               }
             },
             "offences": [
               { "convictionDate": "2026-01-01" }
+            ]
+          },
+          {
+            "defendantId": "DEF-JANE-DOE-888",
+            "masterDefendantId": "1a9176f4-3adc-4ea1-a808-26c4632f38ab",
+            "personDefendant": {
+              "personDetails": {
+                "firstName": "Jane",
+                "lastName": "Dare",
+                "dateOfBirth": "1995-05-15",
+                "address": { "address1": "59 Meadow Lane", "postcode": "B1 1AA" },
+                "contact": { "primaryEmail": "jane.dare@gmail.com" }
+              }
+            },
+            "offences": [
+              { "convictionDate": "2026-02-15" }
             ]
           }
         ],

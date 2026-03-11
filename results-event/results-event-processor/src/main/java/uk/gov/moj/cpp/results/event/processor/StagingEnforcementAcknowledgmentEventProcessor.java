@@ -150,7 +150,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 ncesNotificationDetails = extractNcesNotificationEmail(event, payload);
             }
 
-            if (isNotEmpty(enrichedDetails) && nonNull(ncesNotificationDetails) && nonNull(ncesNotificationDetails.email())) {
+            if (nonNull(ncesNotificationDetails) && nonNull(ncesNotificationDetails.email())) {
                 for (EnrichedFineDetail item : enrichedDetails) {
 
                     final JsonObjectBuilder builder = createObjectBuilder()
@@ -248,15 +248,25 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         String currentDefId = def.getString(Defendant.ID);
         DefendantDetails details = mapToDefendantDetails(def);
 
-        return Optional.ofNullable(sourceSystem.getJsonArray(InactiveMigratedCase.DEFENDANT_FINE_ACCOUNT_NUMBERS))
+        // 1. Get the list of accounts safely
+        List<JsonObject> fineAccountList = Optional.ofNullable(sourceSystem.getJsonArray(InactiveMigratedCase.DEFENDANT_FINE_ACCOUNT_NUMBERS))
                 .stream()
                 .flatMap(JsonArray::stream)
                 .map(JsonValue::asJsonObject)
+                .toList();
+
+        // 2. Try to find the matching account for THIS specific defendant
+        String accountNumber = fineAccountList.stream()
                 .filter(fa -> currentDefId.equals(fa.getString(Defendant.ID)))
-                .map(fa -> new EnrichedFineDetail(
-                        new FineAccount(caseId, fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER), caseIdentifier, caseURN),
-                        details)
-                );
+                .map(fa -> fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER))
+                .findFirst()
+                .orElse("NOT PRESENT"); // This is your fallback requirement
+
+        // 3. Return a Stream with exactly one EnrichedFineDetail object
+        return Stream.of(new EnrichedFineDetail(
+                new FineAccount(caseId, accountNumber, caseIdentifier, caseURN),
+                details)
+        );
     }
 
     private DefendantDetails mapToDefendantDetails(JsonObject defendantJson) {
