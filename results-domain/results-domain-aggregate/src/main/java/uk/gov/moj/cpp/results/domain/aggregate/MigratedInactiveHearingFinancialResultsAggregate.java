@@ -14,6 +14,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFinAcccountNumberAbsent;
 
 import java.io.Serial;
 import java.util.List;
@@ -29,9 +30,10 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
     private String sendToAddress;
     private String subject;
     private boolean isEventRaisedEarlier = false;
+    public static final String FINA_ACCOUNT_NOT_PRESENT = "FIN_ACCOUNT_NOT_PRESENT";
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 101L;
     private UUID caseId;
 
 
@@ -69,6 +71,14 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                     .withDescription("Event earlier or migratedCaseDetails is null")
                     .build();
             return apply(Stream.of(event));
+        }
+
+        if(FINA_ACCOUNT_NOT_PRESENT.equals(migratedCaseDetails.fineAccountNumber())){
+            MigratedInactiveNcesFinAcccountNumberAbsent.migratedInactiveNcesFinAcccountNumberAbsent()
+                    .withMasterDefendantId(UUID.fromString(migratedCaseDetails.masterDefendantId()))
+                    .withDefendantId(UUID.fromString(migratedCaseDetails.masterDefendantId()))
+                    .withCaseId(UUID.fromString(migratedCaseDetails.caseId()))
+                    .build();
         }
 
         final String subject = APPLICATION_TYPES.get(applicationType);
