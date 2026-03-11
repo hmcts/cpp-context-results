@@ -19,6 +19,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatch
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
+import static uk.gov.moj.cpp.results.event.processor.StagingEnforcementAcknowledgmentEventProcessor.FINA_ACCOUNT_NOT_PRESENT;
 
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
@@ -258,7 +259,7 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
-                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("NOT PRESENT")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is(FINA_ACCOUNT_NOT_PRESENT)),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Jane Dare")),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("jane.dare@gmail.com"))
                         ))));
@@ -315,11 +316,11 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
         List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
 
         // 0: Case 1 - Garfield (NOT PRESENT)
-        assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is("NOT PRESENT"));
+        assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINA_ACCOUNT_NOT_PRESENT));
         assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("caseId"), is(caseId1));
 
         // 1: Case 1 - Junior (NOT PRESENT)
-        assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is("NOT PRESENT"));
+        assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINA_ACCOUNT_NOT_PRESENT));
         assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("defendantName"), containsString("Junior"));
 
         // 2: Case 2 - Garfield (67890)

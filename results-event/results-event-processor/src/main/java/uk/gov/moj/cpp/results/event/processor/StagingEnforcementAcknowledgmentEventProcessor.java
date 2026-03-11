@@ -62,6 +62,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String HEARING_FINANCIAL_RESULT_REQUEST = "hearingFinancialResultRequest";
     private static final DateTimeFormatter ISO_FORMATTER = ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMATTER = ofPattern("dd/MM/yyyy");
+    public static final String FINA_ACCOUNT_NOT_PRESENT = "FIN_ACCOUNT_NOT_PRESENT";
 
     private record NcesNotificationDetails(String email, String division) {
     }
@@ -248,21 +249,18 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
         String currentDefId = def.getString(Defendant.ID);
         DefendantDetails details = mapToDefendantDetails(def);
 
-        // 1. Get the list of accounts safely
         List<JsonObject> fineAccountList = Optional.ofNullable(sourceSystem.getJsonArray(InactiveMigratedCase.DEFENDANT_FINE_ACCOUNT_NUMBERS))
                 .stream()
                 .flatMap(JsonArray::stream)
                 .map(JsonValue::asJsonObject)
                 .toList();
 
-        // 2. Try to find the matching account for THIS specific defendant
         String accountNumber = fineAccountList.stream()
                 .filter(fa -> currentDefId.equals(fa.getString(Defendant.ID)))
                 .map(fa -> fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER))
                 .findFirst()
-                .orElse("NOT PRESENT"); // This is your fallback requirement
+                .orElse(FINA_ACCOUNT_NOT_PRESENT);
 
-        // 3. Return a Stream with exactly one EnrichedFineDetail object
         return Stream.of(new EnrichedFineDetail(
                 new FineAccount(caseId, accountNumber, caseIdentifier, caseURN),
                 details)
