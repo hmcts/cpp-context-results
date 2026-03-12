@@ -74,11 +74,12 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
         }
 
         if(FINA_ACCOUNT_NOT_PRESENT.equals(migratedCaseDetails.fineAccountNumber())){
-            MigratedInactiveNcesFinAcccountNumberAbsent.migratedInactiveNcesFinAcccountNumberAbsent()
-                    .withMasterDefendantId(UUID.fromString(migratedCaseDetails.masterDefendantId()))
-                    .withDefendantId(UUID.fromString(migratedCaseDetails.masterDefendantId()))
-                    .withCaseId(UUID.fromString(migratedCaseDetails.caseId()))
+            final MigratedInactiveNcesFinAcccountNumberAbsent event = MigratedInactiveNcesFinAcccountNumberAbsent.migratedInactiveNcesFinAcccountNumberAbsent()
+                    .withMasterDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
+                    .withDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
+                    .withCaseId(fromString(migratedCaseDetails.caseId()))
                     .build();
+            return apply(Stream.of(event));
         }
 
         final String subject = APPLICATION_TYPES.get(applicationType);
