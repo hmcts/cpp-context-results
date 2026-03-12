@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static java.util.Collections.singletonList;
+import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,6 +13,7 @@ import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotif
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFinAcccountNumberAbsent;
 
 import java.util.List;
 import java.util.UUID;
@@ -156,6 +158,42 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         assertThat(events.get(0).getClass(), is(MigratedInactiveNcesEmailNotificationRequestedExists.class));
         assertThat(((MigratedInactiveNcesEmailNotificationRequestedExists) events.get(0)).getDescription(),
                 is(EVENT_EARLIER_OR_MIGRATED_CASE_DETAILS_IS_NULL));
+    }
+
+    @Test
+    public void shouldEmitMigratedInactiveNcesFinAccountNumberAbsentWhenFineAccountNotPresent() {
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(MASTER_DEFENDANT_ID)
+                .withCaseId(CASE_ID)
+                .withFineAccountNumber(MigratedInactiveHearingFinancialResultsAggregate.FINA_ACCOUNT_NOT_PRESENT)
+                .withCourtEmail(COURT_EMAIL)
+                .withDivision(DIVISION)
+                .withDefendantId(DEFENDANT_ID)
+                .withDefendantName(DEFENDANT_NAME)
+                .withDefendantAddress(DEFENDANT_ADDRESS)
+                .withOriginalDateOfConviction(ORIGINAL_DATE_OF_CONVICTION)
+                .withDefendantEmail(DEFENDANT_EMAIL)
+                .withDefendantDateOfBirth(DEFENDANT_DATE_OF_BIRTH)
+                .withDefendantContactNumber(DEFENDANT_CONTACT_NUMBER)
+                .withMigrationSourceSystemCaseIdentifier("CASE123")
+                .withCaseURN("caseUrn1")
+                .build();
+
+        final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
+                STAT_DEC,
+                LISTING_DATE,
+                singletonList("caseUrn"),
+                HEARING_COURT_CENTRE_NAME,
+                migratedCaseDetails);
+
+        final List<Object> events = result.collect(toList());
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesFinAcccountNumberAbsent.class));
+
+        final MigratedInactiveNcesFinAcccountNumberAbsent event = (MigratedInactiveNcesFinAcccountNumberAbsent) events.get(0);
+        assertThat(event.getMasterDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
+        assertThat(event.getDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
+        assertThat(event.getCaseId(), is(fromString(CASE_ID)));
     }
 
     @Test
