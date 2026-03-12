@@ -13,7 +13,7 @@ import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotif
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
-import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFinAcccountNumberAbsent;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFineAcccountNumberAbsent;
 
 import java.util.List;
 import java.util.UUID;
@@ -165,7 +165,7 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
                 .withMasterDefendantId(MASTER_DEFENDANT_ID)
                 .withCaseId(CASE_ID)
-                .withFineAccountNumber(MigratedInactiveHearingFinancialResultsAggregate.FINA_ACCOUNT_NOT_PRESENT)
+                .withFineAccountNumber(MigratedInactiveHearingFinancialResultsAggregate.FINE_ACCOUNT_NOT_PRESENT)
                 .withCourtEmail(COURT_EMAIL)
                 .withDivision(DIVISION)
                 .withDefendantId(DEFENDANT_ID)
@@ -188,9 +188,9 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
 
         final List<Object> events = result.collect(toList());
         assertThat(events.size(), is(1));
-        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesFinAcccountNumberAbsent.class));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesFineAcccountNumberAbsent.class));
 
-        final MigratedInactiveNcesFinAcccountNumberAbsent event = (MigratedInactiveNcesFinAcccountNumberAbsent) events.get(0);
+        final MigratedInactiveNcesFineAcccountNumberAbsent event = (MigratedInactiveNcesFineAcccountNumberAbsent) events.get(0);
         assertThat(event.getMasterDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
         assertThat(event.getDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
         assertThat(event.getCaseId(), is(fromString(CASE_ID)));

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://moj.gov.uk/cpp/results/domain/event/results.event.migrated-inactive-nces-fin-acccount-number-absent.json",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/results.event.migrated-inactive-nces-fine-acccount-number-absent.json",
   "type": "object",
   "properties": {
     "masterDefendantId": {

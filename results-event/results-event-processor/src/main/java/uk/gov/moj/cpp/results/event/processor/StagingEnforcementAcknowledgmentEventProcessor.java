@@ -62,7 +62,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     private static final String HEARING_FINANCIAL_RESULT_REQUEST = "hearingFinancialResultRequest";
     private static final DateTimeFormatter ISO_FORMATTER = ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMATTER = ofPattern("dd/MM/yyyy");
-    public static final String FINA_ACCOUNT_NOT_PRESENT = "FIN_ACCOUNT_NOT_PRESENT";
+    public static final String FINE_ACCOUNT_NOT_PRESENT = "FINE_ACCOUNT_NOT_PRESENT";
 
     private record NcesNotificationDetails(String email, String division) {
     }
@@ -259,7 +259,7 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 .filter(fa -> currentDefId.equals(fa.getString(Defendant.ID)))
                 .map(fa -> fa.getString(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER))
                 .findFirst()
-                .orElse(FINA_ACCOUNT_NOT_PRESENT);
+                .orElse(FINE_ACCOUNT_NOT_PRESENT);
 
         return Stream.of(new EnrichedFineDetail(
                 new FineAccount(caseId, accountNumber, caseIdentifier, caseURN),

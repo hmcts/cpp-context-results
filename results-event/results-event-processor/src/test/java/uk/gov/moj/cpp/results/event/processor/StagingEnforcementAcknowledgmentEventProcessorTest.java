@@ -19,7 +19,7 @@ import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatch
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
-import static uk.gov.moj.cpp.results.event.processor.StagingEnforcementAcknowledgmentEventProcessor.FINA_ACCOUNT_NOT_PRESENT;
+import static uk.gov.moj.cpp.results.event.processor.StagingEnforcementAcknowledgmentEventProcessor.FINE_ACCOUNT_NOT_PRESENT;
 
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
@@ -226,7 +226,6 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
 
         List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
 
-        // 0: Case 1 - Garfield (12345)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(0).metadata(), allEnvelopes.get(0).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -241,7 +240,6 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.originalDateOfConviction", is("09/11/2025, 10/11/2025"))
                         ))));
 
-        // 1: Case 1 - Junior (54321)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(1).metadata(), allEnvelopes.get(1).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -253,18 +251,16 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("junior@gmail.com"))
                         ))));
 
-        // 2: Case 1 - Jane (NOT PRESENT)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(2).metadata(), allEnvelopes.get(2).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
                         payloadIsJson(allOf(
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
-                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is(FINA_ACCOUNT_NOT_PRESENT)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is(FINE_ACCOUNT_NOT_PRESENT)),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Jane Dare")),
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("jane.dare@gmail.com"))
                         ))));
 
-        // 3: Case 2 - Garfield (67890)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(3).metadata(), allEnvelopes.get(3).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -274,7 +270,6 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare"))
                         ))));
 
-        // 4: Final notification
         assertThat(allEnvelopes.get(4).metadata().name(), is("result.command.send-nces-email-for-application"));
     }
 
@@ -310,20 +305,16 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
         // THEN
         verify(progressionService).getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3));
 
-        // UPDATED: 2 from Case 1 (NOT PRESENT) + 1 from Case 2 + 1 Final = 4 total
         verify(sender, times(4)).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
 
-        // 0: Case 1 - Garfield (NOT PRESENT)
-        assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINA_ACCOUNT_NOT_PRESENT));
+        assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINE_ACCOUNT_NOT_PRESENT));
         assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("caseId"), is(caseId1));
 
-        // 1: Case 1 - Junior (NOT PRESENT)
-        assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINA_ACCOUNT_NOT_PRESENT));
+        assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINE_ACCOUNT_NOT_PRESENT));
         assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("defendantName"), containsString("Junior"));
 
-        // 2: Case 2 - Garfield (67890)
         assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(2).metadata(), allEnvelopes.get(2).payload()),
                 jsonEnvelope(
                         metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
@@ -332,7 +323,6 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("67890"))
                         ))));
 
-        // 3: Final command
         assertThat(allEnvelopes.get(3).metadata().name(), is("result.command.send-nces-email-for-application"));
     }
 
