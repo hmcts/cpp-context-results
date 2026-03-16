@@ -37,8 +37,8 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <coredomain.version>17.102.15-CCT-2357-SNAPSHOT</coredomain.version>
-        <referencedata.version>17.103.122</referencedata.version>
+        <coredomain.version>17.103.11</coredomain.version>
+        <referencedata.version>17.103.128</referencedata.version>
         <notification.notify.version>17.0.38</notification.notify.version>
         <systemdocgenerator.version>17.103.103</systemdocgenerator.version>
         <progression.version>17.0.219</progression.version>
@@ -49,7 +49,7 @@
         <netty.version>4.1.113.Final</netty.version>
         <!-- Downgrade h2 until deltaspike tests have been updated to work with latest h2 version -->
         <h2.version>1.4.196</h2.version>
-        <sjp.version>17.103.148</sjp.version>
+        <sjp.version>17.103.166</sjp.version>
         <staging.dcs.version>17.103.8</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
