@@ -151,7 +151,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                 ncesNotificationDetails = extractNcesNotificationEmail(event, payload);
             }
 
-            if (nonNull(ncesNotificationDetails) && nonNull(ncesNotificationDetails.email())) {
                 for (EnrichedFineDetail item : enrichedDetails) {
 
                     final JsonObjectBuilder builder = createObjectBuilder()
@@ -159,14 +158,16 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .add(Case.ID, item.fineAccount().caseId())
                             .add(MigrationConstants.FineAccount.FINE_ACCOUNT_NUMBER, item.fineAccount().fineAccountNumber())
                             .add(InactiveMigratedCase.MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER, item.fineAccount().caseIdentifier())
-                            .add(Case.COURT_EMAIL, ncesNotificationDetails.email())
-                            .add(Case.DIVISION, ncesNotificationDetails.division())
                             .add(Defendant.ID, item.defendant().defendantId())
                             .add(Defendant.NAME, item.defendant().defendantName())
                             .add(Defendant.ADDRESS, item.defendant().defendantAddress())
                             .add(Defendant.ORIGINAL_DATE_OF_CONVICTION, item.defendant().originalDateOfConviction())
                             .add(Case.URN, item.fineAccount().caseURN());
 
+                    addIfNotNull(builder, Case.COURT_EMAIL,
+                            Optional.ofNullable(ncesNotificationDetails).map(NcesNotificationDetails::email).orElse(null));
+                    addIfNotNull(builder, Case.DIVISION,
+                            Optional.ofNullable(ncesNotificationDetails).map(NcesNotificationDetails::division).orElse(null));
                     addIfNotNull(builder, Defendant.EMAIL, item.defendant().defendantEmail());
                     addIfNotNull(builder, Defendant.DATE_OF_BIRTH, item.defendant().defendantDateOfBirth());
                     addIfNotNull(builder, Defendant.CONTACT_NUMBER, item.defendant().defendantContactNumber());
@@ -180,7 +181,6 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
                             .withName(MigrationConstants.RESULT_COMMAND_SEND_MIGRATED_INACTIVE_NCES_EMAIL_FOR_APPLICATION)
                             .withMetadataFrom(event));
                 }
-            }
             this.sender.sendAsAdmin(requestEnvelope);
         } else {
             this.sender.sendAsAdmin(requestEnvelope);

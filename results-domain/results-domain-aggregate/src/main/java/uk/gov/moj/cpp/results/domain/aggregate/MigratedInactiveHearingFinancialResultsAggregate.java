@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
+import static java.util.Objects.isNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
@@ -11,6 +12,7 @@ import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotif
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesCourtEmailAbsent;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
@@ -18,6 +20,7 @@ import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFineAcccountNumbe
 
 import java.io.Serial;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -78,6 +81,17 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                     .withMasterDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
                     .withDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
                     .withCaseId(fromString(migratedCaseDetails.caseId()))
+                    .withCaseURN(migratedCaseDetails.caseURN())
+                    .build();
+            return apply(Stream.of(event));
+        }
+
+        if(isNull(migratedCaseDetails.courtEmail())){
+            final MigratedInactiveNcesCourtEmailAbsent event = MigratedInactiveNcesCourtEmailAbsent.migratedInactiveNcesCourtEmailAbsent()
+                    .withMasterDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
+                    .withDefendantId(fromString(migratedCaseDetails.masterDefendantId()))
+                    .withCaseId(fromString(migratedCaseDetails.caseId()))
+                    .withCaseURN(migratedCaseDetails.caseURN())
                     .build();
             return apply(Stream.of(event));
         }
