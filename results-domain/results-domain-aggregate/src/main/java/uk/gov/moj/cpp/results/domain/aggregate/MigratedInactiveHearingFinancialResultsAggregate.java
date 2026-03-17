@@ -35,7 +35,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
     public static final String FINE_ACCOUNT_NOT_PRESENT = "FINE_ACCOUNT_NOT_PRESENT";
 
     @Serial
-    private static final long serialVersionUID = 101L;
+    private static final long serialVersionUID = 103L;
     private UUID caseId;
 
 
