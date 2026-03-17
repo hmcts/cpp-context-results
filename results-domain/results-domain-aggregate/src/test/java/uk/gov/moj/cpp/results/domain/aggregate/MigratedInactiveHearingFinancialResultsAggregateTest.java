@@ -11,6 +11,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested.migratedInactiveNcesEmailNotificationRequested;
 
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesCourtEmailAbsent;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFineAcccountNumberAbsent;
@@ -194,6 +195,34 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         assertThat(event.getMasterDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
         assertThat(event.getDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
         assertThat(event.getCaseId(), is(fromString(CASE_ID)));
+    }
+
+    @Test
+    public void shouldEmitMigratedInactiveNcesCourtEmailAbsentWhenCourtEmailIsNull() {
+        final String caseUrn = "caseUrn1";
+        final MigratedMasterDefendantCaseDetails migratedCaseDetails = MigratedMasterDefendantCaseDetails.builder()
+                .withMasterDefendantId(MASTER_DEFENDANT_ID)
+                .withCaseId(CASE_ID)
+                .withFineAccountNumber(FINE_ACCOUNT_NUMBER)
+                .withCaseURN(caseUrn)
+                .build();
+
+        final Stream<Object> result = aggregate.sendNcesEmailForMigratedApplication(
+                STAT_DEC,
+                LISTING_DATE,
+                singletonList("caseUrn"),
+                HEARING_COURT_CENTRE_NAME,
+                migratedCaseDetails);
+
+        final List<Object> events = result.collect(toList());
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(MigratedInactiveNcesCourtEmailAbsent.class));
+
+        final MigratedInactiveNcesCourtEmailAbsent event = (MigratedInactiveNcesCourtEmailAbsent) events.get(0);
+        assertThat(event.getMasterDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
+        assertThat(event.getDefendantId(), is(fromString(MASTER_DEFENDANT_ID)));
+        assertThat(event.getCaseId(), is(fromString(CASE_ID)));
+        assertThat(event.getCaseURN(), is(caseUrn));
     }
 
     @Test
