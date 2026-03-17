@@ -20,7 +20,6 @@ import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFineAcccountNumbe
 
 import java.io.Serial;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
