@@ -1,0 +1,25 @@
+{
+  "amendmentDate": "2025-10-16",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "16OCTVTC779",
+  "defendantDateOfBirth": "1997-08-08",
+  "defendantName": "Emile Legros66",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "91655195-c76c-4860-bc81-d955123f56d6",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FCOMP - Compensation\nTo pay compensation of £100.00. , FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
+      "title": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    }
+  ],
+  "notificationId": "6235db26-a141-46ab-97bb-14f1cb4c45b1",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}
