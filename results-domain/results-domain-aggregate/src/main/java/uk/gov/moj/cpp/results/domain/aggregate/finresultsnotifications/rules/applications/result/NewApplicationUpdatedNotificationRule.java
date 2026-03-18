@@ -52,7 +52,6 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
                                         request,
                                         NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT.get(offence.getApplicationType()),
-                                        input.correlationItemList().peekLast(),
                                         impositionOffenceDetailsForApplication,
                                         ncesEmail,
                                         writtenOffExists,

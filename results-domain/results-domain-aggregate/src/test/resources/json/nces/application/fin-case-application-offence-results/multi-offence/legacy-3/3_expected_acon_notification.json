@@ -1,0 +1,28 @@
+{
+  "caseReferences": "28DI9784000",
+  "dateDecisionMade": "2025-10-24",
+  "defendantName": "Andrea4 Jackie4",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £3333.00\nFVS - Surcharge\nTo pay a surcharge of £35.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

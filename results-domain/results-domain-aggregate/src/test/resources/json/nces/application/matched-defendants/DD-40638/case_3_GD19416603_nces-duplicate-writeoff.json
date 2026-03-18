@@ -1,0 +1,46 @@
+{
+  "amendmentDate": "2025-10-20",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "GD19416603",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Shirley Mante",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £500.98\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £900.80 to be paid monthly. Instalment start date: 02/02/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3ba654af-da7b-4e89-8cda-7ae6178e4719",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £242.00, FO - Fine\nFined £55.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d81ec5c0-9d2d-4fb2-9db3-25332379e03a",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "5f17b665-ffb3-4728-a146-a8f2389051f2",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £2000.00 to TV Licensing, FO - Fine\nFined £500.98\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £900.80 to be paid monthly. Instalment start date: 02/02/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3ba654af-da7b-4e89-8cda-7ae6178e4719",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £242.00, FO - Fine\nFined £55.00, FVS - Surcharge\nTo pay a surcharge of £150.50",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d81ec5c0-9d2d-4fb2-9db3-25332379e03a",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

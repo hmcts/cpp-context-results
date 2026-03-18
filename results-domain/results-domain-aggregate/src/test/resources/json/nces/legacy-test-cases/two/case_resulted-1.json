@@ -1,0 +1,27 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Mayer Groves Bergstrommouth Avon DA61 7ND",
+  "defendantContactNumber": "322-402-3488",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Gus Herzog",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d0ce0732-16c4-49aa-b50c-3c09266edd55",
+  "hearingSittingDay": "2025-11-07T15:15:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "a86d5345-27c2-4fb5-8a49-2fe4df126f27",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-11-07",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.10, FVS - Surcharge\nTo pay a surcharge of £90.02, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £113.00 to be paid monthly from 11/12/2025",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "offenceId": "d3627716-33c9-4675-bb34-8cbdde255d15",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD55946965"
+  ]
+}

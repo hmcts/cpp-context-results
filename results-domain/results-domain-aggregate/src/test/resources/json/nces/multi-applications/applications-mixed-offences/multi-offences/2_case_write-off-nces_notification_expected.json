@@ -11,12 +11,6 @@
       "details": "FCOST - Costs\nTo pay costs of £321455.00 to Person first name last name\nFIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £5678.00",
       "offenceDate": "2019-11-28",
       "offenceId": "842d8777-fc3d-4662-9fe8-ef0ef45ea4bf"
-    },
-    {
-      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4563.00, FO - Fine\nFined £100000.00, FVS - Surcharge\nTo pay a surcharge of £34567.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/06/2027",
-      "offenceDate": "2019-11-28",
-      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
-      "title": "Possess / control TV set with intent another use install without a licence"
     }
   ],
   "isSJPHearing": false,
@@ -29,12 +23,6 @@
       "offenceDate": "2019-11-28",
       "offenceId": "842d8777-fc3d-4662-9fe8-ef0ef45ea4bf",
       "title": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
-    },
-    {
-      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £4563.00, FO - Fine\nFined £100000.00, FVS - Surcharge\nTo pay a surcharge of £34567.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 13/06/2027",
-      "offenceDate": "2019-11-28",
-      "offenceId": "d63b5c99-08ff-4be2-9505-003ccc143d3f",
-      "title": "Possess / control TV set with intent another use install without a licence"
     }
   ],
   "notificationId": "{{notificationId}}",

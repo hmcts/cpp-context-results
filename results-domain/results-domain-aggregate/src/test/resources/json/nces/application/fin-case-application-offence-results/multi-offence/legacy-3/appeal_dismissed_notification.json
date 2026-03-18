@@ -1,0 +1,52 @@
+{
+  "caseReferences": "28DI9784000",
+  "defendantAddress": "n Fisher Tunnel9784000 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £2000.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL DISMISSED SENTENCE VARIED"
+}

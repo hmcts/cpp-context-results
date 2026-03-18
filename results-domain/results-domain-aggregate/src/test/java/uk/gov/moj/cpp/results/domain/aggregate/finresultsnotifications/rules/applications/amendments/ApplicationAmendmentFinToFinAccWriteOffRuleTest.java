@@ -133,4 +133,138 @@ class ApplicationAmendmentFinToFinAccWriteOffRuleTest {
                     containsString(NCESDecisionConstants.SENTENCE_VARIED));
         }, () -> fail("Expected Acc Write Off notification to be present"));
     }
+
+    @Test
+    void shouldGenerateAccWriteOffNotificationForFinTransitionFineOffence() {
+        final UUID applicationId = randomUUID();
+        final UUID currentCorrelationId = randomUUID();
+        final UUID offenceId1 = randomUUID();
+        final UUID offenceId2 = randomUUID();
+        var trackRequest = hearingFinancialResultRequest()
+                .withAccountCorrelationId(currentCorrelationId)
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        offenceResults()
+                                .withApplicationId(applicationId)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withOffenceId(offenceId1)
+                                .withIsFinancial(true)
+                                .build(),
+                        offenceResults()
+                                .withApplicationId(applicationId)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withOffenceId(offenceId2)
+                                .withIsFinancial(true)
+                                .withAmendmentDate("2023-01-01")
+                                .build()))
+                .withAccountCorrelationId(randomUUID())
+                .build();
+
+        var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest)
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(offenceId1)
+                                .withIsFinancial(true)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withImpositionOffenceDetails("Previous Acc Write Off Offence1 details")
+                                .build(),
+                                offenceResultsDetails()
+                                        .withOffenceId(offenceId2)
+                                        .withIsFinancial(false)
+                                        .withApplicationType(NCESDecisionConstants.REOPEN)
+                                        .withImpositionOffenceDetails("Previous Acc Write Off Offence2 details")
+                                        .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                        .withAccountCorrelationId(randomUUID())
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
+                                        .withAccountNumber("AC123456789OLD")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build()))
+                                        .build(),
+                                correlationItem()
+                                        .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withAccountNumber("AC123456789")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build()))
+                                        .build()))
+                .build();
+
+        assertThat("Rule should apply for Acc Write Off", rule.appliesTo(input));
+        var output = rule.apply(input);
+
+        output.ifPresentOrElse(notification -> {
+            assertThat("subject should match", notification.getSubject(), is(NCESDecisionConstants.AMEND_AND_RESHARE));
+            assertThat("There should be one imposition offence detail for Acc Write Off", notification.getImpositionOffenceDetails().size(), is(2));
+        }, () -> fail("Expected Acc Write Off notification to be present"));
+    }
+
+    @Test
+    void shouldGenerateAccWriteOffNotificationForFinTransitionNonFineOffence() {
+        final UUID applicationId = randomUUID();
+        final UUID currentCorrelationId = randomUUID();
+        final UUID offenceId1 = randomUUID();
+        final UUID offenceId2 = randomUUID();
+        var trackRequest = hearingFinancialResultRequest()
+                .withAccountCorrelationId(currentCorrelationId)
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        offenceResults()
+                                .withApplicationId(applicationId)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withOffenceId(offenceId1)
+                                .withIsFinancial(true)
+                                .build(),
+                        offenceResults()
+                                .withApplicationId(applicationId)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withOffenceId(offenceId2)
+                                .withIsFinancial(false)
+                                .withAmendmentDate("2023-01-01")
+                                .build()))
+                .withAccountCorrelationId(randomUUID())
+                .build();
+
+        var input = ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest)
+                .withPrevApplicationOffenceResultsMap(Map.of(
+                        applicationId,
+                        List.of(offenceResultsDetails()
+                                .withOffenceId(offenceId1)
+                                .withIsFinancial(true)
+                                .withApplicationType(NCESDecisionConstants.REOPEN)
+                                .withImpositionOffenceDetails("Previous Acc Write Off Offence1 details")
+                                .build(),
+                                offenceResultsDetails()
+                                        .withOffenceId(offenceId2)
+                                        .withIsFinancial(true)
+                                        .withApplicationType(NCESDecisionConstants.REOPEN)
+                                        .withImpositionOffenceDetails("Previous Acc Write Off Offence2 details")
+                                        .build())))
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                        .withAccountCorrelationId(randomUUID())
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
+                                        .withAccountNumber("AC123456789OLD")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build(),
+                                                OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId2).build()))
+                                        .build(),
+                                correlationItem()
+                                        .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withAccountNumber("AC123456789")
+                                        .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build(),
+                                                OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId2).build()))
+                                        .build()))
+                .build();
+
+        assertThat("Rule should apply for Acc Write Off", rule.appliesTo(input));
+        var output = rule.apply(input);
+
+        output.ifPresentOrElse(notification -> {
+            assertThat("subject should match", notification.getSubject(), is(NCESDecisionConstants.AMEND_AND_RESHARE));
+            assertThat("There should be one imposition offence detail for Acc Write Off", notification.getImpositionOffenceDetails().size(), is(2));
+        }, () -> fail("Expected Acc Write Off notification to be present"));
+    }
 }

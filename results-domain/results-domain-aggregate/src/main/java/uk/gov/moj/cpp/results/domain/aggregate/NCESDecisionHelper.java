@@ -7,17 +7,21 @@ import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AACA;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AACD;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AASA;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AASD;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ACSD;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APA;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ASV;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AW;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.DISM;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.G;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.RFSD;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.ROPENED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.SENTENCE_VARIED;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STDEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.SV_SENTENCE_VARIED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WDRN;
@@ -36,10 +40,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableMap;
+
 public class NCESDecisionHelper {
 
-    public static boolean hasSentenceVaried(final List<NewOffenceByResult> newResultByOffence) {
-        return newResultByOffence.stream().anyMatch(newOffenceByResult ->
+    private static final List<String> application_accepted_result_codes = asList(G, STDEC, ROPENED, AACA, AASA);
+    private static final List<String> stadec_reoopen_denied_result_codes = asList(DISM, RFSD, WDRN);
+    private static final List<String> appeal_denied_result_codes = asList(ASV, APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
+    private static final List<String> application_denied_result_codes = asList(APA, AW, AASD, RFSD, DISM, AACD, ACSD, WDRN);
+
+
+    public static boolean hasSentenceVaried(final List<NewOffenceByResult> newOffenceByResults) {
+        return newOffenceByResults.stream().anyMatch(newOffenceByResult ->
                 newOffenceByResult.getDetails().contains(SV_SENTENCE_VARIED));
     }
 
@@ -84,7 +96,7 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()) && APPEAL.equalsIgnoreCase(offence.getApplicationType()))
                 .filter(offence -> nonNull(offence.getApplicationId()) && NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> asList(ASV, APA, AW, AASD, RFSD, DISM).contains(offence.getResultCode()));
+                .anyMatch(offence -> appeal_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
@@ -93,28 +105,65 @@ public class NCESDecisionHelper {
                 .filter(offence -> nonNull(offence.getApplicationType()))
                 .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
                 .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
-                .anyMatch(offence -> asList(G, STDEC, ROPENED, AACA, AASA).contains(offence.getResultCode()));
+                .anyMatch(offence -> application_accepted_result_codes.contains(offence.getResultCode()));
+    }
+
+    public static boolean isNewStatdecReopenApplicationDenied(final HearingFinancialResultRequest hearingFinancialResultRequest) {
+        return hearingFinancialResultRequest
+                .getOffenceResults().stream()
+                .filter(result -> nonNull(result.getApplicationId()))
+                .filter(offence -> nonNull(offence.getApplicationType()) && STAT_DEC.equalsIgnoreCase(offence.getApplicationType()) || REOPEN.equalsIgnoreCase(offence.getApplicationType()))
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .filter(offence -> Objects.isNull(offence.getAmendmentDate()))
+                .anyMatch(offence -> stadec_reoopen_denied_result_codes.contains(offence.getResultCode()));
+    }
+
+    /**
+     * Overloaded check which also checks previous application results to avoid sending duplicate application notifications
+     * when a notification for the same application has already been generated from aggregate state.
+     */
+    public static boolean isNewApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                                  final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails) {
+
+        final boolean incomingRequestIndicatesGrant = isNewApplicationGranted(hearingFinancialResultRequest);
+        if (!incomingRequestIndicatesGrant) {
+            return false;
+        }
+
+        if (applicationResultsDetails == null || applicationResultsDetails.isEmpty()) {
+            return true;
+        }
+
+
+        final boolean notificationAlreadySent = hearingFinancialResultRequest.getOffenceResults().stream()
+                .filter(result -> nonNull(result.getApplicationId()))
+                .filter(result -> Objects.isNull(result.getAmendmentDate()))
+                .filter(result -> nonNull(result.getApplicationType()))
+                .filter(result -> NCESDecisionConstants.APPLICATION_SUBJECT.get(result.getApplicationType()).containsKey(result.getResultCode()))
+                .anyMatch(result -> {
+                    return isApplicationAlreadyGranted(applicationResultsDetails, result);
+                });
+
+        return !notificationAlreadySent;
+    }
+
+    private static boolean isApplicationAlreadyGranted(final Map<UUID, List<OffenceResultsDetails>> applicationResultsDetails, final OffenceResults result) {
+
+        final List<OffenceResultsDetails> prevAppList = applicationResultsDetails.get(result.getApplicationId());
+        if (prevAppList == null || prevAppList.isEmpty()) {
+            return false;
+        }
+        return prevAppList.stream()
+                .map(OffenceResultsDetails::getResultCode)
+                .filter(Objects::nonNull)
+                .anyMatch(application_accepted_result_codes::contains);
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
         return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
                 .filter(offence -> nonNull(offence.getApplicationType()))
-                .filter(offence -> !APPEAL.equalsIgnoreCase(offence.getApplicationType()))
-                .anyMatch(offence -> asList(RFSD, WDRN, DISM).contains(offence.getResultCode()));
-    }
-
-    public static boolean isAppealApplicationWithNoOffenceResults(
-            final UUID currentApplicationId,
-            final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
-            final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-        final List<OffenceResultsDetails> offenceResultsDetails = prevApplicationResultsDetails.get(currentApplicationId);
-
-        final List<OffenceResultsDetails> offenceResultsOnTheApplication = prevApplicationOffenceResultsMap.get(currentApplicationId);
-        return isNotEmpty(offenceResultsDetails) && offenceResultsDetails.stream()
-                .filter(offence -> nonNull(offence.getApplicationType()))
-                .anyMatch(offence -> APPEAL.equalsIgnoreCase(offence.getApplicationType()))
-                && (isNull(offenceResultsOnTheApplication) || offenceResultsOnTheApplication.isEmpty());
+                .filter(offence -> NCESDecisionConstants.APPLICATION_SUBJECT.get(offence.getApplicationType()).containsKey(offence.getResultCode()))
+                .anyMatch(offence -> application_denied_result_codes.contains(offence.getResultCode()));
     }
 
     public static NewOffenceByResult buildNewImpositionOffenceDetailsFromRequest(final OffenceResults offencesFromRequest, final Map<UUID, String> offenceDateMap) {

@@ -1,0 +1,58 @@
+{
+  "amendmentDate": "2025-11-25",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "GK999966216",
+  "defendantDateOfBirth": "1958-11-25",
+  "defendantName": "Werner Herzog",
+  "divisionCode": "82",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £100.00 to Hogwarts, FO - Fine\nFined £500.00, FVS - Surcharge\nTo pay a surcharge of £100.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 06/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5aff20be-0c6e-4532-867e-08e54ce00236",
+      "title": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3f858ebb-c8a0-4273-8eec-353f02ab7fee",
+      "title": "Develop / produce an anti-personnel mine"
+    },
+    {
+      "details": "FO - Fine\nFined £700.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "563b37f8-5f67-4684-a160-80a89ff67568",
+      "title": "Drive whilst unfit through drink"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "76965ce6-8757-47fe-92ee-2847ce6b1483",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £100.00 to Hogwarts, FO - Fine\nFined £500.00, FVS - Surcharge\nTo pay a surcharge of £100.00, ACON - Account Consolidated\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nCOLLO - Collection order\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPDATE - Pay by date\nPay by date. Date to pay in full by: 06/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "5aff20be-0c6e-4532-867e-08e54ce00236",
+      "title": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3f858ebb-c8a0-4273-8eec-353f02ab7fee",
+      "title": "Develop / produce an anti-personnel mine"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 10 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "563b37f8-5f67-4684-a160-80a89ff67568",
+      "title": "Drive whilst unfit through drink"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "82",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

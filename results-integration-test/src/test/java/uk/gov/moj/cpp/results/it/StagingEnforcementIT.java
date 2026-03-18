@@ -250,7 +250,8 @@ public class StagingEnforcementIT {
         final String rejectPayload = getPayload(REJECTED_APPLICATION).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId);
         whenResultsAreTraced(rejectPayload);
 
-        jsonResponse = QueueUtil.retrieveMessage(ncesEmailEventConsumer);
+        final List<JsonPath> appMessages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 1);
+        jsonResponse = appMessages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("APPEAL WITHDRAWN")).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("APPEAL WITHDRAWN"));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));
@@ -460,7 +461,7 @@ public class StagingEnforcementIT {
 
         initiateResultBeforeAmendment(TRACE_RESULT, masterDefendantId, accountCorrelationId, false, true, hearingId);
 
-        initiateResultForGranted(TRACE_RESULT_UPDATED, masterDefendantId, hearingId, accountCorrelationId);
+        initiateResultForUpdated(TRACE_RESULT_UPDATED, masterDefendantId, hearingId);
 
         final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
@@ -478,7 +479,6 @@ public class StagingEnforcementIT {
 
 
         final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
-        messages.forEach(jsonPath -> System.out.println("subject = " + jsonPath.getString(SUBJECT)));
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT)
                         .equalsIgnoreCase(APPEAL_APPLICATION_UPDATED))
                 .findFirst()
@@ -681,6 +681,20 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
     }
 
+    private void initiateResultForUpdated(final String traceResultType, final String masterDefendantId, final String hearingId) {
+        final String payload = getPayload(traceResultType)
+                .replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
+                .replaceAll("HEARING_SITTING_DAY", HEARING_SITTING_DAY_VALUE)
+                .replaceAll("HEARING_COURT_CENTRE_NAME", HEARING_COURT_CENTRE_NAME_VALUE)
+                .replaceAll("DEFENDANT_DATE_OF_BIRTH", DEFENDANT_DATE_OF_BIRTH_VALUE)
+                .replaceAll("DEFENDANT_ADDRESS", DEFENDANT_ADDRESS_VALUE)
+                .replaceAll("DEFENDANT_EMAIL", DEFENDANT_EMAIL_VALUE)
+                .replaceAll("DEFENDANT_CONTACT_NUMBER", DEFENDANT_CONTACT_NUMBER_VALUE)
+                .replaceAll("HEARING_ID", hearingId);
+
+        whenResultsAreTraced(payload);
+    }
+
     private void initiateResultForApplicationGranted(final String traceResultType, final String masterDefendantId, final String hearingId, final String accountCorrelationId, final String offenceId, final String applicationId) {
         final String payload = getPayload(traceResultType)
                 .replaceAll("MASTER_DEFENDANT_ID", masterDefendantId)
@@ -740,9 +754,6 @@ public class StagingEnforcementIT {
                 .build();
         raisePublicEventForAcknowledgement(ncesEmailPayload, PUBLIC_EVENT_SEND_NCES_EMAIL_FOR_NEW_APPLICATION);
 
-        final String rejectPayload = getPayload(REJECTED_APPLICATION).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId);
-        whenResultsAreTraced(rejectPayload);
-
         final JsonObject stagingEnforcementAckPayload = createObjectBuilder().add("originator", "courts")
                 .add(REQUEST_ID, accountCorrelationId)
                 .add(EXPORT_STATUS, "ENFORCEMENT_ACKNOWLEDGED")
@@ -757,7 +768,7 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(MASTER_DEFENDANT_ID), is(masterDefendantId));
         assertThat(jsonResponse.getString(ACCOUNT_NUMBER), is(accountNumber));
 
-        final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 3);
+        final List<JsonPath> messages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 2);
         jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase(APPEAL_APPLICATION_RECEIVED)).findFirst().orElseGet(() -> JsonPath.from("{}"));
 
         assertThat(jsonResponse.getString(SUBJECT), is(APPEAL_APPLICATION_RECEIVED));
@@ -777,7 +788,11 @@ public class StagingEnforcementIT {
         assertThat(jsonResponse.getString(DEFENDANT_ADDRESS), is(DEFENDANT_ADDRESS_VALUE));
         assertThat(jsonResponse.getString(DEFENDANT_CONTACT_NUMBER), is(DEFENDANT_CONTACT_NUMBER_VALUE));
 
-        jsonResponse = messages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("APPEAL WITHDRAWN")).findFirst().orElseGet(() -> JsonPath.from("{}"));
+        final String rejectPayload = getPayload(REJECTED_APPLICATION).replaceAll("MASTER_DEFENDANT_ID", masterDefendantId);
+        whenResultsAreTraced(rejectPayload);
+
+        final List<JsonPath> appMessages = QueueUtil.retrieveMessages(ncesEmailEventConsumer, 1);
+        jsonResponse = appMessages.stream().filter(jsonPath -> jsonPath.getString(SUBJECT).equalsIgnoreCase("APPEAL WITHDRAWN")).findFirst().orElseGet(() -> JsonPath.from("{}"));
         assertThat(jsonResponse.getString(SUBJECT), is("APPEAL WITHDRAWN"));
         assertThat(jsonResponse.getString(DEFENDANT_NAME), is("John Doe"));
         assertThat(jsonResponse.getString(SEND_TO), is("John.Doe@xxx.com"));

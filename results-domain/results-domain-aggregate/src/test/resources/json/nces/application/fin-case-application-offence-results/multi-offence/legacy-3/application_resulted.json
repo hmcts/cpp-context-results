@@ -1,0 +1,81 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel9784000 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "6699b91e-e4db-46bc-b724-aa813b8a65f5",
+  "hearingSittingDay": "2025-10-24T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "5e572bc7-9981-40dd-80bb-f3413af77835",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "offenceTitle": "Robbery",
+      "resultCode": "ASV"
+    },
+    {
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    },
+    {
+      "applicationId": "5e572bc7-9981-40dd-80bb-f3413af77835",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "ASV - Appeal against conviction dismissed and sentence varied\nDate of conviction: 10/10/2025. Date sentence was imposed: 11/11/2026",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ASV"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £1000.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "offenceTitle": "Theft from a shop"
+    },
+    {
+      "applicationResultType": "Consolidated",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "ACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ACON"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9784000"
+  ]
+}

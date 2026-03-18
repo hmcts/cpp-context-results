@@ -1,0 +1,37 @@
+{
+    "accountDivisionCode": "105",
+    "defendantAddress": "50 Main Street Main Street Liverpool Merseyside L1 1AA",
+    "defendantContactNumber": "0674826338",
+    "defendantDateOfBirth": "1979-11-05",
+    "defendantEmail": "gaston.kling@example.com",
+    "defendantName": "Gaston Kling",
+    "hearingCourtCentreName": "Ealing Magistrates' Court",
+    "hearingId": "a3c64d56-d71c-4baf-8261-65a9cb25b7bf",
+    "hearingSittingDay": "2025-11-06T10:00:00.000Z",
+    "isSJPHearing": false,
+    "masterDefendantId": "47a5bce7-e932-4de7-8009-953251eaaca4",
+    "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+    "offenceResults": [
+        {
+            "amendmentDate": "2025-11-06",
+            "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+            "dateOfResult": "2025-11-06",
+            "impositionOffenceDetails": "non financials",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "41ecfc58-d834-4c4b-89a4-fc3d4a640c98",
+            "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+        },
+        {
+            "dateOfResult": "2025-11-06",
+            "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 12 Months.\nDDD - Discretionary with ordinary disqualification\nDisqualified for holding or obtaining a driving licence for 12 Months.  Discretionary disqualification. Driving record endorsed. Section 34(2) Road Traffic Offenders Act 1988.\nPROV - 1: Prov DVLA produced",
+            "isDeemedServed": false,
+            "isFinancial": false,
+            "offenceId": "b0e7c182-4969-4ccb-9dec-49645b3535aa",
+            "offenceTitle": "Drive whilst unfit through drink"
+        }
+    ],
+    "prosecutionCaseReferences": [
+        "HX137719933"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+  "caseReferences": "28DI3937798",
+  "dateDecisionMade": "2025-02-24",
+  "defendantName": "William Kessler",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FCOST - Costs\nTo pay costs of £350.00 to test test\nFIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £700.00.\nFO - Fine\nFined £400.00\nFVS - Surcharge\nTo pay a surcharge of £300.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 15/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "f6592175-2619-4eb8-89f0-42900faa2320",
+  "materialId": "{{materialId}}",
+  "notificationId": "{{notificationId}}",
+  "sendTo": "av.qet@justice.gov.uk",
+  "subject": "ACCOUNTS TO BE CONSOLIDATED"
+}

@@ -1,0 +1,83 @@
+{
+  "caseReferences": "GD25910423,GD19416603",
+  "dateDecisionMade": "2025-10-20",
+  "defendantAddress": "9999A9999AAAA Oda Harbors Aliso Viejo Avon DA61 7ND",
+  "defendantContactNumber": "867-460-5397",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Shirley Mante",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2025-10-20",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £345.45\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £900.90 to be paid monthly from 11/11/2025",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8073de79-83dc-4d6a-b27d-aa2c1e62f531",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £560.45, FVS - Surcharge\nTo pay a surcharge of £234.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "953ee85c-d7d5-441c-afb4-7815f9b51cb5",
+      "title": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "details": "FCOST - Costs\nTo pay costs of £2000.00 to TV Licensing, FO - Fine\nFined £500.98\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £900.80 to be paid monthly. Instalment start date: 02/02/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3ba654af-da7b-4e89-8cda-7ae6178e4719",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £242.00, FO - Fine\nFined £55.00, FVS - Surcharge\nTo pay a surcharge of £150.50",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d81ec5c0-9d2d-4fb2-9db3-25332379e03a",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "5f17b665-ffb3-4728-a146-a8f2389051f2",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted",
+      "Statutory Declaration"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £450.45\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8073de79-83dc-4d6a-b27d-aa2c1e62f531",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £450.45",
+      "offenceDate": "2019-11-28",
+      "offenceId": "953ee85c-d7d5-441c-afb4-7815f9b51cb5",
+      "title": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "details": "FO - Fine\nFined £450.45",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3ba654af-da7b-4e89-8cda-7ae6178e4719",
+      "title": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "details": "FO - Fine\nFined £450.45",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d81ec5c0-9d2d-4fb2-9db3-25332379e03a",
+      "title": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

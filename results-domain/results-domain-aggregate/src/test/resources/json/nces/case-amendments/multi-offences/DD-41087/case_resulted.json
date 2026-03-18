@@ -1,0 +1,45 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "82",
+  "defendantAddress": "15 Station Road Station Road Manchester Greater Manchester M1 3FH",
+  "defendantContactNumber": "0958476223",
+  "defendantDateOfBirth": "1958-11-25",
+  "defendantEmail": "werner.herzog@example.com",
+  "defendantName": "Werner Herzog",
+  "hearingCourtCentreName": "City of London Magistrates' Court",
+  "hearingId": "0aa7f7e4-c1cc-4d1b-880c-e0a15217e753",
+  "hearingSittingDay": "2025-11-25T10:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "76965ce6-8757-47fe-92ee-2847ce6b1483",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-11-25",
+      "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £100.00 to Hogwarts, FO - Fine\nFined £500.00, FVS - Surcharge\nTo pay a surcharge of £100.00, ACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 06/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "5aff20be-0c6e-4532-867e-08e54ce00236",
+      "offenceTitle": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over",
+      "resultCode": "ACON"
+    },
+    {
+      "dateOfResult": "2025-11-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "3f858ebb-c8a0-4273-8eec-353f02ab7fee",
+      "offenceTitle": "Develop / produce an anti-personnel mine"
+    },
+    {
+      "dateOfResult": "2025-11-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £700.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "563b37f8-5f67-4684-a160-80a89ff67568",
+      "offenceTitle": "Drive whilst unfit through drink"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GK999966216"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Oda Harbors Aliso Viejo Avon DA61 7ND",
+  "defendantContactNumber": "867-460-5397",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Shirley Mante",
+  "hearingCourtCentreName": "Blackfriars Crown Court",
+  "hearingId": "8836df5a-131c-4cdb-aeed-0e46392f5fef",
+  "hearingSittingDay": "2025-10-21T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5f17b665-ffb3-4728-a146-a8f2389051f2",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-10-20",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-10-21",
+      "impositionOffenceDetails": "FO - Fine\nFined £560.45, FVS - Surcharge\nTo pay a surcharge of £234.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/12/2025.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "953ee85c-d7d5-441c-afb4-7815f9b51cb5",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD25910423"
+  ]
+}

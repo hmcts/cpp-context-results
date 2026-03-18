@@ -1,0 +1,38 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "56saon 56Police House StreetDescription1 Locality1 Town2 TW14 9XD",
+  "defendantContactNumber": "0917894278022",
+  "defendantDateOfBirth": "1997-08-08",
+  "defendantEmail": "robert@gmail.com",
+  "defendantName": "Emile Legros66",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "4ad8bfc6-52e8-4621-954a-fabe3d11e7a5",
+  "hearingSittingDay": "2025-10-16T17:01:01.001Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "91655195-c76c-4860-bc81-d955123f56d6",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-10-16",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-10-16",
+      "impositionOffenceDetails": "FO - Fine\nFined £20.00\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 12/12/2025. \nACR - Attendance centre\nAttendance Centre Requirement: Attend for 200 Hours.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "75c74128-95ab-4956-83ee-3226ed7c0eb1",
+      "offenceTitle": "Drive / move vehicle making 'u' turn on the motorway"
+    },
+    {
+      "dateOfResult": "2025-10-16",
+      "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £100.00. , FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "0a4cedb1-a376-4779-8acf-77b912f26dc5",
+      "offenceTitle": "Stop / cause to remain at rest a vehicle on a carriageway of motorway"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "16OCTVTC779"
+  ]
+}

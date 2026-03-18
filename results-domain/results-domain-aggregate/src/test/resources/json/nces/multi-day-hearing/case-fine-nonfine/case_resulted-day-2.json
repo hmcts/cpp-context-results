@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Armani Junctions Remingtonbury Avon DA61 7ND",
+  "defendantContactNumber": "771-406-6682",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Twila Kuhn",
+  "hearingCourtCentreName": "Central Criminal Court",
+  "hearingId": "cfe37b01-fce6-4a73-afc8-462c3dcf9e75",
+  "hearingSittingDay": "2025-11-26T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ba1ed04b-9c39-48fa-b4b4-1ee5ca064e9e",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-11-27",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Months.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "e96f9073-49ac-4623-b0f0-44668d54501e",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "dateOfResult": "2025-11-27",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 2 Months.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "244b7df5-1fe5-45ce-9913-674ce1c89c53",
+      "offenceTitle": "Attempt to cause a male aged 13 or over to engage in sexual activity - no penetration"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD21148277"
+  ]
+}

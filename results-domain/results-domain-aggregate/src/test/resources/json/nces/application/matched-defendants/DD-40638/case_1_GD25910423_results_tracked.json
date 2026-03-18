@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Oda Harbors Aliso Viejo Avon DA61 7ND",
+  "defendantContactNumber": "867-460-5397",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Shirley Mante",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "b204f6c4-4343-4c1a-98c8-d488bda6752c",
+  "hearingSittingDay": "2025-10-17T15:15:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5f17b665-ffb3-4728-a146-a8f2389051f2",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-10-17",
+      "impositionOffenceDetails": "FO - Fine\nFined £345.45\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £900.90 to be paid monthly from 11/11/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "8073de79-83dc-4d6a-b27d-aa2c1e62f531",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "dateOfResult": "2025-10-17",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00, FVS - Surcharge\nTo pay a surcharge of £450.40",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "953ee85c-d7d5-441c-afb4-7815f9b51cb5",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD25910423"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Hellen Prairie Bergnaumchester Avon DA61 7ND",
+  "defendantContactNumber": "798-615-0079",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Mya Hermiston",
+  "hearingCourtCentreName": "Blackfriars Crown Court",
+  "hearingId": "6f8b5fe3-9ed6-496f-b573-3cfd7aa74a79",
+  "hearingSittingDay": "2025-12-04T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ef09511c-5888-4505-b03e-f1325431dac4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "bac21dfa-8140-4b25-8d1c-f23b6197a3a8",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-04",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 11/12/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "resultCode": "AACA"
+    },
+    {
+      "applicationId": "bac21dfa-8140-4b25-8d1c-f23b6197a3a8",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against conviction by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-04",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "AACA"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-04",
+      "impositionOffenceDetails": "FO - Fine\nFined £400.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-04",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD05929125"
+  ]
+}
