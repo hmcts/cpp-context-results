@@ -10,8 +10,10 @@ import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResults
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AACA;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.FINAL;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -116,5 +118,52 @@ class NewApplicationUpdatedNotificationRuleTest {
         assertThat("Rule should apply to new application", rule.appliesTo(input));
         var output = rule.apply(input);
         assertThat("No notification should be generated", output.isEmpty());
+    }
+
+    @Test
+    void shouldGenerateUpdateNotificationWithApplicationResultForAppealAllowed() {
+        final UUID hearingId = randomUUID();
+        final UUID offenceId = randomUUID();
+        final UUID accountCorrelationId = randomUUID();
+
+        var trackRequest = hearingFinancialResultRequest()
+                .withProsecutionCaseReferences(List.of("CaseId1"))
+                .withOffenceResults(List.of(
+                        offenceResults()
+                                .withApplicationType(APPEAL)
+                                .withApplicationResultType("Allowed")
+                                .withApplicationResultsCategory(FINAL.name())
+                                .withResultCode(AACA)
+                                .withAmendmentDate(null)
+                                .withImpositionOffenceDetails("Adjourn offences")
+                                .withOffenceResultsCategory("INTERMEDIARY")
+                                .withApplicationId(randomUUID())
+                                .withOffenceId(offenceId)
+                                .build()))
+                .build();
+        var input = resultNotificationRuleInputBuilder()
+                .withRequest(trackRequest)
+                .withPrevOffenceResultsDetails(Map.of(
+                        trackRequest.getOffenceResults().get(0).getOffenceId(),
+                        offenceResultsDetails()
+                                .withIsFinancial(true)
+                                .withImpositionOffenceDetails("Previous Offence details")
+                                .build()))
+                .withPrevApplicationResultsDetails(Map.of())
+                .withCorrelationItemList(
+                        List.of(correlationItem()
+                                .withAccountCorrelationId(accountCorrelationId)
+                                .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).build()))
+                                .withAccountNumber("AC123456789")
+                                .withHearingId(hearingId)
+                                .build()))
+                .build();
+
+        assertThat("Rule should apply to new application", rule.appliesTo(input));
+        var output = rule.apply(input);
+
+        output.ifPresentOrElse(notification -> {
+            assertThat("Application result should match", notification.getApplicationResult(), is("AACA Allowed"));
+        }, () -> fail("Expected notification to be present"));
     }
 }
