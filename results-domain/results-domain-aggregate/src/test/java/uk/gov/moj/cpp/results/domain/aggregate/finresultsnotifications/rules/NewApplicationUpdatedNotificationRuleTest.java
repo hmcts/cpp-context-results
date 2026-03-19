@@ -33,7 +33,8 @@ class NewApplicationUpdatedNotificationRuleTest {
     private static Stream<Arguments> applicationTypesForAdjournment() {
         return Stream.of(Arguments.of(STAT_DEC, "STATUTORY DECLARATION UPDATED"),
                 Arguments.of(APPEAL, "APPEAL APPLICATION UPDATED"),
-                Arguments.of(REOPEN, "APPLICATION TO REOPEN UPDATED"));
+                Arguments.of(REOPEN, "APPLICATION TO REOPEN UPDATED")
+        );
     }
 
     @ParameterizedTest
