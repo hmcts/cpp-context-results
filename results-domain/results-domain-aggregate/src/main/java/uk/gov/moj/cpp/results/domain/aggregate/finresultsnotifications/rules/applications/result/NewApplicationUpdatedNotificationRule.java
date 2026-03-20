@@ -6,7 +6,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEv
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationAdjourned;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousUpdateNotificationSent;
-import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.FINAL;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
