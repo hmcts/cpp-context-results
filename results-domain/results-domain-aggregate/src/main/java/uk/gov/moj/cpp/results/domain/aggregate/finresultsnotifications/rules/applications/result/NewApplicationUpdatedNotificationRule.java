@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationAdjourned;
@@ -62,7 +64,10 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         input.originalDateOfOffenceList(),
                                         input.originalDateOfSentenceList(),
                                         newResultByOffence,
-                                        applicationResult,
+                                        isEmpty(applicationResult) ?
+                                                offenceForApplication.map(offenceResult ->  String.join(" - ",offenceResult.getResultCode(),offenceResult.getApplicationResultType())).
+                                                        orElse(EMPTY) :
+                                                applicationResult,
                                         null,
                                         null,
                                         input.prevApplicationResultsDetails()));
