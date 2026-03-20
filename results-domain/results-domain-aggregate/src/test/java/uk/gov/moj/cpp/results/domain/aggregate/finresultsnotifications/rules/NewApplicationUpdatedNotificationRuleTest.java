@@ -164,7 +164,7 @@ class NewApplicationUpdatedNotificationRuleTest {
         var output = rule.apply(input);
 
         output.ifPresentOrElse(notification -> {
-            assertThat("Application result should match", notification.getApplicationResult(), is("AACA Allowed"));
+            assertThat("Application result should match", notification.getApplicationResult(), is("AACA - Allowed"));
         }, () -> fail("Expected notification to be present"));
     }
 }

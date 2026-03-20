@@ -66,8 +66,7 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         input.originalDateOfSentenceList(),
                                         newResultByOffence,
                                         isEmpty(applicationResult) ?
-                                                offenceForApplication.filter(offenceResult -> offenceResult.getApplicationResultsCategory().equals(FINAL.name())).
-                                                map(offenceResult ->  new StringBuffer(offenceResult.getResultCode()).append(' ').append(offenceResult.getApplicationResultType()).toString()).
+                                                offenceForApplication.map(offenceResult ->  String.join(" - ",offenceResult.getResultCode(),offenceResult.getApplicationResultType())).
                                                         orElse(EMPTY) :
                                                 applicationResult,
                                         null,
