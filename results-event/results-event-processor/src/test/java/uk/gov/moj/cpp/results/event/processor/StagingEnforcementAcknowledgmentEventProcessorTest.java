@@ -6,6 +6,7 @@ import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -324,6 +325,41 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                         ))));
 
         assertThat(allEnvelopes.get(3).metadata().name(), is("result.command.send-nces-email-for-application"));
+    }
+
+    @Test
+    void shouldProcessSendNcesMailForNewApplicationWithNullCourtEmailAndDivisionWhenOrganisationUnitHasNoNcesDetails() {
+        final String masterDefendantId = "1a9176f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
+        final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
+        final String hearingCourtCentreId = "faa91bb2-19cb-384b-bcc1-06d31d12cc67";
+
+        final JsonObject notificationPayload = createObjectBuilder()
+                .add("masterDefendantId", masterDefendantId)
+                .add("caseIds", createCaseIds(caseId1, caseId2))
+                .add("hearingCourtCentreId", hearingCourtCentreId)
+                .build();
+
+        final JsonObject progressionResponse = getPayload("inactive-migrated-cases.json");
+        when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2)))
+                .thenReturn(Optional.of(progressionResponse));
+
+        final JsonObject organisationUnitWithoutNcesDetails = createObjectBuilder()
+                .add("id", hearingCourtCentreId)
+                .build();
+        when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(organisationUnitWithoutNcesDetails);
+
+        final JsonEnvelope event = JsonEnvelope.envelopeFrom(
+                metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
+
+        stagingEnforcementAcknowledgmentEventProcessor.processSendNcesMailForNewApplication(event);
+
+        verify(sender, times(5)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
+
+        final JsonObject firstMigratedPayload = allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount");
+        assertThat(firstMigratedPayload.get("courtEmail"), nullValue());
+        assertThat(firstMigratedPayload.get("division"), nullValue());
     }
 
     private JsonArrayBuilder createCaseIds(String... caseIds) {
