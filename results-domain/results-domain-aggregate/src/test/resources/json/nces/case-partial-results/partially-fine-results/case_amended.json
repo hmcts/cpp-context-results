@@ -1,0 +1,47 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Mayer Groves Bergstrommouth Avon DA61 7ND",
+  "defendantContactNumber": "322-402-3488",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Gus Herzog",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d0ce0732-16c4-49aa-b50c-3c09266edd55",
+  "hearingSittingDay": "2025-11-07T15:15:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "a86d5345-27c2-4fb5-8a49-2fe4df126f27",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "amendmentDate": "2025-11-07",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-11-07",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.10, FVS - Surcharge\nTo pay a surcharge of £90.02, AEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £113.00 to be paid weekly from 11/12/2025",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "d3627716-33c9-4675-bb34-8cbdde255d15",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "dateOfResult": "2025-11-07",
+      "impositionOffenceDetails": "FO - Fine\nFined £900.10\nCOEW - Community order England / Wales\nCommunity order made. The defendant must comply with the requirements (shown below) by 11/12/2025. \nUPWR - Unpaid work. Requirement to be completed within 12 months.\nUnpaid Work Requirement: Carry out unpaid work for 20 Hours within the next twelve months. This work will be supervised by the responsible officer.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "bbf3f2b4-deb8-4f3c-a6fb-21183cb6f40d",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    },
+    {
+      "amendmentDate": "2025-11-07",
+      "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+      "dateOfResult": "2025-11-07",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 1 Years.\nNSP - No separate penalty",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "b2280889-61f1-41f6-9207-6e52afec40eb",
+      "offenceTitle": "Attempt to cause a male aged 13 or over to engage in sexual activity - no penetration"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD55946965"
+  ]
+}

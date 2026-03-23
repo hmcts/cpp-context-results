@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
-import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
@@ -96,7 +95,7 @@ public class HearingResultedEventProcessorTest {
                 .add("id", hearingId.toString())
                 .build();
 
-        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare, null);
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -135,7 +134,7 @@ public class HearingResultedEventProcessorTest {
                 .add("isSJPHearing", true)
                 .build();
 
-        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare, null);
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder()
                 .add("id", hearingId.toString())
@@ -169,7 +168,7 @@ public class HearingResultedEventProcessorTest {
                 .add("id", hearingId.toString())
                 .build();
 
-        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare, null);
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(cacheService.add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString())).thenThrow(new RuntimeException("Error"));
@@ -197,7 +196,7 @@ public class HearingResultedEventProcessorTest {
                 .add("id", hearingId.toString())
                 .build();
 
-        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare, null);
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -354,7 +353,7 @@ public class HearingResultedEventProcessorTest {
 
         ArgumentCaptor<String> externalPayloadCaptor = ArgumentCaptor.forClass(String.class);
 
-        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare, null);
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, reshare);
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(hearing);
         when(referenceDataService.getPoliceFlag(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
@@ -383,15 +382,12 @@ public class HearingResultedEventProcessorTest {
     }
 
     private JsonEnvelope createPublicEvent(final UUID userId, final JsonObject hearing, final ZonedDateTime sharedTime, final String hearingDay,
-                                           final boolean reshare, final JsonArray deletedJudicialResults) {
+                                           final boolean reshare) {
         final JsonObjectBuilder resultPayload = createObjectBuilder()
                 .add("isReshare", reshare)
                 .add("hearingDay", hearingDay)
                 .add("sharedTime", ZonedDateTimes.toString(sharedTime))
                 .add("hearing", hearing);
-        if (nonNull(deletedJudicialResults)) {
-            resultPayload.add("deletedJudicialResults", deletedJudicialResults);
-        }
 
         return envelopeFrom(metadataOf(randomUUID(), "public.events.hearing.hearing-resulted")
                         .withUserId(userId.toString())
