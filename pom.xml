@@ -5,12 +5,12 @@
     <parent>
         <groupId>uk.gov.moj.cpp.common</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>17.103.5</version>
+        <version>17.103.9-M6</version>
     </parent>
 
     <groupId>uk.gov.moj.cpp.results</groupId>
     <artifactId>results-parent</artifactId>
-    <version>17.103.98</version>
+    <version>17.103.98-PEG-3177-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Results Service - Parent Module</name>
