@@ -9,11 +9,27 @@
   "divisionCode": "77",
   "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "City of London Magistrates' Court",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/06/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
+      "title": "Theft of motor vehicle"
+    }
+  ],
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "b7ea5d56-7942-479a-9bc2-6b5d3f4b3e4a",
-  "materialId": "b76e7452-8fed-4f9f-a107-223c676d7ba0",
-  "notificationId": "07b50feb-0ecc-47ee-8e7c-c422d306705d",
+  "materialId": "98e845aa-de09-4e0f-b004-824290da89bd",
+  "newOffenceByResult": [
+    {
+      "details": "A - Adjournment Adjourned for hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing. To attend or a warrant to issue hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
+      "offenceDate": "2019-11-28",
+      "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
+      "title": "Theft of motor vehicle"
+    }
+  ],
+  "notificationId": "7c062fdb-68fc-434d-8cd0-dc8811c83b86",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "APPLICATION TO REOPEN UPDATED"
 }

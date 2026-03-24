@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules;
+package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,7 +18,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.F
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationUpdatedNotificationRule;
 
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,9 @@ class NewApplicationUpdatedNotificationRuleTest {
                                 .withImpositionOffenceDetails("Adjourn offences")
                                 .withOffenceResultsCategory("INTERMEDIARY")
                                 .withApplicationId(randomUUID())
+                                .withIsFinancial(false)
                                 .withOffenceId(offenceId)
+                                .withIsParentFlag(true)
                                 .build()))
                 .build();
         var input = resultNotificationRuleInputBuilder()
@@ -82,6 +83,8 @@ class NewApplicationUpdatedNotificationRuleTest {
 
         output.ifPresentOrElse(notification -> {
             assertThat("subject should match", notification.getSubject(), is(expectedNotification));
+            assertThat("new offence results should be present", notification.getNewOffenceByResult().size(), is(1));
+            assertThat("old offence results should be present", notification.getImpositionOffenceDetails().size(), is(1));
         }, () -> fail("Expected notification to be present"));
     }
 

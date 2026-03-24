@@ -1,4 +1,4 @@
-package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules;
+package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,7 +14,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ru
 
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationDeemedServedNotificationRule;
 
 import java.util.List;
 import java.util.UUID;

@@ -9,11 +9,39 @@
   "divisionCode": "77",
   "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £111.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/10/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "title": "Robbery"
+    },
+    {
+      "details": "FVS - Surcharge\nTo pay a surcharge of £50.00\nIMP - Imprisonment\nCommitted to prison for 6 Years. Reason: failure to comply with a pre-sentence drug testing order because of an unprovoked attack of a serious nature, because the defendant has a flagrant disregard for court orders. Bail remand days to count (Tagged Days): 45. Total custodial period is life.\n \n \nTotal custodial period is life.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "title": "Theft from a shop"
+    }
+  ],
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "efd3da6d-74e9-420e-b59e-5e8a8532f115",
-  "materialId": "f902ee18-d03c-43ac-9254-f72cca0e926b",
-  "notificationId": "8253e66f-2d56-4577-9aaf-2c0975f8ef72",
+  "materialId": "40a65e90-91a6-476a-b9c2-f8e7a98c33ed",
+  "newOffenceByResult": [
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
+      "offenceDate": "2019-11-28",
+      "offenceId": "884a136e-d4c6-48c1-b007-2ac8f61b3abc",
+      "title": "Robbery"
+    },
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 21/11/2025 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
+      "offenceDate": "2019-11-28",
+      "offenceId": "9e92a604-4413-4598-9690-3e6404f62071",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "9d190e88-10b1-49fa-9109-47ec72d46627",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "STATUTORY DECLARATION UPDATED"
 }
