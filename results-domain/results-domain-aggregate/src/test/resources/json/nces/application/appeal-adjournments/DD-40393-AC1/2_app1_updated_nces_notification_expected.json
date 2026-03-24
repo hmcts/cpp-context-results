@@ -10,11 +10,39 @@
   "divisionCode": "77",
   "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "Croydon Crown Court",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £2000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "705b0f95-949b-43cf-9bb5-647fef539dd7",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00, FVS - Surcharge\nTo pay a surcharge of £432.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3184ef79-3fba-4ef4-9bfb-33a75cf8b24f",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "9049a682-8720-4785-9bb9-8de754e208c5",
-  "materialId": "f1bf3bf7-cd91-4266-99fa-468e9863eb9a",
-  "notificationId": "86ddc1b6-4beb-4846-b206-b12e82b56743",
+  "materialId": "fcc0eacb-3e1a-44ab-b07d-6b76b7ed254d",
+  "newOffenceByResult": [
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court",
+      "offenceDate": "2019-11-28",
+      "offenceId": "705b0f95-949b-43cf-9bb5-647fef539dd7",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3184ef79-3fba-4ef4-9bfb-33a75cf8b24f",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "notificationId": "78edfed0-7bd5-4162-8c58-07ef16870c2b",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
   "subject": "APPEAL APPLICATION UPDATED"
 }
