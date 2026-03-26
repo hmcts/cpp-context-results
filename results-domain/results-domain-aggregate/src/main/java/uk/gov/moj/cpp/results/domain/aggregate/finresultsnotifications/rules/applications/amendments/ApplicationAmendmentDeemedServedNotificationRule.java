@@ -47,7 +47,7 @@ public class ApplicationAmendmentDeemedServedNotificationRule extends AbstractAp
                     .filter(or -> Objects.nonNull(or.getAmendmentDate()))
                     .map(or -> buildImpositionOffenceDetailsFromRequest(or, input.offenceDateMap())).distinct()
                     .toList();
-            
+
             return Optional.of(
                     markedAggregateSendEmailEventBuilder(input.ncesEmail(), input.correlationItemList())
                             .buildMarkedAggregateWithoutOlds(request, WRITE_OFF_ONE_DAY_DEEMED_SERVED_REMOVED,
