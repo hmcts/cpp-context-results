@@ -32,6 +32,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.isApplicationUpdatedSubject;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRuleEngine.resultNotificationRuleEngine;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldAccountCorrelations;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
@@ -429,15 +430,15 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         final Stream.Builder<Object> builder = Stream.builder();
 
         markedAggregateSendEmailWhenAccountReceivedList.forEach(marked -> {
-                    final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived().withValuesFrom(marked);
+            final MarkedAggregateSendEmailWhenAccountReceived.Builder markedBuilder = markedAggregateSendEmailWhenAccountReceived().withValuesFrom(marked);
 
-                    final MarkedAggregateSendEmailWhenAccountReceived finalMarked = getMarkedWithUpdatedOldAndNewGobAccounts(marked, markedBuilder);
+            final MarkedAggregateSendEmailWhenAccountReceived finalMarked = getMarkedWithUpdatedOldAndNewGobAccounts(marked, markedBuilder);
 
-                    if (nonNull(finalMarked.getGobAccountNumber()) && isValidOldCorrelationAndAccount(finalMarked.getOldAccountDetails())) {
-                        builder.add(buildNcesApplicationMail(finalMarked));
-                        idsToBeUnmarked.add(finalMarked.getId());
-                    }
-                });
+            if (nonNull(finalMarked.getGobAccountNumber()) && isValidOldCorrelationAndAccount(finalMarked.getOldAccountDetails())) {
+                builder.add(buildNcesApplicationMail(finalMarked));
+                idsToBeUnmarked.add(finalMarked.getId());
+            }
+        });
 
         idsToBeUnmarked.forEach(id -> builder.add(UnmarkedAggregateSendEmailWhenAccountReceived.unmarkedAggregateSendEmailWhenAccountReceived()
                 .withId(id)
@@ -597,11 +598,16 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             return ncesNotification.withHearingSittingDay(marked.getHearingSittingDay())
                     .withDateDecisionMade(marked.getDateDecisionMade())
                     .build();
-        } else if (isThisApplicationUpdated(marked)) {
+        } else if (isApplicationUpdatedSubject(marked.getSubject())) {
             ncesNotification.withHearingCourtCentreName(marked.getHearingCourtCentreName());
             buildDefendantParameters(ncesNotification, marked);
             ncesNotification.withApplicationResult(marked.getApplicationResult());
-            ncesNotification.withImpositionOffenceDetails(null);
+            final List<NewOffenceByResult> newOffenceResults = groupedByOffenceId(marked.getNewOffenceByResult());
+            if (isNotEmpty(newOffenceResults)) {
+                ncesNotification.withNewOffenceByResult(newOffenceResults);
+            } else {
+                ncesNotification.withImpositionOffenceDetails(null);
+            }
         } else if (AMEND_AND_RESHARE.equals(marked.getSubject())) {
             ncesNotification.withAmendmentReason(marked.getAmendmentReason() != null ? marked.getAmendmentReason() : AMENDMENT_REASON);
             ncesNotification.withDefendantDateOfBirth(marked.getDefendantDateOfBirth());

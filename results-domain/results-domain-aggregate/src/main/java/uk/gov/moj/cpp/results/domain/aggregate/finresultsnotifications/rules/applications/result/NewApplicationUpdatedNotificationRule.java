@@ -1,9 +1,13 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealOrReopenApplicationOffencesAreAdjourned;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationAdjourned;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousUpdateNotificationSent;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
@@ -37,7 +41,6 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
         final Map<UUID, String> offenceDateMap = input.offenceDateMap();
         final String ncesEmail = input.ncesEmail();
         final String writtenOffExists = input.isWrittenOffExists();
-        final List<NewOffenceByResult> newResultByOffence = input.newOffenceResultsFromHearing();
         final String applicationResult = input.applicationResult();
 
         final Optional<OffenceResults> offenceForApplication = request.getOffenceResults().stream()
@@ -51,6 +54,12 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                     input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap());
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
+                final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
+                        request.getOffenceResults(),
+                        input.prevOffenceResultsDetails(),
+                        input.prevApplicationOffenceResultsMap()).stream()
+                        .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap))
+                        .distinct().toList();
                 return Optional.of(
                         markedAggregateSendEmailEventBuilder(ncesEmail, input.correlationItemList())
                                 .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(
@@ -61,8 +70,11 @@ public class NewApplicationUpdatedNotificationRule extends AbstractApplicationRe
                                         writtenOffExists,
                                         input.originalDateOfOffenceList(),
                                         input.originalDateOfSentenceList(),
-                                        newResultByOffence,
-                                        applicationResult,
+                                        newApplicationOffenceResults,
+                                        isEmpty(applicationResult) ?
+                                                offenceForApplication.map(offenceResult ->  String.join(" - ",offenceResult.getResultCode(),offenceResult.getApplicationResultType())).
+                                                        orElse(EMPTY) :
+                                                applicationResult,
                                         null,
                                         null,
                                         input.prevApplicationResultsDetails()));

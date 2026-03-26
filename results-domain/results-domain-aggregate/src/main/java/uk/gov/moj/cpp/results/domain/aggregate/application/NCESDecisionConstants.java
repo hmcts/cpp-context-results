@@ -86,6 +86,11 @@ public class NCESDecisionConstants  implements Serializable {
             .put(APPEAL, APPEAL_APPLICATION_UPDATED)
             .build();
 
+    public static boolean isApplicationUpdatedSubject(final String subject) {
+        return APPLICATION_UPDATED_SUBJECT.values().stream()
+                .anyMatch(e -> e.equals(subject));
+    }
+
     public static List<String> getApplicationAppealAllowedSubjects() {
         return Arrays.asList(NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACA),
                 NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AASA)
