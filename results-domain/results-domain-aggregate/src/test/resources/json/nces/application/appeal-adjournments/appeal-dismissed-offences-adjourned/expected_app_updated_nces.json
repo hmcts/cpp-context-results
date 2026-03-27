@@ -1,0 +1,47 @@
+{
+  "applicationResult": "NEXH --",
+  "caseReferences": "28DI5943002",
+  "dateDecisionMade": "2026-03-26",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Jewel Grady",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Blackfriars Crown Court",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f80f77ca-a5fc-473b-a709-0fd7f94a1daa",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "141d7f1d-71ab-4a87-8752-ef5236f4c0af",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "f3d7bb48-3cfb-4cad-b03b-8c1d633bc83d",
+  "materialId": "048a709a-4db5-498f-b3e4-6013b3857bf3",
+  "newOffenceByResult": [
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f80f77ca-a5fc-473b-a709-0fd7f94a1daa",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "offenceDate": "2019-11-28",
+      "offenceId": "141d7f1d-71ab-4a87-8752-ef5236f4c0af",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    }
+  ],
+  "notificationId": "e9ce3e6d-cad2-4c77-9d58-eb83cd52a34a",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION UPDATED"
+}
