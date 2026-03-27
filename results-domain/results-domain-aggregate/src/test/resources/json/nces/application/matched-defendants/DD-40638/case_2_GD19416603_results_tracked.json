@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Hilll Extensions Toychester Avon DA61 7ND",
+  "defendantContactNumber": "569-764-3840",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Shirley Mante",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "f141f2db-0fba-44b7-bc8c-11164d073288",
+  "hearingSittingDay": "2025-10-17T15:15:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "5f17b665-ffb3-4728-a146-a8f2389051f2",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-10-17",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.98\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £900.80 to be paid monthly. Instalment start date: 02/02/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "3ba654af-da7b-4e89-8cda-7ae6178e4719",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+    },
+    {
+      "dateOfResult": "2025-10-17",
+      "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £242.00, FO - Fine\nFined £55.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "d81ec5c0-9d2d-4fb2-9db3-25332379e03a",
+      "offenceTitle": "Provide money / property for use in acts of terrorism"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD19416603"
+  ]
+}
