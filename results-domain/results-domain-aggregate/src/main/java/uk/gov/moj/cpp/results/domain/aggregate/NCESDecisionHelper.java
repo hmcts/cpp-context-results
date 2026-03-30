@@ -169,9 +169,9 @@ public class NCESDecisionHelper {
      * Overloaded check which also checks previous application results to avoid sending duplicate application notifications
      * when a notification for the same application has already been generated from aggregate state.
      */
-    public static boolean isPreviousGrantedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                                            final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
-                                                            final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
+    public static boolean isPreviousApplicationFinalisedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest,
+                                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails,
+                                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap) {
 
         if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
             return false;
@@ -185,20 +185,6 @@ public class NCESDecisionHelper {
             }
         }
         return false;
-    }
-
-    /**
-     * Overloaded check which also checks previous application results to avoid sending duplicate application notifications
-     * when a notification for the same application has already been generated from aggregate state.
-     */
-    public static boolean isPreviousDeniedNotificationSent(final HearingFinancialResultRequest hearingFinancialResultRequest,
-                                                           final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-        if (isNull(prevApplicationResultsDetails) || prevApplicationResultsDetails.isEmpty()) {
-            return false;
-        }
-        final OffenceResults offenceResult = getOffenceResultForApplication(hearingFinancialResultRequest);
-        return areAllApplicationResultsAlreadyFinalised(prevApplicationResultsDetails, offenceResult.getApplicationId());
     }
 
     public static boolean isApplicationDenied(final List<OffenceResultsDetails> offenceResultsDetails) {
