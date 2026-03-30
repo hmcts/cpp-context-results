@@ -10,7 +10,7 @@
 
     <groupId>uk.gov.moj.cpp.results</groupId>
     <artifactId>results-parent</artifactId>
-    <version>17.103.100-SNAPSHOT</version>
+    <version>17.103.100-cimd3210-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Results Service - Parent Module</name>
@@ -38,10 +38,10 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
         <coredomain.version>17.103.11</coredomain.version>
-        <referencedata.version>17.103.128</referencedata.version>
+        <referencedata.version>17.103.129</referencedata.version>
         <notification.notify.version>17.0.38</notification.notify.version>
         <systemdocgenerator.version>17.103.103</systemdocgenerator.version>
-        <progression.version>17.0.219</progression.version>
+        <progression.version>17.0.246</progression.version>
         <material.version>17.0.75</material.version>
         <usersgroups.version>17.104.46</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
