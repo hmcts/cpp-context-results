@@ -1,0 +1,66 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Jewel Grady",
+  "hearingCourtCentreName": "Blackfriars Crown Court",
+  "hearingId": "aca37285-4cd3-42b0-89be-e914ecd3430f",
+  "hearingSittingDay": "2026-03-26T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "f3d7bb48-3cfb-4cad-b03b-8c1d633bc83d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "fad6b77f-8736-4b6a-a220-bdc69548953b",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-03-26",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "f80f77ca-a5fc-473b-a709-0fd7f94a1daa",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence",
+      "resultCode": "ASV"
+    },
+    {
+      "applicationId": "fad6b77f-8736-4b6a-a220-bdc69548953b",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-03-26",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "141d7f1d-71ab-4a87-8752-ef5236f4c0af",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
+      "resultCode": "ASV"
+    },
+    {
+      "applicationId": "fad6b77f-8736-4b6a-a220-bdc69548953b",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-03-26",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 27/03/2026 at 10:00 in Courtroom 01, Blackfriars Crown Court\nUnexpected circumstances meant that the case could not be heard",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "d6b8b245-8ebf-4ac5-806a-b3b24e25ac28",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
+      "resultCode": "ASV"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5943002"
+  ]
+}
