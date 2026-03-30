@@ -1,0 +1,58 @@
+{
+  "amendmentDate": "2025-10-24",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "28DI9784000",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £3333.00\nFVS - Surcharge\nTo pay a surcharge of £35.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £1000.00\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. \nPDATE - Pay by date\nPay by date. Date to pay in full by: 10/10/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "{{oldGobAccountNumber}}",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}

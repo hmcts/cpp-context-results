@@ -36,9 +36,8 @@
     }
   ],
   "notificationId": "{{notificationId}}",
-  "oldDivisionCode": "77",
   "originalDateOfOffence": "2021-21-21",
   "originalDateOfSentence": "2021-21-21",
-  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "sendTo": "postcode@xyz.com",
   "subject": "STATUTORY DECLARATION GRANTED"
 }
