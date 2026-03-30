@@ -32,6 +32,9 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ResultReshareHelper.hasRes
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.StandaloneApplicationHelper.buildDefendantFromSubject;
 import static uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested.appealUpdateNotificationRequested;
 
+import com.google.common.base.Functions;
+import org.apache.commons.collections.map.HashedMap;
+
 import uk.gov.justice.core.courts.AssociatedIndividual;
 import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CaseAddedEvent;
@@ -200,8 +203,8 @@ public class ResultsAggregate implements Aggregate {
                     .withValuesFrom(payload.getHearing())
                     .withProsecutionCases(nonXhibitCases)
                     .build();
-        PublishToDcs publishToDcs = PublishToDcs.publishToDcs()
-                .withPreviousHearing(hearing)
+            PublishToDcs publishToDcs = PublishToDcs.publishToDcs()
+                    .withPreviousHearing(hearing)
                     .withCurrentHearing(builtHearing)
                     .withHearingDay(hearingDay)
                     .withIsReshare(isReshare)
