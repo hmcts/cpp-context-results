@@ -29,6 +29,7 @@ import static uk.gov.moj.cpp.domains.results.structure.Offence.offence;
 import static uk.gov.moj.cpp.domains.results.structure.Person.person;
 import static uk.gov.moj.cpp.domains.results.structure.Result.result;
 import static uk.gov.moj.cpp.results.domain.aggregate.ResultReshareHelper.hasResults;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.StandaloneApplicationHelper.buildDefendantFromSubject;
 import static uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested.appealUpdateNotificationRequested;
 
 import com.google.common.base.Functions;
@@ -39,6 +40,7 @@ import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.CaseAddedEvent;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.DefendantAddedEvent;
@@ -57,6 +59,7 @@ import uk.gov.justice.core.courts.MigrationSourceSystem;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.core.courts.PoliceResultGenerated;
+import uk.gov.justice.core.courts.PoliceResultGeneratedForStandaloneApplication;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
@@ -64,13 +67,13 @@ import uk.gov.justice.core.courts.YouthCourt;
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.moj.cpp.domains.ResultAmendmentDetailsHelper;
 import uk.gov.moj.cpp.domains.resultdetails.CaseResultDetails;
+import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.domains.results.structure.AttendanceDay;
 import uk.gov.moj.cpp.domains.results.structure.Case;
+import uk.gov.moj.cpp.domains.results.structure.CivilOffence;
 import uk.gov.moj.cpp.domains.results.structure.Defendant;
 import uk.gov.moj.cpp.domains.results.structure.Offence;
-import uk.gov.moj.cpp.domains.results.structure.CivilOffence;
 import uk.gov.moj.cpp.domains.results.structure.Result;
-import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.EmailNotificationFailed;
 import uk.gov.moj.cpp.results.domain.event.PoliceNotificationRequestedV2;
 import uk.gov.moj.cpp.results.domain.event.PublishToDcs;
@@ -90,10 +93,14 @@ import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 
+import com.google.common.base.Functions;
+import org.apache.commons.collections.map.HashedMap;
+
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize"})
 public class ResultsAggregate implements Aggregate {
 
 
+    private static final String DEFAULT_URN_FOR_STANDALONE_APPLICATIONS = "00PP0000008";
     public static final String AMEND_RESHARE = "Amend & Reshare";
     private static final String CASE_ID = "caseId";
     private static final String APPLICATION_ID = "applicationId";
@@ -350,7 +357,7 @@ public class ResultsAggregate implements Aggregate {
 
     private List<Result> buildJudicialResults(final List<uk.gov.justice.core.courts.JudicialResult> judicialResults) {
         final List<Result> results = new ArrayList<>();
-        if (isNotNullOrEmpty(judicialResults)) {
+        if (isNotEmpty(judicialResults)) {
             for (final uk.gov.justice.core.courts.JudicialResult judicialResultFromEvent : judicialResults) {
                 results.add(buildJudicialResult(judicialResultFromEvent));
             }
@@ -447,10 +454,21 @@ public class ResultsAggregate implements Aggregate {
 
     @SuppressWarnings("java:S107")
     public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre, final Optional<Boolean> isReshare) {
+        return handleDefendants(caseDetailsFromRequest, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre, isReshare, "");
+    }
+
+    @SuppressWarnings("java:S107")
+    public Stream<Object> handleDefendants(final CaseDetails caseDetailsFromRequest, final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress, final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre, final Optional<Boolean> isReshare, String applicationId) {
         final Stream.Builder<Object> builder = builder();
         final Optional<Case> aCaseAggregateOptional = this.cases.stream().filter(c -> caseDetailsFromRequest.getCaseId().equals(c.getCaseId())).findFirst();
-        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre, isReshare));
+        aCaseAggregateOptional.ifPresent(aCase -> createOrUpdateDefendant(caseDetailsFromRequest, builder, aCase, sendSpiOut, jurisdictionType, prosecutorEmailAddress, isPoliceProsecutor, hearingDay, applicationTypeForCase, courtCentre, isReshare, applicationId));
         return apply(builder.build());
+    }
+
+    public Stream<Object> handleStandaloneApplication(final CourtApplication courtApplication, final boolean sendSpiOut, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare) {
+        final Stream.Builder<Object> streamBuilder = builder();
+        triggerSPIOut(courtApplication, streamBuilder, sendSpiOut, hearingDay, isReshare);
+        return apply(streamBuilder.build());
     }
 
     public Stream<Object> handleApplicationUpdateNotification(final String emailAddress, final UUID applicationId, final String urn, final String defendant) {
@@ -468,21 +486,18 @@ public class ResultsAggregate implements Aggregate {
     private void createOrUpdateDefendant(final CaseDetails caseDetailsFromRequest, final Stream.Builder<Object> builder, final Case aCaseAggregate,
                                          final boolean sendSpiOut, final Optional<JurisdictionType> jurisdictionType, final String prosecutorEmailAddress,
                                          final boolean isPoliceProsecutor, final Optional<LocalDate> hearingDay, final String applicationTypeForCase, final String courtCentre,
-                                         final Optional<Boolean> isReshare) {
+                                         final Optional<Boolean> isReshare, String applicationId) {
         final List<Defendant> defendantsFromAggregate = aCaseAggregate.getDefendants();
         final String hearingDate = hearingDay.map(LocalDate::toString).orElse(EMPTY);
         final String caseId = caseDetailsFromRequest.getCaseId().toString();
         final CaseResultDetails caseResultDetails = caseResultAmendmentDetailsList.get(caseDetailsFromRequest.getCaseId());
 
         defendants = new ArrayList<>();
-        boolean isResultReshared = false;
-        if (hearing != null && isNotEmpty(hearing.getHearingDays()) && hearing.getHearingDays().size() > 1) {
-            isResultReshared = isReshare.orElse(false);
-        } else {
-            isResultReshared = nonNull(caseResultDetails) ? caseResultDetails.isThisCaseReshared() : isReshare.orElse(false);
-        }
+        final boolean isResultReshared = isResultReshared(isReshare, caseResultDetails);
+
         for (final CaseDefendant defendantFromRequest : caseDetailsFromRequest.getDefendants()) {
             final Optional<Defendant> defendantOptional = defendantsFromAggregate.stream().filter(d -> d.getId().equals(defendantFromRequest.getDefendantId())).findFirst();
+
             if (defendantOptional.isEmpty()) {
                 buildDefendantEvent(caseDetailsFromRequest, builder, defendantFromRequest, sendSpiOut, jurisdictionType, hearingDay, isResultReshared);
             } else {
@@ -505,6 +520,7 @@ public class ResultsAggregate implements Aggregate {
                             .withApplicationTypeForCase(applicationTypeForCase)
                             .withUrn(caseDetailsFromRequest.getUrn())
                             .withCaseId(caseId)
+                            .withApplicationId(applicationId)
                             .withCourtCentre(courtCentre)
                             .withCaseResultDetails(caseResultDetailsForEmail)
                             .build());
@@ -515,6 +531,34 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
+    private void triggerSPIOut(final CourtApplication courtApplication, final Stream.Builder<Object> streamBuilder, final boolean sendSpiOut, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare) {
+
+        if (isEligibleForSPIOut(courtApplication, sendSpiOut, isReshare)) {
+            final CourtCentreWithLJA enhancedCourtCenter = enhanceCourtCenter();
+            streamBuilder.add(
+                    buildPoliceResultGeneratedForStandaloneApplicationEvent(courtApplication, hearingDay, enhancedCourtCenter)
+            );
+        }
+
+    }
+
+    private boolean isEligibleForSPIOut(final CourtApplication courtApplication, final boolean sendSpiOut, final Optional<Boolean> isReshare) {
+        final boolean isResultNotReshared = !isResultReshared(isReshare, null);
+        final boolean isResultsPresent = isNotEmpty(courtApplication.getJudicialResults());
+        return sendSpiOut &&
+                isResultNotReshared &&
+                isResultsPresent;
+    }
+
+    private boolean isResultReshared(final Optional<Boolean> isReshare, final CaseResultDetails caseResultDetails) {
+        boolean isResultReshared;
+        if (nonNull(hearing) && isNotEmpty(hearing.getHearingDays()) && hearing.getHearingDays().size() > 1) {
+            isResultReshared = isReshare.orElse(false);
+        } else {
+            isResultReshared = nonNull(caseResultDetails) ? caseResultDetails.isThisCaseReshared() : isReshare.orElse(false);
+        }
+        return isResultReshared;
+    }
 
     private boolean isEligibleForEmailNotification(final Optional<JurisdictionType> jurisdictionType, final boolean isProsecutorPolice, final boolean isResultAmendedReshared, final boolean sendSpiOut) {
         if (!isProsecutorPolice || !sendSpiOut) {
@@ -551,6 +595,7 @@ public class ResultsAggregate implements Aggregate {
         }
     }
 
+    @SuppressWarnings("java:S3776")
     private void updateDefendant(final Hearing hearing, final Optional<LocalDate> hearingDay, final CaseDetails casesDetailsFromRequest,
                                  final Stream.Builder<Object> builder,
                                  final CaseDefendant defendantFromRequest,
@@ -633,17 +678,31 @@ public class ResultsAggregate implements Aggregate {
                 .build();
     }
 
+    private PoliceResultGeneratedForStandaloneApplication buildPoliceResultGeneratedForStandaloneApplicationEvent(final CourtApplication application, final Optional<LocalDate> hearingDay, final CourtCentreWithLJA enhancedCourtCenter) {
+        List<SessionDay> sessionDayList = this.sessionDays;
+
+        if (hearingDay.isPresent()) {
+            sessionDayList = sessionDayList.stream().filter(sd -> hearingDay.get().equals(sd.getSittingDay().withZoneSameInstant(ZoneId.of("Europe/London")).toLocalDate())).toList();
+        }
+        if (nonNull(this.hearing) && Boolean.TRUE.equals(this.hearing.getIsBoxHearing())) {
+            sessionDayList = sessionDayList.stream().map(sd -> new SessionDay(sd.getListedDurationMinutes(), sd.getListingSequence(), this.sharedDate)).toList();
+        }
+
+
+        return PoliceResultGeneratedForStandaloneApplication.policeResultGeneratedForStandaloneApplication()
+                .withId(id)
+                .withCourtCentreWithLJA(enhancedCourtCenter)
+                .withSessionDays(sessionDayList)
+                .withApplicationId(application.getId())
+                .withUrn(ofNullable(application.getApplicationReference()).orElse(DEFAULT_URN_FOR_STANDALONE_APPLICATIONS))
+                .withDefendant(buildDefendantFromSubject(application, this.hearing))
+                .build();
+    }
+
     private boolean isResultPresent(final CaseDefendant defendantFromRequest) {
-        return isNotNullOrEmpty(defendantFromRequest.getJudicialResults()) || (isNotNullOrEmpty(defendantFromRequest.getOffences()) && defendantFromRequest.getOffences().stream().anyMatch(o -> isNotNullOrEmpty(o.getJudicialResults())));
+        return isNotEmpty(defendantFromRequest.getJudicialResults()) || (isNotEmpty(defendantFromRequest.getOffences()) && defendantFromRequest.getOffences().stream().anyMatch(o -> isNotEmpty(o.getJudicialResults())));
     }
 
-    private boolean isNotNullOrEmpty(final List list) {
-        return !isNullOrEmpty(list);
-    }
-
-    private boolean isNullOrEmpty(final List list) {
-        return null == list || list.isEmpty();
-    }
 
     private CourtCentreWithLJA enhanceCourtCenter(final UUID defendantId) {
 
@@ -666,14 +725,18 @@ public class ResultsAggregate implements Aggregate {
         return this.courtCentreWithLJA;
     }
 
+    private CourtCentreWithLJA enhanceCourtCenter() {
+        return this.courtCentreWithLJA;
+    }
+
     private Optional<LjaDetails> populateLjaDetails() {
-        if (courtCentreWithLJA.getCourtCentre() != null &&
-                courtCentreWithLJA.getCourtCentre().getLja() != null) {
+        if (this.courtCentreWithLJA.getCourtCentre() != null &&
+                this.courtCentreWithLJA.getCourtCentre().getLja() != null) {
             return Optional.of(ljaDetails()
-                    .withValuesFrom(courtCentreWithLJA
+                    .withValuesFrom(this.courtCentreWithLJA
                             .getCourtCentre()
                             .getLja())
-                    .withLjaCode(youthCourt.getCourtCode().toString())
+                    .withLjaCode(this.youthCourt.getCourtCode().toString())
                     .build());
         }
         return Optional.empty();
