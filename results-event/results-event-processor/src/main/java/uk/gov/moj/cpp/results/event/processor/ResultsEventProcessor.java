@@ -62,11 +62,12 @@ import uk.gov.moj.cpp.results.event.service.DocumentGenerationRequest;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
-import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 
 import java.time.LocalDate;
@@ -92,7 +93,6 @@ import javax.json.JsonString;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.moj.cpp.results.event.service.SjpService;
 
 @ServiceComponent(EVENT_PROCESSOR)
 @SuppressWarnings({"squid:S2221", "squid:S1132"})
@@ -149,6 +149,7 @@ public class ResultsEventProcessor {
     private static final String EMAIL_TEMPLATE_ID = "emailTemplateId";
     private static final String SEND_TO_ADDRESS = "sendToAddress";
     public static final String HEARING_DAY = "hearingDay";
+    public static final String PUBLIC_RESULTS_POLICE_RESULT_GENERATED = "public.results.police-result-generated";
 
     @Inject
     ReferenceDataService referenceDataService;
@@ -279,10 +280,34 @@ public class ResultsEventProcessor {
         LOGGER.debug("results.event.police-result-generated {}", envelope.toObfuscatedDebugString());
 
         final Metadata metadata = metadataFrom(envelope.metadata())
-                .withName("public.results.police-result-generated")
+                .withName(PUBLIC_RESULTS_POLICE_RESULT_GENERATED)
                 .build();
 
         sender.sendAsAdmin(envelopeFrom(metadata, envelope.payloadAsJsonObject()));
+    }
+
+    @Handles("results.event.police-result-generated-for-standalone-application")
+    public void createResultForStandalone(final JsonEnvelope envelope) {
+        LOGGER.debug("results.event.police-result-generated-for-standalone-application {}", envelope.toObfuscatedDebugString());
+
+        final Metadata metadata = metadataFrom(envelope.metadata())
+                .withName(PUBLIC_RESULTS_POLICE_RESULT_GENERATED)
+                .build();
+
+        sender.sendAsAdmin(envelopeFrom(metadata, replaceFieldName(envelope.payloadAsJsonObject(), APPLICATION_ID, CASE_ID).build()));
+    }
+
+    private static JsonObjectBuilder replaceFieldName(final JsonObject payload, final String from, final String to) {
+        final JsonObjectBuilder payloadBuilder = createObjectBuilder();
+
+        payload.forEach((key, value) -> {
+            if (from.equals(key)) {
+                payloadBuilder.add(to, value);
+            } else {
+                payloadBuilder.add(key, value);
+            }
+        });
+        return payloadBuilder;
     }
 
     @Handles("results.event.nces-email-notification-requested")
@@ -634,7 +659,12 @@ public class ResultsEventProcessor {
                     .anyMatch(applicationResultDetails -> isNotEmpty(applicationResultDetails.getJudicialResultDetails()));
 
             personalisationProperties.put(SUBJECT, buildEmailSubject(resultsAmended, policeNotificationRequestedV2.getUrn(), policeNotificationRequestedV2.getDateOfHearing(), caseApplication, sortedSubject, policeNotificationRequestedV2.getCourtCentre(), isApplicationAmended));
-            personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
+
+            if (isNotEmpty(caseApplication) && isNotEmpty(policeNotificationRequestedV2.getApplicationId())){
+                personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_APPLICATION_AT_A_GLANCE).concat(policeNotificationRequestedV2.getApplicationId()));
+            } else{
+                personalisationProperties.put(COMMON_PLATFORM_URL_CAAG, getCommonPlatformUrl().concat(PROSECUTION_CASEFILE_CASE_AT_A_GLANCE).concat(policeNotificationRequestedV2.getCaseId()));
+            }
         }
 
         personalisationProperties.put(NOTIFICATION_ID, policeNotificationRequestedV2.getNotificationId().toString());
@@ -649,7 +679,7 @@ public class ResultsEventProcessor {
 
     private Notification buildAppealUpdateNotification(final AppealUpdateNotificationRequested appealUpdateNotificationRequested){
         final Map<String, String> personalisationProperties = new HashMap<>();
-        String commonPlatformUrl = getCommonPlatformUrl();
+        final String commonPlatformUrl = getCommonPlatformUrl();
 
         personalisationProperties.put(COMMON_PLATFORM_URL, applicationParameters.getCommonPlatformUrl());
         personalisationProperties.put(COMMON_PLATFORM_URL_AAAG, commonPlatformUrl
@@ -772,10 +802,13 @@ public class ResultsEventProcessor {
 
     private String getCaseDefendants(final List<CaseDefendant> caseDefendants, final boolean amended) {
         return caseDefendants.stream()
-                .map(CaseDefendant::getIndividualDefendant)
-                .map(IndividualDefendant::getPerson)
-                .map(individual -> individual.getFirstName().concat(" ")
-                        .concat(individual.getLastName()))
+                .map(caseDefendant -> {
+                    if (nonNull(caseDefendant.getCorporateDefendant())) {
+                        return caseDefendant.getCorporateDefendant().getName();
+                    }
+                    return caseDefendant.getIndividualDefendant().getPerson().getFirstName().concat(" ")
+                            .concat(caseDefendant.getIndividualDefendant().getPerson().getLastName());
+                })
                 .collect(Collectors.joining(", "));
     }
 
