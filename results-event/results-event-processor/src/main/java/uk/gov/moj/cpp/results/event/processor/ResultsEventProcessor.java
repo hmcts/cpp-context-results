@@ -676,6 +676,7 @@ public class ResultsEventProcessor {
     private String getCommonPlatformUrl() {
         return applicationParameters.getCommonPlatformUrl().endsWith("/") ? applicationParameters.getCommonPlatformUrl() : applicationParameters.getCommonPlatformUrl() + "/";
     }
+
     private Notification buildAppealUpdateNotification(final AppealUpdateNotificationRequested appealUpdateNotificationRequested){
         final Map<String, String> personalisationProperties = new HashMap<>();
         final String commonPlatformUrl = getCommonPlatformUrl();
