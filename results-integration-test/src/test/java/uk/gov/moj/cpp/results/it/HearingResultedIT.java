@@ -44,6 +44,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPubli
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedMessage;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedNotRaised;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultsGenerated;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicMessageConsumerPoliceResultsGeneratedPayload;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DcsStub.clearDcsStub;
