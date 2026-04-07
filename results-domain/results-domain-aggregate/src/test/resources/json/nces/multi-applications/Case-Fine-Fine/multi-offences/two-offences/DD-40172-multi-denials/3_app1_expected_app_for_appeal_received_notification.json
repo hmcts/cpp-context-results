@@ -1,0 +1,20 @@
+{
+  "caseReferences": "28DI4364195",
+  "defendantAddress": "9999A9999AAAA Hellen Prairie Bergnaumchester Avon DA61 7ND",
+  "defendantContactNumber": "798-615-0079",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Mya Hermiston",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Central Criminal Court",
+  "hearingSittingDay": "2025-12-04",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "listedDate": "30/06/2025",
+  "masterDefendantId": "ef09511c-5888-4505-b03e-f1325431dac4",
+  "materialId": "4233dfaf-ce86-4c62-90a8-230ee8bb0084",
+  "notificationId": "460ef27b-1e86-4011-8623-2b3dab956493",
+  "originalDateOfSentence": "04/12/2025",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL APPLICATION RECEIVED"
+}

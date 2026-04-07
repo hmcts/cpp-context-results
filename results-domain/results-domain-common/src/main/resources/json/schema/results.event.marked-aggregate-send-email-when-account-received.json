@@ -9,13 +9,19 @@
     "accountCorrelationId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
-    "oldAccountCorrelationId": {
-      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
-    },
     "gobAccountNumber": {
       "type": "string"
     },
     "divisionCode": {
+      "type": "string"
+    },
+    "oldAccountCorrelationId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "oldGobAccountNumber": {
+      "type": "string"
+    },
+    "oldDivisionCode": {
       "type": "string"
     },
     "caseReferences": {
@@ -76,6 +82,12 @@
         "$ref": "#/definitions/offenceResults"
       }
     },
+    "oldAccountDetails": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/oldAccountDetails"
+      }
+    },
     "newOffenceByResult": {
       "type": "array",
       "items": {
@@ -93,12 +105,6 @@
     },
     "sendTo": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/email"
-    },
-    "oldGobAccountNumber": {
-      "type": "string"
-    },
-    "oldDivisionCode": {
-      "type": "string"
     },
     "amendmentReason": {
       "type": "string",
@@ -139,6 +145,25 @@
           "items": {
             "type": "string"
           }
+        }
+      },
+      "additionalProperties": false
+    },
+    "oldAccountDetails": {
+      "type": "object",
+      "properties": {
+        "accountCorrelationId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "gobAccountNumber": {
+          "type": "string"
+        },
+        "divisionCode": {
+          "type": "string"
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "additionalProperties": false

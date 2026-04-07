@@ -1,0 +1,145 @@
+{
+  "caseId": "8663dafe-12ef-4a0e-9436-ef34f21dd232",
+  "courtCentreWithLJA": {
+    "courtCentre": {
+      "address": {
+        "address1": "Norwich Place",
+        "address2": "Bexleyheath",
+        "address3": "Kent",
+        "postcode": "DA6 7ND"
+      },
+      "code": "B01BH00",
+      "id": "7e967376-eacf-4fca-9b30-21b0c5aad427",
+      "lja": {
+        "ljaCode": "2575",
+        "ljaName": "South East London Magistrates' Court"
+      },
+      "name": "Bexley Magistrates' Court"
+    },
+    "courtHearingLocation": "B01BH00",
+    "psaCode": 2575
+  },
+  "defendant": {
+    "associatedPerson": [],
+    "attendanceDays": [
+      {
+        "attendanceType": "IN_PERSON",
+        "day": "2025-12-11"
+      }
+    ],
+    "defendantId": "b0fe38ce-5ba2-4638-b729-e9eb8f9e968d",
+    "individualDefendant": {
+      "bailConditions": "",
+      "bailStatus": {
+        "code": "C",
+        "description": "Custody",
+        "id": "12e69486-4d01-3403-a50a-7419ca040635"
+      },
+      "person": {
+        "address": {
+          "address1": "70 Victoria Street",
+          "address2": "Victoria Street",
+          "address3": "Oxford",
+          "address4": "Oxfordshire",
+          "postcode": "NW1 5BR"
+        },
+        "contact": {
+          "home": "0638198211",
+          "mobile": "08466889659",
+          "primaryEmail": "rosio.durgan@example.com"
+        },
+        "dateOfBirth": "1953-12-11",
+        "firstName": "Rosio",
+        "gender": "MALE",
+        "lastName": "Durgan",
+        "title": "Mr"
+      },
+      "presentAtHearing": "Y"
+    },
+    "offences": [
+      {
+        "arrestDate": "2025-11-26",
+        "chargeDate": "2025-12-01",
+        "finalDisposal": "N",
+        "id": "cd9fb34f-7e7b-42a6-9e26-4559c0143f0c",
+        "modeOfTrial": "Either Way",
+        "offenceCode": "TH68010",
+        "offenceDateCode": 1,
+        "offenceFacts": {
+          "alcoholReadingAmount": 500,
+          "alcoholReadingMethodCode": "A",
+          "alcoholReadingMethodDescription": "Blood"
+        },
+        "offenceSequenceNumber": 1,
+        "startDate": "2025-10-12",
+        "wording": "Attempt theft from a shop"
+      },
+      {
+        "chargeDate": "2025-12-06",
+        "endDate": "2025-12-10",
+        "finalDisposal": "Y",
+        "id": "0caa903e-9f1e-4507-a1b0-77e330db59ec",
+        "judicialResults": [
+          {
+            "alwaysPublished": false,
+            "canBeSubjectOfBreach": false,
+            "canBeSubjectOfVariation": false,
+            "canExtendActiveOrder": false,
+            "category": "FINAL",
+            "committedToCC": false,
+            "courtClerk": {
+              "firstName": "Erica",
+              "lastName": "Wilson",
+              "userId": "a085e359-6069-4694-8820-7810e7dfe762"
+            },
+            "d20": false,
+            "excludedFromResults": false,
+            "isAdjournmentResult": false,
+            "isAvailableForCourtExtract": true,
+            "isConvictedResult": false,
+            "isDeleted": false,
+            "isFinancialResult": false,
+            "isNewAmendment": true,
+            "isUnscheduled": false,
+            "judicialResultId": "d4155bed-0d95-49d7-b02e-ea07da9822de",
+            "judicialResultTypeId": "2b3f7c20-8fc1-4fad-9076-df196c24b27e",
+            "label": "Granted",
+            "lastSharedDateTime": "2025-12-11",
+            "level": "O",
+            "lifeDuration": false,
+            "orderedDate": "2025-12-11",
+            "orderedHearingId": "199ed7d0-07f1-4f3f-b1e8-6aa34f7c3d1f",
+            "postHearingCustodyStatus": "A",
+            "preserveActiveOrder": false,
+            "publishedAsAPrompt": false,
+            "publishedForNows": false,
+            "rank": 98500,
+            "resultText": "G - Granted",
+            "rollUpPrompts": true,
+            "rootJudicialResultId": "d4155bed-0d95-49d7-b02e-ea07da9822de",
+            "rootJudicialResultTypeId": "2b3f7c20-8fc1-4fad-9076-df196c24b27e",
+            "sentToCC": false,
+            "terminatesOffenceProceedings": false,
+            "urgent": false,
+            "usergroups": []
+          }
+        ],
+        "modeOfTrial": "",
+        "offenceCode": "CJ03510",
+        "offenceDateCode": 4,
+        "offenceSequenceNumber": 0,
+        "startDate": "2025-12-09",
+        "wording": ""
+      }
+    ],
+    "prosecutorReference": "2391NX0000632811763D"
+  },
+  "id": "199ed7d0-07f1-4f3f-b1e8-6aa34f7c3d1f",
+  "sessionDays": [
+    {
+      "listedDurationMinutes": 10,
+      "sittingDay": "2025-12-11T10:45:06.610Z"
+    }
+  ],
+  "urn": "FQAC185245"
+}
