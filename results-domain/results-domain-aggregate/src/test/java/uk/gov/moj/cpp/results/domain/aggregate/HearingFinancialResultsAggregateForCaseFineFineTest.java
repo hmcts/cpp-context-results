@@ -2408,4 +2408,4 @@ class HearingFinancialResultsAggregateForCaseFineFineTest {
         assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
     }
 
-} 
+}
