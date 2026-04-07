@@ -8,7 +8,7 @@
   "defendantEmail": "firstName.lastName3726212@gmail.com",
   "defendantName": "Janis Nikolaus",
   "divisionCode": "47",
-  "gobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
   "isWriteOff": false,
   "masterDefendantId": "93cb9ee4-0eae-41fe-b58b-384447979185",
