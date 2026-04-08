@@ -146,10 +146,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     @Handles("results.command.create-results-for-day")
     public void createResultsForDay(final JsonEnvelope envelope) throws EventStreamException {
-        if(!envelope.payloadIsNull()){
-            LOGGER.error("\n results.command.create-results-for-day received: {}\n", envelope.payloadAsJsonObject());
-        }
-
         final LocalDate hearingDay = LocalDate.parse(envelope.payloadAsJsonObject().getString(HEARING_DAY), DateTimeFormatter.ISO_LOCAL_DATE);
         createResults(envelope, of(hearingDay));
     }
@@ -225,7 +221,6 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 final AtomicReference<String> prosecutorEmailAddress = new AtomicReference<>("");
 
                 final String originatingOrganisation = getOriginatingOrganisation(caseDetails.getOriginatingOrganisation());
-                LOGGER.error("------------ originatingOrganisation {}", originatingOrganisation);
                 if (isNotEmpty(originatingOrganisation)) {
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
 
@@ -244,7 +239,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                     });
                 }
 
-                LOGGER.error("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
+                LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
                 final String applicationTypeForCase = getApplicationTypeForCase(caseDetails.getCaseId(), courtApplicationList);
                 final String applicationId = !courtApplicationList.isEmpty() ? courtApplicationList.get(0).getId().toString() :"";
                 aggregate(ResultsAggregate.class, fromString(id),
@@ -270,7 +265,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                             .orElse(null);
 
                     if (isEmpty(originatingOrganisation)) {
-                        LOGGER.error("--------- The value for originatingOrganisation : {}", originatingOrganisation);
+                        LOGGER.info("--------- The value for originatingOrganisation : {}", originatingOrganisation);
                         return;
                     }
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
@@ -280,7 +275,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
                         prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
-                        LOGGER.error("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
+                        LOGGER.info("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
                     });
 
                     try {
