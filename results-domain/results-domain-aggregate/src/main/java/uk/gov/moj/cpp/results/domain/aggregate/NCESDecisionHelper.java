@@ -5,7 +5,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AACA;
@@ -205,9 +204,11 @@ public class NCESDecisionHelper {
                 .collect(Collectors.toSet());
 
         final UUID applicationId = request.getOffenceResults().stream().filter(or -> nonNull(or.getApplicationId())).map(OffenceResults::getApplicationId).findFirst().orElse(null);
-        final Set<String> prevApplicationResults = prevApplicationResultsDetails.get(applicationId)
+        final Set<String> prevApplicationResults = Optional.ofNullable(prevApplicationResultsDetails.get(applicationId))
+                .orElse(emptyList())
                 .stream()
-                .map(OffenceResultsDetails::getResultCode).collect(Collectors.toSet());
+                .map(OffenceResultsDetails::getResultCode)
+                .collect(Collectors.toSet());
 
         return !prevApplicationResults.equals(applicationResults);
     }
