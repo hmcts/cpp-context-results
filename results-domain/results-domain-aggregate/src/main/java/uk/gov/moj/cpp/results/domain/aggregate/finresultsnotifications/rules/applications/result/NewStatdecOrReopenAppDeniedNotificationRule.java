@@ -56,17 +56,17 @@ public class NewStatdecOrReopenAppDeniedNotificationRule extends AbstractApplica
             final OffenceResults offence = offenceForApplication.get();
             final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
-                    input.prevOffenceResultsDetails(), 
-                    input.prevApplicationOffenceResultsMap(), 
+                    input.prevOffenceResultsDetails(),
+                    input.prevApplicationOffenceResultsMap(),
                     request.getOffenceResults());
-            
+
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication = originalOffenceResults.stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                     .distinct().toList();
-            
+
             final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
-                    request.getOffenceResults(), 
-                    input.prevOffenceResultsDetails(), 
+                    request.getOffenceResults(),
+                    input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap()).stream()
                     .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap))
                     .distinct().toList();
