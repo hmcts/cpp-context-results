@@ -50,36 +50,11 @@ public abstract class AbstractApplicationResultNotificationRule implements Resul
 
         return hearingFinancialResultRequest.getOffenceResults().stream()
                 .filter(result -> nonNull(result.getApplicationType()))
-                .map(offenceFromRequest -> getOldOffenceResultsDetails(offenceFromRequest.getOffenceId(), caseOffenceResultsDetails, prevApplicationOffenceResultsMap, currentApplicationId))
+                .map(offenceFromRequest -> getPreviousOffenceResultsDetails(offenceFromRequest.getOffenceId(), caseOffenceResultsDetails, prevApplicationOffenceResultsMap, currentApplicationId))
                 .filter(Objects::nonNull)
                 .filter(OffenceResultsDetails::getIsFinancial)
                 .map(offenceResults -> buildImpositionOffenceDetailsFromAggregate(offenceResults, offenceDateMap)).distinct()
                 .toList();
-    }
-
-    protected OffenceResultsDetails getOldOffenceResultsDetails(final UUID offenceId, final Map<UUID, OffenceResultsDetails> caseOffenceResultsDetails,
-                                                                final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap, final UUID currentApplicationId) {
-        final List<OffenceResultsDetails> allOffenceResults = new ArrayList<>();
-
-        //add case level results for that offence
-        if (caseOffenceResultsDetails.containsKey(offenceId)) {
-            allOffenceResults.add(caseOffenceResultsDetails.get(offenceId));
-        }
-
-        //add all previous application level results for that offence
-        if (nonNull(currentApplicationId)) {
-            prevApplicationOffenceResultsMap.forEach((applicationId, offenceResults) -> {
-                if (!currentApplicationId.equals(applicationId)) {
-                    allOffenceResults.addAll(offenceResults.stream()
-                            .filter(ord -> offenceId.equals(ord.getOffenceId()))
-                            .toList());
-                }
-            });
-        }
-
-        allOffenceResults.sort(comparing(OffenceResultsDetails::getCreatedTime).reversed());
-
-        return !allOffenceResults.isEmpty() ? allOffenceResults.get(0) : null;
     }
 
     protected Optional<OriginalApplicationResults> getOriginalApplicationResults(final HearingFinancialResultRequest request, final Map<UUID, List<OffenceResultsDetails>> prevAppResultDetails) {

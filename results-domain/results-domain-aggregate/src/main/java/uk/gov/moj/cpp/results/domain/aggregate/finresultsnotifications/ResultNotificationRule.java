@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications;
 
+import static java.util.Comparator.comparing;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -14,12 +15,15 @@ import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Contract for rules that determine when to send result notifications.
@@ -112,6 +116,31 @@ public interface ResultNotificationRule {
                             ofNullable(prevOffenceResultsDetails.get(offenceResult.getOffenceId()))
                                     .map(prevOffenceResult -> !Objects.equals(prevOffenceResult.getIsDeemedServed(), offenceResult.getIsDeemedServed()))
                                     .orElse(false));
+        }
+
+        /**
+         * Checks if there was a financial imposition for the same offence(s) before this application.
+         */
+        public boolean hasFinancialImpositionPriorToThisApplication() {
+            final UUID appId = request.getOffenceResults().stream().filter(or -> nonNull(or.getApplicationId())).map(OffenceResults::getApplicationId).findFirst().orElse(null);
+            if (Objects.isNull(appId)) {
+                return false;
+            }
+            final List<OffenceResultsDetails> allOffenceResults = new ArrayList<>(prevOffenceResultsDetails.values());
+            prevApplicationOffenceResultsMap.forEach((applicationId, offenceResultsDetails) -> {
+                if (!applicationId.equals(appId)) {
+                    allOffenceResults.addAll(offenceResultsDetails);
+                }
+            });
+            allOffenceResults.sort(comparing(OffenceResultsDetails::getCreatedTime).reversed());
+            final Set<UUID> offenceIds = request.getOffenceResults().stream().map(OffenceResults::getOffenceId).collect(Collectors.toSet());
+            return offenceIds.stream().map(offenceId -> getPreviousResults(allOffenceResults, offenceId))
+                    .filter(Objects::nonNull)
+                    .anyMatch(offenceResultsDetails -> Boolean.TRUE.equals(offenceResultsDetails.getIsFinancial()));
+        }
+
+        private static OffenceResultsDetails getPreviousResults(final List<OffenceResultsDetails> allOffenceResults, final UUID offenceId) {
+            return allOffenceResults.stream().filter(o -> offenceId.equals(o.getOffenceId())).findFirst().orElse(null);
         }
     }
 }
