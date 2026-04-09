@@ -44,6 +44,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPubli
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedMessage;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultGeneratedNotRaised;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicEventPoliceResultsGenerated;
+import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPublicMessageConsumerPoliceResultsGeneratedPayload;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DcsStub.clearDcsStub;
@@ -342,6 +343,28 @@ public class HearingResultedIT {
         verifyEmailNotificationIsRaised(List.of(policeEmailAddress, "Imprisonment"));
         verifyDCSRequestIsRaised(Arrays.asList(caseId.toString(), defendantId.toString(), offenceId2.toString()), 1);
         clearDcsStub();
+    }
+
+    @Test
+    public void shouldSendSPIOutForFirstShareForStandaloneApplication() {
+        setupDCSStub();
+        final UUID hearingId = randomUUID();
+        final UUID applicationId = randomUUID();
+        final UUID subjectId = randomUUID();
+        final String payloadString = getPayloadAsString("json/public.events.hearing.hearing-resulted-standalone.json")
+                .replaceAll("HEARING_ID", hearingId.toString())
+                .replaceAll("APPLICATION_ID", applicationId.toString())
+                .replaceAll("SUBJECT_ID", subjectId.toString());
+        final JsonObject payload = jsonStringToJsonObject(payloadString);
+        stubSpiOutFlag(true, true, policeEmailAddress);
+
+        hearingResultsHaveBeenSharedV2(payload);
+
+        Optional<String> response = verifyPublicMessageConsumerPoliceResultsGeneratedPayload();
+        final JSONObject eventPayload = new JSONObject(response.get());
+        assertThat(eventPayload.getJSONObject("_metadata").getString("name"), is("public.results.police-result-generated"));
+        assertThat(eventPayload.getString("caseId"), is(applicationId.toString()));
+        assertThat(eventPayload.getJSONObject("defendant").getString("defendantId"), is(subjectId.toString()));
     }
 
     @Test
