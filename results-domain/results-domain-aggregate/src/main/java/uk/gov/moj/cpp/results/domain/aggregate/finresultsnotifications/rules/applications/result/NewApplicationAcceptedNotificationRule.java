@@ -48,8 +48,6 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
         final HearingFinancialResultRequest request = input.request();
         final List<OffenceResults> offenceResults = request.getOffenceResults();
-        final LinkedList<CorrelationItem> correlationItems = input.correlationItemList();
-        final String ncesEmail = input.ncesEmail();
 
         final Optional<OffenceResults> offenceForApplication = offenceResults.stream()
                 .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
@@ -58,12 +56,12 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
 
         if (offenceForApplication.isPresent()) {
             final OffenceResults offence = offenceForApplication.get();
-            final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
                     input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap(),
                     request.getOffenceResults());
 
+            final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication = originalOffenceResults.stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                     .distinct().toList();
@@ -79,6 +77,8 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
                 final String writtenOffExists = input.isWrittenOffExists();
                 final String originalDateOfOffenceList = input.originalDateOfOffenceList();
                 final String originalDateOfSentenceList = input.originalDateOfSentenceList();
+                final String ncesEmail = input.ncesEmail();
+                final LinkedList<CorrelationItem> correlationItems = input.correlationItemList();
 
                 if (isResultedWithOffences(request.getOffenceResults())
                         && isNcesNotificationForNewApplication(request.getOffenceResults(),
