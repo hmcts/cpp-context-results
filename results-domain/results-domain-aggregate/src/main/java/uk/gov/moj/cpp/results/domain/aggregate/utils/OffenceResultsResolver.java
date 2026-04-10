@@ -176,7 +176,7 @@ public class OffenceResultsResolver {
                 .anyMatch(Objects::nonNull);
     }
 
-    private static OffenceResultsDetails getPreviousOffenceResultsDetails(final UUID offenceId, final Map<UUID, OffenceResultsDetails> caseOffenceResultsDetails,
+    public static OffenceResultsDetails getPreviousOffenceResultsDetails(final UUID offenceId, final Map<UUID, OffenceResultsDetails> caseOffenceResultsDetails,
                                                                           final Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap,
                                                                           final UUID currentApplicationId) {
 
