@@ -11,7 +11,8 @@
       "dateOfResult": "2025-03-12",
       "resultCode": "RFSD",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "REOPEN",
@@ -24,7 +25,8 @@
       "dateOfResult": "2025-03-12",
       "resultCode": "RFSD",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "hearingId": "2992549e-da32-437b-bd1b-6dea21c78fbc",

@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import static java.nio.charset.Charset.defaultCharset;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -9,7 +8,7 @@ import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
-import static javax.json.Json.createReader;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.is;
@@ -18,7 +17,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_UPDATED_SUBJECT;
 
@@ -33,8 +31,6 @@ import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
-import java.io.InputStream;
-import java.io.StringReader;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,11 +42,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -149,9 +140,9 @@ public class HearingFinancialResultsAggregateTest {
 
     public static Object[][] applicationUpdateSubjects() {
         return new String[][]{
-                {STAT_DEC, "ABC", STATUTORY_DECLARATION_UPDATED},
-                {REOPEN, "ROPENED1", APPLICATION_TO_REOPEN_UPDATED},
-                {APPEAL, "APPEAL", APPEAL_APPLICATION_UPDATED}
+                {STAT_DEC, "NEXH--", "", STATUTORY_DECLARATION_UPDATED},
+                {REOPEN, "ROPENED", "OffencesAdjourned", APPLICATION_TO_REOPEN_UPDATED},
+                {APPEAL, "AASA", "OffencesAdjourned", APPEAL_APPLICATION_UPDATED}
         };
     }
 
@@ -534,7 +525,7 @@ public class HearingFinancialResultsAggregateTest {
 
     @ParameterizedTest
     @MethodSource("applicationUpdateSubjects")
-    public void shouldRaiseEmailWhenSingleCaseSingleDefendantSingleOffenceForUpdateSubjects(final String applicationType, final String applicationResultCode, final String subject) {
+    public void shouldRaiseEmailWhenSingleCaseSingleDefendantSingleOffenceForUpdateSubjects(final String applicationType, final String applicationResultCode, final String adjournedIndicator, final String subject) {
         final String createAppSubject = Arrays.stream(applicationTypes()).filter(s -> s[0].equals(applicationType)).map(s -> (String) s[1]).findFirst().orElse("subject not found");
         final UUID accountCorrelationId = randomUUID();
         final UUID offenceIdA = randomUUID();
@@ -549,7 +540,7 @@ public class HearingFinancialResultsAggregateTest {
                 verifyEmailForNewApplication(createAppSubject, accountCorrelationId, event, "caseUrn1"));
 
 
-        final List<Object> eventsApp1 = raiseEventsForApplicationResult(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList("caseUrn1"), applicationType, singletonList(applicationResultCode), true);
+        final List<Object> eventsApp1 = raiseEventsForApplicationResult(singletonList(null), singletonList(offenceIdA), singletonList(false), singletonList("caseUrn1"), applicationType, singletonList(applicationResultCode), singletonList(adjournedIndicator), true);
         assertThat(eventsApp1.size(), is(1));
         Optional.of(eventsApp1.get(0)).map(o -> (NcesEmailNotificationRequested) o).ifPresent(event -> {
                     assertThat(event.getSendTo(), is("John.Doe@xxx.com"));
@@ -1034,7 +1025,7 @@ public class HearingFinancialResultsAggregateTest {
                                                          final List<String> caseUrns,
                                                          final String applicationType,
                                                          final List<String> applicationResultCode) {
-        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, null, null);
+        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, null, null, null, false);
     }
 
     private List<Object> raiseEventsForApplicationResult(final List<UUID> accountCorrelationIds,
@@ -1044,7 +1035,7 @@ public class HearingFinancialResultsAggregateTest {
                                                          final String applicationType,
                                                          final List<String> applicationResultCode,
                                                          final boolean removeTrackedEvent) {
-        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, null, null, removeTrackedEvent);
+        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, null, null, null, removeTrackedEvent);
     }
 
     private List<Object> raiseEventsForApplicationResult(final List<UUID> accountCorrelationIds,
@@ -1055,8 +1046,19 @@ public class HearingFinancialResultsAggregateTest {
                                                          final List<String> applicationResultCode,
                                                          final List<Boolean> isDeemedServed,
                                                          final List<String> amendmentDates) {
-        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, isDeemedServed, amendmentDates, false);
+        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, isDeemedServed, amendmentDates, null, false);
 
+    }
+
+    private List<Object> raiseEventsForApplicationResult(final List<UUID> accountCorrelationIds,
+                                                         final List<UUID> offenceIds,
+                                                         final List<Boolean> isFinancial,
+                                                         final List<String> caseUrns,
+                                                         final String applicationType,
+                                                         final List<String> applicationResultCode,
+                                                         final List<String> adjournedIndicators,
+                                                         final boolean removeTrackedEvent) {
+        return raiseEventsForApplicationResult(accountCorrelationIds, offenceIds, isFinancial, caseUrns, applicationType, applicationResultCode, null, null, adjournedIndicators, removeTrackedEvent);
     }
 
     private List<Object> raiseEventsForApplicationResult(final List<UUID> accountCorrelationIds,
@@ -1067,6 +1069,7 @@ public class HearingFinancialResultsAggregateTest {
                                                          final List<String> applicationResultCode,
                                                          final List<Boolean> isDeemedServed,
                                                          final List<String> amendmentDates,
+                                                         final List<String> adjournedIndicators,
                                                          final boolean removeTrackedEvent
     ) {
         final List<Object> events = new ArrayList<>();
@@ -1103,6 +1106,38 @@ public class HearingFinancialResultsAggregateTest {
                                     .withIsDeemedServed(isNotEmpty(isDeemedServed) ? isDeemedServed.get(i) : Boolean.FALSE)
                                     .withAmendmentDate(isNotEmpty(amendmentDates) ? amendmentDates.get(i) : null)
                                     .withApplicationId(randomUUID())
+                                    .withOffenceResultsCategory(
+                                            applicationResultCode.get(i) == null ? null :
+                                                    (
+                                                            (applicationType != null && (applicationType.equalsIgnoreCase(APPEAL) || applicationType.equalsIgnoreCase(REOPEN))) ?
+                                                                    (applicationResultCode.get(i).equalsIgnoreCase("ROPENED")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase("AASA")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase(ACON)  &&
+                                                                            (isNotEmpty(adjournedIndicators) && adjournedIndicators.get(i) != null && adjournedIndicators.get(i).equalsIgnoreCase("OffencesAdjourned")) ? "INTERMEDIARY" : "FINAL")
+                                                                    : ((applicationType != null && applicationType.equalsIgnoreCase(STAT_DEC)) ?
+                                                                    (applicationResultCode.get(i).equalsIgnoreCase("G")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase("WDRN")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase(ACON)
+                                                                            && isEmpty(adjournedIndicators) ? null : "FINAL")
+                                                                    : null
+                                                            )
+                                                    )
+                                    )
+                                    .withApplicationResultsCategory(
+                                            applicationResultCode.get(i) == null ? null :
+                                                    (
+                                                            (applicationType != null && applicationType.equalsIgnoreCase(STAT_DEC)) ?
+                                                                    (applicationResultCode.get(i).equalsIgnoreCase("G")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase("WDRN")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase(ACON) ? "FINAL" : "INTERMEDIARY")
+                                                                    : ((applicationType != null && (applicationType.equalsIgnoreCase(APPEAL) || applicationType.equalsIgnoreCase(REOPEN))) ?
+                                                                    (applicationResultCode.get(i).equalsIgnoreCase("ROPENED")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase("AASA")
+                                                                            || applicationResultCode.get(i).equalsIgnoreCase(ACON) ? "FINAL" : "INTERMEDIARY")
+                                                                    : null
+                                                            )
+                                                    )
+                                    )
                                     .build())
                             .collect(toList()))
                     .withAccountDivisionCode(accountCorrelationId == null ? null : accountCorrelationId.toString() + "DIVCODE")

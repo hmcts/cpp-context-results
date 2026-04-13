@@ -21,7 +21,8 @@
       "isParentFlag": true,
       "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
       "offenceTitle": "Theft of motor vehicle",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -31,7 +32,8 @@
       "isParentFlag": true,
       "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
       "offenceTitle": "Theft of motor vehicle",
-      "resultCode": "ACON"
+      "resultCode": "ACON",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "ccfe3b59-95f1-4e12-9bb0-06436479d0c2",
@@ -44,7 +46,9 @@
       "isParentFlag": false,
       "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
       "offenceTitle": "Theft of motor vehicle",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fined and detained in default of payment until court rises",
@@ -55,7 +59,8 @@
       "isParentFlag": false,
       "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
       "offenceTitle": "Theft of motor vehicle",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -66,7 +71,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
-      "offenceTitle": "Theft of motor vehicle"
+      "offenceTitle": "Theft of motor vehicle",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Consolidated",
@@ -78,7 +84,8 @@
       "isParentFlag": false,
       "offenceId": "06f2e7bc-2065-4a59-9775-ca00908eb916",
       "offenceTitle": "Theft of motor vehicle",
-      "resultCode": "ACON"
+      "resultCode": "ACON",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

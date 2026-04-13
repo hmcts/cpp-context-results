@@ -1,4 +1,5 @@
 {
+  "applicationResult": "NEXH --",
   "caseReferences": "28DI975229,28DI975227",
   "dateDecisionMade": "2025-10-07",
   "defendantAddress": "9999H9999QQQJ WplfoqqP addressline 4 BtfgstQQ Elfo YO43 4DF",
@@ -9,7 +10,6 @@
   "divisionCode": "96",
   "gobAccountNumber": "{{gobAccountNumber}}",
   "hearingCourtCentreName": "Kingston upon Thames Crown Court",
-  "hearingSittingDay": "2025-10-07",
   "impositionOffenceDetails": [
     {
       "details": "FCOMP - Compensation\nTo pay compensation of £40.00. , FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2025.",
@@ -24,17 +24,10 @@
       "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
     }
   ],
-  "isFinancialPenaltiesWrittenOff": "false",
   "isSJPHearing": false,
   "isWriteOff": false,
   "masterDefendantId": "11afaf89-db69-450f-909f-9ceb70d52dc7",
-  "materialId": "{{materialId}}",
-  "newApplicationResults": {
-    "applicationResult": [
-      "Allowed"
-    ],
-    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
-  },
+  "materialId": "de908be7-53c0-404c-981f-8d7c52f21db0",
   "newOffenceByResult": [
     {
       "details": "A - Adjournment\nAdjourned for hearing on 08/10/2025 at 10:00 in Courtroom 01, Kingston upon Thames Crown Court. Reason: Unexpected circumstances meant that the case could not be heard. Defendant to attend the next hearing.\nhearing on 08/10/2025 at 10:00 in Courtroom 01, Kingston upon Thames Crown Court\nUnexpected circumstances meant that the case could not be heard",
@@ -49,9 +42,7 @@
       "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
     }
   ],
-  "notificationId": "{{notificationId}}",
-  "originalDateOfOffence": "2021-21-21",
-  "originalDateOfSentence": "2021-21-21",
+  "notificationId": "126ba388-b629-4c94-b7c6-72dd60b2e4b8",
   "sendTo": "LCCCCancellations@Justice.gov.uk",
-  "subject": "APPEAL ALLOWED"
+  "subject": "APPEAL APPLICATION UPDATED"
 }

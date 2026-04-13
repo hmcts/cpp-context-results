@@ -22,7 +22,8 @@
       "isParentFlag": false,
       "offenceId": "1578c199-34f0-43ba-ad00-fbd3faf31611",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "RFSD"
+      "resultCode": "RFSD",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

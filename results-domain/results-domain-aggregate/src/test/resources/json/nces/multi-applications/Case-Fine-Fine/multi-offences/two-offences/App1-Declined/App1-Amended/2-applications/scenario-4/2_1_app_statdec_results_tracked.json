@@ -26,7 +26,9 @@
       "isParentFlag": false,
       "offenceId": "09f8340f-e277-43ab-bb4e-f93bf4f7ac6f",
       "offenceTitle": "Robbery",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "amendmentDate": "2025-08-18",
@@ -42,7 +44,9 @@
       "isParentFlag": true,
       "offenceId": "cf220d5a-3765-4d8d-ae8b-9524a5f61dd9",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [
