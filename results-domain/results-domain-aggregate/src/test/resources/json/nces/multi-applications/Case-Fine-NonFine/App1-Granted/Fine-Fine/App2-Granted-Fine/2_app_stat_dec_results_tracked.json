@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -52,7 +56,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -66,7 +72,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
@@ -77,7 +85,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £500.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
@@ -88,7 +97,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £59.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
@@ -99,7 +109,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £560.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f8370c68-94f5-4520-a149-b3df1090ae91",
@@ -110,7 +121,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVEBD - Vehicle Excise Back Duty\nOrdered to pay vehicle excise back duty of £43.00.",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

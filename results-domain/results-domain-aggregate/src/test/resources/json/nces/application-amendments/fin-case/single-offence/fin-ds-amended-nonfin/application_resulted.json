@@ -22,7 +22,8 @@
         "isParentFlag": true,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
         "offenceTitle": "Theft from a shop",
-        "resultCode": "FIDIPI"
+        "resultCode": "FIDIPI",
+        "offenceResultsCategory": "FINAL"
       },
       {
         "applicationId": "73d51107-3258-465f-af66-0df296632ac9",
@@ -35,7 +36,9 @@
         "isParentFlag": false,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
         "offenceTitle": "Theft from a shop",
-        "resultCode": "G"
+        "resultCode": "G",
+        "offenceResultsCategory": "FINAL",
+        "applicationResultsCategory": "FINAL"
       },
       {
         "applicationType": "STAT_DEC",
@@ -46,7 +49,8 @@
         "isParentFlag": true,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
         "offenceTitle": "Theft from a shop",
-        "resultCode": "FIDIPI"
+        "resultCode": "FIDIPI",
+        "offenceResultsCategory": "FINAL"
       },
       {
         "applicationId": "73d51107-3258-465f-af66-0df296632ac9",
@@ -59,7 +63,9 @@
         "isParentFlag": false,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
         "offenceTitle": "Theft from a shop",
-        "resultCode": "STDEC"
+        "resultCode": "STDEC",
+        "offenceResultsCategory": "FINAL",
+        "applicationResultsCategory": "FINAL"
       },
       {
         "applicationResultType": "Costs",
@@ -70,7 +76,8 @@
         "isFinancial": true,
         "isParentFlag": false,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
-        "offenceTitle": "Theft from a shop"
+        "offenceTitle": "Theft from a shop",
+        "offenceResultsCategory": "FINAL"
       },
       {
         "applicationResultType": "Fined and detained in default of payment in police station",
@@ -81,7 +88,8 @@
         "isParentFlag": false,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
         "offenceTitle": "Theft from a shop",
-        "resultCode": "FIDIPI"
+        "resultCode": "FIDIPI",
+        "offenceResultsCategory": "FINAL"
       },
       {
         "applicationResultType": "Fine",
@@ -92,7 +100,8 @@
         "isFinancial": true,
         "isParentFlag": false,
         "offenceId": "d4dc3d18-6987-4d7f-8fa0-607989d2de09",
-        "offenceTitle": "Theft from a shop"
+        "offenceTitle": "Theft from a shop",
+        "offenceResultsCategory": "FINAL"
       }
     ],
     "prosecutionCaseReferences": [

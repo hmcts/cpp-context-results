@@ -23,7 +23,9 @@
             "isParentFlag": true,
             "offenceId": "2a7118c9-5586-4e5b-b543-1cb5bf994df5",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "AASA"
+            "resultCode": "AASA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "203d44cd-a269-46dd-b8bb-7a42fb5dbc4b",
@@ -37,7 +39,9 @@
             "isParentFlag": true,
             "offenceId": "8db6a5bd-3030-48e1-a7b9-7d55a0807c2f",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "AASA"
+            "resultCode": "AASA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [
