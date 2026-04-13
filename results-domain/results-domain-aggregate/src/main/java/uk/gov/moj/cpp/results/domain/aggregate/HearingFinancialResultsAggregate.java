@@ -638,7 +638,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     //ensure original list order maintained
                     final NewOffenceByResult anyOffenceByResult = newOffenceByResultList.get(0);
                     final String title = newOffenceByResultList.stream().map(NewOffenceByResult::getTitle).filter(StringUtils::isNotEmpty).findFirst().orElse(anyOffenceByResult.getTitle());
-                    final String offenceDate = newOffenceByResultList.stream().map(NewOffenceByResult::getOffenceDate).filter(StringUtils::isNotEmpty).findFirst().orElse(anyOffenceByResult.getTitle());
+                    final String offenceDate = newOffenceByResultList.stream().map(NewOffenceByResult::getOffenceDate).filter(StringUtils::isNotEmpty).findFirst().orElse(anyOffenceByResult.getOffenceDate());
                     final String allDetails = newOffenceByResultList.stream().map(NewOffenceByResult::getDetails).filter(StringUtils::isNotEmpty).collect(joining("\n"));
                     newOffenceByResultsGroupedByOffenceId.add(newOffenceByResult()
                             .withTitle(title)
@@ -662,11 +662,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     .collect(joining(","));
         }
         return "";
-    }
-
-    private boolean isThisApplicationUpdated(MarkedAggregateSendEmailWhenAccountReceived marked) {
-        return APPLICATION_UPDATED_SUBJECT.values().stream()
-                .anyMatch(e -> e.equals(marked.getSubject()));
     }
 
     private void buildDefendantParameters(NcesEmailNotificationRequested.Builder ncesNotification,
