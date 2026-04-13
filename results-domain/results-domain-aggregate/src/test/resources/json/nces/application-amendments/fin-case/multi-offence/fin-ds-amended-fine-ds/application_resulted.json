@@ -35,9 +35,7 @@
       "isParentFlag": false,
       "offenceId": "6b024e66-e25a-4960-a599-3cbb02d3003c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "G",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "G"
     },
     {
       "applicationType": "STAT_DEC",
@@ -48,8 +46,7 @@
       "isParentFlag": true,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDIPI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDIPI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -62,9 +59,7 @@
       "isParentFlag": false,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "G",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "G"
     },
     {
       "applicationType": "STAT_DEC",
@@ -75,8 +70,7 @@
       "isParentFlag": true,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDICI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDICI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -89,9 +83,7 @@
       "isParentFlag": false,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "G",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "G"
     },
     {
       "applicationType": "STAT_DEC",
@@ -102,8 +94,7 @@
       "isParentFlag": true,
       "offenceId": "6b024e66-e25a-4960-a599-3cbb02d3003c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDICTI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDICTI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -116,9 +107,7 @@
       "isParentFlag": false,
       "offenceId": "6b024e66-e25a-4960-a599-3cbb02d3003c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "STDEC",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "STDEC"
     },
     {
       "applicationType": "STAT_DEC",
@@ -129,8 +118,7 @@
       "isParentFlag": true,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDIPI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDIPI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -143,9 +131,7 @@
       "isParentFlag": false,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "STDEC",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "STDEC"
     },
     {
       "applicationType": "STAT_DEC",
@@ -156,8 +142,7 @@
       "isParentFlag": true,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDICI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDICI"
     },
     {
       "applicationId": "33a92c64-72d4-4307-ae76-1f9d1155e4ce",
@@ -170,9 +155,7 @@
       "isParentFlag": false,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "STDEC",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "STDEC"
     },
     {
       "applicationResultType": "Fined and detained in default of payment until time",
@@ -183,8 +166,7 @@
       "isParentFlag": false,
       "offenceId": "6b024e66-e25a-4960-a599-3cbb02d3003c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDICTI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDICTI"
     },
     {
       "applicationResultType": "Fine",
@@ -206,8 +188,7 @@
       "isParentFlag": false,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDIPI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDIPI"
     },
     {
       "applicationResultType": "Fine",
@@ -218,8 +199,7 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "d320ab2e-56a3-4a16-8957-4aae4699229c",
-      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "offenceResultsCategory": "FINAL"
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
     },
     {
       "applicationResultType": "Fined and detained in default of payment until court rises",
@@ -230,8 +210,7 @@
       "isParentFlag": false,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
       "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "resultCode": "FIDICI",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "FIDICI"
     },
     {
       "applicationResultType": "Fine",
@@ -242,8 +221,7 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "b65e74dc-1dec-490b-a5ac-b2f3512eeca9",
-      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-      "offenceResultsCategory": "FINAL"
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
     }
   ],
   "prosecutionCaseReferences": [

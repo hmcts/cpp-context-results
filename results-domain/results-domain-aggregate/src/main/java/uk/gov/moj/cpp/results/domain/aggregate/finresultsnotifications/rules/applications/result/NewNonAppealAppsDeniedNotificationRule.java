@@ -4,8 +4,8 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewOffenceResultForSV;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealApplicationDenied;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewApplicationGranted;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecReopenApplicationDenied;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -28,15 +28,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Rule to handle notifications for APPEAL denied results that have been processed.
- * This rule specifically handles appeal results with sentence variation scenarios.
+ * Rule to handle notifications for Non-Appeal Applications(i.e. StatDec/Reopen) that are denied.
  */
-public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResultNotificationRule {
+public class NewNonAppealAppsDeniedNotificationRule extends AbstractApplicationResultNotificationRule {
 
     @Override
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
-                && isNewAppealApplicationDenied(input.request());
+                && isNewStatdecReopenApplicationDenied(input.request());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                 .findFirst();
 
         if (offenceForApplication.isPresent()) {
-            final String subject =  APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
+            final OffenceResults offence = offenceForApplication.get();
             final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
                     input.prevOffenceResultsDetails(), 
@@ -77,62 +76,22 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                 final String originalDateOfSentenceList = input.originalDateOfSentenceList();
                 final String applicationResult = input.applicationResult();
 
-                return processAppealResults(request,
-                        writtenOffExists,
-                        originalDateOfOffenceList,
-                        originalDateOfSentenceList,
-                        newApplicationOffenceResults,
-                        applicationResult,
-                        subject,
-                        impositionOffenceDetailsForApplication,
-                        originalApplicationResults,
-                        ncesEmail,
-                        correlationItems,
-                        input.prevApplicationResultsDetails());
+                return Optional.of(
+                        markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
+                                .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(request,
+                                        APPLICATION_SUBJECT.get(offence.getApplicationType()).get(offence.getResultCode()),
+                                        impositionOffenceDetailsForApplication,
+                                        ncesEmail,
+                                        writtenOffExists,
+                                        originalDateOfOffenceList,
+                                        originalDateOfSentenceList,
+                                        newApplicationOffenceResults,
+                                        applicationResult,
+                                        originalApplicationResults,
+                                        null,
+                                        input.prevApplicationResultsDetails()));
             }
         }
         return Optional.empty();
-    }
-
-    @SuppressWarnings("java:S107")
-    private Optional<MarkedAggregateSendEmailWhenAccountReceived> processAppealResults(
-            final HearingFinancialResultRequest hearingFinancialResultRequest,
-            final String isWrittenOffExists,
-            final String originalDateOfOffenceList,
-            final String originalDateOfSentenceList,
-            final List<NewOffenceByResult> newResultByOffenceList,
-            final String applicationResult,
-            final String subject,
-            final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication,
-            final OriginalApplicationResults originalApplicationResults,
-            final String ncesEmail,
-            final LinkedList<CorrelationItem> correlationItemList,
-            final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-        if (!newResultByOffenceList.isEmpty()) {
-            return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
-                    .buildMarkedAggregateWithOlds(hearingFinancialResultRequest,
-                            impositionOffenceDetailsForApplication,
-                            applicationResult,
-                            buildNewOffenceResultForSV(newResultByOffenceList),
-                            originalApplicationResults,
-                            null,
-                            subject,
-                            prevApplicationResultsDetails));
-        } else {
-            return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItemList)
-                    .buildMarkedAggregateWithoutOldsForSpecificCorrelationIdWithEmail(hearingFinancialResultRequest,
-                            subject,
-                            impositionOffenceDetailsForApplication,
-                            ncesEmail,
-                            isWrittenOffExists,
-                            originalDateOfOffenceList,
-                            originalDateOfSentenceList, 
-                            newResultByOffenceList, 
-                            applicationResult, 
-                            originalApplicationResults, 
-                            null,
-                            prevApplicationResultsDetails));
-        }
     }
 }

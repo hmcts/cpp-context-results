@@ -24,9 +24,7 @@
       "isParentFlag": true,
       "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
       "offenceTitle": "Robbery",
-      "resultCode": "ASV",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "ASV"
     },
     {
       "applicationType": "APPEAL",
@@ -37,8 +35,7 @@
       "isParentFlag": true,
       "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ACON",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "ACON"
     },
     {
       "applicationId": "5e572bc7-9981-40dd-80bb-f3413af77835",
@@ -52,9 +49,7 @@
       "isParentFlag": false,
       "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ASV",
-      "offenceResultsCategory": "FINAL",
-      "applicationResultsCategory": "FINAL"
+      "resultCode": "ASV"
     },
     {
       "applicationResultType": "Fine",
@@ -65,8 +60,7 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
-      "offenceTitle": "Theft from a shop",
-      "offenceResultsCategory": "FINAL"
+      "offenceTitle": "Theft from a shop"
     },
     {
       "applicationResultType": "Consolidated",
@@ -78,8 +72,7 @@
       "isParentFlag": false,
       "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ACON",
-      "offenceResultsCategory": "FINAL"
+      "resultCode": "ACON"
     }
   ],
   "prosecutionCaseReferences": [

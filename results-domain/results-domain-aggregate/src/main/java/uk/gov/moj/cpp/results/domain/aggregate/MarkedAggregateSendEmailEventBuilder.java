@@ -14,7 +14,6 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.isApplicationUpdatedSubject;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.GobAccountHelper.getOldAccountCorrelations;
 import static uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived.markedAggregateSendEmailWhenAccountReceived;
 
@@ -129,9 +128,6 @@ public class MarkedAggregateSendEmailEventBuilder {
             builder.withNewOffenceByResult(newResultByOffence);
             hearingFinancialResultRequest.getOffenceResults().stream().filter(offence -> nonNull(offence.getDateOfResult())).findFirst().ifPresent(offence ->
                     builder.withDateDecisionMade(offence.getDateOfResult()));
-        } else if (isApplicationUpdatedSubject(subject)) {
-            builder.withNewOffenceByResult(newResultByOffence);
-            buildDecisionMade(hearingFinancialResultRequest, builder);
         } else if (originalApplicationResults != null && (getApplicationAppealSubjects().contains(subject) || getApplicationNonGrantedSubjects().contains(subject))) {
             builder.withOriginalApplicationResults(originalApplicationResults);
             buildDecisionMade(hearingFinancialResultRequest, builder);
