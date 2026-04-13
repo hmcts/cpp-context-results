@@ -638,7 +638,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                     //ensure original list order maintained
                     final NewOffenceByResult anyOffenceByResult = newOffenceByResultList.get(0);
                     final String title = newOffenceByResultList.stream().map(NewOffenceByResult::getTitle).filter(StringUtils::isNotEmpty).findFirst().orElse(anyOffenceByResult.getTitle());
-                    final String offenceDate = newOffenceByResultList.stream().map(NewOffenceByResult::getOffenceDate).filter(StringUtils::isNotEmpty).findFirst().orElse(anyOffenceByResult.getTitle());
+                    final String offenceDate = newOffenceByResultList.stream().map(NewOffenceByResult::getOffenceDate).filter(StringUtils::isNotEmpty).findFirst().orElse(anyOffenceByResult.getOffenceDate());
                     final String allDetails = newOffenceByResultList.stream().map(NewOffenceByResult::getDetails).filter(StringUtils::isNotEmpty).collect(joining("\n"));
                     newOffenceByResultsGroupedByOffenceId.add(newOffenceByResult()
                             .withTitle(title)
