@@ -47,6 +47,7 @@ import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JurisdictionType;
 import uk.gov.justice.core.courts.OffenceDetails;
+import uk.gov.justice.core.courts.OrganisationDetails;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -132,6 +133,7 @@ public class ResultsEventProcessorTest {
     private static final String EMAIL_ADDRESS = "test@hmcts.net";
     private static final String COMMON_PLATFORM_URL = "http://xxx.xx.com/";
     private static final String COMMON_PLATFORM_URL_CAAG = "http://xxx.xx.com/prosecution-casefile/case-at-a-glance/b45b1b7d-ee42-4d02-94d4-41877873bb71";
+    private static final String COMMON_PLATFORM_URL_AAAG = "http://xxx.xx.com/prosecution-casefile/application-at-a-glance/b55b1b7d-ee42-4d02-94d4-41877873bb71";
     private static final String POLICE_TEMPLATE_ID = "781b970d-a13e-4440-97c3-ecf22a4540d5";
 
     private static final String POLICE_EMAIL_HEARING_RESULTS_TEMPLATE_ID = "efc18c42-bea2-4124-8c02-7a7ae4556b73";
@@ -145,6 +147,7 @@ public class ResultsEventProcessorTest {
     private static final String APPEAL_UPDATED_TEMPLATE_ID = "a316a21e-1911-4b77-97fc-ee0118d533af";
 
     private static final String CASE_ID = "b45b1b7d-ee42-4d02-94d4-41877873bb71";
+    private static final String APPLICATION_ID = "b55b1b7d-ee42-4d02-94d4-41877873bb71";
     private static final String FIELD_SEND_TO_ADDRESS = "sendToAddress";
     private static final String FIELD_PERSONALISATION = "personalisation";
     private static final String FIELD_URN = "URN";
@@ -163,6 +166,7 @@ public class ResultsEventProcessorTest {
     public static final String NO = "no";
     public static final String COURT_CENTRE = "Croydon Magistrates' Court";
     public static final String AMEND_RESHARE1 = "Amend & Reshare";
+    public static final String ORGANISATION_NAME = "organisationName";
 
     @Spy
     private final Enveloper enveloper = createEnveloper();
@@ -450,6 +454,27 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
+    public void shouldRaiseAPublicEventPoliceResultGeneratedForStandaloneApplications() {
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withName("results.event.police-result-generated-for-standalone-application"))
+                .withPayloadFrom(getPayload("results.event.police-result-generated-for-standalone-application.json"))
+                .build();
+
+        resultsEventProcessor.createResultForStandalone(jsonEnvelope);
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        final Envelope<JsonObject> argumentCaptor = envelopeArgumentCaptor.getValue();
+
+        final JsonEnvelope allValues = envelopeFrom(argumentCaptor.metadata(), argumentCaptor.payload());
+
+        final JsonObject expectedPayload = getPayload("public.results.police-result-generated_expected-for-standalone.json");
+        assertThat(allValues.metadata().name(), is("public.results.police-result-generated"));
+        assertThat(allValues.payloadAsJsonObject(), is(expectedPayload));
+
+    }
+
+    @Test
     public void shouldHandleTheEventPoliceNotificationRequested() {
         final UUID notificationId = randomUUID();
 
@@ -476,14 +501,15 @@ public class ResultsEventProcessorTest {
 
     }
 
+
     @Test
-    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndApplication() {
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndApplicationAndUncompletedPlatformUrl() {
         ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestArgumentCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
         ArgumentCaptor<JsonObject> fileJsonObjectArgumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
         final List<CaseDefendant> caseDefendants = getDefendants();
 
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", true);
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", true, APPLICATION_ID);
         final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
         final UUID payloadFileId = randomUUID();
 
@@ -495,8 +521,9 @@ public class ResultsEventProcessorTest {
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
 
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
-        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn("http://xxx.xx.com");
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
@@ -516,7 +543,59 @@ public class ResultsEventProcessorTest {
         assertThat(additionalInformation.get(FIELD_DEFENDANTS), is(AMENDED_DEFENDANTS));
         assertThat(additionalInformation.get(FIELD_APPLICATIONS), is(AMENDED_APPLICATIONS));
         assertThat(additionalInformation.get(FILED_SUBJECT), is(SUBJECT));
-        assertThat(additionalInformation.get(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+        assertThat(additionalInformation.get(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_AAAG));
+
+        final JsonObject fileJsonObject = fileJsonObjectArgumentCaptor.getValue();
+        assertThat(fileJsonObject.getString("defendants"), is(AMENDED_DEFENDANTS));
+        assertThat(fileJsonObject.getString("applications"), is(AMENDED_APPLICATIONS));
+
+    }
+
+
+
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndApplication() {
+        ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestArgumentCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
+        ArgumentCaptor<JsonObject> fileJsonObjectArgumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
+        final List<CaseDefendant> caseDefendants = getDefendants();
+
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", true, APPLICATION_ID);
+        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+        final UUID payloadFileId = randomUUID();
+
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()),eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(0)).sendEmailNotification(any(), any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestArgumentCaptor.capture(),any());
+        verify(fileService).storePayload(fileJsonObjectArgumentCaptor.capture(), any(), any(), any());
+
+        final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestArgumentCaptor.getValue();
+        final Map<String, String> additionalInformation = documentGenerationRequest.getAdditionalInformation();
+        assertThat(additionalInformation.get(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(additionalInformation.get(FIELD_URN), is(URN));
+        assertThat(additionalInformation.get(FIELD_AMEND_RESHARE), is(AMEND_RESHARE));
+        assertThat(additionalInformation.get(FIELD_DEFENDANTS), is(AMENDED_DEFENDANTS));
+        assertThat(additionalInformation.get(FIELD_APPLICATIONS), is(AMENDED_APPLICATIONS));
+        assertThat(additionalInformation.get(FILED_SUBJECT), is(SUBJECT));
+        assertThat(additionalInformation.get(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_AAAG));
 
         final JsonObject fileJsonObject = fileJsonObjectArgumentCaptor.getValue();
         assertThat(fileJsonObject.getString("defendants"), is(AMENDED_DEFENDANTS));
@@ -532,7 +611,7 @@ public class ResultsEventProcessorTest {
         final List<CaseDefendant> caseDefendants = getDefendantsWithNoApplication();
 
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, null, true);
+                buildPoliceNotificationRequestedV2(caseDefendants, null, true, "");
         final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
         final UUID payloadFileId = randomUUID();
 
@@ -546,6 +625,7 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
@@ -581,7 +661,7 @@ public class ResultsEventProcessorTest {
         List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
         PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, "", true);
+                buildPoliceNotificationRequestedV2(caseDefendants, "", true, "");
         final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
         final UUID payloadFileId = randomUUID();
 
@@ -594,6 +674,7 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
@@ -624,8 +705,9 @@ public class ResultsEventProcessorTest {
         List<String> resultText = asList("Jorunal", "Fine paid");
         List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
+
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false);
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false, APPLICATION_ID);
 
         final Metadata metadata = Envelope.metadataBuilder()
                 .withId(randomUUID())
@@ -648,14 +730,63 @@ public class ResultsEventProcessorTest {
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is("no"));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(DEFENDANTS));
         assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_APPLICATIONS), is("Application to Vary bail"));
-        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_AAAG));
     }
+
+
+
+
+
+    @Test
+    public void shouldHandleTheEventPoliceNotificationRequestedV2WithCaseAndCorporateDefendant() {
+        final List<CaseDefendant> caseDefendants = getDefendants().stream()
+                .map(caseDefendant -> caseDefendant()
+                        .withValuesFrom(caseDefendant)
+                        .withIndividualDefendant(null)
+                        .withCorporateDefendant(OrganisationDetails.organisationDetails()
+                                .withName(ORGANISATION_NAME)
+                                .build())
+                        .build()
+                )
+                .toList();
+
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false, "");
+        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+        final UUID payloadFileId = randomUUID();
+
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(fileService.storePayload(any(),eq("POLICE_NOTIFICATION_HEARING_RESULTS"+notificationId+".html"),eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()),eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+        when(applicationParameters.getEmailTemplateId()).thenReturn(POLICE_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_NOTIFICATION_ID), is(notificationId.toString()));
+        assertThat(jsonObjectArgumentCaptor.getValue().getString(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(URN));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_COMMON_PLATFORM_URL), is(COMMON_PLATFORM_URL));
+        assertThat(jsonObjectArgumentCaptor.getValue().getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is(ORGANISATION_NAME+", "+ORGANISATION_NAME));
+
+    }
+
 
     @Test
     public void shouldSendEmailWhenNoCaseDefendantsAndOnlyApplicationResults() {
         List<CaseDefendant> caseDefendants = Collections.emptyList();
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false);
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application to Vary bail", false, randomUUID().toString());
 
         final Metadata metadata = Envelope.metadataBuilder()
                 .withId(randomUUID())
@@ -711,6 +842,7 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
@@ -745,7 +877,7 @@ public class ResultsEventProcessorTest {
         List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
         PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, "", true);
+                buildPoliceNotificationRequestedV2(caseDefendants, "", true, "");
         final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
         final UUID payloadFileId = randomUUID();
 
@@ -758,6 +890,7 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
@@ -789,7 +922,7 @@ public class ResultsEventProcessorTest {
         final List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
         final PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, null, true);
+                buildPoliceNotificationRequestedV2(caseDefendants, null, true, "");
         final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
         final UUID payloadFileId = randomUUID();
 
@@ -802,6 +935,7 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".pdf"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
 
@@ -832,7 +966,7 @@ public class ResultsEventProcessorTest {
         List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
         PoliceNotificationRequestedV2 policeNotificationRequestedV2 =
-                buildPoliceNotificationRequestedV2(caseDefendants, "Application X", true);
+                buildPoliceNotificationRequestedV2(caseDefendants, "Application X", true, APPLICATION_ID);
         final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
         final UUID payloadFileId = randomUUID();
 
@@ -845,6 +979,7 @@ public class ResultsEventProcessorTest {
         when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
         when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
         when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
         when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
         when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
         when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
@@ -869,7 +1004,7 @@ public class ResultsEventProcessorTest {
         assertThat(additionalInformation.get(FIELD_DEFENDANTS), is(AMENDED_DEFENDANTS));
         assertThat(additionalInformation.get(FIELD_APPLICATIONS), is(AMENDED_APPLICATIONS));
         assertThat(additionalInformation.get(FILED_SUBJECT), is("Amend & Reshare urn123 06-06-2023 Croydon Magistrates' Court"));
-        assertThat(additionalInformation.get(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_CAAG));
+        assertThat(additionalInformation.get(FIELD_COMMON_PLATFORM_URL_CAAG), is(COMMON_PLATFORM_URL_AAAG));
 
         final JsonObject fileJsonObject = fileJsonObjectArgumentCaptor.getValue();
         assertThat(fileJsonObject.getString("defendants"), is(AMENDED_DEFENDANTS));
@@ -924,11 +1059,12 @@ public class ResultsEventProcessorTest {
         assertThat(subject, is("Final Sentence,Warrant Withdrawn,Bail without conditions"));
     }
 
-    private PoliceNotificationRequestedV2 buildPoliceNotificationRequestedV2(final List<CaseDefendant> caseDefendants, final String applicationTypeForCase, final boolean amendAndReshare) {
+    private PoliceNotificationRequestedV2 buildPoliceNotificationRequestedV2(final List<CaseDefendant> caseDefendants, final String applicationTypeForCase, final boolean amendAndReshare, final String appllicationId) {
         return PoliceNotificationRequestedV2.
                 policeNotificationRequestedV2()
                 .withNotificationId(randomUUID())
                 .withCaseId(CASE_ID)
+                .withApplicationId(appllicationId)
                 .withPoliceEmailAddress(EMAIL_ADDRESS)
                 .withAmendReshare(amendAndReshare ? AMEND_RESHARE1 : "")
                 .withDateOfHearing(LocalDate.of(2023, 06, 6).toString())

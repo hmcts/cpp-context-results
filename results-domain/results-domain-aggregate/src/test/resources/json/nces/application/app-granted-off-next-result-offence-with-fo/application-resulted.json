@@ -17,9 +17,10 @@
       "applicationTitle": "Application to reopen case",
       "applicationType": "REOPEN",
       "dateOfResult": "2025-04-04",
+      "impositionOffenceDetails":"A - Adjournment Adjourned for hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing. To attend or a warrant to issue hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
       "isDeemedServed": false,
       "isFinancial": false,
-      "isParentFlag": false,
+      "isParentFlag": true,
       "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
       "offenceTitle": "Theft of motor vehicle",
       "resultCode": "G"
