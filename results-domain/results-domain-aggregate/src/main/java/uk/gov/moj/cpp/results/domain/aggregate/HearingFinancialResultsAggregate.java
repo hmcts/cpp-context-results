@@ -664,11 +664,6 @@ public class HearingFinancialResultsAggregate implements Aggregate {
         return "";
     }
 
-    private boolean isThisApplicationUpdated(MarkedAggregateSendEmailWhenAccountReceived marked) {
-        return APPLICATION_UPDATED_SUBJECT.values().stream()
-                .anyMatch(e -> e.equals(marked.getSubject()));
-    }
-
     private void buildDefendantParameters(NcesEmailNotificationRequested.Builder ncesNotification,
                                           MarkedAggregateSendEmailWhenAccountReceived marked) {
         ncesNotification.withDefendantDateOfBirth(marked.getDefendantDateOfBirth())
