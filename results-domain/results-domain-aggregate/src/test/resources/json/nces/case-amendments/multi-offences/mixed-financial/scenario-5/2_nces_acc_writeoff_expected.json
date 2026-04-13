@@ -1,0 +1,32 @@
+{
+  "amendmentDate": "2025-11-06",
+  "amendmentReason": "Admin error on shared result (a result recorded incorrectly)",
+  "caseReferences": "HX137719933",
+  "defendantDateOfBirth": "1979-11-05",
+  "defendantName": "Gaston Kling",
+  "divisionCode": "105",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 30/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "41ecfc58-d834-4c4b-89a4-fc3d4a640c98",
+      "title": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": true,
+  "masterDefendantId": "47a5bce7-e932-4de7-8009-953251eaaca4",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "non financials",
+      "offenceDate": "2019-11-28",
+      "offenceId": "41ecfc58-d834-4c4b-89a4-fc3d4a640c98",
+      "title": "Aggravated vehicle taking - ( being carried on ) and property damage of £5000 or over"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "AMEND AND RESHARE- DUPLICATE ACCOUNT: WRITE OFF REQUIRED"
+}
