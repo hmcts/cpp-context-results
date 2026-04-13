@@ -12,7 +12,9 @@
       "isFinancial": true,
       "dateOfResult": "2025-06-16",
       "resultCode": "G",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -26,7 +28,9 @@
       "isFinancial": false,
       "dateOfResult": "2025-06-16",
       "resultCode": "G",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "hearingId": "820239cd-517f-4c6c-a575-9ef2102c52f7",

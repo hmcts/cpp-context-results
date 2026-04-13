@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-07",
             "resultCode": "AACA",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "APPEAL",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-07",
             "resultCode": "AACA",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
@@ -49,7 +53,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £7000.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "aec4dcd8-837e-42b1-bc3d-21bc1bc725d8",
@@ -60,7 +65,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £544.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "57558179-a2c7-4f03-898d-85d7c814e0f6",
@@ -71,7 +77,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 9 Years.",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

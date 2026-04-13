@@ -24,7 +24,9 @@
       "offenceId": "OFFENCE_RESULTS_ID",
       "offenceTitle": "Theft from a shop",
       "resultCode": "G",
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "amendmentDate": "01/02/2024",
@@ -37,7 +39,8 @@
       "isFinancial": true,
       "offenceId": "OFFENCE_RESULTS_ID",
       "offenceTitle": "Theft from a shop",
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "amendmentDate": "01/02/2024",
@@ -50,7 +53,8 @@
       "isFinancial": false,
       "offenceId": "OFFENCE_RESULTS_ID",
       "offenceTitle": "Theft from a shop",
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

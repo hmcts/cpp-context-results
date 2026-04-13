@@ -23,7 +23,9 @@
             "impositionOffenceDetails": "App2 nonfincical for Offenc1\n App2 nonfincical for Offenc1 children",
             "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
             "offenceTitle": "Robbery",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "d4ea4586-aeb5-48bb-bd01-2a6359decba2",
@@ -37,7 +39,9 @@
             "impositionOffenceDetails": "App2 nonfincical for Offenc1 children",
             "offenceId": "f0e8a8f0-4326-4a89-ae1e-73af881bae83",
             "offenceTitle": "Robbery",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "d4ea4586-aeb5-48bb-bd01-2a6359decba2",
@@ -51,7 +55,9 @@
             "isParentFlag": true,
             "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -62,7 +68,8 @@
             "isFinancial": false,
             "isParentFlag": false,
             "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -72,7 +79,8 @@
             "isFinancial": false,
             "isParentFlag": false,
             "offenceId": "9b221ddf-deb2-461b-bf22-8b45e95a6084",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

@@ -17,6 +17,7 @@
       "applicationId": "394898ca-2eea-4322-8e64-4bbf252d0cd8",
       "applicationResultType": "Granted",
       "applicationTitle": "Application to reopen case",
+      "applicationResultsCategory": "FINAL",
       "applicationType": "REOPEN",
       "dateOfResult": "2025-02-19",
       "impositionOffenceDetails": "FO - Fine\nFined £32.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
@@ -25,18 +26,21 @@
       "isParentFlag": true,
       "offenceId": "f4f9782c-75d7-4835-b726-0a22f5e628b6",
       "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL",
       "resultCode": "G"
     },
     {
       "applicationResultType": "Fine",
       "applicationType": "REOPEN",
+      "applicationResultsCategory": "FINAL",
       "dateOfResult": "2025-02-19",
       "impositionOffenceDetails": "FO - Fine\nFined £32.00",
       "isDeemedServed": false,
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "f4f9782c-75d7-4835-b726-0a22f5e628b6",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

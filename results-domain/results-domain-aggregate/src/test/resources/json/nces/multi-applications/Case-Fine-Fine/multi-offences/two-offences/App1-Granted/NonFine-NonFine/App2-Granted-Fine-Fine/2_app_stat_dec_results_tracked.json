@@ -23,7 +23,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-07",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -37,7 +39,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-07",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -51,7 +55,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-07",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -65,7 +71,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-07",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

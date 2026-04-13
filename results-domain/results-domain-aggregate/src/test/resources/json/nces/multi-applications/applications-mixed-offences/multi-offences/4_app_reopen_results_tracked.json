@@ -23,7 +23,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-15",
       "resultCode": "G",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "REOPEN",
@@ -37,7 +39,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-15",
       "resultCode": "ROPENED",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
@@ -48,7 +52,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £456.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "b37ec93f-ae57-4fc8-8035-52c001bd1ba7",
@@ -59,7 +64,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £4332.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

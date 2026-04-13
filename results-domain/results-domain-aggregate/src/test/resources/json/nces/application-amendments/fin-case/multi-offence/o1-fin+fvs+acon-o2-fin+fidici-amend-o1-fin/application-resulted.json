@@ -21,7 +21,8 @@
       "isParentFlag": true,
       "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
       "offenceTitle": "Robbery",
-      "resultCode": "ACON"
+      "resultCode": "ACON",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "22fa8a87-8477-4903-ad43-885cb72ac4e8",
@@ -34,7 +35,9 @@
       "isParentFlag": false,
       "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
       "offenceTitle": "Robbery",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "REOPEN",
@@ -45,7 +48,8 @@
       "isParentFlag": true,
       "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "22fa8a87-8477-4903-ad43-885cb72ac4e8",
@@ -58,7 +62,9 @@
       "isParentFlag": false,
       "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -69,7 +75,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Surcharge",
@@ -80,7 +87,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Consolidated",
@@ -92,7 +100,8 @@
       "isParentFlag": false,
       "offenceId": "1edc9d0e-282d-4dfd-bc12-93dca5b45fe8",
       "offenceTitle": "Robbery",
-      "resultCode": "ACON"
+      "resultCode": "ACON",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fined and detained in default of payment until court rises",
@@ -103,7 +112,8 @@
       "isParentFlag": false,
       "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -114,7 +124,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "9abedbae-9166-4c78-bc83-0e75a7e570f2",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

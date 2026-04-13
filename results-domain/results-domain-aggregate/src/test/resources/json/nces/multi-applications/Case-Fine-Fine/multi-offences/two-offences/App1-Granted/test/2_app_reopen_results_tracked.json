@@ -18,6 +18,7 @@
       "applicationResultType": "Granted",
       "applicationTitle": "Application to reopen case",
       "applicationType": "REOPEN",
+      "applicationResultsCategory": "FINAL",
       "dateOfResult": "2025-08-08",
       "impositionOffenceDetails": "FO - Fine\nFined £800.00\nCOLLO - Collection order\nCollection order made. Make payments as ordered.\nPDATE - Pay by date\nPay by date. Date to pay in full by: 19/08/2025.",
       "isDeemedServed": false,
@@ -25,12 +26,14 @@
       "isParentFlag": true,
       "offenceId": "25b3a10b-68a4-4c74-a6c0-5b3d9099fa14",
       "offenceTitle": "Drive whilst unfit through drink",
+      "offenceResultsCategory": "FINAL",
       "resultCode": "G"
     },
     {
       "applicationId": "ed6b5156-dc2f-4adc-a92f-dfdef1fd4353",
       "applicationResultType": "Granted",
       "applicationTitle": "Application to reopen case",
+      "applicationResultsCategory": "FINAL",
       "applicationType": "REOPEN",
       "dateOfResult": "2025-08-08",
       "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 3 Years.",
@@ -39,6 +42,7 @@
       "isParentFlag": true,
       "offenceId": "b757a3a7-a938-4b26-ab5f-ece92e55ef20",
       "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+      "offenceResultsCategory": "FINAL",
       "resultCode": "G"
     },
     {
@@ -50,7 +54,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "25b3a10b-68a4-4c74-a6c0-5b3d9099fa14",
-      "offenceTitle": "Drive whilst unfit through drink"
+      "offenceTitle": "Drive whilst unfit through drink",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

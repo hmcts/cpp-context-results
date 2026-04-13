@@ -25,7 +25,9 @@
       "isParentFlag": true,
       "offenceId": "95fef862-72e1-450b-92ad-d2fdb18152d4",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "AASD"
+      "resultCode": "AASD",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -36,7 +38,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "95fef862-72e1-450b-92ad-d2fdb18152d4",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Surcharge",
@@ -47,7 +50,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "95fef862-72e1-450b-92ad-d2fdb18152d4",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

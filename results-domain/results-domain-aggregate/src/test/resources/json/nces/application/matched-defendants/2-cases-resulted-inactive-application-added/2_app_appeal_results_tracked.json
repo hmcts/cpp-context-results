@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "fef4866b-3c66-4403-8bcc-5adae3ca07e0",
             "offenceTitle": "Robbery",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "INTERMEDIARY",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "5d93ae56-e507-4f9c-86b1-b4d53f36a4dc",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "offenceId": "b717f0bc-0213-425b-acc5-05e2fb2a5f83",
             "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "INTERMEDIARY",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "5d93ae56-e507-4f9c-86b1-b4d53f36a4dc",
@@ -52,7 +56,9 @@
             "isParentFlag": true,
             "offenceId": "f2617f17-2492-4c91-a9a9-cb2ed09ff1a7",
             "offenceTitle": "Robbery",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "INTERMEDIARY",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "5d93ae56-e507-4f9c-86b1-b4d53f36a4dc",
@@ -66,7 +72,9 @@
             "isParentFlag": true,
             "offenceId": "9fb9221b-f66e-46f4-8e2e-1ab57209b6a8",
             "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "INTERMEDIARY",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

@@ -22,7 +22,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -36,7 +37,9 @@
             "dateOfResult": "2025-06-27",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -47,7 +50,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -61,7 +65,9 @@
             "dateOfResult": "2025-06-27",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -75,7 +81,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-27",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -86,7 +94,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -100,7 +109,9 @@
             "dateOfResult": "2025-06-27",
             "resultCode": "ROPENED",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "ROPENED - Case reopened\nCase reopened Section 155 Powers of Criminal Courts (Sentencing) Act 2000. Conviction and sentence imposed on 22/10/2025 set aside. "
+            "impositionOffenceDetails": "ROPENED - Case reopened\nCase reopened Section 155 Powers of Criminal Courts (Sentencing) Act 2000. Conviction and sentence imposed on 22/10/2025 set aside. ",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -111,7 +122,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -125,7 +137,9 @@
             "dateOfResult": "2025-06-27",
             "resultCode": "ROPENED",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "ROPENED - Case reopened\nCase reopened Section 155 Powers of Criminal Courts (Sentencing) Act 2000. Conviction and sentence imposed on 22/10/2025 set aside. "
+            "impositionOffenceDetails": "ROPENED - Case reopened\nCase reopened Section 155 Powers of Criminal Courts (Sentencing) Act 2000. Conviction and sentence imposed on 22/10/2025 set aside. ",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -139,7 +153,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-27",
             "resultCode": "ROPENED",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "0fdab706-19e2-463a-9e4b-ba9baa0d9c86",
@@ -151,7 +167,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "DISM - Dismissed",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "453be853-e9ff-441c-938b-8087320d98aa",
@@ -174,7 +191,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £454.00 to Person first name last name",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "fcf0daa3-5453-468f-9d90-ee654a0904c3",
@@ -185,7 +203,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £1000.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

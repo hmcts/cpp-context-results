@@ -21,7 +21,9 @@
             "dateOfResult": "2025-06-30",
             "isFinancial": false,
             "resultCode": "G",
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -35,7 +37,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         }
 
     ],

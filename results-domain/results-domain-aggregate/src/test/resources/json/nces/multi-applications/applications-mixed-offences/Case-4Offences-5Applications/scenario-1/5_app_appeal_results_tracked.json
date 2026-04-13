@@ -20,7 +20,8 @@
             "isParentFlag": true,
             "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "DISM"
+            "resultCode": "DISM",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationId": "0456c2d4-573a-4d02-af7d-48eb35b69b26",
@@ -34,7 +35,9 @@
             "isParentFlag": false,
             "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "0456c2d4-573a-4d02-af7d-48eb35b69b26",
@@ -48,7 +51,9 @@
             "isParentFlag": true,
             "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Dismissed",
@@ -60,7 +65,8 @@
             "isParentFlag": false,
             "offenceId": "ab457e44-2c97-4f7f-8bca-c6dd2928adbc",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "DISM"
+            "resultCode": "DISM",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

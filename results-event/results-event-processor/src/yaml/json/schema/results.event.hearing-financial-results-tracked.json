@@ -99,6 +99,12 @@
         },
         "isParentFlag": {
           "type": "boolean"
+        },
+        "applicationResultsCategory": {
+          "type": "string"
+        },
+        "offenceResultsCategory": {
+          "type": "string"
         }
       }
     }

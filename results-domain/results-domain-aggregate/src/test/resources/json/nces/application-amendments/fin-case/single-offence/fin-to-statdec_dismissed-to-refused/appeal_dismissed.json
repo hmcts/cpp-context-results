@@ -22,7 +22,9 @@
       "isParentFlag": false,
       "offenceId": "fc2c2255-c564-42e4-9b8b-2c6d8ec48278",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "AACD"
+      "resultCode": "AACD",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

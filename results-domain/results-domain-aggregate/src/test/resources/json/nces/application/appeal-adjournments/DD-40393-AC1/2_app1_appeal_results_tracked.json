@@ -1,0 +1,67 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0205882659",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST015882659@gmail.com",
+  "defendantName": "Krystal Medhurst",
+  "hearingCourtCentreName": "Croydon Crown Court",
+  "hearingId": "b1780346-5635-4730-ab16-c76d0e2bed5f",
+  "hearingSittingDay": "2025-12-15T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "9049a682-8720-4785-9bb9-8de754e208c5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "b5fa0b62-f33b-45f6-92f8-b92a689b6f53",
+      "applicationResultType": "Allowed",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-15",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "705b0f95-949b-43cf-9bb5-647fef539dd7",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "AACA"
+    },
+    {
+      "applicationId": "b5fa0b62-f33b-45f6-92f8-b92a689b6f53",
+      "applicationResultType": "Allowed",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-15",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "3184ef79-3fba-4ef4-9bfb-33a75cf8b24f",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "AACA"
+    },
+    {
+      "applicationId": "b5fa0b62-f33b-45f6-92f8-b92a689b6f53",
+      "applicationResultType": "Allowed",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-15",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 15/12/2025 at 10:00 in Courtroom 03, Blackfriars Crown Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "0d3729b0-ba46-4735-bffc-6ca02640c269",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "AACA"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5882659"
+  ]
+}

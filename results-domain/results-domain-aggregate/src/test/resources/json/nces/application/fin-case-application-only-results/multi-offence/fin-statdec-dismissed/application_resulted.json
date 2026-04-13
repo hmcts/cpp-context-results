@@ -11,7 +11,8 @@
       "dateOfResult": "2025-03-12",
       "resultCode": "DISM",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -24,7 +25,8 @@
       "dateOfResult": "2025-03-12",
       "resultCode": "DISM",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "hearingId": "3f09693f-02c7-4da8-9d6b-2470d542b25c",

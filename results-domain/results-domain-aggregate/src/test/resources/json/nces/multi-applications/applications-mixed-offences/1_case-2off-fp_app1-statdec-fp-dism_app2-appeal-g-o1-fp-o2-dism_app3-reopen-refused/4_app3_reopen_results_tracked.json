@@ -23,7 +23,8 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "RFSD",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "REOPEN",
@@ -37,7 +38,8 @@
       "dateOfResult": "2025-06-27",
       "resultCode": "RFSD",
       "isDeemedServed": false,
-      "isFinancial": false
+      "isFinancial": false,
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

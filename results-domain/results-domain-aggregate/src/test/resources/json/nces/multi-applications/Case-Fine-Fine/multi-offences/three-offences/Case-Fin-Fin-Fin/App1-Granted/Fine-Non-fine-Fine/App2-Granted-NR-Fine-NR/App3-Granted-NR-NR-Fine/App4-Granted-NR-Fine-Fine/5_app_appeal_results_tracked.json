@@ -25,7 +25,9 @@
             "isParentFlag": true,
             "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
             "offenceTitle": "Develop / produce an anti-personnel mine",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "1ecf4876-6c30-4fa2-9315-5c2c9ba53749",
@@ -39,7 +41,9 @@
             "isParentFlag": true,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
             "offenceTitle": "Drive whilst unfit through drink",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Compensation",
@@ -50,7 +54,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
-            "offenceTitle": "Develop / produce an anti-personnel mine"
+            "offenceTitle": "Develop / produce an anti-personnel mine",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -61,7 +66,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "e54b9a73-f21d-4953-95e3-3578452a0833",
-            "offenceTitle": "Develop / produce an anti-personnel mine"
+            "offenceTitle": "Develop / produce an anti-personnel mine",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -72,7 +78,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8a29b4a9-432d-4687-9abf-2daab83614c2",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

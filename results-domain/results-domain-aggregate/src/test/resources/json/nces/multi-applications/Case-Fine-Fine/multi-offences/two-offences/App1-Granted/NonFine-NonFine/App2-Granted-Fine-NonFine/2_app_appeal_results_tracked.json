@@ -23,7 +23,9 @@
             "isParentFlag": true,
             "offenceId": "3443f003-ab1a-4472-97ed-f8b6547d38e6",
             "offenceTitle": "Robbery",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "INTERMEDIARY",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "02d4a24a-23c4-47f3-b9a1-4038b722a32a",
@@ -37,7 +39,8 @@
             "isParentFlag": true,
             "offenceId": "6d9424df-cbcb-40df-9b34-5d6a5ec3c3d1",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "AACA"
+            "resultCode": "AACA",
+            "offenceResultsCategory": "INTERMEDIARY"
         }
     ],
     "prosecutionCaseReferences": [

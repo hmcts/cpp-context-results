@@ -27,7 +27,9 @@
       "offenceTitle": "Access / exit by unofficial route on the Transport for London regional railway network",
       "isParentFlag": true,
       "isFinancial": true,
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "resultId": "a02df768-a722-4b0e-b851-7496e13b82f7",
@@ -37,7 +39,8 @@
       "dateOfResult": "01/01/2021",
       "impositionOffenceDetails": "Amount of surcharge: £200",
       "isFinancial" : FINANCIAL,
-      "isDeemedServed" : DEEMED_SERVED
+      "isDeemedServed" : DEEMED_SERVED,
+      "offenceResultsCategory": "FINAL"
     }
   ]
 }

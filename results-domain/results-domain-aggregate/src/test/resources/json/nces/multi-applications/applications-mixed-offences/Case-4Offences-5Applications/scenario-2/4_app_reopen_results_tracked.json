@@ -23,7 +23,9 @@
             "isParentFlag": true,
             "offenceId": "ec076ee0-7032-4464-af75-1cb7cc6a07cc",
             "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "71ea0194-78a6-4fe8-98d3-bd4d90fa49c6",
@@ -37,7 +39,9 @@
             "isParentFlag": true,
             "offenceId": "30c36c31-b38d-4532-ae4c-7f5398912afa",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

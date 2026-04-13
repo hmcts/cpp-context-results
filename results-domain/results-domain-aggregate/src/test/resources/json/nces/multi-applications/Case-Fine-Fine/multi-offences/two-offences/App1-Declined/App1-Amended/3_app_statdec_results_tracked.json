@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "7bfcf6db-4aa5-46f6-9281-6bb80447f9bb",
       "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "54ffe788-91e4-4532-a2cb-df73ba57ac6b",
@@ -38,7 +40,9 @@
       "isParentFlag": true,
       "offenceId": "6f744bf2-cb06-4d39-bc86-1b934023e9bf",
       "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "54ffe788-91e4-4532-a2cb-df73ba57ac6b",
@@ -52,7 +56,9 @@
       "isParentFlag": true,
       "offenceId": "7bfcf6db-4aa5-46f6-9281-6bb80447f9bb",
       "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
-      "resultCode": "STDEC"
+      "resultCode": "STDEC",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "54ffe788-91e4-4532-a2cb-df73ba57ac6b",
@@ -66,7 +72,9 @@
       "isParentFlag": true,
       "offenceId": "6f744bf2-cb06-4d39-bc86-1b934023e9bf",
       "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-      "resultCode": "STDEC"
+      "resultCode": "STDEC",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

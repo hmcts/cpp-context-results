@@ -23,7 +23,10 @@
       "dateOfResult": "01-01-2021",
       "accountCorrelationId": "2997837e-8002-11eb-9439-0242ac130002\n\n",
       "accountDivisionCode": "accountDivisionCode",
-      "isFinancial": true
+      "isFinancial": true,
+      "applicationId": "6fc80104-8002-11eb-9439-0242ac130002",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "applicationResultsCategory": "INTERMEDIARY"
     }
   ]
 }

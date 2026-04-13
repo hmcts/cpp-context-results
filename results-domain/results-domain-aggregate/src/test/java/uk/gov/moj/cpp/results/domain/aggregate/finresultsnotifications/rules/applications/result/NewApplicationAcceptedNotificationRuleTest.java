@@ -4,18 +4,21 @@ import static java.lang.Boolean.TRUE;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AASA;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
-import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPEAL;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.G;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STDEC;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.FINAL;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.INTERMEDIARY;
 
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
@@ -42,6 +45,7 @@ class NewApplicationAcceptedNotificationRuleTest {
                                 .withOffenceId(offenceId)
                                 .withApplicationType(STAT_DEC)
                                 .withResultCode(STDEC)
+                                .withApplicationResultsCategory("FINAL")
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("stat dec details")
                                 .withIsFinancial(true)
@@ -74,7 +78,8 @@ class NewApplicationAcceptedNotificationRuleTest {
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
-                .build();;
+                .build();
+        ;
 
         assertTrue(rule.appliesTo(input), "Rule should apply for appeal application type with allowed result");
         var output = rule.apply(input);
@@ -94,9 +99,11 @@ class NewApplicationAcceptedNotificationRuleTest {
                         OffenceResults.offenceResults()
                                 .withOffenceId(offenceId)
                                 .withApplicationType(REOPEN)
+                                .withApplicationResultsCategory("FINAL")
                                 .withResultCode(G)
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Application to reopen granted details")
+                                .withOffenceResultsCategory("FINAL")
                                 .withIsFinancial(true)
                                 .withApplicationId(randomUUID())
                                 .build()
@@ -149,10 +156,12 @@ class NewApplicationAcceptedNotificationRuleTest {
                                 .withOffenceId(offenceId)
                                 .withApplicationType(APPEAL)
                                 .withResultCode(AASA)
+                                .withApplicationResultsCategory("FINAL")
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Appeal allowed details")
                                 .withIsFinancial(true)
                                 .withApplicationId(randomUUID())
+                                .withOffenceResultsCategory("FINAL")
                                 .build()
                 )).withAccountCorrelationId(randomUUID());
         // Create previous offence results details
@@ -181,7 +190,8 @@ class NewApplicationAcceptedNotificationRuleTest {
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
-                .build();;
+                .build();
+        ;
 
         assertTrue(rule.appliesTo(input), "Rule should apply for appeal application type with allowed result");
         var output = rule.apply(input);
@@ -202,6 +212,8 @@ class NewApplicationAcceptedNotificationRuleTest {
                                 .withResultCode("RFSD")
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Non-granted result details")
+                                .withApplicationResultsCategory("FINAL")
+                                .withOffenceResultsCategory("INTERMEDIARY")
                                 .withIsFinancial(true)
                                 .build()
                 ));
@@ -286,6 +298,7 @@ class NewApplicationAcceptedNotificationRuleTest {
                         OffenceResults.offenceResults()
                                 .withOffenceId(offenceId)
                                 .withApplicationType(STAT_DEC)
+                                .withApplicationResultsCategory("FINAL")
                                 .withResultCode(G)
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Granted application with previous results")
@@ -294,16 +307,16 @@ class NewApplicationAcceptedNotificationRuleTest {
                                 .build()
                 ))
                 .withAccountCorrelationId(randomUUID());
-        
+
         // Create previous offence results details
         OffenceResultsDetails previousOffenceDetails = OffenceResultsDetails.offenceResultsDetails()
                 .withOffenceId(offenceId)
                 .withIsFinancial(true)
                 .withImpositionOffenceDetails("Previous imposition details")
                 .build();
-        
+
         Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails = Map.of(offenceId, previousOffenceDetails);
-        
+
         var input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest.build())
                 .withPrevOffenceResultsDetails(prevOffenceResultsDetails)
@@ -339,7 +352,9 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withOffenceResults(List.of(
                         OffenceResults.offenceResults()
                                 .withOffenceId(randomUUID())
+                                .withApplicationId(randomUUID())
                                 .withApplicationType(STAT_DEC)
+                                .withApplicationResultsCategory("FINAL")
                                 .withResultCode(G)
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Non-financial offence details")
@@ -365,9 +380,11 @@ class NewApplicationAcceptedNotificationRuleTest {
                         OffenceResults.offenceResults()
                                 .withOffenceId(randomUUID())
                                 .withApplicationType(STAT_DEC)
+                                .withOffenceResultsCategory("FINAL")
                                 .withResultCode(G)
                                 .withIsParentFlag(false)
                                 .withImpositionOffenceDetails("Non-parent flag offence details")
+                                .withOffenceResultsCategory("FINAL")
                                 .withIsFinancial(true)
                                 .build()
                 ));
@@ -375,7 +392,7 @@ class NewApplicationAcceptedNotificationRuleTest {
                 .withRequest(trackRequest.build())
                 .build();
 
-        assertTrue(rule.appliesTo(input), "Rule should apply for non-parent flag offences");
+        assertFalse(rule.appliesTo(input), "Rule should not apply for non-parent flag offences");
         var output = rule.apply(input);
 
         // Should return empty as the rule checks for offences with parent flag
@@ -415,6 +432,9 @@ class NewApplicationAcceptedNotificationRuleTest {
         var input = resultNotificationRuleInputBuilder()
                 .withRequest(trackRequest.build())
                 .withPrevApplicationResultsDetails(prevApplicationResultsDetails)
+                .withPrevApplicationOffenceResultsMap(Map.of(applicationId, List.of(offenceResultsDetails().withOffenceId(offenceId)
+                        .withApplicationId(applicationId)
+                        .withOffenceResultsCategory(INTERMEDIARY.name()).build())))
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                 .withAccountCorrelationId(randomUUID())

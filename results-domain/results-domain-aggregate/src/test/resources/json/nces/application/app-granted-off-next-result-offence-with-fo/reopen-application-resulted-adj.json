@@ -23,7 +23,9 @@
       "isParentFlag": true,
       "offenceId": "765c2c18-6e85-4a62-b910-86bf4f8b53da",
       "offenceTitle": "Theft of motor vehicle",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [
