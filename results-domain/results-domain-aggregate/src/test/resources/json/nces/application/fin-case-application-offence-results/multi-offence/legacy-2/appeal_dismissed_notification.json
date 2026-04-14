@@ -1,0 +1,52 @@
+{
+  "caseReferences": "28DI8379228",
+  "defendantAddress": "n Fisher Tunnel8379228 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £40.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a9d3aeaa-c9d4-4757-97ee-21782e011675",
+      "title": "Robbery"
+    },
+    {
+      "details": "FO - Fine\nFined £32.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "materialId": "{{materialId}}",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/02/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "a9d3aeaa-c9d4-4757-97ee-21782e011675",
+      "title": "Robbery"
+    },
+    {
+      "details": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.\nFO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL DISMISSED SENTENCE VARIED"
+}

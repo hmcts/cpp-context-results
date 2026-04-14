@@ -18,9 +18,10 @@
       "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
       "applicationType": "STAT_DEC",
       "dateOfResult": "2025-05-15",
+      "impositionOffenceDetails" : "A - Adjournment Adjourned for hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing. To attend or a warrant to issue hearing on 10/11/2025 at 10:00 in Courtroom 03, Lavender Hill Magistrates' Court",
       "isDeemedServed": false,
       "isFinancial": false,
-      "isParentFlag": false,
+      "isParentFlag": true,
       "offenceId": "1b58ec55-4d85-4c7e-9d98-8e32cd66d3d2",
       "offenceTitle": "Theft from a shop",
       "resultCode": "G"

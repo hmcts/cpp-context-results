@@ -1,0 +1,35 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel9784000 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "e3830a30-3965-4fe8-a3f9-b4b4a739b92b",
+  "hearingSittingDay": "2025-10-24T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
+      "offenceTitle": "Robbery"
+    },
+    {
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £2000.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI9784000"
+  ]
+}
