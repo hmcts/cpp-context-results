@@ -4,7 +4,7 @@
     <parent>
         <artifactId>results-parent</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>17.103.104-RE-SNAPSHOT</version>
+        <version>17.103.105-RE-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-integration-test</artifactId>
