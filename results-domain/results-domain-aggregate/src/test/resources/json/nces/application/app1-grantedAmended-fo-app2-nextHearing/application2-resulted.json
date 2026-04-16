@@ -21,7 +21,8 @@
         "isFinancial": false,
         "isParentFlag": false,
         "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
-        "offenceTitle": "Theft of motor vehicle"
+        "offenceTitle": "Theft of motor vehicle",
+        "applicationResultsCategory": "FINAL"
       },
       {
         "applicationId": "b7d64ad4-a06b-4104-8362-b7349421b39b",
@@ -33,7 +34,8 @@
         "isFinancial": false,
         "isParentFlag": false,
         "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
-        "offenceTitle": "Theft of motor vehicle"
+        "offenceTitle": "Theft of motor vehicle",
+        "applicationResultsCategory": "FINAL"
       },
       {
         "applicationId": "b7d64ad4-a06b-4104-8362-b7349421b39b",
@@ -45,7 +47,8 @@
         "isFinancial": false,
         "isParentFlag": false,
         "offenceId": "74e428b0-82b8-4423-a4a5-ceda4ff6fee4",
-        "offenceTitle": "Theft of motor vehicle"
+        "offenceTitle": "Theft of motor vehicle",
+        "applicationResultsCategory": "FINAL"
       }
     ],
     "prosecutionCaseReferences": [
