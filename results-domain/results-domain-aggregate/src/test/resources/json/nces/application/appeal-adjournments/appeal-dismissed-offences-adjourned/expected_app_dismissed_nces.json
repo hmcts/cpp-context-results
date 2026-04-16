@@ -1,0 +1,64 @@
+{
+  "caseReferences": "28DI5943002",
+  "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
+  "defendantContactNumber": "015325443756",
+  "defendantDateOfBirth": "1991-02-18",
+  "defendantName": "Jewel Grady",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £400.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/04/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f80f77ca-a5fc-473b-a709-0fd7f94a1daa",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "FO - Fine\nFined £600.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "141d7f1d-71ab-4a87-8752-ef5236f4c0af",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "details": "CD - Conditional discharge\nDischarged conditionally for 1 Months.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d6b8b245-8ebf-4ac5-806a-b3b24e25ac28",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "f3d7bb48-3cfb-4cad-b03b-8c1d633bc83d",
+  "materialId": "77ce40bf-19cf-4bcc-9cd2-8aedced6e423",
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £500.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 20/05/2025.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f80f77ca-a5fc-473b-a709-0fd7f94a1daa",
+      "title": "Use a handheld mobile phone / device while driving a motor vehicle on a road - endorsable offence"
+    },
+    {
+      "details": "FIDICTI - Fined and detained in default of payment until time\nTo be detained in courthouse until 10:00. Total amount enforced £20.00.\nFO - Fine\nFined £500.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "141d7f1d-71ab-4a87-8752-ef5236f4c0af",
+      "title": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence"
+    },
+    {
+      "details": "FO - Fine\nFined £400.00\nACON - Account Consolidated\nACON - Account Consolidated\nAccount to be consolidated with existing accounts. ",
+      "offenceDate": "2019-11-28",
+      "offenceId": "d6b8b245-8ebf-4ac5-806a-b3b24e25ac28",
+      "title": "Permit use of motor vehicle - driver not having proper control - endorsable offence"
+    }
+  ],
+  "notificationId": "e74ba549-5ad7-4c9f-a3fd-443b1d8d67d2",
+  "oldDivisionCode": "77",
+  "oldGobAccountNumber": "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Appeal against conviction dismissed and sentence varied"
+    ],
+    "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL DISMISSED SENTENCE VARIED"
+}

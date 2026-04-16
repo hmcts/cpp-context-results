@@ -21,7 +21,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £321.00\nFO - Fine\nFined £3455.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days\nvulnerability - Risk or vulnerability factors",
             "isFinancial": true,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -35,7 +36,9 @@
             "dateOfResult": "2025-07-08",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -49,7 +52,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -60,7 +65,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £321.00\nFO - Fine\nFined £3455.00\nFVS - Surcharge\nTo pay a surcharge of £432.00\nABDC - Application made for benefit deductions\nApplication made for benefit deductions.\nNOCOLLO - No collection order reason\nNo collection order. Reason: impracticable.\nRLSUM - Reserve Terms Lump sum\nReserve Terms Lump sum. Pay lump sum in full within 28 days\nvulnerability - Risk or vulnerability factors",
             "isFinancial": true,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -74,7 +80,9 @@
             "dateOfResult": "2025-07-08",
             "resultCode": "STDEC",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. "
+            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 14 of the Magistrates' Courts Act 1980. ",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -88,7 +96,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -100,7 +110,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDIPI - Fined and detained in default of payment in police station\nTo be detained in police station until 10:00. Total amount enforced: £321.00",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -111,7 +122,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £3455.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -122,7 +134,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £432.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

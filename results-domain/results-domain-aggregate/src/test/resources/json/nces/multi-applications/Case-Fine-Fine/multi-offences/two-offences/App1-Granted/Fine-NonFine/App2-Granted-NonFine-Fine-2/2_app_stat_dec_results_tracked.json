@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
       "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -35,7 +37,8 @@
       "isParentFlag": true,
       "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "DISM"
+      "resultCode": "DISM",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
@@ -49,7 +52,9 @@
       "isParentFlag": false,
       "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
@@ -63,7 +68,9 @@
       "isParentFlag": true,
       "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
       "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
-      "resultCode": "STDEC"
+      "resultCode": "STDEC",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -74,7 +81,8 @@
       "isParentFlag": true,
       "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "DISM"
+      "resultCode": "DISM",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "d4919cf0-a42e-4e6a-9700-4cb002458d68",
@@ -88,7 +96,9 @@
       "isParentFlag": false,
       "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "STDEC"
+      "resultCode": "STDEC",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -99,7 +109,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "95407263-0336-4c89-a46d-a116e027a3dc",
-      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Dismissed",
@@ -111,7 +122,8 @@
       "isParentFlag": false,
       "offenceId": "850851fa-3b0a-49f6-bd66-61cb43ec9a86",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "DISM"
+      "resultCode": "DISM",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

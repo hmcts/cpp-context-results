@@ -10,9 +10,10 @@ import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static javax.json.JsonValue.NULL;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static uk.gov.justice.core.courts.LinkType.STANDALONE;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static uk.gov.justice.services.core.enveloper.Enveloper.toEnvelopeWithMetadataFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
@@ -20,6 +21,7 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
+import uk.gov.justice.core.courts.CourtApplicationParty;
 import uk.gov.justice.core.courts.CourtCentreWithLJA;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
@@ -27,14 +29,13 @@ import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.JudicialResultPrompt;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.Person;
-import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.SessionDay;
-import uk.gov.justice.core.courts.CourtApplicationParty;
-import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutingAuthority;
+import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.core.courts.SessionDay;
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -178,11 +179,13 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final Optional<JurisdictionType> jurisdictionType = JurisdictionType.valueFor(payload.containsKey("jurisdictionType") ? payload.getJsonString("jurisdictionType").getString() : "");
         final String id = session.getString("id");
         final String sourceType = session.getString("sourceType");
-        final List<SessionDay> sessionDays = (List<SessionDay>) session.get("sessionDays");
-        final List<JsonObject> cases = (List<JsonObject>) payload.get("cases");
-        final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications"))
-                .orElse(emptyList());
+        final List<SessionDay> sessionDays = ofNullable((List<JsonObject>) session.get("sessionDays")).orElse(emptyList()).stream()
+                .map(jsonObject -> jsonObjectToObjectConverter.convert(jsonObject, SessionDay.class))
+                .toList();
+        final List<JsonObject> cases = ofNullable((List<JsonObject>) payload.get("cases")).orElse(emptyList());
+        final List<JsonObject> courtApplications = ofNullable((List<JsonObject>) payload.get("courtApplications")).orElse(emptyList());
         final Optional<Boolean> isReshare = payload.containsKey("isReshare") ? Optional.of(payload.getBoolean("isReshare")) : Optional.empty();
+
 
 
         final CourtCentreWithLJA courtCentre = jsonObjectToObjectConverter.convert(session.getJsonObject("courtCentreWithLJA"), CourtCentreWithLJA.class);
@@ -194,13 +197,13 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 commandEnvelope, a -> a.handleSession(fromString(id), courtCentre, sessionDays));
 
         final List<UUID> caseIdsFromAggregate = aggregate.getCaseIds();
-        final List<CourtApplication> courtApplicationList = new ArrayList<>();
-        for (final JsonObject jsonObject : courtApplications) {
-            final CourtApplication courtApplication = jsonObjectToObjectConverter.convert(jsonObject, CourtApplication.class);
-            courtApplicationList.add(courtApplication);
-        }
+        final List<CourtApplication> courtApplicationList = ofNullable(courtApplications).orElse(emptyList()).stream()
+                .map(jsonObject -> jsonObjectToObjectConverter.convert(jsonObject, CourtApplication.class))
+                .toList();
 
         sendAppealUpdateNotification(commandEnvelope, jurisdictionType, courtApplicationList);
+
+        handleStandaloneApplicationsForSPIOut(courtApplicationList, jurisdictionType, fromString(id), hearingDay, isReshare, commandEnvelope);
 
         for (final JsonObject c : cases) {
 
@@ -238,15 +241,69 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
                 LOGGER.info("SPI OUT flag is '{}' and police prosecutor flag is '{}' for case with prosecution authority code '{}'", sendSpiOut.get(), isPoliceProsecutor.get(), caseDetails.getProsecutionAuthorityCode());
                 final String applicationTypeForCase = getApplicationTypeForCase(caseDetails.getCaseId(), courtApplicationList);
+                final String applicationId = !courtApplicationList.isEmpty() ? courtApplicationList.get(0).getId().toString() :"";
                 aggregate(ResultsAggregate.class, fromString(id),
-                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase, courtCentre.getCourtCentre().getName(), isReshare));
+                        commandEnvelope, a -> a.handleDefendants(caseDetails, sendSpiOut.get(), jurisdictionType, prosecutorEmailAddress.get(), isPoliceProsecutor.get(), hearingDay, applicationTypeForCase, courtCentre.getCourtCentre().getName(), isReshare, applicationId));
             }
         }
     }
 
-    private void sendAppealUpdateNotification(final JsonEnvelope commandEnvelope, final Optional<JurisdictionType> jurisdictionType, final List<CourtApplication> courtApplicationList){
-        for(final CourtApplication courtApplication : courtApplicationList) {
-            if(courtApplication.getType().getAppealFlag() == Boolean.TRUE && isEmailRequiredForApplicationResult(courtApplication)) {
+    private void handleStandaloneApplicationsForSPIOut(final List<CourtApplication> courtApplicationList, final Optional<JurisdictionType> jurisdictionType, final UUID sessionId, final Optional<LocalDate> hearingDay, final Optional<Boolean> isReshare, final JsonEnvelope commandEnvelope) {
+        if (isCrownCourt(jurisdictionType)) { //for standalone applications, jurisdictionType is always MAGISTRATES
+            return;
+        }
+        ofNullable(courtApplicationList).orElse(emptyList()).stream()
+                .filter(courtApplication -> STANDALONE.equals(courtApplication.getType().getLinkType()))
+                .forEach(courtApplication -> {
+
+                    final AtomicBoolean sendSpiOut = new AtomicBoolean(FALSE);
+                    final AtomicBoolean isPoliceProsecutor = new AtomicBoolean(FALSE);
+                    final AtomicReference<String> prosecutorEmailAddress = new AtomicReference<>("");
+
+                    final String originatingOrganisation = getProsecutionAuthorityForApplication(courtApplication)
+                            .map(this::getOriginatingOrganisation)
+                            .orElse(null);
+
+                    if (isEmpty(originatingOrganisation)) {
+                        LOGGER.info("--------- The value for originatingOrganisation : {}", originatingOrganisation);
+                        return;
+                    }
+                    final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
+
+
+                    refDataProsecutorJson.ifPresent(prosecutorJson -> {
+                        sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
+                        isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
+                        prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
+                        LOGGER.info("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
+                    });
+
+                    try {
+                        aggregate(ResultsAggregate.class, sessionId,
+                                commandEnvelope, a -> a.handleStandaloneApplication(courtApplication, sendSpiOut.get(), hearingDay, isReshare));
+                    } catch (EventStreamException e) {
+                        LOGGER.error("Error handling standalone application for court application ID: {}", courtApplication.getId(), e);
+                    }
+
+                });
+    }
+
+    private static Optional<String> getProsecutionAuthorityForApplication(final CourtApplication courtApplication) {
+        return Stream.concat(
+                        Stream.of(courtApplication.getApplicant()),
+                        ofNullable(courtApplication.getRespondents()).orElse(emptyList()).stream()
+                )
+                .filter(Objects::nonNull)
+                .map(CourtApplicationParty::getProsecutingAuthority)
+                .filter(Objects::nonNull)
+                .map(ProsecutingAuthority::getProsecutionAuthorityOUCode)
+                .filter(StringUtils::isNotEmpty)
+                .findFirst();
+    }
+
+    private void sendAppealUpdateNotification(final JsonEnvelope commandEnvelope, final Optional<JurisdictionType> jurisdictionType, final List<CourtApplication> courtApplicationList) {
+        for (final CourtApplication courtApplication : courtApplicationList) {
+            if (courtApplication.getType().getAppealFlag() == Boolean.TRUE && isEmailRequiredForApplicationResult(courtApplication)) {
 
                 final String prosecutingAuthority = courtApplication.getCourtApplicationCases() != null ? courtApplication.getCourtApplicationCases().get(0)
                         .getProsecutionCaseIdentifier().getProsecutionAuthorityCode() : null;
@@ -260,7 +317,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
                 final Person person = getDefendantPerson(courtApplication);
 
-                if(person != null) {
+                if (person != null) {
                     createAppealUpdateEmail(commandEnvelope, jurisdictionType, courtApplication, prosecutingAuthority, prosecutor, person);
                 } else {
                     LOGGER.info("The defendant details is empty so appeal update email is not sent for application id {}.", courtApplication.getId());
@@ -308,7 +365,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 } catch (EventStreamException e) {
                     LOGGER.error("Error in creating results.event.appeal-update-notification-requested event for application id {} ", courtApplication.getId());
                 }
-            }else {
+            } else {
                 LOGGER.info("Email address cannot be found for results.event.appeal-update-notification-requested event for application id {} ", courtApplication.getId());
             }
         });
@@ -481,7 +538,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             final List<Offence> allOffences = resultsAggregateForInitialCaseHearing.getHearing()
                     .getProsecutionCases().stream()
                     .map(ProsecutionCase::getDefendants).flatMap(List::stream)
-                    .map(Defendant::getOffences).flatMap(List::stream).collect(toList());
+                    .map(Defendant::getOffences).flatMap(List::stream).toList();
 
             final List<OffenceResults> originalOffences = new ArrayList<>(hearingFinancialResultRequest.getOffenceResults());
 
@@ -559,7 +616,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 .filter(judicialResult -> nonNull(judicialResult.getJudicialResultPrompts()))
                 .map(JudicialResult::getJudicialResultPrompts).flatMap(List::stream)
                 .filter(a -> a.getPromptReference().equalsIgnoreCase(FINANCIAL_PENALTIES_TO_BE_WRITTEN_OFF))
-                .collect(toList());
+                .toList();
         return judicialResultPromptList.stream().findFirst().map(JudicialResultPrompt::getValue).orElse(null);
     }
 

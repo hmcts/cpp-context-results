@@ -23,7 +23,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-15",
       "resultCode": "G",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
@@ -34,7 +36,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £432.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "c2e5d085-9dff-4890-aa64-44dce146c68d",
@@ -45,7 +48,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £6544.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [
