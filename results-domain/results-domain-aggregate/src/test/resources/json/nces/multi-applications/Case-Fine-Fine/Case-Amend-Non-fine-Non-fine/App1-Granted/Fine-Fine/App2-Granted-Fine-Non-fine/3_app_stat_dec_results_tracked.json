@@ -25,7 +25,9 @@
             "isParentFlag": true,
             "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
             "offenceTitle": "Drive whilst unfit through drink",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "7dda45f3-f451-4549-8d9e-54ee9056835c",
@@ -39,7 +41,9 @@
             "isParentFlag": true,
             "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
             "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -50,7 +54,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -61,7 +66,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "0ad3ccd5-4c22-492a-89a3-b64703c4ad82",
-            "offenceTitle": "Drive whilst unfit through drink"
+            "offenceTitle": "Drive whilst unfit through drink",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Excise penalty",
@@ -72,7 +78,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "bb6eafba-939d-4a8f-bd9e-17c6299ee0b1",
-            "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention"
+            "offenceTitle": "Ride a cycle on a road / bridle way / footpath without due care and attention",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

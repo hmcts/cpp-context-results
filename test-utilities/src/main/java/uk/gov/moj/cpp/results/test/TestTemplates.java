@@ -37,6 +37,7 @@ import uk.gov.justice.core.courts.CourtCentre;
 import uk.gov.justice.core.courts.CourtIndicatedSentence;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.DefendantJudicialResult;
+import uk.gov.justice.core.courts.DeletedJudicialResults;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.HearingType;
@@ -124,6 +125,51 @@ public class TestTemplates {
                 .withApplicationParticulars("bail application")
                 .withAllegationOrComplaintStartDate(now())
                 .build()));
+    }
+
+    public static Hearing basicShareHearingTemplateWithDeletedJudicialResults(final UUID hearingId, final JurisdictionType jurisdictionType, final DeletedJudicialResults deletedJudicialResults) {
+        final List<HearingDay> hearingDays = buildHearingDays();
+
+        return Hearing.hearing()
+                .withId(hearingId)
+                .withType(HearingType.hearingType()
+                        .withId(randomUUID())
+                        .withDescription(TRIAL)
+                        .build())
+                .withProsecutionCases(asList(createProsecutionCase1(null, false)))
+                .withCourtApplications(singletonList(CourtApplication.courtApplication()
+                        .withId(fromString("f8254db1-1683-483e-afb3-b87fde5a0a26"))
+                        .withType(courtApplicationTypeTemplates())
+                        .withApplicationReceivedDate(FUTURE_LOCAL_DATE.next())
+                        .withApplicant(courtApplicationPartyTemplates())
+                        .withApplicationStatus(ApplicationStatus.DRAFT)
+                        .withSubject(courtApplicationPartyTemplates())
+                        .withCourtApplicationCases(asList(createCourtApplicationCaseWithOffences()))
+                        .withApplicationParticulars("bail application")
+                        .withAllegationOrComplaintStartDate(now())
+                        .build()))
+                .withDeletedJudicialResults(deletedJudicialResults)
+                .withJurisdictionType(jurisdictionType)
+                .withHearingDays(hearingDays)
+                .withCourtCentre(CourtCentre.courtCentre()
+                        .withId(randomUUID())
+                        .withName(COURT_NAME)
+                        .withRoomId(randomUUID())
+                        .withRoomName(STRING.next())
+                        .withWelshName(STRING.next())
+                        .withWelshRoomName(STRING.next())
+                        .withAddress(address())
+                        .build())
+                .withDefendantAttendance(of(
+                        defendantAttendance()
+                                .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2018, 5, 2)).withAttendanceType(AttendanceType.IN_PERSON).build()))
+                                .withDefendantId(DEFAULT_DEFENDANT_ID1)
+                                .build(),
+                        defendantAttendance()
+                                .withAttendanceDays(of(attendanceDay().withDay(LocalDate.of(2018, 5, 2)).withAttendanceType(AttendanceType.NOT_PRESENT).build()))
+                                .withDefendantId(DEFAULT_DEFENDANT_ID2)
+                                .build()))
+                .build();
     }
 
     public static Hearing basicShareHearingTemplateWithCustomApplication(final UUID hearingId, final JurisdictionType jurisdictionType, final List<CourtApplication> courtApplications) {

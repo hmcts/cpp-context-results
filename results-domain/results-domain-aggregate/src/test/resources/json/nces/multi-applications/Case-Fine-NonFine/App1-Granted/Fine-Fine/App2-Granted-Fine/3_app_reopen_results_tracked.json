@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-01",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-01",
             "resultCode": "ROPENED",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
@@ -49,7 +53,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "EXCISE - Excise penalty\nTo pay an excise penalty in the amount of £300.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
@@ -60,7 +65,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £4500.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "3fb22d12-7c47-4947-9e59-d6bf88b1eb97",
@@ -71,7 +77,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £1000.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

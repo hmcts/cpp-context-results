@@ -1,0 +1,87 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Hellen Prairie Bergnaumchester Avon DA61 7ND",
+  "defendantContactNumber": "798-615-0079",
+  "defendantDateOfBirth": "1978-11-11",
+  "defendantName": "Mya Hermiston",
+  "hearingCourtCentreName": "Central Criminal Court",
+  "hearingId": "782c0c22-3551-4e2d-886c-83d9bd0c59f2",
+  "hearingSittingDay": "2025-12-05T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ef09511c-5888-4505-b03e-f1325431dac4",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "83070cb3-6b51-4f31-94be-b718bb8d7cd8",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.40\nAEOC - Attachment of earnings order\nAttachment of Earnings Order made.\nCOLLO - Collection order\nCollection order made. Deductions from benefit.\nRINSTL - Reserve Terms Instalments only\nReserve Terms Instalments only. £100.00 to be paid fortnightly from 11/02/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "resultCode": "AASA",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
+    },
+    {
+      "applicationId": "83070cb3-6b51-4f31-94be-b718bb8d7cd8",
+      "applicationResultType": "Allowed",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.45",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "resultCode": "AASA",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £500.40",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Attachment of earnings order",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-05",
+      "impositionOffenceDetails": "AEOC - Attachment of earnings order\nAttachment of Earnings Order made.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-12-05",
+      "impositionOffenceDetails": "FO - Fine\nFined £600.45",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "offenceResultsCategory": "FINAL"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "GD05929125"
+  ]
+}

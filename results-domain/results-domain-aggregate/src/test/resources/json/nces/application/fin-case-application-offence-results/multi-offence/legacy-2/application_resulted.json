@@ -1,0 +1,100 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel8379228 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "497c8d28-aa86-4375-a322-eae481542c95",
+  "hearingSittingDay": "2025-10-24T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "9bec26a4-639c-47d2-aab8-0fbfecb89c63",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 01/02/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "a9d3aeaa-c9d4-4757-97ee-21782e011675",
+      "offenceTitle": "Robbery",
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
+    },
+    {
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.\nFO - Fine\nFined £200.00",
+      "isDeemedServed": true,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "applicationId": "9bec26a4-639c-47d2-aab8-0fbfecb89c63",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationTitle": "Appeal against sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "ASV - Appeal against conviction dismissed and sentence varied\nDate of conviction: 12/12/2025. Date sentence was imposed: 12/12/2026",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £100.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "a9d3aeaa-c9d4-4757-97ee-21782e011675",
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Fined and detained in default of payment until court rises",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £100.00.",
+      "isDeemedServed": true,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI8379228"
+  ]
+}

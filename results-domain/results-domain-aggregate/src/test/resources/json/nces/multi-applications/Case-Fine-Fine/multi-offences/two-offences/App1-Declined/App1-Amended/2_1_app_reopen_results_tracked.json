@@ -1,5 +1,4 @@
 {
-  "accountCorrelationId": "{{accountCorrelationId}}",
   "accountDivisionCode": "77",
   "defendantAddress": "21 Furnburry Park Road London SW11 3TQ",
   "defendantContactNumber": "015325443756",
@@ -24,7 +23,8 @@
       "isParentFlag": false,
       "offenceId": "7bfcf6db-4aa5-46f6-9281-6bb80447f9bb",
       "offenceTitle": "Supervisor of provisional licence holder use hand-held mobile phone / device - endorsable offence",
-      "resultCode": "WDRN"
+      "resultCode": "WDRN",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "4628f64f-fe78-4068-96ab-f8a35ed72d2a",
@@ -38,7 +38,8 @@
       "isParentFlag": false,
       "offenceId": "6f744bf2-cb06-4d39-bc86-1b934023e9bf",
       "offenceTitle": "Permit use of motor vehicle - driver not having proper control - endorsable offence",
-      "resultCode": "WDRN"
+      "resultCode": "WDRN",
+      "applicationResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

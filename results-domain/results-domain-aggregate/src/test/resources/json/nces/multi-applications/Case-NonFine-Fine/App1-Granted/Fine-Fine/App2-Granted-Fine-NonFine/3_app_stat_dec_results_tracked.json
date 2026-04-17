@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-08",
       "resultCode": "G",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -37,7 +39,9 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "APP2 offence2 non financial results",
       "isFinancial": false,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -51,7 +55,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-08",
       "resultCode": "STDEC",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -65,7 +71,9 @@
       "dateOfResult": "2025-07-08",
       "resultCode": "STDEC",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "APP2 offence2 non financial results"
+      "impositionOffenceDetails": "APP2 offence2 non financial results",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
@@ -76,7 +84,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FCOMP - Compensation\nTo pay compensation of £7898.00. This order relates to an offence the defendant admitted and asked the court to take into consideration on sentence",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
@@ -87,7 +96,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £300.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
@@ -98,7 +108,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "impositons results",
       "isFinancial": false,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
@@ -109,7 +120,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FO - Fine\nFined £5000.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

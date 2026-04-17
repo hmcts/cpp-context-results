@@ -1,0 +1,63 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "n Fisher Tunnel6007902 South Lillie Avon DA6 7ND",
+  "defendantContactNumber": "987-204-0324",
+  "defendantDateOfBirth": "1981-10-02",
+  "defendantName": "Andrea4 Jackie4",
+  "hearingCourtCentreName": "Bexley Magistrates' Court",
+  "hearingId": "794034a4-b1c2-46d6-b970-a30dd3c0cc39",
+  "hearingSittingDay": "2025-10-24T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "6da8fefd-f681-4ca8-a99f-2ff8604f47b5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "0d78d79e-c50e-4761-ac97-b42502f11a1e",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 8 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "a5593ad0-f18a-48e9-8c38-26743c4b131b",
+      "offenceTitle": "Robbery",
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
+    },
+    {
+      "applicationId": "0d78d79e-c50e-4761-ac97-b42502f11a1e",
+      "applicationResultType": "Appeal against conviction dismissed and sentence varied",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £10.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 12/12/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "a4e886ab-514f-4b11-b4e9-7f78cc4ad7f8",
+      "offenceTitle": "Theft from a shop",
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2025-10-24",
+      "impositionOffenceDetails": "FO - Fine\nFined £10.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "a4e886ab-514f-4b11-b4e9-7f78cc4ad7f8",
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6007902"
+  ]
+}

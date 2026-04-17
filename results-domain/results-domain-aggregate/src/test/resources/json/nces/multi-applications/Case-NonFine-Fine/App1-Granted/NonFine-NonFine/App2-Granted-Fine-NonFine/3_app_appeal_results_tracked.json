@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "AACA",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "APPEAL",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "AACA",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -49,7 +53,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £4000.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "59592069-4dc3-47cd-80ce-2604857702e0",
@@ -60,7 +65,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £345.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "0ea8157a-04bc-45e2-b956-492f64b89d0a",
@@ -71,7 +77,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "Application2 offence2 non financial impostions",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

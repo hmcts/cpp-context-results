@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -52,7 +56,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "ROPENED",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -66,7 +72,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-07-08",
             "resultCode": "ROPENED",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
@@ -77,7 +85,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £6787.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
@@ -88,7 +97,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £43.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "4f5f5508-1641-46e6-be17-0feb25f34f43",
@@ -99,7 +109,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FCOST - Costs\nTo pay costs of £4566.00 to Carmarthenshire County Council",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [
