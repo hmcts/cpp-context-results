@@ -18,7 +18,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "f1392065-c431-437b-8283-8264bdb25c0b",
-      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "dateOfResult": "2025-04-24",
@@ -26,7 +27,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "25e69d1d-7ba1-4c7f-bed0-517cda0c38d0",
-      "offenceTitle": "Provide money / property for use in acts of terrorism"
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

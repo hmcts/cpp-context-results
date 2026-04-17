@@ -1,0 +1,32 @@
+{
+  "caseReferences": "28NS5418619",
+  "dateDecisionMade": "2026-04-10",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205418619",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5418619@gmail.com",
+  "defendantName": "Camron Lockman",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f62061a8-41c4-4841-8713-ec14b3b033cb",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "c14fd36d-f626-42c9-a0ec-06262e2f891d",
+  "materialId": "7dcc02ee-57a9-4c20-aae7-f4db172c6ee1",
+  "notificationId": "66769320-bbca-425a-9305-d2a2ed5465c3",
+  "originalApplicationResults": {
+    "applicationResult": [
+      "Dismissed"
+    ],
+    "applicationTitle": "Application to reopen case"
+  },
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN DISMISSED"
+}
