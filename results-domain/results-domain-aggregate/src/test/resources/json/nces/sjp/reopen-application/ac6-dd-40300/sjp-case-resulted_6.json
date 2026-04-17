@@ -1,0 +1,28 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "Flmaq4DcSmithHaean@email.com",
+  "defendantName": "Flmaq4Dc SmithHaean",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "fd4d5dbe-76f6-45fc-ae28-9edb234982b5",
+  "hearingSittingDay": "2026-01-20T10:22:28.368Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "34431e2d-7a41-4130-bc5f-4efa7d2d7635",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-20",
+      "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name Driver and Vehicle Licensing Agency, Vehicle Excise Back Duty\nAmount of back duty £340.30, Excise penalty\nAmount of excise penalty £220.00, Compensation\nAmount of compensation £8.91\nMajor creditor organisation name Driver and Vehicle Licensing Agency\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 03/02/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "fc813bf3-d073-4f58-b113-0ffaf7d08fd4",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ914887739"
+  ]
+}
