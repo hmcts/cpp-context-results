@@ -46,7 +46,6 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
         final HearingFinancialResultRequest request = input.request();
         final List<OffenceResults> offenceResults = request.getOffenceResults();
         final LinkedList<CorrelationItem> correlationItems = input.correlationItemList();
-        final String ncesEmail = input.ncesEmail();
 
         final Optional<OffenceResults> offenceForApplication = offenceResults.stream()
                 .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
@@ -55,21 +54,20 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
 
         if (offenceForApplication.isPresent()) {
             final String subject =  APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
-            final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
                     input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap(),
                     request.getOffenceResults());
 
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication = originalOffenceResults.stream()
-                    .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
+                    .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, input.offenceDateMap()))
                     .distinct().toList();
 
             final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
                     request.getOffenceResults(),
                     input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap()).stream()
-                    .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap))
+                    .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, input.offenceDateMap()))
                     .distinct().toList();
 
             if (!impositionOffenceDetailsForApplication.isEmpty()) {
@@ -88,7 +86,7 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                         subject,
                         impositionOffenceDetailsForApplication,
                         originalApplicationResults,
-                        ncesEmail,
+                        input.ncesEmail(),
                         correlationItems,
                         input.prevApplicationResultsDetails());
             }

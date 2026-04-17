@@ -1,0 +1,67 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1976-01-15",
+  "defendantEmail": "FlmK5FxjSmithGnniW@email.com",
+  "defendantName": "FlmK5Fxj SmithGnniW",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "5a121b82-c5a5-4b46-ace2-13e3f93f09be",
+  "hearingSittingDay": "2026-01-15T14:39:27.260Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "8870e3c4-8f71-4cc6-ae02-34baaf6681b8",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "07ac6ed7-3e3b-4856-97ae-9d87f07c8de4",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "473760b3-4bf9-46ca-800c-92fe1657899f",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
+    },
+    {
+      "applicationId": "07ac6ed7-3e3b-4856-97ae-9d87f07c8de4",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "913da760-b891-4d72-bdda-4870cd23189f",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment",
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
+    },
+    {
+      "applicationId": "07ac6ed7-3e3b-4856-97ae-9d87f07c8de4",
+      "applicationResultType": "Case reopened",
+      "applicationTitle": "Application to reopen case",
+      "applicationType": "REOPEN",
+      "dateOfResult": "2026-01-15",
+      "impositionOffenceDetails": "Adjourn to a later SJP hearing session\nAdjourn to date 16/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "7a1422f0-5f9e-403c-9b9a-1a7a1bc2ae50",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+      "resultCode": "ROPENED",
+      "applicationResultsCategory": "FINAL",
+      "offenceResultsCategory":"INTERMEDIARY"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ915426836"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "Flmaq4DcSmithHaean@email.com",
+  "defendantName": "Flmaq4Dc SmithHaean",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "57e4d639-308b-4089-b96b-e4ad566b8b9c",
+  "hearingSittingDay": "2026-01-20T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "34431e2d-7a41-4130-bc5f-4efa7d2d7635",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-20",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 20/01/2026 at 22:30 in Courtroom 01, Bexley Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 20/01/2026 at 22:30 in Courtroom 01, Bexley Magistrates' Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "fc813bf3-d073-4f58-b113-0ffaf7d08fd4",
+      "offenceResultsCategory": "INTERMEDIARY",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ914887739"
+  ]
+}

@@ -4,6 +4,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.app
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToNonFinAccWriteOffRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationStatusAmendmentNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationAcceptedNotificationRule;
@@ -16,6 +17,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cas
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToNonFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseDeemedServedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.SjpReferredReopenApplicationAcceptedNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.util.ArrayList;
@@ -41,12 +43,14 @@ public class ResultNotificationRuleEngine {
         rules.add(new ApplicationAmendmentACONNotificationRule());
         rules.add(new ApplicationAmendmentFinToFinAccWriteOffRule());
         rules.add(new ApplicationAmendmentFinToNonFinAccWriteOffRule());
+        rules.add(new ApplicationStatusAmendmentNotificationRule());
         rules.add(new CaseFinToFinAccWriteOffRule());
         rules.add(new CaseFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentACONNotificationRule());
         rules.add(new CaseACONNotificationRule());
         rules.add(new CaseAmendmentDeemedServedNotificationRule());
         rules.add(new CaseDeemedServedNotificationRule());
+        rules.add(new SjpReferredReopenApplicationAcceptedNotificationRule());
     }
 
     public static ResultNotificationRuleEngine resultNotificationRuleEngine() {

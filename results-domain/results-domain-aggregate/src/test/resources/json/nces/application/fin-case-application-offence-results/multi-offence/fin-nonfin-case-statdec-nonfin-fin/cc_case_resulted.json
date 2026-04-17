@@ -1,0 +1,38 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon SW11 3TQ",
+  "defendantContactNumber": "0206067431",
+  "defendantDateOfBirth": "2005-11-11",
+  "defendantEmail": "ABCD.TEST016067431@gmail.com",
+  "defendantName": "Vilma Dach",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "555692a5-b59b-4c35-a09d-0b00b203aba4",
+  "hearingSittingDay": "2026-01-16T22:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "c7e75178-44c7-4421-807f-2b92336ea976",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-16",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "985f8652-e02e-4e03-8d06-b54052414ff6",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Conspire to assault a person thereby occasioning them actual bodily harm"
+    },
+    {
+      "dateOfResult": "2026-01-16",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "0ed5cf2d-19b9-4518-92cf-0ab4e7c6562d",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Public service vehicles - passenger failing to pay fare"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI6067431"
+  ]
+}

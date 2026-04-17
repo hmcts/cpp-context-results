@@ -1,0 +1,36 @@
+{
+  "applicationResult": "NEXH --",
+  "caseReferences": "28NS5418619",
+  "dateDecisionMade": "2026-04-10",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205418619",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5418619@gmail.com",
+  "defendantName": "Camron Lockman",
+  "divisionCode": "47",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f62061a8-41c4-4841-8713-ec14b3b033cb",
+      "title": "Theft from a shop"
+    }
+  ],
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "c14fd36d-f626-42c9-a0ec-06262e2f891d",
+  "materialId": "04dab932-7a98-4ea1-b2bc-6faee384e137",
+  "newOffenceByResult": [
+    {
+      "details": "A - Adjournment\nAdjourned for hearing on 11/04/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 11/04/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
+      "offenceDate": "2019-11-28",
+      "offenceId": "f62061a8-41c4-4841-8713-ec14b3b033cb",
+      "title": "Theft from a shop"
+    }
+  ],
+  "notificationId": "35096b05-861c-4b05-930b-eea6b9c7080c",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPLICATION TO REOPEN UPDATED"
+}

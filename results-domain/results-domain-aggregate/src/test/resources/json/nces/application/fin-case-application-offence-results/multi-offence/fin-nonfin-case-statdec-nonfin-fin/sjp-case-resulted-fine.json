@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1966-01-09",
+  "defendantEmail": "Flm5KFq6SmithmKAXA@email.com",
+  "defendantName": "Flm5KFq6 SmithmKAXA",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ee78476a-a8d7-49c4-954f-36fd057d7842",
+  "hearingSittingDay": "2026-01-09T17:35:46.432Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "f7b7ba7b-8759-4315-825e-1fcdc6540262",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name Transport for London, Vehicle Excise Back Duty\nAmount of back duty £100.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 23/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "ecb8578d-6237-48e3-a589-e5dfc16cd730",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "No separate penalty\nDriving record endorsed (no points)",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "ba836c10-7586-4511-a778-f4d945ce1cba",
+      "offenceTitle": "Cause use of motor vehicle with no insurance"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "No separate penalty\nDriving record endorsed (no points)",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "d365bb93-c07b-4d85-a11d-9a9a5ac04dce",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ124272889"
+  ]
+}
