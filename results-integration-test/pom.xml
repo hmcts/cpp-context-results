@@ -4,7 +4,7 @@
     <parent>
         <artifactId>results-parent</artifactId>
         <groupId>uk.gov.moj.cpp.results</groupId>
-        <version>17.100.69-PEG-2848-R-SNAPSHOT</version>
+        <version>17.100.70-PEG-2848-R-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-integration-test</artifactId>
