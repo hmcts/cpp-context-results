@@ -1,0 +1,29 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "47",
+  "defendantAddress": "9999A9899AAAA Woodlane4 addressline 3 Bristol Avon BS1 1JQ",
+  "defendantContactNumber": "0205418619",
+  "defendantDateOfBirth": "1972-11-01",
+  "defendantEmail": "firstName.lastName5418619@gmail.com",
+  "defendantName": "Camron Lockman",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "cd0eec5a-8279-45ad-b86d-44cc7a919c71",
+  "hearingSittingDay": "2026-04-09T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "c14fd36d-f626-42c9-a0ec-06262e2f891d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-04-09",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "f62061a8-41c4-4841-8713-ec14b3b033cb",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Theft from a shop"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28NS5418619"
+  ]
+}
