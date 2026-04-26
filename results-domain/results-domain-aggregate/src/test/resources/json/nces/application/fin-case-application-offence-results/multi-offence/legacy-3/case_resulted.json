@@ -18,7 +18,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "8e860547-8fd9-4eaa-89df-78c4cb51cc56",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "dateOfResult": "2025-10-24",
@@ -26,7 +27,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "52a8ed2c-6229-41cb-b7b3-3f56b92e5a5a",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

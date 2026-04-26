@@ -40,6 +40,7 @@ public class NCESDecisionConstants  implements Serializable {
     public static final String SENTENCE_VARIED = "\nSentence varied";
     public static final String APPEAL_WITHDRAWN = "APPEAL WITHDRAWN";
     public static final String APPEAL_ALLOWED = "APPEAL ALLOWED";
+    public static final String APPLICATION_TO_REOPEN_GRANTED = "APPLICATION TO REOPEN GRANTED";
 
     public static final Map<String, String> APPLICATION_TYPES = ImmutableMap.<String, String>builder()
             .put(STAT_DEC, "APPLICATION FOR A STATUTORY DECLARATION RECEIVED")
@@ -58,8 +59,8 @@ public class NCESDecisionConstants  implements Serializable {
             .put(REOPEN, ImmutableMap.<String, String>builder()
                     .put(RFSD, "APPLICATION TO REOPEN REFUSED")
                     .put(WDRN, "APPLICATION TO REOPEN WITHDRAWN")
-                    .put(G, "APPLICATION TO REOPEN GRANTED")
-                    .put(ROPENED, "APPLICATION TO REOPEN GRANTED")
+                    .put(G, APPLICATION_TO_REOPEN_GRANTED)
+                    .put(ROPENED, APPLICATION_TO_REOPEN_GRANTED)
                     .put(DISM, "APPLICATION TO REOPEN DISMISSED")
                     .build())
             .put(APPEAL, ImmutableMap.<String, String>builder()
@@ -84,6 +85,11 @@ public class NCESDecisionConstants  implements Serializable {
             .put(REOPEN, APPLICATION_TO_REOPEN_UPDATED)
             .put(APPEAL, APPEAL_APPLICATION_UPDATED)
             .build();
+
+    public static boolean isApplicationUpdatedSubject(final String subject) {
+        return APPLICATION_UPDATED_SUBJECT.values().stream()
+                .anyMatch(e -> e.equals(subject));
+    }
 
     public static List<String> getApplicationAppealAllowedSubjects() {
         return Arrays.asList(NCESDecisionConstants.APPLICATION_SUBJECT.get(NCESDecisionConstants.APPEAL).get(NCESDecisionConstants.AACA),

@@ -22,7 +22,8 @@
       "isParentFlag": true,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "REOPEN",
@@ -32,7 +33,8 @@
       "isParentFlag": true,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ACON"
+      "resultCode": "ACON",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "b4d049a9-6a95-4470-993e-0945ea611eb1",
@@ -45,7 +47,9 @@
       "isParentFlag": false,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "G"
+      "resultCode": "G",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fined and detained in default of payment until court rises",
@@ -56,7 +60,8 @@
       "isParentFlag": false,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -67,7 +72,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Surcharge",
@@ -78,7 +84,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Consolidated",
@@ -90,7 +97,8 @@
       "isParentFlag": false,
       "offenceId": "4379aadf-f270-4939-a1d9-8e60a1a4cfb1",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ACON"
+      "resultCode": "ACON",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

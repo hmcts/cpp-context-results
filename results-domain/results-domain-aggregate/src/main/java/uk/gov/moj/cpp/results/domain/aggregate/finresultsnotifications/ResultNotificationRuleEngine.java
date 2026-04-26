@@ -4,18 +4,20 @@ import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.app
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationAmendmentFinToNonFinAccWriteOffRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.amendments.ApplicationStatusAmendmentNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.ApplicationDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationAcceptedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewAppealAppDeniedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewApplicationUpdatedNotificationRule;
-import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewNonAppealAppsDeniedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result.NewStatdecOrReopenAppDeniedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.amendments.CaseAmendmentDeemedServedNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToNonFinAccWriteOffRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseACONNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.CaseDeemedServedNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.result.SjpReferredReopenApplicationAcceptedNotificationRule;
 import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountReceived;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class ResultNotificationRuleEngine {
         this.rules = new ArrayList<>();
         rules.add(new NewAppealAppDeniedNotificationRule());
         rules.add(new NewApplicationAcceptedNotificationRule());
-        rules.add(new NewNonAppealAppsDeniedNotificationRule());
+        rules.add(new NewStatdecOrReopenAppDeniedNotificationRule());
         rules.add(new NewApplicationUpdatedNotificationRule());
         rules.add(new ApplicationDeemedServedNotificationRule());
         rules.add(new ApplicationAmendmentDeemedServedNotificationRule());
@@ -41,12 +43,14 @@ public class ResultNotificationRuleEngine {
         rules.add(new ApplicationAmendmentACONNotificationRule());
         rules.add(new ApplicationAmendmentFinToFinAccWriteOffRule());
         rules.add(new ApplicationAmendmentFinToNonFinAccWriteOffRule());
+        rules.add(new ApplicationStatusAmendmentNotificationRule());
         rules.add(new CaseFinToFinAccWriteOffRule());
         rules.add(new CaseFinToNonFinAccWriteOffRule());
         rules.add(new CaseAmendmentACONNotificationRule());
         rules.add(new CaseACONNotificationRule());
         rules.add(new CaseAmendmentDeemedServedNotificationRule());
         rules.add(new CaseDeemedServedNotificationRule());
+        rules.add(new SjpReferredReopenApplicationAcceptedNotificationRule());
     }
 
     public static ResultNotificationRuleEngine resultNotificationRuleEngine() {

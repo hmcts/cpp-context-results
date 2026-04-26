@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-08",
       "resultCode": "G",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -38,7 +40,9 @@
       "dateOfResult": "2025-07-08",
       "resultCode": "G",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "G - Granted"
+      "impositionOffenceDetails": "G - Granted",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -52,7 +56,9 @@
       "isParentFlag": true,
       "dateOfResult": "2025-07-08",
       "resultCode": "STDEC",
-      "isDeemedServed": false
+      "isDeemedServed": false,
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -62,7 +68,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "Application2 offence2 non financial impositions",
       "isFinancial": false,
-      "isParentFlag": true
+      "isParentFlag": true,
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationType": "STAT_DEC",
@@ -76,7 +83,9 @@
       "dateOfResult": "2025-07-08",
       "resultCode": "STDEC",
       "isDeemedServed": false,
-      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 16E of the Magistrates' Courts Act 1980. "
+      "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 16E of the Magistrates' Courts Act 1980. ",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "offenceId": "b5350633-5c9a-41ee-ae30-3ceca44aab31",
@@ -87,7 +96,8 @@
       "isDeemedServed": false,
       "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £300.00",
       "isFinancial": true,
-      "isParentFlag": false
+      "isParentFlag": false,
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

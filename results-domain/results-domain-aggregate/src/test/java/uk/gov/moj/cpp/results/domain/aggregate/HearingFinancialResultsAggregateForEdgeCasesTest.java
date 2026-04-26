@@ -209,10 +209,43 @@ class HearingFinancialResultsAggregateForEdgeCasesTest {
         );
     }
 
+    public static Stream<Arguments> applicationAmendmentEdgeCaseScenarios() {
+        return Stream.of(
+                Arguments.of("Case(fine) -> Application(Granted, Offences adjourned) -> ApplicationAmened(Dismissed)",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/adjourned_orgapp_dismissed/appeals/case_resulted.json",
+                                                accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("app adjourned")
+                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/adjourned_orgapp_dismissed/appeals/app_adjourned.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/adjourned_orgapp_dismissed/appeals/nces_app_updated.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                                .newStep(newResultTrackedStep("org app amended - dismissed")
+                                        .withResultTrackedEvent("json/nces/application-amendments/fin-case/adjourned_orgapp_dismissed/appeals/app_amended.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application-amendments/fin-case/adjourned_orgapp_dismissed/appeals/nces_app_dismissed.json",
+                                                comparison()
+                                                        .withPathsExcluded("materialId", "notificationId")
+                                                        .withParam("gobAccountNumber", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")))
+                )
+        );
+    }
 
     @ParameterizedTest(name = "{index} => {0}")
     @MethodSource("complexMultiApplicationScenarios")
     void shouldCreateNCESNotificationForComplexMultiApplication(final String name, final Scenario scenario) {
         assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
     }
-} 
+
+    @ParameterizedTest(name = "{index} => {0}")
+    @MethodSource("applicationAmendmentEdgeCaseScenarios")
+    void shouldCreateNCESNotificationForApplicationAmendmentEdgeCases(final String name, final Scenario scenario) {
+        assertDoesNotThrow(() -> scenario.run(name, new HearingFinancialResultsAggregate()));
+    }
+}
