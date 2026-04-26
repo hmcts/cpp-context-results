@@ -41,7 +41,7 @@
         <referencedata.version>17.103.131</referencedata.version>
         <notification.notify.version>17.104.44</notification.notify.version>
         <systemdocgenerator.version>17.104.111</systemdocgenerator.version>
-        <progression.version>17.0.249</progression.version>
+        <progression.version>17.0.210-DLRM7-SNAPSHOT</progression.version>
         <material.version>17.0.79</material.version>
         <usersgroups.version>17.104.47</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
