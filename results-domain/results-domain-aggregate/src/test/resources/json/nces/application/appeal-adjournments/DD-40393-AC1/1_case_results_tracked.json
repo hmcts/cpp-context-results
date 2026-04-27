@@ -1,0 +1,44 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "9999A9999AAAA Woodlane addressline 3 Bristol Avon",
+  "defendantContactNumber": "0205882659",
+  "defendantDateOfBirth": "1981-11-11",
+  "defendantEmail": "REDDY.TEST015882659@gmail.com",
+  "defendantName": "Krystal Medhurst",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "4ff879ed-ac0a-40ea-8367-3049413561d9",
+  "hearingSittingDay": "2025-12-15T22:30:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "9049a682-8720-4785-9bb9-8de754e208c5",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2025-12-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £2000.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 13/04/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "705b0f95-949b-43cf-9bb5-647fef539dd7",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "dateOfResult": "2025-12-15",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00, FVS - Surcharge\nTo pay a surcharge of £432.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "3184ef79-3fba-4ef4-9bfb-33a75cf8b24f",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "dateOfResult": "2025-12-15",
+      "impositionOffenceDetails": "CD - Conditional discharge\nDischarged conditionally for 5 Years.",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "0d3729b0-ba46-4735-bffc-6ca02640c269",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "28DI5882659"
+  ]
+}

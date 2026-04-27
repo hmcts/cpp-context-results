@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
             "offenceTitle": "Possess / control TV set with intent another use install without a licence",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "c3988cbf-c5a8-4ab3-b286-9c700aac0841",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
             "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -49,7 +53,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
-            "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Surcharge",
@@ -60,7 +65,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "299397c2-f8a0-4200-bf07-704ec4a992e7",
-            "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+            "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -71,7 +77,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Vehicle Excise Back Duty",
@@ -82,7 +89,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "90184e70-550e-4710-9b3a-d0e12fc17666",
-            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment"
+            "offenceTitle": "Drive motor vehicle fail comply with red / green arrow / lane closure light signals - automatic equipment",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

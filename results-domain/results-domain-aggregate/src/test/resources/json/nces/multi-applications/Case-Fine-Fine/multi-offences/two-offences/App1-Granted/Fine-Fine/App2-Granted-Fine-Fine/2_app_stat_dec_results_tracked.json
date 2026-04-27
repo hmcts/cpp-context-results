@@ -21,7 +21,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £400.00.\nFO - Fine\nFined £3333.00\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/10/2025",
             "isFinancial": true,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -35,7 +36,9 @@
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -49,7 +52,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -60,7 +65,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £400.00.\nFO - Fine\nFined £3333.00\nCOLLO - Collection order\nCollection order made. Attachment of earnings.\nPTFOR - Payment terms - on release\nPayment terms - on release. Date to pay in full by: 15/10/2025",
             "isFinancial": true,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -74,7 +80,9 @@
             "dateOfResult": "2025-06-30",
             "resultCode": "STDEC",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 16E of the Magistrates' Courts Act 1980. "
+            "impositionOffenceDetails": "STDEC - Statutory Declaration\nStatutory declaration made under Section 16E of the Magistrates' Courts Act 1980. ",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationType": "STAT_DEC",
@@ -88,7 +96,9 @@
             "isParentFlag": true,
             "dateOfResult": "2025-06-30",
             "resultCode": "STDEC",
-            "isDeemedServed": false
+            "isDeemedServed": false,
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
@@ -100,7 +110,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse until the court rises. Total amount enforced £400.00.",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f334b49a-e827-4014-b76c-eb4343cb3e7e",
@@ -122,7 +133,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £6666.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "f8f9637a-09f0-4e50-96fa-5e21d901fca8",
@@ -133,7 +145,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FVS - Surcharge\nTo pay a surcharge of £666.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

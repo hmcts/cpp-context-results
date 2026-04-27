@@ -270,7 +270,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                             .orElse(null);
 
                     if (isEmpty(originatingOrganisation)) {
-                        LOGGER.error("--------- The value for originatingOrganisation : {}", originatingOrganisation);
+                        LOGGER.info("--------- The value for originatingOrganisation : {}", originatingOrganisation);
                         return;
                     }
                     final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForOriginatingOrganisation(originatingOrganisation);
@@ -280,7 +280,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                         sendSpiOut.set(getFlagValue(SPI_OUT_FLAG, prosecutorJson));
                         isPoliceProsecutor.set(getFlagValue(POLICE_FLAG, prosecutorJson));
                         prosecutorEmailAddress.set(getEmailAddress(prosecutorJson, jurisdictionType));
-                        LOGGER.error("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
+                        LOGGER.info("-------------- sendSpiOut is '{}' and isPoliceProsecutor is '{}'", sendSpiOut.get(), isPoliceProsecutor.get());
                     });
 
                     try {

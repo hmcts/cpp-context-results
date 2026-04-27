@@ -21,7 +21,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £2000.00.\nFO - Fine\nFined £8877.00\nINSTL - Payment terms - Instalments only\nPayment terms - Instalments only. £100.00 to be paid monthly. Instalment start date: 11/05/2026.",
             "isFinancial": true,
-            "isParentFlag": true
+            "isParentFlag": true,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationType": "REOPEN",
@@ -35,7 +36,9 @@
             "dateOfResult": "2025-06-30",
             "resultCode": "G",
             "isDeemedServed": false,
-            "impositionOffenceDetails": "G - Granted"
+            "impositionOffenceDetails": "G - Granted",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
@@ -47,7 +50,8 @@
             "isDeemedServed": true,
             "impositionOffenceDetails": "FIDICI - Fined and detained in default of payment until court rises\nTo be detained in the courthouse . Detention deemed served by reason of time already spent in custody. Total amount enforced £2000.00.",
             "isFinancial": false,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         },
         {
             "offenceId": "4454a996-089e-41f0-9242-8e737219e8ed",
@@ -58,7 +62,8 @@
             "isDeemedServed": false,
             "impositionOffenceDetails": "FO - Fine\nFined £8877.00",
             "isFinancial": true,
-            "isParentFlag": false
+            "isParentFlag": false,
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

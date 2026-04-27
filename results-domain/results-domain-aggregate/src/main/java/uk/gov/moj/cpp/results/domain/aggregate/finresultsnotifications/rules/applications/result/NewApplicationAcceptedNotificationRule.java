@@ -5,7 +5,9 @@ import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelpe
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildNewImpositionOffenceDetailsFromRequest;
-import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewApplicationGranted;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewAppealOrReopenApplicationGranted;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isPreviousApplicationFinalisedNotificationSent;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.isNewStatdecApplicationGranted;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_SUBJECT;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.OffenceResultsResolver.getNewOffenceResultsApplication;
@@ -38,15 +40,14 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
                 && input.isValidApplicationTypeWithAllowedResultCode()
-                && isNewApplicationGranted(input.request(), input.prevApplicationResultsDetails());
+                && (isNewStatdecApplicationGranted(input.request()) || isNewAppealOrReopenApplicationGranted(input.request()))
+                && !isPreviousApplicationFinalisedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
     @Override
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
         final HearingFinancialResultRequest request = input.request();
         final List<OffenceResults> offenceResults = request.getOffenceResults();
-        final LinkedList<CorrelationItem> correlationItems = input.correlationItemList();
-        final String ncesEmail = input.ncesEmail();
 
         final Optional<OffenceResults> offenceForApplication = offenceResults.stream()
                 .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
@@ -55,19 +56,19 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
 
         if (offenceForApplication.isPresent()) {
             final OffenceResults offence = offenceForApplication.get();
-            final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
-                    input.prevOffenceResultsDetails(), 
-                    input.prevApplicationOffenceResultsMap(), 
+                    input.prevOffenceResultsDetails(),
+                    input.prevApplicationOffenceResultsMap(),
                     request.getOffenceResults());
-            
+
+            final Map<UUID, String> offenceDateMap = input.offenceDateMap();
             final List<ImpositionOffenceDetails> impositionOffenceDetailsForApplication = originalOffenceResults.stream()
                     .map(oor -> buildImpositionOffenceDetailsFromAggregate(oor, offenceDateMap))
                     .distinct().toList();
-            
+
             final List<NewOffenceByResult> newApplicationOffenceResults = getNewOffenceResultsApplication(
-                    request.getOffenceResults(), 
-                    input.prevOffenceResultsDetails(), 
+                    request.getOffenceResults(),
+                    input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap()).stream()
                     .map(nor -> buildNewImpositionOffenceDetailsFromRequest(nor, offenceDateMap))
                     .distinct().toList();
@@ -76,10 +77,12 @@ public class NewApplicationAcceptedNotificationRule extends AbstractApplicationR
                 final String writtenOffExists = input.isWrittenOffExists();
                 final String originalDateOfOffenceList = input.originalDateOfOffenceList();
                 final String originalDateOfSentenceList = input.originalDateOfSentenceList();
+                final String ncesEmail = input.ncesEmail();
+                final LinkedList<CorrelationItem> correlationItems = input.correlationItemList();
 
                 if (isResultedWithOffences(request.getOffenceResults())
-                        && isNcesNotificationForNewApplication(request.getOffenceResults(), 
-                                input.prevOffenceResultsDetails(), 
+                        && isNcesNotificationForNewApplication(request.getOffenceResults(),
+                                input.prevOffenceResultsDetails(),
                                 input.prevApplicationOffenceResultsMap())) {
                     return Optional.of(markedAggregateSendEmailEventBuilder(ncesEmail, correlationItems)
                             .buildMarkedAggregateGranted(request,

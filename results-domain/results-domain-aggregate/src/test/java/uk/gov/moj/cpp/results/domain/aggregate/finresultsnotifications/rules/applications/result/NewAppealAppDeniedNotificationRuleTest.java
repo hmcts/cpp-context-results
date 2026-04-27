@@ -45,6 +45,8 @@ class NewAppealAppDeniedNotificationRuleTest {
                                 .withApplicationId(randomUUID())
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Appeal withdrawn details")
+                                .withApplicationResultsCategory("FINAL")
+                                .withOffenceResultsCategory("FINAL")
                                 .withIsFinancial(true)
                                 .build()
                 )).withAccountCorrelationId(randomUUID());
@@ -225,6 +227,8 @@ class NewAppealAppDeniedNotificationRuleTest {
                                 .withResultCode(AASD)
                                 .withIsParentFlag(true)
                                 .withImpositionOffenceDetails("Appeal with previous results")
+                                .withApplicationResultsCategory("FINAL")
+                                .withOffenceResultsCategory("FINAL")
                                 .withIsFinancial(true)
                                 .build()
                 )).withAccountCorrelationId(randomUUID());

@@ -24,7 +24,9 @@
             "isParentFlag": true,
             "offenceId": "721d02d3-c6c8-4bd2-89ac-b1474e554041",
             "offenceTitle": "Robbery",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "fd511371-c28d-4530-a50e-2622cb994c67",
@@ -38,7 +40,9 @@
             "isParentFlag": true,
             "offenceId": "f8127d18-aa3c-49b0-8faa-5c53922fdb3d",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "fd511371-c28d-4530-a50e-2622cb994c67",
@@ -52,7 +56,9 @@
             "isParentFlag": true,
             "offenceId": "247a47fd-4cbc-4e3e-979c-681240ad5204",
             "offenceTitle": "Robbery",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationId": "fd511371-c28d-4530-a50e-2622cb994c67",
@@ -66,7 +72,9 @@
             "isParentFlag": true,
             "offenceId": "8eb3672c-6666-49bf-be05-c4d9a1adbefb",
             "offenceTitle": "Theft from a shop",
-            "resultCode": "G"
+            "resultCode": "G",
+            "offenceResultsCategory": "FINAL",
+            "applicationResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -77,7 +85,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "721d02d3-c6c8-4bd2-89ac-b1474e554041",
-            "offenceTitle": "Robbery"
+            "offenceTitle": "Robbery",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -88,7 +97,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "f8127d18-aa3c-49b0-8faa-5c53922fdb3d",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -99,7 +109,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "247a47fd-4cbc-4e3e-979c-681240ad5204",
-            "offenceTitle": "Robbery"
+            "offenceTitle": "Robbery",
+            "offenceResultsCategory": "FINAL"
         },
         {
             "applicationResultType": "Fine",
@@ -110,7 +121,8 @@
             "isFinancial": true,
             "isParentFlag": false,
             "offenceId": "8eb3672c-6666-49bf-be05-c4d9a1adbefb",
-            "offenceTitle": "Theft from a shop"
+            "offenceTitle": "Theft from a shop",
+            "offenceResultsCategory": "FINAL"
         }
     ],
     "prosecutionCaseReferences": [

@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "a9d3aeaa-c9d4-4757-97ee-21782e011675",
       "offenceTitle": "Robbery",
-      "resultCode": "ASV"
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationType": "APPEAL",
@@ -35,7 +37,8 @@
       "isParentFlag": true,
       "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationId": "9bec26a4-639c-47d2-aab8-0fbfecb89c63",
@@ -49,7 +52,9 @@
       "isParentFlag": false,
       "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "ASV"
+      "resultCode": "ASV",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -60,7 +65,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "a9d3aeaa-c9d4-4757-97ee-21782e011675",
-      "offenceTitle": "Robbery"
+      "offenceTitle": "Robbery",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fined and detained in default of payment until court rises",
@@ -72,7 +78,8 @@
       "isParentFlag": false,
       "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
       "offenceTitle": "Theft from a shop",
-      "resultCode": "FIDICI"
+      "resultCode": "FIDICI",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -83,7 +90,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "3611b36e-018e-4cdf-8434-076def7cfc5e",
-      "offenceTitle": "Theft from a shop"
+      "offenceTitle": "Theft from a shop",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [
