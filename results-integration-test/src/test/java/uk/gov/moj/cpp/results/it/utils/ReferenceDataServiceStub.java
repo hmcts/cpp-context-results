@@ -33,7 +33,7 @@ public class ReferenceDataServiceStub {
                         .withBody(getJsonResponse("stub-data/referencedata.query.country-nationality.json"))));
     }
 
-    public static void stubGetOrgainsationUnit() {
+    public static void stubGetOrganisationUnit() {
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/organisation-units/";
 
         stubFor(get(urlPathMatching(urlPath + ".*"))

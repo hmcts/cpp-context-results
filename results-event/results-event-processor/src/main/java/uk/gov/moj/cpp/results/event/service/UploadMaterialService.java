@@ -18,8 +18,8 @@ public class UploadMaterialService {
     @Inject
     private Enveloper enveloper;
 
-    public void uploadMaterial(final UploadMaterialContext uploadMaterialContext) {
-        materialService.uploadMaterial(uploadMaterialContext.getFileId(), uploadMaterialContext.getMaterialId(), uploadMaterialContext.getOriginatingEnvelope());
+    public void uploadMaterial(final UploadMaterialContext uploadMaterialContext, final String ncesOriginatorValue) {
+        materialService.uploadMaterial(uploadMaterialContext.getFileId(), uploadMaterialContext.getMaterialId(), uploadMaterialContext.getOriginatingEnvelope(), ncesOriginatorValue);
     }
 
 }

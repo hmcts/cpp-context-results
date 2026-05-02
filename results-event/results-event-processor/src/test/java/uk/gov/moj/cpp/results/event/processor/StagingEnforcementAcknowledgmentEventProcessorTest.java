@@ -2,24 +2,44 @@ package uk.gov.moj.cpp.results.event.processor;
 
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
+import static javax.json.Json.createArrayBuilder;
 import static javax.json.Json.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher.jsonEnvelope;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMetadataMatcher.metadata;
 import static uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher.payloadIsJson;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
+import static uk.gov.moj.cpp.results.event.processor.StagingEnforcementAcknowledgmentEventProcessor.FINE_ACCOUNT_NOT_PRESENT;
 
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.results.event.service.ProgressionService;
+import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
+import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 
+import com.google.common.io.Resources;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -33,6 +53,12 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
 
     @Mock
     private Sender sender;
+
+    @Mock
+    private ProgressionService progressionService;
+
+    @Mock
+    private ReferenceDataService referenceDataService;
 
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> envelopeArgumentCaptor;
@@ -161,5 +187,198 @@ public class StagingEnforcementAcknowledgmentEventProcessorTest {
                                 withJsonPath("$.correlationId", is(accountCorrelationId))
                         ))));
 
+    }
+
+
+    @Test
+    void shouldProcessSendNcesMailForNewApplication() {
+        // GIVEN
+        final String masterDefendantId = "1a9176f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
+        final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId3 = "b10acc1c-eb69-4b3c-960e-76be9153125a";
+        final String hearingCourtCentreId = "faa91bb2-19cb-384b-bcc1-06d31d12cc67";
+
+        final JsonObject notificationPayload = createObjectBuilder()
+                .add("masterDefendantId", masterDefendantId)
+                .add("caseIds", createCaseIds(caseId1, caseId2, caseId3))
+                .add("hearingCourtCentreId", hearingCourtCentreId)
+                .build();
+
+        final JsonObject progressionResponse = getPayload("inactive-migrated-cases.json");
+
+        when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3)))
+                .thenReturn(Optional.of(progressionResponse));
+
+        final JsonObject payload = getPayload("organisation-units.json");
+        when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(payload);
+
+        final JsonEnvelope event = JsonEnvelope.envelopeFrom(
+                metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
+
+        // WHEN
+        stagingEnforcementAcknowledgmentEventProcessor.processSendNcesMailForNewApplication(event);
+
+        // THEN
+        verify(progressionService).getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3));
+
+        // Updated to 5: (3 from Case1 + 1 from Case2 + 1 Final Notification)
+        verify(sender, times(5)).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
+
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(0).metadata(), allEnvelopes.get(0).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.masterDefendantId", is(masterDefendantId)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("12345")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantAddress", is("59 Meadow Lane B1 1AA")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("test@gmail.com")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantDateOfBirth", is("1998-08-23")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.originalDateOfConviction", is("09/11/2025, 10/11/2025"))
+                        ))));
+
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(1).metadata(), allEnvelopes.get(1).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("54321")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield (Junior) Dare")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantDateOfBirth", is("2020-01-01")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("junior@gmail.com"))
+                        ))));
+
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(2).metadata(), allEnvelopes.get(2).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId1)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is(FINE_ACCOUNT_NOT_PRESENT)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Jane Dare")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantEmail", is("jane.dare@gmail.com"))
+                        ))));
+
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(3).metadata(), allEnvelopes.get(3).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId2)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("67890")),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.defendantName", is("Garfield Dare"))
+                        ))));
+
+        assertThat(allEnvelopes.get(4).metadata().name(), is("result.command.send-nces-email-for-application"));
+    }
+
+    @Test
+    void shouldProcessSendNcesMailForNewApplicationWhenDefendantFineAccountNumbersMissing() {
+        // GIVEN
+        final String masterDefendantId = "1a9176f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
+        final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId3 = "b10acc1c-eb69-4b3c-960e-76be9153125a";
+        final String hearingCourtCentreId = "faa91bb2-19cb-384b-bcc1-06d31d12cc67";
+
+        final JsonObject notificationPayload = createObjectBuilder()
+                .add("masterDefendantId", masterDefendantId)
+                .add("caseIds", createCaseIds(caseId1, caseId2, caseId3))
+                .add("hearingCourtCentreId", hearingCourtCentreId)
+                .build();
+
+        final JsonObject progressionResponse = getPayload("inactive-migrated-cases-without-defendant-fine-account-numbers.json");
+
+        when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3)))
+                .thenReturn(Optional.of(progressionResponse));
+
+        final JsonObject payload = getPayload("organisation-units.json");
+        when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(payload);
+
+        final JsonEnvelope event = JsonEnvelope.envelopeFrom(
+                metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
+
+        // WHEN
+        stagingEnforcementAcknowledgmentEventProcessor.processSendNcesMailForNewApplication(event);
+
+        // THEN
+        verify(progressionService).getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2, caseId3));
+
+        verify(sender, times(4)).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
+
+        assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINE_ACCOUNT_NOT_PRESENT));
+        assertThat(allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("caseId"), is(caseId1));
+
+        assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("fineAccountNumber"), is(FINE_ACCOUNT_NOT_PRESENT));
+        assertThat(allEnvelopes.get(1).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount").getString("defendantName"), containsString("Junior"));
+
+        assertThat(JsonEnvelope.envelopeFrom(allEnvelopes.get(2).metadata(), allEnvelopes.get(2).payload()),
+                jsonEnvelope(
+                        metadata().withName("result.command.send-migrated-inactive-nces-email-for-application"),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.caseId", is(caseId2)),
+                                withJsonPath("$.migratedMasterDefendantCourtEmailAndFineAccount.fineAccountNumber", is("67890"))
+                        ))));
+
+        assertThat(allEnvelopes.get(3).metadata().name(), is("result.command.send-nces-email-for-application"));
+    }
+
+    @Test
+    void shouldProcessSendNcesMailForNewApplicationWithNullCourtEmailAndDivisionWhenOrganisationUnitHasNoNcesDetails() {
+        final String masterDefendantId = "1a9176f4-3adc-4ea1-a808-26c4632f38ab";
+        final String caseId1 = "b00acc1c-eb69-4b3c-960e-76be9153125a";
+        final String caseId2 = "7776f4-3adc-4ea1-a808-26c4632f38ab";
+        final String hearingCourtCentreId = "faa91bb2-19cb-384b-bcc1-06d31d12cc67";
+
+        final JsonObject notificationPayload = createObjectBuilder()
+                .add("masterDefendantId", masterDefendantId)
+                .add("caseIds", createCaseIds(caseId1, caseId2))
+                .add("hearingCourtCentreId", hearingCourtCentreId)
+                .build();
+
+        final JsonObject progressionResponse = getPayload("inactive-migrated-cases.json");
+        when(progressionService.getInactiveMigratedCasesByCaseIds(List.of(caseId1, caseId2)))
+                .thenReturn(Optional.of(progressionResponse));
+
+        final JsonObject organisationUnitWithoutNcesDetails = createObjectBuilder()
+                .add("id", hearingCourtCentreId)
+                .build();
+        when(referenceDataService.getOrganisationUnit(eq(hearingCourtCentreId), any())).thenReturn(organisationUnitWithoutNcesDetails);
+
+        final JsonEnvelope event = JsonEnvelope.envelopeFrom(
+                metadataWithRandomUUID("public.hearing.nces-email-notification-for-application"), notificationPayload);
+
+        stagingEnforcementAcknowledgmentEventProcessor.processSendNcesMailForNewApplication(event);
+
+        verify(sender, times(5)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        List<Envelope<JsonObject>> allEnvelopes = envelopeArgumentCaptor.getAllValues();
+
+        final JsonObject firstMigratedPayload = allEnvelopes.get(0).payload().getJsonObject("migratedMasterDefendantCourtEmailAndFineAccount");
+        assertThat(firstMigratedPayload.get("courtEmail"), nullValue());
+        assertThat(firstMigratedPayload.get("division"), nullValue());
+    }
+
+    private JsonArrayBuilder createCaseIds(String... caseIds) {
+        final JsonArrayBuilder builder = createArrayBuilder();
+        Arrays.stream(caseIds).forEach(builder::add);
+        return builder;
+    }
+
+    private static JsonObject getPayload(final String path) {
+        String request = null;
+        try {
+            request = Resources.toString(
+                    Resources.getResource(path),
+                    Charset.defaultCharset()
+            );
+        } catch (final Exception e) {
+            fail("Error consuming file from location " + path);
+        }
+        final JsonReader reader = Json.createReader(new StringReader(request));
+        return reader.readObject();
     }
 }

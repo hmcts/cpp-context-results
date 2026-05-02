@@ -23,16 +23,17 @@ public class Originator {
     public static final String ORIGINATOR_VALUE = "court";
     public static final String SOURCE_NCES = "originator-nces";
     public static final String ORIGINATOR_VALUE_NCES = "nces";
+    public static final String ORIGINATOR_VALUE_NCES_CASEID = "nces:";
 
     private Originator() {
     }
 
-    public static Metadata createMetadataWithProcessIdAndUserId(final String id, final String name, final String userId) {
+    public static Metadata createMetadataWithProcessIdAndUserId(final String id, final String name, final String userId, final String ncesOriginatorValue) {
         final JsonObjectBuilder builder = Json.createObjectBuilder()
                 .add(ID, id)
                 .add(NAME, name)
                 .add(SOURCE, ORIGINATOR_VALUE)
-                .add(SOURCE_NCES, ORIGINATOR_VALUE_NCES);
+                .add(SOURCE_NCES, ncesOriginatorValue);
 
         if (nonNull(userId)) {
             builder.add(CONTEXT, Json.createObjectBuilder()
@@ -42,8 +43,8 @@ public class Originator {
         return metadataFrom(builder.build()).build();
     }
 
-    public static JsonEnvelope assembleEnvelopeWithPayloadAndMetaDetails(final JsonObject payload, final String contentType, final String userId) {
-        final Metadata metadata = createMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), contentType, userId);
+    public static JsonEnvelope assembleEnvelopeWithPayloadAndMetaDetails(final JsonObject payload, final String contentType, final String userId, final String ncesOriginatorValue) {
+        final Metadata metadata = createMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), contentType, userId, ncesOriginatorValue);
         final JsonObject payloadWithMetada = addMetadataToPayload(payload, metadata);
         return envelopeFrom(metadata, payloadWithMetada);
     }

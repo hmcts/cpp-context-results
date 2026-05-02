@@ -22,7 +22,6 @@ import uk.gov.moj.cpp.results.domain.event.MarkedAggregateSendEmailWhenAccountRe
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,7 +50,6 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
     public static final String CASE_OFFENCE_ID_LIST = "caseOffenceIdList";
     public static final String IN_FORMAT = "dd/MM/yyyy";
     public static final String EMPTY_STRING = "";
-
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
     @Inject
@@ -105,8 +103,8 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
 
     @Handles("result.command.send-nces-email-for-application")
     public void sendNcesEmailForNewApplication(final JsonEnvelope envelope) throws EventStreamException {
-        final String masterDefandantId = envelope.payloadAsJsonObject().getString(MASTER_DEFENDANT_ID);
-        LOGGER.info("masterDefendantId : {} - sendNcesEmailForNewApplication: {}", masterDefandantId, envelope.toObfuscatedDebugString());
+        final String masterDefendantId = envelope.payloadAsJsonObject().getString(MASTER_DEFENDANT_ID);
+        LOGGER.info("masterDefendantId : {} - sendNcesEmailForNewApplication: {}", masterDefendantId, envelope.toObfuscatedDebugString());
         final String applicationType = envelope.payloadAsJsonObject().getString(APPLICATION_TYPE);
         final String listingDate = LocalDate.parse(envelope.payloadAsJsonObject().getString(LISTING_DATE),DateTimeFormatter.ofPattern(IN_FORMAT)).toString();
         final List<String> caseUrns = envelope.payloadAsJsonObject().getJsonArray(CASE_URNS).stream().map(i -> ((JsonString) i).getString()).collect(Collectors.toList());
@@ -116,10 +114,13 @@ public class StagingEnforcementResponseHandler extends AbstractCommandHandler {
         final String hearingCourtCentreName = envelope.payloadAsJsonObject().containsKey(HEARING_COURT_CENTRE_NAME)
                 ? envelope.payloadAsJsonObject().getString(HEARING_COURT_CENTRE_NAME)
                 : EMPTY_STRING;
-        final HearingFinancialResultsAggregate hearingFinancialResultsAggregate = aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefandantId),
-                envelope, a -> a.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList));
 
-        LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefandantId);
+        aggregate(HearingFinancialResultsAggregate.class, fromString(masterDefendantId),
+                envelope,
+                hearingFinancialResultsAggregate ->
+                        hearingFinancialResultsAggregate.sendNcesEmailForNewApplication(applicationType, listingDate, caseUrns, hearingCourtCentreName, clonedOffenceIdList));
+
+        LOGGER.info("HearingFinancialResultsAggregate updated for masterDefendantId : {}", masterDefendantId);
     }
 
     @Handles("results.event.send-nces-email-not-found")

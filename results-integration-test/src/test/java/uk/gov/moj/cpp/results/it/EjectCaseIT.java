@@ -12,7 +12,7 @@ import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFact
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudicialResults;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
@@ -55,7 +55,7 @@ public class EjectCaseIT {
         stubJudicialResults();
         stubSpiOutFlag(true, true);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        stubGetOrgainsationUnit();
+        stubGetOrganisationUnit();
         hearingCaseEjectedConsumer = privateEvents.createConsumer("results.hearing-case-ejected");
         hearingApplicationEjectedConsumer = privateEvents.createConsumer("results.hearing-application-ejected");
         createMessageConsumers();

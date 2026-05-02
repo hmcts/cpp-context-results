@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.event.processor;
 
 import static java.util.UUID.fromString;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.moj.cpp.results.event.helper.Originator.ORIGINATOR_VALUE_NCES;
 import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWithPayloadAndMetaDetails;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -107,7 +108,7 @@ public class SystemDocGeneratorEventProcessor {
         LOGGER.info("Retrieved Nces Notification Document Available Public event");
 
         final JsonEnvelope jsonEnvelope = assembleEnvelopeWithPayloadAndMetaDetails(
-                documentAvailablePayload, envelope.metadata().name(), envelope.metadata().userId().orElse(null));
+                documentAvailablePayload, envelope.metadata().name(), envelope.metadata().userId().orElse(null), ORIGINATOR_VALUE_NCES);
 
         //Uploading the file
         LOGGER.info("Stored material {} in file store {}", materialId, documentFileServiceId);
@@ -117,7 +118,7 @@ public class SystemDocGeneratorEventProcessor {
                 .setOriginatingEnvelope(jsonEnvelope)
                 .setMaterialId(materialId)
                 .setFileId(documentFileServiceId)
-                .build());
+                .build(), ORIGINATOR_VALUE_NCES);
     }
 
     private void processPoliceNotificationHearingResult(final JsonEnvelope envelope) {
@@ -128,7 +129,7 @@ public class SystemDocGeneratorEventProcessor {
         final JsonArray additionalInformation = documentAvailablePayload.getJsonArray(ADDITIONAL_INFORMATION);
 
         final JsonEnvelope jsonEnvelope = assembleEnvelopeWithPayloadAndMetaDetails(
-                documentAvailablePayload, envelope.metadata().name(), envelope.metadata().userId().orElse(null));
+                documentAvailablePayload, envelope.metadata().name(), envelope.metadata().userId().orElse(null), ORIGINATOR_VALUE_NCES);
 
         LOGGER.info("Material with ID {} has been stored in the file store with ID {}", materialId, documentFileServiceId);
         final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
@@ -137,7 +138,7 @@ public class SystemDocGeneratorEventProcessor {
                 .setOriginatingEnvelope(jsonEnvelope)
                 .setMaterialId(materialId)
                 .setFileId(documentFileServiceId)
-                .build());
+                .build(), ORIGINATOR_VALUE_NCES);
 
         final String url = materialUrlGenerator.fileStreamUrlFor(materialId, true);
         final Map<String, String> personalisationMap = new HashMap<>();

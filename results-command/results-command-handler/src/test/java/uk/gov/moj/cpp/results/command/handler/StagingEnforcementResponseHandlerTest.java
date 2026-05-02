@@ -9,6 +9,8 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -243,7 +245,9 @@ public class StagingEnforcementResponseHandlerTest {
                         .add("masterDefendantId", masterDefendantId.toString())
                         .add("listingDate", "28/12/2021")
                         .add("caseUrns", createCaseUrns())
-                        .add("hearingCourtCentreName", "Croydon Crown Court").build());
+                        .add("caseIds", createCaseIds())
+                        .add("hearingCourtCentreName", "Croydon Crown Court")
+                        .build());
         HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                                                 .withCreatedTime(ZonedDateTime.now())
@@ -269,14 +273,17 @@ public class StagingEnforcementResponseHandlerTest {
                         .build())
                 .build());
 
-        when(this.aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(hearingFinancialResultsAggregate);
+        HearingFinancialResultsAggregate spyAggregate = spy(hearingFinancialResultsAggregate);
+        when(this.aggregateService.get(this.eventStream, HearingFinancialResultsAggregate.class)).thenReturn(spyAggregate);
 
         stagingEnforcementResponseHandler.sendNcesEmailForNewApplication(envelope);
+
+        verify(spyAggregate).sendNcesEmailForNewApplication(eq("applicationType"), eq("2021-12-28"), any(), eq("Croydon Crown Court"), any());
 
         verify(eventSource, times(1)).getStreamById(eventSourceArgumentCaptor.capture());
 
         verify(eventStream, times(1)).append(eventStreamArgumentCaptor.capture());
-        JsonEnvelope event = eventStreamArgumentCaptor.getValue().collect(toList()).get(0);
+        JsonEnvelope event = eventStreamArgumentCaptor.getValue().toList().get(0);
 
         final JsonEnvelope allValues = envelopeFrom(event.metadata(), event.payload());
         assertThat(allValues,
@@ -389,6 +396,12 @@ public class StagingEnforcementResponseHandlerTest {
     private JsonArrayBuilder createCaseUrns() {
         final JsonArrayBuilder builder = createArrayBuilder();
         builder.add("URN!").add("URN2").build();
+        return builder;
+    }
+
+    private JsonArrayBuilder createCaseIds() {
+        final JsonArrayBuilder builder = createArrayBuilder();
+        builder.add("1a9176f4-3adc-4ea1-a808-26c4632f38ab").add("b00acc1c-eb69-4b3c-960e-76be9153125a").build();
         return builder;
     }
 
