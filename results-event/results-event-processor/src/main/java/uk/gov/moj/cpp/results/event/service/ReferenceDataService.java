@@ -30,7 +30,6 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.AllResultDefinitions
 import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -98,7 +97,7 @@ public class ReferenceDataService {
         return allResultDefinitions;
     }
 
-    public JsonObject getOrgainsationUnit(final String courtId, final JsonEnvelope envelope) {
+    public JsonObject getOrganisationUnit(final String courtId, final JsonEnvelope envelope) {
         final JsonObject payload = createObjectBuilder().add("id", courtId).build();
         final JsonEnvelope requestEnvelope = envelopeFrom(metadataFrom(envelope.metadata()).withName("referencedata.query.organisation-unit.v2"), payload);
         return requester.requestAsAdmin(requestEnvelope, JsonObject.class).payload();

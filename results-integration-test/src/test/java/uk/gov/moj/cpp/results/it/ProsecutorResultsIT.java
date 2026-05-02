@@ -25,7 +25,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResu
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyAppealUpdateEmail;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.NOTIFICATION_NOTIFY_ENDPOINT;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.setupNotificationNotifyStubs;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubPoliceFlag;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
@@ -108,7 +108,7 @@ public class ProsecutorResultsIT {
 
     @Test
     public void testAppealApplicationEmailNotificationSuccess() {
-        stubGetOrgainsationUnit();
+        stubGetOrganisationUnit();
         createMessageConsumers();
         setupNotificationNotifyStubs();
         ReferenceDataServiceStub.stubCountryNationalities();

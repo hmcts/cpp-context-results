@@ -63,6 +63,7 @@ import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
 import uk.gov.moj.cpp.results.domain.event.SendNcesEmailNotFound;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

@@ -83,7 +83,7 @@ public class BaseStructureConverter implements Converter<PublicHearingResulted, 
 
     private JsonObject getOrganisationUnitDetails(final UUID courtId) {
         final JsonEnvelope event = envelopeFrom(metadataBuilder().withName(RESULTS_HEARING_RESULTS_ADDED).withId(courtId).build(), NULL);
-        return referenceDataService.getOrgainsationUnit(courtId.toString(),event);
+        return referenceDataService.getOrganisationUnit(courtId.toString(),event);
     }
 
     private String getCourtRoomOuCode(final UUID courtRoomUuid){

@@ -11,7 +11,7 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonA
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudicialResults;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeOfTrialReasons;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
@@ -39,7 +39,7 @@ public class MoveDefendantLevelResultsIT {
     public void setUp() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubCountryNationalities();
-        stubGetOrgainsationUnit();
+        stubGetOrganisationUnit();
         stubJudicialResults();
         stubSpiOutFlag(true, false);
         stubBailStatuses();

@@ -10,7 +10,10 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -79,7 +82,10 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
     @Test
     public void shouldFindInformantRegisterRequestsByProsecutionAuthorityAndRegisterDateRange() {
 
-        final ZonedDateTime startDate = ZonedDateTime.now().plusDays(3);
+        Instant fixedInstant = Instant.parse("2026-01-01T10:00:00Z");
+        Clock fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
+
+        final ZonedDateTime startDate = ZonedDateTime.now(fixedClock).plusDays(3);
         for (int i = 0; i < 5; i++) {
             informantRegisterRepository.save(createInformantRegister(startDate.plusDays(i)));
         }
