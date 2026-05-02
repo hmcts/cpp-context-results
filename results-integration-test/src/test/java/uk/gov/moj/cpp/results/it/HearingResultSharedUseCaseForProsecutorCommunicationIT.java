@@ -26,7 +26,7 @@ import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionP
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudicialResults;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubModeOfTrialReasons;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
@@ -82,7 +82,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
         stubCountryNationalities();
-        stubGetOrgainsationUnit();
+        stubGetOrganisationUnit();
         stubJudicialResults();
         stubBailStatuses();
         stubModeOfTrialReasons();

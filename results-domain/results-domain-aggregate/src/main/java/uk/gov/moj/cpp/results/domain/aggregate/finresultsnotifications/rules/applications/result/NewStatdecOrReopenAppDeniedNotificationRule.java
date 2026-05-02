@@ -17,7 +17,7 @@ public class NewStatdecOrReopenAppDeniedNotificationRule extends AbstractApplica
     @Override
     public boolean appliesTo(RuleInput input) {
         return input.isNewApplication()
-                && isNewStatdecApplicationDenied(input.request()) || isNewReopenApplicationDenied(input.request())
+                && (isNewStatdecApplicationDenied(input.request()) || isNewReopenApplicationDenied(input.request()))
                 && !isPreviousApplicationFinalisedNotificationSent(input.request(), input.prevApplicationResultsDetails(), input.prevApplicationOffenceResultsMap());
     }
 
