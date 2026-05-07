@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.domains;
 
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.domains.ApplicationHelper.transformApplications;
 import static uk.gov.moj.cpp.domains.ProsecutionCaseHelper.transformProsecutionCases;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPLICANT_COUNSELS;
@@ -42,7 +42,7 @@ import static uk.gov.moj.cpp.domains.SchemaVariableConstants.YOUTH_COURT_DEFENDA
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
@@ -188,7 +188,7 @@ public class HearingHelper {
     }
 
     private static JsonArray filterDefendantJudicialResults(final JsonArray judicialResults) {
-        final JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        final JsonArrayBuilder jsonArrayBuilder = JsonObjects.createArrayBuilder();
         final List<JsonObject> filteredResults = judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getJsonObject(JUDICIAL_RESULT).getBoolean(PUBLISHED_FOR_NOWS))
                 .collect(Collectors.toList());
 
@@ -197,7 +197,7 @@ public class HearingHelper {
     }
 
     public static JsonArray filterJudicialResults(final JsonArray judicialResults) {
-        final JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        final JsonArrayBuilder jsonArrayBuilder = JsonObjects.createArrayBuilder();
         final List<JsonObject> filteredResults = judicialResults.getValuesAs(JsonObject.class).stream().filter(jr -> !jr.getBoolean(PUBLISHED_FOR_NOWS))
                 .collect(Collectors.toList());
 

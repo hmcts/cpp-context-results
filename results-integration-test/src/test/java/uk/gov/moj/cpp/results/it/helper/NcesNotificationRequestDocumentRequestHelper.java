@@ -1,8 +1,8 @@
 package uk.gov.moj.cpp.results.it.helper;
 
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
@@ -47,7 +47,7 @@ public class NcesNotificationRequestDocumentRequestHelper {
     }
 
     private JsonObject documentFailedPayload(final UUID payloadFileServiceId, final String templateIdentifier, final String reportId) {
-        return Json.createObjectBuilder()
+        return JsonObjects.createObjectBuilder()
                 .add("payloadFileServiceId", payloadFileServiceId.toString())
                 .add("templateIdentifier", templateIdentifier)
                 .add("conversionFormat", "pdf")
@@ -65,7 +65,7 @@ public class NcesNotificationRequestDocumentRequestHelper {
                 .add("propertyName", k)
                 .add("propertyValue", v)
                 .build()));
-        return Json.createObjectBuilder()
+        return JsonObjects.createObjectBuilder()
                 .add("payloadFileServiceId", payloadFileServiceId.toString())
                 .add("templateIdentifier", templateIdentifier)
                 .add("conversionFormat", "pdf")
@@ -80,7 +80,7 @@ public class NcesNotificationRequestDocumentRequestHelper {
     }
 
     private Metadata getMetadataFrom(final String userId, final UUID materialId, final String name) {
-        return metadataFrom(Json.createObjectBuilder()
+        return metadataFrom(JsonObjects.createObjectBuilder()
                 .add(ORIGINATOR, materialId.toString())
                 .add(ID, randomUUID().toString())
                 .add(HeaderConstants.USER_ID, userId)
