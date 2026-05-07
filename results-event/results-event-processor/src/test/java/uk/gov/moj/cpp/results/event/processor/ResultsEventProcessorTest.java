@@ -273,7 +273,7 @@ public class ResultsEventProcessorTest {
                 .build());
         when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
         when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
-        when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
+        when(referenceDataService.getOrganisationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(JsonObjects.createObjectBuilder().add("caseId", randomUUID().toString()).build()));
     }
 
