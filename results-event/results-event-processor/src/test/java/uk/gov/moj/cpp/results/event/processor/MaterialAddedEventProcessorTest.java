@@ -104,7 +104,7 @@ public class MaterialAddedEventProcessorTest {
         final String masterDefendantId = randomUUID().toString();
         final String caseId = randomUUID().toString();
         final String originatorValue = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantId + ":" + caseId;
-        final JsonObject metaDataJson = Json.createObjectBuilder()
+        final JsonObject metaDataJson = JsonObjects.createObjectBuilder()
                 .add(Originator.SOURCE_NCES, originatorValue)
                 .add("id", UUID.randomUUID().toString())
                 .add("userId", UUID.randomUUID().toString())
@@ -120,7 +120,7 @@ public class MaterialAddedEventProcessorTest {
             final String[] splitted = originatorValue.split(":");
             final String expectedMasterDefendantId = splitted[1];
             final String expectedCaseId = splitted[2];
-            final JsonObject expectedPayload = Json.createObjectBuilder()
+            final JsonObject expectedPayload = JsonObjects.createObjectBuilder()
                     .add("materialId", materialId)
                     .add("materialUrl", materialUrl)
                     .add("masterDefendantId", expectedMasterDefendantId)
