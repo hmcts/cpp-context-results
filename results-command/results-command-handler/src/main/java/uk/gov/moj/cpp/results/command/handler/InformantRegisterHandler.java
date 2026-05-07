@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.results.command.handler;
 
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.groupingBy;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static javax.json.JsonValue.NULL;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;

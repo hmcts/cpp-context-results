@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;

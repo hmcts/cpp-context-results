@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.helper;
 
-import static javax.json.Json.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static uk.gov.justice.core.courts.ApplicationStatus.FINALISED;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.domains.SchemaVariableConstants.APPLICATION_STATUS;
