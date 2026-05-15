@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.helper;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.nio.charset.Charset.defaultCharset;
 import static java.time.LocalDate.now;
 import static java.time.ZoneId.of;
@@ -34,6 +35,7 @@ import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CaseDetails;
 import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationParty;
 import uk.gov.justice.core.courts.CourtOrder;
 import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.Defendant;
@@ -43,6 +45,7 @@ import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.InitiationCode;
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.core.courts.MasterDefendant;
 import uk.gov.justice.core.courts.Offence;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.Person;
@@ -114,7 +117,7 @@ public class CasesConverterTest {
     private CasesConverter casesConverter;
 
     @BeforeEach
-    void setUpBeforeEachTest() {
+    public void setUpBeforeEachTest() {
         setField(this.jsonToObjectConverter, "objectMapper", new ObjectMapperProducer().objectMapper());
     }
 
@@ -126,7 +129,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    void testConverter2() {
+    public void testConverter2() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
         when(referenceDataService.getPoliceFlag(anyString(), anyString())).thenReturn(false);
 
@@ -162,7 +165,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    void convertApplicationWithNoOffences() {
+    public void convertApplicationWithNoOffences() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
         final UUID hearingId = randomUUID();
@@ -202,7 +205,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    void testConverter() {
+    public void testConverter() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
@@ -232,7 +235,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    void testConverterWhenPoliceProsecutor() {
+    public void testConverterWhenPoliceProsecutor() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
         when(referenceDataService.getPoliceFlag(anyString(), anyString())).thenReturn(true);
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
@@ -247,7 +250,7 @@ public class CasesConverterTest {
             final ProsecutionCase prosecutionCase = prosecutionCaseOptional.get();
             final ProsecutionCaseIdentifier prosecutionCaseIdentifier = prosecutionCase.getProsecutionCaseIdentifier();
             final boolean isUrnValid = CommonMethods.checkURNValidity(prosecutionCaseIdentifier.getCaseURN());
-            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) && isUrnValid) {
+            if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) ) {
                 assertThat(caseDetails.getUrn(), is(prosecutionCaseIdentifier.getCaseURN()));
             } else if (isNotEmpty(prosecutionCaseIdentifier.getProsecutionAuthorityReference())) {
                 assertThat(caseDetails.getUrn(), is(POLICE_URN_DEFAULT_VALUE));
@@ -263,7 +266,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    void testConverter_MissingProsecutionCases() {
+    public void testConverter_MissingProsecutionCases() {
 
         final PublicHearingResulted shareResultsMessage = TestTemplates.basicShareResultsV2Template(JurisdictionType.MAGISTRATES);
         final Hearing hearing = shareResultsMessage.getHearing();
@@ -274,13 +277,14 @@ public class CasesConverterTest {
     }
 
     @Test
-    void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults() {
+    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResults() {
         final UUID hearingId = randomUUID();
         final JsonObject payload = getPayload("public.hearing-resulted-court-order-with-no-judicial-results.json", hearingId);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
 
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
+        final Hearing hearing = publicHearingResulted.getHearing();
         final UUID caseId = randomUUID();
         when(progressionService.getProsecutionCaseDetails(any())).thenReturn(getProsecutionCase("32DN1212262", caseId));
         when(progressionService.caseExistsByCaseUrn("32DN1212262")).thenReturn(Optional.of(Json.createObjectBuilder()
@@ -291,13 +295,14 @@ public class CasesConverterTest {
     }
 
     @Test
-    void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResultsHasSameCaseURNAsApplication() {
+    public void courtApplicationWithJudicialResultsAndNoCourtOrderJudicialResultsHasSameCaseURNAsApplication() {
         final UUID hearingId = randomUUID();
         final JsonObject payload = getPayload("public.hearing-resulted-court-order-with-no-judicial-results-cloned-offence.json", hearingId);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
 
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
+        final Hearing hearing = publicHearingResulted.getHearing();
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
         assertThat(caseDetailsList.size(), is(1));
         final CourtOrder courtOrder = publicHearingResulted.getHearing().getCourtApplications().get(0).getCourtOrder();
@@ -307,7 +312,7 @@ public class CasesConverterTest {
     }
 
     @Test
-    void courtApplicationWithJustJudicialResultsAndNoCaseJudicialResults() {
+    public void courtApplicationWithJustJudicialResultsAndNoCaseJudicialResults() {
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
         final UUID hearingId = randomUUID();
@@ -347,13 +352,14 @@ public class CasesConverterTest {
     }
 
     @Test
-    void courtApplicationWithJudicialResultsAndCourtOrderJudicialResultsHasSameCaseURNAsApplication() {
+    public void courtApplicationWithJudicialResultsAndCourtOrderJudicialResultsHasSameCaseURNAsApplication() {
         final UUID hearingId = randomUUID();
         final JsonObject payload = getPayload("public.hearing-resulted-court-order.json", hearingId);
         final PublicHearingResulted publicHearingResulted = jsonToObjectConverter.convert(payload, PublicHearingResulted.class);
 
         when(referenceCache.getNationalityById(any())).thenReturn(getCountryNationality());
 
+        final Hearing hearing = publicHearingResulted.getHearing();
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
         assertThat(caseDetailsList.size(), is(1));
         final CourtOrder courtOrder = publicHearingResulted.getHearing().getCourtApplications().get(0).getCourtOrder();
@@ -435,6 +441,26 @@ public class CasesConverterTest {
             assertPresentAtHearing(caseDetailsDefendant);
             assertDefendantPerson(caseDetailsDefendant.getIndividualDefendant(), defendantFromRequest.getPersonDefendant());
             assertOffences(caseDetailsDefendant.getOffences(), defendantFromRequest.getOffences());
+        }
+    }
+
+    private void assertDefendants(final CourtOrderOffence courtOrderOffence, final CourtApplicationParty courtApplicationParty, final List<CaseDefendant> caseDetailsDefendants, final Hearing hearing, final boolean courtApplicationWithJudicialResults) {
+        for (final CaseDefendant caseDetailsDefendant : caseDetailsDefendants) {
+            final MasterDefendant masterDefendant = courtApplicationParty.getMasterDefendant();
+            assertThat(caseDetailsDefendant.getProsecutorReference(), is(masterDefendant.getPersonDefendant().getArrestSummonsNumber()));
+            assertThat(caseDetailsDefendant.getPncId(), is(masterDefendant.getPncId()));
+            assertThat(caseDetailsDefendant.getDefendantId(), is(masterDefendant.getMasterDefendantId()));
+            if (null != hearing.getDefendantAttendance()) {
+                assertAttendanceDays(caseDetailsDefendant.getAttendanceDays(), hearing.getDefendantAttendance(), caseDetailsDefendant.getDefendantId());
+            }
+            assertPresentAtHearing(caseDetailsDefendant);
+            assertDefendantPerson(caseDetailsDefendant.getIndividualDefendant(), masterDefendant.getPersonDefendant());
+            final Optional<OffenceDetails> courtApplicationOffence = caseDetailsDefendant.getOffences().stream().filter(offenceDetails -> offenceDetails.getId().equals(hearing.getCourtApplications().get(0).getId())).findFirst();
+            if (courtApplicationWithJudicialResults) {
+                assertThat(courtApplicationOffence.isPresent(), is(true));
+            } else {
+                assertOffences(caseDetailsDefendant.getOffences(), newArrayList(courtOrderOffence.getOffence()));
+            }
         }
     }
 

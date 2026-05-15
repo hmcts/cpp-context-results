@@ -2,10 +2,14 @@ package uk.gov.moj.cpp.results.event.helper.results;
 
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import uk.gov.justice.core.courts.AttendanceDay;
 import uk.gov.justice.core.courts.AttendanceType;
+import uk.gov.justice.core.courts.CourtApplication;
+import uk.gov.justice.core.courts.CourtApplicationCase;
+import uk.gov.justice.core.courts.CourtOrderOffence;
 import uk.gov.justice.core.courts.DefenceCounsel;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.Hearing;
@@ -16,13 +20,17 @@ import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.collections.CollectionUtils;
 
 public class CommonMethods {
     private static final String POLICE_URN_DEFAULT_VALUE = "00PP0000008";
@@ -93,7 +101,7 @@ public class CommonMethods {
     }
 
     public static String getUrn(final ProsecutionCaseIdentifier prosecutionCaseIdentifier, final boolean isPoliceProsecutor, final boolean isURNValid) {
-        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) && isURNValid) {
+        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) && (isPoliceProsecutor || isURNValid)) {
             return prosecutionCaseIdentifier.getCaseURN();
         }
 
@@ -102,6 +110,52 @@ public class CommonMethods {
         }
 
         return NON_POLICE_URN_DEFAULT_VALUE;
+    }
+
+    public static String getUrn(final CourtApplication courtApplication, final boolean isPoliceProsecutor) {
+
+        final List<String> urnList = new ArrayList<>();
+
+        final Stream<CourtApplicationCase> courtApplicationCasesStream = ofNullable(courtApplication.getCourtApplicationCases()).map(Collection::stream).orElseGet(Stream::empty);
+
+        final Stream<CourtOrderOffence> courtOrderOffenceStream = ofNullable(courtApplication.getCourtOrder()).map(courtOrder -> courtOrder.getCourtOrderOffences().stream()).orElseGet(Stream::empty);
+
+        final List<String> courtApplicationCasesUrn = courtApplicationCasesStream.map(c -> getUrn(c.getProsecutionCaseIdentifier(), isPoliceProsecutor, true)).collect(Collectors.toList());
+
+        final List<String> courtOrderUrn = courtOrderOffenceStream.map(o -> getUrn(o.getProsecutionCaseIdentifier(), isPoliceProsecutor, true)).collect(Collectors.toList());
+
+        if (CollectionUtils.isNotEmpty(courtApplicationCasesUrn)) {
+            urnList.addAll(courtApplicationCasesUrn);
+        }
+
+        if (CollectionUtils.isNotEmpty(courtOrderUrn)) {
+            urnList.addAll(courtOrderUrn);
+        }
+
+        return String.join(",", urnList);
+    }
+
+    public static String getCode(final CourtApplication courtApplication) {
+
+        final List<String> urnList = new ArrayList<>();
+
+        final Stream<CourtApplicationCase> courtApplicationCasesStream = ofNullable(courtApplication.getCourtApplicationCases()).map(Collection::stream).orElseGet(Stream::empty);
+
+        final Stream<CourtOrderOffence> courtOrderOffenceStream = ofNullable(courtApplication.getCourtOrder()).map(courtOrder -> courtOrder.getCourtOrderOffences().stream()).orElseGet(Stream::empty);
+
+        final List<String> courtApplicationCasesCode = courtApplicationCasesStream.map(c -> c.getProsecutionCaseIdentifier().getProsecutionAuthorityCode()).collect(Collectors.toList());
+
+        final List<String> courtOrderCode = courtOrderOffenceStream.map(o -> o.getProsecutionCaseIdentifier().getProsecutionAuthorityCode()).collect(Collectors.toList());
+
+        if (CollectionUtils.isNotEmpty(courtApplicationCasesCode)) {
+            urnList.addAll(courtApplicationCasesCode);
+        }
+
+        if (CollectionUtils.isNotEmpty(courtOrderCode)) {
+            urnList.addAll(courtOrderCode);
+        }
+
+        return String.join(",", urnList);
     }
 
     public static boolean checkURNValidity(final String caseURN) {
