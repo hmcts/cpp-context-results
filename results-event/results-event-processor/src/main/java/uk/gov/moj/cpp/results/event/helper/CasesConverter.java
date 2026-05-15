@@ -70,10 +70,11 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
             final String prosecutionAuthorityCode = prosecutionCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
             final boolean isPoliceProsecutor = referenceDataService.getPoliceFlag(originatingOrganisation, prosecutionAuthorityCode);
             final boolean isURNValid = checkURNValidity(prosecutionCase.getProsecutionCaseIdentifier().getCaseURN());
+            final boolean isCivil = nonNull(prosecutionCase.getIsCivil()) && prosecutionCase.getIsCivil();
 
             return caseDetails()
                     .withCaseId(prosecutionCase.getId())
-                    .withUrn(getUrn(prosecutionCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
+                    .withUrn(getUrn(prosecutionCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid, isCivil))
                     .withIsCivil(prosecutionCase.getIsCivil())
                     .withGroupId(prosecutionCase.getGroupId())
                     .withIsGroupMember(prosecutionCase.getIsGroupMember())
@@ -179,10 +180,11 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
     }
 
     private Function<CourtApplicationCase, CaseDetails> buildCaseDetails(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
+        final boolean isCivil = nonNull(courtApplication.getCourtCivilApplication()) && nonNull(courtApplication.getCourtCivilApplication().getIsCivil()) && courtApplication.getCourtCivilApplication().getIsCivil();
         return courtApplicationCase ->
                  caseDetails()
                         .withCaseId(courtApplicationCase.getProsecutionCaseId())
-                        .withUrn(getUrn(courtApplicationCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid))
+                        .withUrn(getUrn(courtApplicationCase.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid, isCivil))
                         .withProsecutionAuthorityCode(courtApplicationCase.getProsecutionCaseIdentifier().getProsecutionAuthorityCode())
                         .withDefendants(new CaseDefendantListBuilder(referenceCache).buildDefendantList(courtApplicationCase, courtApplication, source.getHearing(), isPoliceProsecutor))
                         .build();
@@ -190,11 +192,12 @@ public class CasesConverter implements Converter<PublicHearingResulted, List<Cas
 
     @SuppressWarnings({"squid:S3358", "squid:S1125", "squid:S3776"})
     private Function<CourtOrderOffence, CaseDetails> buildCaseDetailsFromCourtOrder(PublicHearingResulted source, CourtApplication courtApplication, final boolean isPoliceProsecutor, final boolean isURNValid) {
+        final boolean isCivil = nonNull(courtApplication.getCourtCivilApplication()) && nonNull(courtApplication.getCourtCivilApplication().getIsCivil()) && courtApplication.getCourtCivilApplication().getIsCivil();
         return courtOrderOffence -> {
             final DefendantCase defendantCase = courtApplication.getSubject().getMasterDefendant() == null ? null : courtApplication.getSubject().getMasterDefendant().getDefendantCase() == null ? null :
                     courtApplication.getSubject().getMasterDefendant().getDefendantCase().isEmpty() == true ? null : courtApplication.getSubject().getMasterDefendant().getDefendantCase().get(0);
             final UUID caseId = defendantCase == null ? courtOrderOffence.getProsecutionCaseId() : defendantCase.getCaseId();
-            final String urn = defendantCase == null ? getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid) : defendantCase.getCaseReference();
+            final String urn = defendantCase == null ? getUrn(courtOrderOffence.getProsecutionCaseIdentifier(), isPoliceProsecutor, isURNValid, isCivil) : defendantCase.getCaseReference();
             final String prosecutorAuthorityCode = defendantCase == null ? courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode() : courtApplication.getApplicant().getProsecutingAuthority() != null ?
                     courtApplication.getApplicant().getProsecutingAuthority().getProsecutionAuthorityCode() : courtOrderOffence.getProsecutionCaseIdentifier().getProsecutionAuthorityCode();
 

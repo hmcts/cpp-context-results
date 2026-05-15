@@ -71,7 +71,6 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
     private static final String SEND_TO_ADDRESS = "sendToAddress";
     private static final String SUBJECT = "Subject";
     private static final String IS_AMEND_RESHARE_YES = "yes";
-    final String preDecidedDummyPoliceUrn = "00PP0000008";
     private final ObjectMapper objectMapper = new ObjectMapperProducer().objectMapper();
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(objectMapper);
     private NcesNotificationRequestDocumentRequestHelper ncesNotificationRequestDocumentRequestHelper;
@@ -94,7 +93,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
     }
 
     @AfterAll
-    static void teardown() throws JMSException {
+    public static void teardown() throws JMSException {
         closeMessageConsumers();
     }
 
@@ -124,7 +123,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         assertThat(countMatches(payload.toString(), "\"judicialResultId\""), is(countMatches(response, "\"judicialResultId\"")));
         JSONObject jsonObject = new JSONObject(response);
         assertThat(jsonObject.getString("caseId"), is(caseId.toString()));
-        assertThat(jsonObject.getString("urn"), is(preDecidedDummyPoliceUrn));
+        assertThat(jsonObject.getString("urn"), is(caseUrn));
         assertThat(jsonObject.getJSONObject("defendant").getString("defendantId"), is("28d9c834-29ed-4c08-9f9e-1cc4886dee37"));
 
         final JsonObject resharePayload = getPayload("json/public-hearing-results-shared/reshare-onecase-onedefendant-oneoffence.json", caseId, caseUrn, hearingId);
@@ -219,7 +218,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         final List<String> defendantIds = payload.getJsonObject("hearing").getJsonArray("prosecutionCases").getValuesAs(JsonObject.class).stream()
                 .map(prosecutionCase -> prosecutionCase.getJsonArray("defendants").getValuesAs(JsonObject.class).stream()
                         .map(defendant -> defendant.getString("id"))
-                        .toList()
+                        .collect(toList())
                 ).flatMap(Collection::stream)
                 .toList();
         response.stream()
@@ -251,7 +250,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
 
         final List<String> allExpectedDetailsPresentInEmail = Stream.of(expectedDetailsPresentInEmailFormat, expectedDetailsPresentInForDefendantOneInHtmlSection, expectedDetailsPresentInForDefendantTwoInHtmlSection).
                 flatMap(Collection::stream)
-                .toList();
+                .collect(toList());
         final HashMap additionalInformation = new HashMap();
         additionalInformation.put(policeEmailAddress, policeEmailAddress);
         additionalInformation.put("notificationId", randomUUID().toString());

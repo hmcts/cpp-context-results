@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.event.helper.results;
 
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
+import static java.util.regex.Pattern.compile;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import uk.gov.justice.core.courts.AttendanceDay;
@@ -23,13 +24,13 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class CommonMethods {
     private static final String POLICE_URN_DEFAULT_VALUE = "00PP0000008";
     private static final String NON_POLICE_URN_DEFAULT_VALUE = "00NP0000008";
     private static final String N = "N";
     private static final String Y = "Y";
     private static final String PATTERN_URN = "\\d{2}[a-z |A-Z]{2}\\d{7}";
+    private static final String BICHARD_PTI_PATTERN_URN = "^[A-Z0-9]{4}\\d{3,7}$";
     private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private CommonMethods() {
     }
@@ -92,9 +93,30 @@ public class CommonMethods {
         return defendantDefenceCounsel;
     }
 
-    public static String getUrn(final ProsecutionCaseIdentifier prosecutionCaseIdentifier, final boolean isPoliceProsecutor, final boolean isURNValid) {
-        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) && isURNValid) {
+    public static String getUrn(final ProsecutionCaseIdentifier prosecutionCaseIdentifier, final boolean isPoliceProsecutor, final boolean isURNValid, final boolean isCivil) {
+
+        if (isCivil) {
+            return getUrnForCivil(prosecutionCaseIdentifier.getCaseURN(), isPoliceProsecutor);
+        }
+
+        if (isNotEmpty(prosecutionCaseIdentifier.getCaseURN()) && (isPoliceProsecutor || isURNValid)) {
             return prosecutionCaseIdentifier.getCaseURN();
+        }
+
+        String urn;
+
+        if (isPoliceProsecutor) {
+            urn = POLICE_URN_DEFAULT_VALUE;
+        } else {
+            urn = NON_POLICE_URN_DEFAULT_VALUE;
+        }
+
+        return urn;
+    }
+
+    private static String getUrnForCivil(final String caseUrn, final boolean isPoliceProsecutor) {
+        if (checkBichardPtiURNValidity(caseUrn)) {
+            return caseUrn;
         }
 
         if (isPoliceProsecutor) {
@@ -108,8 +130,18 @@ public class CommonMethods {
         return nonNull(caseURN) && isUrnFormatValid(caseURN);
     }
 
+    public static boolean checkBichardPtiURNValidity(final String caseURN) {
+        return nonNull(caseURN) && isPtiUrnFormatValid(caseURN);
+    }
+
     public static boolean isUrnFormatValid(final String urn) {
-        final Pattern pattern = Pattern.compile(PATTERN_URN);
+        final Pattern pattern = compile(PATTERN_URN);
+        final Matcher matcher = pattern.matcher(urn);
+        return matcher.matches();
+    }
+
+    public static boolean isPtiUrnFormatValid(final String urn) {
+        final Pattern pattern = compile(BICHARD_PTI_PATTERN_URN);
         final Matcher matcher = pattern.matcher(urn);
         return matcher.matches();
     }
