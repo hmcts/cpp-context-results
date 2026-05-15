@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -41,7 +41,7 @@ class ApplicationFinalResultsEnricherTest {
 
     @Test
     void shouldDoEnrichmentIfApplicationResultsMissing() throws JsonProcessingException {
-        final JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = JsonObjects.createObjectBuilder();
         jsonObjectBuilder.add("courtApplication", loadAsJsonObject("testdata/application-final-results-enricher/app1_progression_finalised.json"));
         final JsonObject applicationDetails = jsonObjectBuilder.build();
         given(progressionService.getApplicationDetails(any(UUID.class))).willReturn(Optional.of(applicationDetails));
@@ -67,7 +67,7 @@ class ApplicationFinalResultsEnricherTest {
 
     @Test
     void shouldDoEnrichmentWithAmendmentFieldsStrippedOffIfApplicationResultsMissing() throws JsonProcessingException {
-        final JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = JsonObjects.createObjectBuilder();
         jsonObjectBuilder.add("courtApplication", loadAsJsonObject("testdata/application-final-results-enricher/app2_progression_finalised_resultsamended.json"));
         final JsonObject applicationDetails = jsonObjectBuilder.build();
         given(progressionService.getApplicationDetails(any(UUID.class))).willReturn(Optional.of(applicationDetails));
@@ -92,7 +92,7 @@ class ApplicationFinalResultsEnricherTest {
 
     @Test
     void shouldNotDoAnyEnrichmentIfApplicationResultsAreNotFinalised() throws JsonProcessingException {
-        final JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+        final JsonObjectBuilder jsonObjectBuilder = JsonObjects.createObjectBuilder();
         jsonObjectBuilder.add("courtApplication", loadAsJsonObject("testdata/application-final-results-enricher/app_progression_listed.json"));
         final JsonObject applicationDetails = jsonObjectBuilder.build();
         given(progressionService.getApplicationDetails(any(UUID.class))).willReturn(Optional.of(applicationDetails));

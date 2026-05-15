@@ -7,8 +7,8 @@ import static java.time.ZoneId.of;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
-import static javax.json.Json.createReader;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -69,7 +69,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -287,7 +287,7 @@ public class CasesConverterTest {
         final Hearing hearing = publicHearingResulted.getHearing();
         final UUID caseId = randomUUID();
         when(progressionService.getProsecutionCaseDetails(any())).thenReturn(getProsecutionCase("32DN1212262", caseId));
-        when(progressionService.caseExistsByCaseUrn("32DN1212262")).thenReturn(Optional.of(Json.createObjectBuilder()
+        when(progressionService.caseExistsByCaseUrn("32DN1212262")).thenReturn(Optional.of(JsonObjects.createObjectBuilder()
                 .add("caseId", caseId.toString())
                 .build()));
         final List<CaseDetails> caseDetailsList = casesConverter.convert(publicHearingResulted);
@@ -371,11 +371,11 @@ public class CasesConverterTest {
     @Test
     void convertStandaloneApplicationWithNoProsecutionCaseDetailsShouldReturnEmptyCaseDetailsList() {
         when(progressionService.caseExistsByCaseUrn(anyString()))
-                .thenReturn(Optional.of(Json.createObjectBuilder()
+                .thenReturn(Optional.of(JsonObjects.createObjectBuilder()
                         .add("caseId", randomUUID().toString())
                         .build()));
         when(progressionService.getProsecutionCaseDetails(any()))
-                .thenReturn(Json.createObjectBuilder().build());
+                .thenReturn(JsonObjects.createObjectBuilder().build());
 
         final CourtApplication courtApplication = CourtApplication.courtApplication()
                 .withId(randomUUID())
@@ -553,7 +553,7 @@ public class CasesConverterTest {
                         .withProsecutionAuthorityReference("CITYPF")
                         .build())
                 .build();
-        return Json.createObjectBuilder().add("prosecutionCase",objectToJsonObjectConverter.convert(prosecutionCase)).build();
+        return JsonObjects.createObjectBuilder().add("prosecutionCase",objectToJsonObjectConverter.convert(prosecutionCase)).build();
     }
 
 }
