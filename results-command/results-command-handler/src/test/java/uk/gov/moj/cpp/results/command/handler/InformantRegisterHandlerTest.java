@@ -38,6 +38,7 @@ import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDoc
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceVerdict;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResultData;
@@ -506,7 +507,9 @@ public class InformantRegisterHandlerTest {
                                     .withOrderIndex(1)
                                     .withOffenceTitle("offenceTitle_Main_" + i)
                                     .withOffenceCode("offenceCode_Main_" + i)
-                                    .withVerdictCode("verdictCode_Main_" + i)
+                                    .withVerdict(InformantRegisterOffenceVerdict.informantRegisterOffenceVerdict()
+                                            .withVerdictCode("verdictCode_Main_" + i)
+                                            .build())
                                     .withOriginatingCaseUrn("originatingCaseUrn_Main_" + i)
                                     .withPleaValue("pleaValue_Main_" + i)
                                     .withOffenceResults(getResults(RESULT_TYPE_OFFENCE, i, 1))

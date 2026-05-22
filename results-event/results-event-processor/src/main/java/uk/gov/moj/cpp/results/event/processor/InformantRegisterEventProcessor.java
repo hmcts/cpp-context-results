@@ -234,7 +234,9 @@ public class InformantRegisterEventProcessor {
         builder.withOffenceCode(offence.getOffenceCode());
         builder.withOffenceTitle(offence.getOffenceTitle());
         builder.withPleaValue(offence.getPleaValue());
-        builder.withVerdictCode(offence.getVerdictCode());
+        if (nonNull(offence.getVerdict())) {
+            builder.withVerdictCode(offence.getVerdict().getVerdictCode());
+        }
 
         if (nonNull(offenceResult)) {
             buildResult(builder, offenceResult);
