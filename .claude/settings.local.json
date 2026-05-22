@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(jar tf *)"
+      "Bash(jar tf *)",
+      "Bash(git add *)",
+      "Bash(git cherry-pick *)",
+      "Bash(git restore *)",
+      "Bash(git clean *)",
+      "Bash(xargs sed -i '' 's/17\\\\.103\\\\.108-SNAPSHOT/17.103.108-CIMD-3870-SNAPSHOT/g')"
     ]
   }
 }
