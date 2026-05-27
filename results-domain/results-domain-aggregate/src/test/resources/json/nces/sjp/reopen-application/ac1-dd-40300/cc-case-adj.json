@@ -1,0 +1,46 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "2000-01-01",
+  "defendantEmail": "FlmXDIadSmithB2Igi@email.com",
+  "defendantName": "FlmXDIad SmithB2Igi",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "97cc291e-8284-41ae-87b6-bfa9ffa8a157",
+  "hearingSittingDay": "2026-01-09T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "aca50709-3ea9-41bb-8754-23458eae7414",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "c8fef4a7-dd5d-41b6-9b70-ce34fec4d01f",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "offenceResultsCategory":"INTERMIDIARY"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "a460934f-7e92-4297-b9aa-53cd440a1a45",
+      "offenceTitle": "Speeding - passenger motor vehicle and trailer exceeding 50 mph - single carriageway - manned equipment",
+      "offenceResultsCategory":"INTERMIDIARY"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "A - Adjournment\nAdjourned for hearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court. Reason: To attend or a warrant to issue. Defendant to attend the next hearing.\nTo attend or a warrant to issue\nhearing on 09/01/2026 at 10:00 in Courtroom 01, Lavender Hill Magistrates' Court",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "707a5bdc-2637-4d3e-b88c-c3bd5f515e28",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+      "offenceResultsCategory":"INTERMIDIARY"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ275499319"
+  ]
+}

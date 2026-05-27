@@ -12,7 +12,7 @@ import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFact
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
-import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrgainsationUnit;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubJudicialResults;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUserAsPrisonAdminGroup;
@@ -28,7 +28,7 @@ import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
@@ -55,7 +55,7 @@ public class EjectCaseIT {
         stubJudicialResults();
         stubSpiOutFlag(true, true);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
-        stubGetOrgainsationUnit();
+        stubGetOrganisationUnit();
         hearingCaseEjectedConsumer = privateEvents.createConsumer("results.hearing-case-ejected");
         hearingApplicationEjectedConsumer = privateEvents.createConsumer("results.hearing-application-ejected");
         createMessageConsumers();
@@ -88,9 +88,9 @@ public class EjectCaseIT {
         final UUID hearingId = hearingIn.getId();
         final UUID caseId = hearingIn.getProsecutionCases().stream().findFirst().get().getId();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId.toString()).build())
+                        JsonObjects.createArrayBuilder().add(hearingId.toString()).build())
                 .add(PROSECUTION_CASE_ID, caseId.toString())
                 .add(REMOVAL_REASON, "legal")
                 .build();
@@ -129,9 +129,9 @@ public class EjectCaseIT {
         final UUID hearingId = hearingIn.getId();
         final UUID applicationId = hearingIn.getCourtApplications().stream().findFirst().get().getId();
 
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId.toString()).build())
+                        JsonObjects.createArrayBuilder().add(hearingId.toString()).build())
                 .add(APPLICATION_ID, applicationId.toString())
                 .add(REMOVAL_REASON, "legal")
                 .build();

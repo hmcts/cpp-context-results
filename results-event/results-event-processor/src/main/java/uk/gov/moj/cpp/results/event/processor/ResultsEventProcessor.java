@@ -10,8 +10,8 @@ import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -53,6 +53,7 @@ import uk.gov.moj.cpp.results.event.helper.BaseStructureConverter;
 import uk.gov.moj.cpp.results.event.helper.CasesConverter;
 import uk.gov.moj.cpp.results.event.helper.DcsCaseHelper;
 import uk.gov.moj.cpp.results.event.helper.FixedListComparator;
+import uk.gov.moj.cpp.results.event.helper.Originator;
 import uk.gov.moj.cpp.results.event.helper.PoliceEmailHelper;
 import uk.gov.moj.cpp.results.event.helper.ReferenceCache;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
@@ -321,7 +322,7 @@ public class ResultsEventProcessor {
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
         final List<String> caseUrns = extractCaseUrns(envelope.payloadAsJsonObject().getString(CASE_REFERENCES));
-        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId);
+        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES);
 
         for (final String caseUrn : caseUrns) {
             if (isSJPHearing) {

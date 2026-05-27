@@ -6,7 +6,7 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import java.io.IOException;
 import java.io.StringReader;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -44,7 +44,7 @@ public class MapJsonObjectToTypeMatcher<T> extends BaseMatcher<JsonObject> {
     }
 
     public static <T> T convert(Class<T> clazz, String source) {
-        try (JsonReader jr = Json.createReader(new StringReader(source))) {
+        try (JsonReader jr = JsonObjects.createReader(new StringReader(source))) {
             return convert(clazz, jr.readObject());
         }
      }
