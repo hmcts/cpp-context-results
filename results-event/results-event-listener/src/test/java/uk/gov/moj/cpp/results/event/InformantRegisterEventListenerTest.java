@@ -36,7 +36,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import com.google.common.collect.Lists;
@@ -92,7 +92,7 @@ public class InformantRegisterEventListenerTest {
         final ArgumentCaptor<InformantRegisterEntity> informantRegisterRequestEntity = forClass(InformantRegisterEntity.class);
         verify(this.informantRegisterRepository).save(informantRegisterRequestEntity.capture());
         final InformantRegisterEntity savedInformantRegisterEntity = informantRegisterRequestEntity.getValue();
-        final JsonObject jsonPayload = Json.createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
+        final JsonObject jsonPayload = JsonObjects.createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
         final InformantRegisterDocumentRequest informantRegisterRequestSaved = jsonObjectToObjectConverter.convert(jsonPayload, InformantRegisterDocumentRequest.class);
 
         assertThat(savedInformantRegisterEntity.getProsecutionAuthorityId(), is(prosecutionAuthId));

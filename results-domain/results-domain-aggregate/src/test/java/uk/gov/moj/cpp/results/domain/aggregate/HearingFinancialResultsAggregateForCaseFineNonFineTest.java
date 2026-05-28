@@ -31,14 +31,14 @@ class HearingFinancialResultsAggregateForCaseFineNonFineTest {
                 Arguments.of("Case Fine-Non-fine > App1 STATDEC Granted > Non-fine-Fine",
                         newScenario()
                                 .newStep(newResultTrackedStep("case resulted")
-                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/case_resulted.json",
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin-nonfin-case-statdec-nonfin-fin/case_resulted.json",
                                                 accountInfo("11c39541-e8e0-45b3-af99-532b33646b69", "11c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
                                 .newStep(newResultTrackedStep("app statdec")
-                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/application_resulted.json",
+                                        .withResultTrackedEvent("json/nces/application/fin-case-application-offence-results/multi-offence/fin-nonfin-case-statdec-nonfin-fin/application_resulted.json",
                                                 accountInfo("22c39541-e8e0-45b3-af99-532b33646b69", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT"))
                                         .withExpectedEventNames("HearingFinancialResultsTracked", "MarkedAggregateSendEmailWhenAccountReceived", "HearingFinancialResultsUpdated", "NcesEmailNotificationRequested", "UnmarkedAggregateSendEmailWhenAccountReceived")
-                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-offence-results/multi-offence/fin,nonfin-case-statdec-nonfin,fin/application_granted_notification_expected.json",
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/fin-case-application-offence-results/multi-offence/fin-nonfin-case-statdec-nonfin-fin/application_granted_notification_expected.json",
                                                 comparison()
                                                         .withPathsExcluded("materialId", "notificationId")
                                                         .withParam("gobAccountNumber", "22c39541-e8e0-45b3-af99-532b33646b69ACCOUNT")

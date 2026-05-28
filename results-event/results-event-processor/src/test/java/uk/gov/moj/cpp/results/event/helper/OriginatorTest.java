@@ -8,7 +8,7 @@ import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWit
 import org.junit.jupiter.api.Test;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 public class OriginatorTest {
@@ -21,8 +21,8 @@ public class OriginatorTest {
     @Test
     public void shouldCreateMetadataWithProcessIdAndUserId() {
         final String userId = randomUUID().toString();
-        final JsonObject payload = Json.createObjectBuilder().add("key1", "value1").build();
-        final JsonEnvelope envelope = assembleEnvelopeWithPayloadAndMetaDetails(payload, "application/json", userId);
+        final JsonObject payload = JsonObjects.createObjectBuilder().add("key1", "value1").build();
+        final JsonEnvelope envelope = assembleEnvelopeWithPayloadAndMetaDetails(payload, "application/json", userId, "nces");
         assertEquals(envelope.metadata().userId().get(), userId);
         assertEquals (ORIGINATOR_VALUE,envelope.metadata().asJsonObject().getString(SOURCE) );
         assertEquals(ORIGINATOR_VALUE_NCES,envelope.metadata().asJsonObject().getString(SOURCE_NCES));

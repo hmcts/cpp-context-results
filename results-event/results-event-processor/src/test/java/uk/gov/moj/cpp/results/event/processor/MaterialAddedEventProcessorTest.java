@@ -25,7 +25,7 @@ import uk.gov.moj.cpp.results.event.helper.Originator;
 import java.util.UUID;
 import java.util.function.Function;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +72,7 @@ public class MaterialAddedEventProcessorTest {
     public void shouldHandleTheMaterialAdded() {
         final String materialId = randomUUID().toString();
         final String materialUrl = "http://localhost:8080/";
-        final JsonObject metaDataJson = Json.createObjectBuilder()
+        final JsonObject metaDataJson = JsonObjects.createObjectBuilder()
                 .add(Originator.SOURCE_NCES, Originator.ORIGINATOR_VALUE_NCES)
                 .add("id", UUID.randomUUID().toString())
                 .add("userId", UUID.randomUUID().toString())
@@ -87,7 +87,7 @@ public class MaterialAddedEventProcessorTest {
         when(enveloper.withMetadataFrom(jsonEnvelope, "results.command.nces-document-notification"))
                 .thenReturn(factory);
         final Envelope<JsonObject> envelope = mock(Envelope.class);
-        when(envelope.payload()).thenReturn(Json.createObjectBuilder().build());
+        when(envelope.payload()).thenReturn(JsonObjects.createObjectBuilder().build());
 
         materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
 
@@ -95,6 +95,48 @@ public class MaterialAddedEventProcessorTest {
         verify(sender, times(1)).send(envelopeArgumentCaptor.capture());
         verify(sender, times(1)).send(sentEnvelopes.capture());
         assertThat(sentEnvelopes.getValue(), is(outEnvelope));
+    }
+
+    @Test
+    public void shouldHandleMigratedInactiveNcesDocumentNotificationWhenOriginatorStartsWithNcesCaseId() {
+        final String materialId = randomUUID().toString();
+        final String materialUrl = "http://localhost:8080/material.pdf";
+        final String masterDefendantId = randomUUID().toString();
+        final String caseId = randomUUID().toString();
+        final String originatorValue = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantId + ":" + caseId;
+        final JsonObject metaDataJson = JsonObjects.createObjectBuilder()
+                .add(Originator.SOURCE_NCES, originatorValue)
+                .add("id", UUID.randomUUID().toString())
+                .add("userId", UUID.randomUUID().toString())
+                .add("name", "dummy")
+                .build();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataFrom(metaDataJson))
+                .withPayloadOf(materialId, "materialId")
+                .build();
+        when(materialUrlGenerator.pdfFileStreamUrlFor(fromString(materialId))).thenReturn(materialUrl);
+        Function<Object, JsonEnvelope> factory = (payload) -> {
+            final JsonObject jsonPayload = (JsonObject) payload;
+            final String[] splitted = originatorValue.split(":");
+            final String expectedMasterDefendantId = splitted[1];
+            final String expectedCaseId = splitted[2];
+            final JsonObject expectedPayload = JsonObjects.createObjectBuilder()
+                    .add("materialId", materialId)
+                    .add("materialUrl", materialUrl)
+                    .add("masterDefendantId", expectedMasterDefendantId)
+                    .add("caseId", expectedCaseId)
+                    .build();
+            assertThat(jsonPayload, is(expectedPayload));
+            return outEnvelope;
+        };
+        when(enveloper.withMetadataFrom(jsonEnvelope, MaterialAddedEventProcessor.RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION))
+                .thenReturn(factory);
+
+        materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
+
+        verify(materialUrlGenerator, times(1)).pdfFileStreamUrlFor(fromString(materialId));
+        verify(enveloper, times(1)).withMetadataFrom(jsonEnvelope, MaterialAddedEventProcessor.RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION);
+        verify(sender, times(1)).send(outEnvelope);
     }
 
 }

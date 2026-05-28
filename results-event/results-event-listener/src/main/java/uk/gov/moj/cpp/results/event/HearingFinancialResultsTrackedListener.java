@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event;
 
-import static javax.json.Json.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;

@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ public class BaseStructureConverterTest {
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 
-        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
+        when(referenceDataService.getOrganisationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
         when(referenceDataService.getCourtRoomOuCode(anyString())).thenReturn(getJsonObjectForCourtRoomRefDataResponse());
         baseStructure = baseStructureConverter.convert(shareResultsMessage);
         assertThat(baseStructure.getId(), is(hearing.getId()));
@@ -91,7 +91,7 @@ public class BaseStructureConverterTest {
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 
-        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
+        when(referenceDataService.getOrganisationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
         when(referenceDataService.getCourtRoomOuCode(anyString())).thenReturn(getJsonObjectForCourtRoomRefDataResponse());
         baseStructure = baseStructureConverter.convert(shareResultsMessage);
         assertEquals(baseStructure.getId(), hearing.getId());
@@ -112,15 +112,15 @@ public class BaseStructureConverterTest {
     }
 
     private JsonObject getJsonObjectWithNationalCourtCodeAndOuCode() {
-        return Json.createObjectBuilder()
+        return JsonObjects.createObjectBuilder()
                 .add(FIELD_NATIONAL_COURT_CODE, "2574")
                 .add(FIELD_OU_CODE, "B01BH00")
                 .build();
     }
 
     private JsonObject getJsonObjectForCourtRoomRefDataResponse() {
-        return Json.createObjectBuilder()
-                .add("ouCourtRoomCodes", Json.createArrayBuilder().add(COURT_ROOM_OUCODE_FROM_REFDATA).build())
+        return JsonObjects.createObjectBuilder()
+                .add("ouCourtRoomCodes", JsonObjects.createArrayBuilder().add(COURT_ROOM_OUCODE_FROM_REFDATA).build())
                 .build();
     }
 

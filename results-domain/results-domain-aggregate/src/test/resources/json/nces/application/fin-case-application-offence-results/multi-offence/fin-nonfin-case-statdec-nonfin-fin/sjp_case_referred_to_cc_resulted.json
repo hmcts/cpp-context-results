@@ -1,0 +1,47 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1992-01-09",
+  "defendantEmail": "FlmKEAroSmithVQsAC@email.com",
+  "defendantName": "FlmKEAro SmithVQsAC",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "ea4f12e5-7399-4aa1-9d08-ee51e778a790",
+  "hearingSittingDay": "2026-01-09T18:04:45.938Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "e12b8eb9-88c8-4cb2-8e2a-26b1af5b401d",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Costs\nAmount of costs £320.10\nMajor creditor organisation name Transport for London, Vehicle Excise Back Duty\nAmount of back duty £100.00\nCollection order\nCollection order type Make payments as ordered\nReason for not making an attachment of earnings order or deduction from benefit application No information from defendant\nPay by date\nDate to pay in full by 23/01/2026",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "9678bdec-8f29-48b5-a2c0-b0bf5bbb1ec5",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "No separate penalty\nDriving record endorsed (no points)",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "ccdbc544-2775-4b75-bdef-9a0141b8f259",
+      "offenceTitle": "Cause use of motor vehicle with no insurance",
+      "offenceResultsCategory": "FINAL"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "No separate penalty\nDriving record endorsed (no points)",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "e53c3a78-62ad-4759-aa15-627e1f4408aa",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+      "offenceResultsCategory": "FINAL"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ124275277"
+  ]
+}

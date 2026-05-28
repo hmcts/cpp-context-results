@@ -8,8 +8,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -33,7 +33,7 @@ public class ReferenceDataServiceStub {
                         .withBody(getJsonResponse("stub-data/referencedata.query.country-nationality.json"))));
     }
 
-    public static void stubGetOrgainsationUnit() {
+    public static void stubGetOrganisationUnit() {
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/organisation-units/";
 
         stubFor(get(urlPathMatching(urlPath + ".*"))

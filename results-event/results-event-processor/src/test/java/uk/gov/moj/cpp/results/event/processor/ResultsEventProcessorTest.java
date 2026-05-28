@@ -6,8 +6,8 @@ import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createArrayBuilder;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -103,7 +103,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
@@ -273,8 +273,8 @@ public class ResultsEventProcessorTest {
                 .build());
         when(referenceCache.getNationalityById(any())).thenReturn(Optional.of(result));
         when(referenceCache.getResultDefinitionById(any(), any(), any())).thenReturn(buildResultDefinition());
-        when(referenceDataService.getOrgainsationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
-        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(Json.createObjectBuilder().add("caseId", randomUUID().toString()).build()));
+        when(referenceDataService.getOrganisationUnit(any(), any())).thenReturn(envelopeForCourt.payloadAsJsonObject());
+        when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(JsonObjects.createObjectBuilder().add("caseId", randomUUID().toString()).build()));
     }
 
     @Test
@@ -285,7 +285,7 @@ public class ResultsEventProcessorTest {
         final UUID userId = UUID.randomUUID();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.hearing.resulted"),
                 objectToJsonObjectConverter.convert(shareResultsMessage));
-        final JsonObject jsonResult = Json.createObjectBuilder().add("val", randomUUID().toString()).build();
+        final JsonObject jsonResult = JsonObjects.createObjectBuilder().add("val", randomUUID().toString()).build();
         final JsonObject transformedHearing = envelope.asJsonObject();
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing"))).thenReturn(transformedHearing.getJsonObject("hearing"));
         when(cacheService.add(hearingId, transformedHearing.getJsonObject("hearing").toString())).thenReturn("");
@@ -1238,11 +1238,11 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(1)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
@@ -1292,12 +1292,12 @@ public class ResultsEventProcessorTest {
         setSjpServiceMock();
         JsonObject progressionPayload = createObjectBuilder().add("id", randomUUID().toString()).build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.empty());
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(sjpService, times(1)).caseExistsByCaseUrn(any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
     }
@@ -1312,17 +1312,17 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(true, "isSJPHearing")
                 .build();
         setSjpServiceMock();
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(2)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
     }
 
@@ -1340,18 +1340,18 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(1)).caseExistsByCaseUrn(any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(2)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(2)).caseExistsByCaseUrn(any());
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
     }
@@ -1429,9 +1429,9 @@ public class ResultsEventProcessorTest {
         final UUID caseId = randomUUID();
         final String PROSECUTION_CASE_ID = "prosecutionCaseId";
         final String HEARING_IDS = "hearingIds";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                        JsonObjects.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
                 .add(PROSECUTION_CASE_ID, caseId.toString())
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.progression.events.case-or-application-ejected"), payload);
@@ -1459,9 +1459,9 @@ public class ResultsEventProcessorTest {
         final UUID applicationId = randomUUID();
         final String APPLICATION_ID = "applicationId";
         final String HEARING_IDS = "hearingIds";
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = JsonObjects.createObjectBuilder()
                 .add(HEARING_IDS,
-                        Json.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
+                        JsonObjects.createArrayBuilder().add(hearingId1.toString()).add(hearingId2.toString()).build())
                 .add(APPLICATION_ID, applicationId.toString())
                 .build();
         final JsonEnvelope envelope = envelopeFrom(metadataWithRandomUUID("public.progression.events.case-or-application-ejected"), payload);
@@ -1506,7 +1506,7 @@ public class ResultsEventProcessorTest {
                 objectToJsonObjectConverter.convert(shareResultsMessage));
 
         final JsonObject payload = envelope.asJsonObject();
-        final JsonObject internalPayload = Json.createObjectBuilder()
+        final JsonObject internalPayload = JsonObjects.createObjectBuilder()
                 .add("hearing", payload.getJsonObject("hearing"))
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
@@ -1516,7 +1516,7 @@ public class ResultsEventProcessorTest {
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing")))
                 .thenReturn(transformedHearing);
 
-        final JsonObject externalPayload = Json.createObjectBuilder()
+        final JsonObject externalPayload = JsonObjects.createObjectBuilder()
                 .add("hearing", transformedHearing)
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
@@ -1553,7 +1553,7 @@ public class ResultsEventProcessorTest {
         when(hearingHelper.transformedHearing(envelope.payloadAsJsonObject().getJsonObject("hearing")))
                 .thenReturn(transformedHearing);
 
-        final JsonObject externalPayload = Json.createObjectBuilder()
+        final JsonObject externalPayload = JsonObjects.createObjectBuilder()
                 .add("hearing", transformedHearing)
                 .add("sharedTime", payload.getJsonString("sharedTime"))
                 .build();
@@ -1573,7 +1573,7 @@ public class ResultsEventProcessorTest {
 
 
     private JsonObjectBuilder jsonObjectToBuilder(JsonObject jo) {
-        JsonObjectBuilder builder = Json.createObjectBuilder();
+        JsonObjectBuilder builder = JsonObjects.createObjectBuilder();
         for (Map.Entry<String, JsonValue> entry : jo.entrySet()) {
             builder.add(entry.getKey(), entry.getValue());
         }
@@ -1681,7 +1681,7 @@ public class ResultsEventProcessorTest {
         } catch (final Exception e) {
             fail("Error consuming file from location " + path);
         }
-        final JsonReader reader = Json.createReader(new StringReader(request));
+        final JsonReader reader = JsonObjects.createReader(new StringReader(request));
         return reader.readObject();
     }
 
@@ -1700,13 +1700,13 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         // Should call progressionService for each caseUrn
         verify(progressionService, times(3)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
@@ -1727,13 +1727,13 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(true, "isSJPHearing")
                 .build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(sjpService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("id", randomUUID().toString()).build()));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(sjpService, times(3)).caseExistsByCaseUrn(any());
         verify(progressionService, times(0)).caseExistsByCaseUrn(any());
     }
@@ -1750,13 +1750,13 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(1)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
     }
@@ -1773,12 +1773,12 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
 
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
 
         verify(documentGeneratorService, times(1)).generateNcesDocument(
-                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+                any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(0)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
     }
@@ -1794,9 +1794,9 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(caseReferences, "caseReferences")
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
-        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(0)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
     }
@@ -1814,10 +1814,10 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(caseReferences, "caseReferences")
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
-        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(progressionService, times(2)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
     }
@@ -1835,10 +1835,10 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(caseReferences, "caseReferences")
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
-        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         // Should call for each valid urn (2 times)
         verify(progressionService, times(2)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());
@@ -1857,10 +1857,10 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(caseReferences, "caseReferences")
                 .withPayloadOf(false, "isSJPHearing")
                 .build();
-        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any())).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(randomUUID(), "file123.pdf"));
         when(progressionService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("caseId", randomUUID().toString()).build()));
         resultsEventProcessor.handleNcesEmailNotificationRequested(jsonEnvelope);
-        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any());
+        verify(documentGeneratorService, times(1)).generateNcesDocument(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         // Should call for each valid urn (2 times)
         verify(progressionService, times(2)).caseExistsByCaseUrn(any());
         verify(sjpService, times(0)).caseExistsByCaseUrn(any());

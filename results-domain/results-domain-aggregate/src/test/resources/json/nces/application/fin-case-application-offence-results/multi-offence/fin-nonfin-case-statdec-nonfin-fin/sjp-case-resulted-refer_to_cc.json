@@ -1,0 +1,46 @@
+{
+  "accountDivisionCode": "77",
+  "defendantAddress": "FLAT - 25A Constable Street Bristol England UK IG1 1YY",
+  "defendantContactNumber": "01231231230",
+  "defendantDateOfBirth": "1966-01-09",
+  "defendantEmail": "Flm5KFq6SmithmKAXA@email.com",
+  "defendantName": "Flm5KFq6 SmithmKAXA",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "d76c17b6-7da1-4885-824b-fc4cf124be76",
+  "hearingSittingDay": "2026-01-09T17:39:07.513Z",
+  "isSJPHearing": true,
+  "masterDefendantId": "f7b7ba7b-8759-4315-825e-1fcdc6540262",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 20\nTime of hearing 10:00\nDate of hearing 2026-01-30\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "ecb8578d-6237-48e3-a589-e5dfc16cd730",
+      "offenceTitle": "Keep a vehicle without a valid vehicle licence",
+      "offenceResultsCategory": "INTERMEDIARY"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 20\nTime of hearing 10:00\nDate of hearing 2026-01-30\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "ba836c10-7586-4511-a778-f4d945ce1cba",
+      "offenceTitle": "Cause use of motor vehicle with no insurance",
+      "offenceResultsCategory": "INTERMEDIARY"
+    },
+    {
+      "dateOfResult": "2026-01-09",
+      "impositionOffenceDetails": "Refer for a full court hearing\nReasons for referring to court For trial\nCourthouse organisation name Lavender Hill Magistrates' Court\nCourtroom Courtroom 01\nEstimated duration 20\nTime of hearing 10:00\nDate of hearing 2026-01-30\nCourthouse address line 1 176A Lavender Hill\nCourthouse address line 2 London\nCourthouse post code SW11 1JU",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "offenceId": "d365bb93-c07b-4d85-a11d-9a9a5ac04dce",
+      "offenceTitle": "Vehicle defect - permit use of a motor vehicle / trailer with defective brakes",
+      "offenceResultsCategory": "INTERMEDIARY"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "SJ124272889"
+  ]
+}

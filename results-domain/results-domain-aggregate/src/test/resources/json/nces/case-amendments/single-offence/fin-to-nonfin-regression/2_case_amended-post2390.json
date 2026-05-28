@@ -19,7 +19,8 @@
       "isDeemedServed": false,
       "isFinancial": true,
       "offenceId": "5f1b6fc4-8d57-4dc1-a0a5-e2adb1932c32",
-      "offenceTitle": "Engage in activity requiring a licence when not a licensee"
+      "offenceTitle": "Engage in activity requiring a licence when not a licensee",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [

@@ -6,6 +6,7 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
+import uk.gov.moj.cpp.results.domain.aggregate.utils.ApplicationMetadata;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ResultNotificationRuleInputBuilder {
+    public static final String OFFENCE_DATE = "2023-03-01";
     private HearingFinancialResultRequest request;
     private String isWrittenOffExists;
     private String originalDateOfOffenceList;
@@ -24,6 +26,7 @@ public class ResultNotificationRuleInputBuilder {
     private Map<UUID, String> offenceDateMap;
     private String ncesEmail;
     private Map<UUID, OffenceResultsDetails> prevOffenceResultsDetails;
+    private Map<UUID, ApplicationMetadata> prevSjpApplicationOffences;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails;
     private Map<UUID, List<OffenceResultsDetails>> prevApplicationOffenceResultsMap;
     private LinkedList<CorrelationItem> correlationItemList;
@@ -41,6 +44,7 @@ public class ResultNotificationRuleInputBuilder {
         builder.offenceDateMap = Map.of();
         builder.ncesEmail = "nces@test.com";
         builder.prevOffenceResultsDetails = Map.of();
+        builder.prevSjpApplicationOffences = Map.of();
         builder.prevApplicationResultsDetails = Map.of();
         builder.prevApplicationOffenceResultsMap = Map.of();
         builder.correlationItemList = new LinkedList<>();
@@ -52,8 +56,13 @@ public class ResultNotificationRuleInputBuilder {
         this.offenceDateMap = request.getOffenceResults().stream().
                 collect(toMap(
                         OffenceResults::getOffenceId,
-                        offenceResult -> "2023-03-01"
+                        offenceResult -> OFFENCE_DATE
                 ));
+        return this;
+    }
+
+    public ResultNotificationRuleInputBuilder withPrevSjpReferralOffenceResultsDetails(final Map<UUID, ApplicationMetadata> prevSjpApplicationOffences) {
+        this.prevSjpApplicationOffences = prevSjpApplicationOffences;
         return this;
     }
 
@@ -75,7 +84,7 @@ public class ResultNotificationRuleInputBuilder {
     public ResultNotificationRule.RuleInput build() {
         return new ResultNotificationRule.RuleInput(request, isWrittenOffExists, originalDateOfOffenceList, originalDateOfSentenceList,
                 newOffenceResultsFromHearing, applicationResult, offenceDateMap, ncesEmail, prevOffenceResultsDetails,
-                prevApplicationResultsDetails, prevApplicationOffenceResultsMap, correlationItemList);
+                prevApplicationResultsDetails, prevApplicationOffenceResultsMap, prevSjpApplicationOffences, correlationItemList);
     }
 
     public ResultNotificationRuleInputBuilder withCorrelationItemList(final List<CorrelationItem> items) {

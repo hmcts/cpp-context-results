@@ -14,7 +14,7 @@ import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.json.Json;
+import uk.gov.justice.services.messaging.JsonObjects;
 
 public class ProgressionStub {
 
@@ -69,7 +69,7 @@ public class ProgressionStub {
 
     public static void stubGetProgressionCaseExistsByUrn(final String caseUrn, final UUID caseId) {
         final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_URN_URL);
-        final String payload = Json.createObjectBuilder()
+        final String payload = JsonObjects.createObjectBuilder()
                 .add("caseId", caseId.toString())
                 .build().toString();
         stubFor(get(urlPathEqualTo(stringUrl))
