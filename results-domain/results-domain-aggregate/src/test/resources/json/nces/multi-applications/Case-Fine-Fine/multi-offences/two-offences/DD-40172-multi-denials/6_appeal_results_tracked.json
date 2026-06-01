@@ -24,7 +24,9 @@
       "isParentFlag": true,
       "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
       "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
-      "resultCode": "AASA"
+      "resultCode": "AASA",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationId": "83070cb3-6b51-4f31-94be-b718bb8d7cd8",
@@ -38,7 +40,9 @@
       "isParentFlag": true,
       "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
       "offenceTitle": "Provide money / property for use in acts of terrorism",
-      "resultCode": "AASA"
+      "resultCode": "AASA",
+      "offenceResultsCategory": "FINAL",
+      "applicationResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -49,7 +53,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
-      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Attachment of earnings order",
@@ -60,7 +65,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "f5f883c2-2fad-4a41-836e-25a480c496a2",
-      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003"
+      "offenceTitle": "Care worker cause mentally disordered person to watch a sexual act - SOA 2003",
+      "offenceResultsCategory": "FINAL"
     },
     {
       "applicationResultType": "Fine",
@@ -71,7 +77,8 @@
       "isFinancial": true,
       "isParentFlag": false,
       "offenceId": "2442a455-d341-480b-9d77-408adee256f8",
-      "offenceTitle": "Provide money / property for use in acts of terrorism"
+      "offenceTitle": "Provide money / property for use in acts of terrorism",
+      "offenceResultsCategory": "FINAL"
     }
   ],
   "prosecutionCaseReferences": [
