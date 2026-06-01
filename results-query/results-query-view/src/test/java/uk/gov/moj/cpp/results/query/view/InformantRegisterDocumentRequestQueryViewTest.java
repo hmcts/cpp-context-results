@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.query.view;
 import static com.google.common.collect.Lists.newArrayList;
 import static java.time.LocalDate.now;
 import static java.util.UUID.randomUUID;
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
