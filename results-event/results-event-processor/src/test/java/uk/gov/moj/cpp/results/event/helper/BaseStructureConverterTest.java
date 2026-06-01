@@ -62,7 +62,7 @@ public class BaseStructureConverterTest {
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 
-        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
+        when(referenceDataService.getOrganisationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
         when(referenceDataService.getCourtRoomOuCode(anyString())).thenReturn(getJsonObjectForCourtRoomRefDataResponse());
         baseStructure = baseStructureConverter.convert(shareResultsMessage);
         assertThat(baseStructure.getId(), is(hearing.getId()));
@@ -92,7 +92,7 @@ public class BaseStructureConverterTest {
         final Hearing hearing = shareResultsMessage.getHearing();
         final List<HearingDay> hearingDays = hearing.getHearingDays();
 
-        when(referenceDataService.getOrgainsationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
+        when(referenceDataService.getOrganisationUnit(anyString(), any())).thenReturn(getJsonObjectWithNationalCourtCodeAndOuCode());
         when(referenceDataService.getCourtRoomOuCode(anyString())).thenReturn(getJsonObjectForCourtRoomRefDataResponse());
         baseStructure = baseStructureConverter.convert(shareResultsMessage);
         assertEquals(baseStructure.getId(), hearing.getId());

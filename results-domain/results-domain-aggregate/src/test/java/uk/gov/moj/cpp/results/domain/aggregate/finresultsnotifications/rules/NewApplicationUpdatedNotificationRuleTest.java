@@ -8,6 +8,7 @@ import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearin
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
+import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.INTERMEDIARY;
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
 
@@ -34,6 +35,7 @@ class NewApplicationUpdatedNotificationRuleTest {
                         offenceResults()
                                 .withApplicationType(STAT_DEC)
                                 .withApplicationResultType("Adjournment")
+                                .withApplicationResultsCategory(INTERMEDIARY.name())
                                 .withResultCode(null)
                                 .withAmendmentDate(null)
                                 .withImpositionOffenceDetails("Adjourn offences")
@@ -75,6 +77,7 @@ class NewApplicationUpdatedNotificationRuleTest {
                         offenceResults()
                                 .withApplicationType(STAT_DEC)
                                 .withApplicationResultType("Adjournment")
+                                .withApplicationResultsCategory(INTERMEDIARY.name())
                                 .withResultCode(null)
                                 .withAmendmentDate(null)
                                 .withApplicationId(randomUUID())
