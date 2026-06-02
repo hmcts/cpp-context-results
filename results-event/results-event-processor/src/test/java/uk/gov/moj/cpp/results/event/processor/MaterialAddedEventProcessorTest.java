@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
@@ -25,7 +26,6 @@ import uk.gov.moj.cpp.results.event.helper.Originator;
 import java.util.UUID;
 import java.util.function.Function;
 
-import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonObject;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +72,7 @@ public class MaterialAddedEventProcessorTest {
     public void shouldHandleTheMaterialAdded() {
         final String materialId = randomUUID().toString();
         final String materialUrl = "http://localhost:8080/";
-        final JsonObject metaDataJson = JsonObjects.createObjectBuilder()
+        final JsonObject metaDataJson = createObjectBuilder()
                 .add(Originator.SOURCE_NCES, Originator.ORIGINATOR_VALUE_NCES)
                 .add("id", UUID.randomUUID().toString())
                 .add("userId", UUID.randomUUID().toString())
@@ -87,7 +87,7 @@ public class MaterialAddedEventProcessorTest {
         when(enveloper.withMetadataFrom(jsonEnvelope, "results.command.nces-document-notification"))
                 .thenReturn(factory);
         final Envelope<JsonObject> envelope = mock(Envelope.class);
-        when(envelope.payload()).thenReturn(JsonObjects.createObjectBuilder().build());
+        when(envelope.payload()).thenReturn(createObjectBuilder().build());
 
         materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
 
@@ -104,7 +104,7 @@ public class MaterialAddedEventProcessorTest {
         final String masterDefendantId = randomUUID().toString();
         final String caseId = randomUUID().toString();
         final String originatorValue = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantId + ":" + caseId;
-        final JsonObject metaDataJson = JsonObjects.createObjectBuilder()
+        final JsonObject metaDataJson = createObjectBuilder()
                 .add(Originator.SOURCE_NCES, originatorValue)
                 .add("id", UUID.randomUUID().toString())
                 .add("userId", UUID.randomUUID().toString())
@@ -120,7 +120,7 @@ public class MaterialAddedEventProcessorTest {
             final String[] splitted = originatorValue.split(":");
             final String expectedMasterDefendantId = splitted[1];
             final String expectedCaseId = splitted[2];
-            final JsonObject expectedPayload = JsonObjects.createObjectBuilder()
+            final JsonObject expectedPayload = createObjectBuilder()
                     .add("materialId", materialId)
                     .add("materialUrl", materialUrl)
                     .add("masterDefendantId", expectedMasterDefendantId)

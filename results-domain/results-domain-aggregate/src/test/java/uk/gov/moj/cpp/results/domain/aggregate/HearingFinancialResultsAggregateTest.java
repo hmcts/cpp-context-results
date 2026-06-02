@@ -8,6 +8,7 @@ import static java.util.Objects.nonNull;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
