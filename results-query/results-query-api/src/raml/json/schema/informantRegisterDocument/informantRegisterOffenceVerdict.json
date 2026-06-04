@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterOffenceVerdict.json",
+  "description": "The verdict details for an offence in an informant register document",
+  "type": "object",
+  "properties": {
+    "verdictCode": {
+      "description": "The code for the verdict against the offence",
+      "type": "string"
+    },
+    "verdictType": {
+      "description": "The resolved type name for the verdict code",
+      "type": "string"
+    },
+    "verdictDate": {
+      "description": "The date the verdict was given",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verdictCode"
+  ],
+  "additionalProperties": false
+}
