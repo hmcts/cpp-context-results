@@ -397,7 +397,7 @@
           "type": "string"
         },
         "impositionResultCode": {
-          "description": "Identifier of the imposition raised against the offence. Must be FCOMP, FVS, FCOST, FCPC, FO, FVEBD, FCC.",
+          "description": "Identifier of the imposition raised against the offence. Must be FCOMP, FVS, FCOST, FCPC, FO, FVEBD, FCC, FFR.",
           "type": "string",
           "enum": [
             "FO",
@@ -406,7 +406,8 @@
             "FVEBD",
             "FCOST",
             "FCOMP",
-            "FCC"
+            "FCC",
+            "FFR"
           ]
         },
         "impositionAmount": {
