@@ -37,7 +37,7 @@
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
         <sonar.scm.provider>git</sonar.scm.provider>
         <mvn.site.url>file://${project.build.directory}/site</mvn.site.url>
-        <coredomain.version>17.103.14.1978-CIMD3870-SNAPSHOT</coredomain.version>
+        <coredomain.version>17.103.13</coredomain.version>
         <referencedata.version>17.103.131</referencedata.version>
         <notification.notify.version>17.104.44</notification.notify.version>
         <systemdocgenerator.version>17.104.111</systemdocgenerator.version>
