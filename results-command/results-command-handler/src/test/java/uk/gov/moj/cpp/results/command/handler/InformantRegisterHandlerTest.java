@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2.informantRegisterDocumentRequestV2;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
@@ -32,12 +32,9 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegisterStreamId;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
@@ -292,7 +289,7 @@ public class InformantRegisterHandlerTest {
         final UUID prosecutionAuthorityId = randomUUID();
         final ZonedDateTime registerDate = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
         final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequest = informantRegisterDocumentRequestV2()
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
                 .withRegisterDate(registerDate)
                 .build();
@@ -334,7 +331,7 @@ public class InformantRegisterHandlerTest {
         final ZonedDateTime registerDate = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
 
         final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequest = informantRegisterDocumentRequestV2()
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
                 .withRegisterDate(registerDate)
                 .build();
@@ -426,12 +423,12 @@ public class InformantRegisterHandlerTest {
         );
     }
 
-    private Envelope<InformantRegisterDocumentRequest> buildEnvelope() {
+    private Envelope<InformantRegisterDocumentRequestV2> buildEnvelope() {
         return buildEnvelope(null, false, false);
     }
 
-    private Envelope<InformantRegisterDocumentRequest> buildEnvelope(final UUID groupId, final boolean hasDefendantResults, final boolean hasCaseResults) {
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+    private Envelope<InformantRegisterDocumentRequestV2> buildEnvelope(final UUID groupId, final boolean hasDefendantResults, final boolean hasCaseResults) {
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequest = informantRegisterDocumentRequestV2()
                 .withGroupId(groupId)
                 .withHearingId(randomUUID())
                 .withHearingDate(ZonedDateTime.now())

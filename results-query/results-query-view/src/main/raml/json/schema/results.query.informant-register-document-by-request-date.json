@@ -19,7 +19,7 @@
             "type": "string"
           },
           "payload": {
-            "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDocumentRequest.json"
+            "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDocumentRequest-v2.json"
           }
         }
       }

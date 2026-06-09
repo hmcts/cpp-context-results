@@ -10,7 +10,6 @@ import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
 
 import java.time.format.DateTimeFormatter;

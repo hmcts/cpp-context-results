@@ -7,9 +7,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;

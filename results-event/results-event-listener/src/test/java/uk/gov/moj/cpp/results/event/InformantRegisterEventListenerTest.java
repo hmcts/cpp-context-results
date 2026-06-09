@@ -9,8 +9,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2.informantRegisterDocumentRequestV2;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2;
 import static uk.gov.justice.results.courts.InformantRegisterNotified.informantRegisterNotified;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
@@ -21,7 +20,7 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.NOTIFIED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
@@ -76,7 +75,7 @@ public class InformantRegisterEventListenerTest {
     public void shouldSaveInformantRegisterRequested() {
         final UUID prosecutionAuthId = randomUUID();
         final String ouCode = randomAlphanumeric(10);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequest = informantRegisterDocumentRequestV2()
                 .withProsecutionAuthorityId(prosecutionAuthId)
                 .withProsecutionAuthorityOuCode(ouCode)
                 .withRegisterDate(ZonedDateTime.now())
@@ -94,7 +93,7 @@ public class InformantRegisterEventListenerTest {
         verify(this.informantRegisterRepository).save(informantRegisterRequestEntity.capture());
         final InformantRegisterEntity savedInformantRegisterEntity = informantRegisterRequestEntity.getValue();
         final JsonObject jsonPayload = JsonObjects.createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
-        final InformantRegisterDocumentRequest informantRegisterRequestSaved = jsonObjectToObjectConverter.convert(jsonPayload, InformantRegisterDocumentRequest.class);
+        final InformantRegisterDocumentRequestV2 informantRegisterRequestSaved = jsonObjectToObjectConverter.convert(jsonPayload, InformantRegisterDocumentRequestV2.class);
 
         assertThat(savedInformantRegisterEntity.getProsecutionAuthorityId(), is(prosecutionAuthId));
         assertThat(informantRegisterRequestSaved.getProsecutionAuthorityId(), is(prosecutionAuthId));
@@ -107,7 +106,7 @@ public class InformantRegisterEventListenerTest {
         final UUID prosecutionAuthId = randomUUID();
         final LocalDate registerDate = LocalDate.now();
         final UUID fileId = randomUUID();
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequest = informantRegisterDocumentRequestV2()
                 .withProsecutionAuthorityId(prosecutionAuthId)
                 .withRegisterDate(ZonedDateTime.now())
                 .withHearingVenue(informantRegisterHearingVenueV2().build())

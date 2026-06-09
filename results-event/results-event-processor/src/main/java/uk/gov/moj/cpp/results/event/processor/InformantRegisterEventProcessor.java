@@ -10,12 +10,9 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.moj.cpp.results.event.processor.model.InformantRegisterDocument.informantRegisterDocument;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
@@ -172,7 +169,7 @@ public class InformantRegisterEventProcessor {
     }
 
     private void mapToInformantRegisterDocuments(final List<InformantRegisterDocument> informantRegisters, final JsonObject informantRegisterJson) {
-        final InformantRegisterDocumentRequest documentRequest = jsonObjectToObjectConverter.convert(informantRegisterJson, InformantRegisterDocumentRequest.class);
+        final InformantRegisterDocumentRequestV2 documentRequest = jsonObjectToObjectConverter.convert(informantRegisterJson, InformantRegisterDocumentRequestV2.class);
         documentRequest.getHearingVenue().getCourtSessions().forEach(courtSession -> courtSession.getDefendants().forEach(defendant ->
         {
             if (isNotEmpty(defendant.getResults())) {
@@ -197,7 +194,7 @@ public class InformantRegisterEventProcessor {
     }
 
     @SuppressWarnings({"squid:S00107"})
-    private void buildInformantRegister(final List<InformantRegisterDocument> informantRegisters, final InformantRegisterDocumentRequest documentRequest, final InformantRegisterHearingV2 courtSession, final InformantRegisterDefendantV2 defendant,
+    private void buildInformantRegister(final List<InformantRegisterDocument> informantRegisters, final InformantRegisterDocumentRequestV2 documentRequest, final InformantRegisterHearingV2 courtSession, final InformantRegisterDefendantV2 defendant,
                                         final InformantRegisterCaseOrApplicationV2 caseOrApplication, final InformantRegisterResult result, final InformantRegisterOffence offence, final InformantRegisterResult offenceResult) {
 
         final InformantRegisterDocument.Builder informantRegisterDocumentBuilder = informantRegisterDocument()

@@ -7,7 +7,7 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.NOTIFIED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
@@ -46,7 +46,7 @@ public class InformantRegisterEventListener {
 
         final JsonObject informantRegisterDocumentRequestJson = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
 
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, InformantRegisterDocumentRequest.class);
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequest = jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, InformantRegisterDocumentRequestV2.class);
 
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
         informantRegisterEntity.setId(randomUUID());
@@ -80,7 +80,7 @@ public class InformantRegisterEventListener {
             }
         });
 
-        informantRegisterGenerated.getInformantRegisterDocumentRequests().stream().map(InformantRegisterDocumentRequest::getHearingId).forEach(hearingId -> {
+        informantRegisterGenerated.getInformantRegisterDocumentRequests().stream().map(InformantRegisterDocumentRequestV2::getHearingId).forEach(hearingId -> {
             final List<InformantRegisterEntity> informantRegistersList = informantRegisterRepository.findByHearingIdAndStatusRecorded(hearingId);
             informantRegistersList.forEach(informantRegisterEntity -> informantRegisterEntity.setProcessedOn(currentDateTime));
         });

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDocumentRequest.json",
+  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDocumentRequest-v2.json",
   "description": "The details required to batch and generate a informant register document.  Batching is by date, prosecuting authority id, court Centre Id, hearing Id",
   "type": "object",
   "properties": {
