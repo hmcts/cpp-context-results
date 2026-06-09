@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Script that runs, liquibase, deploys wars and runs integration tests
-#
+
 CONTEXT_NAME=results
 
 FRAMEWORK_LIBRARIES_VERSION=$(mvn help:evaluate -Dexpression=framework-libraries.version -q -DforceStdout)
@@ -12,7 +12,7 @@ DOCKER_CONTAINER_REGISTRY_HOST_NAME=crmdvrepo01
 
 LIQUIBASE_COMMAND=update
 #LIQUIBASE_COMMAND=dropAll
-#
+
 #fail script on error
 set -e
 

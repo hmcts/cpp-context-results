@@ -32,7 +32,20 @@
       "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -U -DskipTests)",
       "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -pl results-json,results-domain/results-domain-common,results-command/results-command-handler -am)",
       "Bash(jar xf *)",
-      "Bash(jar -xf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/results/results-json/17.103.109-CIMD-3915-SNAPSHOT/results-json-17.103.109-CIMD-3915-SNAPSHOT.jar)"
+      "Bash(jar -xf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/results/results-json/17.103.109-CIMD-3915-SNAPSHOT/results-json-17.103.109-CIMD-3915-SNAPSHOT.jar)",
+      "Read(//Users/erolkureli/repo/**)",
+      "Read(//Users/erolkureli/**)",
+      "Bash(cp /Users/erolkureli/repo/cpp-platform-core-domain/criminal-court-public-model/src/main/resources/json/schema/global/informantRegisterDocument/informantRegisterOffence.json /Users/erolkureli/repo/cpp-context-results/results-json/src/main/resources/json/schema/informantRegisterDocument/)",
+      "Bash(cp /Users/erolkureli/repo/cpp-platform-core-domain/criminal-court-public-model/src/main/resources/json/schema/global/informantRegisterDocument/informantRegisterOffenceVerdict.json /Users/erolkureli/repo/cpp-context-results/results-json/src/main/resources/json/schema/informantRegisterDocument/)",
+      "Bash(javap -c uk/gov/justice/generation/pojo/maven/PojoGenerationMojo.class)",
+      "Bash(javap *)",
+      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/results/results-json/17.103.109-CIMD-3915-SNAPSHOT/results-json-17.103.109-CIMD-3915-SNAPSHOT.jar META-INF/schema_catalog.json)",
+      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.103.13/criminal-court-public-model-17.103.13.jar META-INF/schema_catalog.json)",
+      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/justice/schema/catalog-core/17.103.1/catalog-core-17.103.1.jar uk/gov/justice/schema/catalog/RawCatalog.class)",
+      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/justice/schema/catalog-core/17.103.1/catalog-core-17.103.1.jar uk/gov/justice/schema/catalog/ClasspathCatalogLoader.class)",
+      "Bash(TMPDIR=/var/tmp javap -c /tmp/ClasspathCatalogLoader.class)",
+      "Bash(CLAUDE_CODE_TMPDIR=/Users/erolkureli/tmp javap -c /tmp/ClasspathCatalogLoader.class)",
+      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.104.5-CIMD3870-SNAPSHOT/criminal-court-public-model-17.104.5-CIMD3870-SNAPSHOT.jar json/schema/global/informantRegisterDocument/informantRegisterOffence.json)"
     ]
   }
 }
