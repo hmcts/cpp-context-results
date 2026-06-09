@@ -38,6 +38,7 @@ import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDoc
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceVerdict;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResultData;

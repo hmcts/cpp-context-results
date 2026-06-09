@@ -45,7 +45,11 @@
       "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/justice/schema/catalog-core/17.103.1/catalog-core-17.103.1.jar uk/gov/justice/schema/catalog/ClasspathCatalogLoader.class)",
       "Bash(TMPDIR=/var/tmp javap -c /tmp/ClasspathCatalogLoader.class)",
       "Bash(CLAUDE_CODE_TMPDIR=/Users/erolkureli/tmp javap -c /tmp/ClasspathCatalogLoader.class)",
-      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.104.5-CIMD3870-SNAPSHOT/criminal-court-public-model-17.104.5-CIMD3870-SNAPSHOT.jar json/schema/global/informantRegisterDocument/informantRegisterOffence.json)"
+      "Bash(unzip -p /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.104.5-CIMD3870-SNAPSHOT/criminal-court-public-model-17.104.5-CIMD3870-SNAPSHOT.jar json/schema/global/informantRegisterDocument/informantRegisterOffence.json)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -pl results-json,results-domain/results-domain-common,results-command/results-command-handler -am -DskipTests)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -pl results-command/results-command-handler -am -Dsurefire.failIfNoSpecifiedTests=false)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -pl results-event/results-event-processor -am -Dsurefire.failIfNoSpecifiedTests=false)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -pl results-domain/results-domain-common -Dsurefire.failIfNoSpecifiedTests=false)"
     ]
   }
 }

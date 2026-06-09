@@ -90,11 +90,6 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>uk.gov.moj.cpp.results</groupId>
-                        <artifactId>results-json</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                    <dependency>
                         <groupId>uk.gov.moj.cpp.core.domain</groupId>
                         <artifactId>criminal-court-public-model</artifactId>
                         <version>${coredomain.version}</version>
@@ -103,6 +98,11 @@
                         <groupId>uk.gov.moj.cpp.core.domain</groupId>
                         <artifactId>common-core-domain</artifactId>
                         <version>${coredomain.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>uk.gov.moj.cpp.results</groupId>
+                        <artifactId>results-json</artifactId>
+                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -146,14 +146,14 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>uk.gov.moj.cpp.results</groupId>
-                        <artifactId>results-json</artifactId>
-                        <version>${project.version}</version>
-                    </dependency>
-                    <dependency>
                         <groupId>uk.gov.moj.cpp.core.domain</groupId>
                         <artifactId>criminal-court-public-model</artifactId>
                         <version>${coredomain.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>uk.gov.moj.cpp.results</groupId>
+                        <artifactId>results-json</artifactId>
+                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
