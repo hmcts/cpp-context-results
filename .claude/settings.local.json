@@ -17,7 +17,19 @@
       "Read(//tmp/**)",
       "Bash(jar -xf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.104.5-CIMD3870-SNAPSHOT/criminal-court-public-model-17.104.5-CIMD3870-SNAPSHOT.jar json/schema/global/)",
       "Bash(mkdir -p /tmp/core-domain-base)",
-      "Bash(jar -xf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.104.1/criminal-court-public-model-17.104.1.jar json/schema/global/)"
+      "Bash(jar -xf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.104.1/criminal-court-public-model-17.104.1.jar json/schema/global/)",
+      "Bash(grep -r 'core/courts\\\\|$ref' /Users/erolkureli/repo/cpp-context-results/results-json/src/main/resources/json/schema/)",
+      "Bash(CLAUDE_CODE_TMPDIR=/tmp jar tf ~/.m2/repository/uk/gov/moj/cpp/core/domain/common-core-domain/17.103.13/common-core-domain-17.103.13.jar)",
+      "Bash(unzip -l ~/.m2/repository/uk/gov/moj/cpp/core/domain/common-core-domain/17.103.13/common-core-domain-17.103.13.jar)",
+      "Bash(unzip -l ~/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.103.13/criminal-court-public-model-17.103.13.jar)",
+      "Bash(mvn clean *)",
+      "Bash(/usr/libexec/java_home *)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -U)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -U -rf :results-domain-common -e)",
+      "Bash(grep *)",
+      "Bash(python3 *)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -rf :results-event-listener)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -U -DskipTests)"
     ]
   }
 }
