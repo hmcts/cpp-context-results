@@ -29,7 +29,10 @@
       "Bash(grep *)",
       "Bash(python3 *)",
       "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -rf :results-event-listener)",
-      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -U -DskipTests)"
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -U -DskipTests)",
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -pl results-json,results-domain/results-domain-common,results-command/results-command-handler -am)",
+      "Bash(jar xf *)",
+      "Bash(jar -xf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/results/results-json/17.103.109-CIMD-3915-SNAPSHOT/results-json-17.103.109-CIMD-3915-SNAPSHOT.jar)"
     ]
   }
 }
