@@ -16,6 +16,7 @@ import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
@@ -119,7 +120,7 @@ public class InformantRegisterHandler {
     private void inflateInformantRegister(final InformantRegisterDocumentRequest informantRegisterDocumentRequest,
                                           final List<ProsecutionCase> prosecutionCases) {
         if (isNotEmpty(informantRegisterDocumentRequest.getHearingVenue().getCourtSessions())) {
-            final InformantRegisterDefendant masterDefendant = informantRegisterDocumentRequest.getHearingVenue()
+            final InformantRegisterDefendantV2 masterDefendant = informantRegisterDocumentRequest.getHearingVenue()
                     .getCourtSessions().get(0)
                     .getDefendants().get(0);
             informantRegisterDocumentRequest.getHearingVenue()

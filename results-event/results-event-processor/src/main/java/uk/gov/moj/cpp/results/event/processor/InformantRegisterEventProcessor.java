@@ -11,9 +11,12 @@ import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.moj.cpp.results.event.processor.model.InformantRegisterDocument.informantRegisterDocument;
 
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
@@ -194,7 +197,8 @@ public class InformantRegisterEventProcessor {
     }
 
     @SuppressWarnings({"squid:S00107"})
-    private void buildInformantRegister(final List<InformantRegisterDocument> informantRegisters, final InformantRegisterDocumentRequest documentRequest, final InformantRegisterHearing courtSession, final InformantRegisterDefendant defendant, final InformantRegisterCaseOrApplication caseOrApplication, final InformantRegisterResult result, final InformantRegisterOffence offence, final InformantRegisterResult offenceResult) {
+    private void buildInformantRegister(final List<InformantRegisterDocument> informantRegisters, final InformantRegisterDocumentRequest documentRequest, final InformantRegisterHearingV2 courtSession, final InformantRegisterDefendantV2 defendant,
+                                        final InformantRegisterCaseOrApplicationV2 caseOrApplication, final InformantRegisterResult result, final InformantRegisterOffence offence, final InformantRegisterResult offenceResult) {
 
         final InformantRegisterDocument.Builder informantRegisterDocumentBuilder = informantRegisterDocument()
                 .withInfDestID(EMPTY_STRING)
@@ -248,7 +252,7 @@ public class InformantRegisterEventProcessor {
         builder.withResultText(offenceResult.getResultText().trim());
     }
 
-    private String getAddress(final InformantRegisterDefendant defendant) {
+    private String getAddress(final InformantRegisterDefendantV2 defendant) {
         final List<String> addressAsList = Arrays.asList(defendant.getAddress1(), defendant.getAddress2(), defendant.getAddress3(), defendant.getAddress4(), defendant.getAddress5());
         return addressAsList
                 .stream()

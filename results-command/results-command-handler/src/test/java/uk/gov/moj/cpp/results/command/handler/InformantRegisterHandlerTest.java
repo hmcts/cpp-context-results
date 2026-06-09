@@ -33,10 +33,13 @@ import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegiste
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceVerdict;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
@@ -440,7 +443,7 @@ public class InformantRegisterHandlerTest {
                 .withFileName("fileName")
                 .withMajorCreditorCode("majorCreditorCode")
                 .withRecipients(getRecipients(1))
-                .withHearingVenue(InformantRegisterHearingVenue.informantRegisterHearingVenue()
+                .withHearingVenue(InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2()
                         .withCourtHouse("courtHouse")
                         .withLjaName("ljaName")
                         .withCourtSessions(getCourtSessions(1, hasDefendantResults, hasCaseResults))
@@ -465,10 +468,10 @@ public class InformantRegisterHandlerTest {
         return recipientList;
     }
 
-    private final List<InformantRegisterHearing> getCourtSessions(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
-        final List<InformantRegisterHearing> hearings = new ArrayList<>();
+    private final List<InformantRegisterHearingV2> getCourtSessions(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
+        final List<InformantRegisterHearingV2> hearings = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
-            hearings.add(InformantRegisterHearing.informantRegisterHearing()
+            hearings.add(InformantRegisterHearingV2.informantRegisterHearingV2()
                     .withCourtRoom("courtroom_" + i)
                     .withHearingStartTime(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE))
                     .withDefendants(getDefendants(1, hasDefendantResults, hasCaseResults))
@@ -477,10 +480,10 @@ public class InformantRegisterHandlerTest {
         return hearings;
     }
 
-    private final List<InformantRegisterDefendant> getDefendants(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
-        final List<InformantRegisterDefendant> defendantList = new ArrayList<>();
+    private final List<InformantRegisterDefendantV2> getDefendants(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
+        final List<InformantRegisterDefendantV2> defendantList = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
-            defendantList.add(InformantRegisterDefendant.informantRegisterDefendant()
+            defendantList.add(InformantRegisterDefendantV2.informantRegisterDefendantV2()
                     .withTitle("title_Main_" + i)
                     .withFirstName("firstName_Main_" + i)
                     .withLastName("lastName_Main_" + i)
@@ -495,11 +498,11 @@ public class InformantRegisterHandlerTest {
         return defendantList;
     }
 
-    private final List<InformantRegisterCaseOrApplication> getCaseOrApplications(final int count, final boolean hasCaseResults) {
-        final List<InformantRegisterCaseOrApplication> caseOrApplications = new ArrayList<>();
+    private final List<InformantRegisterCaseOrApplicationV2> getCaseOrApplications(final int count, final boolean hasCaseResults) {
+        final List<InformantRegisterCaseOrApplicationV2> caseOrApplications = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             caseOrApplications.add(
-                    InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication()
+                    InformantRegisterCaseOrApplicationV2.informantRegisterCaseOrApplicationV2()
                             .withArrestSummonsNumber("arrestSummonsNumber_Main_" + i)
                             .withCaseOrApplicationReference("caseURN_Main_" + i)
                             .withApplicationParticulars("applicationParticulars_Main_" + i)

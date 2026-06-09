@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
@@ -149,7 +149,7 @@ public class ProsecutorResultsQueryViewTest {
     private List<InformantRegisterEntity> getResults() {
         final InformantRegisterEntity entity = new InformantRegisterEntity();
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
-                .withHearingVenue(informantRegisterHearingVenue().build())
+                .withHearingVenue(informantRegisterHearingVenueV2().build())
                 .withProsecutionAuthorityOuCode(ouCode)
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
                 .withProsecutionAuthorityName(prosecutionAuthorityName)

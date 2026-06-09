@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2;
 import static uk.gov.justice.results.courts.InformantRegisterNotified.informantRegisterNotified;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
@@ -79,7 +80,7 @@ public class InformantRegisterEventListenerTest {
                 .withProsecutionAuthorityId(prosecutionAuthId)
                 .withProsecutionAuthorityOuCode(ouCode)
                 .withRegisterDate(ZonedDateTime.now())
-                .withHearingVenue(informantRegisterHearingVenue().build())
+                .withHearingVenue(informantRegisterHearingVenueV2().build())
                 .build();
 
         final InformantRegisterRecorded informantRegisterRecorded = new InformantRegisterRecorded(
@@ -109,7 +110,7 @@ public class InformantRegisterEventListenerTest {
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
                 .withProsecutionAuthorityId(prosecutionAuthId)
                 .withRegisterDate(ZonedDateTime.now())
-                .withHearingVenue(informantRegisterHearingVenue().build())
+                .withHearingVenue(informantRegisterHearingVenueV2().build())
                 .build();
 
         final InformantRegisterGenerated informantRegisterGenerated = new InformantRegisterGenerated(

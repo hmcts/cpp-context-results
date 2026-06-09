@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterHearing.json",
+  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterHearing-v2.json",
   "description": "The hearing details for the informant register entry",
   "type": "object",
   "properties": {
