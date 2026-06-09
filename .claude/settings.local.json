@@ -6,7 +6,7 @@
       "Bash(git cherry-pick *)",
       "Bash(git restore *)",
       "Bash(git clean *)",
-      "Bash(xargs sed -i '' 's/17\\\\.103\\\\.108-SNAPSHOT/17.103.108-CIMD-3915-SNAPSHOT/g')",
+      "Bash(xargs sed -i '' 's/17\\\\.103\\\\.108-SNAPSHOT/17.103.109-CIMD-3915-SNAPSHOT/g')",
       "Bash(git *)",
       "Bash(jar -tf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/common-core-domain/17.103.14.1978-CIMD3870-SNAPSHOT/common-core-domain-17.103.14.1978-CIMD3870-SNAPSHOT.jar)",
       "Bash(jar -tf /Users/erolkureli/.m2/repository/uk/gov/moj/cpp/core/domain/common-core-domain/17.103.14.1978-SNAPSHOT/common-core-domain-17.103.14.1978-SNAPSHOT.jar)",
