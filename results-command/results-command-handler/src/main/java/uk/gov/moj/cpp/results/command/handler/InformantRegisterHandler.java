@@ -15,8 +15,8 @@ import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
@@ -82,29 +82,29 @@ public class InformantRegisterHandler {
     private ProgressionQueryService progressionQueryService;
 
     @Handles("results.command.add-informant-register")
-    public void handleAddInformantRegisterToEventStream(final Envelope<InformantRegisterDocumentRequest> envelope) throws EventStreamException {
+    public void handleAddInformantRegisterToEventStream(final Envelope<InformantRegisterDocumentRequestV2> envelope) throws EventStreamException {
         LOGGER.debug("results.command.add-informant-register {}", envelope.metadata().asJsonObject());
 
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = envelope.payload();
-        if (nonNull(informantRegisterDocumentRequest.getGroupId())) {
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2 = envelope.payload();
+        if (nonNull(informantRegisterDocumentRequestV2.getGroupId())) {
             final JsonEnvelope jsonEnvelope = JsonEnvelope.envelopeFrom(envelope.metadata(), JsonValue.NULL);
-            populateMemberCasesForGroupCase(jsonEnvelope, informantRegisterDocumentRequest);
+            populateMemberCasesForGroupCase(jsonEnvelope, informantRegisterDocumentRequestV2);
         }
 
-        final UUID prosecutionAuthorityId = informantRegisterDocumentRequest.getProsecutionAuthorityId();
-        final UUID informantRegisterId = getInformantRegisterStreamId(prosecutionAuthorityId.toString(), informantRegisterDocumentRequest.getRegisterDate().toLocalDate().toString());
+        final UUID prosecutionAuthorityId = informantRegisterDocumentRequestV2.getProsecutionAuthorityId();
+        final UUID informantRegisterId = getInformantRegisterStreamId(prosecutionAuthorityId.toString(), informantRegisterDocumentRequestV2.getRegisterDate().toLocalDate().toString());
 
         final EventStream eventStream = eventSource.getStreamById(informantRegisterId);
-        final Stream<Object> events = Stream.of(new InformantRegisterRecorded(informantRegisterDocumentRequest, prosecutionAuthorityId));
+        final Stream<Object> events = Stream.of(new InformantRegisterRecorded(informantRegisterDocumentRequestV2, prosecutionAuthorityId));
 
         appendEventsToStream(envelope, eventStream, events);
     }
 
-    private void populateMemberCasesForGroupCase(final JsonEnvelope envelope, final InformantRegisterDocumentRequest informantRegisterDocumentRequest) {
-        final Optional<JsonObject> jsonObject = progressionQueryService.getGroupMemberCases(envelope, informantRegisterDocumentRequest.getGroupId().toString());
+    private void populateMemberCasesForGroupCase(final JsonEnvelope envelope, final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2) {
+        final Optional<JsonObject> jsonObject = progressionQueryService.getGroupMemberCases(envelope, informantRegisterDocumentRequestV2.getGroupId().toString());
 
         if (!jsonObject.isPresent()) {
-            throw new IllegalStateException(String.format("Unable to find member cases for the groupId %s", informantRegisterDocumentRequest.getGroupId()));
+            throw new IllegalStateException(String.format("Unable to find member cases for the groupId %s", informantRegisterDocumentRequestV2.getGroupId()));
         }
 
         final List<ProsecutionCase> prosecutionCases = jsonObject.get().getJsonArray("prosecutionCases")
@@ -113,16 +113,16 @@ public class InformantRegisterHandler {
                 .map(pc -> jsonObjectToObjectConverter.convert(pc, ProsecutionCase.class))
                 .toList();
 
-        inflateInformantRegister(informantRegisterDocumentRequest, prosecutionCases);
+        inflateInformantRegister(informantRegisterDocumentRequestV2, prosecutionCases);
     }
 
-    private void inflateInformantRegister(final InformantRegisterDocumentRequest informantRegisterDocumentRequest,
+    private void inflateInformantRegister(final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2,
                                           final List<ProsecutionCase> prosecutionCases) {
-        if (isNotEmpty(informantRegisterDocumentRequest.getHearingVenue().getCourtSessions())) {
-            final InformantRegisterDefendant masterDefendant = informantRegisterDocumentRequest.getHearingVenue()
+        if (isNotEmpty(informantRegisterDocumentRequestV2.getHearingVenue().getCourtSessions())) {
+            final InformantRegisterDefendantV2 masterDefendant = informantRegisterDocumentRequestV2.getHearingVenue()
                     .getCourtSessions().get(0)
                     .getDefendants().get(0);
-            informantRegisterDocumentRequest.getHearingVenue()
+            informantRegisterDocumentRequestV2.getHearingVenue()
                     .getCourtSessions().get(0)
                     .getDefendants()
                     .addAll(getDefendants(masterDefendant, prosecutionCases));
@@ -159,8 +159,8 @@ public class InformantRegisterHandler {
     private void processRequests(final UUID informantRegisterId, final List<JsonObject> informantRegisterRequest, final Envelope jsonEnvelope, final boolean systemGenerated) {
         try {
             final EventStream eventStream = eventSource.getStreamById(informantRegisterId);
-            final List<InformantRegisterDocumentRequest> informantRegisterDocumentRequests = informantRegisterRequest.stream().map(informantRegister -> stringToJsonObjectConverter.convert(informantRegister.getString((FIELD_PAYLOAD))))
-                    .map(informantRegister -> jsonObjectToObjectConverter.convert(informantRegister, InformantRegisterDocumentRequest.class))
+            final List<InformantRegisterDocumentRequestV2> informantRegisterDocumentRequests = informantRegisterRequest.stream().map(informantRegister -> stringToJsonObjectConverter.convert(informantRegister.getString((FIELD_PAYLOAD))))
+                    .map(informantRegister -> jsonObjectToObjectConverter.convert(informantRegister, InformantRegisterDocumentRequestV2.class))
                     .toList();
 
             final Stream<Object> events = Stream.of(InformantRegisterGenerated.informantRegisterGenerated()

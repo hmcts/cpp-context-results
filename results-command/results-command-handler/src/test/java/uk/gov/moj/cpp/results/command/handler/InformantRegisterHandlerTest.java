@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2.informantRegisterDocumentRequestV2;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
@@ -32,13 +32,13 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegisterStreamId;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceVerdict;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceV2;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceVerdictV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResultData;
@@ -289,7 +289,7 @@ public class InformantRegisterHandlerTest {
         final UUID prosecutionAuthorityId = randomUUID();
         final ZonedDateTime registerDate = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
         final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2 = informantRegisterDocumentRequestV2()
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
                 .withRegisterDate(registerDate)
                 .build();
@@ -297,7 +297,7 @@ public class InformantRegisterHandlerTest {
                 .add(createObjectBuilder()
                         .add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
                         .add("registerDate", REGISTER_DATE.toString())
-                        .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
+                        .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequestV2).toString())
                         .build()).build();
         final JsonObject jsonObject = createObjectBuilder().add("informantRegisterDocumentRequests", jsonValues).build();
 
@@ -331,7 +331,7 @@ public class InformantRegisterHandlerTest {
         final ZonedDateTime registerDate = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
 
         final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2 = informantRegisterDocumentRequestV2()
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
                 .withRegisterDate(registerDate)
                 .build();
@@ -339,7 +339,7 @@ public class InformantRegisterHandlerTest {
                 .add(createObjectBuilder()
                         .add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
                         .add("registerDate", REGISTER_DATE.toString())
-                        .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString())
+                        .add("payload", objectToJsonObjectConverter.convert(informantRegisterDocumentRequestV2).toString())
                         .build()).build();
         final JsonObject jsonObject = createObjectBuilder().add("informantRegisterDocumentRequests", jsonValues).build();
 
@@ -423,12 +423,12 @@ public class InformantRegisterHandlerTest {
         );
     }
 
-    private Envelope<InformantRegisterDocumentRequest> buildEnvelope() {
+    private Envelope<InformantRegisterDocumentRequestV2> buildEnvelope() {
         return buildEnvelope(null, false, false);
     }
 
-    private Envelope<InformantRegisterDocumentRequest> buildEnvelope(final UUID groupId, final boolean hasDefendantResults, final boolean hasCaseResults) {
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+    private Envelope<InformantRegisterDocumentRequestV2> buildEnvelope(final UUID groupId, final boolean hasDefendantResults, final boolean hasCaseResults) {
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2 = informantRegisterDocumentRequestV2()
                 .withGroupId(groupId)
                 .withHearingId(randomUUID())
                 .withHearingDate(ZonedDateTime.now())
@@ -440,14 +440,14 @@ public class InformantRegisterHandlerTest {
                 .withFileName("fileName")
                 .withMajorCreditorCode("majorCreditorCode")
                 .withRecipients(getRecipients(1))
-                .withHearingVenue(InformantRegisterHearingVenue.informantRegisterHearingVenue()
+                .withHearingVenue(InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2()
                         .withCourtHouse("courtHouse")
                         .withLjaName("ljaName")
                         .withCourtSessions(getCourtSessions(1, hasDefendantResults, hasCaseResults))
                         .build())
                 .build();
 
-        return envelope(ADD_INFORMANT_REGISTER_COMMAND_NAME, informantRegisterDocumentRequest);
+        return envelope(ADD_INFORMANT_REGISTER_COMMAND_NAME, informantRegisterDocumentRequestV2);
     }
 
     private <T> Envelope<T> envelope(final String name, final T t) {
@@ -465,10 +465,10 @@ public class InformantRegisterHandlerTest {
         return recipientList;
     }
 
-    private final List<InformantRegisterHearing> getCourtSessions(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
-        final List<InformantRegisterHearing> hearings = new ArrayList<>();
+    private final List<InformantRegisterHearingV2> getCourtSessions(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
+        final List<InformantRegisterHearingV2> hearings = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
-            hearings.add(InformantRegisterHearing.informantRegisterHearing()
+            hearings.add(InformantRegisterHearingV2.informantRegisterHearingV2()
                     .withCourtRoom("courtroom_" + i)
                     .withHearingStartTime(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE))
                     .withDefendants(getDefendants(1, hasDefendantResults, hasCaseResults))
@@ -477,10 +477,10 @@ public class InformantRegisterHandlerTest {
         return hearings;
     }
 
-    private final List<InformantRegisterDefendant> getDefendants(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
-        final List<InformantRegisterDefendant> defendantList = new ArrayList<>();
+    private final List<InformantRegisterDefendantV2> getDefendants(final int count, final boolean hasDefendantResults, final boolean hasCaseResults) {
+        final List<InformantRegisterDefendantV2> defendantList = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
-            defendantList.add(InformantRegisterDefendant.informantRegisterDefendant()
+            defendantList.add(InformantRegisterDefendantV2.informantRegisterDefendantV2()
                     .withTitle("title_Main_" + i)
                     .withFirstName("firstName_Main_" + i)
                     .withLastName("lastName_Main_" + i)
@@ -495,19 +495,19 @@ public class InformantRegisterHandlerTest {
         return defendantList;
     }
 
-    private final List<InformantRegisterCaseOrApplication> getCaseOrApplications(final int count, final boolean hasCaseResults) {
-        final List<InformantRegisterCaseOrApplication> caseOrApplications = new ArrayList<>();
+    private final List<InformantRegisterCaseOrApplicationV2> getCaseOrApplications(final int count, final boolean hasCaseResults) {
+        final List<InformantRegisterCaseOrApplicationV2> caseOrApplications = new ArrayList<>();
         for (int i = 1; i <= count; i++) {
             caseOrApplications.add(
-                    InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication()
+                    InformantRegisterCaseOrApplicationV2.informantRegisterCaseOrApplicationV2()
                             .withArrestSummonsNumber("arrestSummonsNumber_Main_" + i)
                             .withCaseOrApplicationReference("caseURN_Main_" + i)
                             .withApplicationParticulars("applicationParticulars_Main_" + i)
-                            .withOffences(Arrays.asList(InformantRegisterOffence.informantRegisterOffence()
+                            .withOffences(Arrays.asList(InformantRegisterOffenceV2.informantRegisterOffenceV2()
                                     .withOrderIndex(1)
                                     .withOffenceTitle("offenceTitle_Main_" + i)
                                     .withOffenceCode("offenceCode_Main_" + i)
-                                    .withVerdict(InformantRegisterOffenceVerdict.informantRegisterOffenceVerdict()
+                                    .withVerdict(InformantRegisterOffenceVerdictV2.informantRegisterOffenceVerdictV2()
                                             .withVerdictCode("verdictCode_Main_" + i)
                                             .build())
                                     .withOriginatingCaseUrn("originatingCaseUrn_Main_" + i)

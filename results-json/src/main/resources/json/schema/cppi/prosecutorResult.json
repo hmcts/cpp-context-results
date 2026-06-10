@@ -33,7 +33,7 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterHearingVenue.json"
+        "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterHearingVenue-v2.json"
       }
     }
   },

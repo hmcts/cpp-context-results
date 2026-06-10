@@ -10,7 +10,7 @@ import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoN
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
 import uk.gov.justice.domain.aggregate.Aggregate;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
@@ -34,8 +34,8 @@ public class ProsecutionAuthorityAggregate implements Aggregate {
                 when(InformantRegisterRecorded.class).apply(e -> {
                 }),
                 when(InformantRegisterGenerated.class).apply(e -> {
-                    final List<InformantRegisterDocumentRequest> informantRegisterWithRecipients = e.getInformantRegisterDocumentRequests().stream().filter(
-                            informantRegisterDocumentRequest -> nonNull(informantRegisterDocumentRequest.getRecipients()) && !informantRegisterDocumentRequest.getRecipients().isEmpty())
+                    final List<InformantRegisterDocumentRequestV2> informantRegisterWithRecipients = e.getInformantRegisterDocumentRequests().stream().filter(
+                            informantRegisterDocumentRequestV2 -> nonNull(informantRegisterDocumentRequestV2.getRecipients()) && !informantRegisterDocumentRequestV2.getRecipients().isEmpty())
                             .collect(Collectors.toList());
                     if (isNotEmpty(informantRegisterWithRecipients)) {
                         this.informantRegisterRecipients = informantRegisterWithRecipients.get(0).getRecipients();

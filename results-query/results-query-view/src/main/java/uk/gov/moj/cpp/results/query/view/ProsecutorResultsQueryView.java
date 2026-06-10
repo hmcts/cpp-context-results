@@ -6,7 +6,7 @@ import static uk.gov.justice.core.courts.informantRegisterDocument.ProsecutorRes
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.getString;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.ProsecutorResult;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -61,20 +61,20 @@ public class ProsecutorResultsQueryView {
         final LocalDate endDate = optionalEndDate.orElse(startDate);
         informantRegisterEntities.addAll(informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(ouCode, startDate, endDate));
 
-        final List<InformantRegisterDocumentRequest> requests = informantRegisterEntities.stream()
+        final List<InformantRegisterDocumentRequestV2> requests = informantRegisterEntities.stream()
                 .map(InformantRegisterEntity::getPayload)
                 .map(s -> stringToJsonObjectConverter.convert(s))
-                .map(jo -> jsonObjectToObjectConverter.convert(jo, InformantRegisterDocumentRequest.class))
+                .map(jo -> jsonObjectToObjectConverter.convert(jo, InformantRegisterDocumentRequestV2.class))
                 .collect(toList());
 
         final ProsecutorResult.Builder builder = prosecutorResult()
-                .withHearingVenues(requests.stream().map(InformantRegisterDocumentRequest::getHearingVenue).collect(toList()))
+                .withHearingVenues(requests.stream().map(InformantRegisterDocumentRequestV2::getHearingVenue).collect(toList()))
                 .withStartDate(startDate);
 
         optionalEndDate.ifPresent(builder::withEndDate);
 
         if (isNotEmpty(requests)) {
-            final InformantRegisterDocumentRequest firstRequest = requests.get(0);
+            final InformantRegisterDocumentRequestV2 firstRequest = requests.get(0);
             builder.withProsecutionAuthorityCode(firstRequest.getProsecutionAuthorityCode())
                     .withProsecutionAuthorityId(firstRequest.getProsecutionAuthorityId())
                     .withProsecutionAuthorityName(firstRequest.getProsecutionAuthorityName())

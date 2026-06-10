@@ -13,12 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2.informantRegisterDocumentRequestV2;
+import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
@@ -148,15 +148,15 @@ public class ProsecutorResultsQueryViewTest {
 
     private List<InformantRegisterEntity> getResults() {
         final InformantRegisterEntity entity = new InformantRegisterEntity();
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
-                .withHearingVenue(informantRegisterHearingVenue().build())
+        final InformantRegisterDocumentRequestV2 informantRegisterDocumentRequestV2 = informantRegisterDocumentRequestV2()
+                .withHearingVenue(informantRegisterHearingVenueV2().build())
                 .withProsecutionAuthorityOuCode(ouCode)
                 .withProsecutionAuthorityId(prosecutionAuthorityId)
                 .withProsecutionAuthorityName(prosecutionAuthorityName)
                 .withProsecutionAuthorityCode(prosecutionAuthorityCode)
                 .build();
 
-        entity.setPayload(objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString());
+        entity.setPayload(objectToJsonObjectConverter.convert(informantRegisterDocumentRequestV2).toString());
         return singletonList(entity);
     }
 }
