@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterOffence-v2.json",
+  "id": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterOffence.json",
   "description": "The details of a defendant offence for a prosecution case rendered in a informant register document",
   "type": "object",
   "properties": {
@@ -25,7 +25,7 @@
       "type": "string"
     },
     "verdict": {
-      "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterOffenceVerdict-v2.json"
+      "$ref": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterOffenceVerdict.json"
     },
     "offenceResults": {
       "type": "array",

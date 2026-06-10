@@ -10,7 +10,7 @@ import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,9 +29,9 @@ public class DefendantMapper {
     private DefendantMapper() {
     }
 
-    public static List<InformantRegisterDefendantV2> getDefendants(final InformantRegisterDefendantV2 masterDefendant,
+    public static List<InformantRegisterDefendant> getDefendants(final InformantRegisterDefendant masterDefendant,
                                                                  final List<ProsecutionCase> prosecutionCases) {
-        final List<InformantRegisterDefendantV2> defendantList = new ArrayList<>();
+        final List<InformantRegisterDefendant> defendantList = new ArrayList<>();
         prosecutionCases.stream().forEach(prosecutionCase -> {
             if (isNotEmpty(prosecutionCase.getDefendants())) {
                 prosecutionCase.getDefendants().stream().forEach(defendant ->
@@ -41,10 +41,10 @@ public class DefendantMapper {
         return defendantList;
     }
 
-    private static InformantRegisterDefendantV2 getDefendant(final InformantRegisterDefendantV2 masterDefendant,
+    private static InformantRegisterDefendant getDefendant(final InformantRegisterDefendant masterDefendant,
                                                            final ProsecutionCase prosecutionCase,
                                                            final Defendant defendant) {
-        return InformantRegisterDefendantV2.informantRegisterDefendantV2()
+        return InformantRegisterDefendant.informantRegisterDefendant()
                 .withName(getName(defendant))
                 .withDateOfBirth(getDateOfBirth(defendant))
                 .withNationality(getNationality(defendant))

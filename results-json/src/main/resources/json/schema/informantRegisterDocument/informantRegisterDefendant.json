@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDefendant-v2.json",
+  "id": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterDefendant.json",
   "description": "The details of a defendant rendered in a informant register document",
   "type": "object",
   "properties": {
@@ -54,7 +54,7 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterCaseOrApplication-v2.json"
+        "$ref": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterCaseOrApplication.json"
       }
     },
     "results": {

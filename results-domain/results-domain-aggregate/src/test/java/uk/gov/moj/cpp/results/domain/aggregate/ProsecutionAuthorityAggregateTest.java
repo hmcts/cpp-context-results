@@ -7,12 +7,12 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2.informantRegisterDocumentRequestV2;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
 import static uk.gov.justice.results.courts.InformantRegisterGenerated.informantRegisterGenerated;
 import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
@@ -70,7 +70,7 @@ public class ProsecutionAuthorityAggregateTest {
     @Test
     public void shouldPopulateRecipientsFromInformantRegisterGeneratedEvent() {
         final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
-        final InformantRegisterDocumentRequestV2 requestWithRecipients = informantRegisterDocumentRequestV2()
+        final InformantRegisterDocumentRequest requestWithRecipients = informantRegisterDocumentRequest()
                 .withRecipients(singletonList(recipient))
                 .build();
 
@@ -90,7 +90,7 @@ public class ProsecutionAuthorityAggregateTest {
 
     @Test
     public void shouldNotPopulateRecipientsWhenNoRequestHasRecipients() {
-        final InformantRegisterDocumentRequestV2 requestWithoutRecipients = informantRegisterDocumentRequestV2()
+        final InformantRegisterDocumentRequest requestWithoutRecipients = informantRegisterDocumentRequest()
                 .withRecipients(emptyList())
                 .build();
 

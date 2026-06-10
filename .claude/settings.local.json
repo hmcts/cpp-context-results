@@ -56,7 +56,10 @@
       "Bash(CLAUDE_CODE_TMPDIR=/private/var/folders/tmp grep -l \"informantRegisterOffence\" /Users/erolkureli/repo/cpp-context-results/results-domain/results-domain-common/src/main/resources/json/schema/*.json)",
       "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn clean install -pl results-json,results-domain/results-domain-common,results-command/results-command-handler,results-event/results-event-processor,results-event/results-event-listener,results-domain/results-domain-aggregate,results-query/results-query-view -am -DskipTests)",
       "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -pl results-command/results-command-handler,results-event/results-event-processor,results-event/results-event-listener,results-domain/results-domain-aggregate,results-query/results-query-view -am -Dsurefire.failIfNoSpecifiedTests=false)",
-      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -pl results-domain/results-domain-aggregate -am -Dsurefire.failIfNoSpecifiedTests=false)"
+      "Bash(JAVA_HOME=$\\(/usr/libexec/java_home -v 17.0.7\\) mvn test -pl results-domain/results-domain-aggregate -am -Dsurefire.failIfNoSpecifiedTests=false)",
+      "Bash(xargs -I{} basename {})",
+      "Bash(unzip -p ~/.m2/repository/uk/gov/moj/cpp/core/domain/criminal-court-public-model/17.102.12/criminal-court-public-model-17.102.12.jar META-INF/schema_catalog.json)",
+      "Bash(unzip *)"
     ]
   }
 }

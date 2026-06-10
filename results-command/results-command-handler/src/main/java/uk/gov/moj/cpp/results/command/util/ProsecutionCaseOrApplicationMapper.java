@@ -7,9 +7,9 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceV2;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
 
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ public class ProsecutionCaseOrApplicationMapper {
     private ProsecutionCaseOrApplicationMapper() {
     }
 
-    public static List<InformantRegisterCaseOrApplicationV2> getProsecutionCasesOrApplication(final InformantRegisterDefendantV2 masterDefendant,
+    public static List<InformantRegisterCaseOrApplication> getProsecutionCasesOrApplication(final InformantRegisterDefendant masterDefendant,
                                                                                             final ProsecutionCase prosecutionCase,
                                                                                             final Defendant defendant) {
-        return asList(InformantRegisterCaseOrApplicationV2.informantRegisterCaseOrApplicationV2()
+        return asList(InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication()
                 .withCaseOrApplicationReference(getCaseOrApplicationReference(prosecutionCase))
                 .withResults(getResults(masterDefendant.getProsecutionCasesOrApplications()))
                 .withOffences(getOffences(masterDefendant.getProsecutionCasesOrApplications()))
@@ -43,7 +43,7 @@ public class ProsecutionCaseOrApplicationMapper {
         return null;
     }
 
-    private static List<InformantRegisterResult> getResults(final List<InformantRegisterCaseOrApplicationV2> informantRegisterCaseOrApplications) {
+    private static List<InformantRegisterResult> getResults(final List<InformantRegisterCaseOrApplication> informantRegisterCaseOrApplications) {
         final List<InformantRegisterResult> returnList = new ArrayList<>();
         informantRegisterCaseOrApplications.stream().forEach(caseOrApplication -> {
             if (isNotEmpty(caseOrApplication.getResults())) {
@@ -54,8 +54,8 @@ public class ProsecutionCaseOrApplicationMapper {
         return isNotEmpty(returnList) ? returnList : null;
     }
 
-    private static List<InformantRegisterOffenceV2> getOffences(final List<InformantRegisterCaseOrApplicationV2> informantRegisterCaseOrApplications) {
-        final List<InformantRegisterOffenceV2> returnList = new ArrayList<>();
+    private static List<InformantRegisterOffence> getOffences(final List<InformantRegisterCaseOrApplication> informantRegisterCaseOrApplications) {
+        final List<InformantRegisterOffence> returnList = new ArrayList<>();
         informantRegisterCaseOrApplications.stream().forEach(caseOrApplication -> {
             if (isNotEmpty(caseOrApplication.getOffences())) {
                 returnList.addAll(caseOrApplication.getOffences());
@@ -65,12 +65,12 @@ public class ProsecutionCaseOrApplicationMapper {
         return isNotEmpty(returnList) ? returnList : null;
     }
 
-    private static String getArrestSummonsNumber(final InformantRegisterDefendantV2 masterDefendant, final Defendant defendant) {
+    private static String getArrestSummonsNumber(final InformantRegisterDefendant masterDefendant, final Defendant defendant) {
         if (nonNull(defendant.getPersonDefendant())
                 && isNotEmpty(defendant.getPersonDefendant().getArrestSummonsNumber())) {
             return defendant.getPersonDefendant().getArrestSummonsNumber();
         } else {
-            final Optional<InformantRegisterCaseOrApplicationV2> caseOrApplication =
+            final Optional<InformantRegisterCaseOrApplication> caseOrApplication =
                     masterDefendant.getProsecutionCasesOrApplications().stream().filter(o -> isNotEmpty(o.getArrestSummonsNumber())).findFirst();
             if (caseOrApplication.isPresent()) {
                 return caseOrApplication.get().getArrestSummonsNumber();

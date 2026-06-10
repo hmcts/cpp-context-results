@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterDocumentRequest-v2.json",
+  "id": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterDocumentRequest.json",
   "description": "The details required to batch and generate a informant register document request.",
   "type": "object",
   "properties": {
@@ -47,7 +47,7 @@
     },
     "hearingVenue": {
       "description": "The venue for the hearings for the prosecuting authority in question",
-      "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterHearingVenue-v2.json"
+      "$ref": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterHearingVenue.json"
     },
     "groupId": {
       "description": "The group id of the group cases",

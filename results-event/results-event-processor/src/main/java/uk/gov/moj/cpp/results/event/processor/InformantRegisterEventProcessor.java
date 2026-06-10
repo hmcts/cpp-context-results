@@ -10,11 +10,11 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.moj.cpp.results.event.processor.model.InformantRegisterDocument.informantRegisterDocument;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplicationV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendantV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingV2;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceV2;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -169,7 +169,7 @@ public class InformantRegisterEventProcessor {
     }
 
     private void mapToInformantRegisterDocuments(final List<InformantRegisterDocument> informantRegisters, final JsonObject informantRegisterJson) {
-        final InformantRegisterDocumentRequestV2 documentRequest = jsonObjectToObjectConverter.convert(informantRegisterJson, InformantRegisterDocumentRequestV2.class);
+        final InformantRegisterDocumentRequest documentRequest = jsonObjectToObjectConverter.convert(informantRegisterJson, InformantRegisterDocumentRequest.class);
         documentRequest.getHearingVenue().getCourtSessions().forEach(courtSession -> courtSession.getDefendants().forEach(defendant ->
         {
             if (isNotEmpty(defendant.getResults())) {
@@ -194,7 +194,7 @@ public class InformantRegisterEventProcessor {
     }
 
     @SuppressWarnings({"squid:S00107"})
-    private void buildInformantRegister(final List<InformantRegisterDocument> informantRegisters, final InformantRegisterDocumentRequestV2 documentRequest, final InformantRegisterHearingV2 courtSession, final InformantRegisterDefendantV2 defendant, final InformantRegisterCaseOrApplicationV2 caseOrApplication, final InformantRegisterResult result, final InformantRegisterOffenceV2 offence, final InformantRegisterResult offenceResult) {
+    private void buildInformantRegister(final List<InformantRegisterDocument> informantRegisters, final InformantRegisterDocumentRequest documentRequest, final InformantRegisterHearing courtSession, final InformantRegisterDefendant defendant, final InformantRegisterCaseOrApplication caseOrApplication, final InformantRegisterResult result, final InformantRegisterOffence offence, final InformantRegisterResult offenceResult) {
 
         final InformantRegisterDocument.Builder informantRegisterDocumentBuilder = informantRegisterDocument()
                 .withInfDestID(EMPTY_STRING)
@@ -230,7 +230,7 @@ public class InformantRegisterEventProcessor {
         informantRegisters.add(informantRegisterDocumentBuilder.build());
     }
 
-    private void buildOffenceDetails(final InformantRegisterDocument.Builder builder, final InformantRegisterOffenceV2 offence, final InformantRegisterResult offenceResult) {
+    private void buildOffenceDetails(final InformantRegisterDocument.Builder builder, final InformantRegisterOffence offence, final InformantRegisterResult offenceResult) {
         builder.withOffenceCode(offence.getOffenceCode());
         builder.withOffenceTitle(offence.getOffenceTitle());
         builder.withPleaValue(offence.getPleaValue());
@@ -248,7 +248,7 @@ public class InformantRegisterEventProcessor {
         builder.withResultText(offenceResult.getResultText().trim());
     }
 
-    private String getAddress(final InformantRegisterDefendantV2 defendant) {
+    private String getAddress(final InformantRegisterDefendant defendant) {
         final List<String> addressAsList = Arrays.asList(defendant.getAddress1(), defendant.getAddress2(), defendant.getAddress3(), defendant.getAddress4(), defendant.getAddress5());
         return addressAsList
                 .stream()
