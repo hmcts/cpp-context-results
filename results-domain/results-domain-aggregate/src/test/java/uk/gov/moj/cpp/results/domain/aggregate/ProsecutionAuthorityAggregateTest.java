@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
@@ -7,16 +8,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2.informantRegisterDocumentRequestV2;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenueV2.informantRegisterHearingVenueV2;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
+import static uk.gov.justice.results.courts.InformantRegisterGenerated.informantRegisterGenerated;
 import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
 
-import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequestV2;
 import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
-import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
-import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 
@@ -67,5 +65,46 @@ public class ProsecutionAuthorityAggregateTest {
         assertThat(eventStream.size(), is(1));
         final Object object = eventStream.get(0);
         assertThat(object.getClass(), is(equalTo(InformantRegisterNotificationIgnored.class)));
+    }
+
+    @Test
+    public void shouldPopulateRecipientsFromInformantRegisterGeneratedEvent() {
+        final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
+        final InformantRegisterDocumentRequestV2 requestWithRecipients = informantRegisterDocumentRequestV2()
+                .withRecipients(singletonList(recipient))
+                .build();
+
+        aggregate.apply(informantRegisterGenerated()
+                .withInformantRegisterDocumentRequests(singletonList(requestWithRecipients))
+                .build());
+
+        final List<Object> events = aggregate.notifyProsecutingAuthority(notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("templateId")
+                .withFileId(randomUUID())
+                .build()).collect(toList());
+
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(equalTo(InformantRegisterNotifiedV2.class)));
+    }
+
+    @Test
+    public void shouldNotPopulateRecipientsWhenNoRequestHasRecipients() {
+        final InformantRegisterDocumentRequestV2 requestWithoutRecipients = informantRegisterDocumentRequestV2()
+                .withRecipients(emptyList())
+                .build();
+
+        aggregate.apply(informantRegisterGenerated()
+                .withInformantRegisterDocumentRequests(singletonList(requestWithoutRecipients))
+                .build());
+
+        final List<Object> events = aggregate.notifyProsecutingAuthority(notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("templateId")
+                .withFileId(randomUUID())
+                .build()).collect(toList());
+
+        assertThat(events.size(), is(1));
+        assertThat(events.get(0).getClass(), is(equalTo(InformantRegisterNotificationIgnored.class)));
     }
 }
