@@ -58,3 +58,11 @@ buildContexts.sh
 
 lightning-jenkins.properties
 **/.DS_Store
+
+# Claude Code — local-only state (never commit). Team-shared
+# .claude/{agents,rules,skills} remain tracked.
+.claude/settings.local.json
+.claude/projects/
+.claude/todos/
+.claude/shell-snapshots/
+.claude/worktrees/
