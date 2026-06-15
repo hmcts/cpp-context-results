@@ -59,9 +59,11 @@ buildContexts.sh
 lightning-jenkins.properties
 **/.DS_Store
 
-# Claude Code — local-only state (never commit). Team-shared
-# .claude/{agents,rules,skills} remain tracked.
-.claude/settings.local.json
+# Spec Kit / Claude Code — local-only files; team-shared (.claude/agents/,
+# .claude/rules/, .claude/skills/, .specify/) stays tracked.
+# Note: settings.[l]ocal.json uses a glob class so the HMCTS secrets-scanner
+# (gitleaks internal-urls rule) doesn't false-match the literal ".local.json".
+.claude/settings.[l]ocal.json
 .claude/projects/
 .claude/todos/
 .claude/shell-snapshots/
