@@ -33,6 +33,8 @@ public class InformantRegisterApiTest {
 
     private static final String ADD_INFORMANT_REGISTER_REQUEST_NAME = "results.add-informant-register";
     private static final String ADD_INFORMANT_REGISTER_COMMAND_NAME = "results.command.add-informant-register";
+    private static final String ADD_INFORMANT_REGISTER_V2_REQUEST_NAME = "results.add-informant-register-v2";
+    private static final String ADD_INFORMANT_REGISTER_V2_COMMAND_NAME = "results.command.add-informant-register-v2";
     private static final String GENERATE_INFORMANT_REGISTER_REQUEST_NAME = "results.generate-informant-register";
     private static final String GENERATE_INFORMANT_REGISTER_COMMAND_NAME = "results.command.generate-informant-register";
     private static final String GENERATE_INFORMANT_REGISTER_BY_DATE_REQUEST_NAME = "results.generate-informant-register-by-date";
@@ -54,6 +56,12 @@ public class InformantRegisterApiTest {
     }
 
     @Test
+    public void shouldHandleAddInformantRegisterV2Command() {
+        assertThat(InformantRegisterApi.class, isHandlerClass(COMMAND_API)
+                .with(method("handleAddInformantRegisterV2").thatHandles(ADD_INFORMANT_REGISTER_V2_REQUEST_NAME)));
+    }
+
+    @Test
     public void shouldRecordInformantRegisterRequest() {
 
         final JsonEnvelope commandEnvelope = buildEnvelope();
@@ -65,6 +73,21 @@ public class InformantRegisterApiTest {
         final DefaultEnvelope newCommand = envelopeCaptor.getValue();
 
         assertThat(newCommand.metadata().name(), is(ADD_INFORMANT_REGISTER_COMMAND_NAME));
+        assertThat(newCommand.payload(), equalTo(commandEnvelope.payloadAsJsonObject()));
+    }
+
+    @Test
+    public void shouldRecordInformantRegisterV2Request() {
+
+        final JsonEnvelope commandEnvelope = buildEnvelopeWithName(ADD_INFORMANT_REGISTER_V2_REQUEST_NAME);
+
+        informantRegisterApi.handleAddInformantRegisterV2(commandEnvelope);
+
+        verify(sender).send(envelopeCaptor.capture());
+
+        final DefaultEnvelope newCommand = envelopeCaptor.getValue();
+
+        assertThat(newCommand.metadata().name(), is(ADD_INFORMANT_REGISTER_V2_COMMAND_NAME));
         assertThat(newCommand.payload(), equalTo(commandEnvelope.payloadAsJsonObject()));
     }
 
@@ -99,12 +122,16 @@ public class InformantRegisterApiTest {
     }
 
     private JsonEnvelope buildEnvelope() {
+        return buildEnvelopeWithName(ADD_INFORMANT_REGISTER_REQUEST_NAME);
+    }
+
+    private JsonEnvelope buildEnvelopeWithName(final String commandName) {
         final JsonObject payload = createObjectBuilder()
                 .add("informantRegisterRequest", createObjectBuilder().add("prosecutionAuthorityId", randomUUID().toString()).build())
                 .build();
 
         final Metadata metadata = metadataBuilder()
-                .withName(ADD_INFORMANT_REGISTER_REQUEST_NAME)
+                .withName(commandName)
                 .withId(randomUUID())
                 .withUserId(randomUUID().toString())
                 .build();

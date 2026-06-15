@@ -32,6 +32,7 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegisterStreamId;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
 import uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication;
 import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
@@ -97,6 +98,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class InformantRegisterHandlerTest {
 
     private static final String ADD_INFORMANT_REGISTER_COMMAND_NAME = "results.command.add-informant-register";
+    private static final String ADD_INFORMANT_REGISTER_V2_COMMAND_NAME = "results.command.add-informant-register-v2";
     private static final String RESULT_TYPE_DEFENDANT = "defendant";
     private static final String RESULT_TYPE_CASE = "case";
     private static final String RESULT_TYPE_OFFENCE = "offence";
@@ -139,7 +141,7 @@ public class InformantRegisterHandlerTest {
     private final StringToJsonObjectConverter stringToJsonObjectConverter = new StringToJsonObjectConverter();
 
     @Spy
-    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterRecorded.class, InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class);
+    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterRecorded.class, InformantRegisterRecordedV2.class, InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class);
 
     @BeforeEach
     public void setup() {
@@ -307,6 +309,60 @@ public class InformantRegisterHandlerTest {
     }
 
     @Test
+    public void shouldHandleV2Command() {
+        assertThat(new InformantRegisterHandler(), isHandler(COMMAND_HANDLER)
+                .with(method("handleAddInformantRegisterV2ToEventStream")
+                        .thatHandles("results.command.add-informant-register-v2")
+                ));
+    }
+
+    @Test
+    public void shouldProcessV2Command() throws Exception {
+
+        final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
+        when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleAddInformantRegisterV2ToEventStream(buildEnvelopeWithCommandName(ADD_INFORMANT_REGISTER_V2_COMMAND_NAME));
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+
+        assertThat(envelopeStream, streamContaining(
+                        jsonEnvelope(
+                                metadata().withName("results.event.informant-register-recorded-v2"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                                withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                                withJsonPath("$.informantRegister.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                                withJsonPath("$.informantRegister.registerDate", is(REGISTER_DATE.toString()))
+                                        )
+                                ))
+                )
+        );
+    }
+
+    @Test
+    public void shouldSetVerdictObjectOnOffenceForV2() throws Exception {
+        final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
+        when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleAddInformantRegisterV2ToEventStream(buildEnvelopeWithCommandName(ADD_INFORMANT_REGISTER_V2_COMMAND_NAME));
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+
+        final String offencePath = "$.informantRegister.hearingVenue.courtSessions[0].defendants[0]." +
+                "prosecutionCasesOrApplications[0].offences[0].verdict.";
+        assertThat(envelopeStream, streamContaining(
+                        jsonEnvelope(
+                                metadata().withName("results.event.informant-register-recorded-v2"),
+                                JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                        withJsonPath(offencePath + "verdictCode", is("verdictCode_Main_1")),
+                                        withJsonPath(offencePath + "verdictType", is("verdictType_Main_1")),
+                                        withJsonPath(offencePath + "verdictDate", is("verdictDate_Main_1"))
+                                )))
+                )
+        );
+    }
+
+    @Test
     public void generateInformantRegister() throws EventStreamException {
         final Envelope<GenerateInformantRegister> generateInformantRegisterEnvelope = prepareEnvelope();
         final UUID prosecutionAuthorityId = randomUUID();
@@ -448,6 +504,28 @@ public class InformantRegisterHandlerTest {
 
     private Envelope<InformantRegisterDocumentRequest> buildEnvelope() {
         return buildEnvelope(null, false, false);
+    }
+
+    private Envelope<InformantRegisterDocumentRequest> buildEnvelopeWithCommandName(final String commandName) {
+        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+                .withHearingId(randomUUID())
+                .withHearingDate(ZonedDateTime.now())
+                .withRegisterDate(REGISTER_DATE)
+                .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
+                .withProsecutionAuthorityCode("prosecutionAuthorityCode")
+                .withProsecutionAuthorityOuCode("prosecutionAuthorityOuCode")
+                .withProsecutionAuthorityName("prosecutionAuthorityName")
+                .withFileName("fileName")
+                .withMajorCreditorCode("majorCreditorCode")
+                .withRecipients(getRecipients(1))
+                .withHearingVenue(InformantRegisterHearingVenue.informantRegisterHearingVenue()
+                        .withCourtHouse("courtHouse")
+                        .withLjaName("ljaName")
+                        .withCourtSessions(getCourtSessions(1, false, false))
+                        .build())
+                .build();
+
+        return envelope(commandName, informantRegisterDocumentRequest);
     }
 
     private Envelope<InformantRegisterDocumentRequest> buildEnvelope(final UUID groupId, final boolean hasDefendantResults, final boolean hasCaseResults) {

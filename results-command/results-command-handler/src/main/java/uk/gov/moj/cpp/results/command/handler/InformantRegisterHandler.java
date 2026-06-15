@@ -14,6 +14,7 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
 import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
 import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
@@ -127,6 +128,25 @@ public class InformantRegisterHandler {
                     .getDefendants()
                     .addAll(getDefendants(masterDefendant, prosecutionCases));
         }
+    }
+
+    @Handles("results.command.add-informant-register-v2")
+    public void handleAddInformantRegisterV2ToEventStream(final Envelope<InformantRegisterDocumentRequest> envelope) throws EventStreamException {
+        LOGGER.debug("results.command.add-informant-register-v2 {}", envelope.metadata().asJsonObject());
+
+        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = envelope.payload();
+        if (nonNull(informantRegisterDocumentRequest.getGroupId())) {
+            final JsonEnvelope jsonEnvelope = JsonEnvelope.envelopeFrom(envelope.metadata(), JsonValue.NULL);
+            populateMemberCasesForGroupCase(jsonEnvelope, informantRegisterDocumentRequest);
+        }
+
+        final UUID prosecutionAuthorityId = informantRegisterDocumentRequest.getProsecutionAuthorityId();
+        final UUID informantRegisterId = getInformantRegisterStreamId(prosecutionAuthorityId.toString(), informantRegisterDocumentRequest.getRegisterDate().toLocalDate().toString());
+
+        final EventStream eventStream = eventSource.getStreamById(informantRegisterId);
+        final Stream<Object> events = Stream.of(new InformantRegisterRecordedV2(informantRegisterDocumentRequest, prosecutionAuthorityId));
+
+        appendEventsToStream(envelope, eventStream, events);
     }
 
     @Handles("results.command.generate-informant-register")

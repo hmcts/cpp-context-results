@@ -61,6 +61,27 @@ public class InformantRegisterEventListener {
         informantRegisterRepository.save(informantRegisterEntity);
     }
 
+    @Transactional
+    @Handles("results.event.informant-register-recorded-v2")
+    public void saveInformantRegisterV2(final JsonEnvelope event) {
+
+        final JsonObject informantRegisterDocumentRequestJson = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
+
+        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, InformantRegisterDocumentRequest.class);
+
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        informantRegisterEntity.setId(randomUUID());
+        informantRegisterEntity.setRegisterDate(informantRegisterDocumentRequest.getRegisterDate().toLocalDate());
+        informantRegisterEntity.setRegisterTime(informantRegisterDocumentRequest.getRegisterDate());
+        informantRegisterEntity.setHearingId(informantRegisterDocumentRequest.getHearingId());
+        informantRegisterEntity.setProsecutionAuthorityId(informantRegisterDocumentRequest.getProsecutionAuthorityId());
+        informantRegisterEntity.setProsecutionAuthorityCode(informantRegisterDocumentRequest.getProsecutionAuthorityCode());
+        informantRegisterEntity.setProsecutionAuthorityOuCode(informantRegisterDocumentRequest.getProsecutionAuthorityOuCode());
+        informantRegisterEntity.setPayload(informantRegisterDocumentRequestJson.toString());
+        informantRegisterEntity.setStatus(RECORDED);
+        informantRegisterRepository.save(informantRegisterEntity);
+    }
+
     @Handles("results.event.informant-register-generated")
     public void generateInformantRegister(final JsonEnvelope event) {
         final JsonObject payload = event.payloadAsJsonObject();

@@ -87,6 +87,27 @@ baseUri: http://localhost:8080/results-command-api/command/api/rest/results
       500:
         description: Internal Server Error
 
+/informant-register-v2:
+  post:
+    description: |
+      add informant register v2 (uses results-context schemas with verdict object)
+      ...
+      (mapping):
+          requestType: application/vnd.results.add-informant-register-v2+json
+          name: results.add-informant-register-v2
+      ...
+    body:
+      application/vnd.results.add-informant-register-v2+json:
+        example:
+          !include json/results.add-informant-register-v2.json
+        schema:
+          !include json/schema/results.add-informant-register-v2.json
+    responses:
+      202:
+        description: Accepted
+      500:
+        description: Internal Server Error
+
 /informant-register/generate:
   post:
       description: |

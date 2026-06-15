@@ -20,6 +20,9 @@ subscriptions_descriptor:
         - name: results.event.informant-register-recorded
           schema_uri: http://justice.gov.uk/core/courts/informant-register-recorded.json
 
+        - name: results.event.informant-register-recorded-v2
+          schema_uri: http://justice.gov.uk/results/courts/informant-register-recorded-v2.json
+
         - name: results.event.informant-register-generated
           schema_uri: http://justice.gov.uk/results/courts/informant-register-generated.json
 

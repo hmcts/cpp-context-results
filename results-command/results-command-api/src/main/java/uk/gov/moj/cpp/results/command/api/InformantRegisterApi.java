@@ -26,6 +26,12 @@ public class InformantRegisterApi {
                 command.payloadAsJsonObject()));
     }
 
+    @Handles("results.add-informant-register-v2")
+    public void handleAddInformantRegisterV2(final JsonEnvelope command) {
+        this.sender.send(envelopeFrom(metadataFrom(command.metadata()).withName("results.command.add-informant-register-v2").build(),
+                command.payloadAsJsonObject()));
+    }
+
     @Handles("results.generate-informant-register")
     public void handleGenerateInformantRegister(final JsonEnvelope envelope) {
         final JsonObject payload = envelope.payloadAsJsonObject();

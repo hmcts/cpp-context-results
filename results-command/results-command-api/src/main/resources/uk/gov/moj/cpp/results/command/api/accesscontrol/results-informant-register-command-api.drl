@@ -13,6 +13,15 @@ rule "Command - add informant register request"
     $outcome.setSuccess(true);
   end
 
+rule "Command - add informant register v2 request"
+  when
+    $outcome: Outcome();
+    $action: Action(name == "results.add-informant-register-v2");
+    eval(userAndGroupProvider.isMemberOfAnyOfTheSuppliedGroups($action, "Legal Advisers","Listing Officers" ,"Court Clerks", "Crown Court Admin", "Court Administrators", "System Users", "Defence Users", "District Judge", "Court Associate", "Probation Admin", "Second Line Support", "Magistrates"))
+  then
+    $outcome.setSuccess(true);
+  end
+
 rule "Command - generate informant register by date"
   when
     $outcome: Outcome();

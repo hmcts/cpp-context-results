@@ -10,6 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.getWriteUrl;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegister;
+import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegisterV2;
 import static uk.gov.moj.cpp.results.it.helper.RestHelper.postCommand;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryGroupMemberCases;
@@ -42,6 +43,22 @@ public class InformantRegisterDocumentRequestIT {
     @BeforeEach
     public void setup() {
         helper = new InformantRegisterDocumentRequestHelper();
+    }
+
+    @Test
+    public void shouldAddInformantRegisterV2Request() {
+        final UUID prosecutionAuthorityId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final String prosecutionAuthorityCode = STRING.next();
+
+        final Response writeResponse = recordInformantRegisterV2(prosecutionAuthorityId, prosecutionAuthorityCode, randomAlphanumeric(7), registerDate, hearingId, hearingDate, "json/informant-register/results.add-informant-register-v2-document-request.json");
+        assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
+        helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
+
+        generateInformantRegister();
+        helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
     }
 
     @Test

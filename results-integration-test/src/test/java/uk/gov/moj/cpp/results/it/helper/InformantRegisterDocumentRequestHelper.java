@@ -117,4 +117,18 @@ public class InformantRegisterDocumentRequestHelper {
                 "application/vnd.results.add-informant-register+json",
                 body);
     }
+
+    public static Response recordInformantRegisterV2(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final String prosecutionAuthorityOuCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName) {
+        final String body = getPayload(fileName)
+                .replaceAll("%PROSECUTION_AUTHORITY_ID%", prosecutionAuthorityId.toString())
+                .replaceAll("%PROSECUTION_AUTHORITY_CODE%", prosecutionAuthorityCode)
+                .replaceAll("%PROSECUTION_AUTHORITY_OU_CODE%", prosecutionAuthorityOuCode)
+                .replaceAll("%REGISTER_DATE%", registerDate.toString())
+                .replaceAll("%HEARING_ID%", hearingId.toString())
+                .replaceAll("%HEARING_DATE%", hearingDate.toString());
+
+        return postCommand(getWriteUrl("/informant-register-v2"),
+                "application/vnd.results.add-informant-register-v2+json",
+                body);
+    }
 }
