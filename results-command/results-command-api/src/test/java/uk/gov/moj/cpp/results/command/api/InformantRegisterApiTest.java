@@ -56,7 +56,7 @@ public class InformantRegisterApiTest {
     }
 
     @Test
-    public void shouldHandleAddInformantRegisterV2Command() {
+    void shouldHandleAddInformantRegisterV2Command() {
         assertThat(InformantRegisterApi.class, isHandlerClass(COMMAND_API)
                 .with(method("handleAddInformantRegisterV2").thatHandles(ADD_INFORMANT_REGISTER_V2_REQUEST_NAME)));
     }
@@ -77,7 +77,7 @@ public class InformantRegisterApiTest {
     }
 
     @Test
-    public void shouldRecordInformantRegisterV2Request() {
+    void shouldRecordInformantRegisterV2Request() {
 
         final JsonEnvelope commandEnvelope = buildEnvelopeWithName(ADD_INFORMANT_REGISTER_V2_REQUEST_NAME);
 

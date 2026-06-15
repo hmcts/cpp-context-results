@@ -114,7 +114,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void shouldSaveInformantRegisterV2WithVerdictObject() {
+    void shouldSaveInformantRegisterV2WithVerdictObject() {
         final UUID prosecutionAuthId = randomUUID();
         final String ouCode = randomAlphanumeric(10);
         final String verdictCode = "G";
@@ -178,7 +178,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void shouldSaveInformantRegisterV1WithoutVerdictObject() {
+    void shouldSaveInformantRegisterV1WithoutVerdictObject() {
         final UUID prosecutionAuthId = randomUUID();
         final String ouCode = randomAlphanumeric(10);
 

@@ -46,7 +46,7 @@ public class InformantRegisterDocumentRequestIT {
     }
 
     @Test
-    public void shouldAddInformantRegisterV2Request() {
+    void shouldAddInformantRegisterV2Request() {
         final UUID prosecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();
         final ZonedDateTime registerDate = now(UTC);

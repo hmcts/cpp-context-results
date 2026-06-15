@@ -309,7 +309,7 @@ public class InformantRegisterHandlerTest {
     }
 
     @Test
-    public void shouldHandleV2Command() {
+    void shouldHandleV2Command() {
         assertThat(new InformantRegisterHandler(), isHandler(COMMAND_HANDLER)
                 .with(method("handleAddInformantRegisterV2ToEventStream")
                         .thatHandles("results.command.add-informant-register-v2")
@@ -317,7 +317,7 @@ public class InformantRegisterHandlerTest {
     }
 
     @Test
-    public void shouldProcessV2Command() throws Exception {
+    void shouldProcessV2Command() throws Exception {
 
         final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
         when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
@@ -340,7 +340,7 @@ public class InformantRegisterHandlerTest {
     }
 
     @Test
-    public void shouldSetVerdictObjectOnOffenceForV2() throws Exception {
+    void shouldSetVerdictObjectOnOffenceForV2() throws Exception {
         final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
         when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
 
