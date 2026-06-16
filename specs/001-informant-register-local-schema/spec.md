@@ -153,3 +153,4 @@ Existing domain events stored before this change (carrying the old flat `verdict
 - The integration test (`InformantRegisterDocumentRequestIT`) is deferred — it will need updating separately after the unit-test-driven implementation is complete.
 - `verdictType` is populated via a reference data lookup; if unavailable, it is omitted from the verdict object without failing the response.
 - The plea value reporting issue noted in the Jira comments is out of scope for this ticket.
+- **Dual-emit decision**: The command handler emits **V2 only** for all new ingest (both `add-informant-register` and `processRequests`). V1 events already persisted in the event store are handled by the existing V1 listener/processor handlers and are not re-emitted. V1 handlers are retained for backward-compatible replay (US4) but receive no new writes after this change.

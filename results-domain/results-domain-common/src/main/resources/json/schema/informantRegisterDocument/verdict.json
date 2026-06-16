@@ -17,5 +17,9 @@
       "type": "string"
     }
   },
+  "dependencies": {
+    "verdictCode": ["verdictDate"],
+    "verdictDate": ["verdictCode"]
+  },
   "additionalProperties": false
 }

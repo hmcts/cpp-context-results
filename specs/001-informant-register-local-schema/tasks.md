@@ -5,6 +5,17 @@
 
 **TDD discipline (Constitution Principle VIII)**: Every production code task MUST be preceded by its paired failing-test task. Write the test, confirm it fails for the right reason (assertion, not compilation), then write the production code.
 
+> **Phase mapping — plan.md vs tasks.md**:
+> | tasks.md phase | plan.md phase | Scope |
+> |---------------|---------------|-------|
+> | Phase 1 (Contracts) | Phase 0 | JSON schemas + subscription descriptors |
+> | Phase 2 (POJOs) | Phase 1 | Local Java types |
+> | Phase 3 (US1) | Phases 2 + 3 | Command handler + aggregate |
+> | Phase 4 (US3) | Phase 6 | Query view |
+> | Phase 5 (US2) | Phases 4 + 5 | Event listener + processor |
+> | Phase 6 (US4) | Phase 7 | Pre-migration backward compat |
+> | Phase 7 (Polish) | Phase 8 | Full build + hygiene |
+
 ## Format: `[ID] [P?] [Story?] Description`
 
 - **[P]**: Can run in parallel (different files, no shared dependencies)
@@ -78,7 +89,8 @@
 
 - [ ] T036 [US1] Gap-fill `results-command/results-command-handler/src/test/java/uk/gov/moj/cpp/results/command/handler/InformantRegisterHandlerTest.java` — add missing scenarios: offence with no verdict (allowed), offence with null defendants (edge case), verify existing V1 tests still pass
 - [ ] T037 [US1] Write failing test in `InformantRegisterHandlerTest.java` — `handleAddInformantRegisterToEventStream_withVerdictObject_shouldEmitV2RecordedEvent`: build a command envelope with local `InformantRegisterDocumentRequest` carrying an offence with `verdict.verdictCode="G"` → assert `eventRepository.create` called with event name `results.event.informant-register-recorded-v2` and payload contains `verdict.verdictCode = "G"`; confirm test fails (V2 event not yet emitted)
-- [ ] T038 [US1] Update `results-command/results-command-handler/src/main/java/uk/gov/moj/cpp/results/command/handler/InformantRegisterHandler.java` — change `handleAddInformantRegisterToEventStream` to deserialize payload to local `InformantRegisterDocumentRequest` and emit `InformantRegisterRecordedV2`; keep or remove V1 emit per team decision (default: emit V2 only for new events, V1 kept for historical replay); makes T037 green
+- [ ] T071 [US1] Write failing test in `InformantRegisterHandlerTest.java` — `handleAddInformantRegisterToEventStream_withVerdictCodeButNoVerdictDate_shouldFail` (FR-004 co-dependency): build command envelope where an offence has `verdictCode: "G"` but no `verdictDate`; assert the command is rejected (schema validation failure or explicit handler guard); confirm test fails (handler not yet guarding this case). Note: `verdict.json` schema now enforces co-dependency via `dependencies` — verify whether the framework rejects this pre-handler via schema validation, and if so document that as the passing mechanism (no additional production code needed)
+- [ ] T038 [US1] Update `results-command/results-command-handler/src/main/java/uk/gov/moj/cpp/results/command/handler/InformantRegisterHandler.java` — change `handleAddInformantRegisterToEventStream` to deserialize payload to local `InformantRegisterDocumentRequest` and emit `InformantRegisterRecordedV2`; emit V2 only (V1 retained in event store for historical replay per spec.md Assumptions); makes T037 green
 - [ ] T039 [US1] Gap-fill `results-domain/results-domain-aggregate/src/test/java/uk/gov/moj/cpp/results/domain/aggregate/ProsecutionAuthorityAggregateTest.java` — review existing `shouldReturnInformantRegisterNotified` and `shouldReturnInformantRegisterIgnored`; add missing scenarios for V1 generated event apply if not already covered
 - [ ] T040 [US1] Write failing test in `ProsecutionAuthorityAggregateTest.java` — `apply_informantRegisterGeneratedV2_shouldSetRecipientsFromLocalTypes`: create `InformantRegisterGeneratedV2` event with local `InformantRegisterDocumentRequest` containing `InformantRegisterRecipient`; apply to aggregate; assert `informantRegisterRecipients` is populated correctly; confirm test fails
 - [ ] T041 [US1] Update `results-domain/results-domain-aggregate/src/main/java/uk/gov/moj/cpp/results/domain/aggregate/ProsecutionAuthorityAggregate.java` — add `apply(InformantRegisterGeneratedV2 event)` method reading local `InformantRegisterDocumentRequest.getRecipients()`; update imports from core-domain to local types; makes T040 green
@@ -98,7 +110,9 @@
 - [ ] T044 [US3] Write failing test in `ProsecutorResultsQueryViewTest.java` — `getProsecutorResults_whenOffenceHasVerdict_shouldIncludeVerdictInResponse`: store `InformantRegisterEntity` with payload JSON containing offence with `verdict.verdictCode: "G"`; call query; assert returned `ProsecutorResult` includes `offence.verdict.verdictCode = "G"`, `offence.verdict.verdictDate` present; confirm test fails (current code uses core-domain type with no `verdict` field)
 - [ ] T045 [US3] Write failing test in `ProsecutorResultsQueryViewTest.java` — `getProsecutorResults_whenOffenceHasNoVerdict_shouldOmitVerdictField`: store entity with offence JSON that has no `verdict` key; assert response offence object serializes without `verdict` key (not `"verdict": null`)
 - [ ] T046 [US3] Write failing test in `ProsecutorResultsQueryViewTest.java` — `getProsecutorResults_whenOffenceVerdictIsNull_shouldOmitVerdictField`: store entity with `"verdict": null` in offence JSON; assert response offence has no `verdict` key
-- [ ] T047 [US3] Update `results-query/results-query-view/src/main/java/uk/gov/moj/cpp/results/query/view/ProsecutorResultsQueryView.java` — replace core-domain `InformantRegisterDocumentRequest` and `ProsecutorResult` with local types; ensure Jackson's `@JsonInclude(NON_NULL)` (or equivalent) on local `InformantRegisterOffence.verdict` omits absent/null verdict; makes T044–T046 green
+- [ ] T072 [US3] Write failing test in `ProsecutorResultsQueryViewTest.java` — `getProsecutorResults_whenVerdictTypeUnavailable_shouldLogWarningAndStillReturnOffence` (FR-008): store entity with offence carrying `verdictCode: "G"` and `verdictDate`; configure verdict-type reference lookup to return empty/null for that code; call query; assert response offence includes `verdict.verdictCode` and `verdict.verdictDate` but omits `verdictType`; assert SLF4J logger captured a WARN message; confirm test fails (no warning log in current production code)
+- [ ] T073 [US3] Write failing test in `ProsecutorResultsQueryViewTest.java` — `getProsecutorResults_whenVerdictIsEmptyObject_shouldOmitVerdictField`: store entity with offence JSON `"verdict": {}`; call query; assert response offence has no `verdict` key at all (neither `{}` nor `null`); confirm test fails. Note: may require `@JsonInclude(NON_EMPTY)` rather than `NON_NULL` on `InformantRegisterOffence.verdict`
+- [ ] T047 [US3] Update `results-query/results-query-view/src/main/java/uk/gov/moj/cpp/results/query/view/ProsecutorResultsQueryView.java` — replace core-domain `InformantRegisterDocumentRequest` and `ProsecutorResult` with local types; add SLF4J WARN log when verdict-type lookup returns no result (FR-008); use `@JsonInclude(NON_EMPTY)` on `InformantRegisterOffence.verdict` to omit null and empty-object cases (T046 + T073); makes T044–T046, T072, T073 green
 - [ ] T048 [US3] Build gate: `mvn -pl results-query/results-query-view -am test` — all tests green
 
 **Checkpoint**: US3 fully implemented and tested. Query API returns structured verdict data.
@@ -111,8 +125,7 @@
 
 **Independent Test**: Trigger `results.generate-informant-register` → confirm emitted event is `results.event.informant-register-generated-v2`; send that event to the listener → confirm entity status set to GENERATED; send to processor → confirm CSV row `verdictCode` equals `"G"` when offence verdict is `FOUND_GUILTY`.
 
-- [ ] T049 [US2] Gap-fill `InformantRegisterHandlerTest.java` — add missing test: `processRequests_withLocalDocumentRequests_shouldEmitV2GeneratedEvent`; confirm this test currently fails (V2 not yet emitted by `processRequests`)
-- [ ] T050 [US2] Write failing test in `InformantRegisterHandlerTest.java` — `processRequests_shouldEmitInformantRegisterGeneratedV2`: mock dependencies; confirm `processRequests` emits event with name `results.event.informant-register-generated-v2` and payload `informantRegisterDocumentRequests` list contains local `InformantRegisterDocumentRequest` with verdict data
+- [ ] T050 [US2] Gap-fill `InformantRegisterHandlerTest.java` then write failing test `processRequests_shouldEmitInformantRegisterGeneratedV2`: review existing `processRequests` test coverage; add missing scenarios (e.g., empty document-requests list, null recipients); then write the V2 failing test — mock dependencies, confirm `processRequests` emits event with name `results.event.informant-register-generated-v2` and payload `informantRegisterDocumentRequests` list contains local `InformantRegisterDocumentRequest` with verdict data; confirm test currently fails (V2 not yet emitted)
 - [ ] T051 [US2] Update `results-command/results-command-handler/src/main/java/uk/gov/moj/cpp/results/command/handler/InformantRegisterHandler.java` — change `processRequests` to emit `InformantRegisterGeneratedV2` using local types; makes T050 green
 - [ ] T052 [US2] Gap-fill `results-event/results-event-listener/src/test/java/uk/gov/moj/cpp/results/event/listener/InformantRegisterEventListenerTest.java` — review existing test coverage; add missing scenarios if any (e.g., missing test for status transition)
 - [ ] T053 [US2] Write failing test in `InformantRegisterEventListenerTest.java` — `saveInformantRegisterV2_shouldSaveEntityFromLocalDocumentRequest`: build `results.event.informant-register-recorded-v2` envelope with local `InformantRegisterDocumentRequest`; assert listener saves `InformantRegisterEntity` with correct `prosecutionAuthorityId`, `registerDate`, and raw `payload` JSON; confirm fails (no V2 handler yet)
@@ -136,7 +149,7 @@
 
 **Independent Test**: Replay a V1 `informant-register-recorded` event JSON (old schema with flat `verdictCode: "G"` on an offence) through the V1 `saveInformantRegister` listener handler → confirm no exception thrown and entity saved correctly.
 
-- [ ] T063 [US4] Write failing test in `InformantRegisterEventListenerTest.java` — `saveInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow`: build V1 `informant-register-recorded` envelope JSON where offence has `"verdictCode": "G"` (flat string, old core-domain schema); send to V1 listener handler; assert no exception; assert entity saved with correct `prosecutionAuthorityId`
+- [ ] T063 [US4] Write passing regression test in `InformantRegisterEventListenerTest.java` — `saveInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow`: build V1 `informant-register-recorded` envelope JSON where offence has `"verdictCode": "G"` (flat string, old core-domain schema); send to V1 listener handler; assert no exception; assert entity saved with correct `prosecutionAuthorityId`. This test is expected to PASS without new production code — it is a backward-compat regression guard, not a TDD failing test
 - [ ] T064 [US4] Confirm T063 passes without new production code — V1 handler uses core-domain types that already support flat `verdictCode`; document this confirmation explicitly (no production change needed)
 - [ ] T065 [US4] Write failing test in `InformantRegisterEventListenerTest.java` — `generateInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow`: build V1 `informant-register-generated` envelope with offences carrying flat `verdictCode` string; send to V1 listener handler; assert no exception
 - [ ] T066 [US4] Confirm T065 passes without new production code — document confirmation; no production change needed
@@ -152,7 +165,7 @@
 
 - [ ] T068 Full build gate: `mvn clean install` — zero compilation errors, zero test failures across entire reactor
 - [ ] T069 [P] Code hygiene review: verify all new/modified Java files in `results-domain-common`, `results-command-handler`, `results-domain-aggregate`, `results-event-listener`, `results-event-processor`, `results-query-view` have no wildcard imports, no `System.out`/`System.err`, no Spring annotations, no Lombok annotations, SLF4J logging only
-- [ ] T070 [P] Schema-subscription symmetry check (Constitution Principle VI): verify `results.event.informant-register-recorded-v2.json` exists AND appears in listener `subscriptions-descriptor.yaml`; verify `results.event.informant-register-generated-v2.json` exists AND appears in both listener AND processor `subscriptions-descriptor.yaml`; verify zero `$ref` to `http://justice.gov.uk/core/courts/informantRegisterDocument/` remains in any command or event schema for informant-register flows
+- [ ] T070 [P] Schema-subscription symmetry check (Constitution Principle VI + SC-003): verify `results.event.informant-register-recorded-v2.json` exists AND appears in listener `subscriptions-descriptor.yaml`; verify `results.event.informant-register-generated-v2.json` exists AND appears in both listener AND processor `subscriptions-descriptor.yaml`; verify zero `$ref` to `http://justice.gov.uk/core/courts/informantRegisterDocument/` remains in any command or event schema for informant-register flows (SC-003); confirm `results.prosecutor-results.json` schema accepts a sample payload containing a `verdict` sub-object with `verdictCode`, `verdictDate`, `verdictType` (SC-004)
 
 **Checkpoint**: Build green, code clean, schema-subscription symmetry confirmed. Ready for code-reviewer and qa agents.
 
@@ -235,7 +248,7 @@ After T035:
 
 ### Full Delivery (add P2 stories)
 
-7. Phase 5: US2 — Generate (T049–T062) in parallel with Phase 6: US4 — Compat (T063–T067)
+7. Phase 5: US2 — Generate (T050–T062) in parallel with Phase 6: US4 — Compat (T063–T067)
 8. Phase 7: Full build (T068–T070)
 
 ---
