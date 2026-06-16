@@ -180,6 +180,62 @@ public class InformantRegisterHandlerTest {
     }
 
     @Test
+    public void shouldProcessCommandWithVerdictCode() throws Exception {
+        final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
+        when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleAddInformantRegisterToEventStream(
+                buildEnvelopeWithOffence(InformantRegisterOffence.informantRegisterOffence()
+                        .withOrderIndex(1)
+                        .withOffenceTitle("offenceTitle")
+                        .withOffenceCode("offenceCode")
+                        .withVerdictCode("G")
+                        .build()));
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+
+        assertThat(envelopeStream, streamContaining(
+                jsonEnvelope(
+                        metadata().withName("results.event.informant-register-recorded"),
+                        JsonEnvelopePayloadMatcher.payload().isJson(
+                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].prosecutionCasesOrApplications[0].offences[0].verdictCode", is("G"))
+                        )
+                )
+        ));
+    }
+
+    @Test
+    public void shouldProcessCommandWithVerdictObject() throws Exception {
+        final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
+        when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleAddInformantRegisterToEventStream(
+                buildEnvelopeWithOffence(InformantRegisterOffence.informantRegisterOffence()
+                        .withOrderIndex(1)
+                        .withOffenceTitle("offenceTitle")
+                        .withOffenceCode("offenceCode")
+                        .withVerdict(InformantRegisterVerdict.informantRegisterVerdict()
+                                .withVerdictCode("G")
+                                .withVerdictType("GUILTY")
+                                .withVerdictDate("2024-03-12")
+                                .build())
+                        .build()));
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+
+        assertThat(envelopeStream, streamContaining(
+                jsonEnvelope(
+                        metadata().withName("results.event.informant-register-recorded"),
+                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].prosecutionCasesOrApplications[0].offences[0].verdict.verdictCode", is("G")),
+                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].prosecutionCasesOrApplications[0].offences[0].verdict.verdictType", is("GUILTY")),
+                                withJsonPath("$.informantRegister.hearingVenue.courtSessions[0].defendants[0].prosecutionCasesOrApplications[0].offences[0].verdict.verdictDate", is("2024-03-12"))
+                        ))
+                )
+        ));
+    }
+
+    @Test
     public void shouldProcessCommandForGroupCases() throws Exception {
         when(eventSource.getStreamById(any())).thenReturn(eventStream);
         when(progressionQueryService.getGroupMemberCases(any(), any())).thenReturn(getMemberCasesJson(GROUP_ID, 2));
@@ -558,6 +614,41 @@ public class InformantRegisterHandlerTest {
                     .build());
         }
         return arrayBuilder.build();
+    }
+
+    private Envelope<InformantRegisterDocumentRequest> buildEnvelopeWithOffence(final InformantRegisterOffence offence) {
+        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
+                .withHearingId(randomUUID())
+                .withHearingDate(ZonedDateTime.now())
+                .withRegisterDate(REGISTER_DATE)
+                .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
+                .withProsecutionAuthorityCode("prosecutionAuthorityCode")
+                .withProsecutionAuthorityOuCode("prosecutionAuthorityOuCode")
+                .withProsecutionAuthorityName("prosecutionAuthorityName")
+                .withFileName("fileName")
+                .withMajorCreditorCode("majorCreditorCode")
+                .withRecipients(getRecipients(1))
+                .withHearingVenue(InformantRegisterHearingVenue.informantRegisterHearingVenue()
+                        .withCourtHouse("courtHouse")
+                        .withLjaName("ljaName")
+                        .withCourtSessions(List.of(InformantRegisterHearing.informantRegisterHearing()
+                                .withCourtRoom("courtroom_1")
+                                .withHearingStartTime(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE))
+                                .withDefendants(List.of(InformantRegisterDefendant.informantRegisterDefendant()
+                                        .withTitle("title_1")
+                                        .withFirstName("firstName_1")
+                                        .withLastName("lastName_1")
+                                        .withName("firstName_1 lastName_1")
+                                        .withProsecutionCasesOrApplications(List.of(
+                                                InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication()
+                                                        .withCaseOrApplicationReference("caseURN_1")
+                                                        .withOffences(List.of(offence))
+                                                        .build()))
+                                        .build()))
+                                .build()))
+                        .build())
+                .build();
+        return envelope(ADD_INFORMANT_REGISTER_COMMAND_NAME, informantRegisterDocumentRequest);
     }
 
     private JsonArray getDefendantsJson(final int caseIndex, final int count) {
