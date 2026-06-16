@@ -291,17 +291,14 @@ public class InformantRegisterEventProcessorTest {
     }
 
     private static String getFileContent(final String fileName) {
-        String response = null;
         try {
-            response = Resources.toString(
+            return Resources.toString(
                     getResource(fileName),
                     defaultCharset()
             );
         } catch (final Exception e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Failed to read test resource: " + fileName, e);
         }
-
-        return response;
     }
 
 }
