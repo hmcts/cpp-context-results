@@ -24,6 +24,7 @@ import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 import uk.gov.justice.services.common.http.HeaderConstants;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -93,6 +94,17 @@ public class InformantRegisterDocumentRequestHelper {
                 withJsonPath("$.informantRegisterDocumentRequests[*].status", hasItem(NOTIFIED.name())),
                 withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", hasItem(prosecutionAuthorityId.toString()))
         ));
+    }
+
+    public void verifyProsecutorResultsContainVerdict(final String ouCode, final LocalDate startDate, final String expectedVerdictCode) {
+        pollWithDefaults(requestParams(getReadUrl(StringUtils.join("/prosecutor/", ouCode, "?startDate=", startDate.toString())),
+                "application/vnd.results.prosecutor-results+json")
+                .withHeader(HeaderConstants.USER_ID, USER_ID).build())
+                .until(
+                        status().is(OK),
+                        payload().isJson(allOf(
+                                withJsonPath("$.hearingVenues[*].courtSessions[*].defendants[*].prosecutionCasesOrApplications[*].offences[*].verdict.verdictCode", hasItem(expectedVerdictCode))
+                        )));
     }
 
     public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName) throws IOException {

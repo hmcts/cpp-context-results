@@ -2,16 +2,16 @@ package uk.gov.moj.cpp.results.query.view;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
-import static uk.gov.justice.core.courts.informantRegisterDocument.ProsecutorResult.prosecutorResult;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.getString;
+import static uk.gov.moj.cpp.results.domain.informant.model.ProsecutorResult.prosecutorResult;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.ProsecutorResult;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest;
+import uk.gov.moj.cpp.results.domain.informant.model.ProsecutorResult;
 import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -50,7 +50,6 @@ public class ProsecutorResultsQueryView {
         final Optional<String> optionalOuCode = getString(payload, FIELD_OUCODE);
 
         if (!(optionalStartDate.isPresent() && optionalOuCode.isPresent())) {
-            // this should not happen as API level validation would have stopped this
             return null;
         }
 

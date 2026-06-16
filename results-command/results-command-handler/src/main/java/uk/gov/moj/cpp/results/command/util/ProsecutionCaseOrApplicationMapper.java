@@ -7,10 +7,10 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterCaseOrApplication;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDefendant;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterOffence;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterResult;
 
 import java.util.ArrayList;
 import java.util.List;

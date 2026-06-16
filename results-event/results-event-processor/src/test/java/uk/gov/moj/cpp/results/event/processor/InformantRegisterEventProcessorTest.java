@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.event.processor;
 
 import static com.google.common.io.Resources.getResource;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
@@ -20,6 +21,14 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloper;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDefendant.informantRegisterDefendant;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterHearing.informantRegisterHearing;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterOffence.informantRegisterOffence;
+import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterRecipient.informantRegisterRecipient;
+import static uk.gov.moj.cpp.results.domain.informant.model.Verdict.verdict;
 
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -31,10 +40,20 @@ import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.MetadataBuilder;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterCaseOrApplication;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDefendant;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterHearing;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterHearingVenue;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterOffence;
+import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterRecipient;
+import uk.gov.moj.cpp.results.domain.informant.model.Verdict;
 import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 
 import java.io.ByteArrayInputStream;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import javax.json.JsonArray;
@@ -138,6 +157,86 @@ public class InformantRegisterEventProcessorTest {
     }
 
     @Test
+    public void generateInformantRegisterV2_whenOffenceHasVerdictCode_shouldPopulateVerdictCodeInCsvRow() throws Exception {
+        final UUID prosecutionAuthorityId = UUID.fromString("31af405e-7b60-4dd8-a244-c24c2d3fa595");
+        final Verdict verdictObj = verdict().withVerdictCode("G").build();
+        final InformantRegisterOffence offence = informantRegisterOffence()
+                .withOrderIndex(1)
+                .withOffenceCode("PS90010")
+                .withOffenceTitle("Theft")
+                .withVerdict(verdictObj)
+                .build();
+        final InformantRegisterCaseOrApplication caseOrApplication = informantRegisterCaseOrApplication()
+                .withCaseOrApplicationReference("TFL123")
+                .withOffences(singletonList(offence))
+                .build();
+        final InformantRegisterDefendant defendant = informantRegisterDefendant()
+                .withName("John Smith")
+                .withFirstName("John")
+                .withLastName("Smith")
+                .withAddress1("1 High St")
+                .withProsecutionCasesOrApplications(singletonList(caseOrApplication))
+                .build();
+        final InformantRegisterHearing hearing = informantRegisterHearing()
+                .withCourtRoom("Room 1")
+                .withHearingStartTime("2026-04-13")
+                .withDefendants(singletonList(defendant))
+                .build();
+        final InformantRegisterHearingVenue venue = informantRegisterHearingVenue()
+                .withCourtHouse("Crown Court")
+                .withLjaName("LJA")
+                .withCourtSessions(singletonList(hearing))
+                .build();
+        final InformantRegisterRecipient recipient = informantRegisterRecipient()
+                .withRecipientName("Prosecutor")
+                .withEmailAddress1("test@tfl.gov.uk")
+                .withEmailTemplateName("informantTemplate")
+                .build();
+        final InformantRegisterDocumentRequest docRequest = informantRegisterDocumentRequest()
+                .withProsecutionAuthorityId(prosecutionAuthorityId)
+                .withProsecutionAuthorityName("TFL Authority")
+                .withProsecutionAuthorityCode("TFL")
+                .withFileName("test.csv")
+                .withRegisterDate(ZonedDateTime.parse("2026-04-13T09:00:00Z"))
+                .withHearingDate(ZonedDateTime.parse("2026-04-13T09:00:00Z"))
+                .withRecipients(singletonList(recipient))
+                .withHearingVenue(venue)
+                .build();
+        final InformantRegisterGeneratedV2 event = InformantRegisterGeneratedV2.informantRegisterGeneratedV2()
+                .withInformantRegisterDocumentRequests(singletonList(docRequest))
+                .withSystemGenerated(false)
+                .build();
+        final JsonObject eventPayload = objectToJsonObjectConverter.convert(event);
+
+        when(applicationParameters.getEmailTemplateId(anyString())).thenReturn(TEMPLATE_ID);
+
+        informantRegisterEventProcessor.generateInformantRegisterV2(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated-v2"),
+                eventPayload));
+
+        verify(fileStorer).store(filestorerMetadata.capture(), byteInputStreamArgumentCaptor.capture());
+        final String csvOutput = IOUtils.toString(byteInputStreamArgumentCaptor.getValue(), defaultCharset());
+        assertThat(csvOutput, containsString(",G,"));
+    }
+
+    @Test
+    public void generateInformantRegisterV2_shouldProduceSameCsvOutputAsV1Handler() throws Exception {
+        final JsonArray informantRegisters = getJsonPayload("informant-register-document-requests.json").getJsonArray("informantRegisterDocumentRequests");
+        final JsonObject payload = createObjectBuilder()
+                .add("informantRegisterDocumentRequests", informantRegisters)
+                .build();
+
+        when(applicationParameters.getEmailTemplateId(anyString())).thenReturn(TEMPLATE_ID);
+
+        informantRegisterEventProcessor.generateInformantRegisterV2(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated-v2"), payload));
+
+        verify(fileStorer).store(filestorerMetadata.capture(), byteInputStreamArgumentCaptor.capture());
+        final String expectedCsvContent = getFileContent("informantRegister.csv");
+        assertThat(IOUtils.toString(byteInputStreamArgumentCaptor.getValue(), defaultCharset()), is(expectedCsvContent));
+    }
+
+    @Test
     public void notifyProsecutionAuthority() {
         final JsonArrayBuilder recipientJsonArray = createArrayBuilder();
         final String emailAddress1 = "abc@test.com";
@@ -185,7 +284,6 @@ public class InformantRegisterEventProcessorTest {
         assertThat(notificationJson.getValue().getString("templateId"), is(TEMPLATE_ID));
         assertThat(notificationJson.getValue().getString("sendToAddress"), is(emailAddress1));
         assertThat(notificationJson.getValue().getString("fileId"), is(fileId.toString()));
-
     }
 
     private static JsonObject getJsonPayload(final String fileName) {

@@ -11,6 +11,8 @@ import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDoc
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterRecordedV2;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -61,6 +63,26 @@ public class InformantRegisterEventListener {
         informantRegisterRepository.save(informantRegisterEntity);
     }
 
+    @Transactional
+    @Handles("results.event.informant-register-recorded-v2")
+    public void saveInformantRegisterV2(final JsonEnvelope event) {
+        final JsonObject informantRegisterDocumentRequestJson = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
+        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest documentRequest =
+                jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.class);
+
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        informantRegisterEntity.setId(randomUUID());
+        informantRegisterEntity.setRegisterDate(documentRequest.getRegisterDate().toLocalDate());
+        informantRegisterEntity.setRegisterTime(documentRequest.getRegisterDate());
+        informantRegisterEntity.setHearingId(documentRequest.getHearingId());
+        informantRegisterEntity.setProsecutionAuthorityId(documentRequest.getProsecutionAuthorityId());
+        informantRegisterEntity.setProsecutionAuthorityCode(documentRequest.getProsecutionAuthorityCode());
+        informantRegisterEntity.setProsecutionAuthorityOuCode(documentRequest.getProsecutionAuthorityOuCode());
+        informantRegisterEntity.setPayload(informantRegisterDocumentRequestJson.toString());
+        informantRegisterEntity.setStatus(RECORDED);
+        informantRegisterRepository.save(informantRegisterEntity);
+    }
+
     @Handles("results.event.informant-register-generated")
     public void generateInformantRegister(final JsonEnvelope event) {
         final JsonObject payload = event.payloadAsJsonObject();
@@ -85,6 +107,33 @@ public class InformantRegisterEventListener {
             informantRegistersList.forEach(informantRegisterEntity -> informantRegisterEntity.setProcessedOn(currentDateTime));
         });
 
+    }
+
+    @Handles("results.event.informant-register-generated-v2")
+    public void generateInformantRegisterV2(final JsonEnvelope event) {
+        final JsonObject payload = event.payloadAsJsonObject();
+        final InformantRegisterGeneratedV2 informantRegisterGenerated = jsonObjectToObjectConverter.convert(payload, InformantRegisterGeneratedV2.class);
+        final ZonedDateTime currentDateTime = now();
+
+        final UUID prosecutionAuthorityId = informantRegisterGenerated.getInformantRegisterDocumentRequests().get(0).getProsecutionAuthorityId();
+        final LocalDate registerDate = informantRegisterGenerated.getInformantRegisterDocumentRequests().get(0).getRegisterDate().toLocalDate();
+
+        final List<InformantRegisterEntity> informantRegisters = informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthorityId, registerDate);
+        informantRegisters.forEach(informantRegisterEntity -> {
+            informantRegisterEntity.setStatus(GENERATED);
+            informantRegisterEntity.setProcessedOn(currentDateTime);
+            if (BooleanUtils.isTrue(informantRegisterGenerated.getSystemGenerated())) {
+                informantRegisterEntity.setGeneratedDate(currentDateTime.toLocalDate());
+                informantRegisterEntity.setGeneratedTime(currentDateTime);
+            }
+        });
+
+        informantRegisterGenerated.getInformantRegisterDocumentRequests().stream()
+                .map(uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest::getHearingId)
+                .forEach(hearingId -> {
+                    final List<InformantRegisterEntity> informantRegistersList = informantRegisterRepository.findByHearingIdAndStatusRecorded(hearingId);
+                    informantRegistersList.forEach(informantRegisterEntity -> informantRegisterEntity.setProcessedOn(currentDateTime));
+                });
     }
 
     @Handles("results.event.informant-register-notified")

@@ -28,6 +28,8 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterRecordedV2;
 import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -37,6 +39,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import uk.gov.justice.services.messaging.JsonObjects;
+import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.google.common.collect.Lists;
@@ -102,6 +105,38 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
+    public void saveInformantRegisterV2_shouldSaveEntityFromLocalDocumentRequest() {
+        final UUID prosecutionAuthId = randomUUID();
+        final String ouCode = randomAlphanumeric(10);
+        final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
+
+        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest localDocumentRequest =
+                uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
+                        .withProsecutionAuthorityId(prosecutionAuthId)
+                        .withProsecutionAuthorityOuCode(ouCode)
+                        .withRegisterDate(registerDate)
+                        .build();
+
+        final InformantRegisterRecordedV2 event = InformantRegisterRecordedV2.informantRegisterRecordedV2()
+                .withProsecutionAuthorityId(prosecutionAuthId)
+                .withInformantRegister(localDocumentRequest)
+                .build();
+
+        informantRegisterEventListener.saveInformantRegisterV2(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-recorded-v2"),
+                objectToJsonObjectConverter.convert(event)));
+
+        final ArgumentCaptor<InformantRegisterEntity> captor = forClass(InformantRegisterEntity.class);
+        verify(informantRegisterRepository).save(captor.capture());
+        final InformantRegisterEntity saved = captor.getValue();
+
+        assertThat(saved.getProsecutionAuthorityId(), is(prosecutionAuthId));
+        assertThat(saved.getProsecutionAuthorityOuCode(), is(ouCode));
+        assertThat(saved.getStatus(), is(RECORDED));
+        assertThat(saved.getPayload(), notNullValue());
+    }
+
+    @Test
     public void shouldSaveInformantRegisterGenerated() {
         final UUID prosecutionAuthId = randomUUID();
         final LocalDate registerDate = LocalDate.now();
@@ -125,6 +160,138 @@ public class InformantRegisterEventListenerTest {
                 objectToJsonObjectConverter.convert(informantRegisterGenerated)));
 
         assertThat(informantRegisterEntity.getProcessedOn().toString(), is(notNullValue()));
+        assertThat(informantRegisterEntity.getStatus(), is(GENERATED));
+    }
+
+    @Test
+    public void generateInformantRegisterV2_shouldSetEntityStatusToGenerated() {
+        final UUID prosecutionAuthId = randomUUID();
+        final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
+
+        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest localDocumentRequest =
+                uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
+                        .withProsecutionAuthorityId(prosecutionAuthId)
+                        .withRegisterDate(registerDate)
+                        .build();
+
+        final InformantRegisterGeneratedV2 event = InformantRegisterGeneratedV2.informantRegisterGeneratedV2()
+                .withInformantRegisterDocumentRequests(singletonList(localDocumentRequest))
+                .withSystemGenerated(false)
+                .build();
+
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
+        informantRegisterEntity.setStatus(RECORDED);
+        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(
+                prosecutionAuthId, registerDate.toLocalDate())).thenReturn(singletonList(informantRegisterEntity));
+
+        informantRegisterEventListener.generateInformantRegisterV2(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated-v2"),
+                objectToJsonObjectConverter.convert(event)));
+
+        assertThat(informantRegisterEntity.getStatus(), is(GENERATED));
+        assertThat(informantRegisterEntity.getProcessedOn(), notNullValue());
+    }
+
+    @Test
+    public void saveInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
+        final UUID prosecutionAuthId = randomUUID();
+        final JsonObject offenceJson = Json.createObjectBuilder()
+                .add("offenceCode", "PS90010")
+                .add("orderIndex", 1)
+                .add("offenceTitle", "Theft")
+                .add("pleaValue", "NOT_GUILTY")
+                .add("verdictCode", "G")
+                .build();
+        final JsonObject informantRegisterDocumentRequestJson = Json.createObjectBuilder()
+                .add("prosecutionAuthorityId", prosecutionAuthId.toString())
+                .add("registerDate", "2026-04-13T09:00:00Z")
+                .add("hearingDate", "2026-04-13T09:00:00Z")
+                .add("hearingId", randomUUID().toString())
+                .add("prosecutionAuthorityCode", "TFL")
+                .add("fileName", "test.csv")
+                .add("hearingVenue", Json.createObjectBuilder()
+                        .add("courtHouse", "Crown Court")
+                        .add("ljaName", "LJA")
+                        .add("courtSessions", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                        .add("courtRoom", "Room 1")
+                                        .add("hearingStartTime", "2026-04-13T09:00:00Z")
+                                        .add("defendants", Json.createArrayBuilder()
+                                                .add(Json.createObjectBuilder()
+                                                        .add("name", "John Smith")
+                                                        .add("address1", "1 High St")
+                                                        .add("firstName", "John")
+                                                        .add("lastName", "Smith")
+                                                        .add("prosecutionCasesOrApplications", Json.createArrayBuilder()
+                                                                .add(Json.createObjectBuilder()
+                                                                        .add("caseOrApplicationReference", "TFL123")
+                                                                        .add("offences", Json.createArrayBuilder().add(offenceJson)))))))))
+                .build();
+        final JsonObject payload = Json.createObjectBuilder()
+                .add("informantRegister", informantRegisterDocumentRequestJson)
+                .add("prosecutionAuthorityId", prosecutionAuthId.toString())
+                .build();
+
+        final ArgumentCaptor<InformantRegisterEntity> captor = forClass(InformantRegisterEntity.class);
+
+        informantRegisterEventListener.saveInformantRegister(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-recorded"), payload));
+
+        verify(informantRegisterRepository).save(captor.capture());
+        assertThat(captor.getValue().getStatus(), is(RECORDED));
+        assertThat(captor.getValue().getProsecutionAuthorityId(), is(prosecutionAuthId));
+    }
+
+    @Test
+    public void generateInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
+        final UUID prosecutionAuthId = randomUUID();
+        final LocalDate registerDate = LocalDate.parse("2026-04-13");
+        final JsonObject offenceJson = Json.createObjectBuilder()
+                .add("offenceCode", "PS90010")
+                .add("orderIndex", 1)
+                .add("offenceTitle", "Theft")
+                .add("pleaValue", "NOT_GUILTY")
+                .add("verdictCode", "G")
+                .build();
+        final JsonObject documentRequestJson = Json.createObjectBuilder()
+                .add("prosecutionAuthorityId", prosecutionAuthId.toString())
+                .add("registerDate", "2026-04-13T09:00:00Z")
+                .add("hearingDate", "2026-04-13T09:00:00Z")
+                .add("hearingId", randomUUID().toString())
+                .add("prosecutionAuthorityCode", "TFL")
+                .add("fileName", "test.csv")
+                .add("hearingVenue", Json.createObjectBuilder()
+                        .add("courtHouse", "Crown Court")
+                        .add("ljaName", "LJA")
+                        .add("courtSessions", Json.createArrayBuilder()
+                                .add(Json.createObjectBuilder()
+                                        .add("courtRoom", "Room 1")
+                                        .add("hearingStartTime", "2026-04-13T09:00:00Z")
+                                        .add("defendants", Json.createArrayBuilder()
+                                                .add(Json.createObjectBuilder()
+                                                        .add("name", "John Smith")
+                                                        .add("address1", "1 High St")
+                                                        .add("firstName", "John")
+                                                        .add("lastName", "Smith")
+                                                        .add("prosecutionCasesOrApplications", Json.createArrayBuilder()
+                                                                .add(Json.createObjectBuilder()
+                                                                        .add("caseOrApplicationReference", "TFL123")
+                                                                        .add("offences", Json.createArrayBuilder().add(offenceJson)))))))))
+                .build();
+        final JsonObject payload = Json.createObjectBuilder()
+                .add("informantRegisterDocumentRequests", Json.createArrayBuilder().add(documentRequestJson))
+                .add("fileId", randomUUID().toString())
+                .add("systemGenerated", false)
+                .build();
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
+        informantRegisterEntity.setStatus(RECORDED);
+        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthId, registerDate)).thenReturn(singletonList(informantRegisterEntity));
+
+        informantRegisterEventListener.generateInformantRegister(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated"), payload));
+
         assertThat(informantRegisterEntity.getStatus(), is(GENERATED));
     }
 
