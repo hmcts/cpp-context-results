@@ -7,6 +7,9 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThan;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.getWriteUrl;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegister;
@@ -78,6 +81,23 @@ public class InformantRegisterDocumentRequestIT {
 
         generateInformantRegister();
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
+    }
+
+    @Test
+    public void shouldRejectInformantRegisterWithVerdictCodeButNoVerdictDate() throws IOException {
+        // T071 / FR-004: verdict.json `dependencies` makes verdictCode and verdictDate co-dependent.
+        // A command carrying verdictCode without verdictDate must be rejected at the envelope-validation
+        // boundary (a 4xx client error), never accepted (202).
+        final UUID prosecutionAuthorityId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final String prosecutionAuthorityCode = STRING.next();
+
+        final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate,
+                hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-with-invalid-verdict.json");
+
+        assertThat(writeResponse.getStatusCode(), allOf(greaterThanOrEqualTo(400), lessThan(500)));
     }
 
     @Test
