@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/results/courts/informant-register-recorded-v2.json",
+  "description": "Event schema for recording informant register document request with structured verdict",
+  "type": "object",
+  "properties": {
+    "prosecutionAuthorityId": {
+      "description": "The prosecuting authority reference data identifier",
+      "type": "string"
+    },
+    "informantRegister": {
+      "$ref": "http://justice.gov.uk/results/courts/informantRegisterDocument/informantRegisterDocumentRequest.json"
+    }
+  },
+  "required": [
+    "prosecutionAuthorityId",
+    "informantRegister"
+  ],
+  "additionalProperties": false
+}
