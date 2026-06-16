@@ -8,7 +8,7 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterRecipient.json#"
+        "$ref": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterRecipient.json"
       }
     },
     "fileId": {

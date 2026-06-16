@@ -7,7 +7,7 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.NOTIFIED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;

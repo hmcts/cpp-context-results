@@ -2,12 +2,12 @@ package uk.gov.moj.cpp.results.query.view;
 
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
-import static uk.gov.justice.core.courts.informantRegisterDocument.ProsecutorResult.prosecutorResult;
+import static uk.gov.justice.results.informantRegisterDocument.ProsecutorResult.prosecutorResult;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.getString;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.ProsecutorResult;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.ProsecutorResult;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;

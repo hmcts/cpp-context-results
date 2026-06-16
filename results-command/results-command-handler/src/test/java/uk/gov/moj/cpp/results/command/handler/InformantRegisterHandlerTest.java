@@ -15,8 +15,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
@@ -32,16 +32,16 @@ import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.
 import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegisterStreamId;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffenceVerdict;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResultData;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearingVenue;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterOffence;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterVerdict;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterRecipient;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterResult;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterResultData;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
@@ -507,7 +507,7 @@ public class InformantRegisterHandlerTest {
                                     .withOrderIndex(1)
                                     .withOffenceTitle("offenceTitle_Main_" + i)
                                     .withOffenceCode("offenceCode_Main_" + i)
-                                    .withVerdict(InformantRegisterOffenceVerdict.informantRegisterOffenceVerdict()
+                                    .withVerdict(InformantRegisterVerdict.informantRegisterVerdict()
                                             .withVerdictCode("verdictCode_Main_" + i)
                                             .build())
                                     .withOriginatingCaseUrn("originatingCaseUrn_Main_" + i)

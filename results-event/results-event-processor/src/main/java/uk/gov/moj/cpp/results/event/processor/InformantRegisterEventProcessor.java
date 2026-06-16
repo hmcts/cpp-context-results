@@ -10,12 +10,12 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.moj.cpp.results.event.processor.model.InformantRegisterDocument.informantRegisterDocument;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterOffence;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterResult;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;

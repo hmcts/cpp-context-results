@@ -88,6 +88,17 @@ public class InformantRegisterDocumentRequestHelper {
                 .getPayload();
     }
 
+    public void verifyInformantRegisterPayloadContainsVerdict(final UUID prosecutionAuthorityId) {
+        final String payload = getInformantRegisterDocumentRequests(RECORDED.name(), allOf(
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", hasItem(prosecutionAuthorityId.toString())),
+                withJsonPath("$.informantRegisterDocumentRequests[*].status", hasItem(RECORDED.name()))
+        ));
+
+        assertThat(countMatches(payload, "\"verdictCode\":\"G\""), is(2)); // top-level offence field + inside verdict object
+        assertThat(countMatches(payload, "\"verdictType\":\"FOUND_GUILTY\""), is(1));
+        assertThat(countMatches(payload, "\"verdictDate\":\"2020-03-12\""), is(1));
+    }
+
     public void verifyInformantRegisterIsNotified(final UUID prosecutionAuthorityId) {
         getInformantRegisterDocumentRequests(NOTIFIED.name(), allOf(
                 withJsonPath("$.informantRegisterDocumentRequests[*].status", hasItem(NOTIFIED.name())),

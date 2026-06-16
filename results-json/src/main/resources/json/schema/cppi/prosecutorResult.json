@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://justice.gov.uk/core/courts/informantRegisterDocument/prosecutorResult.json",
+  "id": "http://justice.gov.uk/results/informantRegisterDocument/prosecutorResult.json",
   "description": "Response structure for results returned to prosecutor",
   "type": "object",
   "properties": {
@@ -12,7 +12,7 @@
     },
     "prosecutionAuthorityId": {
       "description": "The prosecuting authority reference data identifier",
-      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
     "prosecutionAuthorityCode": {
       "description": "The prosecuting authority reference data code",
@@ -33,7 +33,7 @@
       "type": "array",
       "minItems": 1,
       "items": {
-        "$ref": "http://justice.gov.uk/core/courts/informantRegisterDocument/informantRegisterHearingVenue.json"
+        "$ref": "http://justice.gov.uk/results/informantRegisterDocument/informantRegisterHearingVenue.json"
       }
     }
   },

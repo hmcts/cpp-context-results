@@ -193,6 +193,21 @@ public class InformantRegisterDocumentRequestIT {
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
     }
 
+    @Test
+    public void shouldStoreVerdictInPayloadWhenAddingInformantRegister() throws IOException {
+        final UUID prosecutionAuthorityId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final String prosecutionAuthorityCode = STRING.next();
+
+        final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate,
+                hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-with-verdict.json");
+        assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
+
+        helper.verifyInformantRegisterPayloadContainsVerdict(prosecutionAuthorityId);
+    }
+
     private void generateInformantRegister() {
         final Response generateRegisterResponse = postCommand(
                 getWriteUrl("/informant-register/generate"),

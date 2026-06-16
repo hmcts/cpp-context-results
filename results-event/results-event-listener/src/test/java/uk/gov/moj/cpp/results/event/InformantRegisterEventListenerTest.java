@@ -9,8 +9,13 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearing.informantRegisterHearing;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant.informantRegisterDefendant;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterOffence.informantRegisterOffence;
+import static uk.gov.justice.results.informantRegisterDocument.InformantRegisterVerdict.informantRegisterVerdict;
 import static uk.gov.justice.results.courts.InformantRegisterNotified.informantRegisterNotified;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
@@ -20,7 +25,11 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.NOTIFIED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterOffence;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
@@ -99,6 +108,79 @@ public class InformantRegisterEventListenerTest {
         assertThat(informantRegisterRequestSaved.getProsecutionAuthorityId(), is(prosecutionAuthId));
         assertThat(informantRegisterRequestSaved.getProsecutionAuthorityOuCode(), is(ouCode));
         assertThat(savedInformantRegisterEntity.getStatus(), is(RECORDED));
+    }
+
+    @Test
+    public void shouldSaveInformantRegisterWithVerdictInPayload() {
+        final UUID prosecutionAuthId = randomUUID();
+        final String verdictCode = "G";
+        final String verdictType = "FOUND_GUILTY";
+        final String verdictDate = "2024-03-15";
+
+        final InformantRegisterOffence offence = informantRegisterOffence()
+                .withOffenceCode("PS90010")
+                .withOrderIndex(1)
+                .withOffenceTitle("Test Offence")
+                .withVerdictCode(verdictCode)
+                .withVerdict(informantRegisterVerdict()
+                        .withVerdictCode(verdictCode)
+                        .withVerdictType(verdictType)
+                        .withVerdictDate(verdictDate)
+                        .build())
+                .build();
+
+        final InformantRegisterCaseOrApplication caseOrApplication = informantRegisterCaseOrApplication()
+                .withCaseOrApplicationReference("TFL1234567")
+                .withOffences(singletonList(offence))
+                .build();
+
+        final InformantRegisterDefendant defendant = informantRegisterDefendant()
+                .withName("John Smith")
+                .withAddress1("1 Test Street")
+                .withProsecutionCasesOrApplications(singletonList(caseOrApplication))
+                .build();
+
+        final InformantRegisterHearing hearing = informantRegisterHearing()
+                .withCourtRoom("Room 1")
+                .withHearingStartTime("09:00")
+                .withDefendants(singletonList(defendant))
+                .build();
+
+        final InformantRegisterDocumentRequest documentRequest = informantRegisterDocumentRequest()
+                .withProsecutionAuthorityId(prosecutionAuthId)
+                .withProsecutionAuthorityOuCode(randomAlphanumeric(10))
+                .withRegisterDate(ZonedDateTime.now())
+                .withHearingVenue(informantRegisterHearingVenue()
+                        .withCourtHouse("Test Court")
+                        .withCourtSessions(singletonList(hearing))
+                        .build())
+                .build();
+
+        final InformantRegisterRecorded informantRegisterRecorded = new InformantRegisterRecorded(
+                documentRequest, prosecutionAuthId);
+
+        informantRegisterEventListener.saveInformantRegister(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-recorded"),
+                objectToJsonObjectConverter.convert(informantRegisterRecorded)));
+
+        final ArgumentCaptor<InformantRegisterEntity> captor = forClass(InformantRegisterEntity.class);
+        verify(this.informantRegisterRepository).save(captor.capture());
+        final InformantRegisterEntity saved = captor.getValue();
+
+        final JsonObject jsonPayload = JsonObjects.createReader(new StringReader(saved.getPayload())).readObject();
+        final JsonObject savedOffence = jsonPayload
+                .getJsonObject("hearingVenue")
+                .getJsonArray("courtSessions").getJsonObject(0)
+                .getJsonArray("defendants").getJsonObject(0)
+                .getJsonArray("prosecutionCasesOrApplications").getJsonObject(0)
+                .getJsonArray("offences").getJsonObject(0);
+
+        assertThat(saved.getProsecutionAuthorityId(), is(prosecutionAuthId));
+        assertThat(saved.getStatus(), is(RECORDED));
+        assertThat(savedOffence.getString("verdictCode"), is(verdictCode));
+        assertThat(savedOffence.getJsonObject("verdict").getString("verdictCode"), is(verdictCode));
+        assertThat(savedOffence.getJsonObject("verdict").getString("verdictType"), is(verdictType));
+        assertThat(savedOffence.getJsonObject("verdict").getString("verdictDate"), is(verdictDate));
     }
 
     @Test

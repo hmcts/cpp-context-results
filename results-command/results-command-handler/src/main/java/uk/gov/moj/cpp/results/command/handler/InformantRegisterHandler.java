@@ -15,8 +15,8 @@ import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
 import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
