@@ -14,6 +14,7 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
 import uk.gov.justice.core.courts.ProsecutionCase;
+import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
 import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
 import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant;
@@ -36,6 +37,7 @@ import uk.gov.moj.cpp.results.command.GenerateInformantRegisterByDate;
 import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 import uk.gov.moj.cpp.results.domain.aggregate.ProsecutionAuthorityAggregate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +64,12 @@ public class InformantRegisterHandler {
     private static final String FIELD_REQUEST_STATUS = "requestStatus";
     private static final String FIELD_REGISTER_DATE = "registerDate";
     private static final String FIELD_PROSECUTION_AUTHORITY_CODE = "prosecutionAuthorityCode";
+    private static final String FIELD_HEARING_VENUE = "hearingVenue";
+    private static final String FIELD_COURT_SESSIONS = "courtSessions";
+    private static final String FIELD_DEFENDANTS = "defendants";
+    private static final String FIELD_CASES_OR_APPLICATIONS = "prosecutionCasesOrApplications";
+    private static final String FIELD_OFFENCES = "offences";
+    private static final String FIELD_VERDICT_CODE = "verdictCode";
 
     @Inject
     private EventSource eventSource;
@@ -162,19 +170,85 @@ public class InformantRegisterHandler {
     private void processRequests(final UUID informantRegisterId, final List<JsonObject> informantRegisterRequest, final Envelope jsonEnvelope, final boolean systemGenerated) {
         try {
             final EventStream eventStream = eventSource.getStreamById(informantRegisterId);
-            final List<InformantRegisterDocumentRequest> informantRegisterDocumentRequests = informantRegisterRequest.stream().map(informantRegister -> stringToJsonObjectConverter.convert(informantRegister.getString((FIELD_PAYLOAD))))
-                    .map(informantRegister -> jsonObjectToObjectConverter.convert(informantRegister, InformantRegisterDocumentRequest.class))
+
+            final List<JsonObject> payloads = informantRegisterRequest.stream()
+                    .map(informantRegister -> stringToJsonObjectConverter.convert(informantRegister.getString(FIELD_PAYLOAD)))
                     .toList();
 
-            final Stream<Object> events = Stream.of(InformantRegisterGeneratedV2.informantRegisterGeneratedV2()
-                    .withInformantRegisterDocumentRequests(informantRegisterDocumentRequests)
-                    .withSystemGenerated(systemGenerated)
-                    .build());
+            final List<uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest> v1DocumentRequests = payloads.stream()
+                    .filter(this::isV1InformantRegisterPayload)
+                    .map(payload -> jsonObjectToObjectConverter.convert(payload, uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class))
+                    .toList();
 
-            appendEventsToStream(jsonEnvelope, eventStream, events);
+            final List<InformantRegisterDocumentRequest> v2DocumentRequests = payloads.stream()
+                    .filter(payload -> !isV1InformantRegisterPayload(payload))
+                    .map(payload -> jsonObjectToObjectConverter.convert(payload, InformantRegisterDocumentRequest.class))
+                    .toList();
+
+            LOGGER.debug("Generating informant register for stream {}: {} V1 request(s), {} V2 request(s)",
+                    informantRegisterId, v1DocumentRequests.size(), v2DocumentRequests.size());
+
+            final List<Object> events = new ArrayList<>();
+            if (isNotEmpty(v1DocumentRequests)) {
+                events.add(InformantRegisterGenerated.informantRegisterGenerated()
+                        .withInformantRegisterDocumentRequests(v1DocumentRequests)
+                        .withSystemGenerated(systemGenerated)
+                        .build());
+            }
+            if (isNotEmpty(v2DocumentRequests)) {
+                events.add(InformantRegisterGeneratedV2.informantRegisterGeneratedV2()
+                        .withInformantRegisterDocumentRequests(v2DocumentRequests)
+                        .withSystemGenerated(systemGenerated)
+                        .build());
+            }
+
+            appendEventsToStream(jsonEnvelope, eventStream, events.stream());
         } catch (EventStreamException e) {
             LOGGER.error("Generate informant register stream exception -->>", e);
         }
+    }
+
+    /**
+     * Classifies a queried register payload as V1 or V2 so it can be converted to the matching document-request
+     * type and emitted as the matching generated event.
+     *
+     * <p>This relies on an invariant of the record side: each stored payload is a whole document request recorded
+     * via either {@code results.event.informant-register-recorded} (V1, flat {@code verdictCode} string on the
+     * offence) or {@code results.event.informant-register-recorded-v2} (V2, structured {@code verdict} object), and
+     * is validated against a single schema version at record time. A single stored payload therefore never mixes
+     * offence shapes — it is uniformly V1 or uniformly V2.
+     *
+     * <p>Given that invariant, a payload is treated as V1 only when it positively carries the legacy top-level
+     * {@code verdictCode} on an offence; structured-verdict payloads and payloads with no offences are treated as
+     * V2, so a structured verdict is never silently dropped.
+     */
+    private boolean isV1InformantRegisterPayload(final JsonObject payload) {
+        return offences(payload).anyMatch(offence -> offence.containsKey(FIELD_VERDICT_CODE));
+    }
+
+    private Stream<JsonObject> offences(final JsonObject payload) {
+        final JsonObject hearingVenue = objectOrNull(payload, FIELD_HEARING_VENUE);
+        if (hearingVenue == null) {
+            return Stream.empty();
+        }
+        return arrayObjects(hearingVenue, FIELD_COURT_SESSIONS)
+                .flatMap(courtSession -> arrayObjects(courtSession, FIELD_DEFENDANTS))
+                .flatMap(defendant -> arrayObjects(defendant, FIELD_CASES_OR_APPLICATIONS))
+                .flatMap(caseOrApplication -> arrayObjects(caseOrApplication, FIELD_OFFENCES));
+    }
+
+    private JsonObject objectOrNull(final JsonObject parent, final String field) {
+        if (!parent.containsKey(field) || parent.get(field).getValueType() != JsonValue.ValueType.OBJECT) {
+            return null;
+        }
+        return parent.getJsonObject(field);
+    }
+
+    private Stream<JsonObject> arrayObjects(final JsonObject parent, final String field) {
+        if (!parent.containsKey(field) || parent.get(field).getValueType() != JsonValue.ValueType.ARRAY) {
+            return Stream.empty();
+        }
+        return parent.getJsonArray(field).getValuesAs(JsonObject.class).stream();
     }
 
     private Map<UUID, List<JsonObject>> getInformantRegisterDocumentRequests(final Envelope envelope) {
