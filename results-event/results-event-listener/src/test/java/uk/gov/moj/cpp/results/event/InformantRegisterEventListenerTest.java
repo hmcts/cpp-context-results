@@ -31,8 +31,8 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterRecordedV2;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
 import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -111,8 +111,8 @@ public class InformantRegisterEventListenerTest {
         final String ouCode = randomAlphanumeric(10);
         final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
 
-        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest localDocumentRequest =
-                uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
+        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest localDocumentRequest =
+                uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
                         .withProsecutionAuthorityId(prosecutionAuthId)
                         .withProsecutionAuthorityOuCode(ouCode)
                         .withRegisterDate(registerDate)
@@ -174,8 +174,8 @@ public class InformantRegisterEventListenerTest {
         final UUID prosecutionAuthId = randomUUID();
         final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
 
-        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest localDocumentRequest =
-                uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
+        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest localDocumentRequest =
+                uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
                         .withProsecutionAuthorityId(prosecutionAuthId)
                         .withRegisterDate(registerDate)
                         .build();

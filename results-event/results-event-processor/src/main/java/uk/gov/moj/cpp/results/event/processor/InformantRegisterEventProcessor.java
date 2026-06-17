@@ -291,8 +291,8 @@ public class InformantRegisterEventProcessor {
     }
 
     private void mapToInformantRegisterDocumentsV2(final List<InformantRegisterDocument> informantRegisters, final JsonObject informantRegisterJson) {
-        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest documentRequest =
-                jsonObjectToObjectConverter.convert(informantRegisterJson, uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.class);
+        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest =
+                jsonObjectToObjectConverter.convert(informantRegisterJson, uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class);
         documentRequest.getHearingVenue().getCourtSessions().forEach(courtSession -> courtSession.getDefendants().forEach(defendant -> {
             if (isNotEmpty(defendant.getResults())) {
                 defendant.getResults().forEach(result -> buildInformantRegisterV2(informantRegisters, documentRequest, courtSession, defendant, null, result, null, null));
@@ -315,13 +315,13 @@ public class InformantRegisterEventProcessor {
     @SuppressWarnings({"squid:S00107"})
     private void buildInformantRegisterV2(
             final List<InformantRegisterDocument> informantRegisters,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest documentRequest,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterHearing courtSession,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDefendant defendant,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterCaseOrApplication caseOrApplication,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterResult result,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterOffence offence,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterResult offenceResult) {
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearing courtSession,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant defendant,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterCaseOrApplication caseOrApplication,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult result,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence offence,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult offenceResult) {
 
         final InformantRegisterDocument.Builder informantRegisterDocumentBuilder = informantRegisterDocument()
                 .withInfDestID(EMPTY_STRING)
@@ -359,8 +359,8 @@ public class InformantRegisterEventProcessor {
 
     private void buildOffenceDetailsV2(
             final InformantRegisterDocument.Builder builder,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterOffence offence,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterResult offenceResult) {
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence offence,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult offenceResult) {
         builder.withOffenceCode(offence.getOffenceCode());
         builder.withOffenceTitle(offence.getOffenceTitle());
         builder.withPleaValue(offence.getPleaValue());
@@ -372,12 +372,12 @@ public class InformantRegisterEventProcessor {
 
     private void buildResultV2(
             final InformantRegisterDocument.Builder builder,
-            final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterResult offenceResult) {
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult offenceResult) {
         builder.withCjsResultCode(offenceResult.getCjsResultCode());
         builder.withResultText(offenceResult.getResultText().trim());
     }
 
-    private String getAddressV2(final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDefendant defendant) {
+    private String getAddressV2(final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant defendant) {
         final List<String> addressAsList = Arrays.asList(defendant.getAddress1(), defendant.getAddress2(), defendant.getAddress3(), defendant.getAddress4(), defendant.getAddress5());
         return addressAsList
                 .stream()

@@ -14,10 +14,10 @@ import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterRecordedV2;
-import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDefendant;
-import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;

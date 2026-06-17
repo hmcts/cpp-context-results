@@ -109,6 +109,20 @@ public class InformantRegisterDocumentRequestHelper {
         ));
     }
 
+    /**
+     * Verifies that a register for the given prosecuting authority has progressed out of RECORDED — i.e. an
+     * informant-register-generated(-v2) event was consumed by the listener and advanced the projection. This is
+     * asserted as absence from the RECORDED list (rather than presence in GENERATED) because the generate flow can
+     * progress further to NOTIFIED asynchronously: the processor reacts to the generated event by sending a
+     * notify-informant-register command. Absence-from-RECORDED is stable whether the register lands on GENERATED or
+     * NOTIFIED.
+     */
+    public void verifyInformantRegisterNoLongerRecorded(final UUID prosecutionAuthorityId) {
+        getInformantRegisterDocumentRequests(RECORDED.name(),
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", not(hasItem(prosecutionAuthorityId.toString())))
+        );
+    }
+
     public void verifyProsecutorResultsContainVerdict(final String ouCode, final LocalDate startDate, final String expectedVerdictCode) {
         pollWithDefaults(requestParams(getReadUrl(StringUtils.join("/prosecutor/", ouCode, "?startDate=", startDate.toString())),
                 "application/vnd.results.prosecutor-results+json")

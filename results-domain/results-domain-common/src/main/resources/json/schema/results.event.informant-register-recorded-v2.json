@@ -6,7 +6,7 @@
   "properties": {
     "prosecutionAuthorityId": {
       "description": "The prosecuting authority reference data identifier",
-      "type": "string"
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
     "informantRegister": {
       "$ref": "http://justice.gov.uk/results/courts/informantRegisterDocument/informantRegisterDocumentRequest.json"

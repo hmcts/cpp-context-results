@@ -17,8 +17,8 @@ import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
-import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterRecipient;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ProsecutionAuthorityAggregate implements Aggregate {
                     }
                 }),
                 when(InformantRegisterGeneratedV2.class).apply(e -> {
-                    final List<uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest> informantRegisterWithRecipients = e.getInformantRegisterDocumentRequests().stream().filter(
+                    final List<uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest> informantRegisterWithRecipients = e.getInformantRegisterDocumentRequests().stream().filter(
                             informantRegisterDocumentRequest -> nonNull(informantRegisterDocumentRequest.getRecipients()) && !informantRegisterDocumentRequest.getRecipients().isEmpty())
                             .collect(Collectors.toList());
                     if (isNotEmpty(informantRegisterWithRecipients)) {

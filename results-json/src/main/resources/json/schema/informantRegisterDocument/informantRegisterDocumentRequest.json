@@ -14,11 +14,11 @@
     },
     "hearingId": {
       "description": "The hearing id of the hearing shared",
-      "type": "string"
+       "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "prosecutionAuthorityId": {
       "description": "The prosecuting authority reference data identifier",
-      "type": "string"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     },
     "prosecutionAuthorityCode": {
       "description": "The prosecuting authority reference data code",
@@ -51,7 +51,7 @@
     },
     "groupId": {
       "description": "The group id of the group cases",
-      "type": "string"
+      "$ref": "http://justice.gov.uk/core/courts/courtsDefinitions.json#/definitions/uuid"
     }
   },
   "required": [

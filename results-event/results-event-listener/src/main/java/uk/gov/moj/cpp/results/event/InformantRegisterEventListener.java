@@ -11,8 +11,8 @@ import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDoc
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterRecordedV2;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -67,8 +67,8 @@ public class InformantRegisterEventListener {
     @Handles("results.event.informant-register-recorded-v2")
     public void saveInformantRegisterV2(final JsonEnvelope event) {
         final JsonObject informantRegisterDocumentRequestJson = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
-        final uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest documentRequest =
-                jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.class);
+        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest =
+                jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class);
 
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
         informantRegisterEntity.setId(randomUUID());
@@ -129,7 +129,7 @@ public class InformantRegisterEventListener {
         });
 
         informantRegisterGenerated.getInformantRegisterDocumentRequests().stream()
-                .map(uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest::getHearingId)
+                .map(uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest::getHearingId)
                 .forEach(hearingId -> {
                     final List<InformantRegisterEntity> informantRegistersList = informantRegisterRepository.findByHearingIdAndStatusRecorded(hearingId);
                     informantRegistersList.forEach(informantRegisterEntity -> informantRegisterEntity.setProcessedOn(currentDateTime));

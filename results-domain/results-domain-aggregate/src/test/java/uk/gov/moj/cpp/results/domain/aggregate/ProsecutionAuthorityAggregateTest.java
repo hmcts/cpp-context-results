@@ -9,15 +9,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
-import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterRecipient.informantRegisterRecipient;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
 
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
-import uk.gov.moj.cpp.results.domain.event.InformantRegisterGeneratedV2;
-import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest;
-import uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterRecipient;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient;
 
 import java.util.List;
 import java.util.UUID;

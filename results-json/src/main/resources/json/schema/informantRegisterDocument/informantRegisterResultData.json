@@ -9,8 +9,7 @@
       "type": "string"
     },
     "nextHearingDate": {
-      "type": "string",
-      "format": "date-time"
+      "type": "string"
     },
     "nextCourtLocation": {
       "type": "string"
@@ -22,12 +21,10 @@
       "type": "string"
     },
     "durationStartDate": {
-      "type": "string",
-      "format": "date-time"
+      "type": "string"
     },
     "durationEndDate": {
-      "type": "string",
-      "format": "date-time"
+      "type": "string"
     },
     "secondaryDurationValue": {
       "type": "string"
