@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+
 import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
 import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
 import static uk.gov.moj.cpp.results.domain.informant.model.InformantRegisterRecipient.informantRegisterRecipient;

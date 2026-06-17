@@ -19,7 +19,6 @@ import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
-import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
@@ -47,7 +46,7 @@ public class NcesNotificationRequestDocumentRequestHelper {
     }
 
     private JsonObject documentFailedPayload(final UUID payloadFileServiceId, final String templateIdentifier, final String reportId) {
-        return JsonObjects.createObjectBuilder()
+        return createObjectBuilder()
                 .add("payloadFileServiceId", payloadFileServiceId.toString())
                 .add("templateIdentifier", templateIdentifier)
                 .add("conversionFormat", "pdf")
@@ -60,12 +59,12 @@ public class NcesNotificationRequestDocumentRequestHelper {
     }
 
     private JsonObject documentAvailablePayload(final UUID payloadFileServiceId, final String templateIdentifier, final String reportId, final UUID generatedDocumentId, final String originatingSource, final Map<String, String> additionalInformation) {
-        final JsonArrayBuilder additionalInformationBuilder =  createArrayBuilder();
+        final JsonArrayBuilder additionalInformationBuilder = createArrayBuilder();
         additionalInformation.forEach((k, v) -> additionalInformationBuilder.add(createObjectBuilder()
                 .add("propertyName", k)
                 .add("propertyValue", v)
                 .build()));
-        return JsonObjects.createObjectBuilder()
+        return createObjectBuilder()
                 .add("payloadFileServiceId", payloadFileServiceId.toString())
                 .add("templateIdentifier", templateIdentifier)
                 .add("conversionFormat", "pdf")
@@ -80,7 +79,7 @@ public class NcesNotificationRequestDocumentRequestHelper {
     }
 
     private Metadata getMetadataFrom(final String userId, final UUID materialId, final String name) {
-        return metadataFrom(JsonObjects.createObjectBuilder()
+        return metadataFrom(createObjectBuilder()
                 .add(ORIGINATOR, materialId.toString())
                 .add(ID, randomUUID().toString())
                 .add(HeaderConstants.USER_ID, userId)

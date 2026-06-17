@@ -13,6 +13,9 @@ import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegi
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
 import static uk.gov.justice.results.courts.InformantRegisterNotified.informantRegisterNotified;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
@@ -38,8 +41,6 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import uk.gov.justice.services.messaging.JsonObjects;
-import javax.json.Json;
 import javax.json.JsonObject;
 
 import com.google.common.collect.Lists;
@@ -95,7 +96,7 @@ public class InformantRegisterEventListenerTest {
         final ArgumentCaptor<InformantRegisterEntity> informantRegisterRequestEntity = forClass(InformantRegisterEntity.class);
         verify(this.informantRegisterRepository).save(informantRegisterRequestEntity.capture());
         final InformantRegisterEntity savedInformantRegisterEntity = informantRegisterRequestEntity.getValue();
-        final JsonObject jsonPayload = JsonObjects.createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
+        final JsonObject jsonPayload = createReader(new StringReader(savedInformantRegisterEntity.getPayload())).readObject();
         final InformantRegisterDocumentRequest informantRegisterRequestSaved = jsonObjectToObjectConverter.convert(jsonPayload, InformantRegisterDocumentRequest.class);
 
         assertThat(savedInformantRegisterEntity.getProsecutionAuthorityId(), is(prosecutionAuthId));
@@ -201,39 +202,39 @@ public class InformantRegisterEventListenerTest {
     @Test
     public void saveInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
         final UUID prosecutionAuthId = randomUUID();
-        final JsonObject offenceJson = Json.createObjectBuilder()
+        final JsonObject offenceJson = createObjectBuilder()
                 .add("offenceCode", "PS90010")
                 .add("orderIndex", 1)
                 .add("offenceTitle", "Theft")
                 .add("pleaValue", "NOT_GUILTY")
                 .add("verdictCode", "G")
                 .build();
-        final JsonObject informantRegisterDocumentRequestJson = Json.createObjectBuilder()
+        final JsonObject informantRegisterDocumentRequestJson = createObjectBuilder()
                 .add("prosecutionAuthorityId", prosecutionAuthId.toString())
                 .add("registerDate", "2026-04-13T09:00:00Z")
                 .add("hearingDate", "2026-04-13T09:00:00Z")
                 .add("hearingId", randomUUID().toString())
                 .add("prosecutionAuthorityCode", "TFL")
                 .add("fileName", "test.csv")
-                .add("hearingVenue", Json.createObjectBuilder()
+                .add("hearingVenue", createObjectBuilder()
                         .add("courtHouse", "Crown Court")
                         .add("ljaName", "LJA")
-                        .add("courtSessions", Json.createArrayBuilder()
-                                .add(Json.createObjectBuilder()
+                        .add("courtSessions", createArrayBuilder()
+                                .add(createObjectBuilder()
                                         .add("courtRoom", "Room 1")
                                         .add("hearingStartTime", "2026-04-13T09:00:00Z")
-                                        .add("defendants", Json.createArrayBuilder()
-                                                .add(Json.createObjectBuilder()
+                                        .add("defendants", createArrayBuilder()
+                                                .add(createObjectBuilder()
                                                         .add("name", "John Smith")
                                                         .add("address1", "1 High St")
                                                         .add("firstName", "John")
                                                         .add("lastName", "Smith")
-                                                        .add("prosecutionCasesOrApplications", Json.createArrayBuilder()
-                                                                .add(Json.createObjectBuilder()
+                                                        .add("prosecutionCasesOrApplications", createArrayBuilder()
+                                                                .add(createObjectBuilder()
                                                                         .add("caseOrApplicationReference", "TFL123")
-                                                                        .add("offences", Json.createArrayBuilder().add(offenceJson)))))))))
+                                                                        .add("offences", createArrayBuilder().add(offenceJson)))))))))
                 .build();
-        final JsonObject payload = Json.createObjectBuilder()
+        final JsonObject payload = createObjectBuilder()
                 .add("informantRegister", informantRegisterDocumentRequestJson)
                 .add("prosecutionAuthorityId", prosecutionAuthId.toString())
                 .build();
@@ -252,40 +253,40 @@ public class InformantRegisterEventListenerTest {
     public void generateInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
         final UUID prosecutionAuthId = randomUUID();
         final LocalDate registerDate = LocalDate.parse("2026-04-13");
-        final JsonObject offenceJson = Json.createObjectBuilder()
+        final JsonObject offenceJson = createObjectBuilder()
                 .add("offenceCode", "PS90010")
                 .add("orderIndex", 1)
                 .add("offenceTitle", "Theft")
                 .add("pleaValue", "NOT_GUILTY")
                 .add("verdictCode", "G")
                 .build();
-        final JsonObject documentRequestJson = Json.createObjectBuilder()
+        final JsonObject documentRequestJson = createObjectBuilder()
                 .add("prosecutionAuthorityId", prosecutionAuthId.toString())
                 .add("registerDate", "2026-04-13T09:00:00Z")
                 .add("hearingDate", "2026-04-13T09:00:00Z")
                 .add("hearingId", randomUUID().toString())
                 .add("prosecutionAuthorityCode", "TFL")
                 .add("fileName", "test.csv")
-                .add("hearingVenue", Json.createObjectBuilder()
+                .add("hearingVenue", createObjectBuilder()
                         .add("courtHouse", "Crown Court")
                         .add("ljaName", "LJA")
-                        .add("courtSessions", Json.createArrayBuilder()
-                                .add(Json.createObjectBuilder()
+                        .add("courtSessions", createArrayBuilder()
+                                .add(createObjectBuilder()
                                         .add("courtRoom", "Room 1")
                                         .add("hearingStartTime", "2026-04-13T09:00:00Z")
-                                        .add("defendants", Json.createArrayBuilder()
-                                                .add(Json.createObjectBuilder()
+                                        .add("defendants", createArrayBuilder()
+                                                .add(createObjectBuilder()
                                                         .add("name", "John Smith")
                                                         .add("address1", "1 High St")
                                                         .add("firstName", "John")
                                                         .add("lastName", "Smith")
-                                                        .add("prosecutionCasesOrApplications", Json.createArrayBuilder()
-                                                                .add(Json.createObjectBuilder()
+                                                        .add("prosecutionCasesOrApplications", createArrayBuilder()
+                                                                .add(createObjectBuilder()
                                                                         .add("caseOrApplicationReference", "TFL123")
-                                                                        .add("offences", Json.createArrayBuilder().add(offenceJson)))))))))
+                                                                        .add("offences", createArrayBuilder().add(offenceJson)))))))))
                 .build();
-        final JsonObject payload = Json.createObjectBuilder()
-                .add("informantRegisterDocumentRequests", Json.createArrayBuilder().add(documentRequestJson))
+        final JsonObject payload = createObjectBuilder()
+                .add("informantRegisterDocumentRequests", createArrayBuilder().add(documentRequestJson))
                 .add("fileId", randomUUID().toString())
                 .add("systemGenerated", false)
                 .build();

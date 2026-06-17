@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static javax.json.Json.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 
 import uk.gov.justice.results.courts.NcesDocumentNotification;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
