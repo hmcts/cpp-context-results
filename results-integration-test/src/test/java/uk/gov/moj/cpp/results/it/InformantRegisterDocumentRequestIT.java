@@ -7,9 +7,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThan;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.getWriteUrl;
 import static uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper.recordInformantRegister;
@@ -86,18 +83,28 @@ public class InformantRegisterDocumentRequestIT {
     @Test
     public void shouldRejectInformantRegisterWithVerdictCodeButNoVerdictDate() throws IOException {
         // T071 / FR-004: verdict.json `dependencies` makes verdictCode and verdictDate co-dependent.
-        // A command carrying verdictCode without verdictDate must be rejected at the envelope-validation
-        // boundary (a 4xx client error), never accepted (202).
-        final UUID prosecutionAuthorityId = randomUUID();
+        // A command carrying verdictCode without verdictDate is rejected by JSON-schema validation on the
+        // (async) command-handler side, so it is never recorded. Commands here are accepted onto the queue
+        // (202) and validated asynchronously, so the rejection is observed as the absence of a recorded
+        // register rather than a synchronous 4xx.
+        final UUID rejectedProsecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();
         final ZonedDateTime registerDate = now(UTC);
         final ZonedDateTime hearingDate = now(UTC).minusHours(1);
         final String prosecutionAuthorityCode = STRING.next();
 
-        final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate,
+        final Response writeResponse = recordInformantRegister(rejectedProsecutionAuthorityId, prosecutionAuthorityCode, registerDate,
                 hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-with-invalid-verdict.json");
+        assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
 
-        assertThat(writeResponse.getStatusCode(), allOf(greaterThanOrEqualTo(400), lessThan(500)));
+        // Sentinel: a valid command submitted after the rejected one. Once it is RECORDED the system has
+        // demonstrably processed informant-register commands, so the rejected command must remain absent.
+        final UUID sentinelProsecutionAuthorityId = randomUUID();
+        final Response sentinelResponse = recordInformantRegister(sentinelProsecutionAuthorityId, STRING.next(), now(UTC),
+                randomUUID(), now(UTC).minusHours(1), "json/informant-register/results.add-informant-register-document-request.json");
+        assertThat(sentinelResponse.getStatusCode(), equalTo(SC_ACCEPTED));
+
+        helper.verifyInformantRegisterRejectedNotRecorded(sentinelProsecutionAuthorityId, rejectedProsecutionAuthorityId);
     }
 
     @Test

@@ -139,11 +139,16 @@ public class InformantRegisterEventListenerTest {
     @Test
     public void shouldSaveInformantRegisterGenerated() {
         final UUID prosecutionAuthId = randomUUID();
-        final LocalDate registerDate = LocalDate.now();
+        // Use a fixed instant (in UTC) so the expected registerDate matches how the listener
+        // derives it: the framework's JSON converter normalises ZonedDateTime to UTC, and the
+        // listener calls getRegisterDate().toLocalDate(). Using LocalDate.now()/ZonedDateTime.now()
+        // here makes the test flaky around the midnight boundary in non-UTC zones (e.g. BST).
+        final ZonedDateTime registerDateTime = ZonedDateTime.parse("2026-04-13T09:00:00Z");
+        final LocalDate registerDate = registerDateTime.toLocalDate();
         final UUID fileId = randomUUID();
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
                 .withProsecutionAuthorityId(prosecutionAuthId)
-                .withRegisterDate(ZonedDateTime.now())
+                .withRegisterDate(registerDateTime)
                 .withHearingVenue(informantRegisterHearingVenue().build())
                 .build();
 

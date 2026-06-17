@@ -10,6 +10,7 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
@@ -87,6 +88,18 @@ public class InformantRegisterDocumentRequestHelper {
                                 matchers
                         )))
                 .getPayload();
+    }
+
+    /**
+     * Verifies that a rejected informant-register command was never recorded. The valid
+     * {@code sentinelProsecutionAuthorityId} (submitted after the rejected command) becoming RECORDED
+     * proves the system has processed informant-register commands; the rejected command must remain absent.
+     */
+    public void verifyInformantRegisterRejectedNotRecorded(final UUID sentinelProsecutionAuthorityId, final UUID rejectedProsecutionAuthorityId) {
+        getInformantRegisterDocumentRequests(RECORDED.name(),
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", hasItem(sentinelProsecutionAuthorityId.toString())),
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", not(hasItem(rejectedProsecutionAuthorityId.toString())))
+        );
     }
 
     public void verifyInformantRegisterIsNotified(final UUID prosecutionAuthorityId) {
