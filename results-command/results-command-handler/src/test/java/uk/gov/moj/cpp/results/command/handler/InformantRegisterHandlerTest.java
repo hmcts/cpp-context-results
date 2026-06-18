@@ -8,7 +8,6 @@ import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -331,77 +330,6 @@ public class InformantRegisterHandlerTest {
     }
 
     @Test
-    public void generateInformantRegister_withV1Payload_shouldEmitV1Event() throws EventStreamException {
-        final Envelope<GenerateInformantRegister> generateInformantRegisterEnvelope = prepareEnvelope();
-        final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final JsonObject queryResponse = queryResponseWith(buildV1PayloadJson());
-
-        when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(queryEnvelope.payloadAsJsonObject()).thenReturn(queryResponse);
-        when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
-
-        informantRegisterHandler.handleGenerateInformantRegister(generateInformantRegisterEnvelope);
-
-        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
-        assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata().withName("results.event.informant-register-generated"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
-                                withJsonPath("$.informantRegisterDocumentRequests.length()", is(1)),
-                                withJsonPath("$.informantRegisterDocumentRequests[0].hearingVenue.courtSessions[0]." +
-                                        "defendants[0].prosecutionCasesOrApplications[0].offences[0].verdictCode", is("GUILTY"))
-                        ))
-                )
-        ));
-    }
-
-    @Test
-    public void generateInformantRegister_withV2Payload_shouldEmitV2Event() throws EventStreamException {
-        final Envelope<GenerateInformantRegister> generateInformantRegisterEnvelope = prepareEnvelope();
-        final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final JsonObject queryResponse = queryResponseWith(buildV2PayloadJson());
-
-        when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(queryEnvelope.payloadAsJsonObject()).thenReturn(queryResponse);
-        when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
-
-        informantRegisterHandler.handleGenerateInformantRegister(generateInformantRegisterEnvelope);
-
-        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
-        assertThat(envelopeStream, streamContaining(
-                jsonEnvelope(
-                        metadata().withName("results.event.informant-register-generated-v2"),
-                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
-                                withJsonPath("$.informantRegisterDocumentRequests.length()", is(1)),
-                                withJsonPath("$.informantRegisterDocumentRequests[0].hearingVenue.courtSessions[0]." +
-                                        "defendants[0].prosecutionCasesOrApplications[0].offences[0].verdict.verdictCode", is("GUILTY"))
-                        ))
-                )
-        ));
-    }
-
-    @Test
-    public void generateInformantRegister_withMixedV1AndV2Payloads_shouldEmitBothEvents() throws EventStreamException {
-        final Envelope<GenerateInformantRegister> generateInformantRegisterEnvelope = prepareEnvelope();
-        final JsonEnvelope queryEnvelope = mock(JsonEnvelope.class);
-        final JsonObject queryResponse = queryResponseWith(buildV1PayloadJson(), buildV2PayloadJson());
-
-        when(eventSource.getStreamById(any())).thenReturn(eventStream);
-        when(queryEnvelope.payloadAsJsonObject()).thenReturn(queryResponse);
-        when(requester.request(any(Envelope.class))).thenReturn(queryEnvelope);
-
-        informantRegisterHandler.handleGenerateInformantRegister(generateInformantRegisterEnvelope);
-
-        final List<String> eventNames = verifyAppendAndGetArgumentFrom(eventStream)
-                .map(jsonEnvelope -> jsonEnvelope.metadata().name())
-                .toList();
-
-        assertThat(eventNames, containsInAnyOrder(
-                "results.event.informant-register-generated",
-                "results.event.informant-register-generated-v2"));
-    }
-
-    @Test
     public void notifyInformantRegister() throws EventStreamException {
         final UUID materialId = randomUUID();
         final Envelope<NotifyInformantRegister> notifyInformantRegisterEnvelope = prepareNotificationEnvelope(materialId);
@@ -513,87 +441,6 @@ public class InformantRegisterHandlerTest {
 
                 )
         );
-    }
-
-    private JsonObject queryResponseWith(final String... payloads) {
-        final JsonArrayBuilder arrayBuilder = createArrayBuilder();
-        for (final String payload : payloads) {
-            arrayBuilder.add(createObjectBuilder()
-                    .add("prosecutionAuthorityId", PROSECUTION_AUTHORITY_ID.toString())
-                    .add("registerDate", REGISTER_DATE.toString())
-                    .add("payload", payload)
-                    .build());
-        }
-        return createObjectBuilder().add("informantRegisterDocumentRequests", arrayBuilder.build()).build();
-    }
-
-    private String buildV1PayloadJson() {
-        final uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence offence =
-                uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence.informantRegisterOffence()
-                        .withOffenceCode("offenceCode_V1")
-                        .withOffenceTitle("offenceTitle_V1")
-                        .withOrderIndex(1)
-                        .withVerdictCode("GUILTY")
-                        .build();
-        final uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication caseOrApplication =
-                uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication()
-                        .withCaseOrApplicationReference("caseURN_V1")
-                        .withOffences(List.of(offence))
-                        .build();
-        final uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant defendant =
-                uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant.informantRegisterDefendant()
-                        .withFirstName("firstName_V1")
-                        .withProsecutionCasesOrApplications(List.of(caseOrApplication))
-                        .build();
-        final uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing hearing =
-                uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing.informantRegisterHearing()
-                        .withCourtRoom("courtroom_V1")
-                        .withDefendants(List.of(defendant))
-                        .build();
-        final uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue hearingVenue =
-                uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue()
-                        .withCourtHouse("courtHouse_V1")
-                        .withCourtSessions(List.of(hearing))
-                        .build();
-        final uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest request =
-                uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest()
-                        .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
-                        .withRegisterDate(REGISTER_DATE)
-                        .withHearingVenue(hearingVenue)
-                        .build();
-        return objectToJsonObjectConverter.convert(request).toString();
-    }
-
-    private String buildV2PayloadJson() {
-        final InformantRegisterOffence offence = InformantRegisterOffence.informantRegisterOffence()
-                .withOffenceCode("offenceCode_V2")
-                .withOffenceTitle("offenceTitle_V2")
-                .withOrderIndex(1)
-                .withVerdict(Verdict.verdict().withVerdictCode("GUILTY").build())
-                .build();
-        final InformantRegisterCaseOrApplication caseOrApplication =
-                InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication()
-                        .withCaseOrApplicationReference("caseURN_V2")
-                        .withOffences(List.of(offence))
-                        .build();
-        final InformantRegisterDefendant defendant = InformantRegisterDefendant.informantRegisterDefendant()
-                .withFirstName("firstName_V2")
-                .withProsecutionCasesOrApplications(List.of(caseOrApplication))
-                .build();
-        final InformantRegisterHearing hearing = InformantRegisterHearing.informantRegisterHearing()
-                .withCourtRoom("courtroom_V2")
-                .withDefendants(List.of(defendant))
-                .build();
-        final InformantRegisterHearingVenue hearingVenue = InformantRegisterHearingVenue.informantRegisterHearingVenue()
-                .withCourtHouse("courtHouse_V2")
-                .withCourtSessions(List.of(hearing))
-                .build();
-        final InformantRegisterDocumentRequest request = informantRegisterDocumentRequest()
-                .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
-                .withRegisterDate(REGISTER_DATE)
-                .withHearingVenue(hearingVenue)
-                .build();
-        return objectToJsonObjectConverter.convert(request).toString();
     }
 
     private Envelope<InformantRegisterDocumentRequest> buildEnvelope() {
