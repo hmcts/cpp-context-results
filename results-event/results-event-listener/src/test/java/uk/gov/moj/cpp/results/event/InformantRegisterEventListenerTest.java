@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.event;
 
 import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
@@ -45,6 +44,7 @@ import java.util.UUID;
 import javax.json.JsonObject;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -79,7 +79,7 @@ public class InformantRegisterEventListenerTest {
     @Test
     public void shouldSaveInformantRegisterRequested() {
         final UUID prosecutionAuthId = randomUUID();
-        final String ouCode = randomAlphanumeric(10);
+        final String ouCode = RandomStringUtils.insecure().nextAlphanumeric(10);
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
                 .withProsecutionAuthorityId(prosecutionAuthId)
                 .withProsecutionAuthorityOuCode(ouCode)
@@ -109,7 +109,7 @@ public class InformantRegisterEventListenerTest {
     @Test
     void saveInformantRegisterV2_shouldSaveEntityFromLocalDocumentRequest() {
         final UUID prosecutionAuthId = randomUUID();
-        final String ouCode = randomAlphanumeric(10);
+        final String ouCode = RandomStringUtils.insecure().nextAlphanumeric(10);
         final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
 
         final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest localDocumentRequest =
