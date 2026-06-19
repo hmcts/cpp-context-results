@@ -6,19 +6,18 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
-import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
+import static org.hamcrest.Matchers.hasSize;
 
-import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
-import uk.gov.justice.results.courts.InformantRegisterGenerated;
+import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
+
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
-import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient;
 
 import java.util.List;
 import java.util.UUID;
@@ -54,6 +53,34 @@ public class ProsecutionAuthorityAggregateTest {
         assertThat(eventStream.size(), is(1));
         final Object object = eventStream.get(0);
         assertThat(object.getClass(), is(equalTo(InformantRegisterNotifiedV2.class)));
+    }
+
+    @Test
+    public void apply_informantRegisterGeneratedV2_shouldSetRecipientsFromLocalTypes() {
+        final InformantRegisterRecipient recipient = informantRegisterRecipient()
+                .withRecipientName("Jane")
+                .withEmailAddress1("jane@hmcts.net")
+                .withEmailTemplateName("template")
+                .build();
+        final InformantRegisterDocumentRequest documentRequest = informantRegisterDocumentRequest()
+                .withRecipients(singletonList(recipient))
+                .build();
+        final InformantRegisterGeneratedV2 event = InformantRegisterGeneratedV2.informantRegisterGeneratedV2()
+                .withInformantRegisterDocumentRequests(singletonList(documentRequest))
+                .withSystemGenerated(false)
+                .build();
+
+        aggregate.apply(event);
+
+        final NotifyInformantRegister notifyInformantRegister = notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("template Id")
+                .withFileId(randomUUID())
+                .build();
+
+        final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
+        assertThat(eventStream.size(), is(1));
+        assertThat(eventStream.get(0).getClass(), is(equalTo(InformantRegisterNotifiedV2.class)));
     }
 
     @Test

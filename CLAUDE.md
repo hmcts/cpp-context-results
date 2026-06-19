@@ -134,4 +134,9 @@ This repo uses Spec Kit. For non-trivial work use:
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
+
+**Active feature**: CIMD-3915 — Include Verdict in SJP Results
+**Branch**: `CIMD-3915-informant-register-local-schema`
+**Implementation plan**: [specs/001-informant-register-local-schema/plan.md](specs/001-informant-register-local-schema/plan.md)
+**Quickstart**: [specs/001-informant-register-local-schema/quickstart.md](specs/001-informant-register-local-schema/quickstart.md)
 <!-- SPECKIT END -->

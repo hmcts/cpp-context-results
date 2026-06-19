@@ -13,18 +13,29 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterCaseOrApplication.informantRegisterCaseOrApplication;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant.informantRegisterDefendant;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearing.informantRegisterHearing;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence.informantRegisterOffence;
+import static uk.gov.justice.results.courts.informantRegisterDocument.Verdict.verdict;
 
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.MetadataBuilder;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearingVenue;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence;
+import uk.gov.justice.results.courts.informantRegisterDocument.Verdict;
 import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -32,6 +43,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -134,15 +146,60 @@ public class ProsecutorResultsQueryViewTest {
         assertThat(prosecutorResults.payloadAsJsonObject().getString("prosecutionAuthorityName", null), nullValue());
     }
 
+    @Test
+    public void getProsecutorResults_whenRequiredParamsMissing_shouldReturnNull() {
+        final JsonEnvelope prosecutorResults = prosecutorResultsQueryView.getProsecutorResults(createPayload(null, null, null));
+        assertThat(prosecutorResults, nullValue());
+    }
+
+    @Test
+    public void getProsecutorResults_whenOffenceHasVerdict_shouldIncludeVerdictInResponse() {
+        final Verdict verdictObj = verdict().withVerdictCode("G").withVerdictDate("2026-04-13").withVerdictType("FOUND_GUILTY").build();
+        final List<InformantRegisterEntity> results = getResultsWithVerdict(verdictObj);
+        when(informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(ouCode, now(), now())).thenReturn(results);
+
+        final JsonEnvelope prosecutorResults = prosecutorResultsQueryView.getProsecutorResults(createPayload(ouCode, now().toString(), now().toString()));
+
+        final JsonObject offence = getFirstOffence(prosecutorResults);
+        assertThat(offence.getJsonObject("verdict").getString("verdictCode"), is("G"));
+        assertThat(offence.getJsonObject("verdict").getString("verdictDate"), is("2026-04-13"));
+        assertThat(offence.getJsonObject("verdict").getString("verdictType"), is("FOUND_GUILTY"));
+    }
+
+    @Test
+    public void getProsecutorResults_whenOffenceHasNoVerdict_shouldOmitVerdictField() {
+        final List<InformantRegisterEntity> results = getResultsWithVerdict(null);
+        when(informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(ouCode, now(), now())).thenReturn(results);
+
+        final JsonEnvelope prosecutorResults = prosecutorResultsQueryView.getProsecutorResults(createPayload(ouCode, now().toString(), now().toString()));
+
+        final JsonObject offence = getFirstOffence(prosecutorResults);
+        assertThat(offence.containsKey("verdict"), is(false));
+    }
+
+    @Test
+    public void getProsecutorResults_whenOffenceVerdictIsNull_shouldOmitVerdictField() {
+        final List<InformantRegisterEntity> results = getResultsWithVerdict(null);
+        when(informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(ouCode, now(), now())).thenReturn(results);
+
+        final JsonEnvelope prosecutorResults = prosecutorResultsQueryView.getProsecutorResults(createPayload(ouCode, now().toString(), now().toString()));
+
+        final JsonObject offence = getFirstOffence(prosecutorResults);
+        assertThat(offence.get("verdict"), nullValue());
+    }
+
     private JsonEnvelope createPayload(final String ouCode, final String startDate, final String endDate) {
         final MetadataBuilder metadataBuilder = metadataBuilder().withId(randomUUID()).withName("results.prosecutor-results");
-        final JsonObjectBuilder payloadBuilder = createObjectBuilder()
-                .add("ouCode", ouCode)
-                .add("startDate", startDate);
+        final JsonObjectBuilder payloadBuilder = createObjectBuilder();
+        if (nonNull(ouCode)) {
+            payloadBuilder.add("ouCode", ouCode);
+        }
+        if (nonNull(startDate)) {
+            payloadBuilder.add("startDate", startDate);
+        }
         if (nonNull(endDate)) {
             payloadBuilder.add("endDate", endDate);
         }
-
         return envelopeFrom(metadataBuilder, payloadBuilder);
     }
 
@@ -155,8 +212,53 @@ public class ProsecutorResultsQueryViewTest {
                 .withProsecutionAuthorityName(prosecutionAuthorityName)
                 .withProsecutionAuthorityCode(prosecutionAuthorityCode)
                 .build();
-
         entity.setPayload(objectToJsonObjectConverter.convert(informantRegisterDocumentRequest).toString());
         return singletonList(entity);
+    }
+
+    private List<InformantRegisterEntity> getResultsWithVerdict(final Verdict verdictObj) {
+        final InformantRegisterEntity entity = new InformantRegisterEntity();
+        final InformantRegisterOffence offence = informantRegisterOffence()
+                .withOrderIndex(1)
+                .withOffenceCode("OFF001")
+                .withOffenceTitle("Theft")
+                .withVerdict(verdictObj)
+                .build();
+        final InformantRegisterCaseOrApplication caseOrApplication = informantRegisterCaseOrApplication()
+                .withCaseOrApplicationReference("CASE001")
+                .withOffences(singletonList(offence))
+                .build();
+        final InformantRegisterDefendant defendant = informantRegisterDefendant()
+                .withName("John Smith")
+                .withAddress1("1 Main St")
+                .withProsecutionCasesOrApplications(singletonList(caseOrApplication))
+                .build();
+        final InformantRegisterHearing hearing = informantRegisterHearing()
+                .withCourtRoom("Court 1")
+                .withHearingStartTime("2026-04-13")
+                .withDefendants(singletonList(defendant))
+                .build();
+        final InformantRegisterHearingVenue hearingVenue = informantRegisterHearingVenue()
+                .withCourtHouse("Crown Court")
+                .withCourtSessions(singletonList(hearing))
+                .build();
+        final InformantRegisterDocumentRequest documentRequest = informantRegisterDocumentRequest()
+                .withHearingVenue(hearingVenue)
+                .withProsecutionAuthorityOuCode(ouCode)
+                .withProsecutionAuthorityId(prosecutionAuthorityId)
+                .withProsecutionAuthorityName(prosecutionAuthorityName)
+                .withProsecutionAuthorityCode(prosecutionAuthorityCode)
+                .build();
+        entity.setPayload(objectToJsonObjectConverter.convert(documentRequest).toString());
+        return singletonList(entity);
+    }
+
+    private JsonObject getFirstOffence(final JsonEnvelope prosecutorResults) {
+        return prosecutorResults.payloadAsJsonObject()
+                .getJsonArray("hearingVenues").get(0).asJsonObject()
+                .getJsonArray("courtSessions").get(0).asJsonObject()
+                .getJsonArray("defendants").get(0).asJsonObject()
+                .getJsonArray("prosecutionCasesOrApplications").get(0).asJsonObject()
+                .getJsonArray("offences").get(0).asJsonObject();
     }
 }
