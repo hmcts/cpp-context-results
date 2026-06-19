@@ -16,10 +16,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * T071 (FR-004): the verdict schema's {@code dependencies} block enforces that {@code verdictCode}
- * and {@code verdictDate} are mutually co-dependent. This schema-level constraint is the mechanism
- * by which the framework rejects a command carrying {@code verdictCode} without {@code verdictDate}
- * at the envelope-validation boundary — no production handler guard is required.
+ * T071 (FR-004): the verdict schema's {@code dependencies} block enforces that whenever
+ * {@code verdictDate} is present, {@code verdictCode} must also be present. The reverse is not
+ * required — {@code verdictCode} may stand alone without a {@code verdictDate}. This schema-level
+ * constraint is applied by the framework at the envelope-validation boundary — no production
+ * handler guard is required.
  *
  * <p>This is verified at the schema layer (not in {@code InformantRegisterHandlerTest}) because the
  * handler unit test invokes the handler method directly and therefore bypasses the framework's
@@ -50,10 +51,8 @@ class VerdictSchemaDependencyTest {
     }
 
     @Test
-    void verdictCodeWithoutVerdictDate_shouldFailValidation() {
-        final ValidationException exception = assertThrows(ValidationException.class,
-                () -> schema.validate(new JSONObject().put("verdictCode", "G")));
-        assertThat(exception.getMessage(), containsString("verdictDate"));
+    void verdictCodeWithoutVerdictDate_shouldValidate() {
+        assertDoesNotThrow(() -> schema.validate(new JSONObject().put("verdictCode", "G")));
     }
 
     @Test

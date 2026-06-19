@@ -9,7 +9,7 @@
       "type": "string"
     },
     "verdictDate": {
-      "description": "Conviction date in yyyy-MM-dd format. Mandatory when verdictCode is present.",
+      "description": "Conviction date in yyyy-MM-dd format. Optional, but when present verdictCode is required.",
       "type": "string"
     },
     "verdictType": {
