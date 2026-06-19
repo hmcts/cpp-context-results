@@ -3,7 +3,7 @@
 # Script that runs, liquibase, deploys wars and runs integration tests
 
 CONTEXT_NAME=results
-
+#
 FRAMEWORK_LIBRARIES_VERSION=$(mvn help:evaluate -Dexpression=framework-libraries.version -q -DforceStdout)
 FRAMEWORK_VERSION=$(mvn help:evaluate -Dexpression=framework.version -q -DforceStdout)
 EVENT_STORE_VERSION=$(mvn help:evaluate -Dexpression=event-store.version -q -DforceStdout)
