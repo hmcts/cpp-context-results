@@ -60,13 +60,13 @@ public class InformantRegisterEventListener {
     @Transactional
     @Handles("results.event.informant-register-recorded-v2")
     public void saveInformantRegisterV2(final JsonEnvelope event) {
-        final JsonObject informantRegisterDocumentRequestJson = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
-        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest =
-                jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class);
+        final JsonObject informantRegisterDocumentRequestJsonV2 = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
+        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequestV2 =
+                jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJsonV2, uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class);
 
-        saveRecordedInformantRegister(informantRegisterDocumentRequestJson, documentRequest.getRegisterDate(),
-                documentRequest.getHearingId(), documentRequest.getProsecutionAuthorityId(),
-                documentRequest.getProsecutionAuthorityCode(), documentRequest.getProsecutionAuthorityOuCode());
+        saveRecordedInformantRegister(informantRegisterDocumentRequestJsonV2, documentRequestV2.getRegisterDate(),
+                documentRequestV2.getHearingId(), documentRequestV2.getProsecutionAuthorityId(),
+                documentRequestV2.getProsecutionAuthorityCode(), documentRequestV2.getProsecutionAuthorityOuCode());
     }
 
     private void saveRecordedInformantRegister(final JsonObject informantRegisterDocumentRequestJson,

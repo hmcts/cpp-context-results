@@ -205,7 +205,7 @@ public class InformantRegisterDocumentRequestQueryViewTest {
     }
 
     @Test
-    public void shouldConvertOffenceVerdictCodeToVerdictObjectForByDateQueryWhenOnlyVerdictCodeIsPresent() {
+    void shouldConvertOffenceVerdictCodeToVerdictObjectForByDateQueryWhenOnlyVerdictCodeIsPresent() {
         final LocalDate registerDate = now();
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
         final JsonObject converted = createObjectBuilder()
@@ -228,7 +228,7 @@ public class InformantRegisterDocumentRequestQueryViewTest {
     }
 
     @Test
-    public void shouldConvertOffenceVerdictCodeToVerdictObjectForByMaterialQueryWhenOnlyVerdictCodeIsPresent() {
+    void shouldConvertOffenceVerdictCodeToVerdictObjectForByMaterialQueryWhenOnlyVerdictCodeIsPresent() {
         final UUID fileId = randomUUID();
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
         final JsonObject converted = createObjectBuilder()
