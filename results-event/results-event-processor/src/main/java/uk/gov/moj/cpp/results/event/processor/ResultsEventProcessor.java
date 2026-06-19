@@ -149,6 +149,7 @@ public class ResultsEventProcessor {
     private static final String NOTIFICATION_ID = "notificationId";
     private static final String EMAIL_TEMPLATE_ID = "emailTemplateId";
     private static final String SEND_TO_ADDRESS = "sendToAddress";
+    private static final String BAIL_CONDITIONS_CANCELLED= "Bail Conditions Cancelled";
     public static final String HEARING_DAY = "hearingDay";
     public static final String PUBLIC_RESULTS_POLICE_RESULT_GENERATED = "public.results.police-result-generated";
 
@@ -729,13 +730,14 @@ public class ResultsEventProcessor {
                 .filter(judicialResult -> {
                     String policeSubjectLineTitle = judicialResult.getPoliceSubjectLineTitle();
                     String resultText = judicialResult.getResultText();
-                    return !(policeSubjectLineTitle != null && policeSubjectLineTitle.equals("Bail Conditions Cancelled")
-                            && (resultText != null && (resultText.contains("Domestic Violence case") || resultText.contains("Vulnerable or Intimidated Victim"))));
+                    return !(policeSubjectLineTitle != null && policeSubjectLineTitle.equals(BAIL_CONDITIONS_CANCELLED)
+                            && (resultText != null && !resultText.toLowerCase().contains(BAIL_CONDITIONS_CANCELLED.toLowerCase())));
                 })
                 .map(JudicialResult::getPoliceSubjectLineTitle)
                 .filter(StringUtils::isNotEmpty)
                 .distinct()
                 .collect(Collectors.joining(DELIMITER));
+
         return caseSubject.isEmpty() ? "" : caseSubject;
     }
 
