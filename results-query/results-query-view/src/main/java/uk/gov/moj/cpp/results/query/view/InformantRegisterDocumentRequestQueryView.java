@@ -147,7 +147,7 @@ public class InformantRegisterDocumentRequestQueryView {
         final JsonArrayBuilder jsonArrayBuilder = createArrayBuilder();
 
         final List<InformantRegisterEntity> informantRegisterEntities = informantRegisterRepository.findByFileId(fileId);
-        informantRegisterEntities.forEach(informantRegisterEntity -> jsonArrayBuilder.add(objectToJsonObjectConverter.convert(informantRegisterEntity)));
+        informantRegisterEntities.forEach(informantRegisterEntity -> jsonArrayBuilder.add(convertWithNormalisedVerdict(informantRegisterEntity)));
 
         return envelopeFrom(envelope.metadata(),
                 jsonObjectBuilder.add(FIELD_INFORMANT_REGISTER_DOCUMENTS, jsonArrayBuilder.build()).build());

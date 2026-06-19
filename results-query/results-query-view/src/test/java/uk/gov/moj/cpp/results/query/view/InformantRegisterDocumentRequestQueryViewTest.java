@@ -227,6 +227,29 @@ public class InformantRegisterDocumentRequestQueryViewTest {
         assertThat(offence.getJsonObject("verdict").isNull("verdictDate"), is(true));
     }
 
+    @Test
+    public void shouldConvertOffenceVerdictCodeToVerdictObjectForByMaterialQueryWhenOnlyVerdictCodeIsPresent() {
+        final UUID fileId = randomUUID();
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        final JsonObject converted = createObjectBuilder()
+                .add("payload", payloadWithOffence(createObjectBuilder().add("verdictCode", "G")))
+                .build();
+
+        final JsonObject payload = createObjectBuilder().add("fileId", fileId.toString()).build();
+        final JsonEnvelope envelope = envelopeFrom(metadataBuilder().withId(randomUUID())
+                .withName("results.query.informant-register-document-by-material").build(), payload);
+
+        when(objectToJsonObjectConverter.convert(informantRegisterEntity)).thenReturn(converted);
+        when(informantRegisterRepository.findByFileId(fileId)).thenReturn(newArrayList(informantRegisterEntity));
+
+        final JsonObject offence = firstOffence(informantRegisterDocumentRequestQueryView.getInformantRegistersByMaterial(envelope));
+
+        assertThat(offence.containsKey("verdictCode"), is(false));
+        assertThat(offence.getJsonObject("verdict").getString("verdictCode"), is("G"));
+        assertThat(offence.getJsonObject("verdict").isNull("verdictType"), is(true));
+        assertThat(offence.getJsonObject("verdict").isNull("verdictDate"), is(true));
+    }
+
     private JsonEnvelope recordedRequestEnvelope() {
         return envelopeFrom(metadataBuilder().withId(randomUUID())
                         .withName("results.query.informant-register-document-request").build(),
