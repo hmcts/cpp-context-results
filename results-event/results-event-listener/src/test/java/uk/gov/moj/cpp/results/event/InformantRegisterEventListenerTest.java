@@ -107,7 +107,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void saveInformantRegisterV2_shouldSaveEntityFromLocalDocumentRequest() {
+    void saveInformantRegisterV2_shouldSaveEntityFromLocalDocumentRequest() {
         final UUID prosecutionAuthId = randomUUID();
         final String ouCode = randomAlphanumeric(10);
         final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
@@ -171,7 +171,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void generateInformantRegisterV2_shouldSetEntityStatusToGenerated() {
+    void generateInformantRegisterV2_shouldSetEntityStatusToGenerated() {
         final UUID prosecutionAuthId = randomUUID();
         final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
 
@@ -201,7 +201,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void saveInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
+    void saveInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
         final UUID prosecutionAuthId = randomUUID();
         final JsonObject offenceJson = createObjectBuilder()
                 .add("offenceCode", "PS90010")
@@ -251,7 +251,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void generateInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
+    void generateInformantRegister_withPreMigrationFlatVerdictCode_shouldNotThrow() {
         final UUID prosecutionAuthId = randomUUID();
         final LocalDate registerDate = LocalDate.parse("2026-04-13");
         final JsonObject offenceJson = createObjectBuilder()
@@ -303,7 +303,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void generateInformantRegister_withNullDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+    void generateInformantRegister_withNullDocumentRequests_shouldSkipAndNotInteractWithRepository() {
         final JsonObject payload = createObjectBuilder()
                 .add("fileId", randomUUID().toString())
                 .add("systemGenerated", false)
@@ -316,7 +316,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void generateInformantRegister_withEmptyDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+    void generateInformantRegister_withEmptyDocumentRequests_shouldSkipAndNotInteractWithRepository() {
         final JsonObject payload = createObjectBuilder()
                 .add("informantRegisterDocumentRequests", createArrayBuilder())
                 .add("fileId", randomUUID().toString())
@@ -330,7 +330,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void generateInformantRegisterV2_withNullDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+    void generateInformantRegisterV2_withNullDocumentRequests_shouldSkipAndNotInteractWithRepository() {
         final JsonObject payload = createObjectBuilder()
                 .add("systemGenerated", false)
                 .build();
@@ -342,7 +342,7 @@ public class InformantRegisterEventListenerTest {
     }
 
     @Test
-    public void generateInformantRegisterV2_withEmptyDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+    void generateInformantRegisterV2_withEmptyDocumentRequests_shouldSkipAndNotInteractWithRepository() {
         final JsonObject payload = createObjectBuilder()
                 .add("informantRegisterDocumentRequests", createArrayBuilder())
                 .add("systemGenerated", false)
