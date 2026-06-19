@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
 import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue.informantRegisterHearingVenue;
@@ -299,6 +300,58 @@ public class InformantRegisterEventListenerTest {
                 metadataWithRandomUUID("results.event.informant-register-generated"), payload));
 
         assertThat(informantRegisterEntity.getStatus(), is(GENERATED));
+    }
+
+    @Test
+    public void generateInformantRegister_withNullDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+        final JsonObject payload = createObjectBuilder()
+                .add("fileId", randomUUID().toString())
+                .add("systemGenerated", false)
+                .build();
+
+        informantRegisterEventListener.generateInformantRegister(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated"), payload));
+
+        verifyNoInteractions(informantRegisterRepository);
+    }
+
+    @Test
+    public void generateInformantRegister_withEmptyDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+        final JsonObject payload = createObjectBuilder()
+                .add("informantRegisterDocumentRequests", createArrayBuilder())
+                .add("fileId", randomUUID().toString())
+                .add("systemGenerated", false)
+                .build();
+
+        informantRegisterEventListener.generateInformantRegister(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated"), payload));
+
+        verifyNoInteractions(informantRegisterRepository);
+    }
+
+    @Test
+    public void generateInformantRegisterV2_withNullDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+        final JsonObject payload = createObjectBuilder()
+                .add("systemGenerated", false)
+                .build();
+
+        informantRegisterEventListener.generateInformantRegisterV2(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated-v2"), payload));
+
+        verifyNoInteractions(informantRegisterRepository);
+    }
+
+    @Test
+    public void generateInformantRegisterV2_withEmptyDocumentRequests_shouldSkipAndNotInteractWithRepository() {
+        final JsonObject payload = createObjectBuilder()
+                .add("informantRegisterDocumentRequests", createArrayBuilder())
+                .add("systemGenerated", false)
+                .build();
+
+        informantRegisterEventListener.generateInformantRegisterV2(envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-generated-v2"), payload));
+
+        verifyNoInteractions(informantRegisterRepository);
     }
 
     @Test

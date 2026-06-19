@@ -30,9 +30,13 @@ import javax.json.JsonObject;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ServiceComponent(EVENT_LISTENER)
 public class InformantRegisterEventListener {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(InformantRegisterEventListener.class);
 
     private static final String INFORMANT_REGISTER_REQUEST_PARAM = "informantRegister";
 
@@ -89,8 +93,14 @@ public class InformantRegisterEventListener {
         final InformantRegisterGenerated informantRegisterGenerated = jsonObjectToObjectConverter.convert(payload, InformantRegisterGenerated.class);
         final ZonedDateTime currentDateTime = now();
 
-        final UUID prosecutionAuthorityId = informantRegisterGenerated.getInformantRegisterDocumentRequests().get(0).getProsecutionAuthorityId();
-        final LocalDate registerDate = informantRegisterGenerated.getInformantRegisterDocumentRequests().get(0).getRegisterDate().toLocalDate();
+        final List<InformantRegisterDocumentRequest> documentRequests = informantRegisterGenerated.getInformantRegisterDocumentRequests();
+        if (documentRequests == null || documentRequests.isEmpty()) {
+            LOGGER.warn("Skipping results.event.informant-register-generated: no informantRegisterDocumentRequests present");
+            return;
+        }
+
+        final UUID prosecutionAuthorityId = documentRequests.get(0).getProsecutionAuthorityId();
+        final LocalDate registerDate = documentRequests.get(0).getRegisterDate().toLocalDate();
 
         final List<InformantRegisterEntity> informantRegisters = informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthorityId, registerDate);
         informantRegisters.forEach(informantRegisterEntity -> {
@@ -102,7 +112,7 @@ public class InformantRegisterEventListener {
             }
         });
 
-        informantRegisterGenerated.getInformantRegisterDocumentRequests().stream().map(InformantRegisterDocumentRequest::getHearingId).forEach(hearingId -> {
+        documentRequests.stream().map(InformantRegisterDocumentRequest::getHearingId).forEach(hearingId -> {
             final List<InformantRegisterEntity> informantRegistersList = informantRegisterRepository.findByHearingIdAndStatusRecorded(hearingId);
             informantRegistersList.forEach(informantRegisterEntity -> informantRegisterEntity.setProcessedOn(currentDateTime));
         });
@@ -115,8 +125,14 @@ public class InformantRegisterEventListener {
         final InformantRegisterGeneratedV2 informantRegisterGenerated = jsonObjectToObjectConverter.convert(payload, InformantRegisterGeneratedV2.class);
         final ZonedDateTime currentDateTime = now();
 
-        final UUID prosecutionAuthorityId = informantRegisterGenerated.getInformantRegisterDocumentRequests().get(0).getProsecutionAuthorityId();
-        final LocalDate registerDate = informantRegisterGenerated.getInformantRegisterDocumentRequests().get(0).getRegisterDate().toLocalDate();
+        final List<uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest> documentRequests = informantRegisterGenerated.getInformantRegisterDocumentRequests();
+        if (documentRequests == null || documentRequests.isEmpty()) {
+            LOGGER.warn("Skipping results.event.informant-register-generated-v2: no informantRegisterDocumentRequests present");
+            return;
+        }
+
+        final UUID prosecutionAuthorityId = documentRequests.get(0).getProsecutionAuthorityId();
+        final LocalDate registerDate = documentRequests.get(0).getRegisterDate().toLocalDate();
 
         final List<InformantRegisterEntity> informantRegisters = informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthorityId, registerDate);
         informantRegisters.forEach(informantRegisterEntity -> {
@@ -128,7 +144,7 @@ public class InformantRegisterEventListener {
             }
         });
 
-        informantRegisterGenerated.getInformantRegisterDocumentRequests().stream()
+        documentRequests.stream()
                 .map(uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest::getHearingId)
                 .forEach(hearingId -> {
                     final List<InformantRegisterEntity> informantRegistersList = informantRegisterRepository.findByHearingIdAndStatusRecorded(hearingId);
