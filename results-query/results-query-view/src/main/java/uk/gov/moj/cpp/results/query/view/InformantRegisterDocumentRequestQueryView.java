@@ -177,7 +177,7 @@ public class InformantRegisterDocumentRequestQueryView {
                         .flatMap(List::stream)
                         .collect(Collectors.toList());
             }
-            informantRegisterEntities.forEach(i -> jsonArrayBuilder.add(objectToJsonObjectConverter.convert(i)));
+            informantRegisterEntities.forEach(i -> jsonArrayBuilder.add(convertWithNormalisedVerdict(i)));
         });
 
         return envelopeFrom(envelope.metadata(),

@@ -49,22 +49,12 @@ public class InformantRegisterEventListener {
     @Transactional
     @Handles("results.event.informant-register-recorded")
     public void saveInformantRegister(final JsonEnvelope event) {
-
         final JsonObject informantRegisterDocumentRequestJson = event.payloadAsJsonObject().getJsonObject(INFORMANT_REGISTER_REQUEST_PARAM);
+        final InformantRegisterDocumentRequest documentRequest = jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, InformantRegisterDocumentRequest.class);
 
-        final InformantRegisterDocumentRequest informantRegisterDocumentRequest = jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, InformantRegisterDocumentRequest.class);
-
-        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
-        informantRegisterEntity.setId(randomUUID());
-        informantRegisterEntity.setRegisterDate(informantRegisterDocumentRequest.getRegisterDate().toLocalDate());
-        informantRegisterEntity.setRegisterTime(informantRegisterDocumentRequest.getRegisterDate());
-        informantRegisterEntity.setHearingId(informantRegisterDocumentRequest.getHearingId());
-        informantRegisterEntity.setProsecutionAuthorityId(informantRegisterDocumentRequest.getProsecutionAuthorityId());
-        informantRegisterEntity.setProsecutionAuthorityCode(informantRegisterDocumentRequest.getProsecutionAuthorityCode());
-        informantRegisterEntity.setProsecutionAuthorityOuCode(informantRegisterDocumentRequest.getProsecutionAuthorityOuCode());
-        informantRegisterEntity.setPayload(informantRegisterDocumentRequestJson.toString());
-        informantRegisterEntity.setStatus(RECORDED);
-        informantRegisterRepository.save(informantRegisterEntity);
+        saveRecordedInformantRegister(informantRegisterDocumentRequestJson, documentRequest.getRegisterDate(),
+                documentRequest.getHearingId(), documentRequest.getProsecutionAuthorityId(),
+                documentRequest.getProsecutionAuthorityCode(), documentRequest.getProsecutionAuthorityOuCode());
     }
 
     @Transactional
@@ -74,14 +64,25 @@ public class InformantRegisterEventListener {
         final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest =
                 jsonObjectToObjectConverter.convert(informantRegisterDocumentRequestJson, uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class);
 
+        saveRecordedInformantRegister(informantRegisterDocumentRequestJson, documentRequest.getRegisterDate(),
+                documentRequest.getHearingId(), documentRequest.getProsecutionAuthorityId(),
+                documentRequest.getProsecutionAuthorityCode(), documentRequest.getProsecutionAuthorityOuCode());
+    }
+
+    private void saveRecordedInformantRegister(final JsonObject informantRegisterDocumentRequestJson,
+                                               final ZonedDateTime registerDate,
+                                               final UUID hearingId,
+                                               final UUID prosecutionAuthorityId,
+                                               final String prosecutionAuthorityCode,
+                                               final String prosecutionAuthorityOuCode) {
         final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
         informantRegisterEntity.setId(randomUUID());
-        informantRegisterEntity.setRegisterDate(documentRequest.getRegisterDate().toLocalDate());
-        informantRegisterEntity.setRegisterTime(documentRequest.getRegisterDate());
-        informantRegisterEntity.setHearingId(documentRequest.getHearingId());
-        informantRegisterEntity.setProsecutionAuthorityId(documentRequest.getProsecutionAuthorityId());
-        informantRegisterEntity.setProsecutionAuthorityCode(documentRequest.getProsecutionAuthorityCode());
-        informantRegisterEntity.setProsecutionAuthorityOuCode(documentRequest.getProsecutionAuthorityOuCode());
+        informantRegisterEntity.setRegisterDate(registerDate.toLocalDate());
+        informantRegisterEntity.setRegisterTime(registerDate);
+        informantRegisterEntity.setHearingId(hearingId);
+        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthorityId);
+        informantRegisterEntity.setProsecutionAuthorityCode(prosecutionAuthorityCode);
+        informantRegisterEntity.setProsecutionAuthorityOuCode(prosecutionAuthorityOuCode);
         informantRegisterEntity.setPayload(informantRegisterDocumentRequestJson.toString());
         informantRegisterEntity.setStatus(RECORDED);
         informantRegisterRepository.save(informantRegisterEntity);

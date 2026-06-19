@@ -204,6 +204,29 @@ public class InformantRegisterDocumentRequestQueryViewTest {
         assertThat(offence.getJsonObject("verdict").getString("verdictDate"), is("2026-04-13"));
     }
 
+    @Test
+    public void shouldConvertOffenceVerdictCodeToVerdictObjectForByDateQueryWhenOnlyVerdictCodeIsPresent() {
+        final LocalDate registerDate = now();
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        final JsonObject converted = createObjectBuilder()
+                .add("payload", payloadWithOffence(createObjectBuilder().add("verdictCode", "G")))
+                .build();
+
+        final JsonObject payload = createObjectBuilder().add("registerDate", registerDate.toString()).build();
+        final JsonEnvelope envelope = envelopeFrom(metadataBuilder().withId(randomUUID())
+                .withName("results.query.informant-register-document-by-request-date").build(), payload);
+
+        when(objectToJsonObjectConverter.convert(informantRegisterEntity)).thenReturn(converted);
+        when(informantRegisterRepository.findByRegisterDate(registerDate)).thenReturn(newArrayList(informantRegisterEntity));
+
+        final JsonObject offence = firstOffence(informantRegisterDocumentRequestQueryView.getInformantRegistersByRequestDate(envelope));
+
+        assertThat(offence.containsKey("verdictCode"), is(false));
+        assertThat(offence.getJsonObject("verdict").getString("verdictCode"), is("G"));
+        assertThat(offence.getJsonObject("verdict").isNull("verdictType"), is(true));
+        assertThat(offence.getJsonObject("verdict").isNull("verdictDate"), is(true));
+    }
+
     private JsonEnvelope recordedRequestEnvelope() {
         return envelopeFrom(metadataBuilder().withId(randomUUID())
                         .withName("results.query.informant-register-document-request").build(),
