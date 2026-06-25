@@ -1,0 +1,46 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "6 Dicki Lane Decatur Avon DA6 7ND",
+  "defendantContactNumber": "799-919-0928",
+  "defendantDateOfBirth": "2006-09-09",
+  "defendantName": "Jeromy Kulas",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "184b8ceb-1b0d-416a-a822-a39346eaf4bc",
+  "hearingSittingDay": "2026-06-25T11:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "c650c6ed-4191-470e-8ecc-3699e4042fa6",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "35289aa5-cb2b-45f1-a25e-0ab1d3dff1de",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "7857895d-4bb8-4865-b08c-bd71ed2120fa",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Obstruct person executing search warrant for TV receiver"
+    },
+    {
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "8c92e760-1802-48d8-80aa-3298001cc806",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Robbery"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "30MR3601714"
+  ]
+}

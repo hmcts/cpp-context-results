@@ -1,0 +1,78 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "6 Dicki Lane Decatur Avon DA6 7ND",
+  "defendantContactNumber": "799-919-0928",
+  "defendantDateOfBirth": "2006-09-09",
+  "defendantName": "Jeromy Kulas",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "584499bf-aad7-4144-837c-39d41cd6a9f7",
+  "hearingSittingDay": "2026-06-25T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "c650c6ed-4191-470e-8ecc-3699e4042fa6",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "b6cfae31-a1dc-476e-80fc-6a37ed0b4369",
+      "applicationResultType": "Granted",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £450.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "35289aa5-cb2b-45f1-a25e-0ab1d3dff1de",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "b6cfae31-a1dc-476e-80fc-6a37ed0b4369",
+      "applicationResultType": "Granted",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "ERR - Entered in error",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "7857895d-4bb8-4865-b08c-bd71ed2120fa",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Obstruct person executing search warrant for TV receiver",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "b6cfae31-a1dc-476e-80fc-6a37ed0b4369",
+      "applicationResultType": "Granted",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appearance to make statutory declaration (other than SJP)",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "G - Granted",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "8c92e760-1802-48d8-80aa-3298001cc806",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "STAT_DEC",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £450.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "35289aa5-cb2b-45f1-a25e-0ab1d3dff1de",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "30MR3601714"
+  ]
+}

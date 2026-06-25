@@ -1,0 +1,62 @@
+{
+  "caseReferences": "30MR3601714",
+  "dateDecisionMade": "2026-06-25",
+  "defendantAddress": "6 Dicki Lane Decatur Avon DA6 7ND",
+  "defendantContactNumber": "799-919-0928",
+  "defendantDateOfBirth": "2006-09-09",
+  "defendantName": "Jeromy Kulas",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2026-06-25",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "35289aa5-cb2b-45f1-a25e-0ab1d3dff1de",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7857895d-4bb8-4865-b08c-bd71ed2120fa",
+      "title": "Obstruct person executing search warrant for TV receiver"
+    },
+    {
+      "details": "FO - Fine\nFined £300.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "8c92e760-1802-48d8-80aa-3298001cc806",
+      "title": "Robbery"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "c650c6ed-4191-470e-8ecc-3699e4042fa6",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appearance to make statutory declaration (other than SJP)"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £450.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "35289aa5-cb2b-45f1-a25e-0ab1d3dff1de",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "ERR - Entered in error",
+      "offenceDate": "2019-11-28",
+      "offenceId": "7857895d-4bb8-4865-b08c-bd71ed2120fa",
+      "title": "Obstruct person executing search warrant for TV receiver"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "STATUTORY DECLARATION GRANTED"
+}

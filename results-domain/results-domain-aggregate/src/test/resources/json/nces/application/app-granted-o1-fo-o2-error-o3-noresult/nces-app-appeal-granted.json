@@ -1,0 +1,62 @@
+{
+  "caseReferences": "30MR3601713",
+  "dateDecisionMade": "2026-06-25",
+  "defendantAddress": "j Gleichner Curve Mishawaka Avon DA6 7ND",
+  "defendantContactNumber": "673-236-3255",
+  "defendantDateOfBirth": "2006-09-09",
+  "defendantName": "Camille Zulauf",
+  "divisionCode": "77",
+  "gobAccountNumber": "{{gobAccountNumber}}",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingSittingDay": "2026-06-25",
+  "impositionOffenceDetails": [
+    {
+      "details": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "61c1da79-2ce5-483b-aa6a-b6956be51a8a",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b19d9490-0f68-494d-aaee-45508376f147",
+      "title": "Obstruct person executing search warrant for TV receiver"
+    },
+    {
+      "details": "FO - Fine\nFined £200.00",
+      "offenceDate": "2019-11-28",
+      "offenceId": "bb2940e2-5330-44b5-b728-64d845777336",
+      "title": "Robbery"
+    }
+  ],
+  "isFinancialPenaltiesWrittenOff": "false",
+  "isSJPHearing": false,
+  "isWriteOff": false,
+  "masterDefendantId": "ed8fc2aa-5a48-4df7-b6c4-b60bb6a4117f",
+  "materialId": "{{materialId}}",
+  "newApplicationResults": {
+    "applicationResult": [
+      "Granted"
+    ],
+    "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court"
+  },
+  "newOffenceByResult": [
+    {
+      "details": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "offenceDate": "2019-11-28",
+      "offenceId": "61c1da79-2ce5-483b-aa6a-b6956be51a8a",
+      "title": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "details": "ERR - Entered in error",
+      "offenceDate": "2019-11-28",
+      "offenceId": "b19d9490-0f68-494d-aaee-45508376f147",
+      "title": "Obstruct person executing search warrant for TV receiver"
+    }
+  ],
+  "notificationId": "{{notificationId}}",
+  "originalDateOfOffence": "2021-21-21",
+  "originalDateOfSentence": "2021-21-21",
+  "sendTo": "LCCCCancellations@Justice.gov.uk",
+  "subject": "APPEAL GRANTED"
+}

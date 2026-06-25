@@ -1057,6 +1057,54 @@ class HearingFinancialResultsAggregateNCESTest {
                                                         .withParam("gobAccountNumber", "029c2b00-dcea-42a7-8fda-c9b036cd3178ACCOUNT"))
                                 )
 
+                ),
+                Arguments.of("Reopen > granted,  DD-42787",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/case-resulted.json",
+                                                accountInfo("755bf7b5-d3ff-41de-a308-565100787001", "755bf7b5-d3ff-41de-a308-565100787001ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("reopen app resulted: Granted and o1:FO o2:ERR o3:not resulted")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/application-resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/nces-app-reopen-granted.json",
+                                                comparison()
+                                                        .withParam("gobAccountNumber", "755bf7b5-d3ff-41de-a308-565100787001ACCOUNT")
+                                                        .withParam("subject", "APPLICATION TO REOPEN GRANTED"))
+                                )
+                ),
+                Arguments.of("Appeal > granted,  DD-42787",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/case-resulted1.json",
+                                                accountInfo("c9b11981-9e0e-4b21-bace-ddc8c905487e", "c9b11981-9e0e-4b21-bace-ddc8c905487eACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("appeal app resulted: Granted and o1:FO o2:ERR o3:not resulted")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/appeal-application-resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/nces-app-appeal-granted.json",
+                                                comparison()
+                                                        .withParam("gobAccountNumber", "c9b11981-9e0e-4b21-bace-ddc8c905487eACCOUNT")
+                                                        .withParam("subject", "APPEAL GRANTED"))
+                                )
+                ),
+                Arguments.of("Statdec > granted,  DD-42787",
+                        newScenario()
+                                .newStep(newResultTrackedStep("case resulted")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/case-resulted2.json",
+                                                accountInfo("4ad3f0bb-a7fa-46e9-b278-85f900d3e2c4", "4ad3f0bb-a7fa-46e9-b278-85f900d3e2c4ACCOUNT"))
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "HearingFinancialResultsUpdated"))
+                                .newStep(newResultTrackedStep("statdec app resulted: Granted and o1:FO o2:ERR o3:not resulted")
+                                        .withResultTrackedEvent("json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/statdec-application-resulted.json",
+                                                emptyAccountInfo())
+                                        .withExpectedEventNames("HearingFinancialResultsTracked", "NcesEmailNotificationRequested")
+                                        .withExpectedEventPayloadEquals("NcesEmailNotificationRequested", "json/nces/application/app-granted-o1-fo-o2-error-o3-noresult/nces-app-statdec-granted.json",
+                                                comparison()
+                                                        .withParam("gobAccountNumber", "4ad3f0bb-a7fa-46e9-b278-85f900d3e2c4ACCOUNT")
+                                                        .withParam("subject", "STATUTORY DECLARATION GRANTED"))
+                                )
                 )
         );
     }
