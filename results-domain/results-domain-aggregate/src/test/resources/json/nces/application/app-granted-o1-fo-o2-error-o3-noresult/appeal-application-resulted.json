@@ -1,0 +1,78 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "j Gleichner Curve Mishawaka Avon DA6 7ND",
+  "defendantContactNumber": "673-236-3255",
+  "defendantDateOfBirth": "2006-09-09",
+  "defendantName": "Camille Zulauf",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "94f62e58-d9d3-4172-bd9b-f9bf08020824",
+  "hearingSittingDay": "2026-06-25T09:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ed8fc2aa-5a48-4df7-b6c4-b60bb6a4117f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "applicationId": "9a43eb05-30f0-4964-a3b1-86e02db388f4",
+      "applicationResultType": "Granted",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": true,
+      "offenceId": "61c1da79-2ce5-483b-aa6a-b6956be51a8a",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "9a43eb05-30f0-4964-a3b1-86e02db388f4",
+      "applicationResultType": "Granted",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "ERR - Entered in error",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": true,
+      "offenceId": "b19d9490-0f68-494d-aaee-45508376f147",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Obstruct person executing search warrant for TV receiver",
+      "resultCode": "G"
+    },
+    {
+      "applicationId": "9a43eb05-30f0-4964-a3b1-86e02db388f4",
+      "applicationResultType": "Granted",
+      "applicationResultsCategory": "FINAL",
+      "applicationTitle": "Appeal against conviction and sentence by a Magistrates' Court to the Crown Court",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "G - Granted",
+      "isDeemedServed": false,
+      "isFinancial": false,
+      "isParentFlag": false,
+      "offenceId": "bb2940e2-5330-44b5-b728-64d845777336",
+      "offenceTitle": "Robbery",
+      "resultCode": "G"
+    },
+    {
+      "applicationResultType": "Fine",
+      "applicationType": "APPEAL",
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £300.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "isParentFlag": false,
+      "offenceId": "61c1da79-2ce5-483b-aa6a-b6956be51a8a",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "30MR3601713"
+  ]
+}

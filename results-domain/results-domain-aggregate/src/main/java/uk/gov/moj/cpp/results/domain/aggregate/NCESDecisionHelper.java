@@ -241,14 +241,14 @@ public class NCESDecisionHelper {
         final List<OffenceResults> offenceResults = getFilteredOffenceResults(hearingFinancialResultRequest, asList(APPEAL, REOPEN),
                 appeal_reopen_application_accepted_result_codes);
         return !offenceResults.isEmpty() && offenceResults.stream()
-                .allMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
+                .anyMatch(offence -> FINAL.name().equals(offence.getOffenceResultsCategory()));
     }
 
     public static boolean isNewStatdecApplicationGranted(final HearingFinancialResultRequest hearingFinancialResultRequest) {
         final List<OffenceResults> offenceResults = getFilteredOffenceResults(hearingFinancialResultRequest, asList(STAT_DEC),
                 statdec_application_accepted_result_codes);
         return !offenceResults.isEmpty() && offenceResults.stream()
-                .allMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
+                .anyMatch(offence -> FINAL.name().equals(offence.getApplicationResultsCategory()));
     }
 
     public static boolean isNewAppealOrReopenApplicationOffencesAreAdjourned(final HearingFinancialResultRequest hearingFinancialResultRequest) {

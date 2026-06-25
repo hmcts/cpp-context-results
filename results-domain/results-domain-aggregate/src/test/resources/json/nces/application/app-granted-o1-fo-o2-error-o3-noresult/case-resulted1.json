@@ -1,0 +1,46 @@
+{
+  "accountCorrelationId": "{{accountCorrelationId}}",
+  "accountDivisionCode": "77",
+  "defendantAddress": "j Gleichner Curve Mishawaka Avon DA6 7ND",
+  "defendantContactNumber": "673-236-3255",
+  "defendantDateOfBirth": "2006-09-09",
+  "defendantName": "Camille Zulauf",
+  "hearingCourtCentreName": "Lavender Hill Magistrates' Court",
+  "hearingId": "6275983f-b3d3-422c-95a8-8fee5f1f156f",
+  "hearingSittingDay": "2026-06-25T10:00:00.000Z",
+  "isSJPHearing": false,
+  "masterDefendantId": "ed8fc2aa-5a48-4df7-b6c4-b60bb6a4117f",
+  "ncesEmail": "LCCCCancellations@Justice.gov.uk",
+  "offenceResults": [
+    {
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00\nPDATE - Pay by date\nPay by date. Date to pay in full by: 11/11/2026.",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "61c1da79-2ce5-483b-aa6a-b6956be51a8a",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Possess / control TV set with intent another use install without a licence"
+    },
+    {
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "b19d9490-0f68-494d-aaee-45508376f147",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Obstruct person executing search warrant for TV receiver"
+    },
+    {
+      "dateOfResult": "2026-06-25",
+      "impositionOffenceDetails": "FO - Fine\nFined £200.00",
+      "isDeemedServed": false,
+      "isFinancial": true,
+      "offenceId": "bb2940e2-5330-44b5-b728-64d845777336",
+      "offenceResultsCategory": "FINAL",
+      "offenceTitle": "Robbery"
+    }
+  ],
+  "prosecutionCaseReferences": [
+    "30MR3601713"
+  ]
+}
