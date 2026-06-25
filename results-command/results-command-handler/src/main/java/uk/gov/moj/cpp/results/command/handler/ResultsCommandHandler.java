@@ -101,6 +101,8 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     private static final String A_4 = "A4";
     private static final String ZERO_FOUR = "04";
     private static final String CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
+    private static final String CPS_FLAG = "cpsFlag";
+    private static final String CPS_CC_EMAIL_ADDRESS = "cpsCcEmailAddress";
 
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -352,7 +354,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
             final String[] emailAddress = new String[1];
 
             refDataProsecutorJson.ifPresent(prosecutorJson ->
-                    emailAddress[0] = getEmailAddress(prosecutorJson, jurisdictionType)
+                    emailAddress[0] = getAppealUpdateEmailAddress(prosecutorJson, jurisdictionType)
             );
 
             if (emailAddress[0] != null && !emailAddress[0].isBlank()) {
@@ -636,6 +638,21 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         }
 
         return "";
+    }
+
+    /**
+     * Resolves the email address for appeal-update notifications.
+     * For CPS prosecutors (cpsFlag == true) the CPS Crown Court email (cpsCcEmailAddress) is used when present;
+     * otherwise it falls back to the standard {@link #getEmailAddress} resolution.
+     */
+    private String getAppealUpdateEmailAddress(final JsonObject prosecutorJson, final Optional<JurisdictionType> jurisdictionType) {
+        if (getFlagValue(CPS_FLAG, prosecutorJson)) {
+            final String cpsCcEmailAddress = prosecutorJson.getString(CPS_CC_EMAIL_ADDRESS, null);
+            if (cpsCcEmailAddress != null && !cpsCcEmailAddress.isBlank()) {
+                return cpsCcEmailAddress;
+            }
+        }
+        return getEmailAddress(prosecutorJson, jurisdictionType);
     }
 
     private void appendEventsToStream(final Envelope<?> envelope, final EventStream eventStream, final Stream<Object> events) throws EventStreamException {

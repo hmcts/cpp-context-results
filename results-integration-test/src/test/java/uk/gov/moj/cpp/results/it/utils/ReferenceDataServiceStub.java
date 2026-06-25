@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.it.utils;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.matching;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
@@ -109,6 +110,36 @@ public class ReferenceDataServiceStub {
 
         stubFor(get(urlPathEqualTo(urlPath))
                 .withQueryParam("prosecutorCode", equalTo("CITYPF"))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(prosecutorCodeResponse.toString())));
+    }
+
+    /**
+     * Stubs the prosecutor reference-data query (by prosecutorCode) to return a CPS prosecutor for ANY prosecutorCode.
+     * Used by the appeal-update notification flow, which looks the prosecutor up by code. The CPS Crown Court email
+     * (cpsCcEmailAddress) is expected to be used for CPS prosecutors; contactEmailAddress is included to prove it is
+     * NOT used when the CPS Crown Court email is present.
+     */
+    public static void stubCpsProsecutorForAppealUpdate(final String contactEmailAddress, final String cpsCcEmailAddress) {
+        final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
+
+        final JsonObject cpsProsecutor = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("cpsFlag", true)
+                .add("contactEmailAddress", contactEmailAddress)
+                .add("cpsCcEmailAddress", cpsCcEmailAddress)
+                .build();
+
+        final JsonObject prosecutorCodeResponse = createObjectBuilder()
+                .add("prosecutors", createArrayBuilder()
+                        .add(cpsProsecutor)
+                        .build())
+                .build();
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("prosecutorCode", matching(".+"))
                 .willReturn(aResponse().withStatus(SC_OK)
                         .withHeader(ID, randomUUID().toString())
                         .withHeader(CONTENT_TYPE, APPLICATION_JSON)

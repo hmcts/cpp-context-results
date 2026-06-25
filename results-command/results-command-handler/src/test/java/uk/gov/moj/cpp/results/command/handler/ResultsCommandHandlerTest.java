@@ -18,6 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -1514,6 +1515,106 @@ public class ResultsCommandHandlerTest {
                                         withJsonPath("$.urn", is("20NX8422480")),
                                         withJsonPath("$.notificationId", notNullValue()),
                                         withJsonPath("$.emailAddress", is(EMAIL2))
+                                )
+                        ))
+        ));
+    }
+
+    @Test
+    public void shouldUseCpsCcEmailAddressForCpsProsecutorOnAppealUpdate() throws EventStreamException {
+        final String cpsCcEmail = "crowncourt@cps.gov.uk";
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        // CPS prosecutor: cpsCcEmailAddress should win over contactEmailAddress
+        final JsonObjectBuilder cpsProsecutorBuilder = createObjectBuilder();
+        cpsProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("cpsFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("cpsCcEmailAddress", cpsCcEmail);
+
+        // Non-CPS prosecutor: existing fallback behaviour is unchanged
+        final JsonObjectBuilder nonCpsProsecutorBuilder = createObjectBuilder();
+        nonCpsProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("policeFlag", true)
+                .add("informantEmailAddress", EMAIL2);
+
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any()))
+                .thenReturn(of(cpsProsecutorBuilder.build()))
+                .thenReturn(of(nonCpsProsecutorBuilder.build()));
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_APPLICATION_RESULTED);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(eventStream, Mockito.times(3)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, containsInAnyOrder(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope).withName("results.event.session-added-event"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.id", notNullValue()),
+                                        withJsonPath("$.courtCentreWithLJA", notNullValue()),
+                                        withJsonPath("$.sessionDays", notNullValue())
+                                )
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.applicationId", notNullValue()),
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.emailAddress", is(cpsCcEmail))
+                                )
+                        )),
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.applicationId", notNullValue()),
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.emailAddress", is(EMAIL2))
+                                )
+                        ))
+        ));
+    }
+
+    @Test
+    public void shouldFallBackToContactEmailWhenCpsProsecutorHasNoCpsCcEmailOnAppealUpdate() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        // CPS prosecutor but no cpsCcEmailAddress -> falls back to contactEmailAddress (Crown Court)
+        final JsonObjectBuilder cpsProsecutorBuilder = createObjectBuilder();
+        cpsProsecutorBuilder
+                .add("spiOutFlag", true)
+                .add("cpsFlag", true)
+                .add("contactEmailAddress", EMAIL);
+
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(any()))
+                .thenReturn(of(cpsProsecutorBuilder.build()));
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_APPLICATION_RESULTED);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        verify(eventStream, Mockito.atLeastOnce()).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, hasItem(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.emailAddress", is(EMAIL))
                                 )
                         ))
         ));
