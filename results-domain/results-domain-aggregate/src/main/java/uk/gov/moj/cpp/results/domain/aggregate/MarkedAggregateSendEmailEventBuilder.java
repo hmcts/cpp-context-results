@@ -271,6 +271,11 @@ public class MarkedAggregateSendEmailEventBuilder {
 
         if (isNotEmpty(correlationsWrapper.getOldAccountDetails())) {
             builder.withOldAccountDetails(correlationsWrapper.getOldAccountDetails());
+            correlationItemList.stream()
+                    .filter(ci -> hearingFinancialResultRequest.getAccountCorrelationId() != null
+                            && hearingFinancialResultRequest.getAccountCorrelationId().equals(ci.getAccountCorrelationId()))
+                    .findFirst()
+                    .ifPresent(ci -> builder.withGobAccountNumber(ci.getAccountNumber()));
         }
 
         if (AMEND_AND_RESHARE.equals(subject)) {
