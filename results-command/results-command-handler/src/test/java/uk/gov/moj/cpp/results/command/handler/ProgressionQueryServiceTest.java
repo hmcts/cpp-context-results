@@ -21,6 +21,8 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.spi.DefaultJsonMetadata;
 import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 
+import java.util.UUID;
+
 import javax.json.JsonObject;
 
 import org.mockito.ArgumentCaptor;
@@ -60,6 +62,25 @@ public class ProgressionQueryServiceTest {
         assertThat(classArgumentCaptor.getValue().getName(), is(JsonObject.class.getName()));
         assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is("progression.query.group-member-cases"));
         assertThat(envelopeArgumentCaptor.getValue().payload(), is(payloadIsJson(withJsonPath("$.groupId", is(groupId)))));
+        verifyNoMoreInteractions(requester);
+    }
+
+    @Test
+    public void shouldRequestProsecutionCaseByCaseId() {
+        final UUID caseId = randomUUID();
+        final JsonObject prosecutionCase = createObjectBuilder().build();
+        when(requester.requestAsAdmin(any(), any())).thenReturn(Envelope.envelopeFrom(DefaultJsonMetadata.metadataBuilder().withId(randomUUID()).withName("progression.query.prosecutioncase"), prosecutionCase));
+
+        progressionQueryService.getProsecutionCase(envelope()
+                        .with(metadataWithRandomUUIDAndName())
+                        .build(),
+                caseId);
+
+        verify(requester).requestAsAdmin(envelopeArgumentCaptor.capture(), classArgumentCaptor.capture());
+
+        assertThat(classArgumentCaptor.getValue().getName(), is(JsonObject.class.getName()));
+        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is("progression.query.prosecutioncase"));
+        assertThat(envelopeArgumentCaptor.getValue().payload(), is(payloadIsJson(withJsonPath("$.caseId", is(caseId.toString())))));
         verifyNoMoreInteractions(requester);
     }
 }

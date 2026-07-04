@@ -146,6 +146,36 @@ public class ReferenceDataServiceStub {
                         .withBody(prosecutorCodeResponse.toString())));
     }
 
+    /**
+     * Stubs the prosecutor reference-data query for a SPECIFIC prosecutorCode to return a CPS prosecutor.
+     * Registered at high priority so it wins over any catch-all prosecutor stub. Used to prove that the current
+     * prosecutor (resolved via the progression prosecutioncase query) is emailed at its CPS Crown Court address.
+     */
+    public static void stubCpsProsecutorForAppealUpdateByCode(final String prosecutorCode, final String contactEmailAddress, final String cpsCcEmailAddress) {
+        final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
+
+        final JsonObject cpsProsecutor = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("cpsFlag", true)
+                .add("contactEmailAddress", contactEmailAddress)
+                .add("cpsCcEmailAddress", cpsCcEmailAddress)
+                .build();
+
+        final JsonObject prosecutorCodeResponse = createObjectBuilder()
+                .add("prosecutors", createArrayBuilder()
+                        .add(cpsProsecutor)
+                        .build())
+                .build();
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .atPriority(1)
+                .withQueryParam("prosecutorCode", equalTo(prosecutorCode))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(prosecutorCodeResponse.toString())));
+    }
+
     public static void stubPoliceFlag(final String originatingOrganisation, final String prosecutionAuthority) {
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
 

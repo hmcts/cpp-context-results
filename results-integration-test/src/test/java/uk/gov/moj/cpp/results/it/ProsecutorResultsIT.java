@@ -26,7 +26,9 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyAppea
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.NOTIFICATION_NOTIFY_ENDPOINT;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.setupNotificationNotifyStubs;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.verifyEmailNotificationIsRaised;
+import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionProsecutionCaseWithProsecutor;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCpsProsecutorForAppealUpdate;
+import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCpsProsecutorForAppealUpdateByCode;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubPoliceFlag;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubSpiOutFlag;
@@ -152,6 +154,37 @@ public class ProsecutorResultsIT {
         hearingResultsHaveBeenSharedV2WithoutPoliceResultGenerated(resultsMessage);
 
         verifyEmailNotificationIsRaised(List.of("Appeal Update", cpsCrownCourtEmail));
+    }
+
+    @Test
+    public void testAppealApplicationEmailNotificationUsesCpsCrownCourtEmailForCurrentProsecutor() {
+        final String currentProsecutorCpsCcEmail = "current.cc@cps.gov.uk";
+        final String currentProsecutorContactEmail = "current.contact@cps.gov.uk";
+        final String currentProsecutorCode = "CPSCC";
+        // The appeal application in the template links to this prosecution case id (TestTemplates#LINKED_CASE_ID)
+        final UUID appealLinkedCaseId = UUID.fromString("cccc1111-1e20-4c21-916a-81a6c90239e5");
+
+        stubGetOrganisationUnit();
+        createMessageConsumers();
+        setupNotificationNotifyStubs();
+        ReferenceDataServiceStub.stubCountryNationalities();
+
+        final PublicHearingResulted resultsMessage = basicShareResultsTemplateWithAppealFlag(JurisdictionType.CROWN, true);
+        resultsMessage.setIsReshare(Optional.of(Boolean.FALSE));
+        resultsMessage.setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        resultsMessage.setHearingDay(Optional.of(LocalDate.now()));
+
+        stubSpiOutFlag(true, true, "CCSU@derbyshire.pnn.police.uk");
+        stubPoliceFlag("DERPF", "DERPF");
+
+        // The current prosecutor on the case is resolved via the progression.query.prosecutioncase query
+        // and, being a CPS prosecutor, must be emailed at its CPS Crown Court address (cpsCcEmailAddress).
+        stubGetProgressionProsecutionCaseWithProsecutor(appealLinkedCaseId, currentProsecutorCode);
+        stubCpsProsecutorForAppealUpdateByCode(currentProsecutorCode, currentProsecutorContactEmail, currentProsecutorCpsCcEmail);
+
+        hearingResultsHaveBeenSharedV2WithoutPoliceResultGenerated(resultsMessage);
+
+        verifyEmailNotificationIsRaised(List.of("Appeal Update", currentProsecutorCpsCcEmail));
     }
 
     private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final javax.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {

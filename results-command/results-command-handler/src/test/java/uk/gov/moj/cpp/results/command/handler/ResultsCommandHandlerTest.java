@@ -81,6 +81,7 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopeMatcher;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.command.handler.utils.FileUtil;
+import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
@@ -232,6 +233,9 @@ public class ResultsCommandHandlerTest {
 
     @Mock
     private ReferenceDataService referenceDataService;
+
+    @Mock
+    private ProgressionQueryService progressionQueryService;
 
     private static PublicHearingResulted shareResultsWithMagistratesMessage;
     private static PublicHearingResulted shareResultsWithCrownMessage;
@@ -1618,6 +1622,88 @@ public class ResultsCommandHandlerTest {
                                 )
                         ))
         ));
+    }
+
+    @Test
+    public void shouldSendAppealUpdateToCurrentProsecutorUsingCpsCcEmail() throws EventStreamException {
+        final String cpsCcEmail = "crowncourt@cps.gov.uk";
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        // The current prosecutor on the case (from progression) has a distinct prosecutor code
+        final JsonObject prosecutionCasePayload = createObjectBuilder()
+                .add("prosecutionCase", createObjectBuilder()
+                        .add("prosecutor", createObjectBuilder()
+                                .add("prosecutorCode", "CPSCC")))
+                .build();
+        when(progressionQueryService.getProsecutionCase(any(), any())).thenReturn(of(prosecutionCasePayload));
+
+        // The current prosecutor is CPS, so its CPS CC email address is used
+        final JsonObjectBuilder cpsProsecutorBuilder = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("cpsFlag", true)
+                .add("contactEmailAddress", EMAIL)
+                .add("cpsCcEmailAddress", cpsCcEmail);
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("CPSCC")).thenReturn(of(cpsProsecutorBuilder.build()));
+        // The application's own prosecutor codes resolve to no email, so only the current prosecutor is notified
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("TFL")).thenReturn(empty());
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("DERPF")).thenReturn(empty());
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_APPLICATION_RESULTED);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        // one session-added event and one appeal-update event for the current prosecutor
+        verify(eventStream, Mockito.times(2)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        assertThat(allValues, hasItem(
+                jsonEnvelope(
+                        withMetadataEnvelopedFrom(envelope)
+                                .withName("results.event.appeal-update-notification-requested"),
+                        payloadIsJson(allOf(
+                                        withJsonPath("$.subject", is("Appeal Update")),
+                                        withJsonPath("$.emailAddress", is(cpsCcEmail))
+                                )
+                        ))
+        ));
+    }
+
+    @Test
+    public void shouldNotSendDuplicateAppealUpdateWhenCurrentProsecutorMatchesApplicationProsecutor() throws EventStreamException {
+        final ResultsAggregate resultsAggregate = new ResultsAggregate();
+
+        when(eventSource.getStreamById(any())).thenReturn(this.eventStream);
+        when(aggregateService.get(any(EventStream.class), any())).thenReturn(resultsAggregate);
+
+        // The current prosecutor on the case is the same as the application's respondent prosecutor (TFL)
+        final JsonObject prosecutionCasePayload = createObjectBuilder()
+                .add("prosecutionCase", createObjectBuilder()
+                        .add("prosecutor", createObjectBuilder()
+                                .add("prosecutorCode", "TFL")))
+                .build();
+        when(progressionQueryService.getProsecutionCase(any(), any())).thenReturn(of(prosecutionCasePayload));
+
+        final JsonObjectBuilder tflProsecutorBuilder = createObjectBuilder()
+                .add("spiOutFlag", true)
+                .add("contactEmailAddress", EMAIL);
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("TFL")).thenReturn(of(tflProsecutorBuilder.build()));
+        when(referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("DERPF")).thenReturn(empty());
+
+        final JsonObject payload = getPayload(TEMPLATE_PAYLOAD_APPLICATION_RESULTED);
+        final JsonEnvelope envelope = envelopeFrom(metadataOf(metadataId, "results.command.create-results-for-day"), payload);
+        this.resultsCommandHandler.createResultsForDay(envelope);
+
+        // the duplicate TFL code is de-duped by the set, so only one session-added and one appeal-update event are raised
+        verify(eventStream, Mockito.times(2)).append(streamArgumentCaptor.capture());
+        final List<JsonEnvelope> allValues = convertStreamToEventList(streamArgumentCaptor.getAllValues());
+
+        final long appealUpdateEvents = allValues.stream()
+                .filter(e -> "results.event.appeal-update-notification-requested".equals(e.metadata().name()))
+                .count();
+        assertThat(appealUpdateEvents, is(1L));
     }
 
     private List<JsonEnvelope> convertStreamToEventList(final List<Stream<JsonEnvelope>> listOfStreams) {

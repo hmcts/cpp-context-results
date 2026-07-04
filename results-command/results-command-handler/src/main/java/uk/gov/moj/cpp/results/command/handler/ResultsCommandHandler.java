@@ -55,6 +55,7 @@ import uk.gov.moj.cpp.results.domain.aggregate.DefendantAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.HearingFinancialResultsAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.ResultsAggregate;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
+import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -96,6 +97,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     final JsonObjectToObjectConverter jsonObjectToObjectConverter;
     private final ReferenceDataService referenceDataService;
+    private final ProgressionQueryService progressionQueryService;
     public static final String SURREY_POLICE_CPS_ORGANISATION = "A45AA00";
     public static final String SUSSEX_POLICE_CPS_ORGANISATION = "A47AA00";
     private static final String A_4 = "A4";
@@ -109,11 +111,12 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
 
     @Inject
     public ResultsCommandHandler(final EventSource eventSource, final Enveloper enveloper,
-                                 final AggregateService aggregateService, final JsonObjectToObjectConverter jsonObjectToObjectConverter, final ReferenceDataService referenceDataService, final ObjectToJsonObjectConverter objectToJsonObjectConverter) {
+                                 final AggregateService aggregateService, final JsonObjectToObjectConverter jsonObjectToObjectConverter, final ReferenceDataService referenceDataService, final ObjectToJsonObjectConverter objectToJsonObjectConverter, final ProgressionQueryService progressionQueryService) {
         super(eventSource, enveloper, aggregateService);
         this.jsonObjectToObjectConverter = jsonObjectToObjectConverter;
         this.referenceDataService = referenceDataService;
         this.objectToJsonObjectConverter = objectToJsonObjectConverter;
+        this.progressionQueryService = progressionQueryService;
     }
 
     @Handles("results.command.add-hearing-result")
@@ -348,6 +351,7 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
         final Set<String> prosecutorCodesSet = new HashSet<>();
         prosecutorCodesSet.add(prosecutor);
         prosecutorCodesSet.add(prosecutingAuthority);
+        getCurrentProsecutorCode(commandEnvelope, courtApplication).ifPresent(prosecutorCodesSet::add);
 
         prosecutorCodesSet.stream().filter(prosecutorCode -> prosecutorCode != null).forEach(prosecutorCode -> {
             final Optional<JsonObject> refDataProsecutorJson = referenceDataService.getSpiOutFlagForProsecutionAuthorityCode(prosecutorCode);
@@ -371,6 +375,26 @@ public class ResultsCommandHandler extends AbstractCommandHandler {
                 LOGGER.info("Email address cannot be found for results.event.appeal-update-notification-requested event for application id {} ", courtApplication.getId());
             }
         });
+    }
+
+    private Optional<String> getCurrentProsecutorCode(final JsonEnvelope commandEnvelope, final CourtApplication courtApplication) {
+        final UUID caseId = ofNullable(courtApplication.getCourtApplicationCases())
+                .filter(cases -> !cases.isEmpty())
+                .map(cases -> cases.get(0))
+                .map(CourtApplicationCase::getProsecutionCaseId)
+                .orElse(null);
+
+        if (caseId == null) {
+            return empty();
+        }
+
+        return progressionQueryService.getProsecutionCase(commandEnvelope, caseId)
+                .map(payload -> payload.getJsonObject("prosecutionCase"))
+                .filter(Objects::nonNull)
+                .map(prosecutionCase -> prosecutionCase.getJsonObject("prosecutor"))
+                .filter(Objects::nonNull)
+                .map(prosecutor -> prosecutor.getString("prosecutorCode", null))
+                .filter(StringUtils::isNotEmpty);
     }
 
 

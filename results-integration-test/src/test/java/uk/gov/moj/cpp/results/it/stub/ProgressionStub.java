@@ -34,6 +34,22 @@ public class ProgressionStub {
                         .withBody(payload)));
     }
 
+    public static void stubGetProgressionProsecutionCaseWithProsecutor(final UUID caseId, final String prosecutorCode) {
+        final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_QUERY_URL, caseId);
+        final String payload = createObjectBuilder()
+                .add("prosecutionCase", createObjectBuilder()
+                        .add("id", caseId.toString())
+                        .add("prosecutor", createObjectBuilder()
+                                .add("prosecutorCode", prosecutorCode)))
+                .build().toString();
+        stubFor(get(urlPathEqualTo(stringUrl))
+                .willReturn(aResponse()
+                        .withStatus(SC_OK)
+                        .withHeader("CPPID", randomUUID().toString())
+                        .withHeader("Content-Type", PROGRESSION_PROSECUTION_CASE_MEDIA_TYPE)
+                        .withBody(payload)));
+    }
+
     public static void stubGetProgressionProsecutionCasesFromPayload(final String filepath, final UUID caseId, final String urn, final UUID hearingId, final UUID applicationId) {
         final String stringUrl = format(PROGRESSION_PROSECUTION_CASE_QUERY_URL, caseId);
         final String payload = getPayload(filepath)
