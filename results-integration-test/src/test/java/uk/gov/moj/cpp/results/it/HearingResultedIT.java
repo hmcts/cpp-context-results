@@ -8,8 +8,6 @@ import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -27,6 +25,8 @@ import static uk.gov.justice.core.courts.JurisdictionType.MAGISTRATES;
 import static uk.gov.justice.core.courts.ProsecutionCase.prosecutionCase;
 import static uk.gov.justice.core.courts.ProsecutionCaseIdentifier.prosecutionCaseIdentifier;
 import static uk.gov.justice.core.courts.external.ApiCourtCentre.apiCourtCentre;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.FUTURE_LOCAL_DATE;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 import static uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted.publicHearingResulted;
@@ -51,6 +51,7 @@ import static uk.gov.moj.cpp.results.it.stub.DcsStub.clearDcsStub;
 import static uk.gov.moj.cpp.results.it.stub.DcsStub.setupDCSStub;
 import static uk.gov.moj.cpp.results.it.stub.DcsStub.verifyDCSRequestIsRaised;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.verifyEmailNotificationIsRaised;
+import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.verifyEmailSubjectDoesNotContain;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionProsecutionCases;
 import static uk.gov.moj.cpp.results.it.utils.EventGridStub.stubEventGridEndpoint;
@@ -76,6 +77,7 @@ import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareHearingTemplat
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplateWithOneCaseOneDefendant;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2Template;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2TemplateForIndicatedPlea;
+import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2TemplateWithBailConditionsCancelled;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2TemplateWithHearingDay;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2WithMagistratesAlongWithOffenceDateCodeTemplate;
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsV2WithVerdictTemplate;
@@ -268,6 +270,42 @@ public class HearingResultedIT {
 
         getSummariesByDate(startDate);
         verifyEmailNotificationIsRaised(List.of(policeEmailAddress));
+    }
+
+    @Test
+    void shouldIncludeBailConditionsCancelledInEmailSubjectWhenResultTextContainsBailConditionsCancelled() {
+        final String policeEmailAddress = randomAlphabetic(10) + "@gemail.com";
+        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithBailConditionsCancelled(JurisdictionType.CROWN, "URGENT - Urgent\nUrgent result: Bail Conditions cancelled, Domestic Violence case.");
+        stubSpiOutFlag(true, true, policeEmailAddress);
+        setOuCodeAndProsecutorAuthority(resultsMessage);
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+        verifyEmailNotificationIsRaised(List.of(policeEmailAddress, "urn123 02-05-2018 Bail Conditions Cancelled"));
+    }
+
+    @Test
+    void shouldNotIncludeBailConditionsCancelledInEmailSubjectWhenResultTextContainsUrgentButNotBailConditionsCancelled() {
+        final String policeEmailAddress = randomAlphabetic(11) + "@gemail.com";
+
+        final PublicHearingResulted resultsMessage = basicShareResultsV2TemplateWithBailConditionsCancelled(JurisdictionType.CROWN, "URGENT - Urgent\nUrgent result: Domestic Violence case, Vulnerable or Intimidated Victim/Witness");
+        stubSpiOutFlag(true, true, policeEmailAddress);
+        setOuCodeAndProsecutorAuthority(resultsMessage);
+
+        hearingResultsHaveBeenSharedV2(resultsMessage);
+        whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
+
+        LocalDate startDate = resultsMessage.getHearing().getHearingDays().get(0).getSittingDay().toLocalDate();
+        startDate = of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth() - 1);
+
+        getSummariesByDate(startDate);
+
+        verifyEmailSubjectDoesNotContain(policeEmailAddress, "Bail Conditions Cancelled");
     }
 
     @Test
