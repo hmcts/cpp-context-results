@@ -10,8 +10,6 @@ import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
-import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
-import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -19,6 +17,8 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.event.service.TemplateIdentifier.POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE;
 
 import uk.gov.justice.core.courts.CaseDefendant;
@@ -29,7 +29,6 @@ import uk.gov.justice.core.courts.CourtDocument;
 import uk.gov.justice.core.courts.DocumentCategory;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingDay;
-import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.Material;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -149,6 +148,7 @@ public class ResultsEventProcessor {
     private static final String NOTIFICATION_ID = "notificationId";
     private static final String EMAIL_TEMPLATE_ID = "emailTemplateId";
     private static final String SEND_TO_ADDRESS = "sendToAddress";
+    private static final String BAIL_CONDITIONS_CANCELLED= "Bail Conditions Cancelled";
     public static final String HEARING_DAY = "hearingDay";
     public static final String PUBLIC_RESULTS_POLICE_RESULT_GENERATED = "public.results.police-result-generated";
 
@@ -729,13 +729,14 @@ public class ResultsEventProcessor {
                 .filter(judicialResult -> {
                     String policeSubjectLineTitle = judicialResult.getPoliceSubjectLineTitle();
                     String resultText = judicialResult.getResultText();
-                    return !(policeSubjectLineTitle != null && policeSubjectLineTitle.equals("Bail Conditions Cancelled")
-                            && (resultText != null && (resultText.contains("Domestic Violence case") || resultText.contains("Vulnerable or Intimidated Victim"))));
+                    return !(policeSubjectLineTitle != null && policeSubjectLineTitle.equals(BAIL_CONDITIONS_CANCELLED)
+                            && (resultText != null && !resultText.toLowerCase().contains(BAIL_CONDITIONS_CANCELLED.toLowerCase())));
                 })
                 .map(JudicialResult::getPoliceSubjectLineTitle)
                 .filter(StringUtils::isNotEmpty)
                 .distinct()
                 .collect(Collectors.joining(DELIMITER));
+
         return caseSubject.isEmpty() ? "" : caseSubject;
     }
 
