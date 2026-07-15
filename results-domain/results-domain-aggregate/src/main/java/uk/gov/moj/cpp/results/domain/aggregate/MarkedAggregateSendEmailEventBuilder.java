@@ -88,13 +88,15 @@ public class MarkedAggregateSendEmailEventBuilder {
 
         final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
 
-        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
-            final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
+        final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
 
+        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
             builder.withAccountCorrelationId(oldCorrelationsWrapper.getRecentAccountCorrelationId());
-            builder.withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes());
-            builder.withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
+        } else {
+            builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId());
         }
+        builder.withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes());
+        builder.withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
         builder.withId(randomUUID())
                 .withSendTo(ncesEMail)
                 .withSubject(subject)
