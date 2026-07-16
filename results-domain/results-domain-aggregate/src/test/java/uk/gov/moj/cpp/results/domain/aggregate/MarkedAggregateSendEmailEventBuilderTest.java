@@ -21,11 +21,6 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Regression test for SNI-9128: a new application/hearing result that arrives with its own
- * (new) accountCorrelationId, for an offence already linked to a previously-known GOB account,
- * must still populate gobAccountNumber from that previously-known account.
- */
 class MarkedAggregateSendEmailEventBuilderTest {
 
     private static final String OLD_GOB_ACCOUNT_NUMBER = "73663710A";
@@ -81,8 +76,9 @@ class MarkedAggregateSendEmailEventBuilderTest {
                 notification.getGobAccountNumber(), is(OLD_GOB_ACCOUNT_NUMBER));
         assertThat("divisionCode should be populated from the previously-known account",
                 notification.getDivisionCode(), is(OLD_DIVISION_CODE));
-        assertThat("the request's own new accountCorrelationId should be preserved",
-                notification.getAccountCorrelationId(), is(newAccountCorrelationId));
+        assertThat("accountCorrelationId should resolve to the previously-known correlation id, "
+                        + "not the request's own new correlation id, so it stays consistent with gobAccountNumber",
+                notification.getAccountCorrelationId(), is(oldAccountCorrelationId));
     }
 
     @Test
