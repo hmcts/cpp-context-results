@@ -86,15 +86,12 @@ public class MarkedAggregateSendEmailEventBuilder {
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived();
         final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
 
-        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
-            final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
-
-            builder.withAccountCorrelationId(oldCorrelationsWrapper.getRecentAccountCorrelationId());
-            builder.withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes());
-            builder.withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
-        }  else if(getApplicationAppealDismissedSubjects().contains(subject)) {
+        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId()) || getApplicationAppealDismissedSubjects().contains(subject)) {
             final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, null, offenceIdList, prevApplicationResultsDetails);
-            builder.withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
+
+            builder.withAccountCorrelationId(oldCorrelationsWrapper.getRecentAccountCorrelationId())
+                .withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes())
+                .withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
         }
 
         builder.withId(randomUUID())
