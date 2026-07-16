@@ -11,6 +11,7 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.AMEND_AND_RESHARE;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.WRITE_OFF_ONE_DAY_DEEMED_SERVED;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealAllowedSubjects;
+import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealDismissedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationAppealSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationGrantedSubjects;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.getApplicationNonGrantedSubjects;
@@ -82,33 +83,31 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                                                         final List<NewOffenceByResult> newResultByOffence, final String applicationResult,
                                                                                                                         final OriginalApplicationResults originalApplicationResults, final NewApplicationResults newApplicationResults,
                                                                                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-
-
         final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived();
-
         final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
 
-        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
-            final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
+        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId()) || getApplicationAppealDismissedSubjects().contains(subject)) {
+            final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, null, offenceIdList, prevApplicationResultsDetails);
 
-            builder.withAccountCorrelationId(oldCorrelationsWrapper.getRecentAccountCorrelationId());
-            builder.withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes());
-            builder.withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
+            builder.withAccountCorrelationId(oldCorrelationsWrapper.getRecentAccountCorrelationId())
+                .withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes())
+                .withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
         }
+
         builder.withId(randomUUID())
-                .withSendTo(ncesEMail)
-                .withSubject(subject)
-                .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
-                .withDefendantName(hearingFinancialResultRequest.getDefendantName())
-                .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
-                .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
-                .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
-                .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
-                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
-                .withApplicationResult(applicationResult)
-                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
-                .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
-                .withImpositionOffenceDetails(impositionOffenceDetails);
+            .withSendTo(ncesEMail)
+            .withSubject(subject)
+            .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
+            .withDefendantName(hearingFinancialResultRequest.getDefendantName())
+            .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
+            .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
+            .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
+            .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
+            .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
+            .withApplicationResult(applicationResult)
+            .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
+            .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
+            .withImpositionOffenceDetails(impositionOffenceDetails);
 
         ofNullable(hearingFinancialResultRequest.getHearingSittingDay())
                 .ifPresent(a -> builder.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
