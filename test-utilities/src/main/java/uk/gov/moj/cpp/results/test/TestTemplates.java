@@ -75,8 +75,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.google.common.collect.ImmutableList;
-
 @SuppressWarnings({"java:S4738"})
 public class TestTemplates {
 
@@ -858,6 +856,48 @@ public class TestTemplates {
                 .withSentToCC(true)
                 .withCommittedToCC(true)
                 .build());
+    }
+
+    public static List<JudicialResult> buildBailConditionsCancelledJudicialResultList(final String resultText) {
+        return singletonList(judicialResult()
+                .withJudicialResultId(randomUUID())
+                .withCategory(JudicialResultCategory.FINAL)
+                .withCjsCode(CJS_CODE)
+                .withIsAdjournmentResult(false)
+                .withIsAvailableForCourtExtract(false)
+                .withIsConvictedResult(false)
+                .withIsFinancialResult(false)
+                .withLabel(LABEL)
+                .withIsNewAmendment(true)
+                .withOrderedHearingId(ID)
+                .withOrderedDate(now())
+                .withRank(BigDecimal.ZERO)
+                .withWelshLabel(LABEL)
+                .withResultText(resultText)
+                .withPoliceSubjectLineTitle("Bail Conditions Cancelled")
+                .withLifeDuration(false)
+                .withTerminatesOffenceProceedings(Boolean.FALSE)
+                .withPublishedAsAPrompt(false)
+                .withExcludedFromResults(false)
+                .withAlwaysPublished(false)
+                .withUrgent(false)
+                .withD20(false)
+                .withPublishedForNows(false)
+                .withRollUpPrompts(false)
+                .withJudicialResultTypeId(randomUUID())
+                .withSentToCC(true)
+                .withCommittedToCC(true)
+                .build());
+    }
+
+    public static PublicHearingResulted basicShareResultsV2TemplateWithBailConditionsCancelled(final JurisdictionType jurisdictionType, final String resultText) {
+        final UUID hearingId = randomUUID();
+        return PublicHearingResulted.publicHearingResulted()
+                .setHearing(basicShareHearingTemplate(hearingId,
+                        asList(createCaseWithDefendantAndOffenceLevelJudicialResults(buildBailConditionsCancelledJudicialResultList(resultText))), jurisdictionType, false))
+                .setIsReshare(Optional.of(false))
+                .setHearingDay(Optional.of(LocalDate.of(2018, 5, 2)))
+                .setSharedTime(ZonedDateTime.now(ZoneId.of("UTC")));
     }
 
     public static CourtApplicationType courtApplicationTypeTemplates() {
