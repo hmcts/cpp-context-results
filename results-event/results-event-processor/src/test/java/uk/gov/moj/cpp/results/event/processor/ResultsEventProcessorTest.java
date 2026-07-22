@@ -82,14 +82,14 @@ import uk.gov.moj.cpp.results.event.service.DocumentGenerationRequest;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
-import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
+import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 import uk.gov.moj.cpp.results.test.TestTemplates;
-import uk.gov.moj.cpp.results.event.service.SjpService;
 
 import java.io.StringReader;
 import java.nio.charset.Charset;
@@ -917,7 +917,7 @@ public class ResultsEventProcessorTest {
         ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestArgumentCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
         ArgumentCaptor<JsonObject> fileJsonObjectArgumentCaptor = ArgumentCaptor.forClass(JsonObject.class);
         final List<String> policeSubjectLineTitle = asList("Bail Conditions Cancelled", null);
-        final List<String> resultText = asList("Remanded on conditional bail.", null);
+        final List<String> resultText = asList("URGENT - Urgent\nUrgent result: Bail Conditions cancelled.", null);
 
         final List<CaseDefendant> caseDefendants = getDefendantsWithJudicialResults(policeSubjectLineTitle, resultText);
 
@@ -1010,6 +1010,124 @@ public class ResultsEventProcessorTest {
         assertThat(fileJsonObject.getString("defendants"), is(AMENDED_DEFENDANTS));
         assertThat(fileJsonObject.getString("applications"), is(AMENDED_APPLICATIONS));
 
+    }
+
+    @Test
+    public void shouldShowBailConditionsCancelledINSubjectWhenResultTextContainsBCCAndDomesticViolenceCase() {
+        final String policeEmail = "MO10Mailbox-.CommonPlatform@met.police.uk";
+        final String urn = "01ZD1205724";
+        final String caseId = "10158815-bef7-47ae-9e86-f3f53917a805";
+        final String courtCentre = "Croydon Crown Court";
+        final String dateOfHearing = "2026-06-10";
+        final String dvResultText = "URGENT - Urgent\nUrgent result: Bail Conditions cancelled, Domestic Violence case.";
+
+        // Offence 1 judicial results
+        JudicialResult discharged1 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("f7080f37-ce1a-48c1-aec8-93454346b025"))
+                .withIsNewAmendment(true)
+                .withPoliceSubjectLineTitle("Final Sentence")
+                .withResultText("DISCH - Discharged")
+                .build();
+        JudicialResult emEnd1 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("cb3b792d-90d9-4714-8ec8-62040f5fd3d9"))
+                .withIsNewAmendment(true)
+                .withResultText("EMONE - Electronic Monitoring End - notify contractor")
+                .build();
+        JudicialResult bccDv1 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("c5971d29-5701-4e67-bfad-ec1b51715dbe"))
+                .withIsNewAmendment(true)
+                .withPoliceSubjectLineTitle("Bail Conditions Cancelled")
+                .withResultText(dvResultText)
+                .build();
+
+        // Offence 2 judicial results
+        JudicialResult discharged2 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("681fad0e-6057-4c21-86c1-7105bb70c5a0"))
+                .withIsNewAmendment(true)
+                .withPoliceSubjectLineTitle("Final Sentence")
+                .withResultText("DISCH - Discharged")
+                .build();
+        JudicialResult emEnd2 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("8b4cb167-f3b9-4502-a68e-30b9473b0ddd"))
+                .withIsNewAmendment(true)
+                .withResultText("EMONE - Electronic Monitoring End - notify contractor")
+                .build();
+        JudicialResult bccDv2 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("e7d946f8-4b06-431b-a318-2247f42d0b7b"))
+                .withIsNewAmendment(true)
+                .withPoliceSubjectLineTitle("Bail Conditions Cancelled")
+                .withResultText(dvResultText)
+                .build();
+
+        // Offence 3 judicial results
+        JudicialResult emEnd3 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("b6f6eab8-126f-4315-83cb-1b892842484a"))
+                .withIsNewAmendment(true)
+                .withResultText("EMONE - Electronic Monitoring End - notify contractor")
+                .build();
+        JudicialResult oni = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("c055456e-ed77-4af5-ae6f-42e324ed8513"))
+                .withIsNewAmendment(true)
+                .withResultText("ONI - Offence not on indictment")
+                .build();
+        JudicialResult bccDv3 = JudicialResult.judicialResult()
+                .withJudicialResultId(fromString("7c2d37de-8e7e-4166-9631-884a63ce6ae9"))
+                .withIsNewAmendment(true)
+                .withPoliceSubjectLineTitle("Bail Conditions Cancelled")
+                .withResultText(dvResultText)
+                .build();
+
+        final CaseDefendant natalieGall = caseDefendant()
+                .withDefendantId(fromString("ba55ed01-9ae5-4397-bdf3-da1e6a0b7c89"))
+                .withProsecutorReference("2400000000000486216U")
+                .withOffences(asList(
+                        OffenceDetails.offenceDetails()
+                                .withJudicialResults(asList(discharged1, emEnd1, bccDv1))
+                                .build(),
+                        OffenceDetails.offenceDetails()
+                                .withJudicialResults(asList(discharged2, emEnd2, bccDv2))
+                                .build(),
+                        OffenceDetails.offenceDetails()
+                                .withJudicialResults(asList(emEnd3, oni, bccDv3))
+                                .build()
+                ))
+                .withIndividualDefendant(individualDefendant()
+                        .withPerson(createPerson("Billal", "Ahemad", Gender.FEMALE, null, "Miss", null, null))
+                        .build())
+                .build();
+
+        final PoliceNotificationRequestedV2 event = PoliceNotificationRequestedV2.policeNotificationRequestedV2()
+                .withNotificationId(randomUUID())
+                .withCaseId(caseId)
+                .withPoliceEmailAddress(policeEmail)
+                .withAmendReshare("")
+                .withDateOfHearing(dateOfHearing)
+                .withUrn(urn)
+                .withCaseDefendants(asList(natalieGall))
+                .withApplicationTypeForCase("")
+                .withCourtCentre(courtCentre)
+                .withCaseResultDetails(null)
+                .build();
+
+        final JsonEnvelope jsonEnvelope = envelopeFrom(
+                Envelope.metadataBuilder().withId(randomUUID()).withName("results.event.police-notification-requested-v2").build(),
+                objectToJsonObjectConverter.convert(event));
+
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getEmailTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_TEMPLATE_ID);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(jsonEnvelope);
+
+        verify(notificationNotifyService, times(1)).sendEmailNotification(eq(jsonEnvelope), jsonObjectArgumentCaptor.capture());
+        verify(systemDocGenerator, times(0)).generateDocument(any(), any());
+
+        final JsonObject payload = jsonObjectArgumentCaptor.getValue();
+        assertThat(payload.getString(FIELD_SEND_TO_ADDRESS), is(policeEmail));
+        assertThat(payload.getJsonObject(FIELD_PERSONALISATION).getString(FIELD_URN), is(urn));
+        assertThat(payload.getJsonObject(FIELD_PERSONALISATION).getString(FIELD_AMEND_RESHARE), is("no"));
+        assertThat(payload.getJsonObject(FIELD_PERSONALISATION).getString(FIELD_DEFENDANTS), is("Billal Ahemad"));
+        assertThat(payload.getJsonObject(FIELD_PERSONALISATION).getString(FILED_SUBJECT), is("01ZD1205724 10-06-2026 Final Sentence / Bail Conditions Cancelled"));
     }
 
     @Test
