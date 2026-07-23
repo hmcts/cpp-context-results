@@ -72,13 +72,15 @@ class MarkedAggregateSendEmailEventBuilderTest {
                         null,
                         emptyMap());
 
+        assertThat("accountCorrelationId should stay as the request's own new correlation id "
+                        + "when one is supplied, with the previously-known account carried separately",
+                notification.getAccountCorrelationId(), is(newAccountCorrelationId));
         assertThat("gobAccountNumber should be populated from the previously-known account",
-                notification.getGobAccountNumber(), is(OLD_GOB_ACCOUNT_NUMBER));
+                notification.getOldAccountDetails().get(0).getGobAccountNumber(), is(OLD_GOB_ACCOUNT_NUMBER));
         assertThat("divisionCode should be populated from the previously-known account",
-                notification.getDivisionCode(), is(OLD_DIVISION_CODE));
-        assertThat("accountCorrelationId should resolve to the previously-known correlation id, "
-                        + "not the request's own new correlation id, so it stays consistent with gobAccountNumber",
-                notification.getAccountCorrelationId(), is(oldAccountCorrelationId));
+                notification.getOldAccountDetails().get(0).getDivisionCode(), is(OLD_DIVISION_CODE));
+        assertThat("oldAccountDetails should reference the previously-known correlation id",
+                notification.getOldAccountDetails().get(0).getAccountCorrelationId(), is(oldAccountCorrelationId));
     }
 
     @Test

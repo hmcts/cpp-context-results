@@ -83,31 +83,34 @@ public class MarkedAggregateSendEmailEventBuilder {
                                                                                                                         final List<NewOffenceByResult> newResultByOffence, final String applicationResult,
                                                                                                                         final OriginalApplicationResults originalApplicationResults, final NewApplicationResults newApplicationResults,
                                                                                                                         final Map<UUID, List<OffenceResultsDetails>> prevApplicationResultsDetails) {
-        final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived();
+
         final List<UUID> offenceIdList = hearingFinancialResultRequest.getOffenceResults().stream().map(OffenceResults::getOffenceId).toList();
+        final OldAccountDetailsWrapper correlationsWrapper = getOldAccountCorrelations(correlationItemList, hearingFinancialResultRequest.getAccountCorrelationId(), offenceIdList, prevApplicationResultsDetails);
 
-        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId()) || getApplicationAppealDismissedSubjects().contains(subject)) {
-            final OldAccountDetailsWrapper oldCorrelationsWrapper = getOldAccountCorrelations(correlationItemList, null, offenceIdList, prevApplicationResultsDetails);
+        final MarkedAggregateSendEmailWhenAccountReceived.Builder builder = markedAggregateSendEmailWhenAccountReceived()
+                .withId(randomUUID())
+                .withSendTo(ncesEMail)
+                .withSubject(subject)
+                .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
+                .withDefendantName(hearingFinancialResultRequest.getDefendantName())
+                .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
+                .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
+                .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
+                .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
+                .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
+                .withApplicationResult(applicationResult)
+                .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
+                .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
+                .withImpositionOffenceDetails(impositionOffenceDetails);
 
-            builder.withAccountCorrelationId(oldCorrelationsWrapper.getRecentAccountCorrelationId())
-                .withDivisionCode(oldCorrelationsWrapper.getOldDivisionCodes())
-                .withGobAccountNumber(oldCorrelationsWrapper.getOldGobAccounts());
+        if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
+            builder.withAccountCorrelationId(correlationsWrapper.getRecentAccountCorrelationId())
+                    .withDivisionCode(correlationsWrapper.getOldDivisionCodes())
+                    .withGobAccountNumber(correlationsWrapper.getOldGobAccounts());
+        } else {
+            builder.withAccountCorrelationId(hearingFinancialResultRequest.getAccountCorrelationId())
+                    .withOldAccountDetails(correlationsWrapper.getOldAccountDetails());
         }
-
-        builder.withId(randomUUID())
-            .withSendTo(ncesEMail)
-            .withSubject(subject)
-            .withHearingCourtCentreName(hearingFinancialResultRequest.getHearingCourtCentreName())
-            .withDefendantName(hearingFinancialResultRequest.getDefendantName())
-            .withDefendantDateOfBirth(hearingFinancialResultRequest.getDefendantDateOfBirth())
-            .withDefendantAddress(hearingFinancialResultRequest.getDefendantAddress())
-            .withDefendantEmail(hearingFinancialResultRequest.getDefendantEmail())
-            .withDefendantContactNumber(hearingFinancialResultRequest.getDefendantContactNumber())
-            .withIsSJPHearing(hearingFinancialResultRequest.getIsSJPHearing())
-            .withApplicationResult(applicationResult)
-            .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
-            .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
-            .withImpositionOffenceDetails(impositionOffenceDetails);
 
         ofNullable(hearingFinancialResultRequest.getHearingSittingDay())
                 .ifPresent(a -> builder.withHearingSittingDay(a.format(ofPattern(HEARING_SITTING_DAY_PATTERN))));
