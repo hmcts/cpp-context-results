@@ -101,6 +101,7 @@ public class MarkedAggregateSendEmailEventBuilder {
                 .withApplicationResult(applicationResult)
                 .withCaseReferences(String.join(NCESDecisionConstants.COMMA, hearingFinancialResultRequest.getProsecutionCaseReferences()))
                 .withMasterDefendantId(hearingFinancialResultRequest.getMasterDefendantId())
+                .withDivisionCode(hearingFinancialResultRequest.getAccountDivisionCode())
                 .withImpositionOffenceDetails(impositionOffenceDetails);
 
         if (isNull(hearingFinancialResultRequest.getAccountCorrelationId())) {
@@ -136,6 +137,10 @@ public class MarkedAggregateSendEmailEventBuilder {
             buildDecisionMade(hearingFinancialResultRequest, builder);
         } else if (originalApplicationResults != null && (getApplicationAppealSubjects().contains(subject) || getApplicationNonGrantedSubjects().contains(subject))) {
             builder.withOriginalApplicationResults(originalApplicationResults);
+            if (isNotEmpty(newResultByOffence) && getApplicationAppealDismissedSubjects().contains(subject)) {
+                builder.withNewOffenceByResult(newResultByOffence);
+            }
+
             buildDecisionMade(hearingFinancialResultRequest, builder);
         } else {
             buildDecisionMade(hearingFinancialResultRequest, builder);
