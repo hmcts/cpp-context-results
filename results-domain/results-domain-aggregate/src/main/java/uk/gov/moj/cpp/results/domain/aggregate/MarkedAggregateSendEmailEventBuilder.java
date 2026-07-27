@@ -137,6 +137,7 @@ public class MarkedAggregateSendEmailEventBuilder {
             buildDecisionMade(hearingFinancialResultRequest, builder);
         } else if (originalApplicationResults != null && (getApplicationAppealSubjects().contains(subject) || getApplicationNonGrantedSubjects().contains(subject))) {
             builder.withOriginalApplicationResults(originalApplicationResults);
+            builder.withNewApplicationResults(newApplicationResults);
             if (isNotEmpty(newResultByOffence) && getApplicationAppealDismissedSubjects().contains(subject)) {
                 builder.withNewOffenceByResult(newResultByOffence);
             }
