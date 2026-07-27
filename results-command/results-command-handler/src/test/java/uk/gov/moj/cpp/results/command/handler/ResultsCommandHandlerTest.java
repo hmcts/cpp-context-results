@@ -975,7 +975,7 @@ public class ResultsCommandHandlerTest {
         assertThat(jsonEnvelopeList.get(0).metadata().name(), is("results.event.hearing-financial-results-tracked"));
 
         String s = "PDATE - Pay by date\\nPay by date. Date to pay in full by: 22/12/2023.\",\"title\":\"Keep a vehicle without a valid vehicle licence\"}]";
-        assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.nces-email-notification-requested"));
+        assertThat(jsonEnvelopeList.get(1).metadata().name(), is("results.event.marked-aggregate-send-email-when-account-received"));
         assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("subject"), is("STATUTORY DECLARATION UPDATED"));
         assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("dateDecisionMade"), is("01-01-2021"));
         assertThat(jsonEnvelopeList.get(1).payloadAsJsonObject().getString("defendantName"), is("defendantName"));
