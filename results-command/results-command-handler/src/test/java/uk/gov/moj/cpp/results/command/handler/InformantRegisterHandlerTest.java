@@ -15,8 +15,8 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
-import static uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
+import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_HANDLER;
 import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
@@ -31,16 +31,18 @@ import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderF
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegisterStreamId;
 
-import uk.gov.justice.core.courts.InformantRegisterRecorded;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearing;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterHearingVenue;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterOffence;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterRecipient;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResult;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterResultData;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterCaseOrApplication;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearing;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearingVenue;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResultData;
+import uk.gov.justice.results.courts.informantRegisterDocument.Verdict;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
 import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.InformantRegisterNotificationIgnored;
@@ -138,7 +140,7 @@ public class InformantRegisterHandlerTest {
     private final StringToJsonObjectConverter stringToJsonObjectConverter = new StringToJsonObjectConverter();
 
     @Spy
-    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterRecorded.class, InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class);
+    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class, InformantRegisterRecordedV2.class, InformantRegisterGeneratedV2.class);
 
     @BeforeEach
     public void setup() {
@@ -167,7 +169,7 @@ public class InformantRegisterHandlerTest {
 
         assertThat(envelopeStream, streamContaining(
                         jsonEnvelope(
-                                metadata().withName("results.event.informant-register-recorded"),
+                                metadata().withName("results.event.informant-register-recorded-v2"),
                                 JsonEnvelopePayloadMatcher.payload().isJson(allOf(
                                                 withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
                                                 withJsonPath("$.informantRegister.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
@@ -189,7 +191,7 @@ public class InformantRegisterHandlerTest {
 
         MatcherAssert.assertThat(envelopeStream, streamContaining(
                         jsonEnvelope(
-                                metadata().withName("results.event.informant-register-recorded"),
+                                metadata().withName("results.event.informant-register-recorded-v2"),
                                 JsonEnvelopePayloadMatcher.payload().isJson(allOf(
                                         withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
                                         withJsonPath("$.informantRegister", notNullValue()),
@@ -250,7 +252,7 @@ public class InformantRegisterHandlerTest {
 
         MatcherAssert.assertThat(envelopeStream, streamContaining(
                         jsonEnvelope(
-                                metadata().withName("results.event.informant-register-recorded"),
+                                metadata().withName("results.event.informant-register-recorded-v2"),
                                 JsonEnvelopePayloadMatcher.payload().isJson(allOf(
                                         withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
                                         withJsonPath("$.informantRegister", notNullValue()),
@@ -280,6 +282,25 @@ public class InformantRegisterHandlerTest {
                                 )))
                 )
         );
+    }
+
+    @Test
+    public void handleAddInformantRegisterToEventStream_withVerdictObject_shouldEmitV2RecordedEvent() throws Exception {
+        final UUID informantRegisterId = getInformantRegisterStreamId(PROSECUTION_AUTHORITY_ID.toString(), REGISTER_DATE.toLocalDate().toString());
+        when(eventSource.getStreamById(informantRegisterId)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleAddInformantRegisterToEventStream(buildEnvelope());
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+        assertThat(envelopeStream, streamContaining(
+                jsonEnvelope(
+                        metadata().withName("results.event.informant-register-recorded-v2"),
+                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                withJsonPath("$.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString())),
+                                withJsonPath("$.informantRegister.prosecutionAuthorityId", is(PROSECUTION_AUTHORITY_ID.toString()))
+                        ))
+                )
+        ));
     }
 
     @Test
@@ -412,7 +433,7 @@ public class InformantRegisterHandlerTest {
         assertThat(envelopeStream, streamContaining(
                         jsonEnvelope(
                                 metadata()
-                                        .withName("results.event.informant-register-generated"),
+                                        .withName("results.event.informant-register-generated-v2"),
                                 JsonEnvelopePayloadMatcher.payload().isJson(anyOf(
                                                 withJsonPath("$.informantRegisterDocumentRequests.length()", is(greaterThan(0)))
                                         )
@@ -506,7 +527,7 @@ public class InformantRegisterHandlerTest {
                                     .withOrderIndex(1)
                                     .withOffenceTitle("offenceTitle_Main_" + i)
                                     .withOffenceCode("offenceCode_Main_" + i)
-                                    .withVerdictCode("verdictCode_Main_" + i)
+                                    .withVerdict(Verdict.verdict().withVerdictCode("verdictCode_Main_" + i).build())
                                     .withOriginatingCaseUrn("originatingCaseUrn_Main_" + i)
                                     .withPleaValue("pleaValue_Main_" + i)
                                     .withOffenceResults(getResults(RESULT_TYPE_OFFENCE, i, 1))
