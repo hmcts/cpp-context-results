@@ -13,12 +13,12 @@ import static uk.gov.moj.cpp.domains.InformantRegisterHelper.getInformantRegiste
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 import static uk.gov.moj.cpp.results.command.util.DefendantMapper.getDefendants;
 
-import uk.gov.justice.core.courts.InformantRegisterRecorded;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
+import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
+import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest;
 import uk.gov.justice.results.courts.GenerateInformantRegister;
-import uk.gov.justice.results.courts.InformantRegisterGenerated;
 import uk.gov.justice.results.courts.NotifyInformantRegister;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
@@ -95,7 +95,10 @@ public class InformantRegisterHandler {
         final UUID informantRegisterId = getInformantRegisterStreamId(prosecutionAuthorityId.toString(), informantRegisterDocumentRequest.getRegisterDate().toLocalDate().toString());
 
         final EventStream eventStream = eventSource.getStreamById(informantRegisterId);
-        final Stream<Object> events = Stream.of(new InformantRegisterRecorded(informantRegisterDocumentRequest, prosecutionAuthorityId));
+        final Stream<Object> events = Stream.of(InformantRegisterRecordedV2.informantRegisterRecordedV2()
+                .withProsecutionAuthorityId(prosecutionAuthorityId)
+                .withInformantRegister(informantRegisterDocumentRequest)
+                .build());
 
         appendEventsToStream(envelope, eventStream, events);
     }
@@ -163,7 +166,7 @@ public class InformantRegisterHandler {
                     .map(informantRegister -> jsonObjectToObjectConverter.convert(informantRegister, InformantRegisterDocumentRequest.class))
                     .toList();
 
-            final Stream<Object> events = Stream.of(InformantRegisterGenerated.informantRegisterGenerated()
+            final Stream<Object> events = Stream.of(InformantRegisterGeneratedV2.informantRegisterGeneratedV2()
                     .withInformantRegisterDocumentRequests(informantRegisterDocumentRequests)
                     .withSystemGenerated(systemGenerated)
                     .build());
