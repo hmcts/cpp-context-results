@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.applications.result;
 
+import static java.lang.Boolean.TRUE;
+import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.results.domain.aggregate.ApplicationNCESEventsHelper.buildApplicationResultsFromTrackRequest;
 import static uk.gov.moj.cpp.results.domain.aggregate.ImpositionOffenceDetailsBuilder.buildImpositionOffenceDetailsFromAggregate;
 import static uk.gov.moj.cpp.results.domain.aggregate.MarkedAggregateSendEmailEventBuilder.markedAggregateSendEmailEventBuilder;
@@ -25,6 +27,7 @@ import uk.gov.moj.cpp.results.domain.event.OriginalApplicationResults;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,7 +48,6 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
     public Optional<MarkedAggregateSendEmailWhenAccountReceived> apply(RuleInput input) {
         final HearingFinancialResultRequest request = input.request();
         final List<OffenceResults> offenceResults = request.getOffenceResults();
-        final LinkedList<CorrelationItem> correlationItems = input.correlationItemList();
 
         final Optional<OffenceResults> offenceForApplication = offenceResults.stream()
                 .filter(offence -> APPLICATION_TYPES.containsKey(offence.getApplicationType()))
@@ -53,7 +55,6 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                 .findFirst();
 
         if (offenceForApplication.isPresent()) {
-            final String subject =  APPLICATION_SUBJECT.get(offenceForApplication.get().getApplicationType()).get(offenceForApplication.get().getResultCode());
             final List<OffenceResultsDetails> originalOffenceResults = getOriginalOffenceResultsApplication(
                     input.prevOffenceResultsDetails(),
                     input.prevApplicationOffenceResultsMap(),
@@ -83,16 +84,29 @@ public class NewAppealAppDeniedNotificationRule extends AbstractApplicationResul
                         originalDateOfSentenceList,
                         newApplicationOffenceResults,
                         applicationResult,
-                        subject,
+                        getSubject(request, offenceForApplication.get()),
                         impositionOffenceDetailsForApplication,
                         originalApplicationResults,
                         input.ncesEmail(),
-                        correlationItems,
+                        input.correlationItemList(),
                         input.prevApplicationResultsDetails());
             }
         }
         return Optional.empty();
     }
+
+
+    private static String getSubject(final HearingFinancialResultRequest request, final OffenceResults offence) {
+        return request.getOffenceResults().stream()
+                .filter(applicationResults -> applicationResults.getApplicationId() != null && applicationResults.getResultCode() != null)
+                .map(r -> APPLICATION_SUBJECT
+                        .get(offence.getApplicationType())
+                        .get(r.getResultCode()))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
 
     @SuppressWarnings("java:S107")
     private Optional<MarkedAggregateSendEmailWhenAccountReceived> processAppealResults(
