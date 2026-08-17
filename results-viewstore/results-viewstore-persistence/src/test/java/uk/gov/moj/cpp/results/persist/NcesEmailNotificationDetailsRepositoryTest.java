@@ -2,43 +2,46 @@ package uk.gov.moj.cpp.results.persist;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
+import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
-import java.util.List;
+import java.util.Optional;
 
-import javax.inject.Inject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+public class NcesEmailNotificationDetailsRepositoryTest {
 
-@RunWith(CdiTestRunner.class)
-public class NcesEmailNotificationDetailsRepositoryTest extends BaseTransactionalJunit4Test {
+    private static final String PERSISTENCE_UNIT = "results-test-persistence-unit";
 
-    @Inject
+    @RegisterExtension
+    static HibernateTestEntityManagerProvider hibernateTestEntityManagerProvider =
+            new HibernateTestEntityManagerProvider(PERSISTENCE_UNIT);
+
     private NcesEmailNotificationDetailsRepository ncesEmailNotificationDetailsRepository;
 
     private NcesEmailNotificationDetailsEntity ncesEmailNotificationDetails;
 
-    @Override
-    public void setUpBefore() {
+    @BeforeEach
+    void openEntityManagerAndCreateRepository() {
+        ncesEmailNotificationDetailsRepository = new NcesEmailNotificationDetailsRepository();
+        hibernateTestEntityManagerProvider.injectEntityManagerInto(ncesEmailNotificationDetailsRepository);
+        ncesEmailNotificationDetailsRepository.findAll().forEach(ncesEmailNotificationDetailsRepository::remove);
         ncesEmailNotificationDetails = createNcesEmailNotificationDetailsEntity();
         ncesEmailNotificationDetailsRepository.save(ncesEmailNotificationDetails);
     }
 
-    @Override
-    public void tearDownAfter() {
-        List<NcesEmailNotificationDetailsEntity> ncesEmailNotificationDetailsEntities = ncesEmailNotificationDetailsRepository.findAll();
-        ncesEmailNotificationDetailsEntities.forEach(e -> ncesEmailNotificationDetailsRepository.remove(e));
-    }
-
     @Test
     public void shouldFindTheNcesEmailNotificationDetailsByMaterialId() {
-        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity =
+        final Optional<NcesEmailNotificationDetailsEntity> result =
                 ncesEmailNotificationDetailsRepository.findByMaterialId(ncesEmailNotificationDetails.getMaterialId());
+
+        assertThat(result.isPresent(), is(true));
+        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = result.get();
         assertThat(ncesEmailNotificationDetailsEntity.getId(), is(ncesEmailNotificationDetails.getId()));
         assertThat(ncesEmailNotificationDetailsEntity.getMasterDefendantId(), is(ncesEmailNotificationDetails.getMasterDefendantId()));
         assertThat(ncesEmailNotificationDetailsEntity.getMaterialId(), is(ncesEmailNotificationDetails.getMaterialId()));
@@ -47,15 +50,23 @@ public class NcesEmailNotificationDetailsRepositoryTest extends BaseTransactiona
         assertThat(ncesEmailNotificationDetailsEntity.getSendTo(), is(ncesEmailNotificationDetails.getSendTo()));
     }
 
+    @Test
+    public void shouldRemoveNcesEmailNotificationDetails() {
+        assertThat(ncesEmailNotificationDetailsRepository.findAll(), hasSize(1));
+
+        ncesEmailNotificationDetailsRepository.remove(ncesEmailNotificationDetails);
+
+        assertThat(ncesEmailNotificationDetailsRepository.findAll(), hasSize(0));
+    }
+
     private NcesEmailNotificationDetailsEntity createNcesEmailNotificationDetailsEntity() {
-        NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = new NcesEmailNotificationDetailsEntity();
+        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = new NcesEmailNotificationDetailsEntity();
         ncesEmailNotificationDetailsEntity.setId(randomUUID());
         ncesEmailNotificationDetailsEntity.setMasterDefendantId(randomUUID());
         ncesEmailNotificationDetailsEntity.setMaterialId(randomUUID());
         ncesEmailNotificationDetailsEntity.setNotificationId(randomUUID());
         ncesEmailNotificationDetailsEntity.setSubject("subject");
         ncesEmailNotificationDetailsEntity.setSendTo("mail@email.com");
-
         return ncesEmailNotificationDetailsEntity;
     }
 }

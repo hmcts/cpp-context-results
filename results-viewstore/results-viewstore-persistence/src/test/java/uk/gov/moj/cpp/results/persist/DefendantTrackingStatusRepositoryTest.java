@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
+import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.DefendantTrackingStatus;
 
 import java.time.ZonedDateTime;
@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.inject.Inject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.runner.RunWith;
-import org.junit.Test;
+public class DefendantTrackingStatusRepositoryTest {
 
-@RunWith(CdiTestRunner.class)
-public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJunit4Test {
+    private static final String PERSISTENCE_UNIT = "results-test-persistence-unit";
 
     private static final UUID DEFENDANT_ID1 = randomUUID();
     private static final UUID DEFENDANT_ID2 = randomUUID();
@@ -43,17 +42,17 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
     private static final ZonedDateTime WA_LAST_MODIFIED_OFF3_DEF2 = now().minusDays(7);
     private static final ZonedDateTime WA_LAST_MODIFIED_OFF4_DEF2 = now().minusDays(8);
 
-    @Inject
+    @RegisterExtension
+    static HibernateTestEntityManagerProvider hibernateTestEntityManagerProvider =
+            new HibernateTestEntityManagerProvider(PERSISTENCE_UNIT);
+
     private DefendantTrackingStatusRepository defendantTrackingStatusRepository;
 
-    @Override
-    public void setUpBefore() {
-    }
-
-    @Override
-    public void tearDownAfter() {
-        List<DefendantTrackingStatus> defendantTrackingStatusList = defendantTrackingStatusRepository.findAll();
-        defendantTrackingStatusList.forEach(ir -> defendantTrackingStatusRepository.remove(ir));
+    @BeforeEach
+    void openEntityManagerAndCreateRepository() {
+        defendantTrackingStatusRepository = new DefendantTrackingStatusRepository();
+        hibernateTestEntityManagerProvider.injectEntityManagerInto(defendantTrackingStatusRepository);
+        defendantTrackingStatusRepository.findAll().forEach(defendantTrackingStatusRepository::remove);
     }
 
     @Test
@@ -84,9 +83,7 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
         assertThat(defendantTrackingStatus2.getEmLastModifiedTime(), is(EM_LAST_MODIFIED_OFF4_DEF2));
         assertThat(defendantTrackingStatus2.getEmStatus(), is(true));
         assertThat(defendantTrackingStatus1.getWoaStatus(), is(false));
-
     }
-
 
     @Test
     public void shouldFindOneActiveEmDTStatusWhenFindByDefendantIds() {
@@ -109,7 +106,6 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
         assertThat(defendantTrackingStatus1.getEmLastModifiedTime(), is(EM_LAST_MODIFIED_OFF1_DEF1));
         assertThat(defendantTrackingStatus1.getEmStatus(), is(true));
         assertThat(defendantTrackingStatus1.getWoaStatus(), is(false));
-
     }
 
     @Test
@@ -126,9 +122,7 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
         final List<DefendantTrackingStatus> defendantTrackingStatusList =
                 defendantTrackingStatusRepository.findActiveDefendantTrackingStatusByDefendantIds(defendantIdList);
         assertThat(defendantTrackingStatusList, hasSize(0));
-
     }
-
 
     @Test
     public void shouldFindOneActiveWaDTStatusWhenFindByDefendantIds() {
@@ -151,7 +145,6 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
         assertThat(defendantTrackingStatus1.getEmLastModifiedTime(), is(EM_LAST_MODIFIED_OFF1_DEF1));
         assertThat(defendantTrackingStatus1.getEmStatus(), is(false));
         assertThat(defendantTrackingStatus1.getWoaStatus(), is(true));
-
     }
 
     @Test
@@ -176,14 +169,12 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
         assertThat(defendantTrackingStatus1.getEmStatus(), is(false));
         assertThat(defendantTrackingStatus1.getWoaStatus(), is(true));
 
-
         final DefendantTrackingStatus defendantTrackingStatus2 = defendantTrackingStatusList.get(1);
         assertThat(defendantTrackingStatus2.getOffenceId(), is(OFFENCE_ID4));
         assertThat(defendantTrackingStatus2.getDefendantId(), is(DEFENDANT_ID2));
         assertThat(defendantTrackingStatus2.getEmLastModifiedTime(), is(EM_LAST_MODIFIED_OFF4_DEF2));
         assertThat(defendantTrackingStatus2.getEmStatus(), is(false));
         assertThat(defendantTrackingStatus1.getWoaStatus(), is(true));
-
     }
 
     @Test
@@ -221,7 +212,29 @@ public class DefendantTrackingStatusRepositoryTest extends BaseTransactionalJuni
         assertThat(defendantTrackingStatus3.getEmLastModifiedTime(), is(EM_LAST_MODIFIED_OFF4_DEF2));
         assertThat(defendantTrackingStatus3.getEmStatus(), is(false));
         assertThat(defendantTrackingStatus3.getWoaStatus(), is(true));
+    }
 
+    @Test
+    public void shouldFindByOffenceId() {
+        defendantTrackingStatusRepository.save(createDefendantTrackingStatus(OFFENCE_ID1, DEFENDANT_ID1, EM_LAST_MODIFIED_OFF1_DEF1, WA_LAST_MODIFIED_OFF1_DEF1, true, false));
+
+        final DefendantTrackingStatus found = defendantTrackingStatusRepository.findBy(OFFENCE_ID1);
+
+        assertThat(found.getOffenceId(), is(OFFENCE_ID1));
+        assertThat(found.getDefendantId(), is(DEFENDANT_ID1));
+        assertThat(found.getEmStatus(), is(true));
+    }
+
+    @Test
+    public void shouldRemoveDefendantTrackingStatus() {
+        final DefendantTrackingStatus defendantTrackingStatus =
+                createDefendantTrackingStatus(OFFENCE_ID1, DEFENDANT_ID1, EM_LAST_MODIFIED_OFF1_DEF1, WA_LAST_MODIFIED_OFF1_DEF1, true, false);
+        defendantTrackingStatusRepository.save(defendantTrackingStatus);
+        assertThat(defendantTrackingStatusRepository.findAll(), hasSize(1));
+
+        defendantTrackingStatusRepository.remove(defendantTrackingStatus);
+
+        assertThat(defendantTrackingStatusRepository.findAll(), hasSize(0));
     }
 
     private DefendantTrackingStatus createDefendantTrackingStatus(final UUID offenceId,

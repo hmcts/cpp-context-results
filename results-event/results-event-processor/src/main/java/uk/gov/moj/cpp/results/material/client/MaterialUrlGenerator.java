@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.results.material.client;
 
 import java.util.UUID;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * results-owned copy of material's URL-building helper (decouples results from the

@@ -91,7 +91,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.google.common.base.Functions;
 import org.apache.commons.collections.map.HashedMap;

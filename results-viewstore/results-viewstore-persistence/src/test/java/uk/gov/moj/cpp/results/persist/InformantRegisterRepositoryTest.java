@@ -5,9 +5,10 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
-import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
+import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.time.Clock;
@@ -18,14 +19,13 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import javax.inject.Inject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+public class InformantRegisterRepositoryTest {
 
-@RunWith(CdiTestRunner.class)
-public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test {
+    private static final String PERSISTENCE_UNIT = "results-test-persistence-unit";
 
     private static final UUID PROSECUTION_AUTHORITY_ID = randomUUID();
     private static final String PROSECUTION_AUTHORITY_OU_CODE = randomAlphanumeric(10);
@@ -33,19 +33,19 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
     private static final ZonedDateTime REGISTER_TIME_1 = now();
     private static final ZonedDateTime REGISTER_TIME_2 = now().plusHours(1);
 
-    @Inject
+    @RegisterExtension
+    static HibernateTestEntityManagerProvider hibernateTestEntityManagerProvider =
+            new HibernateTestEntityManagerProvider(PERSISTENCE_UNIT);
+
     private InformantRegisterRepository informantRegisterRepository;
 
-    @Override
-    public void setUpBefore() {
+    @BeforeEach
+    void openEntityManagerAndCreateRepository() {
+        informantRegisterRepository = new InformantRegisterRepository();
+        hibernateTestEntityManagerProvider.injectEntityManagerInto(informantRegisterRepository);
+        informantRegisterRepository.findAll().forEach(informantRegisterRepository::remove);
         informantRegisterRepository.save(createInformantRegister(REGISTER_TIME_1));
         informantRegisterRepository.save(createInformantRegister(REGISTER_TIME_2));
-    }
-
-    @Override
-    public void tearDownAfter() {
-        List<InformantRegisterEntity> informantRegisterEntities = informantRegisterRepository.findAll();
-        informantRegisterEntities.forEach(ir -> informantRegisterRepository.remove(ir));
     }
 
     @Test
@@ -60,12 +60,10 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
         final List<InformantRegisterEntity> informantRegisterEntities =
                 informantRegisterRepository.findByRegisterDate(LocalDate.now());
         assertThat(informantRegisterEntities, hasSize(1));
-
     }
 
     @Test
     public void shouldFindInformantRegisterRequestsByProsecutionAuthorityAndRegisterDate() {
-
         final ZonedDateTime startDate = ZonedDateTime.now().plusDays(3);
         for (int i = 0; i < 5; i++) {
             informantRegisterRepository.save(createInformantRegister(startDate.plusDays(i)));
@@ -76,14 +74,12 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
                     informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(PROSECUTION_AUTHORITY_OU_CODE, startDate.plusDays(i).toLocalDate(), startDate.plusDays(i).toLocalDate());
             assertThat(informantRegisterEntities, hasSize(1));
         }
-
     }
 
     @Test
     public void shouldFindInformantRegisterRequestsByProsecutionAuthorityAndRegisterDateRange() {
-
-        Instant fixedInstant = Instant.parse("2026-01-01T10:00:00Z");
-        Clock fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
+        final Instant fixedInstant = Instant.parse("2026-01-01T10:00:00Z");
+        final Clock fixedClock = Clock.fixed(fixedInstant, ZoneId.of("UTC"));
 
         final ZonedDateTime startDate = ZonedDateTime.now(fixedClock).plusDays(3);
         for (int i = 0; i < 5; i++) {
@@ -109,7 +105,70 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
         final List<InformantRegisterEntity> informantRegisterEntitiesNoResultsOutsideDateRange =
                 informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(PROSECUTION_AUTHORITY_OU_CODE, startDate.minusDays(2).toLocalDate(), startDate.minusDays(1).toLocalDate());
         assertThat(informantRegisterEntitiesNoResultsOutsideDateRange, hasSize(0));
+    }
 
+    @Test
+    public void shouldRemoveInformantRegister() {
+        assertThat(informantRegisterRepository.findAll(), hasSize(2));
+
+        informantRegisterRepository.findAll().forEach(informantRegisterRepository::remove);
+
+        assertThat(informantRegisterRepository.findAll(), hasSize(0));
+    }
+
+    @Test
+    public void shouldFindByFileId() {
+        final UUID fileId = randomUUID();
+        final InformantRegisterEntity withFileId = createInformantRegister(REGISTER_TIME_1);
+        withFileId.setFileId(fileId);
+        informantRegisterRepository.save(withFileId);
+
+        final List<InformantRegisterEntity> informantRegisterEntities =
+                informantRegisterRepository.findByFileId(fileId);
+
+        assertThat(informantRegisterEntities, hasSize(1));
+    }
+
+    @Test
+    public void shouldFindByStatus() {
+        final List<InformantRegisterEntity> informantRegisterEntities =
+                informantRegisterRepository.findByStatus(RECORDED);
+
+        assertThat(informantRegisterEntities, hasSize(2));
+    }
+
+    @Test
+    public void shouldFindByProsecutionAuthorityIdAndStatusGenerated() {
+        informantRegisterRepository.save(createGeneratedInformantRegister(REGISTER_TIME_1));
+
+        final List<InformantRegisterEntity> informantRegisterEntities =
+                informantRegisterRepository.findByProsecutionAuthorityIdAndStatusGenerated(PROSECUTION_AUTHORITY_ID);
+
+        assertThat(informantRegisterEntities, hasSize(1));
+    }
+
+    @Test
+    public void shouldFindByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated() {
+        informantRegisterRepository.save(createGeneratedInformantRegister(REGISTER_TIME_1));
+
+        final List<InformantRegisterEntity> informantRegisterEntities =
+                informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated(PROSECUTION_AUTHORITY_ID, LocalDate.now());
+
+        assertThat(informantRegisterEntities, hasSize(1));
+    }
+
+    @Test
+    public void shouldFindByHearingIdAndStatusRecorded() {
+        final List<InformantRegisterEntity> informantRegisterEntities =
+                informantRegisterRepository.findByHearingIdAndStatusRecorded(HEARING_ID);
+
+        assertThat(informantRegisterEntities, hasSize(2));
+    }
+
+    private InformantRegisterEntity createGeneratedInformantRegister(final ZonedDateTime registerTime) {
+        final InformantRegisterEntity informantRegisterEntity = createInformantRegister(registerTime);
+        informantRegisterEntity.setStatus(GENERATED);
+        return informantRegisterEntity;
     }
 
     private InformantRegisterEntity createInformantRegister(final ZonedDateTime registerTime) {
@@ -123,7 +182,6 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
         informantRegisterEntity.setGeneratedDate(LocalDate.now());
         informantRegisterEntity.setRegisterTime(registerTime);
         informantRegisterEntity.setHearingId(HEARING_ID);
-
         return informantRegisterEntity;
     }
 }

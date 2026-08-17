@@ -31,8 +31,8 @@ import uk.gov.moj.cpp.results.event.helper.results.CaseDefendantListBuilder;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Collection;

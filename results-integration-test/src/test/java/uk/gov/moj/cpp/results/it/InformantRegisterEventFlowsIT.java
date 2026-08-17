@@ -21,9 +21,9 @@ import java.time.ZonedDateTime;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageProducer;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

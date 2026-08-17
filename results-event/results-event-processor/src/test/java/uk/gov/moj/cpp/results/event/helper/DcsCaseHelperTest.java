@@ -31,9 +31,9 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonReader;
 
 import com.google.common.io.Resources;
 import org.junit.jupiter.api.BeforeEach;

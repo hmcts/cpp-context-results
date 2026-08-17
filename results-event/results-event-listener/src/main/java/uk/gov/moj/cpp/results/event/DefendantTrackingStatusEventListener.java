@@ -14,8 +14,8 @@ import uk.gov.moj.cpp.results.persist.entity.DefendantTrackingStatus;
 
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 
 @ServiceComponent(EVENT_LISTENER)
 public class DefendantTrackingStatusEventListener {

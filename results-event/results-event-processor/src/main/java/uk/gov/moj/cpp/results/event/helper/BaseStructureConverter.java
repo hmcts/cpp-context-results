@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.results.event.helper;
 
 import static java.util.Objects.isNull;
 import static java.util.Optional.of;
-import static javax.json.JsonValue.NULL;
+import static jakarta.json.JsonValue.NULL;
 import static uk.gov.justice.core.courts.BaseStructure.baseStructure;
 import static uk.gov.justice.core.courts.CourtCentreWithLJA.courtCentreWithLJA;
 import static uk.gov.justice.core.courts.SessionDay.sessionDay;
@@ -26,11 +26,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonString;
-import javax.json.JsonValue;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 
 public class BaseStructureConverter implements Converter<PublicHearingResulted, BaseStructure> {
 

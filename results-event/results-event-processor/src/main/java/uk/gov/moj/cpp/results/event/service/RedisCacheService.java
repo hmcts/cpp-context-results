@@ -5,7 +5,7 @@ import static java.lang.Long.parseLong;
 
 import uk.gov.justice.services.common.configuration.Value;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;

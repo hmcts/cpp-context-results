@@ -26,8 +26,8 @@ import uk.gov.moj.cpp.domains.HearingHelper;
 
 import java.nio.charset.Charset;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 import com.google.common.io.Resources;
 import org.junit.jupiter.api.Test;

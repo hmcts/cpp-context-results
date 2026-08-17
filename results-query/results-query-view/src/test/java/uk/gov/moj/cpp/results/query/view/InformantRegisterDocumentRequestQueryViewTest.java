@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -256,7 +256,7 @@ public class InformantRegisterDocumentRequestQueryViewTest {
                 createObjectBuilder().add("requestStatus", RECORDED.name()).build());
     }
 
-    private String payloadWithOffence(final javax.json.JsonObjectBuilder offenceBuilder) {
+    private String payloadWithOffence(final jakarta.json.JsonObjectBuilder offenceBuilder) {
         final JsonObject offence = offenceBuilder
                 .add("offenceCode", "PS90010")
                 .add("orderIndex", 1)

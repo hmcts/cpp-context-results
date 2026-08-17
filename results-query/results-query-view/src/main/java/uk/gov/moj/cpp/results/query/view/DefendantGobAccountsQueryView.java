@@ -10,10 +10,11 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +33,14 @@ public class DefendantGobAccountsQueryView {
         final UUID masterDefendantId = UUID.fromString(envelope.payloadAsJsonObject().getString("masterDefendantId"));
         final UUID hearingId = UUID.fromString(envelope.payloadAsJsonObject().getString("hearingId"));
 
-        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
+        final Optional<DefendantGobAccountsEntity> optionalDefendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
 
-        if (defendantGobAccountsEntity == null) {
+        if (optionalDefendantGobAccountsEntity.isEmpty()) {
             LOGGER.warn("No defendant GOB accounts found for masterDefendantId: {} and hearingId: {}", masterDefendantId, hearingId);
             return envelopeFrom(envelope.metadata(), null);
         }
 
+        final DefendantGobAccountsEntity defendantGobAccountsEntity = optionalDefendantGobAccountsEntity.get();
         final JsonObject jsonObject = createObjectBuilder()
                 .add("masterDefendantId", defendantGobAccountsEntity.getMasterDefendantId().toString())
                 .add("accountCorrelationId", defendantGobAccountsEntity.getAccountCorrelationId().toString())

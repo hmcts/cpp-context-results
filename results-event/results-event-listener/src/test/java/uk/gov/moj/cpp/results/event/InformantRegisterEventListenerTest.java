@@ -41,7 +41,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomStringUtils;

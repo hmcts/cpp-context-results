@@ -14,8 +14,9 @@ import uk.gov.justice.services.messaging.Metadata;
 
 import java.util.Optional;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 public class ReferenceDataService {
 
@@ -32,10 +33,11 @@ public class ReferenceDataService {
 
         final JsonEnvelope jsonEnvelope = envelopeFrom(metadata, payload);
         final JsonObject response  = requester.requestAsAdmin(jsonEnvelope, JsonObject.class).payload();
-        if(response.getJsonArray("prosecutors").isEmpty()) {
+        final JsonArray prosecutors = response.getJsonArray("prosecutors");
+        if (prosecutors == null || prosecutors.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(response.getJsonArray("prosecutors").getJsonObject(0));
+        return Optional.ofNullable(prosecutors.getJsonObject(0));
     }
 
     @SuppressWarnings("squid:S1696")
