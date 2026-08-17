@@ -9,6 +9,7 @@ import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.JsonObjects.getJsonObject;
+import static uk.gov.justice.services.messaging.JsonObjects.getString;
 import static uk.gov.moj.cpp.results.event.processor.MigrationConstants.Case;
 import static uk.gov.moj.cpp.results.event.processor.MigrationConstants.Defendant;
 import static uk.gov.moj.cpp.results.event.processor.MigrationConstants.InactiveMigratedCase;
@@ -21,7 +22,6 @@ import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
-import uk.gov.justice.services.messaging.JsonObjects;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
@@ -91,20 +91,20 @@ public class StagingEnforcementAcknowledgmentEventProcessor {
     @Handles("public.stagingenforcement.enforce-financial-imposition-acknowledgement")
     public void processAcknowledgement(final JsonEnvelope event) {
         final JsonObject enforcementResponsePayload = event.payloadAsJsonObject();
-        final Optional<String> originator = JsonObjects.getString(enforcementResponsePayload, ORIGINATOR);
+        final Optional<String> originator = getString(enforcementResponsePayload, ORIGINATOR);
 
         if (originator.isPresent()
                 && (COURTS.equalsIgnoreCase(originator.get()) || ATCM.equalsIgnoreCase(originator.get()))) {
             final Optional<JsonObject> acknowledgement = getJsonObject(enforcementResponsePayload, ACKNOWLEDGEMENT);
-            final Optional<String> optionalRequestId = JsonObjects.getString(enforcementResponsePayload, REQUEST_ID);
+            final Optional<String> optionalRequestId = getString(enforcementResponsePayload, REQUEST_ID);
             final String requestId = optionalRequestId.orElseThrow(() -> new IllegalArgumentException("RequestId is mandatory from enforcement"));
 
-            acknowledgement.map(ack -> JsonObjects.getString(ack, ERROR_CODE))
+            acknowledgement.map(ack -> getString(ack, ERROR_CODE))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .ifPresent(error -> LOGGER.error("Acknowledgement has an error {} ", acknowledgement.get()));
 
-            acknowledgement.map(ack -> JsonObjects.getString(ack, ACCOUNT_NUMBER))
+            acknowledgement.map(ack -> getString(ack, ACCOUNT_NUMBER))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .ifPresent(accountNumber -> updateGobAccount(event, accountNumber, requestId));

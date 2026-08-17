@@ -1,0 +1,7 @@
+# gitleaks false-positive allowlist (fingerprint = commit:file:rule:line)
+# The HMCTS secrets-scanner "internal-urls" rule false-matches the literal
+# ".local.json" introduced in the .gitignore entry for Claude Code local
+# settings. The current .gitignore uses a glob (settings.[l]ocal.json) so no
+# new commit reintroduces it; this entry suppresses the historical finding in
+# the commit that first added the line. Not a real secret.
+1ba6c5c5bb8b369751946e1ba23a3635f582c9fa:.gitignore:internal-urls:64

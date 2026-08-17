@@ -10,7 +10,7 @@ import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.Defendant;
 import uk.gov.justice.core.courts.PersonDefendant;
 import uk.gov.justice.core.courts.ProsecutionCase;
-import uk.gov.justice.core.courts.informantRegisterDocument.InformantRegisterDefendant;
+import uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
