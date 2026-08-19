@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://justice.gov.uk/results/courts/informant-register-generated-v2.json",
+  "description": "Event schema for generating informant register document request with structured verdict",
+  "type": "object",
+  "properties": {
+    "informantRegisterDocumentRequests": {
+      "type": "array",
+      "items": {
+        "$ref": "http://justice.gov.uk/results/courts/informantRegisterDocument/informantRegisterDocumentRequest.json"
+      }
+    },
+    "systemGenerated": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

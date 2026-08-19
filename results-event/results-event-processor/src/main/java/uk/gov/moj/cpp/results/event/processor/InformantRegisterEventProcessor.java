@@ -118,6 +118,31 @@ public class InformantRegisterEventProcessor {
         processInformantRegisterNotificationRequest(envelope, prosecutionAuthorityId, registerDate, fileId, templateId);
     }
 
+    @SuppressWarnings({"squid:S1160"})
+    @Handles("results.event.informant-register-generated-v2")
+    public void generateInformantRegisterV2(final JsonEnvelope envelope) throws IOException, FileServiceException {
+        final JsonObject payload = envelope.payloadAsJsonObject();
+        final List<JsonObject> informantRegisters = payload.getJsonArray(FIELD_INFORMANT_REGISTER_DOCUMENT_REQUESTS).getValuesAs(JsonObject.class);
+        final JsonObject informantRegister = informantRegisters.get(0);
+        final UUID prosecutionAuthorityId = fromString(informantRegister.getString(FIELD_PROSECUTION_AUTHORITY_ID));
+        final LocalDate registerDate = ZonedDateTime.parse(informantRegister.getString(FIELD_REGISTER_DATE)).toLocalDate();
+        final String fileName = informantRegister.getString(FILE_NAME);
+
+        final byte[] informantRegisterInBytes = generateCsvDocumentV2(informantRegisters);
+
+        final JsonObject metadata = createObjectBuilder()
+                .add(FILE_NAME, fileName)
+                .build();
+
+        UUID fileId = null;
+
+        final String templateId = informantRegister.containsKey(FIELD_RECIPIENTS) ? getTemplateId(informantRegister.getJsonArray(FIELD_RECIPIENTS)) : "";
+        if (StringUtils.isNotBlank(templateId)) {
+            fileId = fileStorer.store(metadata, new ByteArrayInputStream(informantRegisterInBytes));
+        }
+        processInformantRegisterNotificationRequest(envelope, prosecutionAuthorityId, registerDate, fileId, templateId);
+    }
+
     @Handles("results.event.informant-register-notified-v2")
     public void notifyProsecutionAuthorityV2(final JsonEnvelope envelope) {
         notifyProsecutionAuthority(envelope);
@@ -247,6 +272,112 @@ public class InformantRegisterEventProcessor {
     }
 
     private String getAddress(final InformantRegisterDefendant defendant) {
+        final List<String> addressAsList = Arrays.asList(defendant.getAddress1(), defendant.getAddress2(), defendant.getAddress3(), defendant.getAddress4(), defendant.getAddress5());
+        return addressAsList
+                .stream()
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.joining(", "));
+    }
+
+    private byte[] generateCsvDocumentV2(final List<JsonObject> informantRegistersByRegisterDate) throws IOException {
+        final List<InformantRegisterDocument> informantRegisters = new ArrayList<>();
+        informantRegistersByRegisterDate.forEach(
+                informantRegister -> mapToInformantRegisterDocumentsV2(informantRegisters, informantRegister));
+
+        final CsvMapper csvMapper = new CsvMapper();
+        final CsvSchema schema = csvMapper.schemaFor(InformantRegisterDocument.class).withHeader();
+        final ObjectWriter writer = csvMapper.writer(schema);
+        return writer.writeValueAsBytes(informantRegisters);
+    }
+
+    private void mapToInformantRegisterDocumentsV2(final List<InformantRegisterDocument> informantRegisters, final JsonObject informantRegisterJson) {
+        final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest =
+                jsonObjectToObjectConverter.convert(informantRegisterJson, uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.class);
+        documentRequest.getHearingVenue().getCourtSessions().forEach(courtSession -> courtSession.getDefendants().forEach(defendant -> {
+            if (isNotEmpty(defendant.getResults())) {
+                defendant.getResults().forEach(result -> buildInformantRegisterV2(informantRegisters, documentRequest, courtSession, defendant, null, result, null, null));
+            }
+            defendant.getProsecutionCasesOrApplications().forEach(caseOrApplication -> {
+                if (isNotEmpty(caseOrApplication.getResults())) {
+                    caseOrApplication.getResults().forEach(caseResult -> buildInformantRegisterV2(informantRegisters, documentRequest, courtSession, defendant, caseOrApplication, caseResult, null, null));
+                }
+                caseOrApplication.getOffences().forEach(offence -> {
+                    if (isNotEmpty(offence.getOffenceResults())) {
+                        offence.getOffenceResults().forEach(offenceResult -> buildInformantRegisterV2(informantRegisters, documentRequest, courtSession, defendant, caseOrApplication, null, offence, offenceResult));
+                    } else {
+                        buildInformantRegisterV2(informantRegisters, documentRequest, courtSession, defendant, caseOrApplication, null, offence, null);
+                    }
+                });
+            });
+        }));
+    }
+
+    @SuppressWarnings({"squid:S00107"})
+    private void buildInformantRegisterV2(
+            final List<InformantRegisterDocument> informantRegisters,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest documentRequest,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterHearing courtSession,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant defendant,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterCaseOrApplication caseOrApplication,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult result,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence offence,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult offenceResult) {
+
+        final InformantRegisterDocument.Builder informantRegisterDocumentBuilder = informantRegisterDocument()
+                .withInfDestID(EMPTY_STRING)
+                .withName(documentRequest.getProsecutionAuthorityName())
+                .withHearingStartTime(documentRequest.getHearingDate().format(ISO_INSTANT))
+                .withLjaName(documentRequest.getHearingVenue().getLjaName())
+                .withCourtHouse(documentRequest.getHearingVenue().getCourtHouse())
+                .withCourtRoom(courtSession.getCourtRoom())
+                .withSessionType(EMPTY_STRING)
+                .withTitle(defendant.getTitle())
+                .withForeNames(defendant.getFirstName())
+                .withSurName(defendant.getLastName())
+                .withAddress(getAddressV2(defendant))
+                .withPostCode(defendant.getPostCode())
+                .withDateOfBirth(defendant.getDateOfBirth())
+                .withCaseNumber(EMPTY_STRING)
+                .withSeqNo(EMPTY_STRING);
+
+        if (nonNull(caseOrApplication)) {
+            informantRegisterDocumentBuilder
+                    .withCaseOrApplicationReference(caseOrApplication.getCaseOrApplicationReference())
+                    .withArrestSummonsNumber(caseOrApplication.getArrestSummonsNumber());
+        }
+
+        if (nonNull(offence)) {
+            buildOffenceDetailsV2(informantRegisterDocumentBuilder, offence, offenceResult);
+        }
+
+        if (nonNull(result)) {
+            buildResultV2(informantRegisterDocumentBuilder, result);
+        }
+
+        informantRegisters.add(informantRegisterDocumentBuilder.build());
+    }
+
+    private void buildOffenceDetailsV2(
+            final InformantRegisterDocument.Builder builder,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterOffence offence,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult offenceResult) {
+        builder.withOffenceCode(offence.getOffenceCode());
+        builder.withOffenceTitle(offence.getOffenceTitle());
+        builder.withPleaValue(offence.getPleaValue());
+        builder.withVerdictCode(offence.getVerdict() != null ? offence.getVerdict().getVerdictCode() : null);
+        if (nonNull(offenceResult)) {
+            buildResultV2(builder, offenceResult);
+        }
+    }
+
+    private void buildResultV2(
+            final InformantRegisterDocument.Builder builder,
+            final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterResult offenceResult) {
+        builder.withCjsResultCode(offenceResult.getCjsResultCode());
+        builder.withResultText(offenceResult.getResultText().trim());
+    }
+
+    private String getAddressV2(final uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDefendant defendant) {
         final List<String> addressAsList = Arrays.asList(defendant.getAddress1(), defendant.getAddress2(), defendant.getAddress3(), defendant.getAddress4(), defendant.getAddress5());
         return addressAsList
                 .stream()

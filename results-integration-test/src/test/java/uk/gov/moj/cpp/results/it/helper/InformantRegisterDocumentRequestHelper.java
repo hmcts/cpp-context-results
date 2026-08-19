@@ -10,6 +10,7 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.test.utils.core.http.RequestParamsBuilder.requestParams;
 import static uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher.payload;
@@ -24,6 +25,7 @@ import static uk.gov.moj.cpp.results.it.utils.UriConstants.BASE_URI;
 import uk.gov.justice.services.common.http.HeaderConstants;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -88,11 +90,48 @@ public class InformantRegisterDocumentRequestHelper {
                 .getPayload();
     }
 
+    /**
+     * Verifies that a rejected informant-register command was never recorded. The valid
+     * {@code sentinelProsecutionAuthorityId} (submitted after the rejected command) becoming RECORDED
+     * proves the system has processed informant-register commands; the rejected command must remain absent.
+     */
+    public void verifyInformantRegisterRejectedNotRecorded(final UUID sentinelProsecutionAuthorityId, final UUID rejectedProsecutionAuthorityId) {
+        getInformantRegisterDocumentRequests(RECORDED.name(),
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", hasItem(sentinelProsecutionAuthorityId.toString())),
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", not(hasItem(rejectedProsecutionAuthorityId.toString())))
+        );
+    }
+
     public void verifyInformantRegisterIsNotified(final UUID prosecutionAuthorityId) {
         getInformantRegisterDocumentRequests(NOTIFIED.name(), allOf(
                 withJsonPath("$.informantRegisterDocumentRequests[*].status", hasItem(NOTIFIED.name())),
                 withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", hasItem(prosecutionAuthorityId.toString()))
         ));
+    }
+
+    /**
+     * Verifies that a register for the given prosecuting authority has progressed out of RECORDED — i.e. an
+     * informant-register-generated(-v2) event was consumed by the listener and advanced the projection. This is
+     * asserted as absence from the RECORDED list (rather than presence in GENERATED) because the generate flow can
+     * progress further to NOTIFIED asynchronously: the processor reacts to the generated event by sending a
+     * notify-informant-register command. Absence-from-RECORDED is stable whether the register lands on GENERATED or
+     * NOTIFIED.
+     */
+    public void verifyInformantRegisterNoLongerRecorded(final UUID prosecutionAuthorityId) {
+        getInformantRegisterDocumentRequests(RECORDED.name(),
+                withJsonPath("$.informantRegisterDocumentRequests[*].prosecutionAuthorityId", not(hasItem(prosecutionAuthorityId.toString())))
+        );
+    }
+
+    public void verifyProsecutorResultsContainVerdict(final String ouCode, final LocalDate startDate, final String expectedVerdictCode) {
+        pollWithDefaults(requestParams(getReadUrl(StringUtils.join("/prosecutor/", ouCode, "?startDate=", startDate.toString())),
+                "application/vnd.results.prosecutor-results+json")
+                .withHeader(HeaderConstants.USER_ID, USER_ID).build())
+                .until(
+                        status().is(OK),
+                        payload().isJson(allOf(
+                                withJsonPath("$.hearingVenues[*].courtSessions[*].defendants[*].prosecutionCasesOrApplications[*].offences[*].verdict.verdictCode", hasItem(expectedVerdictCode))
+                        )));
     }
 
     public static Response recordInformantRegister(final UUID prosecutionAuthorityId, final String prosecutionAuthorityCode, final ZonedDateTime registerDate, final UUID hearingId, final ZonedDateTime hearingDate, final String fileName) throws IOException {

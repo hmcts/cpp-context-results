@@ -61,6 +61,26 @@ public class InformantRegisterDocumentRequestIT {
     }
 
     @Test
+    public void shouldAddInformantRegisterRequestWithVerdictAndExposeItInProsecutorResults() throws IOException {
+        final UUID prosecutionAuthorityId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final String prosecutionAuthorityCode = STRING.next();
+        final String prosecutionAuthorityOuCode = randomAlphanumeric(7);
+
+        final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, prosecutionAuthorityOuCode, registerDate,
+                hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request-with-verdict.json");
+        assertThat(writeResponse.getStatusCode(), equalTo(SC_ACCEPTED));
+        helper.verifyInformantRegisterRequestsExists(prosecutionAuthorityId);
+
+        helper.verifyProsecutorResultsContainVerdict(prosecutionAuthorityOuCode, registerDate.toLocalDate(), "G");
+
+        generateInformantRegister();
+        helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
+    }
+
+    @Test
     public void shouldAddInformantRegisterRequestForGroupCases() throws IOException {
         final UUID prosecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();

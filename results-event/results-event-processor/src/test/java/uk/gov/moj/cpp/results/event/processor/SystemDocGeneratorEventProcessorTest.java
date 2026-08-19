@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -13,6 +12,8 @@ import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
 import static uk.gov.justice.services.messaging.JsonMetadata.NAME;
 import static uk.gov.justice.services.messaging.JsonMetadata.USER_ID;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
@@ -30,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import uk.gov.justice.services.messaging.JsonObjects;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
@@ -132,7 +132,7 @@ public class SystemDocGeneratorEventProcessorTest {
                         .add(USER_ID, UUID.randomUUID().toString()))
                 .add("CJSCPPUID", UUID.randomUUID().toString())
                 .build()).build();
-        JsonArrayBuilder infoArrayBuilder = JsonObjects.createArrayBuilder();
+        JsonArrayBuilder infoArrayBuilder = createArrayBuilder();
         final Map<String, String> additionalInfo = new HashMap<>();
         additionalInfo.put("notificationId", notificationId.toString());
         additionalInfo.put("emailTemplateId", emailTemplateId.toString());
