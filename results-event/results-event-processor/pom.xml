@@ -58,6 +58,10 @@
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventgrid</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-messaging-servicebus</artifactId>
+        </dependency>
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.mockito</groupId>

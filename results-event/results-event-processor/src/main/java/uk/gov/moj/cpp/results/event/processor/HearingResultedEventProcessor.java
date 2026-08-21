@@ -17,6 +17,7 @@ import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.results.event.helper.ApplicationFinalResultsEnricher;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.InformantRegisterQueueService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.util.Optional;
@@ -63,6 +64,9 @@ public class HearingResultedEventProcessor {
 
     @Inject
     private EventGridService eventGridService;
+
+    @Inject
+    private InformantRegisterQueueService informantRegisterQueueService;
 
     @Inject
     private ReferenceDataService referenceDataService;
@@ -120,6 +124,8 @@ public class HearingResultedEventProcessor {
             }
 
             sendEventToGrid(envelope, hearingId, hearingDay, "Hearing_Resulted");
+
+            sendToInformantRegisterQueue(envelope, hearingId, hearingDay, sharedTime.getString());
         }
 
         final JsonObjectBuilder commandPayloadBuilder = createObjectBuilder()
@@ -136,6 +142,16 @@ public class HearingResultedEventProcessor {
                 .withName("results.command.add-hearing-result-for-day")
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
+    }
+
+    @SuppressWarnings({"squid:S2221"})
+    private void sendToInformantRegisterQueue(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
+        final Optional<String> userId = envelope.metadata().userId();
+        try {
+            userId.ifPresent(s -> informantRegisterQueueService.sendDistributionCommand(hearingId, hearingDay, sharedTime));
+        } catch (Exception e) {
+            LOGGER.error("Exception caught while attempting to publish to the informant register queue for hearing {}, hearingDay {}", hearingId, hearingDay, e);
+        }
     }
 
     @SuppressWarnings({"squid:S2221"})

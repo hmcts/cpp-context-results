@@ -29,6 +29,7 @@ import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.results.event.helper.ApplicationFinalResultsEnricher;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
+import uk.gov.moj.cpp.results.event.service.InformantRegisterQueueService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 
 import java.io.StringReader;
@@ -67,6 +68,9 @@ public class HearingResultedEventProcessorTest {
 
     @Mock
     private EventGridService eventGridService;
+
+    @Mock
+    private InformantRegisterQueueService informantRegisterQueueService;
 
     @InjectMocks
     private HearingResultedEventProcessor eventProcessor;
@@ -108,6 +112,8 @@ public class HearingResultedEventProcessorTest {
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+
+        verify(informantRegisterQueueService).sendDistributionCommand(hearingId.toString(), hearingDay, ZonedDateTimes.toString(sharedTime));
 
         final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
         final JsonEnvelope allValues = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
@@ -154,6 +160,62 @@ public class HearingResultedEventProcessorTest {
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "SJP_Hearing_Resulted");
+
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString());
+    }
+
+    @Test
+    public void shouldNotPublishToInformantRegisterQueueWithoutAUserId() {
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .build();
+
+        final JsonObjectBuilder resultPayload = createObjectBuilder()
+                .add("isReshare", false)
+                .add("hearingDay", hearingDay)
+                .add("sharedTime", ZonedDateTimes.toString(sharedTime))
+                .add("hearing", hearing);
+
+        final JsonEnvelope event = envelopeFrom(metadataOf(randomUUID(), "public.events.hearing.hearing-resulted").build(),
+                resultPayload.build());
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString());
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+    }
+
+    @Test
+    public void shouldContinueIfInformantRegisterQueuePublishFailsWhenHearingResulted() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .build();
+
+        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, false);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(informantRegisterQueueService.sendDistributionCommand(anyString(), anyString(), anyString()))
+                .thenThrow(new RuntimeException("queue unavailable"));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
     }
 
     @Test
