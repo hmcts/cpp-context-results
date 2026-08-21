@@ -30,34 +30,30 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     private static final String SOURCE = "RESULTS";
     private static final String EVENT_TYPE_HEARING_RESULTED = "Hearing_Resulted";
 
-    @Inject
-    @Value(key = "informantRegisterQueuePublishEnabled", defaultValue = "false")
-    private String informantRegisterQueuePublishEnabled;
+    // POC: fixed to the STE-42 queue. Per-environment configuration arrives with the production
+    // command/event chain.
+    private static final String QUEUE_NAME = "steccm42.informantregister.requests";
 
     @Inject
     @Value(key = "informantRegisterQueueConnectionString", defaultValue = "")
     private String informantRegisterQueueConnectionString;
 
-    @Inject
-    @Value(key = "informantRegisterQueueName", defaultValue = "informantregister.requests")
-    private String informantRegisterQueueName;
-
     private ServiceBusSenderClient senderClient;
 
     @PostConstruct
     public void setup() {
-        if (isEnabled() && !informantRegisterQueueConnectionString.isBlank()) {
+        if (!informantRegisterQueueConnectionString.isBlank()) {
             senderClient = new ServiceBusClientBuilder()
                     .connectionString(informantRegisterQueueConnectionString)
                     .sender()
-                    .queueName(informantRegisterQueueName)
+                    .queueName(QUEUE_NAME)
                     .buildClient();
         }
     }
 
     @Override
     public boolean sendDistributionCommand(final String hearingId, final String hearingDay, final String sharedTime) {
-        if (!isEnabled() || senderClient == null) {
+        if (senderClient == null) {
             return true;
         }
         try {
@@ -79,16 +75,12 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
             message.setContentType("application/json");
 
             LOGGER.info("Publishing informant register distribution command for hearing {}, hearingDay {}, requestId {} to queue {}",
-                    hearingId, hearingDay, requestId, informantRegisterQueueName);
+                    hearingId, hearingDay, requestId, QUEUE_NAME);
             senderClient.sendMessage(message);
             return true;
         } catch (final Exception e) {
             LOGGER.error("Failed to publish informant register distribution command for hearing {}, hearingDay {}", hearingId, hearingDay, e);
             return false;
         }
-    }
-
-    private boolean isEnabled() {
-        return Boolean.parseBoolean(informantRegisterQueuePublishEnabled);
     }
 }

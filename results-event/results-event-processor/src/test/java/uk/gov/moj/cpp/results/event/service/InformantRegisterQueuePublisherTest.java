@@ -44,14 +44,12 @@ public class InformantRegisterQueuePublisherTest {
     @BeforeEach
     public void setup() {
         publisher = new InformantRegisterQueuePublisher();
-        setField(publisher, "informantRegisterQueuePublishEnabled", "true");
-        setField(publisher, "informantRegisterQueueName", "informantregister.requests");
         setField(publisher, "senderClient", senderClient);
     }
 
     @Test
-    public void shouldNotSendWhenDisabled() {
-        setField(publisher, "informantRegisterQueuePublishEnabled", "false");
+    public void shouldNotSendWhenNoConnectionStringIsConfigured() {
+        setField(publisher, "senderClient", null);
 
         final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME);
 
