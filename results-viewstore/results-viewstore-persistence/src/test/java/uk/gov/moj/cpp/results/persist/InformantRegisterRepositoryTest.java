@@ -165,6 +165,15 @@ public class InformantRegisterRepositoryTest {
         assertThat(informantRegisterEntities, hasSize(2));
     }
 
+    @Test
+    public void shouldRemoveADetachedInformantRegisterByMergingItFirst() {
+        // an unmanaged instance takes the merge branch of remove()
+        informantRegisterRepository.remove(createInformantRegister(REGISTER_TIME_1));
+
+        // only the two entities saved in @BeforeEach remain
+        assertThat(informantRegisterRepository.findAll(), hasSize(2));
+    }
+
     private InformantRegisterEntity createGeneratedInformantRegister(final ZonedDateTime registerTime) {
         final InformantRegisterEntity informantRegisterEntity = createInformantRegister(registerTime);
         informantRegisterEntity.setStatus(GENERATED);

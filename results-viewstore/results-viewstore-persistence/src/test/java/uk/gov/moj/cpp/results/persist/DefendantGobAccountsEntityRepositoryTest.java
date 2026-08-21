@@ -193,6 +193,16 @@ public class DefendantGobAccountsEntityRepositoryTest {
         assertThat(defendantGobAccountsRepository.findAll(), hasSize(0));
     }
 
+    @Test
+    public void shouldRemoveAManagedDefendantGobAccount() {
+        // save() returns the merged, managed instance, so remove() takes the contains==true branch
+        final DefendantGobAccountsEntity managed = defendantGobAccountsRepository.save(createdHearingFinancialDetailsEntity(randomUUID()));
+
+        defendantGobAccountsRepository.remove(managed);
+
+        assertThat(defendantGobAccountsRepository.findAll(), hasSize(0));
+    }
+
     private DefendantGobAccountsEntity createdHearingFinancialDetailsEntity(final UUID hearingId) {
         final DefendantGobAccountsEntity defendantGobAccountsEntity = new DefendantGobAccountsEntity(randomUUID(), randomUUID());
         defendantGobAccountsEntity.setHearingId(hearingId);

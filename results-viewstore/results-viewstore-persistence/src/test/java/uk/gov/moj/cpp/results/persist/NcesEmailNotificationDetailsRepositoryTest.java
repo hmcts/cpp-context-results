@@ -59,6 +59,18 @@ public class NcesEmailNotificationDetailsRepositoryTest {
         assertThat(ncesEmailNotificationDetailsRepository.findAll(), hasSize(0));
     }
 
+    @Test
+    public void shouldRemoveAManagedNcesEmailNotificationDetails() {
+        // save() returns the merged, managed instance, so remove() takes the contains==true branch
+        final NcesEmailNotificationDetailsEntity managed =
+                ncesEmailNotificationDetailsRepository.save(createNcesEmailNotificationDetailsEntity());
+
+        ncesEmailNotificationDetailsRepository.remove(managed);
+
+        // the entity saved in @BeforeEach remains
+        assertThat(ncesEmailNotificationDetailsRepository.findAll(), hasSize(1));
+    }
+
     private NcesEmailNotificationDetailsEntity createNcesEmailNotificationDetailsEntity() {
         final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = new NcesEmailNotificationDetailsEntity();
         ncesEmailNotificationDetailsEntity.setId(randomUUID());

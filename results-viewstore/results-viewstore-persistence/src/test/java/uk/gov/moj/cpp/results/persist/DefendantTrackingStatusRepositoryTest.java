@@ -237,6 +237,17 @@ public class DefendantTrackingStatusRepositoryTest {
         assertThat(defendantTrackingStatusRepository.findAll(), hasSize(0));
     }
 
+    @Test
+    public void shouldRemoveAManagedDefendantTrackingStatus() {
+        // save() returns the merged, managed instance, so remove() takes the contains==true branch
+        final DefendantTrackingStatus managed = defendantTrackingStatusRepository.save(
+                createDefendantTrackingStatus(OFFENCE_ID1, DEFENDANT_ID1, EM_LAST_MODIFIED_OFF1_DEF1, WA_LAST_MODIFIED_OFF1_DEF1, true, false));
+
+        defendantTrackingStatusRepository.remove(managed);
+
+        assertThat(defendantTrackingStatusRepository.findAll(), hasSize(0));
+    }
+
     private DefendantTrackingStatus createDefendantTrackingStatus(final UUID offenceId,
                                                                   final UUID defendantId,
                                                                   final ZonedDateTime emLastModifiedTime,

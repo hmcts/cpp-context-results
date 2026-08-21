@@ -31,6 +31,7 @@ pool:
 variables:
   sonarqubeProject: "uk.gov.moj.cpp.results:results-parent" # update eg: uk.gov.moj.cpp.listing:listing-parent
   service_Name: 'results' # this should be service name. Image repository will be <serviceName>-service and should be in sysnc with aks-deploy repo.. eg : stagingbulkscan, hearing, systemidmapper
+  docker_build_image: true # build and push the results-service Docker image on team/main builds
   itTest_Folder: 'results-integration-test' # integration test folder name system-id-mapper-integration-test
   LANG : 'en_GB.UTF-8' # update lang u need
   LC_ALL : 'en_GB.UTF-8' # update LC u need
@@ -50,3 +51,5 @@ stages:
           serviceName: ${{ variables['service_Name'] }}
           itTestFolder: ${{ variables['itTest_Folder'] }}
           aksDeployBranch: 'wildfly40'
+          dockerfilePath: docker/Dockerfile_results-service
+          repository: hmcts/results-service
