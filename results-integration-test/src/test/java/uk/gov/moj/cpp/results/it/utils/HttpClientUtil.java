@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.it.utils;
 
 import static java.lang.String.format;
-import static javax.ws.rs.core.Response.Status.ACCEPTED;
+import static jakarta.ws.rs.core.Response.Status.ACCEPTED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.justice.services.common.http.HeaderConstants.USER_ID;
@@ -9,10 +9,10 @@ import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFact
 
 import uk.gov.justice.services.test.utils.core.rest.RestClient;
 
-import javax.json.JsonObject;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
 
 import com.google.common.base.Joiner;
 

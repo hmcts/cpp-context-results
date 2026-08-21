@@ -2,12 +2,17 @@ package uk.gov.moj.cpp.results.persist;
 
 import uk.gov.moj.cpp.results.persist.entity.HearingDefendantResultedDocument;
 
-import java.util.UUID;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-import org.apache.deltaspike.data.api.AbstractEntityRepository;
-import org.apache.deltaspike.data.api.Repository;
+@ApplicationScoped
+public class HearingDefendantResultedDocumentRepository {
 
-@Repository(forEntity = HearingDefendantResultedDocument.class)
-public abstract class HearingDefendantResultedDocumentRepository extends AbstractEntityRepository<HearingDefendantResultedDocument, UUID> {
+    @PersistenceContext(unitName = "results-persistence-unit")
+    EntityManager entityManager;
 
+    public HearingDefendantResultedDocument save(final HearingDefendantResultedDocument hearingDefendantResultedDocument) {
+        return entityManager.merge(hearingDefendantResultedDocument);
+    }
 }

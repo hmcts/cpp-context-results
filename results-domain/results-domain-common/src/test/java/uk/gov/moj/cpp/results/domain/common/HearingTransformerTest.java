@@ -30,7 +30,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.google.common.io.Resources;
 import org.junit.jupiter.api.BeforeEach;

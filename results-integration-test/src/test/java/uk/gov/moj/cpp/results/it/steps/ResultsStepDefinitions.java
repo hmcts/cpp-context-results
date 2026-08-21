@@ -8,7 +8,7 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.lang.String.format;
 import static java.util.Optional.empty;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static javax.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.OK;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.not;
@@ -51,9 +51,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.json.JsonObject;
-import javax.ws.rs.core.Response;
+import jakarta.jms.JMSException;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
@@ -120,8 +120,10 @@ public class ResultsStepDefinitions extends AbstractStepDefinitions {
             @Override
             public void describeMismatch(final Object item, final Description description) {
                 final ResponseData responseData = (ResponseData) item;
-                final JsonObject jsonObject = createReader(new StringReader(responseData.getPayload())).readObject();
-                matcher.describeMismatch(jsonObject, description);
+                // Convert to the target type first (as matches() does); passing the raw JsonObject to a typed
+                // bean matcher throws ClassCastException and masks the real mismatch.
+                final T object = MapJsonObjectToTypeMatcher.convert(theClass, responseData.getPayload());
+                matcher.describeMismatch(object, description);
             }
 
             @Override

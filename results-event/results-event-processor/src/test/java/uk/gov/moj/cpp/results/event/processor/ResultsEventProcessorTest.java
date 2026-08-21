@@ -61,7 +61,7 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.test.utils.framework.api.JsonObjectConvertersFactory;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
-import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
+import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
 import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.ApplicationResultDetails;
 import uk.gov.moj.cpp.results.domain.event.CaseResultDetails;
@@ -101,10 +101,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
-import javax.json.JsonValue;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonReader;
+import jakarta.json.JsonValue;
 
 import com.google.common.io.Resources;
 import org.junit.jupiter.api.BeforeEach;

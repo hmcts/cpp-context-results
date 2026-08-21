@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.results.event.service;
 
 import static java.lang.String.format;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
-import static javax.transaction.Transactional.TxType.REQUIRES_NEW;
+import static jakarta.transaction.Transactional.TxType.REQUIRES_NEW;
 
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;
 import uk.gov.justice.services.core.sender.Sender;
@@ -21,9 +21,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.json.JsonObject;
-import javax.transaction.Transactional;
+import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
+import jakarta.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

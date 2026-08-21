@@ -1,6 +1,5 @@
 package uk.gov.moj.cpp.results.test.matchers;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -68,8 +67,6 @@ public class BeanMatcher<T> extends BaseMatcher<T> {
                     return method.invoke(item, args);
                 })).make()) {
             loadedProxyClazz = unloaded.load(clazz.getClassLoader()).getLoaded();
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to create proxy for class: " + clazz.getName(), e);
         }
 
         try {

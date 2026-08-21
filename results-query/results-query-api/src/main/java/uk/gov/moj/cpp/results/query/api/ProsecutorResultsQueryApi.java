@@ -8,7 +8,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.query.api.validator.ProsecutorResultsQueryValidator;
 import uk.gov.moj.cpp.results.query.view.ProsecutorResultsQueryView;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @ServiceComponent(QUERY_API)
 public class ProsecutorResultsQueryApi {

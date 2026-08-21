@@ -12,9 +12,10 @@ import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,7 +54,7 @@ public class DefendantGobAccountsQueryViewTest {
         when(envelope.payloadAsJsonObject()).thenReturn(payload);
         when(payload.getString("masterDefendantId")).thenReturn(masterDefendantId.toString());
         when(payload.getString("hearingId")).thenReturn(hearingId.toString());
-        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId)).thenReturn(entity);
+        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId)).thenReturn(Optional.of(entity));
 
         final JsonEnvelope result = defendantGobAccountsQueryView.getDefendantGobAccounts(envelope);
 
