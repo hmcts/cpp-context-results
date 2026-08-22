@@ -5,7 +5,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-parent</artifactId>
-        <version>17.104.122-IR-SNAPSHOT</version>
+        <version>17.104.123-IR-SNAPSHOT</version>
     </parent>
 
     <artifactId>test-utilities</artifactId>
