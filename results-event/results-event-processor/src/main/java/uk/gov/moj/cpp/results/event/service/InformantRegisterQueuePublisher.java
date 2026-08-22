@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.event.service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.WorkloadIdentityCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
@@ -13,6 +13,8 @@ import uk.gov.justice.services.common.configuration.Value;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -45,14 +47,31 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     @Value(key = "informantRegisterQueueNamespace", defaultValue = "")
     private String informantRegisterQueueNamespace;
 
+    @Inject
+    @Value(key = "azure.local.mi.clientId", defaultValue = "")
+    private String managedIdentityClientId;
+
+    @Inject
+    @Value(key = "azure.local.mi.tenantId", defaultValue = "")
+    private String managedIdentityTenantId;
+
     private ServiceBusSenderClient senderClient;
 
     @PostConstruct
     public void setup() {
         if (!informantRegisterQueueNamespace.isBlank()) {
+            final String tokenFile = System.getenv().getOrDefault(
+                    "AZURE_FEDERATED_TOKEN_FILE", "/var/run/secrets/azure/tokens/azure-identity-token");
+            LOGGER.info("Informant register publisher connecting to {} as client {} (tenant {}, token file {} exists {})",
+                    informantRegisterQueueNamespace, managedIdentityClientId, managedIdentityTenantId,
+                    tokenFile, Files.exists(Paths.get(tokenFile)));
             senderClient = new ServiceBusClientBuilder()
                     .fullyQualifiedNamespace(informantRegisterQueueNamespace)
-                    .credential(new DefaultAzureCredentialBuilder().build())
+                    .credential(new WorkloadIdentityCredentialBuilder()
+                            .clientId(managedIdentityClientId)
+                            .tenantId(managedIdentityTenantId)
+                            .tokenFilePath(tokenFile)
+                            .build())
                     .sender()
                     .queueName(QUEUE_NAME)
                     .buildClient();
