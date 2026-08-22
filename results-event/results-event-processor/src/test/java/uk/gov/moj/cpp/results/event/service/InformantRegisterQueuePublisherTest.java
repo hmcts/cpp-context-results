@@ -51,6 +51,20 @@ public class InformantRegisterQueuePublisherTest {
     public void shouldStayInertWhenNoNamespaceIsConfigured() {
         final InformantRegisterQueuePublisher unconfigured = new InformantRegisterQueuePublisher();
         setField(unconfigured, "informantRegisterQueueNamespace", "");
+        setField(unconfigured, "informantRegisterQueueName", "steccm42.informantregister.requests");
+
+        unconfigured.setup();
+        final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME);
+
+        assertThat(result, is(true));
+        verifyNoInteractions(senderClient);
+    }
+
+    @Test
+    public void shouldStayInertWhenNoQueueNameIsConfigured() {
+        final InformantRegisterQueuePublisher unconfigured = new InformantRegisterQueuePublisher();
+        setField(unconfigured, "informantRegisterQueueNamespace", "sbsteccm01.servicebus.windows.net");
+        setField(unconfigured, "informantRegisterQueueName", "");
 
         unconfigured.setup();
         final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME);

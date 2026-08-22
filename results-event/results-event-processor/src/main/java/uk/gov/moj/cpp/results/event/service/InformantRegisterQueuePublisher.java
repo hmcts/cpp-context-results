@@ -26,11 +26,11 @@ import java.util.UUID;
  * genuine re-share (new sharedTime) mints a new one. The broker messageId is
  * "RESULTS:{requestId}" for duplicate detection.
  *
- * <p>Authentication is workload identity only: when {@code informantRegisterQueueNamespace} is
- * configured the sender authenticates as the pod's managed identity via DefaultAzureCredential,
- * which needs an AzureServiceBusDataSender grant on the namespace (declared in the AKS deploy
- * config, ccm_workload_identities). With no namespace configured the publisher is inert, so
- * environments without the grant are unaffected.
+ * <p>Authentication is workload identity only: when {@code informantRegisterQueueNamespace} and
+ * {@code informantRegisterQueueName} are configured the sender authenticates as the pod's managed
+ * identity via DefaultAzureCredential, which needs an AzureServiceBusDataSender grant on the
+ * namespace (declared in the AKS deploy config, ccm_workload_identities). With either value
+ * unconfigured the publisher is inert, so environments without the grant are unaffected.
  */
 public class InformantRegisterQueuePublisher implements InformantRegisterQueueService {
 
@@ -39,13 +39,13 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     private static final String SOURCE = "RESULTS";
     private static final String EVENT_TYPE_HEARING_RESULTED = "Hearing_Resulted";
 
-    // POC: fixed to the STE-42 queue. Per-environment configuration arrives with the production
-    // command/event chain.
-    private static final String QUEUE_NAME = "steccm42.informantregister.requests";
-
     @Inject
     @Value(key = "informantRegisterQueueNamespace", defaultValue = "")
     private String informantRegisterQueueNamespace;
+
+    @Inject
+    @Value(key = "informantRegisterQueueName", defaultValue = "")
+    private String informantRegisterQueueName;
 
     @Inject
     @Value(key = "azure.local.mi.clientId", defaultValue = "")
@@ -59,11 +59,11 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
 
     @PostConstruct
     public void setup() {
-        if (!informantRegisterQueueNamespace.isBlank()) {
+        if (!informantRegisterQueueNamespace.isBlank() && !informantRegisterQueueName.isBlank()) {
             final String tokenFile = System.getenv().getOrDefault(
                     "AZURE_FEDERATED_TOKEN_FILE", "/var/run/secrets/azure/tokens/azure-identity-token");
-            LOGGER.info("Informant register publisher connecting to {} as client {} (tenant {}, token file {} exists {})",
-                    informantRegisterQueueNamespace, managedIdentityClientId, managedIdentityTenantId,
+            LOGGER.info("Informant register publisher connecting to {} queue {} as client {} (tenant {}, token file {} exists {})",
+                    informantRegisterQueueNamespace, informantRegisterQueueName, managedIdentityClientId, managedIdentityTenantId,
                     tokenFile, Files.exists(Paths.get(tokenFile)));
             senderClient = new ServiceBusClientBuilder()
                     .fullyQualifiedNamespace(informantRegisterQueueNamespace)
@@ -73,7 +73,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
                             .tokenFilePath(tokenFile)
                             .build())
                     .sender()
-                    .queueName(QUEUE_NAME)
+                    .queueName(informantRegisterQueueName)
                     .buildClient();
         }
     }
@@ -102,7 +102,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
             message.setContentType("application/json");
 
             LOGGER.info("Publishing informant register distribution command for hearing {}, hearingDay {}, requestId {} to queue {}",
-                    hearingId, hearingDay, requestId, QUEUE_NAME);
+                    hearingId, hearingDay, requestId, informantRegisterQueueName);
             senderClient.sendMessage(message);
             return true;
         } catch (final Exception e) {
