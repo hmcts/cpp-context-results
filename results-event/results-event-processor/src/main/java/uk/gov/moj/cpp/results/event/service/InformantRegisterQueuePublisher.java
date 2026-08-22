@@ -3,6 +3,7 @@ package uk.gov.moj.cpp.results.event.service;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
@@ -22,6 +23,12 @@ import java.util.UUID;
  * hearingId|hearingDay|sharedTime so a republish of the same share carries the same id, while a
  * genuine re-share (new sharedTime) mints a new one. The broker messageId is
  * "RESULTS:{requestId}" for duplicate detection.
+ *
+ * <p>Authentication is workload identity only: when {@code informantRegisterQueueNamespace} is
+ * configured the sender authenticates as the pod's managed identity via DefaultAzureCredential,
+ * which needs an AzureServiceBusDataSender grant on the namespace (declared in the AKS deploy
+ * config, ccm_workload_identities). With no namespace configured the publisher is inert, so
+ * environments without the grant are unaffected.
  */
 public class InformantRegisterQueuePublisher implements InformantRegisterQueueService {
 
@@ -35,16 +42,17 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     private static final String QUEUE_NAME = "steccm42.informantregister.requests";
 
     @Inject
-    @Value(key = "informantRegisterQueueConnectionString", defaultValue = "")
-    private String informantRegisterQueueConnectionString;
+    @Value(key = "informantRegisterQueueNamespace", defaultValue = "")
+    private String informantRegisterQueueNamespace;
 
     private ServiceBusSenderClient senderClient;
 
     @PostConstruct
     public void setup() {
-        if (!informantRegisterQueueConnectionString.isBlank()) {
+        if (!informantRegisterQueueNamespace.isBlank()) {
             senderClient = new ServiceBusClientBuilder()
-                    .connectionString(informantRegisterQueueConnectionString)
+                    .fullyQualifiedNamespace(informantRegisterQueueNamespace)
+                    .credential(new DefaultAzureCredentialBuilder().build())
                     .sender()
                     .queueName(QUEUE_NAME)
                     .buildClient();

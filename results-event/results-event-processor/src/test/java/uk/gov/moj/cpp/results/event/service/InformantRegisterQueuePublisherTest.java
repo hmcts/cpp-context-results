@@ -48,10 +48,12 @@ public class InformantRegisterQueuePublisherTest {
     }
 
     @Test
-    public void shouldNotSendWhenNoConnectionStringIsConfigured() {
-        setField(publisher, "senderClient", null);
+    public void shouldStayInertWhenNoNamespaceIsConfigured() {
+        final InformantRegisterQueuePublisher unconfigured = new InformantRegisterQueuePublisher();
+        setField(unconfigured, "informantRegisterQueueNamespace", "");
 
-        final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME);
+        unconfigured.setup();
+        final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME);
 
         assertThat(result, is(true));
         verifyNoInteractions(senderClient);
