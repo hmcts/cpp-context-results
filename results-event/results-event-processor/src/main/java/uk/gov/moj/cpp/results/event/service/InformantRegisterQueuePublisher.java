@@ -27,7 +27,9 @@ import java.util.UUID;
  * "RESULTS:{requestId}" for duplicate detection.
  *
  * <p>userId is the CPP user who shared the results, taken from the hearing-resulted envelope's
- * metadata. It is carried so the consumer can attribute every downstream call it makes for this
+ * metadata and parsed by the caller, so a metadata value that is not a canonical uuid never reaches
+ * the queue: the consumer's schema types the field as one, so publishing anything else would buy a
+ * guaranteed dead-letter. It is carried so the consumer can attribute every downstream call it makes for this
  * message to that user through CJSCPPUID, which is what the function app does today: the envelope's
  * userId becomes the orchestration's cjscppuid and is threaded unchanged into the now-subscriptions
  * read and the add-informant-register POST. It is optional in the schema - support replay tooling
@@ -88,7 +90,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     }
 
     @Override
-    public boolean sendDistributionCommand(final String hearingId, final String hearingDay, final String sharedTime, final String userId) {
+    public boolean sendDistributionCommand(final String hearingId, final String hearingDay, final String sharedTime, final UUID userId) {
         if (senderClient == null) {
             return true;
         }
@@ -103,7 +105,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
                     .add("hearingDay", hearingDay)
                     .add("sharedTime", sharedTime)
                     .add("eventType", EVENT_TYPE_HEARING_RESULTED)
-                    .add("userId", userId)
+                    .add("userId", userId.toString())
                     .build()
                     .toString();
 

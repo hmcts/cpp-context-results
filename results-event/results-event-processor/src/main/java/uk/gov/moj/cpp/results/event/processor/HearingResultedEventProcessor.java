@@ -148,7 +148,12 @@ public class HearingResultedEventProcessor {
     private void sendToInformantRegisterQueue(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
         final Optional<String> userId = envelope.metadata().userId();
         try {
-            userId.ifPresent(s -> informantRegisterQueueService.sendDistributionCommand(hearingId, hearingDay, sharedTime, s));
+            // UUID.fromString for the same reason sendEventToGrid does it: the consumer's contract
+            // types userId as a canonical uuid, so a malformed metadata value can only be
+            // dead-lettered on arrival. Parsing here makes it fail on this side instead, and makes
+            // both legs of the fan-out behave alike - the throw is caught below, nothing is
+            // published, and the reason is in this service's log rather than another team's DLQ.
+            userId.ifPresent(s -> informantRegisterQueueService.sendDistributionCommand(hearingId, hearingDay, sharedTime, UUID.fromString(s)));
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to publish to the informant register queue for hearing {}, hearingDay {}", hearingId, hearingDay, e);
         }

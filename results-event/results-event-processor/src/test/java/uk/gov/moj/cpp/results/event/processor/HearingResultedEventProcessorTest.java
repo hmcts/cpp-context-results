@@ -113,7 +113,7 @@ public class HearingResultedEventProcessorTest {
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
 
-        verify(informantRegisterQueueService).sendDistributionCommand(hearingId.toString(), hearingDay, ZonedDateTimes.toString(sharedTime), userId.toString());
+        verify(informantRegisterQueueService).sendDistributionCommand(hearingId.toString(), hearingDay, ZonedDateTimes.toString(sharedTime), userId);
 
         final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
         final JsonEnvelope allValues = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
@@ -161,7 +161,7 @@ public class HearingResultedEventProcessorTest {
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "SJP_Hearing_Resulted");
 
-        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), anyString());
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), any(UUID.class));
     }
 
     @Test
@@ -188,7 +188,45 @@ public class HearingResultedEventProcessorTest {
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
-        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), anyString());
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), any(UUID.class));
+
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+    }
+
+    /**
+     * The consumer's contract types userId as a canonical uuid, so a metadata value that is not one
+     * can only be dead-lettered on arrival - in another team's queue, for a defect that originated
+     * here. It is rejected on this side instead, exactly as the Event Grid leg rejects it, and the
+     * hearing-resulted command still goes out: a malformed identity must not cost the resulting.
+     */
+    @Test
+    public void shouldNotPublishToInformantRegisterQueueWhenTheUserIdIsNotAUuid() {
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .build();
+
+        final JsonObjectBuilder resultPayload = createObjectBuilder()
+                .add("isReshare", false)
+                .add("hearingDay", hearingDay)
+                .add("sharedTime", ZonedDateTimes.toString(sharedTime))
+                .add("hearing", hearing);
+
+        final JsonEnvelope event = envelopeFrom(
+                metadataOf(randomUUID(), "public.events.hearing.hearing-resulted")
+                        .withUserId("not-a-uuid")
+                        .build(),
+                resultPayload.build());
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), any(UUID.class));
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
     }
@@ -208,7 +246,7 @@ public class HearingResultedEventProcessorTest {
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(informantRegisterQueueService.sendDistributionCommand(anyString(), anyString(), anyString(), anyString()))
+        when(informantRegisterQueueService.sendDistributionCommand(anyString(), anyString(), anyString(), any(UUID.class)))
                 .thenThrow(new RuntimeException("queue unavailable"));
 
         eventProcessor.handleHearingResultedPublicEvent(event);

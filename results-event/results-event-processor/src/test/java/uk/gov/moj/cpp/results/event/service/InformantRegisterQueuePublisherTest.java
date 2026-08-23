@@ -34,6 +34,7 @@ public class InformantRegisterQueuePublisherTest {
     private static final String HEARING_DAY = "2026-08-21";
     private static final String SHARED_TIME = "2026-08-21T16:05:00.000Z";
     private static final String USER_ID = "1a3f7c68-4c4b-4a1f-93cd-6e2ac2c4a1d0";
+    private static final UUID USER = UUID.fromString(USER_ID);
 
     @Mock
     private ServiceBusSenderClient senderClient;
@@ -56,7 +57,7 @@ public class InformantRegisterQueuePublisherTest {
         setField(unconfigured, "informantRegisterQueueName", "steccm42.informantregister.requests");
 
         unconfigured.setup();
-        final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
+        final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
 
         assertThat(result, is(true));
         verifyNoInteractions(senderClient);
@@ -69,7 +70,7 @@ public class InformantRegisterQueuePublisherTest {
         setField(unconfigured, "informantRegisterQueueName", "");
 
         unconfigured.setup();
-        final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
+        final boolean result = unconfigured.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
 
         assertThat(result, is(true));
         verifyNoInteractions(senderClient);
@@ -77,7 +78,7 @@ public class InformantRegisterQueuePublisherTest {
 
     @Test
     public void shouldSendDistributionCommandMatchingTheContract() {
-        final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
+        final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
 
         assertThat(result, is(true));
         verify(senderClient).sendMessage(messageCaptor.capture());
@@ -112,8 +113,8 @@ public class InformantRegisterQueuePublisherTest {
     public void shouldNotDeriveTheRequestIdFromTheUserId() {
         final String otherUserId = "9d2b1e04-5f77-4c8a-8b31-0f5c7d6e2a94";
 
-        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
-        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, otherUserId);
+        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
+        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, UUID.fromString(otherUserId));
 
         verify(senderClient, times(2)).sendMessage(messageCaptor.capture());
 
@@ -134,9 +135,9 @@ public class InformantRegisterQueuePublisherTest {
 
     @Test
     public void shouldMintTheSameRequestIdForARepublishAndANewOneForAReshare() {
-        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
-        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
-        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, "2026-08-21T19:30:00.000Z", USER_ID);
+        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
+        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
+        publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, "2026-08-21T19:30:00.000Z", USER);
 
         verify(senderClient, times(3)).sendMessage(messageCaptor.capture());
 
@@ -152,7 +153,7 @@ public class InformantRegisterQueuePublisherTest {
     public void shouldReturnFalseAndNotThrowWhenTheSendFails() {
         doThrow(new RuntimeException("broker unavailable")).when(senderClient).sendMessage(any(ServiceBusMessage.class));
 
-        final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER_ID);
+        final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
 
         assertThat(result, is(false));
     }
