@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.justice.services.common.configuration.Value;
+import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -37,6 +38,13 @@ import java.util.UUID;
  * deliberately NOT part of the requestId recipe, so the same share republished by a different route
  * still dedupes.
  *
+ * <p>The publish is gated on the {@code InformantRegisterService} feature flag, the runtime switch
+ * between the legacy informant-register function app and the new service. The guard is fail-closed:
+ * no flag row for the environment's label means disabled, so every environment stays on the legacy
+ * path until the flag is explicitly created and enabled for its label. The flag is evaluated per
+ * send, after the cheap configuration check, so unconfigured environments never pay for the remote
+ * App Configuration lookup.
+ *
  * <p>Authentication is workload identity only: when {@code informantRegisterQueueNamespace} and
  * {@code informantRegisterQueueName} are configured the sender authenticates as the pod's managed
  * identity via DefaultAzureCredential, which needs an AzureServiceBusDataSender grant on the
@@ -47,8 +55,13 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InformantRegisterQueuePublisher.class);
 
+    public static final String INFORMANT_REGISTER_SERVICE_FEATURE = "InformantRegisterService";
+
     private static final String SOURCE = "RESULTS";
     private static final String EVENT_TYPE_HEARING_RESULTED = "Hearing_Resulted";
+
+    @Inject
+    private FeatureControlGuard featureControlGuard;
 
     @Inject
     @Value(key = "informantRegisterQueueNamespace", defaultValue = "")
@@ -92,6 +105,11 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     @Override
     public boolean sendDistributionCommand(final String hearingId, final String hearingDay, final String sharedTime, final UUID userId) {
         if (senderClient == null) {
+            return true;
+        }
+        if (!featureControlGuard.isFeatureEnabled(INFORMANT_REGISTER_SERVICE_FEATURE)) {
+            LOGGER.info("Feature {} is not enabled - informant register queue publish skipped for hearing {}, hearingDay {}; the legacy function app remains responsible",
+                    INFORMANT_REGISTER_SERVICE_FEATURE, hearingId, hearingDay);
             return true;
         }
         try {

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 
@@ -26,6 +27,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 
 @ExtendWith(MockitoExtension.class)
 public class InformantRegisterQueuePublisherTest {
@@ -39,6 +41,9 @@ public class InformantRegisterQueuePublisherTest {
     @Mock
     private ServiceBusSenderClient senderClient;
 
+    @Mock
+    private FeatureControlGuard featureControlGuard;
+
     @Captor
     private ArgumentCaptor<ServiceBusMessage> messageCaptor;
 
@@ -48,6 +53,12 @@ public class InformantRegisterQueuePublisherTest {
     public void setup() {
         publisher = new InformantRegisterQueuePublisher();
         setField(publisher, "senderClient", senderClient);
+        setField(publisher, "featureControlGuard", featureControlGuard);
+    }
+
+    private void givenTheFeatureIs(final boolean enabled) {
+        when(featureControlGuard.isFeatureEnabled(InformantRegisterQueuePublisher.INFORMANT_REGISTER_SERVICE_FEATURE))
+                .thenReturn(enabled);
     }
 
     @Test
@@ -76,8 +87,26 @@ public class InformantRegisterQueuePublisherTest {
         verifyNoInteractions(senderClient);
     }
 
+    /**
+     * The InformantRegisterService feature flag is the runtime switch between the legacy function
+     * app and the new informant register service. Disabled (or absent for the environment's label -
+     * the guard is fail-closed) means the legacy path stays in charge and nothing is published to
+     * the queue; a no-send is a normal outcome, not a failure.
+     */
+    @Test
+    public void shouldNotSendWhenTheInformantRegisterServiceFeatureIsDisabled() {
+        givenTheFeatureIs(false);
+
+        final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
+
+        assertThat(result, is(true));
+        verifyNoInteractions(senderClient);
+    }
+
     @Test
     public void shouldSendDistributionCommandMatchingTheContract() {
+        givenTheFeatureIs(true);
+
         final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
 
         assertThat(result, is(true));
@@ -111,6 +140,8 @@ public class InformantRegisterQueuePublisherTest {
      */
     @Test
     public void shouldNotDeriveTheRequestIdFromTheUserId() {
+        givenTheFeatureIs(true);
+
         final String otherUserId = "9d2b1e04-5f77-4c8a-8b31-0f5c7d6e2a94";
 
         publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
@@ -135,6 +166,8 @@ public class InformantRegisterQueuePublisherTest {
 
     @Test
     public void shouldMintTheSameRequestIdForARepublishAndANewOneForAReshare() {
+        givenTheFeatureIs(true);
+
         publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
         publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
         publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, "2026-08-21T19:30:00.000Z", USER);
@@ -151,6 +184,8 @@ public class InformantRegisterQueuePublisherTest {
 
     @Test
     public void shouldReturnFalseAndNotThrowWhenTheSendFails() {
+        givenTheFeatureIs(true);
+
         doThrow(new RuntimeException("broker unavailable")).when(senderClient).sendMessage(any(ServiceBusMessage.class));
 
         final boolean result = publisher.sendDistributionCommand(HEARING_ID, HEARING_DAY, SHARED_TIME, USER);
