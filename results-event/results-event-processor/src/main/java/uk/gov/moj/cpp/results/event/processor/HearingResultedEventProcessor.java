@@ -148,7 +148,7 @@ public class HearingResultedEventProcessor {
     private void sendToInformantRegisterQueue(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
         final Optional<String> userId = envelope.metadata().userId();
         try {
-            userId.ifPresent(s -> informantRegisterQueueService.sendDistributionCommand(hearingId, hearingDay, sharedTime));
+            userId.ifPresent(s -> informantRegisterQueueService.sendDistributionCommand(hearingId, hearingDay, sharedTime, s));
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to publish to the informant register queue for hearing {}, hearingDay {}", hearingId, hearingDay, e);
         }

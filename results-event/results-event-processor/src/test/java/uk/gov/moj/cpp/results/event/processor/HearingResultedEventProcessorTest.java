@@ -113,7 +113,7 @@ public class HearingResultedEventProcessorTest {
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
 
-        verify(informantRegisterQueueService).sendDistributionCommand(hearingId.toString(), hearingDay, ZonedDateTimes.toString(sharedTime));
+        verify(informantRegisterQueueService).sendDistributionCommand(hearingId.toString(), hearingDay, ZonedDateTimes.toString(sharedTime), userId.toString());
 
         final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
         final JsonEnvelope allValues = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
@@ -161,7 +161,7 @@ public class HearingResultedEventProcessorTest {
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "SJP_Hearing_Resulted");
 
-        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString());
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
@@ -188,7 +188,7 @@ public class HearingResultedEventProcessorTest {
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
-        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString());
+        verify(informantRegisterQueueService, never()).sendDistributionCommand(anyString(), anyString(), anyString(), anyString());
 
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
     }
@@ -208,7 +208,7 @@ public class HearingResultedEventProcessorTest {
 
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(informantRegisterQueueService.sendDistributionCommand(anyString(), anyString(), anyString()))
+        when(informantRegisterQueueService.sendDistributionCommand(anyString(), anyString(), anyString(), anyString()))
                 .thenThrow(new RuntimeException("queue unavailable"));
 
         eventProcessor.handleHearingResultedPublicEvent(event);

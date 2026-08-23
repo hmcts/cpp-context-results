@@ -20,11 +20,20 @@ import java.util.UUID;
 /**
  * Publishes the thin informant-register distribution command to the dedicated Azure Service Bus
  * queue when a regular hearing is resulted. The message body is the closed contract owned by
- * service-cp-crime-informant-register (distribution-command.schema.json): exactly six fields,
+ * service-cp-crime-informant-register (distribution-command.schema.json): seven fields,
  * additionalProperties false. requestId is minted deterministically from
  * hearingId|hearingDay|sharedTime so a republish of the same share carries the same id, while a
  * genuine re-share (new sharedTime) mints a new one. The broker messageId is
  * "RESULTS:{requestId}" for duplicate detection.
+ *
+ * <p>userId is the CPP user who shared the results, taken from the hearing-resulted envelope's
+ * metadata. It is carried so the consumer can attribute every downstream call it makes for this
+ * message to that user through CJSCPPUID, which is what the function app does today: the envelope's
+ * userId becomes the orchestration's cjscppuid and is threaded unchanged into the now-subscriptions
+ * read and the add-informant-register POST. It is optional in the schema - support replay tooling
+ * has no user to name - but this publisher only runs when the envelope carries one. It is
+ * deliberately NOT part of the requestId recipe, so the same share republished by a different route
+ * still dedupes.
  *
  * <p>Authentication is workload identity only: when {@code informantRegisterQueueNamespace} and
  * {@code informantRegisterQueueName} are configured the sender authenticates as the pod's managed
@@ -79,7 +88,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     }
 
     @Override
-    public boolean sendDistributionCommand(final String hearingId, final String hearingDay, final String sharedTime) {
+    public boolean sendDistributionCommand(final String hearingId, final String hearingDay, final String sharedTime, final String userId) {
         if (senderClient == null) {
             return true;
         }
@@ -94,6 +103,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
                     .add("hearingDay", hearingDay)
                     .add("sharedTime", sharedTime)
                     .add("eventType", EVENT_TYPE_HEARING_RESULTED)
+                    .add("userId", userId)
                     .build()
                     .toString();
 
