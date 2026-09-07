@@ -33,32 +33,6 @@ import javax.json.JsonString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Fans a {@code public.events.hearing.hearing-resulted} event out to Redis, the results command
- * handler, the informant register and Event Grid.
- *
- * <p>The order of those operations is load-bearing. This processor runs inside the container
- * transaction that also acknowledges the inbound event, and the steps fall into two kinds:
- * <ul>
- *   <li><b>Transactional</b> - the JMS command sends. They go through the XA-enlisted connection
- *   factory, so the commands become visible only when the delivery commits, and a send failure
- *   rolls the whole delivery back and the event is redelivered.</li>
- *   <li><b>Not transactional</b> - the Redis writes and the Event Grid publish. Both are plain
- *   network calls that a rollback cannot undo.</li>
- * </ul>
- * So the handler runs the steps as: Redis, then the command sends, then Event Grid, last.
- * <ol>
- *   <li>Redis goes first because the Event Grid subscribers read the cached documents on receipt,
- *   so the documents must exist before the pointer event does. The keys are fixed per hearing and
- *   day, so a redelivery re-writes the same documents and nothing is duplicated.</li>
- *   <li>The command sends go next, before anything that cannot be rolled back. If either fails,
- *   the delivery rolls back with no external side effect and the redelivery starts clean.</li>
- *   <li>Event Grid goes last precisely because it is fire-and-forget: had it run before a send
- *   that then failed, every redelivery would publish another {@code Hearing_Resulted} for the same
- *   share. The one window left is a commit failure after the Event Grid POST, which is accepted.</li>
- * </ol>
- * Moving a step out of this order reintroduces one of those failure modes.
- */
 @ServiceComponent(EVENT_PROCESSOR)
 public class HearingResultedEventProcessor {
 
@@ -140,9 +114,6 @@ public class HearingResultedEventProcessor {
 
         final boolean isSjpHearing = hearingPayload.getJsonObject(HEARING).getBoolean(IS_SJP_HEARING, false);
 
-        // Step 1 - Redis. Not transactional, but idempotent: the keys are fixed per hearing and day,
-        // so a redelivery re-writes the same documents. Must precede the Event Grid publish because
-        // the subscribers read these documents when the pointer event arrives.
         if (isSjpHearing) {
             final String cacheKeySjp = CACHE_KEY_SJP_PREFIX + hearingId + "_" + hearingDay + CACHE_KEY_SUFFIX;
 
@@ -152,6 +123,8 @@ public class HearingResultedEventProcessor {
             } catch (Exception e) {
                 LOGGER.error("Exception caught while attempting to connect to cache service: {} with sjp key {}", e, cacheKeySjp);
             }
+
+            sendEventToGrid(envelope, hearingId, hearingDay, "SJP_Hearing_Resulted");
         } else {
 
             try {
@@ -165,11 +138,10 @@ public class HearingResultedEventProcessor {
             } catch (Exception e) {
                 LOGGER.error("Exception caught while attempting to connect to cache service: ", e);
             }
+
+            sendEventToGrid(envelope, hearingId, hearingDay, "Hearing_Resulted");
         }
 
-        // Step 2 - the command sends. Transactional: both are XA-enlisted with this delivery, so
-        // they are visible only on commit, and a failure here rolls the delivery back before
-        // anything irreversible has happened. Neither send is caught for that reason.
         final JsonObjectBuilder commandPayloadBuilder = createObjectBuilder()
                 .add(HEARING, internalHearingPayload.getJsonObject(HEARING))
                 .add(SHARED_TIME, sharedTime)
@@ -185,21 +157,15 @@ public class HearingResultedEventProcessor {
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
 
-        // Only for a regular hearing; SJP hearings are out of scope for the informant register.
+        // Last, and only for a regular hearing.
         if (!isSjpHearing) {
             requestInformantRegisterPublish(envelope, hearingId, hearingDay, sharedTime.getString());
         }
-
-        // Step 3 - Event Grid, last. Fire-and-forget over HTTP: it cannot be rolled back and never
-        // throws, so it must run only once everything that can fail has succeeded. Otherwise a
-        // failed send would roll the delivery back and every redelivery would publish another
-        // Hearing_Resulted for the same share.
-        sendEventToGrid(envelope, hearingId, hearingDay, isSjpHearing ? "SJP_Hearing_Resulted" : "Hearing_Resulted");
     }
 
     /**
      * Records that this share owes an informant register publish, by sending a command that the
-     * command handler turns into a durable event. The Service Bus publish itself happens on an
+     * command handler turns into a durable event. The Service Bus publish itself now happens on an
      * event processor reading that event, so a broker failure there is redelivered and ultimately
      * dead-lettered instead of being logged and dropped.
      *
@@ -207,64 +173,56 @@ public class HearingResultedEventProcessor {
      * only if the resulting it belongs to commits. That is the point of routing through a command
      * rather than publishing inline.
      *
-     * <p>The send is deliberately not caught. If it fails, the exception propagates, the container
-     * rolls the delivery back - the resulting command sent just before it included - and the
-     * hearing-resulted event is redelivered. Catching it here would let the resulting commit while
-     * the informant register request is silently lost, which is the failure this chain exists to
-     * remove. Because the send runs before the Event Grid publish, the rollback has no external
-     * side effect to undo.
-     *
-     * <p>What is caught, in {@link #informantRegisterPublishPayload}, is everything that decides
-     * whether there is anything to send: the feature-flag read and the assembly of the payload from
-     * the event's metadata. Those failures are either permanent for this share (a userId that is not
-     * a canonical uuid) or not worth a resulting (the flag read itself), and none of them involves
-     * JMS, so skipping the register and letting the resulting proceed is the right outcome.
-     */
-    private void requestInformantRegisterPublish(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
-        final Optional<JsonObject> payload = informantRegisterPublishPayload(envelope, hearingId, hearingDay, sharedTime);
-        if (payload.isEmpty()) {
-            return;
-        }
-
-        LOGGER.info("Requesting informant register publish for hearing {}, hearingDay {}", hearingId, hearingDay);
-        sender.sendAsAdmin(envelop(payload.get())
-                .withName(REQUEST_INFORMANT_REGISTER_PUBLISH)
-                .withMetadataFrom(envelope));
-    }
-
-    /**
-     * Decides whether this share owes an informant register publish and, if so, builds the command
-     * payload. Returns empty when the feature is off, when the event carries no userId, or when
-     * anything in here throws - each of those means "this share will have no informant register",
-     * never "carrying on regardless", which is why the exception case is logged at ERROR. A
-     * malformed userId is rejected on this side rather than dead-lettered on arrival at the
-     * consumer, mirroring what the Event Grid leg does with the same value.
+     * <p>What the catch is for, precisely - it does NOT protect the resulting from a rollback, and
+     * must not be read as doing so. Three kinds of failure can arrive here:
+     * <ul>
+     *   <li><b>Caller-side and permanent</b> - a metadata userId that is not a canonical uuid, or a
+     *   payload the command's schema rejects. These throw before any JMS work, leaving the
+     *   transaction untouched, and are swallowed on purpose: they are defects in this share's
+     *   identity, they will fail identically on every redelivery, and they must not cost the
+     *   resulting. This mirrors what the Event Grid leg does with the same malformed userId.</li>
+     *   <li><b>Caller-side and transient</b> - the feature-store lookup itself fails. With the
+     *   caching provider that read is an in-memory map and cannot throw, but with the non-caching
+     *   provider it is a remote fetch and the framework does not catch it. It is inside the try for
+     *   that reason: the flag read is not worth a resulting. Unlike the permanent case it will
+     *   likely succeed on the next share, so the cost is at most this one register.</li>
+     *   <li><b>Broker-side</b> - the send itself fails. That marks the transaction rollback-only, so
+     *   the resulting command rolls back with it and the whole hearing-resulted event is redelivered
+     *   no matter what this catch does. That is the wanted behaviour, and the catch neither causes
+     *   nor prevents it.</li>
+     * </ul>
+     * So the log line below means "this share will have no informant register", never "carrying on
+     * regardless" - which is why it is at ERROR.
      */
     @SuppressWarnings({"squid:S2221"})
-    private Optional<JsonObject> informantRegisterPublishPayload(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
+    private void requestInformantRegisterPublish(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
         try {
             if (!featureControlGuard.isFeatureEnabled(INFORMANT_REGISTER_SERVICE_FEATURE)) {
                 LOGGER.info("Feature {} is not enabled - no informant register publish requested for hearing {}, hearingDay {}; the legacy function app remains responsible",
                         INFORMANT_REGISTER_SERVICE_FEATURE, hearingId, hearingDay);
-                return Optional.empty();
+                return;
             }
 
             final Optional<String> userId = envelope.metadata().userId();
             if (userId.isEmpty()) {
                 LOGGER.warn("No userId on the hearing-resulted event - no informant register publish requested for hearing {}, hearingDay {}",
                         hearingId, hearingDay);
-                return Optional.empty();
+                return;
             }
 
-            return Optional.of(createObjectBuilder()
+            final JsonObject payload = createObjectBuilder()
                     .add(COMMAND_HEARING_ID, hearingId)
                     .add(HEARING_DAY, hearingDay)
                     .add(SHARED_TIME, sharedTime)
                     .add(USER_ID, UUID.fromString(userId.get()).toString())
-                    .build());
+                    .build();
+
+            LOGGER.info("Requesting informant register publish for hearing {}, hearingDay {}", hearingId, hearingDay);
+            sender.sendAsAdmin(envelop(payload)
+                    .withName(REQUEST_INFORMANT_REGISTER_PUBLISH)
+                    .withMetadataFrom(envelope));
         } catch (Exception e) {
             LOGGER.error("Exception caught while attempting to request the informant register publish for hearing {}, hearingDay {}", hearingId, hearingDay, e);
-            return Optional.empty();
         }
     }
 

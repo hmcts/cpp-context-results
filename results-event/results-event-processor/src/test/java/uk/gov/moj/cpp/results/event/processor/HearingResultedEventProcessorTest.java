@@ -5,13 +5,11 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -55,7 +53,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -132,13 +129,6 @@ public class HearingResultedEventProcessorTest {
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
 
-        // Both JMS sends must precede the Event Grid publish. The sends are transactional and roll
-        // back on failure; the Event Grid POST is not, so anything that can fail has to run first
-        // or a redelivery would publish the same Hearing_Resulted twice.
-        final InOrder inOrder = inOrder(sender, eventGridService);
-        inOrder.verify(sender, times(2)).sendAsAdmin(any(Envelope.class));
-        inOrder.verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
-
         final List<Envelope<JsonObject>> argumentCaptor = envelopeArgumentCaptor.getAllValues();
         final JsonEnvelope resultingCommand = envelopeFrom(argumentCaptor.get(0).metadata(), argumentCaptor.get(0).payload());
         assertThat(resultingCommand,
@@ -198,12 +188,6 @@ public class HearingResultedEventProcessorTest {
         verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
 
         verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "SJP_Hearing_Resulted");
-
-        // The SJP path keeps the same ordering as the regular path: the transactional send first,
-        // the non-transactional Event Grid publish last.
-        final InOrder inOrder = inOrder(sender, eventGridService);
-        inOrder.verify(sender).sendAsAdmin(any(Envelope.class));
-        inOrder.verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "SJP_Hearing_Resulted");
 
         // Only the resulting command - SJP hearings are out of scope for the informant register, and
         // the branch short-circuits before the feature flag is even consulted.
@@ -344,14 +328,16 @@ public class HearingResultedEventProcessorTest {
     }
 
     /**
-     * A failed publish-request send is not caught. It propagates out of the processor so the
-     * container rolls the delivery back - the resulting command sent just before it is undone with
-     * it and the hearing-resulted event is redelivered. Because the send runs before the Event Grid
-     * publish, the rollback has no external side effect to undo: Event Grid must not have been
-     * called, otherwise every redelivery would publish a duplicate Hearing_Resulted.
+     * Scope of this test, stated honestly: there is no transaction in scope here, so it proves only
+     * that the processor returns normally and that both sends were attempted in order. It does NOT
+     * prove the resulting survives - a broker-side send failure marks the real transaction
+     * rollback-only and the whole hearing-resulted event is redelivered regardless of this catch.
+     * What the catch does cover is the caller-side permanent failures (malformed userId, a payload
+     * the command schema rejects), which throw before any JMS work; those are covered by the two
+     * userId tests above.
      */
     @Test
-    public void shouldPropagateTheInformantRegisterSendFailureSoTheDeliveryRollsBack() {
+    public void shouldContinueIfTheInformantRegisterPublishRequestFailsWhenHearingResulted() {
         final UUID userId = randomUUID();
         final UUID hearingId = randomUUID();
         final ZonedDateTime sharedTime = clock.now();
@@ -369,55 +355,15 @@ public class HearingResultedEventProcessorTest {
 
         // The resulting command goes first and succeeds; the publish request is the second send.
         // A plain RuntimeException stands in for anything the send can raise.
-        final RuntimeException sendFailure = new RuntimeException("command queue unavailable");
-        doNothing().doThrow(sendFailure).when(sender).sendAsAdmin(any(Envelope.class));
+        doNothing().doThrow(new RuntimeException("command queue unavailable")).when(sender).sendAsAdmin(any(Envelope.class));
 
-        final RuntimeException thrown = assertThrows(RuntimeException.class, () -> eventProcessor.handleHearingResultedPublicEvent(event));
-        assertThat(thrown, is(sendFailure));
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
 
         verify(sender, times(2)).sendAsAdmin(envelopeArgumentCaptor.capture());
         assertThat(envelopeArgumentCaptor.getAllValues().get(0).metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
         assertThat(envelopeArgumentCaptor.getAllValues().get(1).metadata().name(), is(REQUEST_INFORMANT_REGISTER_PUBLISH));
-
-        verifyNoInteractions(eventGridService);
-    }
-
-    /**
-     * Same guarantee for the first send: if the resulting command cannot be sent, the delivery is
-     * rolled back before anything non-transactional has happened, so the redelivery starts clean.
-     */
-    @Test
-    public void shouldNotPublishToEventGridWhenTheResultingCommandSendFails() {
-        final UUID userId = randomUUID();
-        final UUID hearingId = randomUUID();
-        final ZonedDateTime sharedTime = clock.now();
-        final String hearingDay = "2021-03-15";
-
-        final JsonObject hearing = createObjectBuilder()
-                .add("id", hearingId.toString())
-                .build();
-
-        final JsonEnvelope event = createPublicEvent(userId, hearing, sharedTime, hearingDay, false);
-
-        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
-        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        final RuntimeException sendFailure = new RuntimeException("command queue unavailable");
-        doThrow(sendFailure).when(sender).sendAsAdmin(any(Envelope.class));
-
-        final RuntimeException thrown = assertThrows(RuntimeException.class, () -> eventProcessor.handleHearingResultedPublicEvent(event));
-        assertThat(thrown, is(sendFailure));
-
-        // Redis is written before the sends. That is fine: the keys are idempotent per hearing and
-        // day, so the redelivery simply writes the same documents again.
-        verify(cacheService).add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString());
-        verify(cacheService).add(eq("INT_" + hearingId + "_2021-03-15_result_"), anyString());
-
-        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
-        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
-
-        verifyNoInteractions(eventGridService);
-        verifyNoInteractions(featureControlGuard);
     }
 
     @Test

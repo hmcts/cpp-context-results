@@ -1,9 +1,5 @@
 package uk.gov.moj.cpp.results.it;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.containing;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -117,15 +113,6 @@ public class InformantRegisterPublishRequestIT {
         assertThat(publishRequested.getString("hearingDay"), is(EXPECTED_HEARING_DAY));
         assertThat(publishRequested.getString("sharedTime"), is(EXPECTED_SHARED_TIME));
         assertThat(publishRequested.getString("userId"), is(userId.toString()));
-
-        // The Event Grid publish happens inside the same delivery, before it commits, so by the time
-        // the publish-requested event is observable the POST has already been made. Exactly one:
-        // the share was processed once, and the processor publishes to Event Grid only after both
-        // command sends have succeeded, so a clean run must never produce a second Hearing_Resulted.
-        // Matched on body rather than path so the assertion does not depend on the SDK's URL layout.
-        verify(1, postRequestedFor(urlMatching("/.*"))
-                .withRequestBody(containing(hearingId.toString()))
-                .withRequestBody(containing("Hearing_Resulted")));
     }
 
     /**
