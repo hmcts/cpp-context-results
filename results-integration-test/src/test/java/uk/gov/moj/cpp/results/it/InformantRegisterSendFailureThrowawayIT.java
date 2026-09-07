@@ -65,6 +65,9 @@ public class InformantRegisterSendFailureThrowawayIT {
 
     private static final UUID SENTINEL_HEARING_ID = UUID.fromString("00000000-0000-0000-0000-00000000dead");
 
+    /** Hook in sendEventToGrid throws for this id, outside the catch, so step 3 fails and the delivery rolls back. */
+    private static final UUID EVENT_GRID_SENTINEL_HEARING_ID = UUID.fromString("00000000-0000-0000-0000-0000000e6bad");
+
     private static final long PUBLISH_REQUESTED_TIMEOUT = 20000;
     private static final long ABSENCE_TIMEOUT = 15000;
 
@@ -124,6 +127,33 @@ public class InformantRegisterSendFailureThrowawayIT {
         LOGGER.info("THROWAWAY IT - Event Grid attempts for the FAILING hearing (expect 0):   docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Adding Hearing Resulted for hearing {}\"", SENTINEL_HEARING_ID);
         LOGGER.info("THROWAWAY IT - delivery attempts for the FAILING hearing (expect 10/run): docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Requesting informant register publish for hearing {}\"", SENTINEL_HEARING_ID);
         LOGGER.info("THROWAWAY IT - Event Grid attempts for the SUCCEEDING hearing (expect 1): docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Adding Hearing Resulted for hearing {}\"", controlHearingId);
+    }
+
+    /**
+     * Step 3 fails: the Event Grid publish throws and the exception escapes. The delivery rolls back,
+     * so step 2 - the resulting command and the informant register publish request, both sent in
+     * this transaction - is undone: no publish-requested event is ever recorded, on any attempt.
+     *
+     * <p>This also shows the cost of letting an Event Grid failure escape in production: every
+     * redelivery reaches the Event Grid call again (the log shows one attempt per delivery), which is
+     * why the real code swallows that failure instead.
+     */
+    @Test
+    public void aFailedEventGridPublishShouldRollBackStepTwo() {
+        setFeatureToggle(INFORMANT_REGISTER_SERVICE_FEATURE, true);
+
+        LOGGER.info("THROWAWAY IT - hearing whose EVENT GRID publish must FAIL (exception escapes, delivery rolls back, step 2 undone): {}", EVENT_GRID_SENTINEL_HEARING_ID);
+
+        shareHearingResults(EVENT_GRID_SENTINEL_HEARING_ID, randomUUID());
+
+        // Step 2 rolled back on every attempt: the publish request was sent and undone each time, so
+        // the command handler never saw it and no publish-requested event exists.
+        assertThat(retrieveMessage(publishRequestedConsumer, ABSENCE_TIMEOUT), is(nullValue()));
+        LOGGER.info("THROWAWAY IT - no publish-requested event recorded for hearing {} (step 2 rolled back)", EVENT_GRID_SENTINEL_HEARING_ID);
+
+        LOGGER.info("THROWAWAY IT - delivery attempts, each one sending then rolling back step 2 (expect 10/run): docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Requesting informant register publish for hearing {}\"", EVENT_GRID_SENTINEL_HEARING_ID);
+        LOGGER.info("THROWAWAY IT - Event Grid attempts, one per redelivery (expect 10/run):                   docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Adding Hearing Resulted for hearing {}\"", EVENT_GRID_SENTINEL_HEARING_ID);
+        LOGGER.info("THROWAWAY IT - the escaped exception (expect 10/run):                                     docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"THROWAWAY simulated Event Grid failure for hearing {}\"", EVENT_GRID_SENTINEL_HEARING_ID);
     }
 
     private void shareHearingResults(final UUID hearingId, final UUID userId) {

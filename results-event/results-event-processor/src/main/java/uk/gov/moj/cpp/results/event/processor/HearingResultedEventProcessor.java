@@ -274,6 +274,13 @@ public class HearingResultedEventProcessor {
 
     @SuppressWarnings({"squid:S2221"})
     private void sendEventToGrid(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String eventType) {
+        // THROWAWAY - simulated Event Grid failure that escapes the catch below, so the delivery rolls
+        // back and step 2 (both command sends) is undone. Logs the same attempt line as the real path
+        // so the WildFly log counts attempts identically. Never merge.
+        if (hearingId.endsWith("e6bad")) {
+            LOGGER.info("Adding Hearing Resulted for hearing {}, hearingDay {} and eventType {} to EventGrid", hearingId, hearingDay, eventType);
+            throw new RuntimeException("THROWAWAY simulated Event Grid failure for hearing " + hearingId);
+        }
         final Optional<String> userId = envelope.metadata().userId();
         try {
             LOGGER.info("Adding Hearing Resulted for hearing {}, hearingDay {} and eventType {} to EventGrid", hearingId, hearingDay, eventType);
