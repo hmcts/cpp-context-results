@@ -62,6 +62,12 @@
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-servicebus</artifactId>
         </dependency>
+        <!-- AmqpRetryOptions is imported directly by InformantRegisterQueuePublisher, so it is
+             declared rather than relied on transitively through azure-messaging-servicebus. -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-amqp</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>

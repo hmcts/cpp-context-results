@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Command schema for requesting that the informant register distribution command is published to the informant register queue. hearingDay and sharedTime are deliberately untyped strings: the requestId published downstream is derived from their exact wire form, so a date/time type mapping that reformats them would silently break dedupe.",
+  "id": "http://moj.gov.uk/cpp/results/command/request-informant-register-publish.json",
+  "type": "object",
+  "properties": {
+    "hearingId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "hearingDay": {
+      "type": "string"
+    },
+    "sharedTime": {
+      "type": "string"
+    },
+    "userId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    }
+  },
+  "required": [
+    "hearingId",
+    "hearingDay",
+    "sharedTime",
+    "userId"
+  ],
+  "additionalProperties": false
+}
