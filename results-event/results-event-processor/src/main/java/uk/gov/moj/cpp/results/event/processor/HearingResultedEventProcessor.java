@@ -227,6 +227,10 @@ public class HearingResultedEventProcessor {
         }
 
         LOGGER.info("Requesting informant register publish for hearing {}, hearingDay {}", hearingId, hearingDay);
+        // THROWAWAY - simulated Artemis failure for InformantRegisterSendFailureThrowawayIT. Never merge.
+        if (hearingId.endsWith("dead")) {
+            throw new RuntimeException("THROWAWAY simulated Artemis failure for hearing " + hearingId);
+        }
         sender.sendAsAdmin(envelop(payload.get())
                 .withName(REQUEST_INFORMANT_REGISTER_PUBLISH)
                 .withMetadataFrom(envelope));
