@@ -30,6 +30,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * THROWAWAY - never merge. Relies on a temporary hook in {@code HearingResultedEventProcessor}
@@ -53,6 +55,8 @@ import org.junit.jupiter.api.Test;
  * message on {@code jms.queue.DLQ}.
  */
 public class InformantRegisterSendFailureThrowawayIT {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(InformantRegisterSendFailureThrowawayIT.class);
 
     private static final String PUBLIC_HEARING_RESULTED = "public.events.hearing.hearing-resulted";
     private static final String PUBLISH_REQUESTED = "results.events.informant-register-publish-requested";
@@ -95,22 +99,31 @@ public class InformantRegisterSendFailureThrowawayIT {
     public void aFailedPublishRequestSendShouldRollBackBeforeEventGridIsCalled() {
         setFeatureToggle(INFORMANT_REGISTER_SERVICE_FEATURE, true);
 
+        final UUID controlHearingId = randomUUID();
+
+        LOGGER.info("THROWAWAY IT - hearing that must FAIL (send throws, delivery rolls back, Event Grid never called): {}", SENTINEL_HEARING_ID);
+        LOGGER.info("THROWAWAY IT - hearing that must SUCCEED (published to Event Grid exactly once): {}", controlHearingId);
+
         // Failing share: the processor throws where it would send the publish request.
         shareHearingResults(SENTINEL_HEARING_ID, randomUUID());
 
         // Every delivery attempt rolled back, so the resulting command never reached the handler and
         // no publish-requested event was ever recorded.
         assertThat(retrieveMessage(publishRequestedConsumer, ABSENCE_TIMEOUT), is(nullValue()));
+        LOGGER.info("THROWAWAY IT - no publish-requested event recorded for failing hearing {}", SENTINEL_HEARING_ID);
 
         // Positive control: a normal share on the same deployment produces the event.
-        final UUID controlHearingId = randomUUID();
         shareHearingResults(controlHearingId, randomUUID());
 
         final JsonPath publishRequested = retrieveMessage(publishRequestedConsumer, PUBLISH_REQUESTED_TIMEOUT);
         assertThat(publishRequested, is(notNullValue()));
         assertThat(publishRequested.getString("hearingId"), is(controlHearingId.toString()));
+        LOGGER.info("THROWAWAY IT - publish-requested event recorded for succeeding hearing {}", controlHearingId);
 
-        // Event Grid evidence is in the WildFly log - see the class Javadoc.
+        // Event Grid evidence is in the WildFly log - see the class Javadoc. Ready-to-run checks:
+        LOGGER.info("THROWAWAY IT - Event Grid attempts for the FAILING hearing (expect 0):   docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Adding Hearing Resulted for hearing {}\"", SENTINEL_HEARING_ID);
+        LOGGER.info("THROWAWAY IT - delivery attempts for the FAILING hearing (expect 10/run): docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Requesting informant register publish for hearing {}\"", SENTINEL_HEARING_ID);
+        LOGGER.info("THROWAWAY IT - Event Grid attempts for the SUCCEEDING hearing (expect 1): docker logs containers-cpp-wildfly-1 2>&1 | grep -c \"Adding Hearing Resulted for hearing {}\"", controlHearingId);
     }
 
     private void shareHearingResults(final UUID hearingId, final UUID userId) {
