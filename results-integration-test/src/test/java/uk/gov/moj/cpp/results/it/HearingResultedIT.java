@@ -403,6 +403,7 @@ public class HearingResultedIT {
         assertThat(eventPayload.getJSONObject("_metadata").getString("name"), is("public.results.police-result-generated"));
         assertThat(eventPayload.getString("caseId"), is(applicationId.toString()));
         assertThat(eventPayload.getJSONObject("defendant").getString("defendantId"), is(subjectId.toString()));
+        assertThat(eventPayload.getJSONObject("defendant").getJSONObject("individualDefendant").getString("presentAtHearing"), is("Y"));
     }
 
     @Test

@@ -695,7 +695,7 @@ public class ResultsAggregate implements Aggregate {
                 .withSessionDays(sessionDayList)
                 .withApplicationId(application.getId())
                 .withUrn(ofNullable(application.getApplicationReference()).orElse(DEFAULT_URN_FOR_STANDALONE_APPLICATIONS))
-                .withDefendant(buildDefendantFromSubject(application, this.hearing))
+                .withDefendant(buildDefendantFromSubject(application, this.hearing, hearingDay))
                 .build();
     }
 

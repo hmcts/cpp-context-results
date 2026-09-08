@@ -17,6 +17,7 @@ import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.DefendantAttendance;
 import uk.gov.justice.core.courts.Gender;
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
 import uk.gov.justice.core.courts.OffenceDetails;
@@ -27,8 +28,10 @@ import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collections;
-import java.util.UUID;
+import java.util.Optional;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -44,6 +47,7 @@ public class StandaloneApplicationHelperTest {
     private static final String POLICE_ASN_DEFAULT_VALUE = "0800PP0100000000001H";
     public static final int DEFAULT_OFFENCE_SEQ_NUMBER = 1;
     public static final int DEFAULT_OFFENCE_DATE_CODE = 1;
+    private static final ZonedDateTime SITTING_DAY = ZonedDateTime.now(ZoneId.of("Europe/London"));
 
     @Test
     public void givenStandaloneApplication_whenIndividualSubject_shouldBuildDefendantFromSubject() {
@@ -58,9 +62,10 @@ public class StandaloneApplicationHelperTest {
                                 .withAttendanceType(AttendanceType.IN_PERSON)
                                 .build()))
                         .build()))
+                .withHearingDays(singletonList(HearingDay.hearingDay().withSittingDay(SITTING_DAY).build()))
                 .build();
 
-        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing);
+        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing, Optional.empty());
 
         final JsonObject subject = applicationPayload.getJsonObject("subject");
         final JsonObject personDetails = subject.getJsonObject("personDetails");
@@ -77,6 +82,7 @@ public class StandaloneApplicationHelperTest {
         final IndividualDefendant individualDefendant = caseDefendant.getIndividualDefendant();
         assertThat(individualDefendant, notNullValue());
         assertThat(individualDefendant.getBailStatus().getCode(), is(judicialResultJson.getString("postHearingCustodyStatus")));
+        assertThat(individualDefendant.getPresentAtHearing(), is("Y"));
 
         assertThat(individualDefendant.getPerson().getFirstName(), is(personDetails.getString("firstName")));
         assertThat(individualDefendant.getPerson().getLastName(), is(personDetails.getString("lastName")));
@@ -121,9 +127,10 @@ public class StandaloneApplicationHelperTest {
                                 .withAttendanceType(AttendanceType.IN_PERSON)
                                 .build()))
                         .build()))
+                .withHearingDays(singletonList(HearingDay.hearingDay().withSittingDay(SITTING_DAY).build()))
                 .build();
 
-        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing);
+        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing, Optional.empty());
 
         final JsonObject subject = applicationPayload.getJsonObject("subject");
         final JsonObject personDetails = subject.getJsonObject("personDetails");
@@ -140,6 +147,7 @@ public class StandaloneApplicationHelperTest {
         final IndividualDefendant individualDefendant = caseDefendant.getIndividualDefendant();
         assertThat(individualDefendant, notNullValue());
         assertThat(individualDefendant.getBailStatus().getCode(), is(judicialResultJson.getString("postHearingCustodyStatus")));
+        assertThat(individualDefendant.getPresentAtHearing(), is("Y"));
 
         assertThat(individualDefendant.getPerson().getFirstName(), is(personDetails.getString("firstName")));
         assertThat(individualDefendant.getPerson().getLastName(), is(personDetails.getString("lastName")));
@@ -184,9 +192,10 @@ public class StandaloneApplicationHelperTest {
                                 .withAttendanceType(AttendanceType.IN_PERSON)
                                 .build()))
                         .build()))
+                .withHearingDays(singletonList(HearingDay.hearingDay().withSittingDay(SITTING_DAY).build()))
                 .build();
 
-        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing);
+        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing, Optional.empty());
 
         final JsonObject subject = applicationPayload.getJsonObject("subject");
         final JsonObject personDetails = subject.getJsonObject("personDetails");
@@ -203,6 +212,7 @@ public class StandaloneApplicationHelperTest {
         final IndividualDefendant individualDefendant = caseDefendant.getIndividualDefendant();
         assertThat(individualDefendant, notNullValue());
         assertThat(individualDefendant.getBailStatus().getCode(), is(judicialResultJson.getString("postHearingCustodyStatus")));
+        assertThat(individualDefendant.getPresentAtHearing(), is("Y"));
 
         assertThat(individualDefendant.getPerson().getFirstName(), is(personDetails.getString("firstName")));
         assertThat(individualDefendant.getPerson().getLastName(), is(personDetails.getString("lastName")));
@@ -241,9 +251,10 @@ public class StandaloneApplicationHelperTest {
         final CourtApplication application = jsonObjectToObjectConverter.convert(applicationPayload, CourtApplication.class);
         final Hearing hearing = Hearing.hearing()
                 .withDefendantAttendance(null)
+                .withHearingDays(singletonList(HearingDay.hearingDay().withSittingDay(SITTING_DAY).build()))
                 .build();
 
-        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing);
+        final CaseDefendant caseDefendant = StandaloneApplicationHelper.buildDefendantFromSubject(application, hearing, Optional.empty());
 
         final JsonObject subject = applicationPayload.getJsonObject("subject");
         final JsonObject organisation = subject.getJsonObject("organisation");
