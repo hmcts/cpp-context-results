@@ -249,7 +249,14 @@
     "type": {
       "description": "First hearing",
       "id": "4a0e892d-c0c5-3c51-95b8-704d8c781776"
-    }
+    },
+    "defendantAttendance" : [{
+      "attendanceDays" : [{
+        "day" : "2019-06-03",
+        "attendanceType" : "BY_VIDEO"
+      }],
+      "defendantId" : "SUBJECT_ID"
+    }]
   },
   "sharedTime": "2019-06-03T15:14:14.438Z",
   "hearingDay": "2019-06-03",

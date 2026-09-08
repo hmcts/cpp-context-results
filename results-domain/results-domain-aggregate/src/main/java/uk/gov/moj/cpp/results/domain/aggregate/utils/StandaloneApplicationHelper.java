@@ -8,12 +8,15 @@ import static java.util.Optional.ofNullable;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
+import uk.gov.justice.core.courts.AttendanceType;
 import uk.gov.justice.core.courts.BailStatus;
 import uk.gov.justice.core.courts.CaseDefendant;
 import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationParty;
+import uk.gov.justice.core.courts.DefenceCounsel;
 import uk.gov.justice.core.courts.DefendantAttendance;
 import uk.gov.justice.core.courts.Hearing;
+import uk.gov.justice.core.courts.HearingDay;
 import uk.gov.justice.core.courts.Individual;
 import uk.gov.justice.core.courts.IndividualDefendant;
 import uk.gov.justice.core.courts.JudicialResult;
@@ -21,6 +24,10 @@ import uk.gov.justice.core.courts.JudicialResultCategory;
 import uk.gov.justice.core.courts.OffenceDetails;
 import uk.gov.justice.core.courts.OrganisationDetails;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,26 +35,78 @@ import java.util.UUID;
 public class StandaloneApplicationHelper {
 
     private static final String POLICE_ASN_DEFAULT_VALUE = "0800PP0100000000001H";
+    private static final String PRESENT_AT_HEARING_YES = "Y";
+    private static final String PRESENT_AT_HEARING_ATTENDED_BY_COUNSEL = "A";
+    private static final String PRESENT_AT_HEARING_NO = "N";
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private StandaloneApplicationHelper() {
     }
 
-    public static CaseDefendant buildDefendantFromSubject(final CourtApplication application, final Hearing hearing) {
+    public static CaseDefendant buildDefendantFromSubject(final CourtApplication application, final Hearing hearing, final Optional<LocalDate> hearingDay) {
         final CourtApplicationParty subject = application.getSubject();
         if(isNull(subject)){
             return null;
         }
 
+        final List<uk.gov.justice.core.courts.AttendanceDay> attendanceDays = ofNullable(hearing.getDefendantAttendance()).map(defendantAttendances -> buildAttendance(defendantAttendances, subject.getId())).orElse(emptyList());
+        final String presentAtHearing = getPresentAtHearing(attendanceDays, hearing, subject.getId(), hearingDay);
+
         return CaseDefendant.caseDefendant()
                 .withDefendantId(subject.getId())
                 .withCorporateDefendant(buildCorporateDefendant(application.getSubject()))
-                .withIndividualDefendant(buildIndividualDefendant(application.getSubject()))
-                .withAttendanceDays(ofNullable(hearing.getDefendantAttendance()).map(defendantAttendances -> buildAttendance(defendantAttendances, application.getSubject().getId())).orElse(emptyList()))
+                .withIndividualDefendant(buildIndividualDefendant(application.getSubject(), presentAtHearing))
+                .withAttendanceDays(attendanceDays)
                 .withProsecutorReference(ofNullable(application.getDefendantASN()).orElse(POLICE_ASN_DEFAULT_VALUE))//Police flag already checked in upper level. If the flow reaches upto here, prosecutor should be police.
                 .withOffences(buildOffenceList(application))
                 .withPncId(null)
                 .withAssociatedPerson(null)
                 .withJudicialResults(null)//not used in SPI OUT. Results are picked up from offence.
                 .build();
+    }
+
+    private static String getPresentAtHearing(final List<uk.gov.justice.core.courts.AttendanceDay> attendanceDays, final Hearing hearing, final UUID subjectId, final Optional<LocalDate> hearingDay) {
+        String result = PRESENT_AT_HEARING_NO;
+        final Optional<ZonedDateTime> sittingDayOptional = resolveSittingDay(hearing, hearingDay);
+
+        if (isNotEmpty(attendanceDays) && sittingDayOptional.isPresent()) {
+            final LocalDate targetDay = getLocalLondonZoneDate(sittingDayOptional.get());
+            final boolean isPresent = attendanceDays.stream()
+                    .anyMatch(a -> a.getDay().equals(targetDay) && a.getAttendanceType() != AttendanceType.NOT_PRESENT);
+            if (isPresent) {
+                result = PRESENT_AT_HEARING_YES;
+            }
+        }
+        if (PRESENT_AT_HEARING_NO.equals(result) && getDefenceCounsel(hearing, subjectId, sittingDayOptional).isPresent()) {
+            result = PRESENT_AT_HEARING_ATTENDED_BY_COUNSEL;
+        }
+        return result;
+    }
+
+    private static Optional<ZonedDateTime> resolveSittingDay(final Hearing hearing, final Optional<LocalDate> hearingDay) {
+        if (hearingDay.isPresent()) {
+            return hearing.getHearingDays().stream()
+                    .map(HearingDay::getSittingDay)
+                    .filter(sittingDay -> hearingDay.get().equals(getLocalLondonZoneDate(sittingDay)))
+                    .findFirst();
+        }
+        return hearing.getHearingDays().stream().map(HearingDay::getSittingDay).findFirst();
+    }
+
+    private static Optional<UUID> getDefenceCounsel(final Hearing hearing, final UUID subjectId, final Optional<ZonedDateTime> sittingDayOptional) {
+        if (isNull(hearing.getDefenceCounsels()) || sittingDayOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        final LocalDate targetDay = getLocalLondonZoneDate(sittingDayOptional.get());
+        return hearing.getDefenceCounsels().stream()
+                .filter(d -> d.getAttendanceDays().contains(targetDay))
+                .map(DefenceCounsel::getDefendants)
+                .flatMap(Collection::stream)
+                .filter(a -> a.equals(subjectId))
+                .findFirst();
+    }
+
+    private static LocalDate getLocalLondonZoneDate(final ZonedDateTime utcDateTime) {
+        return utcDateTime.withZoneSameInstant(UK_TIME_ZONE).toLocalDate();
     }
 
 
@@ -117,7 +176,7 @@ public class StandaloneApplicationHelper {
                 .build();
     }
 
-    private static IndividualDefendant buildIndividualDefendant(final CourtApplicationParty subject){
+    private static IndividualDefendant buildIndividualDefendant(final CourtApplicationParty subject, final String presentAtHearing){
         if(isNull(subject.getPersonDetails())){
             return null;
         }
@@ -140,7 +199,7 @@ public class StandaloneApplicationHelper {
                         .withNationality(subject.getPersonDetails().getNationalityDescription())
                         .withTitle(subject.getPersonDetails().getTitle())
                         .build())
-                .withPresentAtHearing(null)//standalone applications does not have attendance information. A Default value is set in staging-spi.
+                .withPresentAtHearing(presentAtHearing)
                 .build();
     }
 
