@@ -86,8 +86,10 @@ import static uk.gov.moj.cpp.results.test.matchers.BeanMatcher.isBean;
 
 import uk.gov.justice.core.courts.Address;
 import uk.gov.justice.core.courts.ApplicationStatus;
+import uk.gov.justice.core.courts.CourtApplication;
 import uk.gov.justice.core.courts.CourtApplicationCase;
 import uk.gov.justice.core.courts.CourtCentre;
+import uk.gov.justice.core.courts.CourtCivilApplication;
 import uk.gov.justice.core.courts.DeletedJudicialResults;
 import uk.gov.justice.core.courts.Hearing;
 import uk.gov.justice.core.courts.HearingResultsAdded;
@@ -114,6 +116,7 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -620,7 +623,8 @@ public class HearingResultedIT {
         PublicHearingResulted resultsMessage = basicShareResultsV2Template(MAGISTRATES);
         setOuCodeAndProsecutorAuthority(resultsMessage);
 
-        final Hearing hearingIn = resultsMessage.getHearing();
+        final Hearing hearingIn = withCivilFlags(resultsMessage.getHearing());
+        resultsMessage.setHearing(hearingIn);
         hearingResultsHaveBeenSharedV2(resultsMessage);
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         ApiCourtCentre expectedCourtCentre =
@@ -651,10 +655,33 @@ public class HearingResultedIT {
                 withJsonPath("$.hearing.courtCentre.address.address1", equalTo(expectedCourtCentre.getAddress().getAddress1())),
                 withJsonPath("$.hearing.courtCentre.address.address2", equalTo(expectedCourtCentre.getAddress().getAddress2())),
                 withJsonPath("$.hearing.courtCentre.address.postcode", equalTo(expectedCourtCentre.getAddress().getPostcode())),
+                withJsonPath("$.hearing.prosecutionCases[0].isCivil", is(true)),
+                withJsonPath("$.hearing.courtApplications[0].courtCivilApplication.isCivil", is(true)),
+                withJsonPath("$.hearing.courtApplications[0].courtCivilApplication.isExParte", is(false)),
                 withJsonPath("$.sharedTime", notNullValue())
         };
         getHearingDetailsForHearingId(resultsMessage.getHearing().getId(), matcher1);
 
+    }
+
+    private Hearing withCivilFlags(final Hearing hearing) {
+        final List<ProsecutionCase> prosecutionCases = new ArrayList<>(hearing.getProsecutionCases());
+        prosecutionCases.set(0, prosecutionCase().withValuesFrom(prosecutionCases.get(0))
+                .withIsCivil(true)
+                .build());
+
+        final List<CourtApplication> courtApplications = new ArrayList<>(hearing.getCourtApplications());
+        courtApplications.set(0, courtApplication().withValuesFrom(courtApplications.get(0))
+                .withCourtCivilApplication(CourtCivilApplication.courtCivilApplication()
+                        .withIsCivil(true)
+                        .withIsExParte(false)
+                        .build())
+                .build());
+
+        return Hearing.hearing().withValuesFrom(hearing)
+                .withProsecutionCases(prosecutionCases)
+                .withCourtApplications(courtApplications)
+                .build();
     }
 
     @Test

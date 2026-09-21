@@ -242,7 +242,22 @@ public class HearingTransformerTest {
 
         assertThat(apiHearing.getCourtCentre().getCode(), is("1234"));
         assertThat(apiHearing.getJurisdictionType().name(), is(JurisdictionType.MAGISTRATES.name()));
+
+        assertThat(apiHearing.getProsecutionCases().get(0).getIsCivil(), is(true));
+        assertThat(apiHearing.getCourtApplications().get(0).getCourtCivilApplication().getIsCivil(), is(true));
+        assertThat(apiHearing.getCourtApplications().get(0).getCourtCivilApplication().getIsExParte(), is(false));
     }
+
+    @Test
+    public void shouldTransformHearingWithAbsentCivilFlags() {
+        final JsonObject hearingJson = getHearingJson("hearing.json");
+        final Hearing hearing = jsonObjectToObjectConverter.convert(hearingJson, Hearing.class);
+        final ApiHearing apiHearing = hearingTransformer.hearing(hearing).build();
+
+        assertThat(apiHearing.getProsecutionCases().get(0).getIsCivil(), nullValue());
+        assertThat(apiHearing.getCourtApplications().get(0).getCourtCivilApplication(), nullValue());
+    }
+
     @Test
     public void shouldTransformYouthCourtDetails() {
         final JsonObject hearingJson = getHearingJson("hearing.json");
