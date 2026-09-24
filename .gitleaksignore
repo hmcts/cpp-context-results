@@ -5,3 +5,10 @@
 # new commit reintroduces it; this entry suppresses the historical finding in
 # the commit that first added the line. Not a real secret.
 1ba6c5c5bb8b369751946e1ba23a3635f582c9fa:.gitignore:internal-urls:64
+
+# Same "internal-urls" false positive: the rule treats ".local" as an internal
+# hostname and matches the CDI @Value config keys "azure.local.mi.clientId" /
+# "azure.local.mi.tenantId" (empty defaults) in InformantRegisterQueuePublisher.
+# These are property key names, not URLs or secrets.
+0f13730aa3483a172862c2ae0fae27116add2e6f:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:51
+0f13730aa3483a172862c2ae0fae27116add2e6f:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:55
