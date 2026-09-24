@@ -33,8 +33,10 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.command.GenerateInformantRegisterByDate;
+import uk.gov.moj.cpp.results.command.RequestInformantRegisterPublish;
 import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 import uk.gov.moj.cpp.results.domain.aggregate.ProsecutionAuthorityAggregate;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterPublishRequested;
 
 import java.util.List;
 import java.util.Map;
@@ -130,6 +132,55 @@ public class InformantRegisterHandler {
                     .getDefendants()
                     .addAll(getDefendants(masterDefendant, prosecutionCases));
         }
+    }
+
+    /**
+     * Records that a resulted regular hearing owes an informant register publish, so the publish
+     * survives a Service Bus failure. Before this event existed the publish happened inline on the
+     * hearing-resulted event processor and a broker blip lost the register silently, with no retry
+     * and no record that a publish was ever owed.
+     *
+     * <p>The stream id is the hearingId, so every share and re-share of one hearing lands on one
+     * stream. That is deliberate and load-bearing: the framework serialises dispatch per stream, so
+     * a re-share published moments after the original cannot overtake it on the way to the queue. A
+     * stream per share - the requestId, say - would put the two on unrelated streams, let them
+     * dispatch concurrently, and allow the consuming service to apply the older share last. It also
+     * keeps stream cardinality to one per hearing rather than one per share, each of which is a
+     * permanent row in the event store's stream_status and in the processor's event buffer, and each
+     * of which a CATCHUP walks.
+     *
+     * <p>The stream is an audit log, not an idempotency key: a redelivered command appends a second
+     * event rather than failing, and the framework then publishes a second, byte-identical Service
+     * Bus message. So does a processor CATCHUP or stream replay, for every share ever recorded. That
+     * is survivable because the requestId minted downstream is deterministic and the consuming
+     * service keeps a (source, requestId) processed-log - that log is the authoritative guard, not
+     * the broker, whose duplicate detection is optional and time-windowed. A genuine re-share
+     * carries a new sharedTime, mints a new requestId, and must be published again.
+     *
+     * <p>No aggregate is loaded: nothing about this event mutates case or financial state, and no
+     * aggregate reads it back. Same shape as {@link #handleAddInformantRegisterToEventStream}.
+     */
+    @Handles("results.command.request-informant-register-publish")
+    public void handleRequestInformantRegisterPublish(final Envelope<RequestInformantRegisterPublish> envelope)
+            throws EventStreamException {
+
+        final RequestInformantRegisterPublish command = envelope.payload();
+
+        // hearingDay and sharedTime are copied through as the raw strings from the hearing-resulted
+        // event and are not re-rendered here: the requestId the publisher mints is a hash of them,
+        // so reformatting either would mint a different id for the same share and defeat both dedupes.
+        LOGGER.info("results.command.request-informant-register-publish for hearing {}, hearingDay {}, sharedTime {}",
+                command.getHearingId(), command.getHearingDay(), command.getSharedTime());
+
+        final EventStream eventStream = eventSource.getStreamById(command.getHearingId());
+        final Stream<Object> events = Stream.of(InformantRegisterPublishRequested.informantRegisterPublishRequested()
+                .withHearingId(command.getHearingId())
+                .withHearingDay(command.getHearingDay())
+                .withSharedTime(command.getSharedTime())
+                .withUserId(command.getUserId())
+                .build());
+
+        appendEventsToStream(envelope, eventStream, events);
     }
 
     @Handles("results.command.generate-informant-register")

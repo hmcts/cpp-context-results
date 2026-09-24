@@ -41,6 +41,8 @@ subscriptions_descriptor:
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/migrated-inactive-nces-email-notification-requested.json
         - name: results.event.migrated-inactive-nces-email-notification
           schema_uri: http://moj.gov.uk/cpp/results/domain/event/migrated-inactive-nces-email-notification.json
+        - name: results.events.informant-register-publish-requested
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/results.events.informant-register-publish-requested.json
 
       event_source_name: results
 
