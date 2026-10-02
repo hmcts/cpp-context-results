@@ -11,7 +11,7 @@ import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
-import uk.gov.moj.cpp.material.url.MaterialUrlGenerator;
+import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialContextBuilder;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialService;
