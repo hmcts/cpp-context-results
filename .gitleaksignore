@@ -5,3 +5,10 @@
 # new commit reintroduces it; this entry suppresses the historical finding in
 # the commit that first added the line. Not a real secret.
 1ba6c5c5bb8b369751946e1ba23a3635f582c9fa:.gitignore:internal-urls:64
+
+# Same "internal-urls" false positive: the rule treats the "local" segment of
+# the CDI @Value config keys for the managed-identity client/tenant id (empty
+# defaults) in YotResultsQueuePublisher as an internal hostname.
+# These are property key names, not URLs or secrets.
+3ab6afe1e8f87a56535ed992f94a7322b6e2f88e:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/YotResultsQueuePublisher.java:internal-urls:79
+3ab6afe1e8f87a56535ed992f94a7322b6e2f88e:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/YotResultsQueuePublisher.java:internal-urls:83
