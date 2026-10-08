@@ -22,7 +22,7 @@ public class YotResultsHelperTest {
     @Test
     public void yotResultsRequestId_forAKnownShare_should_mintThePinnedId() {
         assertThat(yotResultsRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME),
-                is(UUID.fromString("52ba4dc9-fd12-3c7e-98d6-34da80ce7be8")));
+                is(UUID.fromString("e74ed270-0b62-36d9-bb10-12bd6baa5bea")));
     }
 
     @Test
@@ -35,7 +35,7 @@ public class YotResultsHelperTest {
     public void yotResultsRequestId_forAReshare_should_mintANewId() {
         final UUID reshareRequestId = yotResultsRequestId(HEARING_ID, HEARING_DAY, "2026-08-19T19:30:00.000Z");
 
-        assertThat(reshareRequestId, is(UUID.fromString("8962f9db-4ad8-32bf-9bc0-6c9954dd9d63")));
+        assertThat(reshareRequestId, is(UUID.fromString("32475c57-26ec-31e2-9349-a2bc6e1f8411")));
         assertThat(reshareRequestId, is(not(yotResultsRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME))));
     }
 

@@ -7,7 +7,6 @@ import java.util.UUID;
 
 public class YotResultsHelper {
 
-    private static final String REQUEST_ID_PREFIX = "YOT";
     private static final String REQUEST_ID_SEPARATOR = "|";
 
     private YotResultsHelper() {
@@ -40,8 +39,7 @@ public class YotResultsHelper {
                                            final String hearingDay,
                                            final String sharedTime) {
         return nameUUIDFromBytes(
-                (REQUEST_ID_PREFIX + REQUEST_ID_SEPARATOR + hearingId + REQUEST_ID_SEPARATOR + hearingDay
+                (hearingId + REQUEST_ID_SEPARATOR + hearingDay
                         + REQUEST_ID_SEPARATOR + sharedTime).getBytes(UTF_8));
     }
-
 }
