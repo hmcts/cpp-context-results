@@ -14,6 +14,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
 import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterRecipient.informantRegisterRecipient;
@@ -66,6 +69,8 @@ import uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory;
 import uk.gov.justice.services.test.utils.core.matchers.JsonEnvelopePayloadMatcher;
 import uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil;
 import uk.gov.moj.cpp.results.command.GenerateInformantRegisterByDate;
+import uk.gov.moj.cpp.results.command.RequestInformantRegisterPublish;
+import uk.gov.moj.cpp.results.domain.event.InformantRegisterPublishRequested;
 import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 import uk.gov.moj.cpp.results.domain.aggregate.ProsecutionAuthorityAggregate;
 
@@ -104,6 +109,13 @@ public class InformantRegisterHandlerTest {
     private static final UUID PROSECUTION_AUTHORITY_ID = randomUUID();
 
 
+    private static final String REQUEST_INFORMANT_REGISTER_PUBLISH_COMMAND_NAME = "results.command.request-informant-register-publish";
+    private static final String INFORMANT_REGISTER_PUBLISH_REQUESTED_EVENT_NAME = "results.events.informant-register-publish-requested";
+    private static final UUID HEARING_ID = UUID.fromString("0aa5bf35-1e51-45e5-9e42-64bd57e15c11");
+    private static final UUID SHARING_USER_ID = UUID.fromString("1a3f7c68-4c4b-4a1f-93cd-6e2ac2c4a1d0");
+    private static final String HEARING_DAY = "2026-08-19";
+    private static final String SHARED_TIME = "2026-08-19T16:42:07.512Z";
+
     private static final ZonedDateTime REGISTER_DATE = ZonedDateTime.parse("2024-10-24T22:23:12.414Z");
     private static final UUID GROUP_ID = randomUUID();
 
@@ -140,7 +152,7 @@ public class InformantRegisterHandlerTest {
     private final StringToJsonObjectConverter stringToJsonObjectConverter = new StringToJsonObjectConverter();
 
     @Spy
-    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class, InformantRegisterRecordedV2.class, InformantRegisterGeneratedV2.class);
+    private Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(InformantRegisterGenerated.class, InformantRegisterNotified.class, InformantRegisterNotifiedV2.class, InformantRegisterNotificationIgnored.class, InformantRegisterRecordedV2.class, InformantRegisterGeneratedV2.class, InformantRegisterPublishRequested.class);
 
     @BeforeEach
     public void setup() {
@@ -155,6 +167,96 @@ public class InformantRegisterHandlerTest {
                 .with(method("handleAddInformantRegisterToEventStream")
                         .thatHandles("results.command.add-informant-register")
                 ));
+    }
+
+    @Test
+    public void handleRequestInformantRegisterPublish_should_beWiredAsACommandHandler() {
+        assertThat(new InformantRegisterHandler(), isHandler(COMMAND_HANDLER)
+                .with(method("handleRequestInformantRegisterPublish")
+                        .thatHandles(REQUEST_INFORMANT_REGISTER_PUBLISH_COMMAND_NAME)
+                ));
+    }
+
+    /**
+     * The stream id is the hearingId, not the requestId. The framework serialises dispatch per
+     * stream, so keying on the hearing is what stops a re-share overtaking the share it supersedes
+     * on the way to the queue - see the handler's Javadoc.
+     */
+    @Test
+    public void handleRequestInformantRegisterPublish_should_appendTheEventToTheHearingStream() throws Exception {
+        when(eventSource.getStreamById(HEARING_ID)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleRequestInformantRegisterPublish(publishRequestEnvelope());
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+
+        assertThat(envelopeStream, streamContaining(
+                jsonEnvelope(
+                        metadata().withName(INFORMANT_REGISTER_PUBLISH_REQUESTED_EVENT_NAME),
+                        JsonEnvelopePayloadMatcher.payload().isJson(allOf(
+                                withJsonPath("$.hearingId", is(HEARING_ID.toString())),
+                                withJsonPath("$.hearingDay", is(HEARING_DAY)),
+                                withJsonPath("$.sharedTime", is(SHARED_TIME)),
+                                withJsonPath("$.userId", is(SHARING_USER_ID.toString()))
+                        ))
+                )
+        ));
+    }
+
+    /**
+     * A share and a later re-share of the same hearing must land on one stream, so the framework
+     * dispatches them in order and the consuming service cannot apply the older share last. Keyed
+     * on the requestId - a hash that includes sharedTime - these would be two unrelated streams.
+     */
+    @Test
+    public void handleRequestInformantRegisterPublish_forAShareAndAReshare_should_useTheSameStream() throws Exception {
+        when(eventSource.getStreamById(HEARING_ID)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleRequestInformantRegisterPublish(publishRequestEnvelope());
+        informantRegisterHandler.handleRequestInformantRegisterPublish(
+                publishRequestEnvelope("2026-08-19T19:30:00.000Z"));
+
+        verify(eventSource, times(2)).getStreamById(HEARING_ID);
+        verifyNoMoreInteractions(eventSource);
+    }
+
+    /**
+     * sharedTime and hearingDay must reach the event exactly as they arrived. The requestId minted
+     * downstream is a hash of them, so a value that is parsed and re-rendered anywhere on this path
+     * mints a different id for the same share and defeats the consumer's dedupe.
+     */
+    @Test
+    public void handleRequestInformantRegisterPublish_should_carryTheShareValuesUnaltered() throws Exception {
+        final String awkwardSharedTime = "2026-08-19T16:42:07.5Z";
+        when(eventSource.getStreamById(HEARING_ID)).thenReturn(eventStream);
+
+        informantRegisterHandler.handleRequestInformantRegisterPublish(publishRequestEnvelope(awkwardSharedTime));
+
+        final Stream<JsonEnvelope> envelopeStream = verifyAppendAndGetArgumentFrom(eventStream);
+
+        assertThat(envelopeStream, streamContaining(
+                jsonEnvelope(
+                        metadata().withName(INFORMANT_REGISTER_PUBLISH_REQUESTED_EVENT_NAME),
+                        JsonEnvelopePayloadMatcher.payload().isJson(
+                                withJsonPath("$.sharedTime", is(awkwardSharedTime))
+                        )
+                )
+        ));
+    }
+
+    private Envelope<RequestInformantRegisterPublish> publishRequestEnvelope() {
+        return publishRequestEnvelope(SHARED_TIME);
+    }
+
+    private Envelope<RequestInformantRegisterPublish> publishRequestEnvelope(final String sharedTime) {
+        return Envelope.envelopeFrom(
+                metadataWithRandomUUID(REQUEST_INFORMANT_REGISTER_PUBLISH_COMMAND_NAME).build(),
+                RequestInformantRegisterPublish.requestInformantRegisterPublish()
+                        .withHearingId(HEARING_ID)
+                        .withHearingDay(HEARING_DAY)
+                        .withSharedTime(sharedTime)
+                        .withUserId(SHARING_USER_ID)
+                        .build());
     }
 
     @Test

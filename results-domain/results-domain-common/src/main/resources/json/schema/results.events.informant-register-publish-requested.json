@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Domain event recording that a resulted regular hearing owes an informant register publish. Durable so the publish survives a broker failure: the event processor retries off this event and the framework dead-letters it rather than losing the register. hearingDay and sharedTime are deliberately untyped strings - the deterministic requestId is derived from their exact wire form.",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/results.events.informant-register-publish-requested.json",
+  "type": "object",
+  "properties": {
+    "hearingId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "hearingDay": {
+      "type": "string"
+    },
+    "sharedTime": {
+      "type": "string"
+    },
+    "userId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    }
+  },
+  "required": [
+    "hearingId",
+    "hearingDay",
+    "sharedTime",
+    "userId"
+  ],
+  "additionalProperties": false
+}

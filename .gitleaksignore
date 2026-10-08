@@ -5,3 +5,13 @@
 # new commit reintroduces it; this entry suppresses the historical finding in
 # the commit that first added the line. Not a real secret.
 1ba6c5c5bb8b369751946e1ba23a3635f582c9fa:.gitignore:internal-urls:64
+
+# Same "internal-urls" false positive: the rule treats the "local" segment of
+# the CDI @Value config keys for the managed-identity client/tenant id (empty
+# defaults) in InformantRegisterQueuePublisher as an internal hostname.
+# These are property key names, not URLs or secrets. The 1e0309f entries cover
+# an earlier version of this comment that quoted the keys verbatim.
+0f13730aa3483a172862c2ae0fae27116add2e6f:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:51
+0f13730aa3483a172862c2ae0fae27116add2e6f:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:55
+1e0309f3224016e66c84252a35e33533af054589:.gitleaksignore:internal-urls:10
+1e0309f3224016e66c84252a35e33533af054589:.gitleaksignore:internal-urls:11
