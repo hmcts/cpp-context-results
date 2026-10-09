@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Test;
  * records nothing.
  *
  * <p>The Service Bus publish itself is deliberately not exercised here. This environment has no
- * Service Bus emulator and no {@code yotResultsQueueNamespace} configured, so the publisher
+ * Service Bus emulator and no {@code yotResultsDistributionQueueNamespace} configured, so the publisher
  * is inert by design; the message shape and its broker properties are covered by
  * {@code YotResultsQueuePublisherTest}. What this test does cover is the part that used to be
  * missing entirely - that the publish intent is written somewhere durable before anyone tries to

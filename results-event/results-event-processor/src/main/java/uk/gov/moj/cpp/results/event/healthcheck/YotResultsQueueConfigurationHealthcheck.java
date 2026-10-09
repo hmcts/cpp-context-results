@@ -29,11 +29,11 @@ public class YotResultsQueueConfigurationHealthcheck implements Healthcheck {
     private FeatureControlGuard featureControlGuard;
 
     @Inject
-    @Value(key = "yotResultsQueueNamespace", defaultValue = "")
+    @Value(key = "yotResultsDistributionQueueNamespace", defaultValue = "")
     private String yotResultsQueueNamespace;
 
     @Inject
-    @Value(key = "yotResultsQueueName", defaultValue = "")
+    @Value(key = "yotResultsDistributionQueueName", defaultValue = "")
     private String yotResultsQueueName;
 
     @Override
@@ -58,7 +58,7 @@ public class YotResultsQueueConfigurationHealthcheck implements Healthcheck {
         if (yotResultsQueueNamespace.isBlank() || yotResultsQueueName.isBlank()) {
             return failure(format(
                     "Feature %s is enabled but the YOT results queue is not configured "
-                            + "(yotResultsQueueNamespace '%s', yotResultsQueueName '%s'). "
+                            + "(yotResultsDistributionQueueNamespace '%s', yotResultsDistributionQueueName '%s'). "
                             + "Every resulted regular hearing will record a publish request that is never published.",
                     YOT_RESULTS_DISTRIBUTION_SERVICE_FEATURE, yotResultsQueueNamespace, yotResultsQueueName));
         }

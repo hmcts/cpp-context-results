@@ -43,8 +43,8 @@ import uk.gov.justice.services.common.configuration.Value;
  * publish request is in the event store it is owed, and a flag flipped off mid-flight must not
  * strand it.
  *
- * <p>Authentication is workload identity only: when {@code yotResultsQueueNamespace} and
- * {@code yotResultsQueueName} are configured the sender authenticates as the pod's managed
+ * <p>Authentication is workload identity only: when {@code yotResultsDistributionQueueNamespace} and
+ * {@code yotResultsDistributionQueueName} are configured the sender authenticates as the pod's managed
  * identity, which needs an AzureServiceBusDataSender grant on the namespace. With either value
  * unconfigured the publisher is inert; {@code YotResultsQueueConfigurationHealthcheck} fails when
  * the flag is on and no queue is configured.
@@ -68,11 +68,11 @@ public class YotResultsQueuePublisher implements YotResultsQueueService {
     private static final Duration TRY_TIMEOUT = Duration.ofSeconds(10);
 
     @Inject
-    @Value(key = "yotResultsQueueNamespace", defaultValue = "")
+    @Value(key = "yotResultsDistributionQueueNamespace", defaultValue = "")
     private String yotResultsQueueNamespace;
 
     @Inject
-    @Value(key = "yotResultsQueueName", defaultValue = "")
+    @Value(key = "yotResultsDistributionQueueName", defaultValue = "")
     private String yotResultsQueueName;
 
     @Inject
