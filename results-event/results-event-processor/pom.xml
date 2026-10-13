@@ -111,16 +111,6 @@
             <artifactId>system-documentgenerator-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>uk.gov.moj.cpp.material</groupId>
-            <artifactId>material-client</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>uk.gov.justice.services</groupId>
-                    <artifactId>test-utils-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>uk.gov.moj.cpp.core.domain</groupId>
             <artifactId>common-core-domain</artifactId>
         </dependency>
