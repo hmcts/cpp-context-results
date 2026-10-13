@@ -84,14 +84,15 @@ public class SystemDocGeneratorEventProcessor {
 
         final String originatingSource = documentAvailablePayload.getString("originatingSource", "");
 
-        final String materialId = documentAvailablePayload.getString(SOURCE_CORRELATION_ID);
-
-        final UUID payloadFileId = fromString(documentAvailablePayload.getString(PAYLOAD_FILE_SERVICE_ID));
-
-        final String reason = documentAvailablePayload.getString("reason");
-
         if (NCES_EMAIL_NOTIFICATION_REQUEST.equalsIgnoreCase(originatingSource)
                 || POLICE_NOTIFICATION_HEARING_RESULTS.equals(originatingSource)) {
+
+            final String materialId = documentAvailablePayload.getString(SOURCE_CORRELATION_ID);
+
+            final UUID payloadFileId = fromString(documentAvailablePayload.getString(PAYLOAD_FILE_SERVICE_ID));
+
+            final String reason = documentAvailablePayload.getString("reason");
+
             LOGGER.error("Asynchronous document generation failed. Failed to generate email notification, originatingSource: '{}', material id: '{}', payloadFileId: '{}', reason: '{}'",
                     originatingSource, materialId, payloadFileId, reason);
         }
