@@ -14,6 +14,7 @@ public class UploadMaterialContextBuilder {
     private UUID fileId;
     private UUID caseId;
     private UUID applicationId;
+    private String fileUri;
 
     public UploadMaterialContextBuilder setSender(final Sender sender) {
         this.sender = sender;
@@ -45,6 +46,11 @@ public class UploadMaterialContextBuilder {
         return this;
     }
 
+    public UploadMaterialContextBuilder setFileUri(final String fileUri) {
+        this.fileUri = fileUri;
+        return this;
+    }
+
     public UploadMaterialContextBuilder setCaseId(final UUID caseId) {
         this.caseId = caseId;
         return this;
@@ -65,6 +71,7 @@ public class UploadMaterialContextBuilder {
         uploadMaterialContext.setMaterialId(materialId);
         uploadMaterialContext.setCaseId(caseId);
         uploadMaterialContext.setApplicationId(applicationId);
+        uploadMaterialContext.setFileUri(fileUri);
         return uploadMaterialContext;
     }
 }

@@ -4,10 +4,12 @@ import static java.lang.Boolean.TRUE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Comparator.comparing;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.UUID.fromString;
+import static java.util.UUID.nameUUIDFromBytes;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
@@ -36,6 +38,7 @@ import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
+import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -70,6 +73,7 @@ import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -205,6 +209,9 @@ public class ResultsEventProcessor {
     @Inject
     private SystemDocGenerator systemDocGenerator;
 
+    @Inject
+    private FeatureControlGuard featureControlGuard;
+
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
 
     @Handles("public.hearing.resulted")
@@ -322,14 +329,22 @@ public class ResultsEventProcessor {
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
         final List<String> caseUrns = extractCaseUrns(envelope.payloadAsJsonObject().getString(CASE_REFERENCES));
-        final FileParams fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES);
-
+        final FileParams fileParams;
+        if (!featureControlGuard.isFeatureEnabled("resultsFileStore")) {
+            fileParams = documentGeneratorService.generateNcesDocument(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES);
+        } else {
+            fileParams = documentGeneratorService.generateNcesDocumentWithUri(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES);
+        }
         for (final String caseUrn : caseUrns) {
             if (isSJPHearing) {
                 getSjpCaseUUID(caseUrn).ifPresentOrElse(
                     caseUUID -> {
                         LOGGER.info("In SJP case Nces notification requested payload for add court document- caseUrn {}  fileid {} case UUID {}", caseUrn, fileParams.getFileId(), caseUUID);
-                        addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
+                        if(isNull(fileParams.getFileUri())) {
+                            addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
+                        } else {
+                            addCourtDocumentForSjpCaseWithUri(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileUri());
+                        }
                     },
                     () -> LOGGER.warn("No SJP case UUID found for caseUrn: {}", caseUrn)
                 );
@@ -359,6 +374,22 @@ public class ResultsEventProcessor {
                 .add(CASE_ID, caseUUID.toString())
                 .add("caseDocumentType", SJP_DOCUMENT_TYPE_OTHER + "-" + fileName)
                 .add("caseDocument", fileId.toString())
+                .build();
+
+        final Envelope<JsonObject> sjpEenvelope = envelopeFrom(
+                JsonEnvelope.metadataFrom(envelope.metadata()).withName(SJP_UPLOAD_CASE_DOCUMENT),
+                uploadCaseDocumentPayload);
+
+        sender.send(sjpEenvelope);
+    }
+
+    private void addCourtDocumentForSjpCaseWithUri(final JsonEnvelope envelope, final UUID caseUUID, final String fileName, final String fileUri) {
+        LOGGER.info("addCourtDocumentForSjpCase caseUUID {} , fileName {} , fileUri {}" , caseUUID , fileName , fileUri);
+        final JsonObject uploadCaseDocumentPayload = createObjectBuilder()
+                .add(CASE_ID, caseUUID.toString())
+                .add("caseDocumentType", SJP_DOCUMENT_TYPE_OTHER + "-" + fileName)
+                .add("caseDocument", nameUUIDFromBytes(fileUri.getBytes(StandardCharsets.UTF_8)).toString())
+                .add("caseDocumentUri", fileUri)
                 .build();
 
         final Envelope<JsonObject> sjpEenvelope = envelopeFrom(
@@ -511,16 +542,30 @@ public class ResultsEventProcessor {
 
             final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
             final String fileName = POLICE_NOTIFICATION_HEARING_RESULTS + notificationId + ".html";
-            final UUID fileId = fileService.storePayload(payload.build(), fileName, POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue(), ConversionFormat.THYMELEAF);
-            final DocumentGenerationRequest documentGenerationRequest = new DocumentGenerationRequest(
-                    POLICE_NOTIFICATION_HEARING_RESULTS,
-                    POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE,
-                    ConversionFormat.THYMELEAF,
-                    notificationId.toString(),
-                    fileId,
-                    additionalInformation);
+            final DocumentGenerationRequest documentGenerationRequest;
+            if (!featureControlGuard.isFeatureEnabled("resultsFileStore")) {
+                final UUID fileId = fileService.storePayload(payload.build(), fileName, POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue(), ConversionFormat.THYMELEAF);
+                documentGenerationRequest = new DocumentGenerationRequest(
+                        POLICE_NOTIFICATION_HEARING_RESULTS,
+                        POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE,
+                        ConversionFormat.THYMELEAF,
+                        notificationId.toString(),
+                        fileId,
+                        additionalInformation);
+            } else {
+                final DocumentGeneratorService.Result result = documentGeneratorService.storePayloadWithUri(payload.build(), fileName, POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue(), ConversionFormat.THYMELEAF);
+                documentGenerationRequest = new DocumentGenerationRequest(
+                        POLICE_NOTIFICATION_HEARING_RESULTS,
+                        POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE,
+                        ConversionFormat.THYMELEAF,
+                        notificationId.toString(),
+                        additionalInformation,
+                        result.payloadFileUri(),
+                        result.destinationFileUri());
+            }
 
-            LOGGER.info("Generating document for police notification of hearing amend and re-share result. Notification ID: {}, File ID: {}", notificationId, fileId);
+
+            LOGGER.info("Generating document for police notification of hearing amend and re-share result. Notification ID: {}, File ID: {} FILE URI:{}", notificationId, documentGenerationRequest.getPayloadFileServiceId(), documentGenerationRequest.getPayloadFileServiceUri());
             systemDocGenerator.generateDocument(documentGenerationRequest, envelope);
         }
     }

@@ -23,6 +23,8 @@ public class UploadMaterialContext {
 
     private  UUID applicationId;
 
+    private  String fileUri;
+
 
     public Sender getSender() {
         return sender;
@@ -56,6 +58,9 @@ public class UploadMaterialContext {
         return applicationId;
     }
 
+    public String getFileUri() {
+        return fileUri;
+    }
 
     public void setSender(final Sender sender) {
         this.sender = sender;
@@ -87,6 +92,10 @@ public class UploadMaterialContext {
 
     public void setApplicationId(final UUID applicationId) {
         this.applicationId = applicationId;
+    }
+
+    public void setFileUri(final String fileUri) {
+        this.fileUri = fileUri;
     }
 
 }

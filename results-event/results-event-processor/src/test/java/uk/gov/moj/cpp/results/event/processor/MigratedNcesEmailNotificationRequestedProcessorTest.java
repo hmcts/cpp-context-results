@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.test.utils.framework.api.JsonObjectConvertersFactory;
+import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -32,6 +34,7 @@ import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
+import uk.gov.moj.cpp.results.event.service.exception.FileUploadException;
 
 import java.util.UUID;
 
@@ -56,6 +59,8 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
     private static final String PROGRESSION_ADD_COURT_DOCUMENT = "progression.add-court-document";
     private static final String DOCUMENT_TYPE_DESCRIPTION = "Electronic Notifications";
     private static final String APPLICATION_PDF = "application/pdf";
+    private static final String RESULTS_FILE_STORE_FEATURE = "resultsFileStore";
+    private static final String BLOB_URI = "https://account.blob.core.windows.net/results/nces/documents/ENFDocumentOrder_material.pdf";
 
     @Mock
     private ReferenceDataService referenceDataService;
@@ -77,6 +82,9 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
     @Mock
     private NotificationNotifyService notificationNotifyService;
+
+    @Mock
+    private FeatureControlGuard featureControlGuard;
 
     @InjectMocks
     private MigratedNcesEmailNotificationRequestedProcessor processor;
@@ -339,5 +347,94 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         assertThat(capturedEmailNotification.getSendToAddress(), is(sendToAddress));
         assertThat(capturedEmailNotification.getSubject().orElse(null), is(subject));
         assertThat(capturedEmailNotification.getMaterialUrl(), is(materialUrl));
+    }
+
+    @Test
+    public void shouldGenerateMigratedInactiveNcesDocumentViaFileServiceWhenResultsFileStoreToggleIsOff() {
+        final UUID userId = randomUUID();
+        final UUID caseUUID = randomUUID();
+        final UUID masterDefendantUUID = randomUUID();
+        final UUID materialId = randomUUID();
+        final String fileName = "test-document.pdf";
+        final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID + ":" + caseUUID;
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(false);
+        when(documentGeneratorService.generateMigratedInactiveNcesDocument(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
+                .thenReturn(new FileParams(randomUUID(), fileName));
+
+        processor.handleMigratedNcesEmailNotificationRequested(migratedInactiveNcesEmailNotificationRequestedEnvelope(userId, caseUUID, masterDefendantUUID, materialId));
+
+        verify(documentGeneratorService, never()).generateMigratedInactiveNcesDocumentWithUri(any(), any(), any(), any(), any());
+        verify(sender).send(envelopeCaptor.capture());
+        assertThat(envelopeCaptor.getValue().metadata().name(), is(PROGRESSION_ADD_COURT_DOCUMENT));
+        assertThat(envelopeCaptor.getValue().payload().getJsonObject("courtDocument").getString("name"), is(fileName));
+    }
+
+    @Test
+    public void shouldGenerateMigratedInactiveNcesDocumentViaBlobStoreAndAddCourtDocumentWhenResultsFileStoreToggleIsOn() {
+        final UUID userId = randomUUID();
+        final UUID caseUUID = randomUUID();
+        final UUID masterDefendantUUID = randomUUID();
+        final UUID materialId = randomUUID();
+        final String fileName = "ENFDocumentOrder_20261016120000.pdf";
+        final String expectedOriginator = Originator.ORIGINATOR_VALUE_NCES_CASEID + masterDefendantUUID + ":" + caseUUID;
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        when(documentGeneratorService.generateMigratedInactiveNcesDocumentWithUri(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), eq(expectedOriginator)))
+                .thenReturn(blobFileParams(fileName));
+
+        processor.handleMigratedNcesEmailNotificationRequested(migratedInactiveNcesEmailNotificationRequestedEnvelope(userId, caseUUID, masterDefendantUUID, materialId));
+
+        verify(documentGeneratorService, never()).generateMigratedInactiveNcesDocument(any(), any(), any(), any(), any());
+        verify(documentGeneratorService).generateMigratedInactiveNcesDocumentWithUri(
+                any(Sender.class), jsonEnvelopeCaptor.capture(), eq(userId), eq(materialId), eq(expectedOriginator));
+        // the blob path renders the same transformed payload as the file service path
+        assertThat(jsonEnvelopeCaptor.getValue().payloadAsJsonObject().containsKey("materialId"), is(false));
+
+        verify(sender).send(envelopeCaptor.capture());
+        final Envelope<JsonObject> progressionCommand = envelopeCaptor.getValue();
+        assertThat(progressionCommand.metadata().name(), is(PROGRESSION_ADD_COURT_DOCUMENT));
+        assertThat(progressionCommand.payload().getString(MATERIAL_ID), is(materialId.toString()));
+        final JsonObject courtDocumentJson = progressionCommand.payload().getJsonObject("courtDocument");
+        assertThat(courtDocumentJson.getString("name"), is(fileName));
+        assertThat(courtDocumentJson.getJsonArray("materials").getJsonObject(0).getString("id"), is(materialId.toString()));
+        assertThat(courtDocumentJson.getJsonObject("documentCategory").getJsonObject("caseDocument").getString("prosecutionCaseId"), is(caseUUID.toString()));
+    }
+
+    @Test
+    public void shouldNotAddCourtDocumentWhenBlobStoreDocumentGenerationFailsAndResultsFileStoreToggleIsOn() {
+        final UUID userId = randomUUID();
+        final UUID materialId = randomUUID();
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        when(documentGeneratorService.generateMigratedInactiveNcesDocumentWithUri(any(), any(JsonEnvelope.class), eq(userId), eq(materialId), any()))
+                .thenThrow(new FileUploadException(new RuntimeException("blob store unavailable")));
+
+        final JsonEnvelope envelope = migratedInactiveNcesEmailNotificationRequestedEnvelope(userId, randomUUID(), randomUUID(), materialId);
+        assertThrows(FileUploadException.class, () -> processor.handleMigratedNcesEmailNotificationRequested(envelope));
+
+        verify(documentGeneratorService, never()).generateMigratedInactiveNcesDocument(any(), any(), any(), any(), any());
+        verify(sender, never()).send(any());
+    }
+
+    private static JsonEnvelope migratedInactiveNcesEmailNotificationRequestedEnvelope(final UUID userId, final UUID caseUUID,
+                                                                                      final UUID masterDefendantUUID, final UUID materialId) {
+        final Metadata metadata = metadataFrom(createObjectBuilder()
+                .add(ID, randomUUID().toString())
+                .add(NAME, "results.event.migrated-inactive-nces-email-notification-requested")
+                .add("context", createObjectBuilder()
+                        .add(USER_ID, userId.toString()))
+                .build()).build();
+
+        return envelopeFrom(metadata,
+                createObjectBuilder()
+                        .add(CASE_ID, caseUUID.toString())
+                        .add(MASTER_DEFENDANT_ID, masterDefendantUUID.toString())
+                        .add(MATERIAL_ID, materialId.toString())
+                        .build());
+    }
+
+    private static FileParams blobFileParams(final String fileName) {
+        final FileParams fileParams = new FileParams();
+        fileParams.setFileUri(BLOB_URI);
+        fileParams.setFilename(fileName);
+        return fileParams;
     }
 }

@@ -13,6 +13,8 @@ public class DocumentGenerationRequest {
     private final ConversionFormat conversionFormat;
     private final String sourceCorrelationId;
     private final UUID payloadFileServiceId;
+    private final String payloadFileServiceUri;
+    private final String documentFileServiceUri;
     private final String originatingSource;
 
     private final Map<String, String> additionalInformation;
@@ -29,6 +31,25 @@ public class DocumentGenerationRequest {
         this.sourceCorrelationId = sourceCorrelationId;
         this.payloadFileServiceId = payloadFileServiceId;
         this.additionalInformation = additionalInformation;
+        this.payloadFileServiceUri = null;
+        this.documentFileServiceUri = null;
+    }
+
+    public DocumentGenerationRequest(final String originatingSource,
+                                     final TemplateIdentifier templateIdentifier,
+                                     final ConversionFormat conversionFormat,
+                                     final String sourceCorrelationId,
+                                     final Map<String, String> additionalInformation,
+                                     final String payloadFileServiceUri,
+                                     final String documentFileServiceUri) {
+        this.originatingSource = originatingSource;
+        this.templateIdentifier = templateIdentifier;
+        this.conversionFormat = conversionFormat;
+        this.sourceCorrelationId = sourceCorrelationId;
+        this.payloadFileServiceId = null;
+        this.additionalInformation = additionalInformation;
+        this.payloadFileServiceUri = payloadFileServiceUri;
+        this.documentFileServiceUri = documentFileServiceUri;
     }
 
     public Map<String, String> getAdditionalInformation() {
@@ -53,6 +74,14 @@ public class DocumentGenerationRequest {
 
     public UUID getPayloadFileServiceId() {
         return payloadFileServiceId;
+    }
+
+    public String getPayloadFileServiceUri() {
+        return payloadFileServiceUri;
+    }
+
+    public String getDocumentFileServiceUri() {
+        return documentFileServiceUri;
     }
 
     @Override

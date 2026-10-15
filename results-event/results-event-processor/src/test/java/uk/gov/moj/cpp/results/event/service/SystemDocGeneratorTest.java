@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
+import static uk.gov.moj.cpp.results.event.service.TemplateIdentifier.POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
 
@@ -63,6 +64,40 @@ public class SystemDocGeneratorTest {
         assertThat(actual.payload().getString("conversionFormat"), equalTo("pdf"));
         assertThat(actual.payload().getString("sourceCorrelationId"), equalTo(sourceCorrelationId));
         assertThat(actual.payload().getString("payloadFileServiceId"), equalTo(payloadFileServiceId.toString()));
+        // generate-document is a oneOf: a file service id request carries no uris
+        assertThat(actual.payload().containsKey("payloadFileUri"), is(false));
+        assertThat(actual.payload().containsKey("destinationFileUri"), is(false));
+    }
+
+    @Test
+    public void shouldGenerateDocumentByPayloadAndDestinationUriWhenNoFileServiceId() {
+        final String sourceCorrelationId = randomUUID().toString();
+        final String payloadFileUri = "https://account.blob.core.windows.net/results/sdg/requests/POLICE_NOTIFICATION_HEARING_RESULTS.html";
+        final String destinationFileUri = "https://account.blob.core.windows.net/results/sdg/documents/POLICE_NOTIFICATION_HEARING_RESULTS.html";
+        final DocumentGenerationRequest request = new DocumentGenerationRequest(
+                "POLICE_NOTIFICATION_HEARING_RESULTS",
+                POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE,
+                ConversionFormat.THYMELEAF,
+                sourceCorrelationId,
+                Map.of("key1", "value1"),
+                payloadFileUri,
+                destinationFileUri
+        );
+
+        systemDocGenerator.generateDocument(request, envelope());
+
+        verify(sender).sendAsAdmin(argumentCaptor.capture());
+        final Envelope<JsonObject> actual = argumentCaptor.getValue();
+        assertThat(actual.metadata().name(), equalTo("systemdocgenerator.generate-document"));
+        final JsonObject payload = actual.payload();
+        assertThat(payload.getString("originatingSource"), equalTo("POLICE_NOTIFICATION_HEARING_RESULTS"));
+        assertThat(payload.getString("templateIdentifier"), equalTo(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()));
+        assertThat(payload.getString("conversionFormat"), equalTo(ConversionFormat.THYMELEAF.getValue()));
+        assertThat(payload.getString("sourceCorrelationId"), equalTo(sourceCorrelationId));
+        assertThat(payload.getString("payloadFileUri"), equalTo(payloadFileUri));
+        assertThat(payload.getString("destinationFileUri"), equalTo(destinationFileUri));
+        assertThat(payload.containsKey("payloadFileServiceId"), is(false));
+        assertThat(payload.getJsonArray("additionalInformation").getJsonObject(0).getString("propertyName"), is("key1"));
     }
 
     @Test
