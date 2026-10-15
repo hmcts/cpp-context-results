@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class FileParams {
     private UUID fileId;
+    private String fileUri;
     private String filename;
 
     public FileParams(UUID fileId, String filename) {
@@ -17,4 +18,12 @@ public class FileParams {
     public void setFileId(UUID fileId) {            this.fileId = fileId;        }
     public String getFilename() {             return filename;        }
     public void setFilename(String filename) {             this.filename = filename;         }
+
+    public void setFileUri(final String fileUri) {
+        this.fileUri = fileUri;
+    }
+
+    public String getFileUri() {
+        return fileUri;
+    }
 }

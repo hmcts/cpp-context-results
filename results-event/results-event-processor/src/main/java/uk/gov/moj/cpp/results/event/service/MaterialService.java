@@ -45,4 +45,22 @@ public class MaterialService {
             sender.sendAsAdmin(Envelope.envelopeFrom(metadata, uploadMaterialPayload));
         }
     }
+
+    public void uploadMaterialWithUri(final String payloadUri, final UUID materialId, final JsonEnvelope envelope, final String ncesOriginatorValue) {
+        LOGGER.info("material being uploaded '{}' file URI id '{}'", materialId, payloadUri);
+        final JsonObject uploadMaterialPayload = createObjectBuilder()
+                .add(FIELD_MATERIAL_ID, materialId.toString())
+                .add("fileUri", payloadUri)
+                .build();
+
+        LOGGER.info("requesting material service to upload file uri {} for material {}", payloadUri, materialId);
+
+        final Optional<String> userId = envelope.metadata().userId();
+        if (userId.isPresent()) {
+            sender.send(assembleEnvelopeWithPayloadAndMetaDetails(uploadMaterialPayload, UPLOAD_MATERIAL, userId.get(), ncesOriginatorValue));
+        } else {
+            final Metadata metadata = createMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), UPLOAD_MATERIAL, null, ncesOriginatorValue);
+            sender.sendAsAdmin(Envelope.envelopeFrom(metadata, uploadMaterialPayload));
+        }
+    }
 }

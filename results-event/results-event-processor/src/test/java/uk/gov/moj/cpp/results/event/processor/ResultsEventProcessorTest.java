@@ -5,7 +5,9 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.Arrays.asList;
 import static java.util.Objects.nonNull;
 import static java.util.UUID.fromString;
+import static java.util.UUID.nameUUIDFromBytes;
 import static java.util.UUID.randomUUID;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -53,6 +56,7 @@ import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.enveloper.Enveloper;
+import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 import uk.gov.justice.services.core.requester.Requester;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
@@ -93,6 +97,7 @@ import uk.gov.moj.cpp.results.test.TestTemplates;
 
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
@@ -167,6 +172,11 @@ public class ResultsEventProcessorTest {
     public static final String COURT_CENTRE = "Croydon Magistrates' Court";
     public static final String AMEND_RESHARE1 = "Amend & Reshare";
     public static final String ORGANISATION_NAME = "organisationName";
+    private static final String RESULTS_FILE_STORE_FEATURE = "resultsFileStore";
+    private static final UUID NCES_MATERIAL_ID = randomUUID();
+    private static final UUID SJP_CASE_UUID = randomUUID();
+    private static final String NCES_FILE_NAME = "ENFDocumentOrder_20261015120000.pdf";
+    private static final String NCES_BLOB_URI = "https://account.blob.core.windows.net/results/nces/ENFDocumentOrder_" + NCES_MATERIAL_ID + ".pdf";
 
     @Spy
     private final Enveloper enveloper = createEnveloper();
@@ -226,6 +236,9 @@ public class ResultsEventProcessorTest {
 
     @Mock
     PoliceEmailHelper policeEmailHelper;
+
+    @Mock
+    private FeatureControlGuard featureControlGuard;
 
     @Spy
     private JsonObjectToObjectConverter jsonObjectToObjectConverter = new JsonObjectConvertersFactory().jsonObjectToObjectConverter();
@@ -603,6 +616,74 @@ public class ResultsEventProcessorTest {
 
     }
 
+
+    @Test
+    void shouldStorePoliceNotificationPayloadInFileServiceWhenResultsFileStoreToggleIsOff() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(false);
+        final ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = givenAmendReshareWithApplicationPoliceNotification();
+        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+        final UUID payloadFileId = randomUUID();
+        when(fileService.storePayload(any(), eq("POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html"), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF))).thenReturn(payloadFileId);
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(policeNotificationEnvelope(policeNotificationRequestedV2));
+
+        verify(documentGeneratorService, never()).storePayloadWithUri(any(), any(), any(), any());
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestCaptor.capture(), any());
+        final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestCaptor.getValue();
+        assertThat(documentGenerationRequest.getPayloadFileServiceId(), is(payloadFileId));
+        assertThat(documentGenerationRequest.getPayloadFileServiceUri(), is(nullValue()));
+        assertThat(documentGenerationRequest.getDocumentFileServiceUri(), is(nullValue()));
+    }
+
+    @Test
+    void shouldStorePoliceNotificationPayloadInBlobStoreAndRequestDocumentByUriWhenResultsFileStoreToggleIsOn() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        final ArgumentCaptor<DocumentGenerationRequest> documentGenerationRequestCaptor = ArgumentCaptor.forClass(DocumentGenerationRequest.class);
+        final ArgumentCaptor<JsonObject> payloadCaptor = ArgumentCaptor.forClass(JsonObject.class);
+        final PoliceNotificationRequestedV2 policeNotificationRequestedV2 = givenAmendReshareWithApplicationPoliceNotification();
+        final UUID notificationId = policeNotificationRequestedV2.getNotificationId();
+        final String fileName = "POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html";
+        final String payloadFileUri = "https://account.blob.core.windows.net/results/sdg/requests/" + fileName;
+        final String destinationFileUri = "https://account.blob.core.windows.net/results/sdg/documents/" + fileName;
+        when(documentGeneratorService.storePayloadWithUri(payloadCaptor.capture(), eq(fileName), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF)))
+                .thenReturn(new DocumentGeneratorService.Result(payloadFileUri, destinationFileUri));
+
+        resultsEventProcessor.handlePoliceNotificationRequestedV2(policeNotificationEnvelope(policeNotificationRequestedV2));
+
+        verify(fileService, never()).storePayload(any(), any(), any(), any());
+        assertThat(payloadCaptor.getValue().getString("defendants"), is(AMENDED_DEFENDANTS));
+        assertThat(payloadCaptor.getValue().getString("applications"), is(AMENDED_APPLICATIONS));
+
+        verify(systemDocGenerator).generateDocument(documentGenerationRequestCaptor.capture(), any());
+        final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestCaptor.getValue();
+        assertThat(documentGenerationRequest.getOriginatingSource(), is("POLICE_NOTIFICATION_HEARING_RESULTS"));
+        assertThat(documentGenerationRequest.getTemplateIdentifier(), is(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE));
+        assertThat(documentGenerationRequest.getConversionFormat(), is(ConversionFormat.THYMELEAF));
+        assertThat(documentGenerationRequest.getSourceCorrelationId(), is(notificationId.toString()));
+        assertThat(documentGenerationRequest.getPayloadFileServiceId(), is(nullValue()));
+        assertThat(documentGenerationRequest.getPayloadFileServiceUri(), is(payloadFileUri));
+        assertThat(documentGenerationRequest.getDocumentFileServiceUri(), is(destinationFileUri));
+        assertThat(documentGenerationRequest.getAdditionalInformation().get(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+    }
+
+    private PoliceNotificationRequestedV2 givenAmendReshareWithApplicationPoliceNotification() {
+        when(referenceDataService.fetchPoliceEmailAddressForProsecutorOuCode(OU_CODE)).thenReturn(EMAIL_ADDRESS);
+        when(applicationParameters.getCommonPlatformUrl()).thenReturn(COMMON_PLATFORM_URL);
+        when(applicationParameters.getPoliceNotificationHearingResultsAmendedTemplateId()).thenReturn(POLICE_NOTIFICATION_HEARING_RESULTS_AMENDED_TEMPLATE_ID);
+        when(applicationParameters.getPoliceEmailHearingResultsWithApplicationTemplateId()).thenReturn(POLICE_EMAIL_HEARING_RESULTS_WITH_APPLICATIONS_TEMPLATE_ID);
+        when(policeEmailHelper.buildDefendantAmendmentDetails(any())).thenReturn(AMENDED_DEFENDANTS);
+        when(policeEmailHelper.buildApplicationAmendmentDetails(anyList())).thenReturn(AMENDED_APPLICATIONS);
+        return buildPoliceNotificationRequestedV2(getDefendants(), "Application to Vary bail", true, APPLICATION_ID);
+    }
+
+    private JsonEnvelope policeNotificationEnvelope(final PoliceNotificationRequestedV2 policeNotificationRequestedV2) {
+        final Metadata metadata = Envelope.metadataBuilder()
+                .withId(randomUUID())
+                .withName("dummy")
+                .build();
+        return envelopeFrom(metadata, objectToJsonObjectConverter.convert(policeNotificationRequestedV2));
+    }
 
     @Test
     public void shouldHandleTheEventPoliceNotificationRequestedV2WithAmendReshareAndNoApplication() {
@@ -1854,6 +1935,96 @@ public class ResultsEventProcessorTest {
                 any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
         verify(sjpService, times(3)).caseExistsByCaseUrn(any());
         verify(progressionService, times(0)).caseExistsByCaseUrn(any());
+    }
+
+    @Test
+    void shouldGenerateNcesDocumentViaFileServiceWhenResultsFileStoreToggleIsOff() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(false);
+        final UUID fileId = randomUUID();
+        when(documentGeneratorService.generateNcesDocument(any(), any(), any(), any(), eq("nces"))).thenReturn(new FileParams(fileId, "file123.pdf"));
+        when(sjpService.caseExistsByCaseUrn("sjpUrn1")).thenReturn(Optional.of(createObjectBuilder().add("id", SJP_CASE_UUID.toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("sjpUrn1", true));
+
+        verify(documentGeneratorService, never()).generateNcesDocumentWithUri(any(), any(), any(), any(), any());
+        verify(sender).send(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> sjpCommand = envelopeArgumentCaptor.getValue();
+        assertThat(sjpCommand.metadata().name(), is("sjp.upload-case-document"));
+        assertThat(sjpCommand.payload().getString("caseId"), is(SJP_CASE_UUID.toString()));
+        assertThat(sjpCommand.payload().getString("caseDocument"), is(fileId.toString()));
+        assertThat(sjpCommand.payload().containsKey("caseDocumentUri"), is(false));
+    }
+
+    @Test
+    void shouldGenerateNcesDocumentViaBlobStoreAndSendCaseDocumentUriToSjpWhenResultsFileStoreToggleIsOn() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        when(documentGeneratorService.generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"))).thenReturn(blobFileParams());
+        when(sjpService.caseExistsByCaseUrn("sjpUrn1")).thenReturn(Optional.of(createObjectBuilder().add("id", SJP_CASE_UUID.toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("sjpUrn1", true));
+
+        verify(documentGeneratorService, never()).generateNcesDocument(any(), any(), any(), any(), any());
+        verify(documentGeneratorService).generateNcesDocumentWithUri(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
+        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(NCES_MATERIAL_ID.toString()));
+
+        verify(sender).send(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> sjpCommand = envelopeArgumentCaptor.getValue();
+        assertThat(sjpCommand.metadata().name(), is("sjp.upload-case-document"));
+        assertThat(sjpCommand.payload().getString("caseId"), is(SJP_CASE_UUID.toString()));
+        assertThat(sjpCommand.payload().getString("caseDocumentType"), is("OTHER-" + NCES_FILE_NAME));
+        assertThat(sjpCommand.payload().getString("caseDocumentUri"), is(NCES_BLOB_URI));
+        // must match the derivation sjp falls back to (CaseDocumentProcessor) and staging-dvla uses
+        assertThat(sjpCommand.payload().getString("caseDocument"),
+                is(nameUUIDFromBytes(NCES_BLOB_URI.getBytes(StandardCharsets.UTF_8)).toString()));
+    }
+
+    @Test
+    void shouldSendOneSjpUploadCaseDocumentPerCaseUrnWhenResultsFileStoreToggleIsOn() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        when(documentGeneratorService.generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"))).thenReturn(blobFileParams());
+        when(sjpService.caseExistsByCaseUrn(any())).thenReturn(Optional.of(createObjectBuilder().add("id", randomUUID().toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("sjpUrn1,sjpUrn2", true));
+
+        verify(documentGeneratorService, times(1)).generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"));
+        verify(sender, times(2)).send(envelopeArgumentCaptor.capture());
+        envelopeArgumentCaptor.getAllValues().forEach(command -> {
+            assertThat(command.metadata().name(), is("sjp.upload-case-document"));
+            assertThat(command.payload().getString("caseDocumentUri"), is(NCES_BLOB_URI));
+        });
+    }
+
+    @Test
+    void shouldAddCourtDocumentToProgressionByMaterialIdWhenResultsFileStoreToggleIsOnForCcCase() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        when(documentGeneratorService.generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"))).thenReturn(blobFileParams());
+        final UUID ccCaseId = randomUUID();
+        when(progressionService.caseExistsByCaseUrn("ccUrn1")).thenReturn(Optional.of(createObjectBuilder().add("caseId", ccCaseId.toString()).build()));
+
+        resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("ccUrn1", false));
+
+        verify(documentGeneratorService, never()).generateNcesDocument(any(), any(), any(), any(), any());
+        verify(sjpService, never()).caseExistsByCaseUrn(any());
+        verify(sender).send(envelopeArgumentCaptor.capture());
+        final Envelope<JsonObject> progressionCommand = envelopeArgumentCaptor.getValue();
+        assertThat(progressionCommand.metadata().name(), is("progression.add-court-document"));
+        assertThat(progressionCommand.payload().getString("materialId"), is(NCES_MATERIAL_ID.toString()));
+    }
+
+    private static FileParams blobFileParams() {
+        final FileParams fileParams = new FileParams();
+        fileParams.setFileUri(NCES_BLOB_URI);
+        fileParams.setFilename(NCES_FILE_NAME);
+        return fileParams;
+    }
+
+    private static JsonEnvelope ncesEmailNotificationRequestedEnvelope(final String caseReferences, final boolean isSjpHearing) {
+        return envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("results.event.nces-email-notification-requested"))
+                .withPayloadOf(NCES_MATERIAL_ID.toString(), "materialId")
+                .withPayloadOf(caseReferences, "caseReferences")
+                .withPayloadOf(isSjpHearing, "isSJPHearing")
+                .build();
     }
 
     @Test

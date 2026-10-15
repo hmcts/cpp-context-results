@@ -73,6 +73,13 @@
             **/uk/gov/moj/cpp/results/event/service/UploadMaterialContextBuilder.*,
             **/uk/gov/moj/cpp/results/persist/entity/**/*
         </sonar.coverage.exclusions>
+        <!-- JDK HTTP transport for Azure SDK v12 — avoids netty which conflicts with WildFly 26's own netty modules.
+        TODO: move to cpp-platform-maven-common-bom once available there -->
+        <azure-core-http-jdk-httpclient.version>1.0.0-beta.14</azure-core-http-jdk-httpclient.version>
+
+        <!-- TODO: move to cpp-platform-maven-common-bom once available there -->
+        <cpp-platform-azure-utils.version>17.104.3</cpp-platform-azure-utils.version>
+
     </properties>
     <build>
         <plugins>
@@ -198,6 +205,16 @@
                 <version>${netty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-core-http-jdk-httpclient</artifactId>
+                <version>${azure-core-http-jdk-httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.moj.cpp.common.library.utils</groupId>
+                <artifactId>cpp-platform-azure-utils</artifactId>
+                <version>${cpp-platform-azure-utils.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
