@@ -18,6 +18,8 @@ public interface InformantRegisterRepository extends EntityRepository<InformantR
 
     List<InformantRegisterEntity> findByFileId(final UUID materialId);
 
+    List<InformantRegisterEntity> findByFileUri(final String fileUri);
+
     List<InformantRegisterEntity> findByStatus(final RegisterStatus status);
 
     @Query("select informantRegister from InformantRegisterEntity informantRegister " +
