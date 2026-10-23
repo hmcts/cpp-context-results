@@ -45,6 +45,9 @@ public class InformantRegisterEntity implements Serializable {
     @Column(name = "file_id")
     private UUID fileId;
 
+    @Column(name = "file_uri")
+    private String fileUri;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private RegisterStatus status;
@@ -115,6 +118,14 @@ public class InformantRegisterEntity implements Serializable {
 
     public void setFileId(UUID fileId) {
         this.fileId = fileId;
+    }
+
+    public String getFileUri() {
+        return fileUri;
+    }
+
+    public void setFileUri(String fileUri) {
+        this.fileUri = fileUri;
     }
 
     public RegisterStatus getStatus() {
