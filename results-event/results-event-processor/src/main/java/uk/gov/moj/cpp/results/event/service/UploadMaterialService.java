@@ -22,4 +22,8 @@ public class UploadMaterialService {
         materialService.uploadMaterial(uploadMaterialContext.getFileId(), uploadMaterialContext.getMaterialId(), uploadMaterialContext.getOriginatingEnvelope(), ncesOriginatorValue);
     }
 
+    public void uploadMaterialWithUri(final UploadMaterialContext uploadMaterialContext, final String ncesOriginatorValue) {
+        materialService.uploadMaterialWithUri(uploadMaterialContext.getFileUri(), uploadMaterialContext.getMaterialId(), uploadMaterialContext.getOriginatingEnvelope(), ncesOriginatorValue);
+    }
+
 }

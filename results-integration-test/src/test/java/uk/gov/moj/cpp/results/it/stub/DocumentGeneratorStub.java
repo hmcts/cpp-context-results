@@ -26,6 +26,16 @@ public class DocumentGeneratorStub {
                         .withBody(documentText.getBytes())));
     }
 
+    /**
+     * The synchronous render the system-documentgenerator-client calls, whichever context path the
+     * environment routes it through (locally {@code /systemdocgenerator-service/...}).
+     */
+    public static void stubRenderDocumentWithStatusOk(final String documentText) {
+        stubFor(post(urlPathMatching("/.*/rest/systemdocgenerator/render"))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode())
+                        .withBody(documentText.getBytes())));
+    }
+
     public static void stubDocGeneratorEndPoint() {
         stubFor(post(urlPathMatching(SYS_DOC_GENERATOR_URL))
                 .withHeader(CONTENT_TYPE, equalTo(GENERATE_DOCUMENT_MEDIA_TYPE))

@@ -28,6 +28,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
+import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -79,6 +80,9 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     @Inject
     private NotificationNotifyService notificationNotifyService;
 
+    @Inject
+    private FeatureControlGuard featureControlGuard;
+
     @Handles("results.event.migrated-inactive-nces-email-notification-requested")
     public void handleMigratedNcesEmailNotificationRequested(final JsonEnvelope envelope) {
         final UUID userId = fromString(envelope.metadata().userId().orElseThrow(() -> new RuntimeException("UserId missing from event.")));
@@ -89,10 +93,15 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
 
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID));
         final JsonEnvelope transformedEnvelope = transformEnvelope(envelope);
-        final FileParams fileParams = documentGeneratorService.generateMigratedInactiveNcesDocument(sender, transformedEnvelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
+        final FileParams fileParams;
+        if (!featureControlGuard.isFeatureEnabled("resultsFileStore")) {
+            fileParams = documentGeneratorService.generateMigratedInactiveNcesDocument(sender, transformedEnvelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
+        } else {
+            fileParams = documentGeneratorService.generateMigratedInactiveNcesDocumentWithUri(sender, transformedEnvelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES_CASEID.concat(rootAggregateId));
+        }
 
         addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
-        LOGGER.info("In CC migrated inactive case Nces notification requested payload for add court document- fileid {} case UUID {}", fileParams.getFileId(), caseUUID);
+        LOGGER.info("In CC migrated inactive case Nces notification requested payload for add court document- fileid {} fileUri {} case UUID {}", fileParams.getFileId(),fileParams.getFileUri(), caseUUID);
 
     }
 

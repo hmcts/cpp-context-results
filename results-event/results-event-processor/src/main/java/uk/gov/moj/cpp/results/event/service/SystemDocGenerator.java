@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import static java.util.Objects.nonNull;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static org.apache.commons.collections.MapUtils.isNotEmpty;
@@ -38,8 +39,15 @@ public class SystemDocGenerator {
                 .add("originatingSource", request.getOriginatingSource())
                 .add("templateIdentifier", request.getTemplateIdentifier().getValue())
                 .add("conversionFormat", request.getConversionFormat().getValue())
-                .add("sourceCorrelationId", request.getSourceCorrelationId())
-                .add("payloadFileServiceId", request.getPayloadFileServiceId().toString());
+                .add("sourceCorrelationId", request.getSourceCorrelationId());
+
+        // generate-document is a oneOf: a file service id, or a payload uri together with its destination uri
+        if (nonNull(request.getPayloadFileServiceUri())) {
+            payloadBuilder.add("payloadFileUri", request.getPayloadFileServiceUri());
+            payloadBuilder.add("destinationFileUri", request.getDocumentFileServiceUri());
+        } else {
+            payloadBuilder.add("payloadFileServiceId", request.getPayloadFileServiceId().toString());
+        }
 
         if (isNotEmpty(request.getAdditionalInformation())) {
             JsonArrayBuilder infoArrayBuilder = createArrayBuilder();
