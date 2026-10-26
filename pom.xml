@@ -41,7 +41,7 @@
         <referencedata.version>17.104.137</referencedata.version>
         <notification.notify.version>17.104.44</notification.notify.version>
         <systemdocgenerator.version>17.104.111</systemdocgenerator.version>
-        <progression.version>17.0.286</progression.version>
+        <progression.version>17.104.306</progression.version>
         <material.version>17.0.79</material.version>
         <usersgroups.version>17.104.47</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
@@ -49,7 +49,7 @@
         <netty.version>4.1.113.Final</netty.version>
         <!-- Downgrade h2 until deltaspike tests have been updated to work with latest h2 version -->
         <h2.version>1.4.196</h2.version>
-        <sjp.version>17.103.174</sjp.version>
+        <sjp.version>17.104.197</sjp.version>
         <staging.dcs.version>17.103.11</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
@@ -73,6 +73,13 @@
             **/uk/gov/moj/cpp/results/event/service/UploadMaterialContextBuilder.*,
             **/uk/gov/moj/cpp/results/persist/entity/**/*
         </sonar.coverage.exclusions>
+        <!-- JDK HTTP transport for Azure SDK v12 — avoids netty which conflicts with WildFly 26's own netty modules.
+        TODO: move to cpp-platform-maven-common-bom once available there -->
+        <azure-core-http-jdk-httpclient.version>1.0.0-beta.14</azure-core-http-jdk-httpclient.version>
+
+        <!-- TODO: move to cpp-platform-maven-common-bom once available there -->
+        <cpp-platform-azure-utils.version>17.104.3</cpp-platform-azure-utils.version>
+
     </properties>
     <build>
         <plugins>
@@ -198,6 +205,16 @@
                 <version>${netty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-core-http-jdk-httpclient</artifactId>
+                <version>${azure-core-http-jdk-httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.gov.moj.cpp.common.library.utils</groupId>
+                <artifactId>cpp-platform-azure-utils</artifactId>
+                <version>${cpp-platform-azure-utils.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -115,6 +115,35 @@ public class ReferenceDataServiceStub {
                         .withBody(prosecutorCodeResponse.toString())));
     }
 
+    /**
+     * A prosecutor with neither SPI-out nor police flag, by prosecutor code and by OU code, so resulting
+     * a hearing for it creates the results without fanning out to SPI-out or police notification.
+     */
+    public static void stubProsecutorWithoutSpiOutOrPoliceFlag(final String prosecutorCode, final String ouCode) {
+        final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
+        final JsonObject prosecutor = createObjectBuilder()
+                .add("prosecutorCode", prosecutorCode)
+                .add("oucode", ouCode)
+                .add("spiOutFlag", false)
+                .add("policeFlag", false)
+                .build();
+        final String prosecutors = createObjectBuilder().add("prosecutors", createArrayBuilder().add(prosecutor)).build().toString();
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("prosecutorCode", equalTo(prosecutorCode))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(prosecutors)));
+
+        stubFor(get(urlPathEqualTo(urlPath))
+                .withQueryParam("oucode", equalTo(ouCode))
+                .willReturn(aResponse().withStatus(SC_OK)
+                        .withHeader(ID, randomUUID().toString())
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON)
+                        .withBody(prosecutor.toString())));
+    }
+
     public static void stubPoliceFlag(final String originatingOrganisation, final String prosecutionAuthority) {
         final String urlPath = "/referencedata-service/query/api/rest/referencedata/prosecutors";
 

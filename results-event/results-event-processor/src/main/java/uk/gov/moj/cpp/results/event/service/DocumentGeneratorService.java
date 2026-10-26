@@ -1,6 +1,9 @@
 package uk.gov.moj.cpp.results.event.service;
 
+import static com.azure.core.util.BinaryData.fromStream;
+import static com.azure.core.util.Context.NONE;
 import static java.lang.String.format;
+import static java.util.Map.of;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static javax.transaction.Transactional.TxType.REQUIRES_NEW;
 
@@ -9,6 +12,7 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.results.event.blobstore.AzureFileStoreBlobConfiguration;
 import uk.gov.moj.cpp.results.event.service.exception.FileUploadException;
 import uk.gov.moj.cpp.results.event.service.exception.TemplateNameNotFoundException;
 import uk.gov.moj.cpp.system.documentgenerator.client.DocumentGeneratorClient;
@@ -17,14 +21,19 @@ import uk.gov.moj.cpp.system.documentgenerator.client.DocumentGeneratorClientPro
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.transaction.Transactional;
 
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +46,7 @@ public class DocumentGeneratorService {
     public static final String NCES_DOCUMENT_TEMPLATE_NAME = "NCESNotification";
     public static final String NCES_DLRM_DOC_TEMPLATE_NAME = "NCESDLRMNotification";
     public static final String ENF_DOCUMENT_ORDER = "ENFDocumentOrder";
+    public static final String FILE_NAME = "fileName";
 
     private final DocumentGeneratorClientProducer documentGeneratorClientProducer;
 
@@ -45,6 +55,12 @@ public class DocumentGeneratorService {
     private final UploadMaterialService uploadMaterialService;
 
     private final SystemUserProvider systemUserProvider;
+
+    @Inject
+    private BlobContainerClient blobContainerClient;
+    @Inject
+    private AzureFileStoreBlobConfiguration azureBlobConfiguration;
+
 
 
     @Inject
@@ -67,9 +83,21 @@ public class DocumentGeneratorService {
     }
 
     @Transactional(REQUIRES_NEW)
+    public FileParams generateNcesDocumentWithUri(final Sender sender, final JsonEnvelope originatingEnvelope,
+                                           final UUID userId, UUID materialId, final String ncesOriginatorValue) {
+        return generateDocumentWithUri(sender, originatingEnvelope, userId, materialId, ncesOriginatorValue, NCES_DOCUMENT_TEMPLATE_NAME);
+    }
+
+    @Transactional(REQUIRES_NEW)
     public FileParams generateMigratedInactiveNcesDocument(final Sender sender, final JsonEnvelope originatingEnvelope,
                                                            final UUID userId, UUID materialId, final String ncesOriginatorValue) {
         return generateDocument(sender, originatingEnvelope, userId, materialId, ncesOriginatorValue, NCES_DLRM_DOC_TEMPLATE_NAME);
+    }
+
+    @Transactional(REQUIRES_NEW)
+    public FileParams generateMigratedInactiveNcesDocumentWithUri(final Sender sender, final JsonEnvelope originatingEnvelope,
+                                                           final UUID userId, UUID materialId, final String ncesOriginatorValue) {
+        return generateDocumentWithUri(sender, originatingEnvelope, userId, materialId, ncesOriginatorValue, NCES_DLRM_DOC_TEMPLATE_NAME);
     }
 
 
@@ -94,6 +122,32 @@ public class DocumentGeneratorService {
         } catch (IOException | RuntimeException e) {
             LOGGER.error(ERROR_MESSAGE, e);
         }
+        return fileParams;
+    }
+
+    private FileParams generateDocumentWithUri(final Sender sender, final JsonEnvelope originatingEnvelope,
+                                        final UUID userId, final UUID materialId,
+                                        final String ncesOriginatorValue, final String templateName) {
+        FileParams fileParams = new FileParams();
+        final String fileName = getTimeStampAmendedFileName(ENF_DOCUMENT_ORDER);
+
+        final JsonObject ncesDocumentJson = originatingEnvelope.payloadAsJsonObject();
+        final DocumentGeneratorClient documentGeneratorClient = documentGeneratorClientProducer.documentGeneratorClient();
+
+        // Generate the PDF using the specific template provided
+        final byte[] resultOrderAsByteArray;
+        try {
+            resultOrderAsByteArray = documentGeneratorClient.generatePdfDocument(ncesDocumentJson, templateName, getSystemUserUuid());
+        } catch (final IOException e) {
+            throw new FileUploadException(e);
+        }
+
+        final String fileUri = addDocumentToMaterialWithUris(sender, originatingEnvelope, ENF_DOCUMENT_ORDER, fileName,
+                resultOrderAsByteArray, userId, materialId, ncesOriginatorValue);
+
+        fileParams.setFileUri(fileUri);
+        fileParams.setFilename(fileName);
+
         return fileParams;
     }
 
@@ -122,10 +176,54 @@ public class DocumentGeneratorService {
         return fileId ;
     }
 
+    private String addDocumentToMaterialWithUris(Sender sender, JsonEnvelope originatingEnvelope, final String documentName, final String fileName, final byte[] fileContent,
+                                       final UUID userId,
+                                       final UUID materialId, final String ncesOriginatorValue) {
+        // <documentName>_<materialId>.<extension>: the file name's prefix, keyed by material instead of a timestamp
+        final String blobFileName = azureBlobConfiguration.getDocumentBlobPrefix() + documentName + "_" + materialId + "." + fileName.substring(fileName.lastIndexOf('.') + 1);
 
+        final String fullFileUri = storeFileToBlob(blobFileName, of(FILE_NAME, fileName),fileContent);
+
+        final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
+        uploadMaterialService.uploadMaterialWithUri(uploadMaterialContextBuilder
+                .setSender(sender)
+                .setOriginatingEnvelope(originatingEnvelope)
+                .setUserId(userId)
+                .setMaterialId(materialId)
+                .setFileUri(fullFileUri)
+                .build(), ncesOriginatorValue);
+
+        return fullFileUri;
+    }
+
+    public record Result(String payloadFileUri, String destinationFileUri){}
+    public Result storePayloadWithUri(final JsonObject payload, final String fileName, final String templateName, final  ConversionFormat conversionFormat) {
+        final String blobFileName = azureBlobConfiguration.getPayloadBlobPrefix() + fileName;
+        final byte[] jsonPayloadInBytes = payload.toString().getBytes(StandardCharsets.UTF_8);
+
+        Map<String, String> metadata = of(FILE_NAME, fileName,"conversionFormat", conversionFormat.getValue(),"templateName", templateName,"numberOfPages", "1","fileSize", String.valueOf(jsonPayloadInBytes.length));
+
+        final String fullBlobName =  storeFileToBlob(blobFileName, metadata, jsonPayloadInBytes);
+        // the generated document goes under the document prefix with the payload's file name
+        final String destinationFileUri = blobContainerClient
+                .getBlobClient(azureBlobConfiguration.getDocumentBlobPrefix() + fileName)
+                .getBlobUrl();
+        return new Result(fullBlobName, destinationFileUri);
+    }
+
+    private String storeFileToBlob(final String blobFileName, Map<String, String> metadata, final byte[] fileContent){
+        final BlobClient blobClient = blobContainerClient.getBlobClient(blobFileName);
+        blobClient.uploadWithResponse(
+                new BlobParallelUploadOptions(fromStream(new ByteArrayInputStream(fileContent)))
+                        .setMetadata(metadata),
+                azureBlobConfiguration.getTransferTimeout(), NONE);
+
+        return blobClient
+                .getBlobUrl();
+    }
 
     private UUID storeFile(final InputStream fileContent, final String fileName) throws FileServiceException {
-        final JsonObject metadata = createObjectBuilder().add("fileName", fileName).build();
+        final JsonObject metadata = createObjectBuilder().add(FILE_NAME, fileName).build();
         return fileStorer.store(metadata, fileContent);
     }
 
