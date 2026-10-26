@@ -46,6 +46,7 @@ public class DocumentGeneratorService {
     public static final String NCES_DOCUMENT_TEMPLATE_NAME = "NCESNotification";
     public static final String NCES_DLRM_DOC_TEMPLATE_NAME = "NCESDLRMNotification";
     public static final String ENF_DOCUMENT_ORDER = "ENFDocumentOrder";
+    public static final String FILE_NAME = "fileName";
 
     private final DocumentGeneratorClientProducer documentGeneratorClientProducer;
 
@@ -181,7 +182,7 @@ public class DocumentGeneratorService {
         // <documentName>_<materialId>.<extension>: the file name's prefix, keyed by material instead of a timestamp
         final String blobFileName = azureBlobConfiguration.getDocumentBlobPrefix() + documentName + "_" + materialId + "." + fileName.substring(fileName.lastIndexOf('.') + 1);
 
-        final String fullFileUri = storeFileToBlob(blobFileName, of("fileName", fileName),fileContent);
+        final String fullFileUri = storeFileToBlob(blobFileName, of(FILE_NAME, fileName),fileContent);
 
         final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
         uploadMaterialService.uploadMaterialWithUri(uploadMaterialContextBuilder
@@ -200,7 +201,7 @@ public class DocumentGeneratorService {
         final String blobFileName = azureBlobConfiguration.getPayloadBlobPrefix() + fileName;
         final byte[] jsonPayloadInBytes = payload.toString().getBytes(StandardCharsets.UTF_8);
 
-        Map<String, String> metadata = of("fileName", fileName,"conversionFormat", conversionFormat.getValue(),"templateName", templateName,"numberOfPages", "1","fileSize", String.valueOf(jsonPayloadInBytes.length));
+        Map<String, String> metadata = of(FILE_NAME, fileName,"conversionFormat", conversionFormat.getValue(),"templateName", templateName,"numberOfPages", "1","fileSize", String.valueOf(jsonPayloadInBytes.length));
 
         final String fullBlobName =  storeFileToBlob(blobFileName, metadata, jsonPayloadInBytes);
         // the generated document goes under the document prefix with the payload's file name
@@ -222,7 +223,7 @@ public class DocumentGeneratorService {
     }
 
     private UUID storeFile(final InputStream fileContent, final String fileName) throws FileServiceException {
-        final JsonObject metadata = createObjectBuilder().add("fileName", fileName).build();
+        final JsonObject metadata = createObjectBuilder().add(FILE_NAME, fileName).build();
         return fileStorer.store(metadata, fileContent);
     }
 
