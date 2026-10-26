@@ -5,6 +5,9 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static uk.gov.moj.cpp.domains.constant.RegisterStatus.NOTIFIED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
 import uk.gov.justice.services.test.utils.persistence.BaseTransactionalJunit4Test;
@@ -110,6 +113,47 @@ public class InformantRegisterRepositoryTest extends BaseTransactionalJunit4Test
                 informantRegisterRepository.findByProsecutionAuthorityOuCodeAndRegisterDateRange(PROSECUTION_AUTHORITY_OU_CODE, startDate.minusDays(2).toLocalDate(), startDate.minusDays(1).toLocalDate());
         assertThat(informantRegisterEntitiesNoResultsOutsideDateRange, hasSize(0));
 
+    }
+
+    @Test
+    public void shouldSaveAndReadBackFileIdAndFileUri() {
+        final UUID fileId = randomUUID();
+        final String fileUri = "https://account.blob.core.windows.net/results/informant-register/" + fileId + ".csv";
+        final InformantRegisterEntity notified = createInformantRegister(REGISTER_TIME_1);
+        notified.setStatus(NOTIFIED);
+        notified.setFileId(fileId);
+        notified.setFileUri(fileUri);
+        informantRegisterRepository.save(notified);
+
+        final InformantRegisterEntity found = informantRegisterRepository.findBy(notified.getId());
+
+        assertThat(found.getFileId(), is(fileId));
+        assertThat(found.getFileUri(), is(fileUri));
+    }
+
+    @Test
+    public void shouldLeaveFileUriNullWhenNotSet() {
+        final InformantRegisterEntity notified = createInformantRegister(REGISTER_TIME_1);
+        notified.setFileId(randomUUID());
+        informantRegisterRepository.save(notified);
+
+        assertThat(informantRegisterRepository.findBy(notified.getId()).getFileUri(), is(nullValue()));
+    }
+
+    @Test
+    public void shouldFindInformantRegistersByFileUri() {
+        final UUID fileId = randomUUID();
+        final String fileUri = "https://account.blob.core.windows.net/results/informant-register/" + fileId + ".csv";
+        final InformantRegisterEntity notified = createInformantRegister(REGISTER_TIME_1);
+        notified.setFileId(fileId);
+        notified.setFileUri(fileUri);
+        informantRegisterRepository.save(notified);
+
+        final List<InformantRegisterEntity> found = informantRegisterRepository.findByFileUri(fileUri);
+
+        assertThat(found, hasSize(1));
+        assertThat(found.get(0).getFileId(), is(fileId));
+        assertThat(informantRegisterRepository.findByFileUri(fileUri + ".unknown"), hasSize(0));
     }
 
     private InformantRegisterEntity createInformantRegister(final ZonedDateTime registerTime) {
