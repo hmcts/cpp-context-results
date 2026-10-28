@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 
 import static uk.gov.justice.results.courts.NotifyInformantRegister.notifyInformantRegister;
 import static uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest.informantRegisterDocumentRequest;
@@ -81,6 +82,78 @@ public class ProsecutionAuthorityAggregateTest {
         final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
         assertThat(eventStream.size(), is(1));
         assertThat(eventStream.get(0).getClass(), is(equalTo(InformantRegisterNotifiedV2.class)));
+    }
+
+    @Test
+    public void notifyProsecutingAuthority_withFileUriAndNoFileId_shouldRaiseNotificationIgnoredCarryingFileUri() {
+        final String fileUri = "https://blob.example/informant-register/register.csv";
+        final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
+        final NotifyInformantRegister notifyInformantRegister = notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("template Id")
+                .withFileUri(fileUri)
+                .build();
+
+        aggregate.setInformantRegisterRecipients(singletonList(recipient));
+        final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
+
+        assertThat(eventStream, hasSize(1));
+        assertThat(eventStream.get(0).getClass(), is(equalTo(InformantRegisterNotificationIgnored.class)));
+        final InformantRegisterNotificationIgnored ignored = (InformantRegisterNotificationIgnored) eventStream.get(0);
+        assertThat(ignored.getFileUri(), is(fileUri));
+        assertThat(ignored.getFileId(), is(nullValue()));
+    }
+
+    @Test
+    public void notifyProsecutingAuthority_withFileIdAndFileUri_shouldRaiseNotifiedV2CarryingBoth() {
+        final UUID fileId = randomUUID();
+        final String fileUri = "https://blob.example/informant-register/register.csv";
+        final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
+        final NotifyInformantRegister notifyInformantRegister = notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("template Id")
+                .withFileId(fileId)
+                .withFileUri(fileUri)
+                .build();
+
+        aggregate.setInformantRegisterRecipients(singletonList(recipient));
+        final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
+
+        assertThat(eventStream, hasSize(1));
+        final InformantRegisterNotifiedV2 notified = (InformantRegisterNotifiedV2) eventStream.get(0);
+        assertThat(notified.getFileId(), is(fileId));
+        assertThat(notified.getFileUri(), is(fileUri));
+    }
+
+    @Test
+    public void notifyProsecutingAuthority_withNeitherFileIdNorFileUri_shouldRaiseNotificationIgnored() {
+        final InformantRegisterRecipient recipient = informantRegisterRecipient().withRecipientName("John").build();
+        final NotifyInformantRegister notifyInformantRegister = notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("template Id")
+                .build();
+
+        aggregate.setInformantRegisterRecipients(singletonList(recipient));
+        final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
+
+        assertThat(eventStream, hasSize(1));
+        assertThat(eventStream.get(0).getClass(), is(equalTo(InformantRegisterNotificationIgnored.class)));
+    }
+
+    @Test
+    public void notifyProsecutingAuthority_withoutRecipients_shouldRaiseNotificationIgnoredCarryingFileUri() {
+        final String fileUri = "https://blob.example/informant-register/register.csv";
+        final NotifyInformantRegister notifyInformantRegister = notifyInformantRegister()
+                .withProsecutionAuthorityId(randomUUID())
+                .withTemplateId("template Id")
+                .withFileUri(fileUri)
+                .build();
+
+        final List<Object> eventStream = aggregate.notifyProsecutingAuthority(notifyInformantRegister).collect(toList());
+
+        assertThat(eventStream, hasSize(1));
+        final InformantRegisterNotificationIgnored ignored = (InformantRegisterNotificationIgnored) eventStream.get(0);
+        assertThat(ignored.getFileUri(), is(fileUri));
     }
 
     @Test

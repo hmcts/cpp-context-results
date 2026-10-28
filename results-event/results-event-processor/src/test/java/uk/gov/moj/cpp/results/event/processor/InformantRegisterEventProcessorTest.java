@@ -14,6 +14,7 @@ import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
@@ -284,6 +285,27 @@ public class InformantRegisterEventProcessorTest {
         assertThat(notificationJson.getValue().getString("templateId"), is(TEMPLATE_ID));
         assertThat(notificationJson.getValue().getString("sendToAddress"), is(emailAddress1));
         assertThat(notificationJson.getValue().getString("fileId"), is(fileId.toString()));
+    }
+
+    @Test
+    public void notifyProsecutionAuthorityV2_whenOnlyFileUri_shouldNotSendEmail() {
+        final JsonArrayBuilder recipientJsonArray = createArrayBuilder();
+        recipientJsonArray.add(createObjectBuilder()
+                .add("recipientName", "Prosecutor_name")
+                .add("emailTemplateName", "some template")
+                .add("emailAddress1", "abc@test.com").build());
+        final JsonObject notificationObject = createObjectBuilder()
+                .add("recipients", recipientJsonArray)
+                .add("fileUri", "https://blob.example/informant-register/register.csv")
+                .add("templateId", TEMPLATE_ID)
+                .build();
+        final JsonEnvelope requestEnvelope = envelopeFrom(
+                metadataWithRandomUUID("results.event.informant-register-notified-v2").withUserId(randomUUID().toString()),
+                notificationObject);
+
+        informantRegisterEventProcessor.notifyProsecutionAuthorityV2(requestEnvelope);
+
+        verify(notificationNotifyService, never()).sendEmailNotification(any(), any());
     }
 
     private static JsonObject getJsonPayload(final String fileName) {
