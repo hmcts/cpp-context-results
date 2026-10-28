@@ -52,12 +52,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ServiceComponent(EVENT_PROCESSOR)
 public class InformantRegisterEventProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InformantRegisterEventProcessor.class);
     private static final String FIELD_PROSECUTION_AUTHORITY_ID = "prosecutionAuthorityId";
     private static final String FIELD_REGISTER_DATE = "registerDate";
     private static final String FIELD_INFORMANT_REGISTER_DOCUMENT_REQUESTS = "informantRegisterDocumentRequests";
@@ -155,12 +152,6 @@ public class InformantRegisterEventProcessor {
     public void notifyProsecutionAuthority(final JsonEnvelope envelope) {
         final JsonObject payload = envelope.payloadAsJsonObject();
         final JsonString fileId = payload.getJsonString(FILE_ID);
-        // notificationnotify.send-email-notification attaches by fileId only; it has no fileUri yet
-        if (fileId == null) {
-            LOGGER.warn("Informant register for prosecution authority {} has no fileId, email notification not sent",
-                    payload.getString(FIELD_PROSECUTION_AUTHORITY_ID, null));
-            return;
-        }
         final JsonString templateId = payload.getJsonString(FIELD_TEMPLATE_ID);
         final List<JsonObject> recipients = payload.getJsonArray(FIELD_RECIPIENTS).getValuesAs(JsonObject.class);
         if(nonNull(recipients)) {

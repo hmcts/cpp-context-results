@@ -63,12 +63,9 @@ public class ProsecutionAuthorityAggregate implements Aggregate {
 
     public Stream<Object> notifyProsecutingAuthority(final NotifyInformantRegister notifyInformantRegister) {
 
-        // notificationnotify attaches the register by fileId only, so a register held only by fileUri
-        // cannot be emailed yet; ignore it rather than record it as notified
         if (isEmpty(informantRegisterRecipients) || isBlank(notifyInformantRegister.getTemplateId()) || isNull(notifyInformantRegister.getFileId())) {
             return apply(Stream.of(InformantRegisterNotificationIgnored.informantRegisterNotificationIgnored()
                     .withFileId(notifyInformantRegister.getFileId())
-                    .withFileUri(notifyInformantRegister.getFileUri())
                     .withTemplateId(notifyInformantRegister.getTemplateId())
                     .withProsecutionAuthorityId(notifyInformantRegister.getProsecutionAuthorityId()).build()));
         }
@@ -83,7 +80,6 @@ public class ProsecutionAuthorityAggregate implements Aggregate {
                 .collect(Collectors.toList());
         return apply(Stream.of(InformantRegisterNotifiedV2.informantRegisterNotifiedV2().withRecipients(coreRecipients)
                 .withFileId(notifyInformantRegister.getFileId())
-                .withFileUri(notifyInformantRegister.getFileUri())
                 .withTemplateId(notifyInformantRegister.getTemplateId())
                 .withProsecutionAuthorityId(notifyInformantRegister.getProsecutionAuthorityId())
                         .withRegisterDate(notifyInformantRegister.getRegisterDate())
