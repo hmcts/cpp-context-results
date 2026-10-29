@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
-import static java.util.UUID.fromString;
+import static java.util.Objects.nonNull;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.moj.cpp.results.event.helper.Originator.ORIGINATOR_VALUE_NCES;
 import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWithPayloadAndMetaDetails;
@@ -36,6 +36,8 @@ public class SystemDocGeneratorEventProcessor {
     private static final String DOCUMENT_FILE_SERVICE_ID = "documentFileServiceId";
     private static final String SOURCE_CORRELATION_ID = "sourceCorrelationId";
     private static final String PAYLOAD_FILE_SERVICE_ID = "payloadFileServiceId";
+    private static final String DESTINATION_FILE_URI = "destinationFileUri";
+    private static final String PAYLOAD_FILE_URI = "payloadFileUri";
     private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
     private static final String POLICE_NOTIFICATION_HEARING_RESULTS = "POLICE_NOTIFICATION_HEARING_RESULTS";
     private static final String ADDITIONAL_INFORMATION = "additionalInformation";
@@ -86,14 +88,16 @@ public class SystemDocGeneratorEventProcessor {
 
         final String materialId = documentAvailablePayload.getString(SOURCE_CORRELATION_ID);
 
-        final UUID payloadFileId = fromString(documentAvailablePayload.getString(PAYLOAD_FILE_SERVICE_ID));
+        final String payloadFile = documentAvailablePayload.containsKey(PAYLOAD_FILE_URI)
+                ? documentAvailablePayload.getString(PAYLOAD_FILE_URI)
+                : documentAvailablePayload.getString(PAYLOAD_FILE_SERVICE_ID, null);
 
         final String reason = documentAvailablePayload.getString("reason");
 
         if (NCES_EMAIL_NOTIFICATION_REQUEST.equalsIgnoreCase(originatingSource)
                 || POLICE_NOTIFICATION_HEARING_RESULTS.equals(originatingSource)) {
-            LOGGER.error("Asynchronous document generation failed. Failed to generate email notification, originatingSource: '{}', material id: '{}', payloadFileId: '{}', reason: '{}'",
-                    originatingSource, materialId, payloadFileId, reason);
+            LOGGER.error("Asynchronous document generation failed. Failed to generate email notification, originatingSource: '{}', material id: '{}', payloadFile: '{}', reason: '{}'",
+                    originatingSource, materialId, payloadFile, reason);
         }
     }
 
@@ -103,42 +107,23 @@ public class SystemDocGeneratorEventProcessor {
 
         final UUID materialId = UUID.fromString(documentAvailablePayload.getString(SOURCE_CORRELATION_ID));
 
-        final UUID documentFileServiceId = UUID.fromString(documentAvailablePayload.getString(DOCUMENT_FILE_SERVICE_ID));
-
         LOGGER.info("Retrieved Nces Notification Document Available Public event");
 
         final JsonEnvelope jsonEnvelope = assembleEnvelopeWithPayloadAndMetaDetails(
                 documentAvailablePayload, envelope.metadata().name(), envelope.metadata().userId().orElse(null), ORIGINATOR_VALUE_NCES);
 
-        //Uploading the file
-        LOGGER.info("Stored material {} in file store {}", materialId, documentFileServiceId);
-        final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
-        uploadMaterialService.uploadMaterial(uploadMaterialContextBuilder
-                .setSender(sender)
-                .setOriginatingEnvelope(jsonEnvelope)
-                .setMaterialId(materialId)
-                .setFileId(documentFileServiceId)
-                .build(), ORIGINATOR_VALUE_NCES);
+        uploadGeneratedDocument(documentAvailablePayload, jsonEnvelope, materialId);
     }
 
     private void processPoliceNotificationHearingResult(final JsonEnvelope envelope) {
         final JsonObject documentAvailablePayload = envelope.payloadAsJsonObject();
         final UUID materialId = UUID.fromString(documentAvailablePayload.getString(SOURCE_CORRELATION_ID));
-
-        final UUID documentFileServiceId = UUID.fromString(documentAvailablePayload.getString(DOCUMENT_FILE_SERVICE_ID));
         final JsonArray additionalInformation = documentAvailablePayload.getJsonArray(ADDITIONAL_INFORMATION);
 
         final JsonEnvelope jsonEnvelope = assembleEnvelopeWithPayloadAndMetaDetails(
                 documentAvailablePayload, envelope.metadata().name(), envelope.metadata().userId().orElse(null), ORIGINATOR_VALUE_NCES);
 
-        LOGGER.info("Material with ID {} has been stored in the file store with ID {}", materialId, documentFileServiceId);
-        final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
-        uploadMaterialService.uploadMaterial(uploadMaterialContextBuilder
-                .setSender(sender)
-                .setOriginatingEnvelope(jsonEnvelope)
-                .setMaterialId(materialId)
-                .setFileId(documentFileServiceId)
-                .build(), ORIGINATOR_VALUE_NCES);
+        uploadGeneratedDocument(documentAvailablePayload, jsonEnvelope, materialId);
 
         final String url = materialUrlGenerator.fileStreamUrlFor(materialId, true);
         final Map<String, String> personalisationMap = new HashMap<>();
@@ -149,5 +134,31 @@ public class SystemDocGeneratorEventProcessor {
                 personalisationMap, url);
 
         notificationNotifyService.sendEmailNotification(envelope, objectToJsonObjectConverter.convert(notification));
+    }
+
+    /**
+     * The document-available schema's oneOf makes the two addressing modes exclusive: the generated
+     * document is either in the file service (documentFileServiceId) or in the blob store
+     * (destinationFileUri), so material is asked to upload it by whichever reference is present.
+     */
+    private void uploadGeneratedDocument(final JsonObject documentAvailablePayload, final JsonEnvelope jsonEnvelope, final UUID materialId) {
+        final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder()
+                .setSender(sender)
+                .setOriginatingEnvelope(jsonEnvelope)
+                .setMaterialId(materialId);
+
+        final String destinationFileUri = documentAvailablePayload.getString(DESTINATION_FILE_URI, null);
+        if (nonNull(destinationFileUri)) {
+            LOGGER.info("Material is uploaded with ID {}, with URI {}", materialId, destinationFileUri);
+            uploadMaterialService.uploadMaterialWithUri(uploadMaterialContextBuilder
+                    .setFileUri(destinationFileUri)
+                    .build(), ORIGINATOR_VALUE_NCES);
+        } else {
+            final UUID documentFileServiceId = UUID.fromString(documentAvailablePayload.getString(DOCUMENT_FILE_SERVICE_ID));
+            LOGGER.info("Material with ID {} has been stored in the file store with ID {}", materialId, documentFileServiceId);
+            uploadMaterialService.uploadMaterial(uploadMaterialContextBuilder
+                    .setFileId(documentFileServiceId)
+                    .build(), ORIGINATOR_VALUE_NCES);
+        }
     }
 }
