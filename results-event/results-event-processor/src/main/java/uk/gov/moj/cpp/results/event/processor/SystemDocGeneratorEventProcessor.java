@@ -88,8 +88,9 @@ public class SystemDocGeneratorEventProcessor {
 
         final String materialId = documentAvailablePayload.getString(SOURCE_CORRELATION_ID);
 
-        final String payloadFile = documentAvailablePayload.getString(PAYLOAD_FILE_SERVICE_ID,
-                documentAvailablePayload.getString(PAYLOAD_FILE_URI, null));
+        final String payloadFile = documentAvailablePayload.containsKey(PAYLOAD_FILE_URI)
+                ? documentAvailablePayload.getString(PAYLOAD_FILE_URI)
+                : documentAvailablePayload.getString(PAYLOAD_FILE_SERVICE_ID, null);
 
         final String reason = documentAvailablePayload.getString("reason");
 
@@ -148,7 +149,7 @@ public class SystemDocGeneratorEventProcessor {
 
         final String destinationFileUri = documentAvailablePayload.getString(DESTINATION_FILE_URI, null);
         if (nonNull(destinationFileUri)) {
-            LOGGER.info("Material with ID {} has been stored in the blob store with URI {}", materialId, destinationFileUri);
+            LOGGER.info("Material is uploaded with ID {}, with URI {}", materialId, destinationFileUri);
             uploadMaterialService.uploadMaterialWithUri(uploadMaterialContextBuilder
                     .setFileUri(destinationFileUri)
                     .build(), ORIGINATOR_VALUE_NCES);
