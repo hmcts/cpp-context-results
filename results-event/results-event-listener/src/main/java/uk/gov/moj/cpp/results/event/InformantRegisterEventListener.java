@@ -156,7 +156,7 @@ public class InformantRegisterEventListener {
         final JsonObject payload = event.payloadAsJsonObject();
         final InformantRegisterNotified informantRegisterNotified = jsonObjectToObjectConverter.convert(payload, InformantRegisterNotified.class);
         final List<InformantRegisterEntity> informantRegisters = informantRegisterRepository.findByProsecutionAuthorityIdAndStatusGenerated(informantRegisterNotified.getProsecutionAuthorityId());
-        markInformantRegistersNotified(informantRegisters, informantRegisterNotified.getFileId(), informantRegisterNotified.getFileUri());
+        markInformantRegistersNotified(informantRegisters, informantRegisterNotified.getFileId());
     }
 
     @Handles("results.event.informant-register-notified-v2")
@@ -164,14 +164,13 @@ public class InformantRegisterEventListener {
         final JsonObject payload = event.payloadAsJsonObject();
         final InformantRegisterNotifiedV2 informantRegisterNotified = jsonObjectToObjectConverter.convert(payload, InformantRegisterNotifiedV2.class);
         final List<InformantRegisterEntity> informantRegisters = informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated(informantRegisterNotified.getProsecutionAuthorityId(), informantRegisterNotified.getRegisterDate());
-        markInformantRegistersNotified(informantRegisters, informantRegisterNotified.getFileId(), informantRegisterNotified.getFileUri());
+        markInformantRegistersNotified(informantRegisters, informantRegisterNotified.getFileId());
     }
 
-    private void markInformantRegistersNotified(final List<InformantRegisterEntity> informantRegisters, final UUID fileId, final String fileUri) {
+    private void markInformantRegistersNotified(final List<InformantRegisterEntity> informantRegisters, final UUID fileId) {
         informantRegisters.forEach(informantRegisterEntity -> {
                     informantRegisterEntity.setStatus(NOTIFIED);
                     informantRegisterEntity.setFileId(fileId);
-                    informantRegisterEntity.setFileUri(fileUri);
                     informantRegisterEntity.setProcessedOn(now());
                 }
         );

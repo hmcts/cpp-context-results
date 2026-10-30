@@ -14,9 +14,6 @@
     "fileId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
-    "fileUri": {
-      "type": "string"
-    },
     "prosecutionAuthorityId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },
