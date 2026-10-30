@@ -20,12 +20,13 @@ public class InformantRegisterApi {
     @Inject
     private Sender sender;
 
+    // informant register flow will be decommissioned soon.
     @Handles("results.add-informant-register")
     public void handleAddInformantRegister(final JsonEnvelope command) {
         this.sender.send(envelopeFrom(metadataFrom(command.metadata()).withName("results.command.add-informant-register").build(),
                 command.payloadAsJsonObject()));
     }
-
+    // informant register flow will be decommissioned soon.
     @Handles("results.generate-informant-register")
     public void handleGenerateInformantRegister(final JsonEnvelope envelope) {
         final JsonObject payload = envelope.payloadAsJsonObject();
@@ -33,7 +34,7 @@ public class InformantRegisterApi {
         this.sender.send(envelopeFrom(metadataFrom(envelope.metadata()).withName("results.command.generate-informant-register").build(),
                 wrappedPayload));
     }
-
+    // informant register floe will be decommissioned soon.
     @Handles("results.generate-informant-register-by-date")
     public void handleGenerateInformantRegisterByDate(final JsonEnvelope envelope) {
         this.sender.send(envelopeFrom(metadataFrom(envelope.metadata()).withName("results.command.generate-informant-register-by-date").build(),
