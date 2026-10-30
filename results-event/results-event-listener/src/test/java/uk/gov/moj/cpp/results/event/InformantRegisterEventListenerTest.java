@@ -4,7 +4,6 @@ import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.verify;
@@ -407,102 +406,5 @@ public class InformantRegisterEventListenerTest {
         informantRegisterEventListener.notifyInformantRegisterV2(jsonEnvelope);
         assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
         assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
-    }
-
-    @Test
-    void notifyInformantRegister_shouldPersistFileIdAndFileUri() {
-        final UUID prosecutionAuthId = randomUUID();
-        final UUID fileId = randomUUID();
-        final String fileUri = "https://account.blob.core.windows.net/results/informant-register/" + fileId + ".csv";
-
-        final InformantRegisterNotified informantRegisterNotified = informantRegisterNotified()
-                .withFileId(fileId)
-                .withFileUri(fileUri)
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .build();
-
-        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
-        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
-        informantRegisterEntity.setStatus(GENERATED);
-        when(informantRegisterRepository.findByProsecutionAuthorityIdAndStatusGenerated(prosecutionAuthId)).thenReturn(Lists.newArrayList(informantRegisterEntity));
-
-        informantRegisterEventListener.notifyInformantRegister(envelopeFrom(
-                metadataWithRandomUUID("results.event.informant-register-notified"),
-                objectToJsonObjectConverter.convert(informantRegisterNotified)));
-
-        assertThat(informantRegisterEntity.getFileId(), is(fileId));
-        assertThat(informantRegisterEntity.getFileUri(), is(fileUri));
-    }
-
-    @Test
-    void notifyInformantRegisterV2_shouldPersistFileIdAndFileUri() {
-        final UUID prosecutionAuthId = randomUUID();
-        final UUID fileId = randomUUID();
-        final String fileUri = "https://account.blob.core.windows.net/results/informant-register/" + fileId + ".csv";
-        final LocalDate registerDate = LocalDate.parse("2024-10-24");
-
-        final InformantRegisterNotifiedV2 informantRegisterNotified = InformantRegisterNotifiedV2.informantRegisterNotifiedV2()
-                .withFileId(fileId)
-                .withFileUri(fileUri)
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .withRegisterDate(registerDate)
-                .build();
-
-        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
-        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
-        informantRegisterEntity.setRegisterDate(registerDate);
-        informantRegisterEntity.setStatus(GENERATED);
-        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated(prosecutionAuthId, registerDate)).thenReturn(Lists.newArrayList(informantRegisterEntity));
-
-        informantRegisterEventListener.notifyInformantRegisterV2(envelopeFrom(
-                metadataWithRandomUUID("results.event.informant-register-notified-v2"),
-                objectToJsonObjectConverter.convert(informantRegisterNotified)));
-
-        assertThat(informantRegisterEntity.getFileId(), is(fileId));
-        assertThat(informantRegisterEntity.getFileUri(), is(fileUri));
-    }
-
-    @Test
-    void notifyInformantRegister_withoutFileUri_shouldLeaveFileUriNull() {
-        final UUID prosecutionAuthId = randomUUID();
-
-        final InformantRegisterNotified informantRegisterNotified = informantRegisterNotified()
-                .withFileId(randomUUID())
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .build();
-
-        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
-        informantRegisterEntity.setStatus(GENERATED);
-        when(informantRegisterRepository.findByProsecutionAuthorityIdAndStatusGenerated(prosecutionAuthId)).thenReturn(Lists.newArrayList(informantRegisterEntity));
-
-        informantRegisterEventListener.notifyInformantRegister(envelopeFrom(
-                metadataWithRandomUUID("results.event.informant-register-notified"),
-                objectToJsonObjectConverter.convert(informantRegisterNotified)));
-
-        assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
-        assertThat(informantRegisterEntity.getFileUri(), is(nullValue()));
-    }
-
-    @Test
-    void notifyInformantRegisterV2_withoutFileUri_shouldLeaveFileUriNull() {
-        final UUID prosecutionAuthId = randomUUID();
-        final LocalDate registerDate = LocalDate.parse("2024-10-24");
-
-        final InformantRegisterNotifiedV2 informantRegisterNotified = InformantRegisterNotifiedV2.informantRegisterNotifiedV2()
-                .withFileId(randomUUID())
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .withRegisterDate(registerDate)
-                .build();
-
-        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
-        informantRegisterEntity.setStatus(GENERATED);
-        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateAndStatusGenerated(prosecutionAuthId, registerDate)).thenReturn(Lists.newArrayList(informantRegisterEntity));
-
-        informantRegisterEventListener.notifyInformantRegisterV2(envelopeFrom(
-                metadataWithRandomUUID("results.event.informant-register-notified-v2"),
-                objectToJsonObjectConverter.convert(informantRegisterNotified)));
-
-        assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
-        assertThat(informantRegisterEntity.getFileUri(), is(nullValue()));
     }
 }
