@@ -1,6 +1,7 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.util.UUID.randomUUID;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -129,5 +130,14 @@ public class ReferenceDataServiceTest {
         });
     }
 
+    @Test
+    public void chd07_responseWithoutProsecutorsKey_should_fail_not_return_empty() {
+        when(requester.requestAsAdmin(any(JsonEnvelope.class), any())).thenAnswer(invocationOnMock -> {
+            final JsonEnvelope envelope = (JsonEnvelope) invocationOnMock.getArguments()[0];
+            return envelopeFrom(envelope.metadata(), createObjectBuilder().build());
+        });
 
+        assertThrows(NullPointerException.class,
+                () -> referenceDataService.getSpiOutFlagForProsecutionAuthorityCode("someCode"));
+    }
 }

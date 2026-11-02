@@ -23,4 +23,22 @@
         </properties>
     </persistence-unit>
 
+    <!-- Same as production: no hibernate.jdbc.time_zone, and a hand-made zoneless table instead of hbm2ddl. -->
+    <persistence-unit name="results-test-production-timezone-unit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jar-file>../classes</jar-file>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:h2:mem:resultsproductiontimezone;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.hbm2ddl.auto" value="none"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.jpa.compliance.query" value="false"/>
+        </properties>
+    </persistence-unit>
+
 </persistence>

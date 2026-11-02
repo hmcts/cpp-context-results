@@ -39,7 +39,10 @@ import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.io.StringReader;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import jakarta.json.JsonObject;
@@ -407,5 +410,42 @@ public class InformantRegisterEventListenerTest {
         informantRegisterEventListener.notifyInformantRegisterV2(jsonEnvelope);
         assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
         assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
+    }
+
+    @Test
+    public void chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone() {
+        final ZoneId zoneOnDifferentDateToUtc = zoneOnDifferentDateToUtc();
+        final TimeZone originalZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone(zoneOnDifferentDateToUtc));
+        try {
+            final InformantRegisterEntity informantRegisterEntity = generateSystemRegister();
+
+            assertThat(informantRegisterEntity.getGeneratedDate(), is(LocalDate.now(zoneOnDifferentDateToUtc)));
+        } finally {
+            TimeZone.setDefault(originalZone);
+        }
+    }
+
+    private InformantRegisterEntity generateSystemRegister() {
+        final UUID prosecutionAuthId = randomUUID();
+        final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
+        final InformantRegisterDocumentRequest documentRequest = informantRegisterDocumentRequest()
+                .withProsecutionAuthorityId(prosecutionAuthId)
+                .withRegisterDate(registerDate)
+                .withHearingVenue(informantRegisterHearingVenue().build())
+                .build();
+        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
+        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
+        informantRegisterEntity.setStatus(RECORDED);
+        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthId, registerDate.toLocalDate()))
+                .thenReturn(singletonList(informantRegisterEntity));
+
+        informantRegisterEventListener.generateInformantRegister(envelopeFrom(metadataWithRandomUUID("results.event.informant-register-generated"),
+                objectToJsonObjectConverter.convert(new InformantRegisterGenerated(singletonList(documentRequest), randomUUID(), true))));
+        return informantRegisterEntity;
+    }
+
+    private ZoneId zoneOnDifferentDateToUtc() {
+        return ZonedDateTime.now(ZoneOffset.UTC).getHour() >= 12 ? ZoneId.of("Pacific/Kiritimati") : ZoneId.of("Pacific/Pago_Pago");
     }
 }

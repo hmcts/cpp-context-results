@@ -4,7 +4,10 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
@@ -80,5 +83,21 @@ public class NcesEmailNotificationDetailsRepositoryTest {
         ncesEmailNotificationDetailsEntity.setSubject("subject");
         ncesEmailNotificationDetailsEntity.setSendTo("mail@email.com");
         return ncesEmailNotificationDetailsEntity;
+    }
+
+    @Test
+    public void chd06_findByMaterialId_noMatch_should_throw_NoResultException() {
+        assertThrows(NoResultException.class,
+                () -> ncesEmailNotificationDetailsRepository.findByMaterialId(randomUUID()));
+    }
+
+    @Test
+    public void chd06_findByMaterialId_twoRowsForMaterial_should_throw_NonUniqueResultException() {
+        final NcesEmailNotificationDetailsEntity duplicate = createNcesEmailNotificationDetailsEntity();
+        duplicate.setMaterialId(ncesEmailNotificationDetails.getMaterialId());
+        ncesEmailNotificationDetailsRepository.save(duplicate);
+
+        assertThrows(NonUniqueResultException.class,
+                () -> ncesEmailNotificationDetailsRepository.findByMaterialId(ncesEmailNotificationDetails.getMaterialId()));
     }
 }

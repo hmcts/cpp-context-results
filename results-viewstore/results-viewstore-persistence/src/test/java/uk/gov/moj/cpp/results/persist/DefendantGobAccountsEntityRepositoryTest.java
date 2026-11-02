@@ -3,17 +3,26 @@ package uk.gov.moj.cpp.results.persist;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Persistence;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -220,5 +229,69 @@ public class DefendantGobAccountsEntityRepositoryTest {
             builder.add(str);
         }
         return builder.build();
+    }
+
+    @Test
+    public void chd05_findAccountNumber_noMatch_should_throw_NoResultException() {
+        assertThrows(NoResultException.class,
+                () -> defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(randomUUID(), randomUUID()));
+    }
+
+    @Test
+    public void chd03_zonedDateTime_should_be_stored_as_jvm_local_wall_clock_in_zoneless_column() {
+        inZonelessTableOnLondonJvm(entityManager -> {
+            final DefendantGobAccountsEntity entity = createdHearingFinancialDetailsEntity(randomUUID());
+            entity.setAccountRequestTime(ZonedDateTime.parse("2026-07-01T10:00:00Z"));
+            entityManager.merge(entity);
+            entityManager.flush();
+
+            final Object stored = entityManager.createNativeQuery(
+                    "select cast(account_request_time as varchar(40)) from defendant_gob_accounts").getSingleResult();
+
+            assertThat(stored.toString(), startsWith("2026-07-01 11:00:00"));
+        });
+    }
+
+    @Test
+    public void chd03_existingRowWrittenAsLocalWallClock_should_read_back_as_the_same_instant() {
+        inZonelessTableOnLondonJvm(entityManager -> {
+            final DefendantGobAccountsEntity written = createdHearingFinancialDetailsEntity(randomUUID());
+            entityManager.createNativeQuery("insert into defendant_gob_accounts (master_defendant_id, account_correlation_id, hearing_id, case_references, "
+                            + "account_request_time, created_time, updated_time) values (:masterDefendantId, :accountCorrelationId, :hearingId, '[]', "
+                            + "timestamp '2026-07-01 11:00:00', timestamp '2026-07-01 11:00:00', timestamp '2026-07-01 11:00:00')")
+                    .setParameter("masterDefendantId", written.getMasterDefendantId())
+                    .setParameter("accountCorrelationId", written.getAccountCorrelationId())
+                    .setParameter("hearingId", written.getHearingId())
+                    .executeUpdate();
+
+            final DefendantGobAccountsEntity read = entityManager.find(DefendantGobAccountsEntity.class, written.getId());
+
+            assertThat(read.getAccountRequestTime().toInstant(), is(Instant.parse("2026-07-01T10:00:00Z")));
+        });
+    }
+
+    /**
+     * Mirrors production, which the shared unit hides: a Liquibase-style TIMESTAMP column with no zone
+     * (changeset 028), no hibernate.jdbc.time_zone, and a JVM on UK time.
+     */
+    private void inZonelessTableOnLondonJvm(final Consumer<EntityManager> test) {
+        final TimeZone originalZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("results-test-production-timezone-unit");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.createNativeQuery("drop table if exists defendant_gob_accounts").executeUpdate();
+            entityManager.createNativeQuery("create table defendant_gob_accounts (master_defendant_id uuid not null, "
+                    + "account_correlation_id uuid not null, hearing_id uuid not null, account_number varchar(255), "
+                    + "case_references varchar(4000) not null, account_request_time timestamp, created_time timestamp not null, "
+                    + "updated_time timestamp not null, primary key (master_defendant_id, account_correlation_id))").executeUpdate();
+            test.accept(entityManager);
+        } finally {
+            entityManager.getTransaction().rollback();
+            entityManager.close();
+            entityManagerFactory.close();
+            TimeZone.setDefault(originalZone);
+        }
     }
 }

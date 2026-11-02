@@ -8,6 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.hearing.courts.HearingFinancialResultRequest.hearingFinancialResultRequest;
 import static uk.gov.justice.hearing.courts.OffenceResults.offenceResults;
 import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResultsDetails;
+import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.buildApplicationResultsDetailsFromOffenceResults;
 import static uk.gov.moj.cpp.results.domain.aggregate.NCESDecisionHelper.previousUpdateNotificationSent;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.REOPEN;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.STAT_DEC;
@@ -18,8 +19,10 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.I
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -199,4 +202,17 @@ public class NCESDecisionHelperTest {
         assertThat(adjourned, is(false));
     }
 
+    @Test
+    public void chd08_applicationResultsCreatedTime_should_be_in_jvm_zone() {
+        final TimeZone originalZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Pacific/Kiritimati"));
+        try {
+            final List<OffenceResultsDetails> results =
+                    buildApplicationResultsDetailsFromOffenceResults(List.of(offenceResults().build()));
+
+            assertThat(results.get(0).getCreatedTime().getZone(), is(ZoneId.of("Pacific/Kiritimati")));
+        } finally {
+            TimeZone.setDefault(originalZone);
+        }
+    }
 }

@@ -3,8 +3,10 @@ package uk.gov.moj.cpp.results.persist;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.STRING;
 
+import jakarta.persistence.NoResultException;
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocumentKey;
@@ -117,5 +119,14 @@ public class HearingResultedDocumentRepositoryTest {
         document.setEndDate(LocalDate.of(2018, 12, 10));
         document.setPayload(STRING.next());
         hearingResultedDocumentRepository.save(document);
+    }
+
+    @Test
+    public void chd01_findByHearingIdAndHearingDay_noDocumentForThatDay_should_throw_NoResultException() {
+        final UUID hearingId = randomUUID();
+        persistDocument(hearingId, LocalDate.of(2018, 12, 5));
+
+        assertThrows(NoResultException.class,
+                () -> hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, LocalDate.of(2018, 12, 6)));
     }
 }
