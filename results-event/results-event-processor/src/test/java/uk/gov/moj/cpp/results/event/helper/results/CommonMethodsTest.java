@@ -31,7 +31,7 @@ import uk.gov.justice.core.courts.ProsecutionCaseIdentifier;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,7 +73,7 @@ class CommonMethodsTest {
         attendanceDays.add(AttendanceDay.attendanceDay().withAttendanceType(AttendanceType.NOT_PRESENT).withDay(LocalDate.of(2019, 02, 02)).build());
 
         final Hearing hearing = hearing().withHearingDays(Collections.singletonList(hearingDay()
-                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
+                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneOffset.UTC))
                 .withListedDurationMinutes(100)
                 .withListingSequence(10)
                 .build())).build();
@@ -312,7 +312,7 @@ class CommonMethodsTest {
         attendanceDays.add(AttendanceDay.attendanceDay().withAttendanceType(AttendanceType.NOT_PRESENT).withDay(LocalDate.of(2019, 02, 02)).build());
 
         final Hearing hearing = hearing().withHearingDays(Collections.singletonList(hearingDay()
-                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
+                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneOffset.UTC))
                 .withListedDurationMinutes(100)
                 .withListingSequence(10)
                 .build())).build();
@@ -356,17 +356,17 @@ class CommonMethodsTest {
     private Hearing buildHearing() {
         return hearing().withHearingDays(asList(
                 hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
+                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 1, 1), ZoneOffset.UTC))
                         .withListedDurationMinutes(100)
                         .withListingSequence(10)
                         .build(),
                 hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
+                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneOffset.UTC))
                         .withListedDurationMinutes(100)
                         .withListingSequence(10)
                         .build(),
                 hearingDay()
-                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
+                        .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneOffset.UTC))
                         .withListedDurationMinutes(100)
                         .withListingSequence(10)
                         .build())).build();
@@ -379,17 +379,17 @@ class CommonMethodsTest {
 
                 .withHearingDays(asList(
                         hearingDay()
-                                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
+                                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 4), LocalTime.of(12, 1, 1), ZoneOffset.UTC))
                                 .withListedDurationMinutes(100)
                                 .withListingSequence(10)
                                 .build(),
                         hearingDay()
-                                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneId.systemDefault()))
+                                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 5, 2), LocalTime.of(12, 1, 1), ZoneOffset.UTC))
                                 .withListedDurationMinutes(100)
                                 .withListingSequence(10)
                                 .build(),
                         hearingDay()
-                                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
+                                .withSittingDay(ZonedDateTime.of(LocalDate.of(2018, 6, 1), LocalTime.of(12, 3, 10), ZoneOffset.UTC))
                                 .withListedDurationMinutes(100)
                                 .withListingSequence(10)
                                 .build())).build();

@@ -4,7 +4,6 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static com.jayway.jsonpath.matchers.JsonPathMatchers.withoutJsonPath;
 import static java.lang.String.format;
 import static java.time.ZoneOffset.UTC;
-import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
@@ -33,6 +32,7 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQ
 import static uk.gov.moj.cpp.results.test.TestTemplates.basicShareResultsTemplateWithAppealFlag;
 
 import uk.gov.justice.core.courts.JurisdictionType;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.core.matchers.ResponsePayloadMatcher;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub;
@@ -61,8 +61,8 @@ public class ProsecutorResultsIT {
         final UUID prosecutionAuthorityId = randomUUID();
         final String prosecutionAuthorityOuCode = randomAlphanumeric(7);
         final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime registerDate = new UtcClock().now();
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
         final String prosecutionAuthorityCode = STRING.next();
 
         for (int i = 0; i < 5; i++) {
@@ -82,7 +82,7 @@ public class ProsecutorResultsIT {
                 withJsonPath("$.hearingVenues", hasSize(5)))
         );
 
-        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.toLocalDate().toString(), null, javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCode);
+        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.toLocalDate().toString(), null, jakarta.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCode);
 
         final ResponsePayloadMatcher responsePayloadMatcherForValidOuCodeWithDateRange = payload().isJson(allOf(
                 withJsonPath("$.prosecutionAuthorityId", is(prosecutionAuthorityId.toString())),
@@ -92,7 +92,7 @@ public class ProsecutorResultsIT {
                 withJsonPath("$.hearingVenues", hasSize(10)))
         );
 
-        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.minusDays(1).toLocalDate().toString(), registerDate.toLocalDate().toString(), javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCodeWithDateRange);
+        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.minusDays(1).toLocalDate().toString(), registerDate.toLocalDate().toString(), jakarta.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCodeWithDateRange);
 
 
         final ResponsePayloadMatcher responsePayloadMatcherForUnknownOuCode = payload().isJson(allOf(
@@ -102,7 +102,7 @@ public class ProsecutorResultsIT {
                 withoutJsonPath("$.endDate"),
                 withJsonPath("$.hearingVenues", hasSize(0)))
         );
-        validateProsecutorResults(randomAlphanumeric(7), registerDate.toLocalDate().toString(), null, javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForUnknownOuCode);
+        validateProsecutorResults(randomAlphanumeric(7), registerDate.toLocalDate().toString(), null, jakarta.ws.rs.core.Response.Status.OK, responsePayloadMatcherForUnknownOuCode);
 
     }
 
@@ -125,7 +125,7 @@ public class ProsecutorResultsIT {
         verifyAppealUpdateEmail(NOTIFICATION_NOTIFY_ENDPOINT);
     }
 
-    private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final javax.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {
+    private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final jakarta.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {
         final String url = BASE_URI + format("/results-query-api/query/api/rest/results/prosecutor/%s?startDate=%s%s", ouCode, startDate, Objects.nonNull(endDate) ? "&endDate=" + endDate : "");
 
         pollWithDefaults(requestParams(url, "application/vnd.results.prosecutor-results+json")

@@ -8,14 +8,14 @@ import uk.gov.justice.services.messaging.Metadata;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.jms.Topic;
-import javax.json.JsonObject;
+import jakarta.jms.Connection;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
+import jakarta.jms.Topic;
+import jakarta.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
@@ -40,7 +40,7 @@ public class QueueUtil {
 
     private final String topicName;
 
-    private Connection connection;
+    private static Connection connection;
 
     public static final QueueUtil publicEvents = new QueueUtil("jms.topic.public.event");
 
@@ -52,24 +52,65 @@ public class QueueUtil {
     }
 
     private void initialize(final String topicName) {
+        if (connection == null || !isAlive(connection)) {
+            connect();
+        }
+        topic = new ActiveMQTopic(topicName);
+    }
+
+    /**
+     * (Re)creates the single shared connection + session used by all QueueUtil instances. Artemis 2.54 is more
+     * aggressive about closing idle client connections, and a long-running test class (e.g. StagingEnforcementIT
+     * ~16m) previously left the shared session closed for the following classes ("AMQ219019: Session is closed" /
+     * a 30s "AMQ219014: Timed out" hang on the half-open connection). We disable the broker idle timeout
+     * (connectionTTL -1), keep the client failure-check keepalive at its default, and shorten the call timeout so
+     * a genuinely dead connection fails fast enough to reconnect-and-retry within a test's polling window.
+     */
+    private static synchronized void connect() {
+        closeQuietly();
         try {
             LOGGER.info("Artemis URI: {}", QUEUE_URI);
             final ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(QUEUE_URI);
+            factory.setConnectionTTL(-1);
+            factory.setCallTimeout(15000);
             connection = factory.createConnection();
             connection.start();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            topic = new ActiveMQTopic(topicName);
         } catch (final JMSException e) {
             LOGGER.error("Fatal error initialising Artemis", e);
             throw new RuntimeException(e);
         }
     }
 
+    private static synchronized void closeQuietly() {
+        try {
+            if (session != null) {
+                session.close();
+            }
+        } catch (final Exception ignored) {
+            // best-effort cleanup before reconnect
+        }
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (final Exception ignored) {
+            // best-effort cleanup before reconnect
+        }
+        session = null;
+        connection = null;
+    }
+
     public MessageConsumer createConsumer(final String eventSelector) {
         try {
             return session.createConsumer(topic, String.format(EVENT_SELECTOR_TEMPLATE, eventSelector));
         } catch (final JMSException e) {
-            throw new RuntimeException(e);
+            connect();
+            try {
+                return session.createConsumer(topic, String.format(EVENT_SELECTOR_TEMPLATE, eventSelector));
+            } catch (final JMSException retryEx) {
+                throw new RuntimeException(retryEx);
+            }
         }
     }
 
@@ -77,7 +118,12 @@ public class QueueUtil {
         try {
             return session.createProducer(topic);
         } catch (final JMSException e) {
-            throw new RuntimeException(e);
+            connect();
+            try {
+                return session.createProducer(topic);
+            } catch (final JMSException retryEx) {
+                throw new RuntimeException(retryEx);
+            }
         }
     }
 
@@ -133,12 +179,16 @@ public class QueueUtil {
 
     public MessageProducer createPublicProducer() {
         try {
-            if (!isAlive(this.connection)) {
-                initialize("public.event");
-            }
             return session.createProducer(topic);
         } catch (final JMSException e) {
-            throw new RuntimeException(e);
+            // Connection/session dropped (isAlive() can false-positive on an Artemis-closed connection);
+            // recreate the shared connection + session and retry once.
+            connect();
+            try {
+                return session.createProducer(topic);
+            } catch (final JMSException retryEx) {
+                throw new RuntimeException(retryEx);
+            }
         }
     }
 

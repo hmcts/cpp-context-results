@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.domains;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 public class DefaultsHelper {
 

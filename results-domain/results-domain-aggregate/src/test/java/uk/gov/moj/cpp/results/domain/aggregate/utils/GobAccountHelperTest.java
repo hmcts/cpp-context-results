@@ -21,8 +21,12 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.gov.justice.services.common.util.UtcClock;
 
 public class GobAccountHelperTest {
+
+    private static final ZonedDateTime CREATED_TIME_BASE = new UtcClock().now();
+    private static int createdTimeOffset;
 
     private LinkedList<CorrelationItem> correlationItemList;
 
@@ -141,7 +145,7 @@ public class GobAccountHelperTest {
     private static OffenceResultsDetails getOffenceResultsDetails(final UUID offenceId1, final boolean isFinancial) {
         return offenceResultsDetails().withOffenceId(offenceId1)
                 .withIsFinancial(isFinancial)
-                .withCreatedTime(ZonedDateTime.now())
+                .withCreatedTime(new UtcClock().now())
                 .build();
     }
 
@@ -156,7 +160,7 @@ public class GobAccountHelperTest {
                 .withAccountCorrelationId(randomUUID())
                 .withHearingId(hearingId)
                 .withAccountDivisionCode(randomAlphanumeric(8))
-                .withCreatedTime(ZonedDateTime.now())
+                .withCreatedTime(CREATED_TIME_BASE.plusSeconds(++createdTimeOffset))
                 .withProsecutionCaseReferences(of("CASEURN001"))
                 .withAccountNumber(gobAccount)
                 .withOffenceResultsDetailsList(caseOffences)

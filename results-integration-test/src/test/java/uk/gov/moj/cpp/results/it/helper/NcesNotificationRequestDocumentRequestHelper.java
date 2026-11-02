@@ -10,17 +10,17 @@ import static uk.gov.moj.cpp.results.it.utils.QueueUtil.publicEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.sendMessage;
 
 import uk.gov.justice.services.common.http.HeaderConstants;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.Metadata;
 
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageProducer;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 
 
 public class NcesNotificationRequestDocumentRequestHelper {
@@ -50,10 +50,10 @@ public class NcesNotificationRequestDocumentRequestHelper {
                 .add("payloadFileServiceId", payloadFileServiceId.toString())
                 .add("templateIdentifier", templateIdentifier)
                 .add("conversionFormat", "pdf")
-                .add("requestedTime", ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT))
+                .add("requestedTime", new UtcClock().now().format(DateTimeFormatter.ISO_INSTANT))
                 .add("sourceCorrelationId", reportId)
                 .add("originatingSource", ORIGINATOR)
-                .add("failedTime", ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT))
+                .add("failedTime", new UtcClock().now().format(DateTimeFormatter.ISO_INSTANT))
                 .add("reason", "Test")
                 .build();
     }
@@ -68,11 +68,11 @@ public class NcesNotificationRequestDocumentRequestHelper {
                 .add("payloadFileServiceId", payloadFileServiceId.toString())
                 .add("templateIdentifier", templateIdentifier)
                 .add("conversionFormat", "pdf")
-                .add("requestedTime", ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT))
+                .add("requestedTime", new UtcClock().now().format(DateTimeFormatter.ISO_INSTANT))
                 .add("sourceCorrelationId", reportId)
                 .add("originatingSource", originatingSource)
                 .add("documentFileServiceId", generatedDocumentId.toString())
-                .add("generatedTime", ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT))
+                .add("generatedTime", new UtcClock().now().format(DateTimeFormatter.ISO_INSTANT))
                 .add("generateVersion", 1)
                 .add("additionalInformation", additionalInformationBuilder.build())
                 .build();

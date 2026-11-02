@@ -1,7 +1,5 @@
 package uk.gov.moj.cpp.results.it;
 
-import static java.time.ZoneOffset.UTC;
-import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.http.HttpStatus.SC_ACCEPTED;
@@ -16,6 +14,7 @@ import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryGr
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.stubNotificationNotifyEndPoint;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper;
 
 import java.io.IOException;
@@ -48,8 +47,8 @@ public class InformantRegisterDocumentRequestIT {
     public void shouldAddInformantRegisterRequest() throws IOException {
         final UUID prosecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime registerDate = new UtcClock().now();
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
         final String prosecutionAuthorityCode = STRING.next();
 
         final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, registerDate, hearingId, hearingDate, "json/informant-register/results.add-informant-register-document-request.json");
@@ -64,8 +63,8 @@ public class InformantRegisterDocumentRequestIT {
     public void shouldAddInformantRegisterRequestWithVerdictAndExposeItInProsecutorResults() throws IOException {
         final UUID prosecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime registerDate = new UtcClock().now();
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
         final String prosecutionAuthorityCode = STRING.next();
         final String prosecutionAuthorityOuCode = randomAlphanumeric(7);
 
@@ -84,8 +83,8 @@ public class InformantRegisterDocumentRequestIT {
     public void shouldAddInformantRegisterRequestForGroupCases() throws IOException {
         final UUID prosecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime registerDate = new UtcClock().now();
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
         final String prosecutionAuthorityCode = STRING.next();
 
         final Response writeResponse = recordInformantRegister(prosecutionAuthorityId, prosecutionAuthorityCode, randomAlphanumeric(7), registerDate,
@@ -103,9 +102,9 @@ public class InformantRegisterDocumentRequestIT {
         final String prosecutionAuthorityCode = STRING.next();
 
         final UUID hearingId = randomUUID();
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
 
-        final ZonedDateTime registerDate1 = now(UTC).minusMinutes(3);
+        final ZonedDateTime registerDate1 = new UtcClock().now().minusMinutes(3);
 
         final Response writeResponse1 = recordInformantRegister(prosecutionAuthorityId,
                 prosecutionAuthorityCode, registerDate1, hearingId, hearingDate,
@@ -113,14 +112,14 @@ public class InformantRegisterDocumentRequestIT {
 
         assertThat(writeResponse1.getStatusCode(), equalTo(SC_ACCEPTED));
 
-        final ZonedDateTime registerDate2 = now(UTC).minusMinutes(2);
+        final ZonedDateTime registerDate2 = new UtcClock().now().minusMinutes(2);
         final Response writeResponse2 = recordInformantRegister(prosecutionAuthorityId,
                 prosecutionAuthorityCode, registerDate2, hearingId, hearingDate,
                 "json/informant-register/results.add-informant-register-document-request.json");
 
         assertThat(writeResponse2.getStatusCode(), equalTo(SC_ACCEPTED));
 
-        final ZonedDateTime registerDate3 = now(UTC).minusMinutes(1);
+        final ZonedDateTime registerDate3 = new UtcClock().now().minusMinutes(1);
         final Response writeResponse3 = recordInformantRegister(prosecutionAuthorityId,
                 prosecutionAuthorityCode, registerDate3, hearingId, hearingDate,
                 "json/informant-register/results.add-informant-register-document-request.json");
@@ -140,7 +139,7 @@ public class InformantRegisterDocumentRequestIT {
 
         helper.verifyInformantRegisterIsNotified(prosecutionAuthorityId);
 
-        final ZonedDateTime registerDate5 = now(UTC).minusMinutes(3);
+        final ZonedDateTime registerDate5 = new UtcClock().now().minusMinutes(3);
 
         final Response writeResponse5 = recordInformantRegister(prosecutionAuthorityId,
                 prosecutionAuthorityCode, registerDate5, hearingId, hearingDate,
@@ -160,8 +159,8 @@ public class InformantRegisterDocumentRequestIT {
         final UUID prosecutionAuthorityId_2 = randomUUID();
         final UUID hearingId_1 = randomUUID();
         final UUID hearingId_2 = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime registerDate = new UtcClock().now();
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
         final String prosecutionAuthorityCode_1 = STRING.next();
         final String prosecutionAuthorityCode_2 = STRING.next();
         final String fileName = "json/informant-register/results.add-informant-register-document-request.json";
@@ -197,8 +196,8 @@ public class InformantRegisterDocumentRequestIT {
     public void shouldGenerateInformantRegistersOnlyByRequestDate() throws IOException {
         final UUID prosecutionAuthorityId = randomUUID();
         final UUID hearingId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
-        final ZonedDateTime hearingDate = now(UTC).minusHours(1);
+        final ZonedDateTime registerDate = new UtcClock().now();
+        final ZonedDateTime hearingDate = new UtcClock().now().minusHours(1);
         final String prosecutionAuthorityCode = STRING.next();
 
         final InformantRegisterDocumentRequestHelper helper = new InformantRegisterDocumentRequestHelper();

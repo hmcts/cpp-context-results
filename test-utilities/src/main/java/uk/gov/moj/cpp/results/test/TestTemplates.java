@@ -1010,7 +1010,7 @@ public class TestTemplates {
         return Defendant.defendant()
                 .withId(fromString(defendantId))
                 .withMasterDefendantId(fromString(defendantId))
-                .withCourtProceedingsInitiated(ZonedDateTime.now())
+                .withCourtProceedingsInitiated(new UtcClock().now())
                 .withProsecutionCaseId(randomUUID())
                 .withProsecutionAuthorityReference(prosecutionAuthorityReference)
                 .withPncId("pncId")

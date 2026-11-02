@@ -22,7 +22,7 @@ import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 
 import java.time.LocalDate;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

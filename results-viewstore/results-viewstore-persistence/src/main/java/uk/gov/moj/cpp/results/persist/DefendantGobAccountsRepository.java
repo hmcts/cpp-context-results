@@ -1,24 +1,51 @@
 package uk.gov.moj.cpp.results.persist;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.QueryParam;
-import org.apache.deltaspike.data.api.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-@Repository
-public interface DefendantGobAccountsRepository extends EntityRepository<DefendantGobAccountsEntity, DefendantGobAccountsId> {
+@ApplicationScoped
+public class DefendantGobAccountsRepository {
 
-    @Query(value = """
-            SELECT * 
-            FROM defendant_gob_accounts dga 
-            WHERE dga.master_defendant_id = :masterDefendantId 
-              AND dga.hearing_id = :hearingId
-            ORDER BY dga.account_request_time DESC
-            LIMIT 1
-            """, isNative = true)
-    DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndHearingId(@QueryParam("masterDefendantId") final UUID masterDefendantId,
-                                                                                 @QueryParam("hearingId") final UUID hearingId);
+    @PersistenceContext(unitName = "results-persistence-unit")
+    EntityManager entityManager;
 
+    public DefendantGobAccountsEntity save(final DefendantGobAccountsEntity defendantGobAccountsEntity) {
+        return entityManager.merge(defendantGobAccountsEntity);
+    }
+
+    public DefendantGobAccountsEntity findBy(final DefendantGobAccountsId id) {
+        return entityManager.find(DefendantGobAccountsEntity.class, id);
+    }
+
+    public List<DefendantGobAccountsEntity> findAll() {
+        return entityManager.createQuery("select d from DefendantGobAccountsEntity d", DefendantGobAccountsEntity.class).getResultList();
+    }
+
+    public void remove(final DefendantGobAccountsEntity defendantGobAccountsEntity) {
+        entityManager.remove(entityManager.contains(defendantGobAccountsEntity)
+                ? defendantGobAccountsEntity
+                : entityManager.merge(defendantGobAccountsEntity));
+    }
+
+    @SuppressWarnings("unchecked")
+    public Optional<DefendantGobAccountsEntity> findAccountNumberByMasterDefendantIdAndHearingId(final UUID masterDefendantId,
+                                                                                                 final UUID hearingId) {
+        final List<DefendantGobAccountsEntity> results = entityManager.createNativeQuery("""
+                        SELECT *
+                        FROM defendant_gob_accounts dga
+                        WHERE dga.master_defendant_id = :masterDefendantId
+                          AND dga.hearing_id = :hearingId
+                        ORDER BY dga.account_request_time DESC
+                        LIMIT 1
+                        """, DefendantGobAccountsEntity.class)
+                .setParameter("masterDefendantId", masterDefendantId)
+                .setParameter("hearingId", hearingId)
+                .getResultList();
+        return results.stream().findFirst();
+    }
 }
