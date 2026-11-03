@@ -46,7 +46,7 @@
         <usersgroups.version>17.104.47</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
         <azure-sdk-bom>1.2.27</azure-sdk-bom>
-        <sjp.version>17.103.174</sjp.version>
+        <sjp.version>17.104.197</sjp.version>
         <staging.dcs.version>17.103.11</staging.dcs.version>
         <sonar.coverage.exclusions>
             **/uk/gov/moj/cpp/results/command/api/accesscontrol/**/*,
