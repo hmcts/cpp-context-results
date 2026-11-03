@@ -3,7 +3,7 @@ package uk.gov.moj.cpp.results.event.service;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class UploadMaterialService {
 

@@ -71,7 +71,6 @@ import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
@@ -83,12 +82,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonString;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonString;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -388,7 +387,7 @@ public class ResultsEventProcessor {
                 .build();
 
         final Material material = Material.material().withId(materialId)
-                .withReceivedDateTime(ZonedDateTime.now())
+                .withReceivedDateTime(utcClock.now())
                 .build();
 
         return CourtDocument.courtDocument()

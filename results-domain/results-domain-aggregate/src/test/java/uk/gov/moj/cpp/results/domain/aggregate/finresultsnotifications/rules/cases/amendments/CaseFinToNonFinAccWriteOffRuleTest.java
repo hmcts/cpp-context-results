@@ -11,11 +11,11 @@ import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ru
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.cases.CaseFinToNonFinAccWriteOffRule;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -97,7 +97,7 @@ class CaseFinToNonFinAccWriteOffRuleTest {
                         offenceResultsDetails()
                                 .withHearingId(hearingId)
                                 .withOffenceId(trackRequest.getOffenceResults().get(0).getOffenceId())
-                                .withCreatedTime(ZonedDateTime.now().minusHours(1))
+                                .withCreatedTime(new UtcClock().now().minusHours(1))
                                 .withIsFinancial(true)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
                                 .build(),
@@ -105,7 +105,7 @@ class CaseFinToNonFinAccWriteOffRuleTest {
                         offenceResultsDetails()
                                 .withHearingId(hearingId)
                                 .withOffenceId(trackRequest.getOffenceResults().get(1).getOffenceId())
-                                .withCreatedTime(ZonedDateTime.now().minusHours(1))
+                                .withCreatedTime(new UtcClock().now().minusHours(1))
                                 .withIsFinancial(true)
                                 .withImpositionOffenceDetails("Previous Acc Write Off Offence details")
                                 .build()
@@ -113,15 +113,15 @@ class CaseFinToNonFinAccWriteOffRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withHearingId(hearingId)
-                                        .withCreatedTime(ZonedDateTime.now().minusHours(1))
+                                        .withCreatedTime(new UtcClock().now().minusHours(1))
                                         .withAccountCorrelationId(randomUUID())
                                         .withAccountNumber("AC123456789OLD")
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(true).build(),
-                                                offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(true).withCreatedTime(ZonedDateTime.now().minusHours(1)).build()))
+                                                offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(true).withCreatedTime(new UtcClock().now().minusHours(1)).build()))
                                         .build(),
                                 correlationItem()
                                         .withHearingId(hearingId)
-                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withCreatedTime(new UtcClock().now())
                                         .withAccountCorrelationId(accountCorrelationId)
                                         .withAccountNumber("AC123456789")
                                         .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(true).build()))

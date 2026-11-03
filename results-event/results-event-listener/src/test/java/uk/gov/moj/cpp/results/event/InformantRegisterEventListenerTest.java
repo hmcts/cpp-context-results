@@ -30,6 +30,7 @@ import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
 import uk.gov.justice.results.courts.InformantRegisterRecordedV2;
@@ -41,7 +42,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -83,7 +84,7 @@ public class InformantRegisterEventListenerTest {
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
                 .withProsecutionAuthorityId(prosecutionAuthId)
                 .withProsecutionAuthorityOuCode(ouCode)
-                .withRegisterDate(ZonedDateTime.now())
+                .withRegisterDate(new UtcClock().now())
                 .withHearingVenue(informantRegisterHearingVenue().build())
                 .build();
 
@@ -143,7 +144,7 @@ public class InformantRegisterEventListenerTest {
         final UUID prosecutionAuthId = randomUUID();
         // Use a fixed instant (in UTC) so the expected registerDate matches how the listener
         // derives it: the framework's JSON converter normalises ZonedDateTime to UTC, and the
-        // listener calls getRegisterDate().toLocalDate(). Using LocalDate.now()/ZonedDateTime.now()
+        // listener calls getRegisterDate().toLocalDate(). Using LocalDate.now()/new UtcClock().now()
         // here makes the test flaky around the midnight boundary in non-UTC zones (e.g. BST).
         final ZonedDateTime registerDateTime = ZonedDateTime.parse("2026-04-13T09:00:00Z");
         final LocalDate registerDate = registerDateTime.toLocalDate();

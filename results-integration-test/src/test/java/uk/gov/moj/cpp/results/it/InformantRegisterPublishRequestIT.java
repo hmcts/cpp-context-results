@@ -20,10 +20,10 @@ import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQ
 
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageProducer;
+import jakarta.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.AfterEach;

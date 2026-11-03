@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.domain.aggregate;
 
 import static com.google.common.collect.ImmutableList.of;
 import static java.lang.Integer.valueOf;
-import static java.time.ZonedDateTime.now;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.empty;
@@ -78,6 +77,7 @@ import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.core.courts.ProsecutionCaseResults;
 import uk.gov.justice.core.courts.SessionAddedEvent;
 import uk.gov.justice.core.courts.SessionDay;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.domain.event.AmendmentType;
 import uk.gov.moj.cpp.results.domain.event.AppealUpdateNotificationRequested;
@@ -95,7 +95,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -134,7 +134,7 @@ public class ResultsAggregateTest {
             .setHearing(hearing()
                     .withId(UUID.randomUUID())
                     .build())
-            .setSharedTime(ZonedDateTime.now());
+            .setSharedTime(new UtcClock().now());
 
     private final UUID hearingId = UUID.randomUUID();
     private final String courtCode = "cc123";
@@ -146,7 +146,7 @@ public class ResultsAggregateTest {
                             .build())
                     .withYouthCourtDefendantIds(singletonList(DEFENDANT_ID))
                     .build())
-            .setSharedTime(ZonedDateTime.now());
+            .setSharedTime(new UtcClock().now());
 
     @InjectMocks
     private ResultsAggregate resultsAggregate;
@@ -194,7 +194,7 @@ public class ResultsAggregateTest {
                 .setHearing(hearing()
                         .withId(hearingId)
                         .build())
-                .setSharedTime(ZonedDateTime.now());
+                .setSharedTime(new UtcClock().now());
         resultsAggregate.saveHearingResults(input);
         final JsonObject payload = createObjectBuilder()
                 .add(HEARING_ID, hearingId.toString())
@@ -219,7 +219,7 @@ public class ResultsAggregateTest {
                 .setHearing(hearing()
                         .withId(hearingId)
                         .build())
-                .setSharedTime(ZonedDateTime.now());
+                .setSharedTime(new UtcClock().now());
         resultsAggregate.saveHearingResults(input);
         final JsonObject payload = createObjectBuilder()
                 .add(HEARING_ID, hearingId.toString())
@@ -253,7 +253,7 @@ public class ResultsAggregateTest {
     public void testHandleSession() {
         final UUID id = randomUUID();
         final CourtCentreWithLJA courtCentre = courtCentreWithLJA().build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
 
@@ -277,7 +277,7 @@ public class ResultsAggregateTest {
     public void shouldNotRaiseSessionAddedEventWhenSessionDaysUnchanged() {
         final UUID id = randomUUID();
         final CourtCentreWithLJA courtCentre = courtCentreWithLJA().build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
         final SessionAddedEvent update = resultsAggregate.handleSession(id, courtCentre, sessionDays)
@@ -301,7 +301,7 @@ public class ResultsAggregateTest {
     public void shouldRaiseSessionAddedEventWhenSessionDaysUpdatedForHearing() {
         final UUID id = randomUUID();
         final CourtCentreWithLJA courtCentre = courtCentreWithLJA().build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
         final SessionAddedEvent update = resultsAggregate.handleSession(id, courtCentre, sessionDays)
@@ -782,7 +782,7 @@ public class ResultsAggregateTest {
                         .withPsaCode(987)
                         .build())
                 .build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
 
@@ -822,7 +822,7 @@ public class ResultsAggregateTest {
                         .withPsaCode(987)
                         .build())
                 .build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
 
@@ -880,7 +880,7 @@ public class ResultsAggregateTest {
                         .withPsaCode(987)
                         .build())
                 .build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
 
@@ -910,7 +910,7 @@ public class ResultsAggregateTest {
                         .withPsaCode(987)
                         .build())
                 .build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
 
@@ -925,7 +925,7 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
 
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
-                .setSharedTime(ZonedDateTime.now())
+                .setSharedTime(new UtcClock().now())
                 .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1, null, null)), LocalDate.now());
         resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
         resultsAggregate.handleCase(caseDetails);
@@ -987,7 +987,7 @@ public class ResultsAggregateTest {
 
 
         final Stream<Object> result = resultsAggregate.saveHearingResultsForDay(publicHearingResulted()
-                .setSharedTime(now())
+                .setSharedTime(new UtcClock().now())
                 .setHearing(createHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1, null, migrationSourceSystem)), LocalDate.now());
         assertEquals(numberOfEvents, result.count());
     }
@@ -1002,7 +1002,7 @@ public class ResultsAggregateTest {
                         .withPsaCode(987)
                         .build())
                 .build();
-        final ZonedDateTime sittingDay = now();
+        final ZonedDateTime sittingDay = new UtcClock().now();
         final SessionDay sessionDay = sessionDay().withListedDurationMinutes(10).withListingSequence(15).withSittingDay(sittingDay).build();
         final List<SessionDay> sessionDays = of(sessionDay);
 
@@ -1017,7 +1017,7 @@ public class ResultsAggregateTest {
         final CaseDetails caseDetails = createCaseDetails(null, offenceDetailsList);
 
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
-                .setSharedTime(ZonedDateTime.now())
+                .setSharedTime(new UtcClock().now())
                 .setIsReshare(Optional.of(Boolean.FALSE))
                 .setHearing(createMultiDayHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1)), LocalDate.of(2018, 2, 2));
         resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
@@ -1031,7 +1031,7 @@ public class ResultsAggregateTest {
         assertEquals(LocalDate.now(), policeResultGenerated.getSessionDays().get(0).getSittingDay().toLocalDate());
 
         resultsAggregate.saveHearingResultsForDay(PublicHearingResulted.publicHearingResulted()
-                .setSharedTime(ZonedDateTime.now())
+                .setSharedTime(new UtcClock().now())
                 .setIsReshare(Optional.of(Boolean.FALSE))
                 .setHearing(createMultiDayHearing(caseDetails.getCaseId(), caseDetails.getDefendants().get(0).getDefendantId(), offenceDetailsList.get(0).getId(), judicialResult1)), LocalDate.of(2018, 4, 3));
         resultsAggregate.handleSession(hearingId, courtCentre, sessionDays);
@@ -1068,7 +1068,7 @@ public class ResultsAggregateTest {
 
         final Stream<Object> eventStream = resultsAggregate.saveHearingResultsForDay(publicHearingResulted()
                         .setHearing(hearing)
-                        .setSharedTime(now())
+                        .setSharedTime(new UtcClock().now())
                         .setIsReshare(Optional.of(Boolean.FALSE)),
                 LocalDate.of(2025, 9, 9));
 

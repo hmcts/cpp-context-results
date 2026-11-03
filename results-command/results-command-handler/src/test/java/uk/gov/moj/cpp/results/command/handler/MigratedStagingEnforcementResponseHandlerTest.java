@@ -1,7 +1,7 @@
 package uk.gov.moj.cpp.results.command.handler;
 
 import static java.util.UUID.randomUUID;
-import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;;
+import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.Json;
+import jakarta.json.Json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

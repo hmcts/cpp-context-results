@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.StringUtils.countMatches;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
@@ -50,18 +50,18 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.jms.JMSException;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.jms.JMSException;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({"unchecked", "serial", "squid:S2925", "squid:S1607", "java:S2699"})
 public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
@@ -77,7 +77,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
 
     private final String policeEmailAddress = randomAlphabetic(15) + "@email.com";
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         setupUserAsPrisonAdminGroup(getUserId());
         stubEventGridEndpoint();
@@ -97,7 +97,7 @@ public class HearingResultSharedUseCaseForProsecutorCommunicationIT {
         closeMessageConsumers();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         stubSpiOutFlag(true, true, policeEmailAddress);
         createMessageConsumers();

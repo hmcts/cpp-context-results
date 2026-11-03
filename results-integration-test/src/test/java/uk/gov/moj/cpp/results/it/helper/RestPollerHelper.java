@@ -10,7 +10,7 @@ public class RestPollerHelper {
 
     public static final long DELAY_IN_MILLIS = 0L;
     public static final long INTERVAL_IN_MILLIS = 1000L;
-    public static final long TIMEOUT_IN_MILLIS = 30000L;
+    public static final long TIMEOUT_IN_MILLIS = 60000L;
 
     public static RestPoller pollWithDefaults(final RequestParams requestParams) {
         return poll(requestParams)

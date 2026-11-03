@@ -22,6 +22,7 @@ import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
@@ -38,7 +39,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -134,13 +135,13 @@ public class ResultsEventListenerTest {
                 .add("hearing", objectToJsonObjectConverter.convert(Hearing.hearing()
                         .withId(hearingId)
                         .withHearingDays(Arrays.asList(HearingDay.hearingDay()
-                                        .withSittingDay(ZonedDateTime.now())
+                                        .withSittingDay(new UtcClock().now())
                                         .build(),
                                 HearingDay.hearingDay()
-                                        .withSittingDay(ZonedDateTime.now().plusDays(2))
+                                        .withSittingDay(new UtcClock().now().plusDays(2))
                                         .build(),
                                 HearingDay.hearingDay()
-                                        .withSittingDay(ZonedDateTime.now().plusDays(3))
+                                        .withSittingDay(new UtcClock().now().plusDays(3))
                                         .build()))
                         .build()))
                 .add("hearingDay", LocalDate.now().plusDays(2).toString())
@@ -173,13 +174,13 @@ public class ResultsEventListenerTest {
                         .withId(hearingId)
                         .withIsGroupProceedings(Boolean.TRUE)
                         .withHearingDays(Arrays.asList(HearingDay.hearingDay()
-                                        .withSittingDay(ZonedDateTime.now())
+                                        .withSittingDay(new UtcClock().now())
                                         .build(),
                                 HearingDay.hearingDay()
-                                        .withSittingDay(ZonedDateTime.now().plusDays(2))
+                                        .withSittingDay(new UtcClock().now().plusDays(2))
                                         .build(),
                                 HearingDay.hearingDay()
-                                        .withSittingDay(ZonedDateTime.now().plusDays(3))
+                                        .withSittingDay(new UtcClock().now().plusDays(3))
                                         .build()))
                         .withProsecutionCases(Arrays.asList(ProsecutionCase.prosecutionCase()
                                         .withId(case1Id)

@@ -50,6 +50,7 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.aggregate.AggregateService;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.eventsourcing.source.core.EventSource;
@@ -70,7 +71,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.json.JsonArrayBuilder;
+import jakarta.json.JsonArrayBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -249,7 +250,7 @@ public class StagingEnforcementResponseHandlerTest {
                         .build());
         HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                                                .withCreatedTime(ZonedDateTime.now())
+                                                .withCreatedTime(new UtcClock().now())
                                                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                                                         .withHearingId(randomUUID())
                                                         .withMasterDefendantId(masterDefendantId)
@@ -259,7 +260,7 @@ public class StagingEnforcementResponseHandlerTest {
                                                         .build())
                                                 .build());
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                .withCreatedTime(ZonedDateTime.now())
+                .withCreatedTime(new UtcClock().now())
                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                         .withHearingId(randomUUID())
                         .withMasterDefendantId(masterDefendantId)
@@ -310,7 +311,7 @@ public class StagingEnforcementResponseHandlerTest {
                         .add("caseUrns", createCaseUrns()).build());
         HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                .withCreatedTime(ZonedDateTime.now())
+                .withCreatedTime(new UtcClock().now())
                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                         .withHearingId(randomUUID())
                         .withMasterDefendantId(masterDefendantId)
@@ -319,7 +320,7 @@ public class StagingEnforcementResponseHandlerTest {
                         .build())
                 .build());
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                .withCreatedTime(ZonedDateTime.now())
+                .withCreatedTime(new UtcClock().now())
                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                         .withHearingId(randomUUID())
                         .withMasterDefendantId(masterDefendantId)

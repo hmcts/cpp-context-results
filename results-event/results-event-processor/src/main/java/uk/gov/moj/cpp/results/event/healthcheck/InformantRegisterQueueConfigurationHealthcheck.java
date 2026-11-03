@@ -10,7 +10,7 @@ import uk.gov.justice.services.core.featurecontrol.FeatureControlGuard;
 import uk.gov.justice.services.healthcheck.api.Healthcheck;
 import uk.gov.justice.services.healthcheck.api.HealthcheckResult;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * Fails when the InformantRegisterService feature is enabled for this environment but no Service Bus
