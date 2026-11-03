@@ -31,10 +31,9 @@ public class NcesEmailNotificationDetailsRepository {
     }
 
     public Optional<NcesEmailNotificationDetailsEntity> findByMaterialId(final UUID materialId) {
-        return entityManager.createQuery(
+        return Optional.of(entityManager.createQuery(
                         "select n from NcesEmailNotificationDetailsEntity n where n.materialId = :materialId", NcesEmailNotificationDetailsEntity.class)
                 .setParameter("materialId", materialId)
-                .getResultStream()
-                .findFirst();
+                .getSingleResult());
     }
 }

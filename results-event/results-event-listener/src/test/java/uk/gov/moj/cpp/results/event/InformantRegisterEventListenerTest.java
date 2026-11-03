@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -39,8 +40,6 @@ import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.io.StringReader;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -54,6 +53,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.MockedConstruction;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -412,15 +412,19 @@ public class InformantRegisterEventListenerTest {
         assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
     }
 
+    /** 00:30 on 2 July in the UK, still 1 July in UTC. The JVM runs on UK time. */
     @Test
     public void chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone() {
-        final ZoneId zoneOnDifferentDateToUtc = zoneOnDifferentDateToUtc();
-        final TimeZone originalZone = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone(zoneOnDifferentDateToUtc));
-        try {
-            final InformantRegisterEntity informantRegisterEntity = generateSystemRegister();
+        final InformantRegisterEntity informantRegisterEntity = generateSystemRegisterAtUkTime(ZonedDateTime.parse("2026-07-01T23:30:00Z"));
 
-            assertThat(informantRegisterEntity.getGeneratedDate(), is(LocalDate.now(zoneOnDifferentDateToUtc)));
+        assertThat(informantRegisterEntity.getGeneratedDate(), is(LocalDate.of(2026, 7, 2)));
+    }
+
+    private InformantRegisterEntity generateSystemRegisterAtUkTime(final ZonedDateTime now) {
+        final TimeZone originalZone = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        try (MockedConstruction<UtcClock> utcClock = mockConstruction(UtcClock.class, (clock, context) -> when(clock.now()).thenReturn(now))) {
+            return generateSystemRegister();
         } finally {
             TimeZone.setDefault(originalZone);
         }
@@ -443,9 +447,5 @@ public class InformantRegisterEventListenerTest {
         informantRegisterEventListener.generateInformantRegister(envelopeFrom(metadataWithRandomUUID("results.event.informant-register-generated"),
                 objectToJsonObjectConverter.convert(new InformantRegisterGenerated(singletonList(documentRequest), randomUUID(), true))));
         return informantRegisterEntity;
-    }
-
-    private ZoneId zoneOnDifferentDateToUtc() {
-        return ZonedDateTime.now(ZoneOffset.UTC).getHour() >= 12 ? ZoneId.of("Pacific/Kiritimati") : ZoneId.of("Pacific/Pago_Pago");
     }
 }

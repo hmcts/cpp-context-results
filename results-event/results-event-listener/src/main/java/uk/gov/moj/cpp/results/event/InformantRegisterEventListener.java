@@ -21,6 +21,7 @@ import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class InformantRegisterEventListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InformantRegisterEventListener.class);
 
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private static final String INFORMANT_REGISTER_REQUEST_PARAM = "informantRegister";
 
     @Inject
@@ -140,7 +142,7 @@ public class InformantRegisterEventListener {
             informantRegisterEntity.setStatus(GENERATED);
             informantRegisterEntity.setProcessedOn(currentDateTime);
             if (systemGenerated) {
-                informantRegisterEntity.setGeneratedDate(currentDateTime.toLocalDate());
+                informantRegisterEntity.setGeneratedDate(currentDateTime.withZoneSameInstant(UK_TIME_ZONE).toLocalDate());
                 informantRegisterEntity.setGeneratedTime(currentDateTime);
             }
         });

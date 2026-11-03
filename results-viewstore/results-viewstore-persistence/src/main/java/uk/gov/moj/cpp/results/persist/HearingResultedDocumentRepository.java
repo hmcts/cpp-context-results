@@ -47,11 +47,10 @@ public class HearingResultedDocumentRepository {
     }
 
     public Optional<HearingResultedDocument> findByHearingIdAndHearingDay(final UUID hearingId, final LocalDate hearingDate) {
-        return entityManager.createQuery(
+        return Optional.of(entityManager.createQuery(
                         "select h from HearingResultedDocument h where h.id.hearingId = :hearingId and h.id.hearingDay = :hearingDate", HearingResultedDocument.class)
                 .setParameter(HEARING_ID_PARAM, hearingId)
                 .setParameter("hearingDate", hearingDate)
-                .getResultStream()
-                .findFirst();
+                .getSingleResult());
     }
 }

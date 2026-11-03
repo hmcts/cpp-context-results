@@ -205,12 +205,12 @@ public class NCESDecisionHelperTest {
     @Test
     public void chd08_applicationResultsCreatedTime_should_be_in_jvm_zone() {
         final TimeZone originalZone = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("Pacific/Kiritimati"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
         try {
             final List<OffenceResultsDetails> results =
                     buildApplicationResultsDetailsFromOffenceResults(List.of(offenceResults().build()));
 
-            assertThat(results.get(0).getCreatedTime().getZone(), is(ZoneId.of("Pacific/Kiritimati")));
+            assertThat(results.get(0).getCreatedTime().getZone(), is(ZoneId.of("Europe/London")));
         } finally {
             TimeZone.setDefault(originalZone);
         }

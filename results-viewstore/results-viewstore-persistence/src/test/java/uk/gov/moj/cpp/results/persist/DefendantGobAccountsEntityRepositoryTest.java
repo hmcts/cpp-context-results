@@ -24,6 +24,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 
+import org.h2.util.DateTimeUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -175,9 +176,8 @@ public class DefendantGobAccountsEntityRepositoryTest {
         defendantGobAccountsRepository.save(entity);
 
         final UUID nonExistentHearingId = randomUUID();
-        final Optional<DefendantGobAccountsEntity> result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, nonExistentHearingId);
-
-        assertThat(result.isEmpty(), is(true));
+        assertThrows(NoResultException.class,
+                () -> defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, nonExistentHearingId));
     }
 
     @Test
@@ -277,6 +277,7 @@ public class DefendantGobAccountsEntityRepositoryTest {
     private void inZonelessTableOnLondonJvm(final Consumer<EntityManager> test) {
         final TimeZone originalZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        DateTimeUtils.resetCalendar();
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("results-test-production-timezone-unit");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
@@ -292,6 +293,7 @@ public class DefendantGobAccountsEntityRepositoryTest {
             entityManager.close();
             entityManagerFactory.close();
             TimeZone.setDefault(originalZone);
+            DateTimeUtils.resetCalendar();
         }
     }
 }

@@ -171,7 +171,7 @@ class HearingFinancialResultsTrackedListenerTest {
     public void chd08_gobAccountAuditTimes_should_be_in_jvm_zone() {
         final JsonEnvelope jsonEnvelope = createJsonEnvelope(hearingFinancialResultsTracked());
         final TimeZone originalZone = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("Pacific/Kiritimati"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
         try {
             hearingFinancialResultsTrackedListener.processDefendantGobAccounts(jsonEnvelope);
         } finally {
@@ -180,7 +180,7 @@ class HearingFinancialResultsTrackedListenerTest {
 
         verify(defendantGobAccountsRepository).save(this.defendantGobAccountsEntityArgumentCaptor.capture());
         final DefendantGobAccountsEntity capturedEntity = defendantGobAccountsEntityArgumentCaptor.getValue();
-        assertThat(capturedEntity.getCreatedTime().getZone(), is(ZoneId.of("Pacific/Kiritimati")));
-        assertThat(capturedEntity.getUpdatedTime().getZone(), is(ZoneId.of("Pacific/Kiritimati")));
+        assertThat(capturedEntity.getCreatedTime().getZone(), is(ZoneId.of("Europe/London")));
+        assertThat(capturedEntity.getUpdatedTime().getZone(), is(ZoneId.of("Europe/London")));
     }
 }

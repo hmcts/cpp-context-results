@@ -12,6 +12,7 @@ import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
+import java.time.ZoneId;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 @ServiceComponent(EVENT_LISTENER)
 public class HearingFinancialResultsTrackedListener {
 
+    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private static final Logger LOGGER = LoggerFactory.getLogger(HearingFinancialResultsTrackedListener.class);
     @Inject
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
@@ -54,9 +56,9 @@ public class HearingFinancialResultsTrackedListener {
         // account_number is not set here as it may not be available if GOB happens in one go after multiple amendments
         defendantGobAccountsEntity.setCaseReferences(convertCaseReferencesToJsonArray(hearingFinancialResultRequest.getProsecutionCaseReferences()).toString());
         defendantGobAccountsEntity.setAccountRequestTime(hearingFinancialResultsTracked.getCreatedTime());
-        defendantGobAccountsEntity.setCreatedTime(new UtcClock().now());
+        defendantGobAccountsEntity.setCreatedTime(new UtcClock().now().withZoneSameInstant(UK_TIME_ZONE));
         defendantGobAccountsEntity.setHearingId(hearingFinancialResultRequest.getHearingId());
-        defendantGobAccountsEntity.setUpdatedTime(new UtcClock().now());
+        defendantGobAccountsEntity.setUpdatedTime(new UtcClock().now().withZoneSameInstant(UK_TIME_ZONE));
         return defendantGobAccountsEntity;
     }
 

@@ -32,10 +32,9 @@ public class DefendantGobAccountsRepository {
                 : entityManager.merge(defendantGobAccountsEntity));
     }
 
-    @SuppressWarnings("unchecked")
     public Optional<DefendantGobAccountsEntity> findAccountNumberByMasterDefendantIdAndHearingId(final UUID masterDefendantId,
                                                                                                  final UUID hearingId) {
-        final List<DefendantGobAccountsEntity> results = entityManager.createNativeQuery("""
+        return Optional.of((DefendantGobAccountsEntity) entityManager.createNativeQuery("""
                         SELECT *
                         FROM defendant_gob_accounts dga
                         WHERE dga.master_defendant_id = :masterDefendantId
@@ -45,7 +44,6 @@ public class DefendantGobAccountsRepository {
                         """, DefendantGobAccountsEntity.class)
                 .setParameter("masterDefendantId", masterDefendantId)
                 .setParameter("hearingId", hearingId)
-                .getResultList();
-        return results.stream().findFirst();
+                .getSingleResult());
     }
 }

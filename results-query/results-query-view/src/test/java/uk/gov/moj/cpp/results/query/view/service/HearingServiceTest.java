@@ -211,7 +211,7 @@ public class HearingServiceTest {
     }
 
     private void stubNoDocumentForHearingDay(final UUID hearingId, final LocalDate hearingDate) {
-        when(hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate)).thenReturn(Optional.empty());
+        when(hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate)).thenThrow(new NoResultException());
     }
 
     private void queryHearingDetailsForDay(final UUID hearingId, final LocalDate hearingDate) {
