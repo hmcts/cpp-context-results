@@ -36,7 +36,7 @@ class EventGridPublisherTest {
 
     @Test
     void disabledPublishingDoesNotRequireAnEndpointOrKeyAndSkipsBothEventTypes() {
-        setField(publisher, "eventGridPublishingEnabled", false);
+        setField(publisher, "eventGridPublishingEnabled", "false");
 
         publisher.setup();
 

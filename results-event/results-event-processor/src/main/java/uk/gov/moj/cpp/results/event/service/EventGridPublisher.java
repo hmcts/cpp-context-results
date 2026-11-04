@@ -28,7 +28,7 @@ public class EventGridPublisher implements EventGridService {
 
     @Inject
     @Value(key = "eventGridPublishingEnabled", defaultValue = "true")
-    private boolean eventGridPublishingEnabled = true;
+    private String eventGridPublishingEnabled = "true";
 
     private EventGridPublisherClient<EventGridEvent> eventGridPublisherClient;
 
@@ -99,6 +99,6 @@ public class EventGridPublisher implements EventGridService {
     }
 
     private boolean isPublishingDisabled() {
-        return !eventGridPublishingEnabled || "localhost".equals(eventgridTopicEndpoint);
+        return !Boolean.parseBoolean(eventGridPublishingEnabled) || "localhost".equals(eventgridTopicEndpoint);
     }
 }
