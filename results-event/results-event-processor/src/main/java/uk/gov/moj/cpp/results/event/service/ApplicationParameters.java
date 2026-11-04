@@ -5,7 +5,7 @@ import uk.gov.justice.services.common.configuration.Value;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class ApplicationParameters {
 

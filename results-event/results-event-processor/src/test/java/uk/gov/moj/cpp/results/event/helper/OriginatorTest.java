@@ -8,7 +8,7 @@ import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWit
 
 import uk.gov.justice.services.messaging.JsonEnvelope;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 

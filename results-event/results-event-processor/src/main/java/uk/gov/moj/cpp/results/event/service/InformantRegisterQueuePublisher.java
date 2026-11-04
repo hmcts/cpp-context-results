@@ -9,9 +9,9 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.inject.Inject;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.identity.WorkloadIdentityCredentialBuilder;

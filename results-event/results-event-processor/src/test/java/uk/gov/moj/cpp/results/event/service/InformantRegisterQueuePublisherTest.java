@@ -17,8 +17,8 @@ import java.io.StringReader;
 import java.time.Duration;
 import java.util.UUID;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusMessage;

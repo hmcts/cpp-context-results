@@ -6,15 +6,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +39,7 @@ public class DefendantGobAccountsQueryViewTest {
         final UUID accountCorrelationId = randomUUID();
         final UUID hearingId = randomUUID();
         final String storedCaseReferences = "[\"caseRef1\", \"caseRef2\"]"; // JSON array stored in entity
-        final ZonedDateTime accountRequestTime = ZonedDateTime.now();
+        final ZonedDateTime accountRequestTime = new UtcClock().now();
         
         final DefendantGobAccountsEntity entity = new DefendantGobAccountsEntity(masterDefendantId, accountCorrelationId);
         entity.setHearingId(hearingId);
@@ -53,7 +55,7 @@ public class DefendantGobAccountsQueryViewTest {
         when(envelope.payloadAsJsonObject()).thenReturn(payload);
         when(payload.getString("masterDefendantId")).thenReturn(masterDefendantId.toString());
         when(payload.getString("hearingId")).thenReturn(hearingId.toString());
-        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId)).thenReturn(entity);
+        when(defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId)).thenReturn(Optional.of(entity));
 
         final JsonEnvelope result = defendantGobAccountsQueryView.getDefendantGobAccounts(envelope);
 

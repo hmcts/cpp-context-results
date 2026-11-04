@@ -123,11 +123,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageProducer;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.path.json.JsonPath;
@@ -549,7 +549,10 @@ public class HearingResultedIT {
         getHearingDetails(resultsMessage.getHearing().getId(), defendantId0, matcher);
 
         Matcher<HearingResultsAdded> matcherStatus = isBean(HearingResultsAdded.class)
-                .with(HearingResultsAdded::getSharedTime, is(resultsMessage.getSharedTime()))
+                // Compare by instant, not zone representation: the projected value can round-trip through JSON as
+                // "...Z" (ZoneOffset) while the source is "...Z[UTC]" (ZoneId) — same instant, but zone-sensitive
+                // ZonedDateTime.equals() would wrongly fail.
+                .with(hearingResultsAdded -> hearingResultsAdded.getSharedTime().toInstant(), is(resultsMessage.getSharedTime().toInstant()))
                 .with(HearingResultsAdded::getHearing, isBean(Hearing.class)
                         .withValue(Hearing::getId, resultsMessage.getHearing().getId())
                         .withValue(Hearing::getCourtApplications, resultsMessage.getHearing().getCourtApplications())

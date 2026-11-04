@@ -3,10 +3,10 @@ package uk.gov.moj.cpp.results.persist;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "defendant_gob_accounts")

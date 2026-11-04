@@ -15,9 +15,9 @@ import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionCo
 import static uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder.resultNotificationRuleInputBuilder;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -193,7 +193,7 @@ class ApplicationStatusAmendmentNotificationRuleTest {
                 .withOffenceId(offenceId)
                 .withIsFinancial(isFinancial)
                 .withImpositionOffenceDetails(impositionOffenceDetails)
-                .withCreatedTime(ZonedDateTime.now().minusDays(1))
+                .withCreatedTime(new UtcClock().now().minusDays(1))
                 .build();
     }
 

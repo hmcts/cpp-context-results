@@ -1,7 +1,5 @@
 package uk.gov.moj.cpp.results.it;
 
-import static java.time.ZoneOffset.UTC;
-import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataBuilder;
@@ -13,6 +11,7 @@ import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.sendMessage;
 import static uk.gov.moj.cpp.results.it.utils.WireMockStubUtils.setupUsersGroupQueryStub;
 
+import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.it.helper.InformantRegisterDocumentRequestHelper;
 
@@ -21,9 +20,9 @@ import java.time.ZonedDateTime;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageProducer;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -80,7 +79,7 @@ public class InformantRegisterEventFlowsIT {
     @Test
     public void recordedV2EventShouldProjectRecordedRegister() {
         final UUID prosecutionAuthorityId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime registerDate = new UtcClock().now();
         final JsonObject documentRequest = v2DocumentRequest(prosecutionAuthorityId, registerDate, randomUUID());
 
         publishRecorded(EVENT_RECORDED_V2, prosecutionAuthorityId, documentRequest);
@@ -91,7 +90,7 @@ public class InformantRegisterEventFlowsIT {
     @Test
     public void generatedV2EventShouldAdvanceRecordedRegister() {
         final UUID prosecutionAuthorityId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime registerDate = new UtcClock().now();
         final JsonObject documentRequest = v2DocumentRequest(prosecutionAuthorityId, registerDate, randomUUID());
 
         publishRecorded(EVENT_RECORDED_V2, prosecutionAuthorityId, documentRequest);
@@ -104,7 +103,7 @@ public class InformantRegisterEventFlowsIT {
     @Test
     public void recordedEventShouldProjectRecordedRegister() {
         final UUID prosecutionAuthorityId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime registerDate = new UtcClock().now();
         final JsonObject documentRequest = v1DocumentRequest(prosecutionAuthorityId, registerDate, randomUUID());
 
         publishRecorded(EVENT_RECORDED, prosecutionAuthorityId, documentRequest);
@@ -115,7 +114,7 @@ public class InformantRegisterEventFlowsIT {
     @Test
     public void generatedEventShouldAdvanceRecordedRegister() {
         final UUID prosecutionAuthorityId = randomUUID();
-        final ZonedDateTime registerDate = now(UTC);
+        final ZonedDateTime registerDate = new UtcClock().now();
         final JsonObject documentRequest = v1DocumentRequest(prosecutionAuthorityId, registerDate, randomUUID());
 
         publishRecorded(EVENT_RECORDED, prosecutionAuthorityId, documentRequest);

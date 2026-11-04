@@ -18,7 +18,7 @@ import uk.gov.justice.services.messaging.Envelope;
 import java.io.InputStream;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
