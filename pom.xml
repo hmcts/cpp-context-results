@@ -45,7 +45,6 @@
         <material.version>17.0.79</material.version>
         <usersgroups.version>17.104.47</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>
-        <azure-sdk-bom>1.2.27</azure-sdk-bom>
         <sjp.version>17.104.197</sjp.version>
         <staging.dcs.version>17.103.11</staging.dcs.version>
         <sonar.coverage.exclusions>
@@ -180,14 +179,6 @@
                 <groupId>uk.gov.moj.cpp.core.domain</groupId>
                 <artifactId>criminal-court-public-model</artifactId>
                 <version>${coredomain.version}</version>
-            </dependency>
-            <!-- https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid -->
-            <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>azure-sdk-bom</artifactId>
-                <version>${azure-sdk-bom}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
