@@ -32,6 +32,8 @@
     </modules>
 
     <properties>
+        <!-- Keep the released 26.33 interface pins for the isolated DPAP patch build. -->
+        <enforcer.skipMoJLatestInterfacesRule>true</enforcer.skipMoJLatestInterfacesRule>
         <jgitflow.maven.developBranchName>main</jgitflow.maven.developBranchName>
         <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
         <sonar.report.export.path>sonar-report.json</sonar.report.export.path>
