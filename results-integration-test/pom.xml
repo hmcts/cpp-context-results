@@ -16,12 +16,6 @@
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- JUnit 4 API (via the vintage engine) for the JUnit 4 based integration tests -->
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>uk.gov.justice.services</groupId>
             <artifactId>wiremock-test-utils</artifactId>
