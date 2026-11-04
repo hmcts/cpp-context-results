@@ -26,10 +26,18 @@ public class EventGridPublisher implements EventGridService {
     @Value(key = "eventGridTopicKey", defaultValue = "test_key")
     private String eventgridTopicKey;
 
+    @Inject
+    @Value(key = "eventGridPublishingEnabled", defaultValue = "true")
+    private boolean eventGridPublishingEnabled = true;
+
     private EventGridPublisherClient<EventGridEvent> eventGridPublisherClient;
 
     @PostConstruct
     public void setup() {
+        if (isPublishingDisabled()) {
+            LOGGER.info("Event Grid publishing is disabled");
+            return;
+        }
         final AzureKeyCredential azureKeyCredential = new AzureKeyCredential(eventgridTopicKey);
         eventGridPublisherClient = new EventGridPublisherClientBuilder()
                 .endpoint(eventgridTopicEndpoint)
@@ -70,7 +78,7 @@ public class EventGridPublisher implements EventGridService {
     }
 
     private boolean publishResults(final String hearingId, final Object object, final String eventType) {
-        if ("localhost".equals(eventgridTopicEndpoint)) {
+        if (isPublishingDisabled()) {
             return true;
         }
         try {
@@ -88,5 +96,9 @@ public class EventGridPublisher implements EventGridService {
         }
         return true;
 
+    }
+
+    private boolean isPublishingDisabled() {
+        return !eventGridPublishingEnabled || "localhost".equals(eventgridTopicEndpoint);
     }
 }
