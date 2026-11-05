@@ -4,7 +4,6 @@ import static java.lang.String.format;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static jakarta.transaction.Transactional.TxType.REQUIRES_NEW;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
@@ -18,6 +17,7 @@ import uk.gov.moj.cpp.system.documentgenerator.client.DocumentGeneratorClientPro
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
@@ -131,7 +131,7 @@ public class DocumentGeneratorService {
 
 
     private String getTimeStampAmendedFileName(final String fileName) {
-        return format("%s_%s.pdf", fileName, new UtcClock().now().format(TIMESTAMP_FORMATTER));
+        return format("%s_%s.pdf", fileName, ZonedDateTime.now().format(TIMESTAMP_FORMATTER));
     }
 
     private UUID getSystemUserUuid() {

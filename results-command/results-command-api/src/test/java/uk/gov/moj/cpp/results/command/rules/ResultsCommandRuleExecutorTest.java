@@ -2,6 +2,8 @@ package uk.gov.moj.cpp.results.command.rules;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -17,6 +19,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.kie.api.KieServices;
 import org.kie.api.runtime.ExecutionResults;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -84,5 +87,16 @@ public class ResultsCommandRuleExecutorTest extends BaseDroolsAccessControlTest 
             this.actionName = actionName;
             this.allowedUserGroups = allowedUserGroups;
         }
+    }
+
+    @Test
+    public void chd11_commandApiKieBase_should_load_rules() {
+        assertThat(ruleCountIn("COMMAND_API"), greaterThan(0L));
+    }
+
+    private long ruleCountIn(final String kieBaseName) {
+        return KieServices.get().getKieClasspathContainer().getKieBase(kieBaseName).getKiePackages().stream()
+                .mapToLong(kiePackage -> kiePackage.getRules().size())
+                .sum();
     }
 }

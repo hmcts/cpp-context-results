@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event;
 
+import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.toList;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
@@ -13,7 +14,6 @@ import uk.gov.justice.results.courts.InformantRegisterNotified;
 import uk.gov.justice.results.courts.InformantRegisterNotifiedV2;
 import uk.gov.justice.results.courts.InformantRegisterGeneratedV2;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -92,7 +92,7 @@ public class InformantRegisterEventListener {
     public void generateInformantRegister(final JsonEnvelope event) {
         final JsonObject payload = event.payloadAsJsonObject();
         final InformantRegisterGenerated informantRegisterGenerated = jsonObjectToObjectConverter.convert(payload, InformantRegisterGenerated.class);
-        final ZonedDateTime currentDateTime = new UtcClock().now();
+        final ZonedDateTime currentDateTime = now();
 
         final List<InformantRegisterDocumentRequest> documentRequests = informantRegisterGenerated.getInformantRegisterDocumentRequests();
         if (documentRequests == null || documentRequests.isEmpty()) {
@@ -112,7 +112,7 @@ public class InformantRegisterEventListener {
     public void generateInformantRegisterV2(final JsonEnvelope event) {
         final JsonObject payload = event.payloadAsJsonObject();
         final InformantRegisterGeneratedV2 informantRegisterGenerated = jsonObjectToObjectConverter.convert(payload, InformantRegisterGeneratedV2.class);
-        final ZonedDateTime currentDateTime = new UtcClock().now();
+        final ZonedDateTime currentDateTime = now();
 
         final List<uk.gov.justice.results.courts.informantRegisterDocument.InformantRegisterDocumentRequest> documentRequests = informantRegisterGenerated.getInformantRegisterDocumentRequests();
         if (documentRequests == null || documentRequests.isEmpty()) {
@@ -171,7 +171,7 @@ public class InformantRegisterEventListener {
         informantRegisters.forEach(informantRegisterEntity -> {
                     informantRegisterEntity.setStatus(NOTIFIED);
                     informantRegisterEntity.setFileId(fileId);
-                    informantRegisterEntity.setProcessedOn(new UtcClock().now());
+                    informantRegisterEntity.setProcessedOn(now());
                 }
         );
     }

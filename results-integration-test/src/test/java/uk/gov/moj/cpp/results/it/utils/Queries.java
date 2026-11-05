@@ -2,7 +2,6 @@ package uk.gov.moj.cpp.results.it.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.test.matchers.BeanMatcher;
 
 import java.time.LocalDateTime;
@@ -14,12 +13,12 @@ public class Queries {
 
     public static <T> void pollForMatch(final long timeoutInSeconds, final long pollPeriodMillis, Supplier<T> query, final BeanMatcher<T> resultMatcher) {
 
-        final LocalDateTime expiryTime = new UtcClock().now().toLocalDateTime().plusSeconds(timeoutInSeconds);
+        final LocalDateTime expiryTime = LocalDateTime.now().plusSeconds(timeoutInSeconds);
 
         boolean matched = false;
 
         T latestValue = null;
-        for (; !matched && new UtcClock().now().toLocalDateTime().isBefore(expiryTime); ) {
+        for (; !matched && LocalDateTime.now().isBefore(expiryTime); ) {
             try {
                 TimeUnit.MILLISECONDS.sleep(pollPeriodMillis);
             } catch (InterruptedException e) {

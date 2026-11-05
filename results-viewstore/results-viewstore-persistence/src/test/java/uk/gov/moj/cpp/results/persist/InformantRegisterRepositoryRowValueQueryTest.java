@@ -1,12 +1,14 @@
 package uk.gov.moj.cpp.results.persist;
 
+import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.time.LocalDate;
@@ -63,7 +65,7 @@ public class InformantRegisterRepositoryRowValueQueryTest {
         informantRegisterRepository.entityManager = entityManager;
 
         entityManager.getTransaction().begin();
-        final ZonedDateTime registerTime = new UtcClock().now();
+        final ZonedDateTime registerTime = now();
         informantRegisterRepository.save(createInformantRegister(registerTime));
         informantRegisterRepository.save(createInformantRegister(registerTime.plusHours(1)));
     }
@@ -112,5 +114,19 @@ public class InformantRegisterRepositoryRowValueQueryTest {
         informantRegisterEntity.setRegisterTime(registerTime);
         informantRegisterEntity.setHearingId(HEARING_ID);
         return informantRegisterEntity;
+    }
+
+    @Test
+    public void chd14_finderWithUnqualifiedAttributes_should_return_matching_rows() {
+        final InformantRegisterEntity generated = createInformantRegister(now());
+        generated.setStatus(GENERATED);
+        informantRegisterRepository.save(generated);
+        entityManager.flush();
+
+        final List<InformantRegisterEntity> informantRegisterEntities =
+                informantRegisterRepository.findByProsecutionAuthorityIdAndStatusGenerated(PROSECUTION_AUTHORITY_ID);
+
+        assertThat(informantRegisterEntities, hasSize(1));
+        assertThat(informantRegisterEntities.get(0).getId(), is(generated.getId()));
     }
 }

@@ -56,7 +56,6 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.aggregate.AggregateService;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.core.requester.Requester;
@@ -554,7 +553,7 @@ public class InformantRegisterHandlerTest {
         final InformantRegisterDocumentRequest informantRegisterDocumentRequest = informantRegisterDocumentRequest()
                 .withGroupId(groupId)
                 .withHearingId(randomUUID())
-                .withHearingDate(new UtcClock().now())
+                .withHearingDate(ZonedDateTime.now())
                 .withRegisterDate(REGISTER_DATE)
                 .withProsecutionAuthorityId(PROSECUTION_AUTHORITY_ID)
                 .withProsecutionAuthorityCode("prosecutionAuthorityCode")

@@ -4,11 +4,13 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,11 +39,8 @@ public class NcesEmailNotificationDetailsRepositoryTest {
 
     @Test
     public void shouldFindTheNcesEmailNotificationDetailsByMaterialId() {
-        final Optional<NcesEmailNotificationDetailsEntity> result =
+        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity =
                 ncesEmailNotificationDetailsRepository.findByMaterialId(ncesEmailNotificationDetails.getMaterialId());
-
-        assertThat(result.isPresent(), is(true));
-        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = result.get();
         assertThat(ncesEmailNotificationDetailsEntity.getId(), is(ncesEmailNotificationDetails.getId()));
         assertThat(ncesEmailNotificationDetailsEntity.getMasterDefendantId(), is(ncesEmailNotificationDetails.getMasterDefendantId()));
         assertThat(ncesEmailNotificationDetailsEntity.getMaterialId(), is(ncesEmailNotificationDetails.getMaterialId()));
@@ -80,5 +79,21 @@ public class NcesEmailNotificationDetailsRepositoryTest {
         ncesEmailNotificationDetailsEntity.setSubject("subject");
         ncesEmailNotificationDetailsEntity.setSendTo("mail@email.com");
         return ncesEmailNotificationDetailsEntity;
+    }
+
+    @Test
+    public void chd06_findByMaterialId_noMatch_should_throw_NoResultException() {
+        assertThrows(NoResultException.class,
+                () -> ncesEmailNotificationDetailsRepository.findByMaterialId(randomUUID()));
+    }
+
+    @Test
+    public void chd06_findByMaterialId_twoRowsForMaterial_should_throw_NonUniqueResultException() {
+        final NcesEmailNotificationDetailsEntity duplicate = createNcesEmailNotificationDetailsEntity();
+        duplicate.setMaterialId(ncesEmailNotificationDetails.getMaterialId());
+        ncesEmailNotificationDetailsRepository.save(duplicate);
+
+        assertThrows(NonUniqueResultException.class,
+                () -> ncesEmailNotificationDetailsRepository.findByMaterialId(ncesEmailNotificationDetails.getMaterialId()));
     }
 }

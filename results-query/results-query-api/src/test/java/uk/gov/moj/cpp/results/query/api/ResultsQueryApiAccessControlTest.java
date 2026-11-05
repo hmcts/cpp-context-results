@@ -1,6 +1,8 @@
 package uk.gov.moj.cpp.results.query.api;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.BDDMockito.given;
 import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_ASSOCIATE;
 import static uk.gov.moj.cpp.results.query.api.accesscontrol.UserGroupType.COURT_CLERKS;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.kie.api.KieServices;
 import org.kie.api.runtime.ExecutionResults;
 import org.mockito.Mock;
 
@@ -189,4 +192,14 @@ public class ResultsQueryApiAccessControlTest extends BaseDroolsAccessControlTes
         return Collections.singletonMap(UserAndGroupProvider.class, mockUserAndGroupProvider);
     }
 
+    @Test
+    public void chd11_queryApiKieBase_should_load_rules() {
+        assertThat(ruleCountIn("QUERY_API"), greaterThan(0L));
+    }
+
+    private long ruleCountIn(final String kieBaseName) {
+        return KieServices.get().getKieClasspathContainer().getKieBase(kieBaseName).getKiePackages().stream()
+                .mapToLong(kiePackage -> kiePackage.getRules().size())
+                .sum();
+    }
 }

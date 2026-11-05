@@ -2,6 +2,7 @@ package uk.gov.moj.cpp.results.domain.aggregate.utils;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -23,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import uk.gov.justice.services.common.util.UtcClock;
 
 public class OffenceResultsResolverTest {
 
@@ -44,7 +44,7 @@ public class OffenceResultsResolverTest {
     public void givenCaseOffencesNonFine_whenAmendedWithNonFine_shouldResolveOriginalOffenceResults() {
         final UUID offenceId1 = randomUUID();
         final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap = Map.of(offenceId1, offenceResultsDetails().withOffenceId(offenceId1)
-                .withIsFinancial(FALSE).withCreatedTime(new UtcClock().now().minusHours(3)).build());
+                .withIsFinancial(FALSE).withCreatedTime(now().minusHours(3)).build());
 
         final List<OffenceResults> newOffenceResults = List.of(OffenceResults.offenceResults().withOffenceId(offenceId1).withIsFinancial(FALSE).build());
 
@@ -57,7 +57,7 @@ public class OffenceResultsResolverTest {
     public void givenCaseOffencesFine_whenAmendedWithFine_shouldResolveOriginalOffenceResults() {
         final UUID offenceId1 = randomUUID();
         final Map<UUID, OffenceResultsDetails> previousCaseOffenceResultsMap = Map.of(offenceId1, offenceResultsDetails().withOffenceId(offenceId1)
-                .withIsFinancial(TRUE).withCreatedTime(new UtcClock().now().minusHours(3)).build());
+                .withIsFinancial(TRUE).withCreatedTime(now().minusHours(3)).build());
 
         final List<OffenceResults> newOffenceResults = List.of(OffenceResults.offenceResults().withOffenceId(offenceId1).withIsFinancial(TRUE).build());
 
@@ -77,12 +77,12 @@ public class OffenceResultsResolverTest {
                 Arguments.of(
                         "Case-Fine-Fine > App1 Fine-Fine > App2 Fine-Fine",
                         Map.of(offenceId1, offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build(),
+                                        .withCreatedTime(now().minusHours(3)).build(),
                                 offenceId2, offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build()),
+                                        .withCreatedTime(now().minusHours(3)).build()),
                         Map.of(randomUUID(), List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(TRUE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build())),
+                                .withCreatedTime(now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
+                                .withCreatedTime(now().minusHours(2)).build())),
 
                         List.of(offenceResults().withOffenceId(offenceId1).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(TRUE).build(),
                                 offenceResults().withOffenceId(offenceId2).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(TRUE).build()),
@@ -92,12 +92,12 @@ public class OffenceResultsResolverTest {
                 Arguments.of(
                         "Case-Fine-Fine > App1 Fine-Fine > App2 Fine-Non-fine",
                         Map.of(offenceId1, offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build(),
+                                        .withCreatedTime(now().minusHours(3)).build(),
                                 offenceId2, offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build()),
+                                        .withCreatedTime(now().minusHours(3)).build()),
                         Map.of(randomUUID(), List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(TRUE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build())),
+                                .withCreatedTime(now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
+                                .withCreatedTime(now().minusHours(2)).build())),
 
                         List.of(offenceResults().withOffenceId(offenceId1).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(TRUE).build(),
                                 offenceResults().withOffenceId(offenceId2).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(FALSE).build()),
@@ -107,12 +107,12 @@ public class OffenceResultsResolverTest {
                 Arguments.of(
                         "Case-Fine-Fine > App1 Non-Fine-Fine > App2 Fine-Fine",
                         Map.of(offenceId1, offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build(),
+                                        .withCreatedTime(now().minusHours(3)).build(),
                                 offenceId2, offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build()),
+                                        .withCreatedTime(now().minusHours(3)).build()),
                         Map.of(randomUUID(), List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(FALSE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(FALSE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build())),
+                                .withCreatedTime(now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(FALSE)
+                                .withCreatedTime(now().minusHours(2)).build())),
 
                         List.of(offenceResults().withOffenceId(offenceId1).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(TRUE).build(),
                                 offenceResults().withOffenceId(offenceId2).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(TRUE).build()),
@@ -122,12 +122,12 @@ public class OffenceResultsResolverTest {
                 Arguments.of(
                         "Case-Fine-Fine > App1 Non-Fine-Fine > App2 Non-Fine-Fine",
                         Map.of(offenceId1, offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build(),
+                                        .withCreatedTime(now().minusHours(3)).build(),
                                 offenceId2, offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(TRUE)
-                                        .withCreatedTime(new UtcClock().now().minusHours(3)).build()),
+                                        .withCreatedTime(now().minusHours(3)).build()),
                         Map.of(randomUUID(), List.of(offenceResultsDetails().withOffenceId(offenceId1).withIsFinancial(FALSE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(FALSE)
-                                .withCreatedTime(new UtcClock().now().minusHours(2)).build())),
+                                .withCreatedTime(now().minusHours(2)).build(), offenceResultsDetails().withOffenceId(offenceId2).withIsFinancial(FALSE)
+                                .withCreatedTime(now().minusHours(2)).build())),
 
                         List.of(offenceResults().withOffenceId(offenceId1).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(FALSE).build(),
                                 offenceResults().withOffenceId(offenceId2).withApplicationId(newApplicationId).withApplicationType("type").withIsFinancial(TRUE).build()),

@@ -26,7 +26,6 @@ import uk.gov.justice.core.courts.DocumentCategory;
 import uk.gov.justice.core.courts.Material;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
@@ -39,6 +38,7 @@ import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -165,7 +165,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
                 .build();
 
         final Material material = Material.material().withId(materialId)
-                .withReceivedDateTime(new UtcClock().now())
+                .withReceivedDateTime(ZonedDateTime.now())
                 .build();
 
         return CourtDocument.courtDocument()

@@ -18,12 +18,12 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.corr
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
-import uk.gov.justice.services.common.util.UtcClock;
 
 class NewNonAppealAppsDeniedNotificationRuleTest {
     private final NewStatdecOrReopenAppDeniedNotificationRule rule = new NewStatdecOrReopenAppDeniedNotificationRule();
@@ -58,14 +58,14 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now()).build()))
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
                 .build();
@@ -109,14 +109,14 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now()).build()))
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
                 .build();
@@ -160,14 +160,14 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now()).build()))
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
                 .build();
@@ -211,14 +211,14 @@ class NewNonAppealAppsDeniedNotificationRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456788")
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now().minusHours(2)).build()))
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now().minusHours(2)).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.build().getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
-                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(new UtcClock().now()).build()))
+                                        .withCreatedTime(ZonedDateTime.now())
+                                        .withOffenceResultsDetailsList(List.of(offenceResultsDetails().withOffenceId(offenceId).withCreatedTime(ZonedDateTime.now()).build()))
                                         .withAccountNumber("AC123456789")
                                         .build()))
                 .build();

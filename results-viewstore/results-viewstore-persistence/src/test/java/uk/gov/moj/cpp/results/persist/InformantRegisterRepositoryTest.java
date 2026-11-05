@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.persist;
 
+import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -7,7 +8,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.GENERATED;
 import static uk.gov.moj.cpp.domains.constant.RegisterStatus.RECORDED;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
@@ -30,8 +30,8 @@ public class InformantRegisterRepositoryTest {
     private static final UUID PROSECUTION_AUTHORITY_ID = randomUUID();
     private static final String PROSECUTION_AUTHORITY_OU_CODE = randomAlphanumeric(10);
     private static final UUID HEARING_ID = randomUUID();
-    private static final ZonedDateTime REGISTER_TIME_1 = new UtcClock().now();
-    private static final ZonedDateTime REGISTER_TIME_2 = new UtcClock().now().plusHours(1);
+    private static final ZonedDateTime REGISTER_TIME_1 = now();
+    private static final ZonedDateTime REGISTER_TIME_2 = now().plusHours(1);
 
     @RegisterExtension
     static HibernateTestEntityManagerProvider hibernateTestEntityManagerProvider =
@@ -64,7 +64,7 @@ public class InformantRegisterRepositoryTest {
 
     @Test
     public void shouldFindInformantRegisterRequestsByProsecutionAuthorityAndRegisterDate() {
-        final ZonedDateTime startDate = new UtcClock().now().plusDays(3);
+        final ZonedDateTime startDate = ZonedDateTime.now().plusDays(3);
         for (int i = 0; i < 5; i++) {
             informantRegisterRepository.save(createInformantRegister(startDate.plusDays(i)));
         }

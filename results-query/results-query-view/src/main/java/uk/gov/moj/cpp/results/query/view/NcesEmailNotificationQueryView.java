@@ -8,6 +8,7 @@ import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.NcesEmailNotificationDetailsRepository;
+import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
 import java.util.UUID;
 
@@ -32,9 +33,8 @@ public class NcesEmailNotificationQueryView {
         LOGGER.info("Received getNcesEmailNotificationDetails view {}", envelope.toObfuscatedDebugString());
         final UUID materialId = UUID.fromString(envelope.payloadAsJsonObject().getString("materialId"));
 
-        final JsonObject jsonObject = ncesEmailNotificationDetailsRepository.findByMaterialId(materialId)
-                .map(objectToJsonObjectConverter::convert)
-                .orElse(null);
+        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = ncesEmailNotificationDetailsRepository.findByMaterialId(materialId);
+        final JsonObject jsonObject = objectToJsonObjectConverter.convert(ncesEmailNotificationDetailsEntity);
         return envelopeFrom(envelope.metadata(), jsonObject);
     }
 }

@@ -50,7 +50,6 @@ import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.ZonedDateTimes;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.aggregate.AggregateService;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.eventsourcing.source.core.EventSource;
@@ -250,7 +249,7 @@ public class StagingEnforcementResponseHandlerTest {
                         .build());
         HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                                                .withCreatedTime(new UtcClock().now())
+                                                .withCreatedTime(ZonedDateTime.now())
                                                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                                                         .withHearingId(randomUUID())
                                                         .withMasterDefendantId(masterDefendantId)
@@ -260,7 +259,7 @@ public class StagingEnforcementResponseHandlerTest {
                                                         .build())
                                                 .build());
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                .withCreatedTime(new UtcClock().now())
+                .withCreatedTime(ZonedDateTime.now())
                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                         .withHearingId(randomUUID())
                         .withMasterDefendantId(masterDefendantId)
@@ -311,7 +310,7 @@ public class StagingEnforcementResponseHandlerTest {
                         .add("caseUrns", createCaseUrns()).build());
         HearingFinancialResultsAggregate hearingFinancialResultsAggregate = new HearingFinancialResultsAggregate();
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                .withCreatedTime(new UtcClock().now())
+                .withCreatedTime(ZonedDateTime.now())
                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                         .withHearingId(randomUUID())
                         .withMasterDefendantId(masterDefendantId)
@@ -320,7 +319,7 @@ public class StagingEnforcementResponseHandlerTest {
                         .build())
                 .build());
         hearingFinancialResultsAggregate.apply(HearingFinancialResultsTracked.hearingFinancialResultsTracked()
-                .withCreatedTime(new UtcClock().now())
+                .withCreatedTime(ZonedDateTime.now())
                 .withHearingFinancialResultRequest(HearingFinancialResultRequest.hearingFinancialResultRequest()
                         .withHearingId(randomUUID())
                         .withMasterDefendantId(masterDefendantId)

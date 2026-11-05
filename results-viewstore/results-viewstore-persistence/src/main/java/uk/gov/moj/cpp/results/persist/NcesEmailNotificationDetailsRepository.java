@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.persist;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,11 +29,10 @@ public class NcesEmailNotificationDetailsRepository {
                 : entityManager.merge(ncesEmailNotificationDetailsEntity));
     }
 
-    public Optional<NcesEmailNotificationDetailsEntity> findByMaterialId(final UUID materialId) {
+    public NcesEmailNotificationDetailsEntity findByMaterialId(final UUID materialId) {
         return entityManager.createQuery(
                         "select n from NcesEmailNotificationDetailsEntity n where n.materialId = :materialId", NcesEmailNotificationDetailsEntity.class)
                 .setParameter("materialId", materialId)
-                .getResultStream()
-                .findFirst();
+                .getSingleResult();
     }
 }

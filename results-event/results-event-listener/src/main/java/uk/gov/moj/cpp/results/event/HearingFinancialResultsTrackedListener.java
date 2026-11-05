@@ -5,13 +5,13 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_LISTENER;
 
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
@@ -54,9 +54,9 @@ public class HearingFinancialResultsTrackedListener {
         // account_number is not set here as it may not be available if GOB happens in one go after multiple amendments
         defendantGobAccountsEntity.setCaseReferences(convertCaseReferencesToJsonArray(hearingFinancialResultRequest.getProsecutionCaseReferences()).toString());
         defendantGobAccountsEntity.setAccountRequestTime(hearingFinancialResultsTracked.getCreatedTime());
-        defendantGobAccountsEntity.setCreatedTime(new UtcClock().now());
+        defendantGobAccountsEntity.setCreatedTime(ZonedDateTime.now());
         defendantGobAccountsEntity.setHearingId(hearingFinancialResultRequest.getHearingId());
-        defendantGobAccountsEntity.setUpdatedTime(new UtcClock().now());
+        defendantGobAccountsEntity.setUpdatedTime(ZonedDateTime.now());
         return defendantGobAccountsEntity;
     }
 

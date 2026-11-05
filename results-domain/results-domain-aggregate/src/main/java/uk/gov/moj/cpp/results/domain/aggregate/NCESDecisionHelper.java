@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
 
-import static java.time.ZoneOffset.UTC;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
@@ -232,7 +231,7 @@ public class NCESDecisionHelper {
                 .withApplicationResultType(result.getApplicationResultType())
                 .withApplicationResultsCategory(result.getApplicationResultsCategory())
                 .withOffenceResultsCategory(result.getOffenceResultsCategory())
-                .withCreatedTime(ZonedDateTime.now(UTC))
+                .withCreatedTime(ZonedDateTime.now())
                 .build())
         );
         return applicationResults;
