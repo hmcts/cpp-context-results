@@ -22,8 +22,8 @@ import static uk.gov.moj.cpp.results.domain.aggregate.utils.ResultCategoryType.I
 
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import java.time.ZonedDateTime;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

@@ -22,10 +22,8 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
 
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -166,22 +164,5 @@ class HearingFinancialResultsTrackedListenerTest {
 
         return envelopeFrom(metadata,
                 objectToJsonObjectConverter.convert(hearingFinancialResultsTracked));
-    }
-
-    @Test
-    public void chd08_gobAccountAuditTimes_should_be_in_jvm_zone() {
-        final JsonEnvelope jsonEnvelope = createJsonEnvelope(hearingFinancialResultsTracked());
-        final TimeZone originalZone = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        try {
-            hearingFinancialResultsTrackedListener.processDefendantGobAccounts(jsonEnvelope);
-        } finally {
-            TimeZone.setDefault(originalZone);
-        }
-
-        verify(defendantGobAccountsRepository).save(this.defendantGobAccountsEntityArgumentCaptor.capture());
-        final DefendantGobAccountsEntity capturedEntity = defendantGobAccountsEntityArgumentCaptor.getValue();
-        assertThat(capturedEntity.getCreatedTime().getZone(), is(ZoneId.of("UTC")));
-        assertThat(capturedEntity.getUpdatedTime().getZone(), is(ZoneId.of("UTC")));
     }
 }

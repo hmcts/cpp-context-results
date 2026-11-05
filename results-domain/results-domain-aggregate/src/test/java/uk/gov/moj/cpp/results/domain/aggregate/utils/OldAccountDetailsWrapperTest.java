@@ -8,8 +8,8 @@ import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.moj.cpp.results.domain.event.OldAccountDetails.oldAccountDetails;
 
 import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
-import java.time.ZonedDateTime;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 

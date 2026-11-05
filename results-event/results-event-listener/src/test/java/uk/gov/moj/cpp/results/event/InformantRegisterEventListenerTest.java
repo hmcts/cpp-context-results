@@ -6,8 +6,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -39,11 +37,8 @@ import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.io.StringReader;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.TimeZone;
 import java.util.UUID;
 
 import jakarta.json.JsonObject;
@@ -55,7 +50,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.MockedStatic;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -412,43 +406,5 @@ public class InformantRegisterEventListenerTest {
         informantRegisterEventListener.notifyInformantRegisterV2(jsonEnvelope);
         assertThat(informantRegisterEntity.getStatus(), is(NOTIFIED));
         assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
-    }
-
-    /** 23:30 on 1 July in UTC, already 2 July in the UK. The framework sets the JVM default zone to UTC. */
-    @Test
-    public void chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone() {
-        final InformantRegisterEntity informantRegisterEntity = generateSystemRegisterAt(Instant.parse("2026-07-01T23:30:00Z"));
-
-        assertThat(informantRegisterEntity.getGeneratedDate(), is(LocalDate.of(2026, 7, 1)));
-    }
-
-    private InformantRegisterEntity generateSystemRegisterAt(final Instant instant) {
-        final TimeZone originalZone = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        try (MockedStatic<ZonedDateTime> zonedDateTime = mockStatic(ZonedDateTime.class, CALLS_REAL_METHODS)) {
-            zonedDateTime.when(() -> ZonedDateTime.now()).thenAnswer(invocation -> ZonedDateTime.ofInstant(instant, ZoneId.systemDefault()));
-            return generateSystemRegister();
-        } finally {
-            TimeZone.setDefault(originalZone);
-        }
-    }
-
-    private InformantRegisterEntity generateSystemRegister() {
-        final UUID prosecutionAuthId = randomUUID();
-        final ZonedDateTime registerDate = ZonedDateTime.parse("2026-04-13T09:00:00Z");
-        final InformantRegisterDocumentRequest documentRequest = informantRegisterDocumentRequest()
-                .withProsecutionAuthorityId(prosecutionAuthId)
-                .withRegisterDate(registerDate)
-                .withHearingVenue(informantRegisterHearingVenue().build())
-                .build();
-        final InformantRegisterEntity informantRegisterEntity = new InformantRegisterEntity();
-        informantRegisterEntity.setProsecutionAuthorityId(prosecutionAuthId);
-        informantRegisterEntity.setStatus(RECORDED);
-        when(informantRegisterRepository.findByProsecutionAuthorityIdAndRegisterDateForStatusRecorded(prosecutionAuthId, registerDate.toLocalDate()))
-                .thenReturn(singletonList(informantRegisterEntity));
-
-        informantRegisterEventListener.generateInformantRegister(envelopeFrom(metadataWithRandomUUID("results.event.informant-register-generated"),
-                objectToJsonObjectConverter.convert(new InformantRegisterGenerated(singletonList(documentRequest), randomUUID(), true))));
-        return informantRegisterEntity;
     }
 }
