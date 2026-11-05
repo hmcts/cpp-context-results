@@ -18,7 +18,6 @@ import uk.gov.justice.core.courts.external.ApiPerson;
 import uk.gov.justice.core.courts.external.ApiPersonDefendant;
 import uk.gov.justice.core.courts.external.ApiProsecutionCase;
 import uk.gov.justice.core.courts.external.ApiProsecutionCaseIdentifier;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
 
 import java.time.ZonedDateTime;
@@ -47,12 +46,12 @@ public class TestTemplates {
                 .withType(HearingType.hearingType().withDescription(STRING.next()).build())
                 .withHearingDays(asList(
                         HearingDay.hearingDay()
-                                .withSittingDay(new UtcClock().now())
+                                .withSittingDay(ZonedDateTime.now())
                                 .build()
                 ))
                 .withCourtCentre(CourtCentre.courtCentre().withId(UUID.randomUUID()).build())
                 .build();
-        final ZonedDateTime sharedTime = new UtcClock().now();
+        final ZonedDateTime sharedTime = ZonedDateTime.now();
 
         HearingResultsAdded result = new HearingResultsAdded(hearing, sharedTime);
 

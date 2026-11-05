@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.results.event;
 
+import static java.time.ZonedDateTime.now;
+import static java.time.ZoneOffset.UTC;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -15,7 +17,6 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
@@ -123,7 +124,7 @@ class HearingFinancialResultsTrackedListenerTest {
 
         return HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                 .withHearingFinancialResultRequest(request)
-                .withCreatedTime(new UtcClock().now())
+                .withCreatedTime(now(UTC))
                 .build();
     }
 
@@ -137,7 +138,7 @@ class HearingFinancialResultsTrackedListenerTest {
 
         return HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                 .withHearingFinancialResultRequest(request)
-                .withCreatedTime(new UtcClock().now())
+                .withCreatedTime(now(UTC))
                 .build();
     }
 
@@ -153,7 +154,7 @@ class HearingFinancialResultsTrackedListenerTest {
 
         return HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                 .withHearingFinancialResultRequest(request)
-                .withCreatedTime(new UtcClock().now())
+                .withCreatedTime(now(UTC))
                 .build();
     }
 

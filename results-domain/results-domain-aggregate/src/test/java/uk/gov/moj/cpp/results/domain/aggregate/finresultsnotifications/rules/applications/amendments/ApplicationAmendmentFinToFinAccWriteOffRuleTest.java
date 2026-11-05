@@ -11,10 +11,10 @@ import static uk.gov.justice.hearing.courts.OffenceResultsDetails.offenceResults
 import static uk.gov.moj.cpp.results.domain.aggregate.utils.CorrelationItem.correlationItem;
 
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.rules.ResultNotificationRuleInputBuilder;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -56,13 +56,13 @@ class ApplicationAmendmentFinToFinAccWriteOffRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456789OLD")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
+                                        .withCreatedTime(ZonedDateTime.now())
                                         .withAccountNumber("AC123456789")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
                                         .build()))
@@ -110,13 +110,13 @@ class ApplicationAmendmentFinToFinAccWriteOffRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456789OLD")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
+                                        .withCreatedTime(ZonedDateTime.now())
                                         .withAccountNumber("AC123456789NEW")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId).build()))
                                         .build()))
@@ -179,13 +179,13 @@ class ApplicationAmendmentFinToFinAccWriteOffRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456789OLD")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
+                                        .withCreatedTime(ZonedDateTime.now())
                                         .withAccountNumber("AC123456789")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build()))
                                         .build()))
@@ -245,14 +245,14 @@ class ApplicationAmendmentFinToFinAccWriteOffRuleTest {
                 .withCorrelationItemList(
                         List.of(correlationItem()
                                         .withAccountCorrelationId(randomUUID())
-                                        .withCreatedTime(new UtcClock().now().minusHours(2))
+                                        .withCreatedTime(ZonedDateTime.now().minusHours(2))
                                         .withAccountNumber("AC123456789OLD")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build(),
                                                 OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId2).build()))
                                         .build(),
                                 correlationItem()
                                         .withAccountCorrelationId(trackRequest.getAccountCorrelationId())
-                                        .withCreatedTime(new UtcClock().now())
+                                        .withCreatedTime(ZonedDateTime.now())
                                         .withAccountNumber("AC123456789")
                                         .withOffenceResultsDetailsList(List.of(OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId1).build(),
                                                 OffenceResultsDetails.offenceResultsDetails().withOffenceId(offenceId2).build()))

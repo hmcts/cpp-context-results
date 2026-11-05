@@ -7,8 +7,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.moj.cpp.results.domain.event.OldAccountDetails.oldAccountDetails;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.domain.event.OldAccountDetails;
+import java.time.ZonedDateTime;
 
 import java.util.List;
 import java.util.UUID;
@@ -70,10 +70,10 @@ public class OldAccountDetailsWrapperTest {
         final UUID accountCorrelationId2 = randomUUID();
         final List<OldAccountDetails> oldAccountCorrelations = List.of(oldAccountDetails()
                         .withAccountCorrelationId(accountCorrelationId1)
-                        .withCreatedTime(new UtcClock().now().minusHours(1)).build(),
+                        .withCreatedTime(ZonedDateTime.now().minusHours(1)).build(),
                 oldAccountDetails()
                         .withAccountCorrelationId(accountCorrelationId2)
-                        .withCreatedTime(new UtcClock().now()).build());
+                        .withCreatedTime(ZonedDateTime.now()).build());
 
         final OldAccountDetailsWrapper oldAccountDetailsWrapper = new OldAccountDetailsWrapper(oldAccountCorrelations);
 

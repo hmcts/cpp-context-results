@@ -23,7 +23,7 @@ import uk.gov.moj.cpp.results.event.helper.resultdefinition.ResultDefinition;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +33,7 @@ import java.util.UUID;
 public class TestTemplate {
 
     public static final UUID SESSION_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d");
-    public static final ZonedDateTime DATE_AND_TIME_OF_SESSION = ZonedDateTime.of(LocalDate.of(2019, 5, 2), LocalTime.of(12, 3, 10), ZoneOffset.UTC);
+    public static final ZonedDateTime DATE_AND_TIME_OF_SESSION = ZonedDateTime.of(LocalDate.of(2019, 5, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault());
 
     private static final UUID RESULT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6743d");
     private static final UUID PROMPT_ID = fromString("e4003b92-419b-4e47-b3f9-89a4bbd6741d");
@@ -233,7 +233,7 @@ public class TestTemplate {
     private static BasePersonDetail getBuildParentGuardianDetails() {
         return basePersonDetail()
                 .withAddress(buildAddress())
-                .withBirthDate(ZonedDateTime.of(LocalDate.of(2019, 2, 2), LocalTime.of(12, 3, 10), ZoneOffset.UTC))
+                .withBirthDate(ZonedDateTime.of(LocalDate.of(2019, 2, 2), LocalTime.of(12, 3, 10), ZoneId.systemDefault()))
                 .withEmailAddress1("parentguardianmemail1@random.random")
                 .withEmailAddress2("parentguardianemail2@random.random")
                 .withFirstName("ParentGuardianFirstName")

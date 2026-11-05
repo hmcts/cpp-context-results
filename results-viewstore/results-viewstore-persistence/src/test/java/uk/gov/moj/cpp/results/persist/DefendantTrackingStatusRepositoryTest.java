@@ -1,11 +1,11 @@
 package uk.gov.moj.cpp.results.persist;
 
+import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.DefendantTrackingStatus;
 
@@ -30,17 +30,17 @@ public class DefendantTrackingStatusRepositoryTest {
     private static final UUID OFFENCE_ID3 = randomUUID();
     private static final UUID OFFENCE_ID4 = randomUUID();
 
-    private static final ZonedDateTime EM_LAST_MODIFIED_OFF1_DEF1 = new UtcClock().now().minusDays(1);
-    private static final ZonedDateTime EM_LAST_MODIFIED_OFF2_DEF1 = new UtcClock().now().minusDays(2);
+    private static final ZonedDateTime EM_LAST_MODIFIED_OFF1_DEF1 = now().minusDays(1);
+    private static final ZonedDateTime EM_LAST_MODIFIED_OFF2_DEF1 = now().minusDays(2);
 
-    private static final ZonedDateTime EM_LAST_MODIFIED_OFF3_DEF2 = new UtcClock().now().minusDays(3);
-    private static final ZonedDateTime EM_LAST_MODIFIED_OFF4_DEF2 = new UtcClock().now().minusDays(4);
+    private static final ZonedDateTime EM_LAST_MODIFIED_OFF3_DEF2 = now().minusDays(3);
+    private static final ZonedDateTime EM_LAST_MODIFIED_OFF4_DEF2 = now().minusDays(4);
 
-    private static final ZonedDateTime WA_LAST_MODIFIED_OFF1_DEF1 = new UtcClock().now().minusDays(5);
-    private static final ZonedDateTime WA_LAST_MODIFIED_OFF2_DEF1 = new UtcClock().now().minusDays(6);
+    private static final ZonedDateTime WA_LAST_MODIFIED_OFF1_DEF1 = now().minusDays(5);
+    private static final ZonedDateTime WA_LAST_MODIFIED_OFF2_DEF1 = now().minusDays(6);
 
-    private static final ZonedDateTime WA_LAST_MODIFIED_OFF3_DEF2 = new UtcClock().now().minusDays(7);
-    private static final ZonedDateTime WA_LAST_MODIFIED_OFF4_DEF2 = new UtcClock().now().minusDays(8);
+    private static final ZonedDateTime WA_LAST_MODIFIED_OFF3_DEF2 = now().minusDays(7);
+    private static final ZonedDateTime WA_LAST_MODIFIED_OFF4_DEF2 = now().minusDays(8);
 
     @RegisterExtension
     static HibernateTestEntityManagerProvider hibernateTestEntityManagerProvider =
