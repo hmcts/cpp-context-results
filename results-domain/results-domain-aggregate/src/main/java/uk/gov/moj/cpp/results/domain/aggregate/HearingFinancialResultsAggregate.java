@@ -1,6 +1,6 @@
 package uk.gov.moj.cpp.results.domain.aggregate;
 
-import static java.time.ZoneOffset.UTC;
+import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -50,7 +50,6 @@ import uk.gov.justice.hearing.courts.HearingFinancialResultRequest;
 import uk.gov.justice.hearing.courts.HearingFinancialResultsTracked;
 import uk.gov.justice.hearing.courts.OffenceResults;
 import uk.gov.justice.hearing.courts.OffenceResultsDetails;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants;
 import uk.gov.moj.cpp.results.domain.aggregate.finresultsnotifications.ResultNotificationRule.RuleInput;
 import uk.gov.moj.cpp.results.domain.aggregate.utils.ApplicationMetadata;
@@ -231,7 +230,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
             builder.add(
                     HearingFinancialResultsTracked.hearingFinancialResultsTracked()
                             .withHearingFinancialResultRequest(hearingFinancialResultRequest)
-                            .withCreatedTime(ZonedDateTime.now(UTC))
+                            .withCreatedTime(ZonedDateTime.now())
                             .build());
         }
     }
@@ -374,7 +373,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withResultCode(resultFromRequest.getResultCode())
                 .withIsFinancial(resultFromRequest.getIsFinancial())
                 .withIsParentFlag(resultFromRequest.getIsParentFlag())
-                .withCreatedTime(ZonedDateTime.now(UTC))
+                .withCreatedTime(ZonedDateTime.now())
                 .withApplicationResultsCategory(resultFromRequest.getApplicationResultsCategory())
                 .withOffenceResultsCategory(resultFromRequest.getOffenceResultsCategory())
                 .build();
@@ -386,7 +385,7 @@ public class HearingFinancialResultsAggregate implements Aggregate {
                 .withAccountNumber(accountNumber)
                 .withMasterDefendantId(masterDefendantId)
                 .withCorrelationId(correlationId)
-                .withUpdatedTime(new UtcClock().now())
+                .withUpdatedTime(now())
                 .build();
         return apply(builder().add(hearingFinancialResultsUpdated).build());
     }

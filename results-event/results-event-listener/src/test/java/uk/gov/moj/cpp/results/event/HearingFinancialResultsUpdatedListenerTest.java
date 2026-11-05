@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import uk.gov.justice.core.courts.HearingFinancialResultsUpdated;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsEntity;
 import uk.gov.moj.cpp.results.persist.DefendantGobAccountsRepository;
@@ -44,7 +43,7 @@ class HearingFinancialResultsUpdatedListenerTest {
         UUID correlationId = randomUUID();
         UUID hearingId = randomUUID();
         String accountNumber = "TEST123";
-        ZonedDateTime accountRequestTime = new UtcClock().now();
+        ZonedDateTime accountRequestTime = ZonedDateTime.now();
         
         JsonEnvelope mockEnvelope = mock(JsonEnvelope.class);
         JsonObject mockPayload = mock(JsonObject.class);
@@ -77,7 +76,7 @@ class HearingFinancialResultsUpdatedListenerTest {
         UUID masterDefendantId = randomUUID();
         UUID correlationId = randomUUID();
         String accountNumber = "TEST123";
-        ZonedDateTime accountRequestTime = new UtcClock().now();
+        ZonedDateTime accountRequestTime = ZonedDateTime.now();
         
         JsonEnvelope mockEnvelope = mock(JsonEnvelope.class);
         JsonObject mockPayload = mock(JsonObject.class);

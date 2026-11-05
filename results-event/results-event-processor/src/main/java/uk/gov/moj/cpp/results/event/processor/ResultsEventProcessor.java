@@ -71,6 +71,7 @@ import uk.gov.moj.cpp.results.event.service.SjpService;
 import uk.gov.moj.cpp.results.event.service.SystemDocGenerator;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
@@ -387,7 +388,7 @@ public class ResultsEventProcessor {
                 .build();
 
         final Material material = Material.material().withId(materialId)
-                .withReceivedDateTime(utcClock.now())
+                .withReceivedDateTime(ZonedDateTime.now())
                 .build();
 
         return CourtDocument.courtDocument()

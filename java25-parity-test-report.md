@@ -10,14 +10,32 @@ BC references are from [Parity Testing Java17 → Java25](https://hmcts.atlassia
 | Hibernate in unit tests | 6.6.1.Final | 5.4.24.Final |
 | H2 | 2.3.232 | 1.4.196 |
 
-Production code is unchanged on both branches. Triage (Stage 5) and ITs (Stage 6) are not done.
+The Java 17 copy's production code is unchanged. On the Java 25 branch, production code has changed only to address the
+PR #228 review, restoring `main`'s behaviour. Triage (Stage 5) and ITs (Stage 6) are not done.
 
 **The JVM default zone is UTC, not UK time.** Earlier versions of this report took UK time (Europe/London) as fact.
 The PR #228 review points out that the framework's `EntityManagerProducer.create()` calls `TimeZone.setDefault(UTC)`
 (persistence-deltaspike 17.103.x and persistence-jpa 25.104.x), and the containers run in UTC, so `main`'s
 `ZonedDateTime.now()` gives UTC on both stacks. `NCESDecisionHelper`, `HearingFinancialResultsTrackedListener`,
 `InformantRegisterEventListener` and `DocumentGeneratorService` are back to `main`'s `ZonedDateTime.now()` calls, and the
-CHD-04, CHD-08 and CHD-10 tests now set the JVM to UTC and assert UTC. CHD-03 has not been revisited against this.
+CHD-04, CHD-08 and CHD-10 tests now set the JVM to UTC and assert UTC.
+
+The review's rule is to keep `main`'s `now()` calls. `UtcClock` is `now(UTC).truncatedTo(MILLIS)`, so it also loses
+Java 17's microsecond precision. The same rule was applied to four classes the review didn't name, which had the same
+swap:
+
+| Class | Restored to `main`'s |
+|---|---|
+| `HearingFinancialResultsAggregate` | `withCreatedTime(ZonedDateTime.now())` ×2 and `withUpdatedTime(now())`, replacing `now(UTC)` ×2 and `new UtcClock().now()` |
+| `HearingFinancialResultsUpdatedListener` | `setUpdatedTime(ZonedDateTime.now())`, replacing `new UtcClock().now()` |
+| `MigratedNcesEmailNotificationRequestedProcessor` | `withReceivedDateTime(ZonedDateTime.now())`, replacing `new UtcClock().now()` |
+| `ResultsEventProcessor` | `withReceivedDateTime(ZonedDateTime.now())`, replacing `utcClock.now()`. The `UtcClock` field is on `main` too and stays |
+
+`HearingFinancialResultsUpdatedListenerTest` and one `TestTemplates` (test-utilities) line are also back to `main`'s
+`ZonedDateTime.now()`. A search of the production diff against `main` now finds no `UtcClock`, `now(UTC)` or
+`Europe/London` changes. The one remaining zone change is CHD-02's `sharedTime` conversion, which restores Java 17's
+output. Test code elsewhere still uses `new UtcClock().now()` to build test data, which doesn't affect production
+behaviour.
 
 ## Results
 
@@ -73,7 +91,7 @@ Together these give the +62 difference.
 |---|---|---|---|---|---|---|
 | CHD-01 (BC-01) | High | A query for a hearing date with no document returns the latest day's results with a 200, instead of failing | `HearingResultedDocumentRepositoryTest.chd01_findByHearingIdAndHearingDay_noDocumentForThatDay_should_throw_NoResultException`<br>`HearingServiceTest.chd01_hearingDateWithNoDocument_should_not_fall_back_to_latest_hearing_day` | GREEN ×2 | **GREEN ×2.** `HearingResultedDocumentRepository` is back to Java 17's signatures: `findByHearingIdAndHearingDay` returns the entity and throws `NoResultException` (DeltaSpike's default `singleResult`), and `findByHearingIdAndLatestHearingDay` returns `null` when nothing matches (DeltaSpike's `OPTIONAL`). `HearingService.findHearing` is back to `main`'s `Supplier<HearingResultedDocument>` with the null check. `shouldReturnNullWhenFindByHearingIdAndLatestHearingDayNoHearingPresent` covers the `null` case | **Fixed.** No change from `main` in behaviour or in `HearingService` |
 | CHD-02 (BC-08) | High | `sharedTime` in the query response changes from `...Z[UTC]` to `...Z` | `ResultsQueryViewTest.chd02_sharedTimeReadFromStoredPayload_should_keep_java17_string_form` | GREEN | **GREEN.** `ResultsQueryView` converts `sharedTime` with `withZoneSameInstant(ZoneId.of("UTC"))` before `toString()`, giving `2018-12-05T10:00Z[UTC]` as on Java 17 | **Fixed** (earlier commit). Still restore the assertion weakened with `toInstant()` at `HearingResultedIT.java:555` |
-| CHD-03 (BC-24, Hibernate 5→6) | Medium (was High) | Times in zoneless columns could shift by an hour in BST, because the JVM is on UK time | `DefendantGobAccountsEntityRepositoryTest.chd03_zonedDateTime_should_be_stored_as_jvm_local_wall_clock_in_zoneless_column`<br>`DefendantGobAccountsEntityRepositoryTest.chd03_existingRowWrittenAsLocalWallClock_should_read_back_as_the_same_instant` | GREEN ×2 | GREEN ×2. **Not reproduced on H2.** See "Corrections" | None yet. Confirm on PostgreSQL and Hibernate 7.3.2, because production differs from this H2 setup. Keep open until then |
+| CHD-03 (BC-24, Hibernate 5→6) | Medium (was High) | Times in zoneless columns could shift by an hour in BST if the JVM runs on a zone with daylight saving. The framework sets UTC, so this applies only if that default is overridden. The tests deliberately run the JVM on `Europe/London` to probe it | `DefendantGobAccountsEntityRepositoryTest.chd03_zonedDateTime_should_be_stored_as_jvm_local_wall_clock_in_zoneless_column`<br>`DefendantGobAccountsEntityRepositoryTest.chd03_existingRowWrittenAsLocalWallClock_should_read_back_as_the_same_instant` | GREEN ×2 | GREEN ×2. **Not reproduced on H2.** See "Corrections" | None yet. Confirm on PostgreSQL and Hibernate 7.3.2, because production differs from this H2 setup. Keep open until then |
 | CHD-04 | High | A register generated between 00:00 and 01:00 BST gets a different `generatedDate` from Java 17, so `findByRegisterDate` looks in a different day | `InformantRegisterEventListenerTest.chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone` | GREEN (earlier version) | **GREEN.** Production code restored to `main`'s `now()` (×3) and `currentDateTime.toLocalDate()`. At 23:30 UTC on 1 July with the JVM on UTC: `2026-07-01`, as on Java 17 | **Fixed.** No change from `main`. `Europe/London` would have given `2026-07-02`, and `UtcClock` truncates to milliseconds |
 | CHD-05 (BC-01) | Medium | No GOB account: an exception (likely 500) becomes a null payload (likely 404) | `DefendantGobAccountsEntityRepositoryTest.chd05_findAccountNumber_noMatch_should_throw_NoResultException` | GREEN | **GREEN.** `findAccountNumberByMasterDefendantIdAndHearingId` is back to Java 17's signature: it returns the entity and throws `NoResultException` when nothing matches (DeltaSpike's default `singleResult`). `DefendantGobAccountsQueryView` and its test are back to `main`'s code, including the unreachable `null` branch | **Fixed.** No change from `main`. The PR #228 CHD-01 review comment applied here too: `Optional.of(getSingleResult())` could never be empty |
 | CHD-06 (BC-01, multi-match) | Medium | Two rows for one material: failure becomes an arbitrary row, so an NCES email could use the wrong recipient. No match also fails differently | `NcesEmailNotificationDetailsRepositoryTest.chd06_findByMaterialId_noMatch_should_throw_NoResultException`<br>`NcesEmailNotificationDetailsRepositoryTest.chd06_findByMaterialId_twoRowsForMaterial_should_throw_NonUniqueResultException` | GREEN ×2 | **GREEN ×2.** `findByMaterialId` is back to Java 17's signature: it returns the entity and throws `NoResultException` or `NonUniqueResultException`, as DeltaSpike's derived query did. `NcesEmailNotificationQueryView` and its test are back to `main`'s code | **Fixed.** No change from `main`. Same review point as CHD-05 |
