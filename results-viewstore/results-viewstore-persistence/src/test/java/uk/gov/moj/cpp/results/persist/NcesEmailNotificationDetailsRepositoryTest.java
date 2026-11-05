@@ -11,7 +11,6 @@ import jakarta.persistence.NonUniqueResultException;
 import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManagerProvider;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,11 +39,8 @@ public class NcesEmailNotificationDetailsRepositoryTest {
 
     @Test
     public void shouldFindTheNcesEmailNotificationDetailsByMaterialId() {
-        final Optional<NcesEmailNotificationDetailsEntity> result =
+        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity =
                 ncesEmailNotificationDetailsRepository.findByMaterialId(ncesEmailNotificationDetails.getMaterialId());
-
-        assertThat(result.isPresent(), is(true));
-        final NcesEmailNotificationDetailsEntity ncesEmailNotificationDetailsEntity = result.get();
         assertThat(ncesEmailNotificationDetailsEntity.getId(), is(ncesEmailNotificationDetails.getId()));
         assertThat(ncesEmailNotificationDetailsEntity.getMasterDefendantId(), is(ncesEmailNotificationDetails.getMasterDefendantId()));
         assertThat(ncesEmailNotificationDetailsEntity.getMaterialId(), is(ncesEmailNotificationDetails.getMaterialId()));

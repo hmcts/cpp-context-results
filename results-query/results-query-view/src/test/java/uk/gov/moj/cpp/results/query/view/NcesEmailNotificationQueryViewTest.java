@@ -15,7 +15,6 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.persist.NcesEmailNotificationDetailsRepository;
 import uk.gov.moj.cpp.results.persist.entity.NcesEmailNotificationDetailsEntity;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -44,7 +43,7 @@ public class NcesEmailNotificationQueryViewTest {
         final JsonEnvelope requestEnvelope = createJsonEnvelope(materialId);
         final NcesEmailNotificationDetailsEntity entity = createNcesEmailNotificationDetailsEntity(materialId);
         when(ncesEmailNotificationDetailsRepository.findByMaterialId(materialId))
-                .thenReturn(Optional.of(entity));
+                .thenReturn(entity);
 
         final JsonEnvelope ncesEmailNotificationDetails = ncesEmailNotificationQueryView.getNcesEmailNotificationDetails(requestEnvelope);
 

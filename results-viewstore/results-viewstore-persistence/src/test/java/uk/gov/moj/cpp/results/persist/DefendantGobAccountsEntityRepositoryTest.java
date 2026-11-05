@@ -12,7 +12,6 @@ import uk.gov.justice.services.test.utils.persistence.HibernateTestEntityManager
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -51,10 +50,7 @@ public class DefendantGobAccountsEntityRepositoryTest {
         final DefendantGobAccountsEntity hearingFinancialDetails = createdHearingFinancialDetailsEntity(randomUUID());
         defendantGobAccountsRepository.save(hearingFinancialDetails);
 
-        final Optional<DefendantGobAccountsEntity> result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(hearingFinancialDetails.getMasterDefendantId(), hearingFinancialDetails.getHearingId());
-        assertThat(result.isPresent(), is(true));
-
-        final DefendantGobAccountsEntity defendantGobAccountsEntity = result.get();
+        final DefendantGobAccountsEntity defendantGobAccountsEntity = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(hearingFinancialDetails.getMasterDefendantId(), hearingFinancialDetails.getHearingId());
         assertThat(defendantGobAccountsEntity.getId(), is(hearingFinancialDetails.getId()));
         assertThat(defendantGobAccountsEntity.getMasterDefendantId(), is(hearingFinancialDetails.getMasterDefendantId()));
         assertThat(defendantGobAccountsEntity.getHearingId(), is(hearingFinancialDetails.getHearingId()));
@@ -87,11 +83,9 @@ public class DefendantGobAccountsEntityRepositoryTest {
         newerEntity.setUpdatedTime(ZonedDateTime.parse("2023-01-02T10:00:00Z"));
         defendantGobAccountsRepository.save(newerEntity);
 
-        final Optional<DefendantGobAccountsEntity> result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
-
-        assertThat(result.isPresent(), is(true));
-        assertThat(result.get().getAccountNumber(), is("newerAccountNumber"));
-        assertThat(result.get().getAccountRequestTime(), is(ZonedDateTime.parse("2023-01-02T10:00:00Z")));
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
+        assertThat(result.getAccountNumber(), is("newerAccountNumber"));
+        assertThat(result.getAccountRequestTime(), is(ZonedDateTime.parse("2023-01-02T10:00:00Z")));
     }
 
     @Test
@@ -109,11 +103,9 @@ public class DefendantGobAccountsEntityRepositoryTest {
         entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         defendantGobAccountsRepository.save(entity);
 
-        final Optional<DefendantGobAccountsEntity> result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
-
-        assertThat(result.isPresent(), is(true));
-        assertThat(result.get().getAccountNumber(), is("accountNumber"));
-        assertThat(result.get().getCaseReferences(), is(storedCaseReferences));
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
+        assertThat(result.getAccountNumber(), is("accountNumber"));
+        assertThat(result.getCaseReferences(), is(storedCaseReferences));
     }
 
     @Test
@@ -131,11 +123,9 @@ public class DefendantGobAccountsEntityRepositoryTest {
         entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         defendantGobAccountsRepository.save(entity);
 
-        final Optional<DefendantGobAccountsEntity> result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
-
-        assertThat(result.isPresent(), is(true));
-        assertThat(result.get().getAccountNumber(), is("accountNumber"));
-        assertThat(result.get().getCaseReferences(), is(storedCaseReferences));
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
+        assertThat(result.getAccountNumber(), is("accountNumber"));
+        assertThat(result.getCaseReferences(), is(storedCaseReferences));
     }
 
     @Test
@@ -153,11 +143,9 @@ public class DefendantGobAccountsEntityRepositoryTest {
         entity.setUpdatedTime(ZonedDateTime.parse("2023-01-01T10:00:00Z"));
         defendantGobAccountsRepository.save(entity);
 
-        final Optional<DefendantGobAccountsEntity> result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
-
-        assertThat(result.isPresent(), is(true));
-        assertThat(result.get().getAccountNumber(), is("accountNumber"));
-        assertThat(result.get().getCaseReferences(), is(storedCaseReferences));
+        final DefendantGobAccountsEntity result = defendantGobAccountsRepository.findAccountNumberByMasterDefendantIdAndHearingId(masterDefendantId, hearingId);
+        assertThat(result.getAccountNumber(), is("accountNumber"));
+        assertThat(result.getCaseReferences(), is(storedCaseReferences));
     }
 
     @Test

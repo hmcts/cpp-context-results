@@ -37,7 +37,6 @@ import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -105,7 +104,7 @@ public class HearingServiceTest {
         JsonObject payloadJson = Mockito.mock(JsonObject.class);
         when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
         when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
-        when (hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId)).thenReturn(Optional.of(hearingResultedDocument));
+        when (hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId)).thenReturn(hearingResultedDocument);
 
         //The test call !!!!!!!
         HearingResultsAdded result = hearingService.findHearingDetailsByHearingIdDefendantId(hearingId, defendantId);
@@ -131,7 +130,7 @@ public class HearingServiceTest {
 
         when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
         when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
-        when (hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate)).thenReturn(Optional.of(hearingResultedDocument));
+        when (hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate)).thenReturn(hearingResultedDocument);
 
         HearingResultsAdded result = hearingService.findHearingForHearingIdAndHearingDate(hearingId, hearingDate);
 
@@ -150,7 +149,7 @@ public class HearingServiceTest {
 
         when(stringToJsonObjectConverter.convert(hearingResultedDocument.getPayload())).thenReturn(payloadJson);
         when(jsonObjectToObjectConverter.convert(payloadJson, HearingResultsAdded.class)).thenReturn(payload);
-        when (hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId)).thenReturn(Optional.of(hearingResultedDocument));
+        when (hearingResultedDocumentRepository.findByHearingIdAndLatestHearingDay(hearingId)).thenReturn(hearingResultedDocument);
 
         HearingResultsAdded result = hearingService.findHearingForHearingId(hearingId);
 

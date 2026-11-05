@@ -4,7 +4,6 @@ import static java.lang.String.format;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static jakarta.transaction.Transactional.TxType.REQUIRES_NEW;
 
-import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
@@ -18,7 +17,7 @@ import uk.gov.moj.cpp.system.documentgenerator.client.DocumentGeneratorClientPro
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
@@ -33,7 +32,6 @@ import org.slf4j.LoggerFactory;
 public class DocumentGeneratorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentGeneratorService.class);
-    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
     private static final String ERROR_MESSAGE = "Error while uploading document generation or upload ";
     public static final String NCES_DOCUMENT_TEMPLATE_NAME = "NCESNotification";
@@ -133,7 +131,7 @@ public class DocumentGeneratorService {
 
 
     private String getTimeStampAmendedFileName(final String fileName) {
-        return format("%s_%s.pdf", fileName, new UtcClock().now().withZoneSameInstant(UK_TIME_ZONE).format(TIMESTAMP_FORMATTER));
+        return format("%s_%s.pdf", fileName, ZonedDateTime.now().format(TIMESTAMP_FORMATTER));
     }
 
     private UUID getSystemUserUuid() {

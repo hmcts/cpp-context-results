@@ -12,28 +12,35 @@ BC references are from [Parity Testing Java17 → Java25](https://hmcts.atlassia
 
 Production code is unchanged on both branches. Triage (Stage 5) and ITs (Stage 6) are not done.
 
-**The service runs on UK time (Europe/London), confirmed by the team.** This report and the tests take that as fact.
+**The JVM default zone is UTC, not UK time.** Earlier versions of this report took UK time (Europe/London) as fact.
+The PR #228 review points out that the framework's `EntityManagerProducer.create()` calls `TimeZone.setDefault(UTC)`
+(persistence-deltaspike 17.103.x and persistence-jpa 25.104.x), and the containers run in UTC, so `main`'s
+`ZonedDateTime.now()` gives UTC on both stacks. `NCESDecisionHelper`, `HearingFinancialResultsTrackedListener`,
+`InformantRegisterEventListener` and `DocumentGeneratorService` are back to `main`'s `ZonedDateTime.now()` calls, and the
+CHD-04, CHD-08 and CHD-10 tests now set the JVM to UTC and assert UTC. CHD-03 has not been revisited against this.
 
 ## Results
 
 | Run | Java 17 | Java 25 |
 |---|---|---|
 | Unit tests | 1,054 | 1,116 |
-| Failed | **0** | 11 |
+| Failed | **0** | **0** |
 | Skipped | 2 | 2 |
 | Parity tests (methods starting `chd`) | 18 | 18 |
-| Parity tests green | **18** | 7 |
-| Parity tests red | 0 | **11** |
+| Parity tests green | **18** | **18** |
+| Parity tests red | 0 | 0 |
 | Other tests red | 0 | 0 |
 | Hibernate 7.3.2 persistence run | n/a | **Not run** |
 
-All 18 parity tests pass on Java 17. The 11 red tests on Java 25 cover 8 risks and are the findings to triage in
-Stage 5.
+All 18 parity tests pass on both JDKs. The Java 25 figures come from a full `mvn -o install` on JDK 25.0.5 after the
+PR #228 review fixes. Every viewstore repository was also checked against `main`'s DeltaSpike version: the other finders
+all return lists, as on `main`, with the same queries. CHD-01, CHD-04, CHD-05, CHD-06, CHD-08 and CHD-10 were fixed in response to that review. CHD-02 and
+CHD-07 were already green from earlier commits on this branch. Those rows below describe the code as it is now.
 
 **The two copies have drifted and need realigning.** At Stage 4 a script confirmed all 18 method names matched and all
 18 bodies were identical. Since then the CHD-04, CHD-08 (×2) and CHD-10 tests on the Java 25 branch were rewritten to
-run on UK time, and the Java 17 copy has not been updated. Names still match, but those 4 bodies differ, and their
-Java 17 results below come from the earlier version, which used far-from-UTC zones. See "UK time tests". The other 14
+run on UK time and then moved to UTC, and the Java 17 copy has not been updated. Names still match, but those 4 bodies differ, and their
+Java 17 results below come from the earlier version, which used far-from-UTC zones. See "Time zone tests". The other 14
 bodies are unchanged.
 
 One test is in a different class: `chd14_finderWithUnqualifiedAttributes_should_return_matching_rows` is in
@@ -64,16 +71,16 @@ Together these give the +62 difference.
 
 | ID | Severity | What could change | Test | Java 17 | Java 25 | Suggested fix |
 |---|---|---|---|---|---|---|
-| CHD-01 (BC-01) | High | A query for a hearing date with no document returns the latest day's results with a 200, instead of failing | `HearingResultedDocumentRepositoryTest.chd01_findByHearingIdAndHearingDay_noDocumentForThatDay_should_throw_NoResultException`<br>`HearingServiceTest.chd01_hearingDateWithNoDocument_should_not_fall_back_to_latest_hearing_day` | GREEN ×2 | **RED ×2.** No exception thrown; `findByHearingIdAndLatestHearingDay` was called. The wrong-day fallback is proven | **Fix.** Restore `getSingleResult()`, or stop the fallback in `ResultsQueryView.java:121-122`. Returning another day's results can't be accepted either way |
-| CHD-02 (BC-08) | High | `sharedTime` in the query response changes from `...Z[UTC]` to `...Z` | `ResultsQueryViewTest.chd02_sharedTimeReadFromStoredPayload_should_keep_java17_string_form` | GREEN | **RED.** Expected `2018-12-05T10:00Z[UTC]`, got `2018-12-05T10:00Z` | **Fix or Accept**, depending on consumers. `...Z` is valid `date-time` and `Z[UTC]` isn't, so Accept may be right, with owner sign-off. Either way restore the assertion weakened with `toInstant()` at `HearingResultedIT.java:555` |
+| CHD-01 (BC-01) | High | A query for a hearing date with no document returns the latest day's results with a 200, instead of failing | `HearingResultedDocumentRepositoryTest.chd01_findByHearingIdAndHearingDay_noDocumentForThatDay_should_throw_NoResultException`<br>`HearingServiceTest.chd01_hearingDateWithNoDocument_should_not_fall_back_to_latest_hearing_day` | GREEN ×2 | **GREEN ×2.** `HearingResultedDocumentRepository` is back to Java 17's signatures: `findByHearingIdAndHearingDay` returns the entity and throws `NoResultException` (DeltaSpike's default `singleResult`), and `findByHearingIdAndLatestHearingDay` returns `null` when nothing matches (DeltaSpike's `OPTIONAL`). `HearingService.findHearing` is back to `main`'s `Supplier<HearingResultedDocument>` with the null check. `shouldReturnNullWhenFindByHearingIdAndLatestHearingDayNoHearingPresent` covers the `null` case | **Fixed.** No change from `main` in behaviour or in `HearingService` |
+| CHD-02 (BC-08) | High | `sharedTime` in the query response changes from `...Z[UTC]` to `...Z` | `ResultsQueryViewTest.chd02_sharedTimeReadFromStoredPayload_should_keep_java17_string_form` | GREEN | **GREEN.** `ResultsQueryView` converts `sharedTime` with `withZoneSameInstant(ZoneId.of("UTC"))` before `toString()`, giving `2018-12-05T10:00Z[UTC]` as on Java 17 | **Fixed** (earlier commit). Still restore the assertion weakened with `toInstant()` at `HearingResultedIT.java:555` |
 | CHD-03 (BC-24, Hibernate 5→6) | Medium (was High) | Times in zoneless columns could shift by an hour in BST, because the JVM is on UK time | `DefendantGobAccountsEntityRepositoryTest.chd03_zonedDateTime_should_be_stored_as_jvm_local_wall_clock_in_zoneless_column`<br>`DefendantGobAccountsEntityRepositoryTest.chd03_existingRowWrittenAsLocalWallClock_should_read_back_as_the_same_instant` | GREEN ×2 | GREEN ×2. **Not reproduced on H2.** See "Corrections" | None yet. Confirm on PostgreSQL and Hibernate 7.3.2, because production differs from this H2 setup. Keep open until then |
-| CHD-04 | High | A register generated between 00:00 and 01:00 BST gets the previous day's `generatedDate`, so `findByRegisterDate` looks in the wrong day | `InformantRegisterEventListenerTest.chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone` | GREEN (earlier version) | **RED.** At 00:30 BST on 2 July: expected `2026-07-02`, got `2026-07-01` | **Fix.** Derive the date in `Europe/London`, as `getLocalLondonZoneDate` already does in `ResultsEventListener` |
-| CHD-05 (BC-01) | Medium | No GOB account: an exception (likely 500) becomes a null payload (likely 404) | `DefendantGobAccountsEntityRepositoryTest.chd05_findAccountNumber_noMatch_should_throw_NoResultException` | GREEN | **RED.** No exception thrown | **Accept candidate.** The `null` branch in the view shows this was the intent, but it was dead code on Java 17. Needs owner sign-off, and the status codes need confirming in Stage 6 |
-| CHD-06 (BC-01, multi-match) | Medium | Two rows for one material: failure becomes an arbitrary row, so an NCES email could use the wrong recipient. No match also fails differently | `NcesEmailNotificationDetailsRepositoryTest.chd06_findByMaterialId_noMatch_should_throw_NoResultException`<br>`NcesEmailNotificationDetailsRepositoryTest.chd06_findByMaterialId_twoRowsForMaterial_should_throw_NonUniqueResultException` | GREEN ×2 | **RED ×2.** No exception thrown in either case | **Fix.** End the finder with `getSingleResult()` |
-| CHD-07 | Medium | A reference data response with no `prosecutors` key used to fail the command; now processing continues with default flags and police results could be skipped silently | `ReferenceDataServiceTest.chd07_responseWithoutProsecutorsKey_should_fail_not_return_empty` | GREEN | **RED.** `NullPointerException` expected, nothing thrown | **Fix.** Remove the added null check, unless the owner decides a missing key should be tolerated |
-| CHD-08 (BC-08) | Low (was Medium) | In-memory times change from the JVM zone to UTC | `NCESDecisionHelperTest.chd08_applicationResultsCreatedTime_should_be_in_jvm_zone`<br>`HearingFinancialResultsTrackedListenerTest.chd08_gobAccountAuditTimes_should_be_in_jvm_zone` | GREEN ×2 (earlier version) | **RED ×2.** Expected `Europe/London`, got `Z` | **Accept candidate.** Same instant, and serialised JSON is identical on both stacks |
+| CHD-04 | High | A register generated between 00:00 and 01:00 BST gets a different `generatedDate` from Java 17, so `findByRegisterDate` looks in a different day | `InformantRegisterEventListenerTest.chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone` | GREEN (earlier version) | **GREEN.** Production code restored to `main`'s `now()` (×3) and `currentDateTime.toLocalDate()`. At 23:30 UTC on 1 July with the JVM on UTC: `2026-07-01`, as on Java 17 | **Fixed.** No change from `main`. `Europe/London` would have given `2026-07-02`, and `UtcClock` truncates to milliseconds |
+| CHD-05 (BC-01) | Medium | No GOB account: an exception (likely 500) becomes a null payload (likely 404) | `DefendantGobAccountsEntityRepositoryTest.chd05_findAccountNumber_noMatch_should_throw_NoResultException` | GREEN | **GREEN.** `findAccountNumberByMasterDefendantIdAndHearingId` is back to Java 17's signature: it returns the entity and throws `NoResultException` when nothing matches (DeltaSpike's default `singleResult`). `DefendantGobAccountsQueryView` and its test are back to `main`'s code, including the unreachable `null` branch | **Fixed.** No change from `main`. The PR #228 CHD-01 review comment applied here too: `Optional.of(getSingleResult())` could never be empty |
+| CHD-06 (BC-01, multi-match) | Medium | Two rows for one material: failure becomes an arbitrary row, so an NCES email could use the wrong recipient. No match also fails differently | `NcesEmailNotificationDetailsRepositoryTest.chd06_findByMaterialId_noMatch_should_throw_NoResultException`<br>`NcesEmailNotificationDetailsRepositoryTest.chd06_findByMaterialId_twoRowsForMaterial_should_throw_NonUniqueResultException` | GREEN ×2 | **GREEN ×2.** `findByMaterialId` is back to Java 17's signature: it returns the entity and throws `NoResultException` or `NonUniqueResultException`, as DeltaSpike's derived query did. `NcesEmailNotificationQueryView` and its test are back to `main`'s code | **Fixed.** No change from `main`. Same review point as CHD-05 |
+| CHD-07 | Medium | A reference data response with no `prosecutors` key used to fail the command; now processing continues with default flags and police results could be skipped silently | `ReferenceDataServiceTest.chd07_responseWithoutProsecutorsKey_should_fail_not_return_empty` | GREEN | **GREEN.** The added null check is gone, so a missing key throws `NullPointerException` as on Java 17 | **Fixed** (earlier commit) |
+| CHD-08 (BC-08) | Low (was Medium) | In-memory times change from the JVM zone to UTC | `NCESDecisionHelperTest.chd08_applicationResultsCreatedTime_should_be_in_jvm_zone`<br>`HearingFinancialResultsTrackedListenerTest.chd08_gobAccountAuditTimes_should_be_in_jvm_zone` | GREEN ×2 (earlier version) | **GREEN ×2.** Production code restored to `main`'s `ZonedDateTime.now()` in both classes; with the JVM default at UTC, as the framework sets it, the zone is `UTC` | **Fixed.** No change from `main`. `UtcClock` and `Europe/London` were dropped: `UtcClock` also truncates to milliseconds, which differs from Java 17's microseconds |
 | CHD-09 | Low (was Medium) | `progression.version` moved to `17.104.306` | None. It's a build setting, so a unit test would only restate the pom | Not tested | Not tested. The query API and `add-court-document` schemas are unchanged; the command API adds only `remove-application-bdf` | **Keep the bump.** The enforcer requires it, and `main` needs the same change. See "Corrections" |
-| CHD-10 | Low | PDF file name timestamps change from JVM time to UTC | `DocumentGeneratorServiceTest.chd10_generatedFileNameTimestamp_should_use_jvm_zone` (new class; none existed) | GREEN (earlier version) | **RED.** At 00:30 BST on 2 July: expected `ENFDocumentOrder_20260702003000.pdf`, got `ENFDocumentOrder_20260701233000.pdf` | **Accept candidate**, once nothing is found depending on the name's time. File names run an hour behind UK time in BST, and carry the previous date in the first hour after midnight |
+| CHD-10 | Low | PDF file name timestamps change from JVM time | `DocumentGeneratorServiceTest.chd10_generatedFileNameTimestamp_should_use_jvm_zone` (new class; none existed) | GREEN (earlier version) | **GREEN.** Production code restored to `main`'s `ZonedDateTime.now()`. At 23:30 UTC on 1 July with the JVM on UTC: `ENFDocumentOrder_20260701233000.pdf`, as on Java 17 | **Fixed.** No change from `main`. `Europe/London` would have made every BST file name an hour later |
 | CHD-11 (BC-20) | Low | Rules could load as zero, so deny tests pass without proving anything | `ResultsCommandRuleExecutorTest.chd11_commandApiKieBase_should_load_rules`<br>`ResultsQueryApiAccessControlTest.chd11_queryApiKieBase_should_load_rules` | GREEN ×2 | GREEN ×2 | None. Keep the guards |
 | CHD-12 (BC-13) | Low | Stricter schema validation could reject borderline payloads | `VerdictSchemaDependencyTest.chd12_dateTimeFormat_should_accept_and_reject_the_same_borderline_values`<br>`VerdictSchemaDependencyTest.chd12_integerType_should_treat_a_whole_decimal_payload_the_same` | GREEN ×2 | GREEN ×2 | None. Covers the engine with inline schemas, not every real schema |
 | CHD-13 (BC-21) | Low | The Reflections change could alter the set of generated classes | None | Not tested | Not tested | Compare `target/generated-sources` file lists between the two copies. Both are now built, but this comparison hasn't been done |
@@ -111,7 +118,7 @@ Library versions differ: Jackson 2.12.7 → 2.21.8 and org.json 20231013 → 202
 | Area | Java 25 | Java 17 |
 |---|---|---|
 | Imports | `jakarta.persistence` | `javax.persistence` |
-| CHD-01 stub (`stubNoDocumentForHearingDay`) | Returns `Optional.empty()` | Throws `NoResultException`, as the Java 17 repository does |
+| CHD-01 stub (`stubNoDocumentForHearingDay`) | Throws `NoResultException`, as the repository does again | Same |
 | CHD-03 factory | Test persistence unit `results-test-production-timezone-unit` | Hibernate `Configuration` in code, because a test `persistence.xml` would interfere with OpenEJB |
 | CHD-03 table | `uuid` columns | `binary(16)` columns, as Hibernate 5 maps UUID on H2 |
 | CHD-03 helper | `createdHearingFinancialDetailsEntity(UUID)` exists | Overload added |
@@ -119,22 +126,22 @@ Library versions differ: Jackson 2.12.7 → 2.21.8 and org.json 20231013 → 202
 
 ## Remaining limits
 
-- **The CHD-01 Java 17 service-level test is partly harness-defined.** Its stub throws, so what proves the repository
-  really throws is the repository-level CHD-01 test, which runs against real Hibernate.
+- **The CHD-01 service-level test is partly harness-defined on both JDKs.** Its stub throws, so what proves the
+  repository really throws is the repository-level CHD-01 test, which runs against real Hibernate.
 - **Status codes in CHD-05 and CHD-06 are still inferred.** Stage 6 needs to observe them.
 
-## UK time tests
+## Time zone tests
 
-London equals UTC outside BST, so setting the zone alone would pass in winter and prove nothing. The tests now behave
-the same on any date:
+All these tests set the JVM default zone to `UTC`, as `EntityManagerProducer` does, and restore it afterwards.
 
-- **CHD-04 and CHD-10** set the JVM to `Europe/London` and use Mockito `mockConstruction` to fix `new UtcClock()` at
-  `2026-07-01T23:30:00Z`, which is 00:30 on 2 July in the UK. They assert exact expected values.
-- **CHD-08** sets the JVM to `Europe/London` and asserts the zone itself, so it needs no fixed time.
+- **CHD-04 and CHD-10** use Mockito `mockStatic(ZonedDateTime.class, CALLS_REAL_METHODS)` to stub only the no-arg
+  `ZonedDateTime.now()`, returning `2026-07-01T23:30:00Z` in the JVM zone. That instant is already 2 July in the UK,
+  so a change back to `Europe/London` would fail them. They assert exact expected values.
+- **CHD-08** asserts the zone itself, so it needs no fixed time. Both tests expect `UTC`.
 
-**Java 17 copy still to do:** Java 17 production code calls `ZonedDateTime.now()`, not `UtcClock`, so `mockConstruction`
-won't work there. CHD-04 and CHD-10 need a different harness to fix the time, such as `mockStatic(ZonedDateTime.class)`,
-which I haven't tried on Java 17. CHD-08 only needs the zone name changed.
+**Java 17 copy still to do:** Java 17 production code also calls `ZonedDateTime.now()`, so the Java 25 test bodies for
+CHD-04, CHD-08 and CHD-10 should carry over unchanged, apart from `javax`/`jakarta` imports. They haven't been run on
+Java 17 yet.
 
 ## Resolved observation
 

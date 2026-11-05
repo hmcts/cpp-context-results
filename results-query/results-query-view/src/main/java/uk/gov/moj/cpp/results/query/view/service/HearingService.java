@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.inject.Inject;
@@ -131,15 +130,15 @@ public class HearingService {
                 () -> String.format("findHearingForHearingIdAndHearingDate cant find hearing %s and date %s ", hearingId, hearingDate));
     }
 
-    private HearingResultsAdded findHearing(Supplier<Optional<HearingResultedDocument>> documentFinder, Supplier<String> getLogString){
-        final Optional<HearingResultedDocument> document = documentFinder.get();
-        if (document.isEmpty()) {
+    private HearingResultsAdded findHearing(Supplier<HearingResultedDocument> documentFinder, Supplier<String> getLogString){
+        final HearingResultedDocument document = documentFinder.get();
+        if (document == null) {
             if (LOGGER.isErrorEnabled()) {
                 LOGGER.error(getLogString.get());
             }
             return null;
         }
-        final JsonObject jsonPayload = stringToJsonObjectConverter.convert(document.get().getPayload());
+        final JsonObject jsonPayload = stringToJsonObjectConverter.convert(document.getPayload());
         return jsonObjectToObjectConverter.convert(jsonPayload, HearingResultsAdded.class);
     }
 

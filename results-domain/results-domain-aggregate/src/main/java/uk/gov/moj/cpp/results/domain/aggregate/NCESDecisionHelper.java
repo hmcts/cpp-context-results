@@ -36,7 +36,6 @@ import uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants
 import uk.gov.moj.cpp.results.domain.event.ImpositionOffenceDetails;
 import uk.gov.moj.cpp.results.domain.event.NewOffenceByResult;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +47,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NCESDecisionHelper {
-
-    private static final ZoneId UK_TIME_ZONE = ZoneId.of("Europe/London");
 
     private static final List<String> appeal_reopen_application_accepted_result_codes = asList(G, ROPENED, AACA, AASA);
     private static final List<String> statdec_application_accepted_result_codes = asList(G, STDEC);
@@ -234,7 +231,7 @@ public class NCESDecisionHelper {
                 .withApplicationResultType(result.getApplicationResultType())
                 .withApplicationResultsCategory(result.getApplicationResultsCategory())
                 .withOffenceResultsCategory(result.getOffenceResultsCategory())
-                .withCreatedTime(ZonedDateTime.now(UK_TIME_ZONE))
+                .withCreatedTime(ZonedDateTime.now())
                 .build())
         );
         return applicationResults;

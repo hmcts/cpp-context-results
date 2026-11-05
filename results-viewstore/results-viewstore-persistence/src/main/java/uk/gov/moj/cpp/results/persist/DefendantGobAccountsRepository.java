@@ -1,7 +1,6 @@
 package uk.gov.moj.cpp.results.persist;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,9 +31,9 @@ public class DefendantGobAccountsRepository {
                 : entityManager.merge(defendantGobAccountsEntity));
     }
 
-    public Optional<DefendantGobAccountsEntity> findAccountNumberByMasterDefendantIdAndHearingId(final UUID masterDefendantId,
-                                                                                                 final UUID hearingId) {
-        return Optional.of((DefendantGobAccountsEntity) entityManager.createNativeQuery("""
+    public DefendantGobAccountsEntity findAccountNumberByMasterDefendantIdAndHearingId(final UUID masterDefendantId,
+                                                                                       final UUID hearingId) {
+        return (DefendantGobAccountsEntity) entityManager.createNativeQuery("""
                         SELECT *
                         FROM defendant_gob_accounts dga
                         WHERE dga.master_defendant_id = :masterDefendantId
@@ -44,6 +43,6 @@ public class DefendantGobAccountsRepository {
                         """, DefendantGobAccountsEntity.class)
                 .setParameter("masterDefendantId", masterDefendantId)
                 .setParameter("hearingId", hearingId)
-                .getSingleResult());
+                .getSingleResult();
     }
 }

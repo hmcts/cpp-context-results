@@ -6,7 +6,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentCaptor.forClass;
-import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -39,7 +40,9 @@ import uk.gov.moj.cpp.results.persist.InformantRegisterRepository;
 import uk.gov.moj.cpp.results.persist.entity.InformantRegisterEntity;
 
 import java.io.StringReader;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -53,7 +56,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -412,18 +415,19 @@ public class InformantRegisterEventListenerTest {
         assertThat(informantRegisterEntity.getProcessedOn(), is(notNullValue()));
     }
 
-    /** 00:30 on 2 July in the UK, still 1 July in UTC. The JVM runs on UK time. */
+    /** 23:30 on 1 July in UTC, already 2 July in the UK. The framework sets the JVM default zone to UTC. */
     @Test
     public void chd04_systemGeneratedRegister_should_take_generatedDate_from_jvm_zone() {
-        final InformantRegisterEntity informantRegisterEntity = generateSystemRegisterAtUkTime(ZonedDateTime.parse("2026-07-01T23:30:00Z"));
+        final InformantRegisterEntity informantRegisterEntity = generateSystemRegisterAt(Instant.parse("2026-07-01T23:30:00Z"));
 
-        assertThat(informantRegisterEntity.getGeneratedDate(), is(LocalDate.of(2026, 7, 2)));
+        assertThat(informantRegisterEntity.getGeneratedDate(), is(LocalDate.of(2026, 7, 1)));
     }
 
-    private InformantRegisterEntity generateSystemRegisterAtUkTime(final ZonedDateTime now) {
+    private InformantRegisterEntity generateSystemRegisterAt(final Instant instant) {
         final TimeZone originalZone = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        try (MockedConstruction<UtcClock> utcClock = mockConstruction(UtcClock.class, (clock, context) -> when(clock.now()).thenReturn(now))) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        try (MockedStatic<ZonedDateTime> zonedDateTime = mockStatic(ZonedDateTime.class, CALLS_REAL_METHODS)) {
+            zonedDateTime.when(() -> ZonedDateTime.now()).thenAnswer(invocation -> ZonedDateTime.ofInstant(instant, ZoneId.systemDefault()));
             return generateSystemRegister();
         } finally {
             TimeZone.setDefault(originalZone);
