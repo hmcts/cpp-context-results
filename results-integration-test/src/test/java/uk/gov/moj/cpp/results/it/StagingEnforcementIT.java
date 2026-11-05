@@ -49,10 +49,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageConsumer;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 
 import io.restassured.path.json.JsonPath;
 import org.hamcrest.Matcher;

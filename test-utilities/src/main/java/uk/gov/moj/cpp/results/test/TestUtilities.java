@@ -10,8 +10,8 @@ import java.io.StringReader;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsNull;

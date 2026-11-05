@@ -3,8 +3,14 @@ package uk.gov.moj.cpp.results.query.view.service;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUIDAndName;
 import static uk.gov.justice.services.test.utils.core.random.RandomGenerator.PAST_LOCAL_DATE;
+import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateDefendant;
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultDocument;
 import static uk.gov.moj.cpp.results.query.view.TestTemplates.templateHearingResultDocuments;
@@ -19,9 +25,11 @@ import uk.gov.justice.core.courts.ProsecutionCase;
 import uk.gov.justice.services.common.converter.JsonObjectToObjectConverter;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.StringToJsonObjectConverter;
+import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
 import uk.gov.moj.cpp.results.persist.HearingResultedDocumentRepository;
 import uk.gov.moj.cpp.results.persist.entity.HearingResultedDocument;
+import uk.gov.moj.cpp.results.query.view.ResultsQueryView;
 import uk.gov.moj.cpp.results.query.view.response.DefendantView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummariesView;
 import uk.gov.moj.cpp.results.query.view.response.HearingResultSummaryView;
@@ -32,7 +40,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
+import jakarta.persistence.NoResultException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -183,5 +192,38 @@ public class HearingServiceTest {
         assertThat(defendantSummary.getFirstName(), is(defendant.getPersonDefendant().getPersonDetails().getFirstName()));
         assertThat(defendantSummary.getLastName(), is(defendant.getPersonDefendant().getPersonDetails().getLastName()));
         assertThat(defendantSummary.getPersonId(), is(defendant.getId()));
+    }
+
+    /**
+     * Java 17: the day-specific finder throws, so the query fails and the latest-day finder is never reached.
+     * The expectation is that a request for one day is never answered from another day's document.
+     */
+    @Test
+    public void chd01_hearingDateWithNoDocument_should_not_fall_back_to_latest_hearing_day() {
+        final UUID hearingId = UUID.randomUUID();
+        final LocalDate hearingDate = LocalDate.of(2018, 12, 6);
+        stubNoDocumentForHearingDay(hearingId, hearingDate);
+
+        queryHearingDetailsForDay(hearingId, hearingDate);
+
+        verify(hearingResultedDocumentRepository, never()).findByHearingIdAndLatestHearingDay(hearingId);
+    }
+
+    private void stubNoDocumentForHearingDay(final UUID hearingId, final LocalDate hearingDate) {
+        when(hearingResultedDocumentRepository.findByHearingIdAndHearingDay(hearingId, hearingDate)).thenThrow(new NoResultException());
+    }
+
+    private void queryHearingDetailsForDay(final UUID hearingId, final LocalDate hearingDate) {
+        final ResultsQueryView resultsQueryView = new ResultsQueryView();
+        setField(resultsQueryView, "hearingService", hearingService);
+        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
+                .add("hearingId", hearingId.toString())
+                .add("hearingDate", hearingDate.toString())
+                .build());
+        try {
+            resultsQueryView.getHearingDetailsForHearingId(query);
+        } catch (final NoResultException expectedOnJava17) {
+            // the query fails rather than answering from another day
+        }
     }
 }

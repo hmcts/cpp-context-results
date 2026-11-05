@@ -17,10 +17,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageProducer;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 
 
 public class NcesNotificationRequestDocumentRequestHelper {

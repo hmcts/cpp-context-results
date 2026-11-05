@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-event</artifactId>
-        <version>17.104.124-SNAPSHOT</version>
+        <version>25.104.2-CHD-2689-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-event-processor</artifactId>
@@ -17,8 +17,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -54,19 +54,25 @@
             <groupId>uk.gov.justice.framework-api</groupId>
             <artifactId>framework-api-core</artifactId>
         </dependency>
+        <!-- Not managed by the 25.104.x BOMs yet (agreed with PEG to pin for now).
+             Versions from azure-sdk-bom 1.2.29, which matches the parent's azure-core 1.53.0.
+             Realign if the parent's azure-core changes; remove once added to cp-maven-common-bom. -->
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventgrid</artifactId>
+            <version>4.26.0</version>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-servicebus</artifactId>
+            <version>7.17.5</version>
         </dependency>
         <!-- AmqpRetryOptions is imported directly by InformantRegisterQueuePublisher, so it is
              declared rather than relied on transitively through azure-messaging-servicebus. -->
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-amqp</artifactId>
+            <version>2.9.10</version>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -141,9 +147,14 @@
                 <artifactId>messaging-client-generator-plugin</artifactId>
                 <dependencies>
                     <dependency>
-                        <groupId>javax</groupId>
-                        <artifactId>javaee-api</artifactId>
+                        <groupId>jakarta.platform</groupId>
+                        <artifactId>jakarta.jakartaee-api</artifactId>
                         <version>${javaee-api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${jakarta.xml.bind-api.raml.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>uk.gov.moj.cpp.results</groupId>
@@ -164,9 +175,14 @@
                 <artifactId>rest-client-generator-plugin</artifactId>
                 <dependencies>
                     <dependency>
-                        <groupId>javax</groupId>
-                        <artifactId>javaee-api</artifactId>
+                        <groupId>jakarta.platform</groupId>
+                        <artifactId>jakarta.jakartaee-api</artifactId>
                         <version>${javaee-api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>${jakarta.xml.bind-api.raml.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>uk.gov.moj.cpp.material</groupId>

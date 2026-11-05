@@ -5,14 +5,38 @@ import uk.gov.moj.cpp.results.persist.entity.DefendantTrackingStatus;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.QueryParam;
-import org.apache.deltaspike.data.api.Repository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-@Repository
-public interface DefendantTrackingStatusRepository extends EntityRepository<DefendantTrackingStatus, UUID> {
+@ApplicationScoped
+public class DefendantTrackingStatusRepository {
 
-    @Query(value = "FROM DefendantTrackingStatus defendantTrackingStatus where defendantTrackingStatus.defendantId in (:defendantIds) and (defendantTrackingStatus.emStatus = true or defendantTrackingStatus.woaStatus = true) ")
-    List<DefendantTrackingStatus> findActiveDefendantTrackingStatusByDefendantIds(@QueryParam("defendantIds") final List<UUID> defendantIds);
+    @PersistenceContext(unitName = "results-persistence-unit")
+    EntityManager entityManager;
+
+    public DefendantTrackingStatus save(final DefendantTrackingStatus defendantTrackingStatus) {
+        return entityManager.merge(defendantTrackingStatus);
+    }
+
+    public DefendantTrackingStatus findBy(final UUID id) {
+        return entityManager.find(DefendantTrackingStatus.class, id);
+    }
+
+    public List<DefendantTrackingStatus> findAll() {
+        return entityManager.createQuery("select defendantTrackingStatus from DefendantTrackingStatus defendantTrackingStatus", DefendantTrackingStatus.class).getResultList();
+    }
+
+    public void remove(final DefendantTrackingStatus defendantTrackingStatus) {
+        entityManager.remove(entityManager.contains(defendantTrackingStatus)
+                ? defendantTrackingStatus
+                : entityManager.merge(defendantTrackingStatus));
+    }
+
+    public List<DefendantTrackingStatus> findActiveDefendantTrackingStatusByDefendantIds(final List<UUID> defendantIds) {
+        return entityManager.createQuery(
+                        "select defendantTrackingStatus FROM DefendantTrackingStatus defendantTrackingStatus where defendantTrackingStatus.defendantId in (:defendantIds) and (defendantTrackingStatus.emStatus = true or defendantTrackingStatus.woaStatus = true) ", DefendantTrackingStatus.class)
+                .setParameter("defendantIds", defendantIds)
+                .getResultList();
+    }
 }

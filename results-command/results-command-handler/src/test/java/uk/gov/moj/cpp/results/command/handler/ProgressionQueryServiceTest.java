@@ -21,7 +21,7 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.spi.DefaultJsonMetadata;
 import uk.gov.moj.cpp.results.command.service.ProgressionQueryService;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;

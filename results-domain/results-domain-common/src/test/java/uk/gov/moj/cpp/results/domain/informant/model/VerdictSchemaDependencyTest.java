@@ -66,4 +66,24 @@ class VerdictSchemaDependencyTest {
     void emptyVerdict_shouldValidate() {
         assertDoesNotThrow(() -> schema.validate(new JSONObject()));
     }
+
+    @Test
+    void chd12_dateTimeFormat_should_accept_and_reject_the_same_borderline_values() {
+        final Schema dateTimeSchema = SchemaLoader.load(new JSONObject(
+                "{\"type\":\"object\",\"properties\":{\"time\":{\"type\":\"string\",\"format\":\"date-time\"}}}"));
+
+        assertDoesNotThrow(() -> dateTimeSchema.validate(new JSONObject("{\"time\":\"2018-12-05T10:00:00.000Z\"}")));
+        assertDoesNotThrow(() -> dateTimeSchema.validate(new JSONObject("{\"time\":\"2018-12-05T10:00:00Z\"}")));
+        assertThrows(ValidationException.class, () -> dateTimeSchema.validate(new JSONObject("{\"time\":\"2018-12-05T10:00Z[UTC]\"}")));
+        assertThrows(ValidationException.class, () -> dateTimeSchema.validate(new JSONObject("{\"time\":\"2018-12-05\"}")));
+    }
+
+    @Test
+    void chd12_integerType_should_treat_a_whole_decimal_payload_the_same() {
+        final Schema integerSchema = SchemaLoader.load(new JSONObject(
+                "{\"type\":\"object\",\"properties\":{\"count\":{\"type\":\"integer\"}}}"));
+
+        assertDoesNotThrow(() -> integerSchema.validate(new JSONObject("{\"count\":1}")));
+        assertThrows(ValidationException.class, () -> integerSchema.validate(new JSONObject("{\"count\":1.5}")));
+    }
 }

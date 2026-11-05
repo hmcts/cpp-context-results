@@ -4,7 +4,7 @@
     <parent>
         <groupId>uk.gov.moj.cpp.results</groupId>
         <artifactId>results-query</artifactId>
-        <version>17.104.124-SNAPSHOT</version>
+        <version>25.104.2-CHD-2689-SNAPSHOT</version>
     </parent>
 
     <artifactId>results-query-view</artifactId>
@@ -31,8 +31,8 @@
         </dependency>
 
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
 

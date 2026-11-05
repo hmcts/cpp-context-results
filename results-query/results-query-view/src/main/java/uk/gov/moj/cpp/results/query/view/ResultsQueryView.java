@@ -28,6 +28,7 @@ import uk.gov.moj.cpp.results.query.view.service.DefendantTrackingStatusService;
 import uk.gov.moj.cpp.results.query.view.service.HearingService;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -37,10 +38,10 @@ import java.util.Set;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.inject.Inject;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,8 @@ import org.slf4j.LoggerFactory;
 public class ResultsQueryView {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultsQueryView.class);
+
+    private static final ZoneId SHARED_TIME_ZONE = ZoneId.of("UTC");
 
     private static final String RESPONSE_NAME_HEARING_DETAILS = "results.hearing-details";
     private static final String RESPONSE_NAME_RESULTS_SUMMARY = "results.results-summary";
@@ -126,7 +129,7 @@ public class ResultsQueryView {
             final JsonObject jsonValue = objectToJsonObjectConverter.convert(hearing);
             final JsonObject jsonResult = createObjectBuilder()
                     .add("hearing", jsonValue)
-                    .add("sharedTime", hearingResultAdded.getSharedTime().toString())
+                    .add("sharedTime", hearingResultAdded.getSharedTime().withZoneSameInstant(SHARED_TIME_ZONE).toString())
                     .build();
             return envelopeFrom(metadataFrom(query.metadata()).withName(RESPONSE_NAME_HEARING_INFORMATION_DETAILS).build(), jsonResult);
         }

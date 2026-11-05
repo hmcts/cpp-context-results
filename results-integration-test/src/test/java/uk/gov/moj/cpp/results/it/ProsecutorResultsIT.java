@@ -82,7 +82,7 @@ public class ProsecutorResultsIT {
                 withJsonPath("$.hearingVenues", hasSize(5)))
         );
 
-        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.toLocalDate().toString(), null, javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCode);
+        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.toLocalDate().toString(), null, jakarta.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCode);
 
         final ResponsePayloadMatcher responsePayloadMatcherForValidOuCodeWithDateRange = payload().isJson(allOf(
                 withJsonPath("$.prosecutionAuthorityId", is(prosecutionAuthorityId.toString())),
@@ -92,7 +92,7 @@ public class ProsecutorResultsIT {
                 withJsonPath("$.hearingVenues", hasSize(10)))
         );
 
-        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.minusDays(1).toLocalDate().toString(), registerDate.toLocalDate().toString(), javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCodeWithDateRange);
+        validateProsecutorResults(prosecutionAuthorityOuCode, registerDate.minusDays(1).toLocalDate().toString(), registerDate.toLocalDate().toString(), jakarta.ws.rs.core.Response.Status.OK, responsePayloadMatcherForValidOuCodeWithDateRange);
 
 
         final ResponsePayloadMatcher responsePayloadMatcherForUnknownOuCode = payload().isJson(allOf(
@@ -102,7 +102,7 @@ public class ProsecutorResultsIT {
                 withoutJsonPath("$.endDate"),
                 withJsonPath("$.hearingVenues", hasSize(0)))
         );
-        validateProsecutorResults(randomAlphanumeric(7), registerDate.toLocalDate().toString(), null, javax.ws.rs.core.Response.Status.OK, responsePayloadMatcherForUnknownOuCode);
+        validateProsecutorResults(randomAlphanumeric(7), registerDate.toLocalDate().toString(), null, jakarta.ws.rs.core.Response.Status.OK, responsePayloadMatcherForUnknownOuCode);
 
     }
 
@@ -125,7 +125,7 @@ public class ProsecutorResultsIT {
         verifyAppealUpdateEmail(NOTIFICATION_NOTIFY_ENDPOINT);
     }
 
-    private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final javax.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {
+    private void validateProsecutorResults(final String ouCode, final String startDate, final String endDate, final jakarta.ws.rs.core.Response.Status status, final ResponsePayloadMatcher responsePayloadMatcher) {
         final String url = BASE_URI + format("/results-query-api/query/api/rest/results/prosecutor/%s?startDate=%s%s", ouCode, startDate, Objects.nonNull(endDate) ? "&endDate=" + endDate : "");
 
         pollWithDefaults(requestParams(url, "application/vnd.results.prosecutor-results+json")

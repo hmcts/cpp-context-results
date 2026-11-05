@@ -26,6 +26,7 @@ import uk.gov.justice.core.courts.external.ApiHearing;
 import uk.gov.justice.core.courts.external.ApiHearingDay;
 import uk.gov.justice.core.courts.external.ApiHearingType;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
+import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
 import uk.gov.justice.services.common.util.UtcClock;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.messaging.JsonEnvelope;
@@ -44,8 +45,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -386,4 +387,22 @@ public class ResultsQueryViewTest {
         return defendantTrackingStatusEntity;
     }
 
+    @Test
+    public void chd02_sharedTimeReadFromStoredPayload_should_keep_java17_string_form() throws Exception {
+        final ZonedDateTime sharedTime = new ObjectMapperProducer().objectMapper()
+                .readValue("\"2018-12-05T10:00:00.000Z\"", ZonedDateTime.class);
+        final HearingResultsAdded template = templateHearingResultsAdded();
+        final HearingResultsAdded hearingResultsAdded = new HearingResultsAdded(template.getHearing(), sharedTime);
+        final JsonEnvelope query = envelopeFrom(metadataWithRandomUUIDAndName(), createObjectBuilder()
+                .add(FIELD_HEARING_ID, HEARING_ID.toString())
+                .build());
+        final ApiHearing.Builder apiHearingBuilder = ApiHearing.apiHearing();
+        when(hearingService.findHearingForHearingId(HEARING_ID)).thenReturn(hearingResultsAdded);
+        when(hearingTransformer.hearing(hearingResultsAdded.getHearing())).thenReturn(apiHearingBuilder);
+        when(objectToJsonObjectConverter.convert(apiHearingBuilder.build())).thenReturn(createObjectBuilder().build());
+
+        final JsonEnvelope actualHearingResults = resultsQueryView.getHearingDetailsForHearingId(query);
+
+        assertThat(actualHearingResults.payloadAsJsonObject().getString("sharedTime"), is("2018-12-05T10:00Z[UTC]"));
+    }
 }
