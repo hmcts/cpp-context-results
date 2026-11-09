@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Completion tracking for the NCES and police-notification documents stored in the results blob container,
+         one row per materialId. -->
+    <changeSet id="create-results-document-delivery-table" author="cpp.context.results"
+               logicalFilePath="030-create-results-document-delivery-table.xml">
+        <createTable tableName="results_document_delivery">
+            <column name="material_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="results_document_delivery_pk"/>
+            </column>
+            <column name="document_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <!-- PENDING, SUCCESS or FAILED -->
+            <column name="material_status" type="VARCHAR(32)"/>
+            <!-- the payload sent to system-doc-generator; police notification only, null for NCES -->
+            <column name="payload_blob_uri" type="TEXT"/>
+            <!-- the document material uploads (NCES: rendered by results, police notification: written by system-doc-generator) -->
+            <column name="document_blob_uri" type="TEXT"/>
+            <!-- NOT_REQUIRED, PENDING, SUCCESS or FAILED; the email that carries the document's link, NOT_REQUIRED where none is sent -->
+            <column name="email_status" type="VARCHAR(32)"/>
+        </createTable>
+
+        <createIndex tableName="results_document_delivery" indexName="results_document_delivery_document_blob_uri_idx">
+            <column name="document_blob_uri"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="results_document_delivery"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

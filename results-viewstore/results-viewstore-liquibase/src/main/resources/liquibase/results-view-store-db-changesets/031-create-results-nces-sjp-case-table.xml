@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- One row per SJP case an NCES document was sent to; child of results_document_delivery (030). -->
+    <changeSet id="create-results-nces-sjp-case-table" author="cpp.context.results"
+               logicalFilePath="031-create-results-nces-sjp-case-table.xml">
+        <createTable tableName="results_nces_sjp_case">
+            <column name="material_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="case_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <!-- the fileId or document blob uri sent to sjp for this case -->
+            <column name="sjp_correlation_id" type="TEXT"/>
+            <!-- PENDING, SUCCESS or FAILED -->
+            <column name="sjp_status" type="VARCHAR(32)"/>
+        </createTable>
+
+        <addPrimaryKey tableName="results_nces_sjp_case"
+                       columnNames="material_id,case_id"
+                       constraintName="results_nces_sjp_case_pk"/>
+
+        <addForeignKeyConstraint baseTableName="results_nces_sjp_case"
+                                 baseColumnNames="material_id"
+                                 constraintName="results_nces_sjp_case_material_id_fk"
+                                 referencedTableName="results_document_delivery"
+                                 referencedColumnNames="material_id"
+                                 onDelete="CASCADE"/>
+
+        <createIndex tableName="results_nces_sjp_case" indexName="results_nces_sjp_case_case_id_idx">
+            <column name="case_id"/>
+        </createIndex>
+
+        <rollback>
+            <dropTable tableName="results_nces_sjp_case"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
