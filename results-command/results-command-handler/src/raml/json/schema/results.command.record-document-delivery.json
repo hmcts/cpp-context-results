@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Records a change to the delivery tracking of a document results stores in its blob container; every field but the material id is optional",
+  "id": "http://justice.gov.uk/results/courts/record-document-delivery.json",
+  "type": "object",
+  "properties": {
+    "materialId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "documentType": {
+      "description": "set on the PENDING record that starts the tracking",
+      "type": "string",
+      "enum": [
+        "NCES",
+        "POLICE_NOTIFICATION"
+      ]
+    },
+    "materialStatus": {
+      "$ref": "#/definitions/status"
+    },
+    "payloadBlobUri": {
+      "type": "string"
+    },
+    "documentBlobUri": {
+      "type": "string"
+    },
+    "emailStatus": {
+      "description": "NOT_REQUIRED where no email is sent",
+      "type": "string",
+      "enum": [
+        "NOT_REQUIRED",
+        "PENDING",
+        "SUCCESS",
+        "FAILED"
+      ]
+    },
+    "sjpCases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/sjpCase"
+      }
+    }
+  },
+  "required": [
+    "materialId"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "SUCCESS",
+        "FAILED"
+      ]
+    },
+    "sjpCase": {
+      "description": "an SJP case, identified by its case id; the correlation id the document was filed with is given when tracking starts",
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "sjpCorrelationId": {
+          "type": "string"
+        },
+        "sjpStatus": {
+          "$ref": "#/definitions/status"
+        }
+      },
+      "required": [
+        "caseId",
+        "sjpStatus"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

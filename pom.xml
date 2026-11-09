@@ -41,7 +41,7 @@
         <referencedata.version>17.104.137</referencedata.version>
         <notification.notify.version>17.104.44</notification.notify.version>
         <systemdocgenerator.version>17.104.127-CHD-2786-SNAPSHOT</systemdocgenerator.version>
-        <progression.version>17.104.306</progression.version>
+        <progression.version>17.104.308</progression.version>
         <material.version>17.0.88-CHD-2786-SNAPSHOT</material.version>
         <usersgroups.version>17.104.47</usersgroups.version>
         <stream-transformation-tool-api.version>7.0.0</stream-transformation-tool-api.version>

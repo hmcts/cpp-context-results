@@ -47,4 +47,7 @@ subscriptions_descriptor:
         - name: results.event.hearing-financial-results-tracked
           schema_uri: http://justice.gov.uk/hearing/courts/hearing-financial-results-tracked.json
 
+        - name: results.event.document-delivery-recorded
+          schema_uri: http://moj.gov.uk/cpp/results/domain/event/document-delivery-recorded.json
+
       event_source_name: results

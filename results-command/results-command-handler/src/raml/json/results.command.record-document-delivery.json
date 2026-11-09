@@ -1,0 +1,13 @@
+{
+  "materialId": "0bb7b276-9dc0-4af2-83b9-f4acef0c7898",
+  "documentType": "NCES",
+  "materialStatus": "PENDING",
+  "documentBlobUri": "https://example.blob.core.windows.net/results/sdg/documents/ENFDocumentOrder_0bb7b276-9dc0-4af2-83b9-f4acef0c7898.pdf",
+  "sjpCases": [
+    {
+      "caseId": "6b1c6f2a-5d3e-4a3e-9b7e-0e2b8e3c1a11",
+      "sjpCorrelationId": "2f0f1a8e-7c64-3b5f-9d38-3e1c0a9b7d22",
+      "sjpStatus": "PENDING"
+    }
+  ]
+}

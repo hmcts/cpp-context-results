@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A change to the delivery tracking of a document results stores in its blob container; only the fields that changed are present",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/document-delivery-recorded.json",
+  "type": "object",
+  "properties": {
+    "materialId": {
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "documentType": {
+      "description": "NCES or POLICE_NOTIFICATION; present on the record that starts the tracking",
+      "type": "string"
+    },
+    "materialStatus": {
+      "description": "PENDING, SUCCESS or FAILED",
+      "type": "string"
+    },
+    "payloadBlobUri": {
+      "type": "string"
+    },
+    "documentBlobUri": {
+      "type": "string"
+    },
+    "emailStatus": {
+      "description": "NOT_REQUIRED, PENDING, SUCCESS or FAILED",
+      "type": "string"
+    },
+    "sjpCases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/sjpCase"
+      }
+    }
+  },
+  "required": [
+    "materialId"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "sjpCase": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+        },
+        "sjpCorrelationId": {
+          "type": "string"
+        },
+        "sjpStatus": {
+          "description": "PENDING, SUCCESS or FAILED",
+          "type": "string"
+        }
+      },
+      "required": [
+        "caseId",
+        "sjpStatus"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
