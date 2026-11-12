@@ -279,6 +279,7 @@ public class HearingTransformer {
                 .withDefendants(prosecutionCase.getDefendants() == null ? Collections.emptyList() :
                         prosecutionCase.getDefendants().stream().map(dr -> defendant(dr).build()).collect(Collectors.toList()))
                 .withId(prosecutionCase.getId())
+                .withIsCivil(prosecutionCase.getIsCivil())
                 .withOriginatingOrganisation(prosecutionCase.getOriginatingOrganisation())
                 .withStatementOfFacts(prosecutionCase.getStatementOfFacts())
                 .withStatementOfFactsWelsh(prosecutionCase.getStatementOfFactsWelsh())
@@ -470,6 +471,7 @@ public class HearingTransformer {
                 .withApplicationDecisionSoughtByDate(courtApplication.getApplicationDecisionSoughtByDate())
                 .withApplicationReference(courtApplication.getApplicationReference())
                 .withApplicationReceivedDate(courtApplication.getApplicationReceivedDate())
+                .withCourtCivilApplication(courtApplication.getCourtCivilApplication())
                 .withId(courtApplication.getId())
                 .withJudicialResults(courtApplication.getJudicialResults() == null ?
                         Collections.emptyList() : filterJudicialResults(courtApplication.getJudicialResults()))
