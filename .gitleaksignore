@@ -10,5 +10,10 @@
 # the CDI @Value config keys for the managed-identity client/tenant id (empty
 # defaults) in InformantRegisterQueuePublisher as an internal hostname.
 # These are property key names, not URLs or secrets.
-19c24028592a9257e8b4687a9acde2097741b209:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:113
-19c24028592a9257e8b4687a9acde2097741b209:results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:117
+#
+# Global fingerprints (file:rule:line, no commit) so the suppression holds for
+# every commit that carries these lines, including merges from main. The lines
+# also carry an inline "gitleaks:allow" which covers them if they ever move;
+# once that has reached main these two entries can be deleted.
+results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:113
+results-event/results-event-processor/src/main/java/uk/gov/moj/cpp/results/event/service/InformantRegisterQueuePublisher.java:internal-urls:117

@@ -110,11 +110,11 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
     private String informantRegisterQueueName;
 
     @Inject
-    @Value(key = "azure.local.mi.clientId", defaultValue = "")
+    @Value(key = "azure.local.mi.clientId", defaultValue = "") // gitleaks:allow
     private String managedIdentityClientId;
 
     @Inject
-    @Value(key = "azure.local.mi.tenantId", defaultValue = "")
+    @Value(key = "azure.local.mi.tenantId", defaultValue = "") // gitleaks:allow
     private String managedIdentityTenantId;
 
     private ServiceBusSenderClient senderClient;
