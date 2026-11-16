@@ -21,6 +21,8 @@ import static uk.gov.justice.services.messaging.Envelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryType.NCES;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryType.POLICE_NOTIFICATION;
 import static uk.gov.moj.cpp.results.event.service.TemplateIdentifier.POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE;
 
 import uk.gov.justice.core.courts.CaseDefendant;
@@ -43,6 +45,7 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
 import uk.gov.moj.cpp.domains.HearingHelper;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.domains.results.shareresults.PublicHearingResulted;
@@ -62,6 +65,7 @@ import uk.gov.moj.cpp.results.event.service.ApplicationParameters;
 import uk.gov.moj.cpp.results.event.service.CacheService;
 import uk.gov.moj.cpp.results.event.service.ConversionFormat;
 import uk.gov.moj.cpp.results.event.service.DocumentGenerationRequest;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.EventGridService;
@@ -77,6 +81,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -191,6 +196,9 @@ public class ResultsEventProcessor {
 
     @Inject
     private DocumentGeneratorService documentGeneratorService;
+
+    @Inject
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
 
     @Inject
     private ProgressionService progressionService;
@@ -335,6 +343,7 @@ public class ResultsEventProcessor {
         } else {
             fileParams = documentGeneratorService.generateNcesDocumentWithUri(sender, envelope, userId, materialId, Originator.ORIGINATOR_VALUE_NCES);
         }
+        final List<UUID> sjpCasesSentTo = new ArrayList<>();
         for (final String caseUrn : caseUrns) {
             if (isSJPHearing) {
                 getSjpCaseUUID(caseUrn).ifPresentOrElse(
@@ -344,6 +353,7 @@ public class ResultsEventProcessor {
                             addCourtDocumentForSjpCase(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileId());
                         } else {
                             addCourtDocumentForSjpCaseWithUri(envelope, caseUUID, fileParams.getFilename(), fileParams.getFileUri());
+                            sjpCasesSentTo.add(caseUUID);
                         }
                     },
                     () -> LOGGER.warn("No SJP case UUID found for caseUrn: {}", caseUrn)
@@ -358,6 +368,28 @@ public class ResultsEventProcessor {
                 );
             }
         }
+        if (nonNull(fileParams.getFileUri())) {
+            startNcesDocumentTracking(envelope, materialId, fileParams.getFileUri(), sjpCasesSentTo);
+        }
+    }
+
+    /**
+     * Records the email status of the NCES document the email sends, on the file uri path only - the
+     * email carries the material there.
+     */
+    private void recordEmailStatus(final JsonEnvelope envelope, final EmailNotification emailNotification, final EmailDeliveryStatus emailStatus) {
+        emailNotification.getMaterialId().ifPresent(materialId ->
+                documentDeliveryStatusService.recordEmailStatus(envelope.metadata(), materialId, emailStatus));
+    }
+
+    /**
+     * Starts tracking the NCES document of the file uri path once it is generated, uploaded to material
+     * and sent to its SJP cases - a document that fails before then is not recorded at all: material
+     * and every SJP case it was sent to PENDING; its email is decided later in the flow. One record,
+     * as records for the same material handled out of order would be lost.
+     */
+    private void startNcesDocumentTracking(final JsonEnvelope envelope, final UUID materialId, final String documentBlobUri, final List<UUID> sjpCasesSentTo) {
+        documentDeliveryStatusService.startTracking(envelope.metadata(), materialId, NCES, null, documentBlobUri, sjpCasesSentTo, null);
     }
 
     private static List<String> extractCaseUrns(final String caseReferences) {
@@ -463,16 +495,21 @@ public class ResultsEventProcessor {
                 .withSendToAddress(ncesEmailNotification.getSendToAddress())
                 .withSubject(ncesEmailNotification.getSubject())
                 .withMaterialUrl(ncesEmailNotification.getMaterialUrl())
+                // the material is tracked, and its email matched back to it, on the file uri path only
+                .withMaterialId(TRUE.equals(ncesEmailNotification.getIsFileUri()) ? ncesEmailNotification.getMaterialId() : null)
                 .build();
 
         //Send Email
         LOGGER.info("send email notification - {}", emailNotification.getNotificationId());
         if (isEmpty(emailNotification.getSendToAddress())) {
+            // no NCES address: the email the flow sends is not sent
+            recordEmailStatus(envelope, emailNotification, EmailDeliveryStatus.NOT_REQUIRED);
             final Envelope<JsonObject> jsonObjectEnvelope = envelop(envelope.payloadAsJsonObject())
                     .withName(RESULTS_NCES_SEND_EMAIL_NOT_FOUND)
                     .withMetadataFrom(envelope);
             sender.sendAsAdmin(jsonObjectEnvelope);
         } else {
+            recordEmailStatus(envelope, emailNotification, EmailDeliveryStatus.PENDING);
             notificationNotifyService.sendNcesEmail(emailNotification, envelope);
         }
     }
@@ -567,6 +604,12 @@ public class ResultsEventProcessor {
 
             LOGGER.info("Generating document for police notification of hearing amend and re-share result. Notification ID: {}, File ID: {} FILE URI:{}", notificationId, documentGenerationRequest.getPayloadFileServiceId(), documentGenerationRequest.getPayloadFileServiceUri());
             systemDocGenerator.generateDocument(documentGenerationRequest, envelope);
+            if (nonNull(documentGenerationRequest.getPayloadFileServiceUri())) {
+                // file uri path: tracked from its sending to system document generator, the notification
+                // id being the material id the document is uploaded with; its email is decided later
+                documentDeliveryStatusService.startTracking(envelope.metadata(), notificationId, POLICE_NOTIFICATION,
+                        documentGenerationRequest.getPayloadFileServiceUri(), documentGenerationRequest.getDocumentFileServiceUri(), List.of(), null);
+            }
         }
     }
 

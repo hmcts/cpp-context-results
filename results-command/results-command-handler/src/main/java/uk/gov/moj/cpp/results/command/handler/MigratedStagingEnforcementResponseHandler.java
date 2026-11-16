@@ -55,6 +55,7 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
     public static final String MIGRATION_SOURCE_SYSTEM_CASE_IDENTIFIER = "migrationSourceSystemCaseIdentifier";
     public static final String CASE_URN = "caseURN";
     private static final String MATERIAL_URL = "materialUrl";
+    private static final String IS_FILE_URI = "isFileUri";
 
     @Inject
     @Value(key = "ncesEmailNotificationTemplateId")
@@ -122,7 +123,8 @@ public class MigratedStagingEnforcementResponseHandler extends AbstractCommandHa
         aggregate(MigratedInactiveHearingFinancialResultsAggregate.class, rootAggregateUUID,
                 envelope,
                 migratedInactiveHearingFinancialResultsAggregate ->
-                        migratedInactiveHearingFinancialResultsAggregate.saveMigratedInactiveNcesEmailNotificationDetails(materialUrl, ncesEmailNotificationTemplateId));
+                        migratedInactiveHearingFinancialResultsAggregate.saveMigratedInactiveNcesEmailNotificationDetails(materialUrl, ncesEmailNotificationTemplateId,
+                                payload.getBoolean(IS_FILE_URI, false)));
 
     }
 }

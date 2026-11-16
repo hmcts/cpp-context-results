@@ -43,9 +43,6 @@
         "caseId": {
           "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
         },
-        "sjpCorrelationId": {
-          "type": "string"
-        },
         "sjpStatus": {
           "description": "PENDING, SUCCESS or FAILED",
           "type": "string"

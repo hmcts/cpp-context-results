@@ -10,6 +10,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
@@ -36,6 +39,11 @@ import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.event.service.exception.FileUploadException;
 
+import org.mockito.InOrder;
+import uk.gov.moj.cpp.domains.DocumentDeliveryType;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
+import java.util.List;
 import java.util.UUID;
 
 import javax.json.JsonObject;
@@ -85,6 +93,9 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
     @Mock
     private FeatureControlGuard featureControlGuard;
+
+    @Mock
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
 
     @InjectMocks
     private MigratedNcesEmailNotificationRequestedProcessor processor;
@@ -320,6 +331,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         final String sendToAddress = "mail@email.com";
         final String subject = "Migrated inactive NCES notification";
         final String materialUrl = "http://localhost:1234/material";
+        final UUID materialId = randomUUID();
 
         final Metadata metadata = metadataFrom(createObjectBuilder()
                 .add(ID, randomUUID().toString())
@@ -333,10 +345,17 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
                         .add("sendToAddress", sendToAddress)
                         .add("subject", subject)
                         .add("materialUrl", materialUrl)
+                        .add("materialId", materialId.toString())
+                        .add("isFileUri", true)
                         .build());
 
         // When
         processor.handleSendNcesEmailNotification(jsonEnvelope);
+
+        // the email's status is PENDING right before it is sent
+        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notificationNotifyService);
+        pendingThenSent.verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), materialId, EmailDeliveryStatus.PENDING);
+        pendingThenSent.verify(notificationNotifyService).sendNcesEmail(any(), any());
 
         // Then
         verify(notificationNotifyService, times(1)).sendNcesEmail(
@@ -347,6 +366,29 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         assertThat(capturedEmailNotification.getSendToAddress(), is(sendToAddress));
         assertThat(capturedEmailNotification.getSubject().orElse(null), is(subject));
         assertThat(capturedEmailNotification.getMaterialUrl(), is(materialUrl));
+    }
+
+    @Test
+    void shouldNotTrackTheMigratedInactiveNcesEmailOfTheFileServicePath() {
+        final JsonEnvelope jsonEnvelope = envelopeFrom(
+                metadataFrom(createObjectBuilder()
+                        .add(ID, randomUUID().toString())
+                        .add(NAME, "results.event.migrated-inactive-nces-email-notification")
+                        .build()).build(),
+                createObjectBuilder()
+                        .add("notificationId", randomUUID().toString())
+                        .add("templateId", randomUUID().toString())
+                        .add("sendToAddress", "mail@email.com")
+                        .add("subject", "Migrated inactive NCES notification")
+                        .add("materialUrl", "http://localhost:1234/material")
+                        .add("materialId", randomUUID().toString())
+                        .build());
+
+        processor.handleSendNcesEmailNotification(jsonEnvelope);
+
+        verify(notificationNotifyService).sendNcesEmail(emailNotificationCaptor.capture(), eq(jsonEnvelope));
+        assertThat(emailNotificationCaptor.getValue().getMaterialId().isPresent(), is(false));
+        verifyNoInteractions(documentDeliveryStatusService);
     }
 
     @Test
@@ -383,6 +425,12 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
         processor.handleMigratedNcesEmailNotificationRequested(migratedInactiveNcesEmailNotificationRequestedEnvelope(userId, caseUUID, masterDefendantUUID, materialId));
 
+        // tracked once the document is generated and uploaded - a crown court case, so no SJP case
+        final InOrder generationThenTracking = inOrder(documentGeneratorService, documentDeliveryStatusService);
+        generationThenTracking.verify(documentGeneratorService).generateMigratedInactiveNcesDocumentWithUri(any(), any(), any(), any(), any());
+        generationThenTracking.verify(documentDeliveryStatusService).startTracking(any(), eq(materialId), eq(DocumentDeliveryType.NCES), isNull(),
+                eq(BLOB_URI), eq(List.of()), isNull());
+
         verify(documentGeneratorService, never()).generateMigratedInactiveNcesDocument(any(), any(), any(), any(), any());
         verify(documentGeneratorService).generateMigratedInactiveNcesDocumentWithUri(
                 any(Sender.class), jsonEnvelopeCaptor.capture(), eq(userId), eq(materialId), eq(expectedOriginator));
@@ -412,6 +460,8 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
         verify(documentGeneratorService, never()).generateMigratedInactiveNcesDocument(any(), any(), any(), any(), any());
         verify(sender, never()).send(any());
+        // nothing was sent anywhere, so nothing is left PENDING
+        verifyNoInteractions(documentDeliveryStatusService);
     }
 
     private static JsonEnvelope migratedInactiveNcesEmailNotificationRequestedEnvelope(final UUID userId, final UUID caseUUID,

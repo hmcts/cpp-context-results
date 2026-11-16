@@ -1,5 +1,7 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.util.Objects.nonNull;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryType.NCES;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
@@ -34,6 +36,8 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
 import uk.gov.moj.cpp.results.event.helper.Originator;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
@@ -41,6 +45,7 @@ import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -75,6 +80,9 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     private DocumentGeneratorService documentGeneratorService;
 
     @Inject
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
+
+    @Inject
     private JsonObjectToObjectConverter jsonObjectToObjectConverter;
 
     @Inject
@@ -102,6 +110,12 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
 
         addCourtDocumentForCCCase(envelope, caseUUID, materialId, fileParams.getFilename());
         LOGGER.info("In CC migrated inactive case Nces notification requested payload for add court document- fileid {} fileUri {} case UUID {}", fileParams.getFileId(),fileParams.getFileUri(), caseUUID);
+        if (nonNull(fileParams.getFileUri())) {
+            // file uri path: tracked once the document is generated and uploaded to material - one that
+            // fails before then is not recorded; a crown court case only, so no SJP case, and its email
+            // is decided later in the flow
+            documentDeliveryStatusService.startTracking(envelope.metadata(), materialId, NCES, null, fileParams.getFileUri(), List.of(), null);
+        }
 
     }
 
@@ -117,10 +131,16 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
                 .withSendToAddress(ncesEmailNotification.getSendToAddress())
                 .withSubject(ncesEmailNotification.getSubject())
                 .withMaterialUrl(ncesEmailNotification.getMaterialUrl())
+                // the material is tracked, and its email matched back to it, on the file uri path only
+                .withMaterialId(Boolean.TRUE.equals(ncesEmailNotification.getIsFileUri()) ? ncesEmailNotification.getMaterialId() : null)
                 .build();
 
         //Send Email
         LOGGER.info("send migrated inactive email notification - {}", emailNotification.getNotificationId());
+        // the email's status is PENDING right before it is sent, on the file uri path only - the email
+        // carries the material there
+        emailNotification.getMaterialId().ifPresent(materialId ->
+                documentDeliveryStatusService.recordEmailStatus(envelope.metadata(), materialId, EmailDeliveryStatus.PENDING));
         notificationNotifyService.sendNcesEmail(emailNotification, envelope);
     }
 

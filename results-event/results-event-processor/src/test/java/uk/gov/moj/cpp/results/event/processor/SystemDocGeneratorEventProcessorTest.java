@@ -9,7 +9,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.FAILED;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonMetadata.ID;
@@ -27,6 +30,9 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
+import org.mockito.InOrder;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialContext;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialService;
@@ -69,6 +75,9 @@ public class SystemDocGeneratorEventProcessorTest {
 
     @Mock
     private MaterialUrlGenerator materialUrlGenerator;
+
+    @Mock
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
 
     @Captor
     private ArgumentCaptor<Envelope<JsonObject>> envelopeCaptor;
@@ -182,6 +191,9 @@ public class SystemDocGeneratorEventProcessorTest {
         assertThat(personalisation.getString("defendants"), is(defendants));
 
 
+        // the file service path is not tracked
+        verifyNoInteractions(documentDeliveryStatusService);
+        assertThat(argumentCaptor.getValue().containsKey("clientContext"), is(false));
     }
 
     @Test
@@ -246,6 +258,11 @@ public class SystemDocGeneratorEventProcessorTest {
         final ArgumentCaptor<JsonObject> notificationCaptor = ArgumentCaptor.forClass(JsonObject.class);
         verify(notificationNotifyService).sendEmailNotification(any(), notificationCaptor.capture());
         assertThat(notificationCaptor.getValue().getString("materialUrl"), is(url));
+        assertThat(notificationCaptor.getValue().getString("clientContext"), is("RESULTS_" + notificationId));
+
+        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notificationNotifyService);
+        pendingThenSent.verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), notificationId, EmailDeliveryStatus.PENDING);
+        pendingThenSent.verify(notificationNotifyService).sendEmailNotification(any(), any());
     }
 
     @Test
@@ -262,6 +279,66 @@ public class SystemDocGeneratorEventProcessorTest {
                 generationFailedPayload().add("payloadFileUri", "https://blob.example/sdg/requests/nces.json").build());
 
         assertDoesNotThrow(() -> systemDocGeneratorEventProcessor.handleDocumentGenerationFailedEvent(jsonEnvelope));
+    }
+
+    @Test
+    void shouldRecordTheMaterialOfAFailedNcesDocumentAsFailed() {
+        final UUID materialId = UUID.randomUUID();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(documentAvailableMetadata(), generationFailedPayload()
+                .add("sourceCorrelationId", materialId.toString())
+                .add("payloadFileUri", "https://blob.example/sdg/requests/nces.json").build());
+
+        systemDocGeneratorEventProcessor.handleDocumentGenerationFailedEvent(jsonEnvelope);
+
+        verify(documentDeliveryStatusService).recordMaterialStatus(jsonEnvelope.metadata(), materialId, FAILED);
+    }
+
+    @Test
+    void shouldRecordTheMaterialOfAFailedPoliceNotificationAsFailed() {
+        final UUID materialId = UUID.randomUUID();
+        final JsonEnvelope jsonEnvelope = envelopeFrom(documentAvailableMetadata(), generationFailedPayload()
+                .add("originatingSource", "POLICE_NOTIFICATION_HEARING_RESULTS")
+                .add("sourceCorrelationId", materialId.toString())
+                .add("payloadFileUri", "https://blob.example/sdg/requests/police.html").build());
+
+        systemDocGeneratorEventProcessor.handleDocumentGenerationFailedEvent(jsonEnvelope);
+
+        verify(documentDeliveryStatusService).recordMaterialStatus(jsonEnvelope.metadata(), materialId, FAILED);
+    }
+
+    @Test
+    void shouldOnlyLogAFailedDocumentOfTheFileServicePath() {
+        final JsonEnvelope jsonEnvelope = envelopeFrom(documentAvailableMetadata(),
+                generationFailedPayload().add("payloadFileServiceId", UUID.randomUUID().toString()).build());
+
+        systemDocGeneratorEventProcessor.handleDocumentGenerationFailedEvent(jsonEnvelope);
+
+        verifyNoInteractions(documentDeliveryStatusService);
+    }
+
+    @Test
+    void shouldNotRecordAFailedDocumentThatDoesNotNameItsMaterial() {
+        final JsonEnvelope jsonEnvelope = envelopeFrom(documentAvailableMetadata(), createObjectBuilder()
+                .add("originatingSource", "NCES_EMAIL_NOTIFICATION_REQUEST")
+                .add("templateIdentifier", "OEE_Layout5")
+                .add("conversionFormat", "pdf")
+                .add("reason", "template not found")
+                .add("payloadFileUri", "https://blob.example/sdg/requests/nces.json").build());
+
+        systemDocGeneratorEventProcessor.handleDocumentGenerationFailedEvent(jsonEnvelope);
+
+        verifyNoInteractions(documentDeliveryStatusService);
+    }
+
+    @Test
+    void shouldNotRecordAFailedDocumentOfAnotherContext() {
+        final JsonEnvelope jsonEnvelope = envelopeFrom(documentAvailableMetadata(), generationFailedPayload()
+                .add("originatingSource", "PROGRESSION_COURT_ORDER")
+                .add("payloadFileUri", "https://blob.example/sdg/requests/other.json").build());
+
+        systemDocGeneratorEventProcessor.handleDocumentGenerationFailedEvent(jsonEnvelope);
+
+        verifyNoInteractions(documentDeliveryStatusService);
     }
 
     private static JsonObjectBuilder generationFailedPayload() {

@@ -77,4 +77,22 @@ subscriptions_descriptor:
         - name: public.systemdocgenerator.events.generation-failed
           schema_uri: http://moj.gov.uk/cpp/json/schemas/systemdocgenerator/events/public/generation-failed.json
 
+        - name: public.events.material.failed-to-add-material
+          schema_uri: http://justice.gov.uk/cps/material/events/public.events.material.failed-to-add-material.json
+
+        - name: public.sjp.case-document-added
+          schema_uri: http://cpp.moj.gov.uk/sjp/json/schema/event/public-case-document-added.json
+
+        - name: public.sjp.case-document-addition-failed
+          schema_uri: http://cpp.moj.gov.uk/sjp/json/schema/event/public-case-document-addition-failed.json
+
+        - name: public.sjp.events.case-document-upload-rejected
+          schema_uri: http://justice.gov.uk/json/schemas/domains/sjp/event/public-case-document-upload-rejected.json
+
+        - name: public.notificationnotify.events.notification-sent
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/notificationnotify/events/public/notification-sent.json
+
+        - name: public.notificationnotify.events.notification-failed
+          schema_uri: http://moj.gov.uk/cpp/json/schemas/notificationnotify/events/public/notification-failed.json
+
       event_source_name: public.event.source

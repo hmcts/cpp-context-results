@@ -55,14 +55,11 @@
       ]
     },
     "sjpCase": {
-      "description": "an SJP case, identified by its case id; the correlation id the document was filed with is given when tracking starts",
+      "description": "an SJP case, identified by its case id",
       "type": "object",
       "properties": {
         "caseId": {
           "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
-        },
-        "sjpCorrelationId": {
-          "type": "string"
         },
         "sjpStatus": {
           "$ref": "#/definitions/status"

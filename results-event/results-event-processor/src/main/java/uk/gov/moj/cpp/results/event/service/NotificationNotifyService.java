@@ -35,6 +35,27 @@ public class NotificationNotifyService {
     private static final String NOTIFICATION_NOTIFY_EMAIL_METADATA_TYPE = "notificationnotify.send-email-notification";
     private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
 
+    /**
+     * Echoed back by notificationnotify on notification-sent / notification-failed. Results sets it,
+     * with this prefix, on the email of a document it tracks the delivery of, so those events can be
+     * told apart from other contexts' and matched back to the material: the rest of it is the
+     * material id.
+     */
+    public static final String CLIENT_CONTEXT = "clientContext";
+    public static final String CLIENT_CONTEXT_PREFIX = "RESULTS_";
+
+    public static String clientContextFor(final UUID materialId) {
+        return CLIENT_CONTEXT_PREFIX + materialId;
+    }
+
+    public static boolean isResultsNotification(final JsonObject payload) {
+        return payload.getString(CLIENT_CONTEXT, "").startsWith(CLIENT_CONTEXT_PREFIX);
+    }
+
+    public static UUID materialIdFrom(final JsonObject payload) {
+        return UUID.fromString(payload.getString(CLIENT_CONTEXT).substring(CLIENT_CONTEXT_PREFIX.length()));
+    }
+
     @Inject
     @ServiceComponent(EVENT_PROCESSOR)
     private Sender sender;
@@ -69,6 +90,7 @@ public class NotificationNotifyService {
 
         emailNotification.getSubject().ifPresent(subject ->
                 payload.add("personalisation", createObjectBuilder().add("subject", subject)));
+        emailNotification.getMaterialId().ifPresent(materialId -> payload.add(CLIENT_CONTEXT, clientContextFor(materialId)));
 
         final JsonEnvelope envelopeToSend = envelopeFrom(
                 JsonEnvelope.metadataFrom(envelope.metadata()).withName(NOTIFICATION_NOTIFY_EMAIL_METADATA_TYPE), payload);

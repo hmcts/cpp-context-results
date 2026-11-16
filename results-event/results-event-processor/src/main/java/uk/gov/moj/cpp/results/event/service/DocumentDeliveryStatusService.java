@@ -46,7 +46,6 @@ public class DocumentDeliveryStatusService {
     private static final String MATERIAL_ID = "materialId";
     private static final String SJP_CASES = "sjpCases";
     private static final String CASE_ID = "caseId";
-    private static final String SJP_CORRELATION_ID = "sjpCorrelationId";
     private static final String SJP_STATUS = "sjpStatus";
 
     @Inject
@@ -55,12 +54,12 @@ public class DocumentDeliveryStatusService {
 
     /**
      * @param payloadBlobUri the payload sent to system document generator; null where there is none
-     * @param sjpCases       the SJP cases the document is sent to; empty where there are none
+     * @param sjpCaseIds     the SJP cases the document is sent to; empty where there are none
      * @param emailStatus    NOT_REQUIRED for a flow that sends no email; null for a flow that does,
      *                       which records NOT_REQUIRED or PENDING once it has decided whether to send it
      */
     public void startTracking(final Metadata originatingMetadata, final UUID materialId, final DocumentDeliveryType documentType,
-                              final String payloadBlobUri, final String documentBlobUri, final List<SjpCaseDelivery> sjpCases,
+                              final String payloadBlobUri, final String documentBlobUri, final List<UUID> sjpCaseIds,
                               final EmailDeliveryStatus emailStatus) {
         final JsonObjectBuilder payload = materialPayload(materialId)
                 .add("documentType", documentType.name())
@@ -71,15 +70,11 @@ public class DocumentDeliveryStatusService {
             payload.add("emailStatus", emailStatus.name());
         }
 
-        if (!sjpCases.isEmpty()) {
+        if (!sjpCaseIds.isEmpty()) {
             final JsonArrayBuilder sjpCaseArray = createArrayBuilder();
-            sjpCases.forEach(sjpCase -> {
-                final JsonObjectBuilder sjpCasePayload = createObjectBuilder()
-                        .add(CASE_ID, sjpCase.caseId().toString())
-                        .add(SJP_STATUS, PENDING.name());
-                addIfPresent(sjpCasePayload, SJP_CORRELATION_ID, sjpCase.sjpCorrelationId());
-                sjpCaseArray.add(sjpCasePayload);
-            });
+            sjpCaseIds.forEach(caseId -> sjpCaseArray.add(createObjectBuilder()
+                    .add(CASE_ID, caseId.toString())
+                    .add(SJP_STATUS, PENDING.name())));
             payload.add(SJP_CASES, sjpCaseArray);
         }
 
@@ -116,12 +111,5 @@ public class DocumentDeliveryStatusService {
         sender.sendAsAdmin(Envelope.envelopeFrom(
                 metadataFrom(originatingMetadata).withName(RESULTS_COMMAND_RECORD_DOCUMENT_DELIVERY),
                 payload));
-    }
-
-    /**
-     * An SJP case a document is sent to, with the correlation id it is filed with (the caseDocument
-     * sent on sjp.upload-case-document).
-     */
-    public record SjpCaseDelivery(UUID caseId, String sjpCorrelationId) {
     }
 }

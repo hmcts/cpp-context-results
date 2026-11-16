@@ -13,8 +13,6 @@
             <column name="case_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <!-- the fileId or document blob uri sent to sjp for this case -->
-            <column name="sjp_correlation_id" type="TEXT"/>
             <!-- PENDING, SUCCESS or FAILED -->
             <column name="sjp_status" type="VARCHAR(32)"/>
         </createTable>

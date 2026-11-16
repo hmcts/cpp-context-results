@@ -35,6 +35,7 @@ public class NcesDocumentNotificationCommandHandler extends AbstractCommandHandl
     private static final Logger LOGGER = LoggerFactory.getLogger(NcesDocumentNotificationCommandHandler.class);
     private static final String MATERIAL_ID = "materialId";
     private static final String MATERIAL_URL = "materialUrl";
+    private static final String IS_FILE_URI = "isFileUri";
 
     @Inject
     @Value(key = "ncesEmailNotificationTemplateId")
@@ -70,6 +71,8 @@ public class NcesDocumentNotificationCommandHandler extends AbstractCommandHandl
                 .withSendToAddress(ncesEmailNotificationDetails.getSendTo())
                 .withSubject(ncesEmailNotificationDetails.getSubject())
                 .withMaterialUrl(materialUrl)
+                // carried on to the email only on the file uri path, whose delivery is tracked
+                .withIsFileUri(envelope.payloadAsJsonObject().getBoolean(IS_FILE_URI, false) ? Boolean.TRUE : null)
                 .build();
 
         aggregate(HearingFinancialResultsAggregate.class, emailNotification.getMasterDefendantId(), envelope,

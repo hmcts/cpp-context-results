@@ -122,7 +122,11 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
          return apply(Stream.of(requested));
     }
 
-    public Stream<Object> saveMigratedInactiveNcesEmailNotificationDetails(final String materialUrl, final  String ncesEmailNotificationTemplateId) {
+    /**
+     * @param isFileUri whether the document was uploaded on the file uri path, whose delivery is tracked
+     */
+    public Stream<Object> saveMigratedInactiveNcesEmailNotificationDetails(final String materialUrl, final  String ncesEmailNotificationTemplateId,
+                                                                          final boolean isFileUri) {
         final MigratedInactiveNcesEmailNotification migratedInactiveNcesEmailNotification = MigratedInactiveNcesEmailNotification.migratedInactiveNcesEmailNotification()
                 .withMasterDefendantId(this.masterDefendantId)
                 .withNotificationId(this.notificationId)
@@ -131,6 +135,7 @@ public class MigratedInactiveHearingFinancialResultsAggregate implements Aggrega
                 .withSendToAddress(this.sendToAddress)
                 .withSubject(this.subject)
                 .withMaterialUrl(materialUrl)
+                .withIsFileUri(isFileUri ? Boolean.TRUE : null)
                 .build();
 
         return apply(Stream.of(migratedInactiveNcesEmailNotification));

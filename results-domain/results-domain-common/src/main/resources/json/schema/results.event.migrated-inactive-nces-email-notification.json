@@ -23,6 +23,10 @@
     },
     "materialUrl": {
       "type": "string"
+    },
+    "isFileUri": {
+      "description": "the document was uploaded by its blob uri (the file uri path), whose delivery is tracked",
+      "type": "boolean"
     }
   },
   "additionalProperties": false,

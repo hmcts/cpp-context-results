@@ -4,15 +4,19 @@ import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.services.messaging.Envelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.messaging.JsonEnvelopeBuilder.envelope;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.SUCCESS;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.common.converter.jackson.ObjectMapperProducer;
@@ -22,7 +26,10 @@ import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
 import uk.gov.moj.cpp.results.event.helper.Originator;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -49,6 +56,9 @@ public class MaterialAddedEventProcessorTest {
 
     @Mock
     private JsonEnvelope outEnvelope;
+
+    @Mock
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
 
     @Spy
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -95,6 +105,73 @@ public class MaterialAddedEventProcessorTest {
         verify(sender, times(1)).send(envelopeArgumentCaptor.capture());
         verify(sender, times(1)).send(sentEnvelopes.capture());
         assertThat(sentEnvelopes.getValue(), is(outEnvelope));
+        // the file service path is not tracked
+        verify(documentDeliveryStatusService, never()).recordMaterialStatus(any(), any(), any());
+    }
+
+    @Test
+    void shouldRecordTheMaterialOfTheFileUriPathAsAddedAndCarryThePathToItsEmail() {
+        final String materialId = randomUUID().toString();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataFrom(createObjectBuilder()
+                        .add(Originator.SOURCE_NCES, Originator.ORIGINATOR_VALUE_NCES)
+                        .add(Originator.ORIGINATOR_FILE_URI, true)
+                        .add("id", UUID.randomUUID().toString())
+                        .add("name", "material.material-added")
+                        .build()))
+                .withPayloadOf(materialId, "materialId")
+                .build();
+        when(materialUrlGenerator.pdfFileStreamUrlFor(fromString(materialId))).thenReturn("http://localhost:8080/");
+        final List<Object> commandPayloads = new ArrayList<>();
+        when(enveloper.withMetadataFrom(jsonEnvelope, "results.command.nces-document-notification")).thenReturn(payload -> {
+            commandPayloads.add(payload);
+            return outEnvelope;
+        });
+
+        materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
+
+        verify(documentDeliveryStatusService).recordMaterialStatus(jsonEnvelope.metadata(), fromString(materialId), SUCCESS);
+        assertThat(((JsonObject) commandPayloads.get(0)).getBoolean("isFileUri"), is(true));
+    }
+
+    @Test
+    void shouldCarryTheFileUriPathOfAMigratedInactiveMaterialToItsEmail() {
+        final String materialId = randomUUID().toString();
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataFrom(createObjectBuilder()
+                        .add(Originator.SOURCE_NCES, Originator.ORIGINATOR_VALUE_NCES_CASEID + randomUUID() + ":" + randomUUID())
+                        .add(Originator.ORIGINATOR_FILE_URI, true)
+                        .add("id", UUID.randomUUID().toString())
+                        .add("name", "material.material-added")
+                        .build()))
+                .withPayloadOf(materialId, "materialId")
+                .build();
+        when(materialUrlGenerator.pdfFileStreamUrlFor(fromString(materialId))).thenReturn("http://localhost:8080/");
+        final List<Object> commandPayloads = new ArrayList<>();
+        when(enveloper.withMetadataFrom(jsonEnvelope, MaterialAddedEventProcessor.RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION)).thenReturn(payload -> {
+            commandPayloads.add(payload);
+            return outEnvelope;
+        });
+
+        materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
+
+        verify(documentDeliveryStatusService).recordMaterialStatus(jsonEnvelope.metadata(), fromString(materialId), SUCCESS);
+        assertThat(((JsonObject) commandPayloads.get(0)).getBoolean("isFileUri"), is(true));
+    }
+
+    @Test
+    void shouldNotRecordTheDeliveryOfAMaterialOfAnotherContext() {
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataFrom(createObjectBuilder()
+                        .add("id", UUID.randomUUID().toString())
+                        .add("name", "material.material-added")
+                        .build()))
+                .withPayloadOf(randomUUID().toString(), "materialId")
+                .build();
+
+        materialAddedEventProcessor.processMaterialAdded(jsonEnvelope);
+
+        verifyNoInteractions(documentDeliveryStatusService, sender);
     }
 
     @Test
@@ -137,6 +214,8 @@ public class MaterialAddedEventProcessorTest {
         verify(materialUrlGenerator, times(1)).pdfFileStreamUrlFor(fromString(materialId));
         verify(enveloper, times(1)).withMetadataFrom(jsonEnvelope, MaterialAddedEventProcessor.RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION);
         verify(sender, times(1)).send(outEnvelope);
+        // the file service path is not tracked
+        verify(documentDeliveryStatusService, never()).recordMaterialStatus(any(), any(), any());
     }
 
 }

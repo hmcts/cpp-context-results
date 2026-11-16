@@ -3,6 +3,8 @@ package uk.gov.moj.cpp.results.event.service;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWithPayloadAndMetaDetails;
+import static uk.gov.moj.cpp.results.event.helper.Originator.assembleFileUriEnvelopeWithPayloadAndMetaDetails;
+import static uk.gov.moj.cpp.results.event.helper.Originator.createFileUriMetadataWithProcessIdAndUserId;
 import static uk.gov.moj.cpp.results.event.helper.Originator.createMetadataWithProcessIdAndUserId;
 
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -57,9 +59,9 @@ public class MaterialService {
 
         final Optional<String> userId = envelope.metadata().userId();
         if (userId.isPresent()) {
-            sender.send(assembleEnvelopeWithPayloadAndMetaDetails(uploadMaterialPayload, UPLOAD_MATERIAL, userId.get(), ncesOriginatorValue));
+            sender.send(assembleFileUriEnvelopeWithPayloadAndMetaDetails(uploadMaterialPayload, UPLOAD_MATERIAL, userId.get(), ncesOriginatorValue));
         } else {
-            final Metadata metadata = createMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), UPLOAD_MATERIAL, null, ncesOriginatorValue);
+            final Metadata metadata = createFileUriMetadataWithProcessIdAndUserId(UUID.randomUUID().toString(), UPLOAD_MATERIAL, null, ncesOriginatorValue);
             sender.sendAsAdmin(Envelope.envelopeFrom(metadata, uploadMaterialPayload));
         }
     }

@@ -10,6 +10,10 @@
     "materialUrl": {
       "type": "string"
     },
+    "isFileUri": {
+      "description": "the material was uploaded by its blob uri (the file uri path), whose delivery is tracked",
+      "type": "boolean"
+    },
     "masterDefendantId": {
       "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
     },

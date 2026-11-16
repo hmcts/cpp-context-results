@@ -71,7 +71,7 @@ public class DocumentDeliveryAggregate implements Aggregate {
         final Map<UUID, SjpCases> sjpCases = new LinkedHashMap<>();
         request.sjpCases()
                 .forEach(sjpCase -> sjpCases.putIfAbsent(sjpCase.caseId(),
-                        new SjpCases(sjpCase.caseId(), sjpCase.sjpCorrelationId(), sjpCase.sjpStatus())));
+                        new SjpCases(sjpCase.caseId(), sjpCase.sjpStatus())));
 
         return DocumentDeliveryRecorded.documentDeliveryRecorded()
                 .withMaterialId(request.materialId())
@@ -116,7 +116,7 @@ public class DocumentDeliveryAggregate implements Aggregate {
             }
             final String newSjpStatus = statusChange(sjpStatusByCaseId.get(caseId), sjpCase.sjpStatus());
             if (nonNull(newSjpStatus)) {
-                changes.put(caseId, new SjpCases(caseId, null, newSjpStatus));
+                changes.put(caseId, new SjpCases(caseId, newSjpStatus));
             }
         }
         return new ArrayList<>(changes.values());

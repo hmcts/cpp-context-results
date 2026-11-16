@@ -7,11 +7,13 @@ import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.moj.cpp.results.domain.aggregate.application.NCESDecisionConstants.APPLICATION_TYPES;
 import static uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested.migratedInactiveNcesEmailNotificationRequested;
 
 import uk.gov.moj.cpp.domains.results.MigratedMasterDefendantCaseDetails;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesCourtEmailAbsent;
+import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotification;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequested;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesEmailNotificationRequestedExists;
 import uk.gov.moj.cpp.results.domain.event.MigratedInactiveNcesFineAcccountNumberAbsent;
@@ -246,9 +248,13 @@ public class MigratedInactiveHearingFinancialResultsAggregateTest {
         final String materialUrl = "https://example.com/material";
         final String templateId = randomUUID().toString();
 
-        final Stream<Object> result = aggregate.saveMigratedInactiveNcesEmailNotificationDetails(materialUrl, templateId);
+        final Stream<Object> result = aggregate.saveMigratedInactiveNcesEmailNotificationDetails(materialUrl, templateId, true);
 
         final List<Object> events = result.collect(toList());
         assertThat(events.size(), is(1));
+        // the document was uploaded on the file uri path, carried on to its email
+        assertThat(((MigratedInactiveNcesEmailNotification) events.get(0)).getIsFileUri(), is(true));
+        assertThat(((MigratedInactiveNcesEmailNotification) aggregate.saveMigratedInactiveNcesEmailNotificationDetails(materialUrl, templateId, false)
+                .findFirst().orElseThrow()).getIsFileUri(), is(nullValue()));
     }
 }

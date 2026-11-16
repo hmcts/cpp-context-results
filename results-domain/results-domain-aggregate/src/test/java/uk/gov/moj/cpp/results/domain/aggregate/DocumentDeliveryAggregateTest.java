@@ -158,7 +158,7 @@ class DocumentDeliveryAggregateTest {
     void shouldUpdateOnlyTheSjpCaseTheOutcomeIsFor() {
         record(ncesPending(firstCaseId, secondCaseId));
 
-        final DocumentDeliveryRecorded recorded = (DocumentDeliveryRecorded) record(sjpStatus(new SjpCase(secondCaseId, null, SUCCESS.name()))).get(0);
+        final DocumentDeliveryRecorded recorded = (DocumentDeliveryRecorded) record(sjpStatus(new SjpCase(secondCaseId, SUCCESS.name()))).get(0);
 
         assertThat(recorded.getSjpCases(), hasSize(1));
         assertThat(recorded.getSjpCases().get(0).getCaseId(), is(secondCaseId));
@@ -170,15 +170,15 @@ class DocumentDeliveryAggregateTest {
     void shouldIgnoreAnSjpCaseTheDocumentWasNotSentTo() {
         record(ncesPending(firstCaseId));
 
-        assertThat(record(sjpStatus(new SjpCase(randomUUID(), null, SUCCESS.name()))), is(empty()));
+        assertThat(record(sjpStatus(new SjpCase(randomUUID(), SUCCESS.name()))), is(empty()));
     }
 
     @Test
     void shouldNotTakeACompletedSjpStatusBackToPending() {
         record(ncesPending(firstCaseId));
-        record(sjpStatus(new SjpCase(firstCaseId, null, SUCCESS.name())));
+        record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name())));
 
-        assertThat(record(sjpStatus(new SjpCase(firstCaseId, null, PENDING.name()))), is(empty()));
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, PENDING.name()))), is(empty()));
     }
 
     @Test
@@ -194,7 +194,7 @@ class DocumentDeliveryAggregateTest {
 
     private DocumentDeliveryRequest ncesPending(final UUID... caseIds) {
         return new DocumentDeliveryRequest(materialId, NCES.name(), PENDING.name(), null, DOCUMENT_BLOB_URI, null,
-                Arrays.stream(caseIds).map(caseId -> new SjpCase(caseId, DOCUMENT_BLOB_URI, PENDING.name())).toList());
+                Arrays.stream(caseIds).map(caseId -> new SjpCase(caseId, PENDING.name())).toList());
     }
 
     private DocumentDeliveryRequest materialStatus(final String status) {

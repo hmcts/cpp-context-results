@@ -1,6 +1,12 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.lang.Boolean.TRUE;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.SUCCESS;
+import static uk.gov.moj.cpp.results.event.helper.Originator.isFileUriMaterial;
+import static uk.gov.moj.cpp.results.event.helper.Originator.isMigratedInactiveNcesMaterial;
+import static uk.gov.moj.cpp.results.event.helper.Originator.isNcesMaterial;
+import static uk.gov.moj.cpp.results.event.helper.Originator.isResultsMaterial;
 
 import uk.gov.justice.results.courts.NcesDocumentNotification;
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
@@ -12,11 +18,13 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
 import uk.gov.moj.cpp.results.event.helper.Originator;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +35,14 @@ public class MaterialAddedEventProcessor {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(MaterialAddedEventProcessor.class.getName());
     public static final String ORIGINATOR = Originator.SOURCE_NCES;
-    public static final String ORIGINATOR_VALUE = Originator.ORIGINATOR_VALUE_NCES;
-    public static final String ORIGINATOR_VALUE_NCES_CASEID = Originator.ORIGINATOR_VALUE_NCES_CASEID;
     public static final String RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION = "result.command.migrated-inactive-nces-document-notification";
     public static final String MATERIAL_ID = "materialId";
     public static final String MATERIAL_URL = "materialUrl";
     public static final String MASTER_DEFENDANT_ID = "masterDefendantId";
     public static final String CASE_ID = "caseId";
     public static final String SEPARATOR = ":";
+    // the material was uploaded on the file uri path, carried to the email so its delivery is tracked
+    public static final String IS_FILE_URI = "isFileUri";
 
     @Inject
     private MaterialUrlGenerator materialUrlGenerator;
@@ -48,18 +56,21 @@ public class MaterialAddedEventProcessor {
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
+    @Inject
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
+
     @Handles("material.material-added")
     public void processMaterialAdded(final JsonEnvelope envelope) {
         LOGGER.info("Received MaterialAddedEvent {}", envelope.toObfuscatedDebugString());
-        if (envelope.metadata().asJsonObject().containsKey(ORIGINATOR)) {
-            final String originator = envelope.metadata().asJsonObject().getString(ORIGINATOR);
+        if (isResultsMaterial(envelope.metadata()) && isFileUriMaterial(envelope.metadata())) {
+            documentDeliveryStatusService.recordMaterialStatus(envelope.metadata(),
+                    UUID.fromString(envelope.payloadAsJsonObject().getString(MATERIAL_ID)), SUCCESS);
+        }
 
-            if (ORIGINATOR_VALUE.equalsIgnoreCase(originator)) {
-                processNcesDocumentNotification(envelope);
-            }
-            else if (originator != null && originator.toLowerCase().startsWith(ORIGINATOR_VALUE_NCES_CASEID.toLowerCase())) {
-                processMigratedInactiveNcesDocumentNotification(envelope);
-            }
+        if (isNcesMaterial(envelope.metadata())) {
+            processNcesDocumentNotification(envelope);
+        } else if (isMigratedInactiveNcesMaterial(envelope.metadata())) {
+            processMigratedInactiveNcesDocumentNotification(envelope);
         }
     }
     @SuppressWarnings("squid:CallToDeprecatedMethod")
@@ -71,6 +82,7 @@ public class MaterialAddedEventProcessor {
         final NcesDocumentNotification ncesDocumentNotificationCommand = NcesDocumentNotification.ncesDocumentNotification()
                 .withMaterialId(materialId)
                 .withMaterialUrl(materialUrl)
+                .withIsFileUri(isFileUriMaterial(envelope.metadata()) ? TRUE : null)
                 .build();
 
         this.sender.send(this.enveloper.withMetadataFrom(envelope, "results.command.nces-document-notification")
@@ -86,16 +98,17 @@ public class MaterialAddedEventProcessor {
         final String originator = envelope.metadata().asJsonObject().getString(ORIGINATOR);
         final String[] splitted = originator.split(SEPARATOR);
 
-        final JsonObject enrichedPayload = createObjectBuilder()
+        final JsonObjectBuilder enrichedPayload = createObjectBuilder()
                 .add(MATERIAL_ID, materialId.toString())
                 .add(MATERIAL_URL, materialUrl)
                 .add(MASTER_DEFENDANT_ID, splitted[1])
-                .add(CASE_ID, splitted[2])
-                .build();
+                .add(CASE_ID, splitted[2]);
+        if (isFileUriMaterial(envelope.metadata())) {
+            enrichedPayload.add(IS_FILE_URI, true);
+        }
 
         this.sender.send(this.enveloper
                 .withMetadataFrom(envelope, RESULTS_COMMAND_INACTIVE_MIGRATED_NCES_DOCUMENT_NOTIFICATION)
-                .apply(enrichedPayload));
+                .apply(enrichedPayload.build()));
     }
-
 }
