@@ -16,7 +16,6 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
-import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService.SjpCaseDelivery;
 
 import java.util.List;
 import java.util.UUID;
@@ -76,13 +75,12 @@ class DocumentDeliveryStatusServiceTest {
     @Test
     void shouldStartTrackingAnNcesDocumentWithItsSjpCasesPending() {
         documentDeliveryStatusService.startTracking(originatingMetadata, materialId, NCES, null, DOCUMENT_BLOB_URI,
-                List.of(new SjpCaseDelivery(caseId, "document-id")), null);
+                List.of(caseId), null);
 
         final JsonObject payload = sentPayload();
         assertThat(payload.containsKey("payloadBlobUri"), is(false));
         final JsonObject sjpCase = payload.getJsonArray("sjpCases").getJsonObject(0);
         assertThat(sjpCase.getString("caseId"), is(caseId.toString()));
-        assertThat(sjpCase.getString("sjpCorrelationId"), is("document-id"));
         assertThat(sjpCase.getString("sjpStatus"), is(PENDING.name()));
     }
 

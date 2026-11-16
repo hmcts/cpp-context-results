@@ -168,6 +168,7 @@ public class MigratedStagingEnforcementResponseHandlerTest {
                         .add("caseId", caseId)
                         .add("materialId", materialId)
                         .add("materialUrl", materialUrl)
+                        .add("isFileUri", true)
                         .build());
 
         final MigratedInactiveHearingFinancialResultsAggregate spyAggregate = spy(new MigratedInactiveHearingFinancialResultsAggregate());
@@ -178,6 +179,6 @@ public class MigratedStagingEnforcementResponseHandlerTest {
         verify(eventSource, times(1)).getStreamById(eventSourceArgumentCaptor.capture());
         verify(eventStream, times(1)).append(eventStreamArgumentCaptor.capture());
 
-        verify(spyAggregate).saveMigratedInactiveNcesEmailNotificationDetails(eq(materialUrl), eq(TEMPLATE_ID));
+        verify(spyAggregate).saveMigratedInactiveNcesEmailNotificationDetails(materialUrl, TEMPLATE_ID, true);
     }
 }

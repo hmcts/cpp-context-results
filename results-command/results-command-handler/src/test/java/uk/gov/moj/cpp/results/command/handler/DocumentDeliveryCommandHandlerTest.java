@@ -99,7 +99,6 @@ class DocumentDeliveryCommandHandlerTest {
                 .add("documentBlobUri", DOCUMENT_BLOB_URI)
                 .add("sjpCases", createArrayBuilder().add(createObjectBuilder()
                         .add("caseId", caseId.toString())
-                        .add("sjpCorrelationId", "document-id")
                         .add("sjpStatus", "PENDING")))
                 .build()));
 
@@ -112,7 +111,6 @@ class DocumentDeliveryCommandHandlerTest {
                         withJsonPath("$.materialStatus", is("PENDING")),
                         withJsonPath("$.documentBlobUri", is(DOCUMENT_BLOB_URI)),
                         withJsonPath("$.sjpCases[0].caseId", is(caseId.toString())),
-                        withJsonPath("$.sjpCases[0].sjpCorrelationId", is("document-id")),
                         withJsonPath("$.sjpCases[0].sjpStatus", is("PENDING")))))));
     }
 

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://cpp.moj.gov.uk/sjp/json/schema/event/public-case-document-added.json",
+  "type": "object",
+  "properties": {
+    "caseId": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "description": "case document id"
+    },
+    "materialId": {
+      "type": "string"
+    },
+    "documentType" : {
+      "type": "string"
+    },
+    "documentUri": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "caseId",
+    "id",
+    "materialId"
+  ]
+}

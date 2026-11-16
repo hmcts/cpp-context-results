@@ -3,7 +3,6 @@ package uk.gov.moj.cpp.results.persist;
 import static java.time.ZonedDateTime.now;
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
@@ -16,7 +15,6 @@ import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
 import uk.gov.moj.cpp.results.persist.entity.NcesSjpCase;
 import uk.gov.moj.cpp.results.persist.entity.ResultsDocumentDeliveryEntity;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -50,8 +48,8 @@ public class ResultsDocumentDeliveryRepositoryTest extends BaseTransactionalJuni
     public void setUpBefore() {
         final ResultsDocumentDeliveryEntity nces = new ResultsDocumentDeliveryEntity(ncesMaterialId, NCES, now(), null, NCES_DOCUMENT_BLOB_URI);
         nces.setMaterialStatus(PENDING);
-        nces.getSjpCases().add(new NcesSjpCase(firstCaseId, NCES_DOCUMENT_BLOB_URI, PENDING));
-        nces.getSjpCases().add(new NcesSjpCase(secondCaseId, NCES_DOCUMENT_BLOB_URI, PENDING));
+        nces.getSjpCases().add(new NcesSjpCase(firstCaseId, PENDING));
+        nces.getSjpCases().add(new NcesSjpCase(secondCaseId, PENDING));
         resultsDocumentDeliveryRepository.save(nces);
 
         final ResultsDocumentDeliveryEntity police = new ResultsDocumentDeliveryEntity(policeMaterialId, POLICE_NOTIFICATION, now(),
@@ -84,13 +82,6 @@ public class ResultsDocumentDeliveryRepositoryTest extends BaseTransactionalJuni
         assertThat(police.getPayloadBlobUri(), is(POLICE_PAYLOAD_BLOB_URI));
         assertThat(police.getDocumentBlobUri(), is(POLICE_DOCUMENT_BLOB_URI));
         assertThat(police.getSjpCases(), hasSize(0));
-    }
-
-    @Test
-    public void shouldFindByDocumentBlobUri() {
-        final List<ResultsDocumentDeliveryEntity> found = resultsDocumentDeliveryRepository.findByDocumentBlobUri(NCES_DOCUMENT_BLOB_URI);
-
-        assertThat(found.stream().map(ResultsDocumentDeliveryEntity::getMaterialId).toList(), contains(ncesMaterialId));
     }
 
     @Test

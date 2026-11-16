@@ -74,8 +74,8 @@ class DocumentDeliveryRecordedListenerTest {
                 .withDocumentType("NCES")
                 .withMaterialStatus("PENDING")
                 .withDocumentBlobUri(DOCUMENT_BLOB_URI)
-                .withSjpCases(List.of(new SjpCases(firstCaseId, "first-document-id", "PENDING"),
-                        new SjpCases(secondCaseId, "second-document-id", "PENDING")))
+                .withSjpCases(List.of(new SjpCases(firstCaseId, "PENDING"),
+                        new SjpCases(secondCaseId, "PENDING")))
                 .build()));
 
         verify(resultsDocumentDeliveryRepository).save(deliveryCaptor.capture());
@@ -86,7 +86,6 @@ class DocumentDeliveryRecordedListenerTest {
         assertThat(delivery.getDocumentBlobUri(), is(DOCUMENT_BLOB_URI));
         assertThat(delivery.getCreatedAt(), is(notNullValue()));
         assertThat(delivery.getSjpCases().stream().map(NcesSjpCase::getCaseId).toList(), contains(firstCaseId, secondCaseId));
-        assertThat(delivery.getSjpCases().stream().map(NcesSjpCase::getSjpCorrelationId).toList(), contains("first-document-id", "second-document-id"));
     }
 
     @Test
@@ -129,13 +128,12 @@ class DocumentDeliveryRecordedListenerTest {
 
         documentDeliveryRecordedListener.handleDocumentDeliveryRecorded(event(DocumentDeliveryRecorded.documentDeliveryRecorded()
                 .withMaterialId(materialId)
-                .withSjpCases(List.of(new SjpCases(secondCaseId, null, "FAILED"), new SjpCases(randomUUID(), null, "SUCCESS")))
+                .withSjpCases(List.of(new SjpCases(secondCaseId, "FAILED"), new SjpCases(randomUUID(), "SUCCESS")))
                 .build()));
 
         verify(resultsDocumentDeliveryRepository).save(existing);
         assertThat(existing.getSjpCases().stream().map(NcesSjpCase::getCaseId).toList(), contains(firstCaseId, secondCaseId));
         assertThat(existing.getSjpCases().stream().map(NcesSjpCase::getSjpStatus).toList(), contains("PENDING", "FAILED"));
-        assertThat(existing.getSjpCases().get(1).getSjpCorrelationId(), is("second-document-id"));
     }
 
     @Test
@@ -151,8 +149,8 @@ class DocumentDeliveryRecordedListenerTest {
     private ResultsDocumentDeliveryEntity existingNcesDelivery() {
         final ResultsDocumentDeliveryEntity delivery = new ResultsDocumentDeliveryEntity(materialId, "NCES", ZonedDateTime.now(), null, DOCUMENT_BLOB_URI);
         delivery.setMaterialStatus("SUCCESS");
-        delivery.getSjpCases().add(new NcesSjpCase(firstCaseId, "first-document-id", "PENDING"));
-        delivery.getSjpCases().add(new NcesSjpCase(secondCaseId, "second-document-id", "PENDING"));
+        delivery.getSjpCases().add(new NcesSjpCase(firstCaseId, "PENDING"));
+        delivery.getSjpCases().add(new NcesSjpCase(secondCaseId, "PENDING"));
         return delivery;
     }
 

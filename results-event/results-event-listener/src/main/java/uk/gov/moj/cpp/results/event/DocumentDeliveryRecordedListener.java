@@ -58,7 +58,7 @@ public class DocumentDeliveryRecordedListener {
         delivery.setMaterialStatus(recorded.getMaterialStatus());
         delivery.setEmailStatus(recorded.getEmailStatus());
         sjpCasesOf(recorded).forEach(sjpCase ->
-                delivery.getSjpCases().add(new NcesSjpCase(sjpCase.getCaseId(), sjpCase.getSjpCorrelationId(), sjpCase.getSjpStatus())));
+                delivery.getSjpCases().add(new NcesSjpCase(sjpCase.getCaseId(), sjpCase.getSjpStatus())));
         return delivery;
     }
 

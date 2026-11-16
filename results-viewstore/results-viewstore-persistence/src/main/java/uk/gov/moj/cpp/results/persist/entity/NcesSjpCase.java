@@ -18,9 +18,6 @@ public class NcesSjpCase implements Serializable {
     @Column(name = "case_id", nullable = false)
     private UUID caseId;
 
-    @Column(name = "sjp_correlation_id")
-    private String sjpCorrelationId;
-
     // PENDING, SUCCESS or FAILED (DocumentDeliveryStatus)
     @Column(name = "sjp_status")
     private String sjpStatus;
@@ -28,9 +25,8 @@ public class NcesSjpCase implements Serializable {
     public NcesSjpCase() {
     }
 
-    public NcesSjpCase(final UUID caseId, final String sjpCorrelationId, final String sjpStatus) {
+    public NcesSjpCase(final UUID caseId, final String sjpStatus) {
         this.caseId = caseId;
-        this.sjpCorrelationId = sjpCorrelationId;
         this.sjpStatus = sjpStatus;
     }
 
@@ -40,14 +36,6 @@ public class NcesSjpCase implements Serializable {
 
     public void setCaseId(final UUID caseId) {
         this.caseId = caseId;
-    }
-
-    public String getSjpCorrelationId() {
-        return sjpCorrelationId;
-    }
-
-    public void setSjpCorrelationId(final String sjpCorrelationId) {
-        this.sjpCorrelationId = sjpCorrelationId;
     }
 
     public String getSjpStatus() {

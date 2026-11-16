@@ -27,10 +27,6 @@
             <column name="email_status" type="VARCHAR(32)"/>
         </createTable>
 
-        <createIndex tableName="results_document_delivery" indexName="results_document_delivery_document_blob_uri_idx">
-            <column name="document_blob_uri"/>
-        </createIndex>
-
         <rollback>
             <dropTable tableName="results_document_delivery"/>
         </rollback>

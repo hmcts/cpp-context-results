@@ -26,9 +26,8 @@ public record DocumentDeliveryRequest(UUID materialId,
     }
 
     /**
-     * An SJP case, identified by its case id; the correlation id the document was filed with is
-     * recorded when tracking starts.
+     * An SJP case, identified by its case id.
      */
-    public record SjpCase(UUID caseId, String sjpCorrelationId, String sjpStatus) {
+    public record SjpCase(UUID caseId, String sjpStatus) {
     }
 }

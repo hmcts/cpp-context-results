@@ -4,10 +4,12 @@ import static com.jayway.jsonpath.matchers.JsonPathMatchers.withJsonPath;
 import static java.util.UUID.randomUUID;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static uk.gov.justice.services.messaging.Envelope.metadataBuilder;
 import static uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory.createEnveloperWithEvents;
@@ -118,6 +120,41 @@ public class NcesDocumentNotificationCommandHandlerTest {
         verify(aggregateService).get(eventStream, HearingFinancialResultsAggregate.class);
         verify(enveloper).withMetadataFrom(jsonEnvelope);
 
+    }
+
+    @Test
+    void shouldCarryTheFileUriPathOfTheDocumentToItsEmail() throws EventStreamException {
+        final UUID materialId = randomUUID();
+        final JsonEnvelope command = JsonEnvelope.envelopeFrom(
+                metadataBuilder().withId(randomUUID()).withName("results.command.nces-document-notification").build(),
+                createObjectBuilder()
+                        .add(MATERIAL_ID, materialId.toString())
+                        .add(MATERIAL_URL, "http://localhost:8080/")
+                        .add("isFileUri", true)
+                        .build());
+        when(requester.requestAsAdmin(any(), any())).thenAnswer(mock -> createNcesEmailNotificationJsonEnvelope(createNcesEmailNotification(materialId)));
+        final HearingFinancialResultsAggregate aggregate = spy(new HearingFinancialResultsAggregate());
+        when(aggregateService.get(eventStream, HearingFinancialResultsAggregate.class)).thenReturn(aggregate);
+
+        ncesDocumentNotificationCommandHandler.processNcesEmailNotification(command);
+
+        final ArgumentCaptor<NcesEmailNotification> emailNotification = ArgumentCaptor.forClass(NcesEmailNotification.class);
+        verify(aggregate).saveNcesEmailNotificationDetails(emailNotification.capture());
+        assertThat(emailNotification.getValue().getIsFileUri(), is(true));
+    }
+
+    @Test
+    void shouldNotCarryAFileUriPathForADocumentOfTheFileServicePath() throws EventStreamException {
+        final UUID materialId = randomUUID();
+        when(requester.requestAsAdmin(any(), any())).thenAnswer(mock -> createNcesEmailNotificationJsonEnvelope(createNcesEmailNotification(materialId)));
+        final HearingFinancialResultsAggregate aggregate = spy(new HearingFinancialResultsAggregate());
+        when(aggregateService.get(eventStream, HearingFinancialResultsAggregate.class)).thenReturn(aggregate);
+
+        ncesDocumentNotificationCommandHandler.processNcesEmailNotification(createJsonEnvelope(randomUUID(), materialId));
+
+        final ArgumentCaptor<NcesEmailNotification> emailNotification = ArgumentCaptor.forClass(NcesEmailNotification.class);
+        verify(aggregate).saveNcesEmailNotificationDetails(emailNotification.capture());
+        assertThat(emailNotification.getValue().getIsFileUri(), is(nullValue()));
     }
 
     private JsonEnvelope createJsonEnvelope(final UUID id, final UUID materialId) {

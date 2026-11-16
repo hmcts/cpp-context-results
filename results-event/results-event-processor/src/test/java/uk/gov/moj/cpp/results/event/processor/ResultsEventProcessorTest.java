@@ -11,15 +11,20 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.justice.core.courts.AssociatedIndividual.associatedIndividual;
@@ -101,6 +106,11 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
+import org.mockito.InOrder;
+import uk.gov.moj.cpp.domains.DocumentDeliveryType;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
+import uk.gov.moj.cpp.results.event.service.exception.FileUploadException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -245,6 +255,9 @@ public class ResultsEventProcessorTest {
 
     @Spy
     private ObjectToJsonObjectConverter objectToJsonObjectConverter = new JsonObjectConvertersFactory().objectToJsonObjectConverter();
+
+    @Mock
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
 
     @InjectMocks
     private ResultsEventProcessor resultsEventProcessor;
@@ -665,6 +678,12 @@ public class ResultsEventProcessorTest {
         assertThat(documentGenerationRequest.getPayloadFileServiceUri(), is(payloadFileUri));
         assertThat(documentGenerationRequest.getDocumentFileServiceUri(), is(destinationFileUri));
         assertThat(documentGenerationRequest.getAdditionalInformation().get(FIELD_SEND_TO_ADDRESS), is(EMAIL_ADDRESS));
+
+        // tracked right after it is sent to system document generator, the notification id being its material id
+        final InOrder sendingThenTracking = inOrder(systemDocGenerator, documentDeliveryStatusService);
+        sendingThenTracking.verify(systemDocGenerator).generateDocument(any(), any());
+        sendingThenTracking.verify(documentDeliveryStatusService).startTracking(any(), eq(notificationId), eq(DocumentDeliveryType.POLICE_NOTIFICATION),
+                eq(payloadFileUri), eq(destinationFileUri), eq(List.of()), isNull());
     }
 
     private PoliceNotificationRequestedV2 givenAmendReshareWithApplicationPoliceNotification() {
@@ -1571,6 +1590,7 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(notificationId, "notificationId")
                 .withPayloadOf(materialId, "materialId")
                 .withPayloadOf(templateId, "templateId")
+                .withPayloadOf(true, "isFileUri")
                 .build();
 
         resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
@@ -1586,6 +1606,32 @@ public class ResultsEventProcessorTest {
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
         assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("templateId"), is(templateId));
         assertThat(emailNotificationArgumentCaptor.getValue().getMaterialUrl(), is(materialUrl));
+        assertThat(emailNotificationArgumentCaptor.getValue().getMaterialId(), is(Optional.of(UUID.fromString(materialId))));
+
+        // the email's status is PENDING right before it is sent
+        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notificationNotifyService);
+        pendingThenSent.verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), UUID.fromString(materialId), EmailDeliveryStatus.PENDING);
+        pendingThenSent.verify(notificationNotifyService).sendNcesEmail(any(), any());
+    }
+
+    @Test
+    void shouldNotTrackTheNcesEmailOfTheFileServicePath() {
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf("mail@email.com", "sendToAddress")
+                .withPayloadOf("my subject", "subject")
+                .withPayloadOf("http://localhost:1234/", "materialUrl")
+                .withPayloadOf(randomUUID().toString(), "notificationId")
+                .withPayloadOf(randomUUID().toString(), "materialId")
+                .withPayloadOf(randomUUID().toString(), "templateId")
+                .build();
+
+        resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
+
+        // no material on the email: no client context, and no email status recorded
+        verify(notificationNotifyService).sendNcesEmail(emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
+        assertThat(emailNotificationArgumentCaptor.getValue().getMaterialId(), is(Optional.empty()));
+        verifyNoInteractions(documentDeliveryStatusService);
     }
 
     @Test
@@ -1602,6 +1648,7 @@ public class ResultsEventProcessorTest {
                 .withPayloadOf(notificationId, "notificationId")
                 .withPayloadOf(materialId, "materialId")
                 .withPayloadOf(templateId, "templateId")
+                .withPayloadOf(true, "isFileUri")
                 .build();
 
         resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
@@ -1619,6 +1666,9 @@ public class ResultsEventProcessorTest {
                                 withJsonPath("$.materialId", is(materialId)),
                                 withJsonPath("$.templateId", is(templateId)))
                         )));
+        // the flow sends an email, but there is no address to send it to
+        verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), UUID.fromString(materialId), EmailDeliveryStatus.NOT_REQUIRED);
+        verify(notificationNotifyService, never()).sendNcesEmail(any(), any());
     }
 
     @Test
@@ -1961,7 +2011,16 @@ public class ResultsEventProcessorTest {
         when(documentGeneratorService.generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"))).thenReturn(blobFileParams());
         when(sjpService.caseExistsByCaseUrn("sjpUrn1")).thenReturn(Optional.of(createObjectBuilder().add("id", SJP_CASE_UUID.toString()).build()));
 
-        resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("sjpUrn1", true));
+        final JsonEnvelope ncesEmailNotificationRequested = ncesEmailNotificationRequestedEnvelope("sjpUrn1", true);
+        resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequested);
+
+        // tracked once the document is generated, uploaded and sent to every SJP case - in one record
+        final InOrder operationsThenTracking = inOrder(documentGeneratorService, sender, documentDeliveryStatusService);
+        operationsThenTracking.verify(documentGeneratorService).generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"));
+        operationsThenTracking.verify(sender).send(any());
+        operationsThenTracking.verify(documentDeliveryStatusService).startTracking(ncesEmailNotificationRequested.metadata(), NCES_MATERIAL_ID,
+                DocumentDeliveryType.NCES, null, NCES_BLOB_URI,
+                List.of(SJP_CASE_UUID), null);
 
         verify(documentGeneratorService, never()).generateNcesDocument(any(), any(), any(), any(), any());
         verify(documentGeneratorService).generateNcesDocumentWithUri(any(), jsonEnvelopeArgumentCaptor.capture(), any(), any(), eq("nces"));
@@ -1979,6 +2038,19 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
+    void shouldNotTrackAnNcesDocumentWhoseGenerationFails() {
+        when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
+        when(documentGeneratorService.generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces")))
+                .thenThrow(new FileUploadException(new RuntimeException("blob store unavailable")));
+
+        assertThrows(FileUploadException.class,
+                () -> resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("sjpUrn1", true)));
+
+        // nothing was sent anywhere, so nothing is left PENDING
+        verifyNoInteractions(documentDeliveryStatusService);
+    }
+
+    @Test
     void shouldSendOneSjpUploadCaseDocumentPerCaseUrnWhenResultsFileStoreToggleIsOn() {
         when(featureControlGuard.isFeatureEnabled(RESULTS_FILE_STORE_FEATURE)).thenReturn(true);
         when(documentGeneratorService.generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"))).thenReturn(blobFileParams());
@@ -1987,6 +2059,9 @@ public class ResultsEventProcessorTest {
         resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("sjpUrn1,sjpUrn2", true));
 
         verify(documentGeneratorService, times(1)).generateNcesDocumentWithUri(any(), any(), any(), any(), eq("nces"));
+        verify(sjpService, times(2)).caseExistsByCaseUrn(any());
+        verify(documentDeliveryStatusService).startTracking(any(), eq(NCES_MATERIAL_ID), eq(DocumentDeliveryType.NCES), isNull(), eq(NCES_BLOB_URI),
+                argThat(sjpCases -> sjpCases.size() == 2), isNull());
         verify(sender, times(2)).send(envelopeArgumentCaptor.capture());
         envelopeArgumentCaptor.getAllValues().forEach(command -> {
             assertThat(command.metadata().name(), is("sjp.upload-case-document"));
@@ -2002,6 +2077,9 @@ public class ResultsEventProcessorTest {
         when(progressionService.caseExistsByCaseUrn("ccUrn1")).thenReturn(Optional.of(createObjectBuilder().add("caseId", ccCaseId.toString()).build()));
 
         resultsEventProcessor.handleNcesEmailNotificationRequested(ncesEmailNotificationRequestedEnvelope("ccUrn1", false));
+
+        verify(documentDeliveryStatusService).startTracking(any(), eq(NCES_MATERIAL_ID), eq(DocumentDeliveryType.NCES), isNull(), eq(NCES_BLOB_URI),
+                eq(List.of()), isNull());
 
         verify(documentGeneratorService, never()).generateNcesDocument(any(), any(), any(), any(), any());
         verify(sjpService, never()).caseExistsByCaseUrn(any());

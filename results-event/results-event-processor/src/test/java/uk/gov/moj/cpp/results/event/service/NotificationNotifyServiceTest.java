@@ -27,6 +27,8 @@ import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory;
 import uk.gov.moj.cpp.results.domain.event.NcesEmailNotificationRequested;
 
+import java.util.UUID;
+
 import javax.json.JsonObject;
 
 import org.hamcrest.Matchers;
@@ -118,6 +120,34 @@ public class NotificationNotifyServiceTest {
         assertThat(payload.getString("templateId"), equalTo(emailNotification.getTemplateId().toString()));
         assertThat(payload.getString("sendToAddress"), equalTo(emailNotification.getSendToAddress()));
         assertThat(payload.getJsonObject("personalisation").getString("subject"), equalTo("my subject"));
+    }
+
+    @Test
+    void shouldSendTheNcesEmailWithTheClientContextOfItsMaterial() {
+        final UUID materialId = randomUUID();
+        final EmailNotification emailNotification = EmailNotification.emailNotification()
+                .withNotificationId(randomUUID())
+                .withTemplateId(randomUUID())
+                .withSendToAddress("sendToAddress")
+                .withMaterialUrl(randomUUID().toString())
+                .withMaterialId(materialId)
+                .build();
+
+        notificationNotifyService.sendNcesEmail(emailNotification, envelope());
+
+        verify(sender).send(envelopeCaptor.capture());
+        assertThat(envelopeCaptor.getValue().payloadAsJsonObject().getString("clientContext"), equalTo("RESULTS_" + materialId));
+    }
+
+    @Test
+    void shouldTellAResultsNotificationApartAndReadItsMaterialId() {
+        final UUID materialId = randomUUID();
+        final JsonObject resultsNotification = createObjectBuilder().add("clientContext", NotificationNotifyService.clientContextFor(materialId)).build();
+
+        assertThat(NotificationNotifyService.isResultsNotification(resultsNotification), is(true));
+        assertThat(NotificationNotifyService.materialIdFrom(resultsNotification), is(materialId));
+        assertThat(NotificationNotifyService.isResultsNotification(createObjectBuilder().add("clientContext", "STAGINGDVLA_" + materialId).build()), is(false));
+        assertThat(NotificationNotifyService.isResultsNotification(createObjectBuilder().build()), is(false));
     }
 
     private JsonEnvelope envelope() {

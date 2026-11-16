@@ -19,18 +19,20 @@ public class EmailNotification {
     private final UUID fileId;
     private final Map<String, Object> personalisation;
     private final String materialUrl;
+    private final UUID materialId;
 
     private EmailNotification(final UUID notificationId,
                               final UUID templateId,
                               final String sendToAddress,
                               final UUID fileId,
-                              final Map<String, Object> personalisation, final String materialUrl) {
+                              final Map<String, Object> personalisation, final String materialUrl, final UUID materialId) {
         this.notificationId = notificationId;
         this.templateId = templateId;
         this.sendToAddress = sendToAddress;
         this.fileId = fileId;
         this.personalisation = personalisation;
         this.materialUrl = materialUrl;
+        this.materialId = materialId;
     }
 
     public static Builder emailNotification() {
@@ -55,6 +57,13 @@ public class EmailNotification {
 
     public String getMaterialUrl() {
         return materialUrl;
+    }
+
+    /**
+     * The material the email sends, which results tracks the delivery of; empty where there is none.
+     */
+    public Optional<UUID> getMaterialId() {
+        return ofNullable(materialId);
     }
 
     public Optional<String> getSubject() {
@@ -84,6 +93,7 @@ public class EmailNotification {
         private UUID fileId;
         private Map<String, Object> personalisation;
         private String materialUrl;
+        private UUID materialId;
 
         public Builder withNotificationId(final UUID notificationId) {
             this.notificationId = notificationId;
@@ -105,6 +115,11 @@ public class EmailNotification {
             return this;
         }
 
+        public Builder withMaterialId(final UUID materialId) {
+            this.materialId = materialId;
+            return this;
+        }
+
         public Builder withFileId(final UUID fileId) {
             this.fileId = fileId;
             return this;
@@ -123,7 +138,8 @@ public class EmailNotification {
                     this.sendToAddress,
                     this.fileId,
                     personalisation,
-                    materialUrl);
+                    materialUrl,
+                    materialId);
         }
     }
 }

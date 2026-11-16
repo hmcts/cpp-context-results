@@ -1,17 +1,23 @@
 package uk.gov.moj.cpp.results.event.processor;
 
 import static java.util.Objects.nonNull;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.FAILED;
 import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
+import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.event.helper.Originator.ORIGINATOR_VALUE_NCES;
 import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWithPayloadAndMetaDetails;
+import static uk.gov.moj.cpp.results.event.service.NotificationNotifyService.CLIENT_CONTEXT;
+import static uk.gov.moj.cpp.results.event.service.NotificationNotifyService.clientContextFor;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
 import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
+import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialContextBuilder;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialService;
@@ -23,6 +29,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +64,9 @@ public class SystemDocGeneratorEventProcessor {
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
 
     @Inject
+    private DocumentDeliveryStatusService documentDeliveryStatusService;
+
+    @Inject
     private Sender sender;
 
     @Inject
@@ -86,7 +96,7 @@ public class SystemDocGeneratorEventProcessor {
 
         final String originatingSource = documentAvailablePayload.getString("originatingSource", "");
 
-        final String materialId = documentAvailablePayload.getString(SOURCE_CORRELATION_ID);
+        final String materialId = documentAvailablePayload.getString(SOURCE_CORRELATION_ID, null);
 
         final String payloadFile = documentAvailablePayload.containsKey(PAYLOAD_FILE_URI)
                 ? documentAvailablePayload.getString(PAYLOAD_FILE_URI)
@@ -98,6 +108,11 @@ public class SystemDocGeneratorEventProcessor {
                 || POLICE_NOTIFICATION_HEARING_RESULTS.equals(originatingSource)) {
             LOGGER.error("Asynchronous document generation failed. Failed to generate email notification, originatingSource: '{}', material id: '{}', payloadFile: '{}', reason: '{}'",
                     originatingSource, materialId, payloadFile, reason);
+            // a document results requested on the file uri path (the file service path is not tracked):
+            // it never reaches material, so its delivery has failed
+            if (documentAvailablePayload.containsKey(PAYLOAD_FILE_URI) && nonNull(materialId)) {
+                documentDeliveryStatusService.recordMaterialStatus(envelope.metadata(), UUID.fromString(materialId), FAILED);
+            }
         }
     }
 
@@ -133,7 +148,14 @@ public class SystemDocGeneratorEventProcessor {
                 personalisationMap.get(SEND_TO_ADDRESS),
                 personalisationMap, url);
 
-        notificationNotifyService.sendEmailNotification(envelope, objectToJsonObjectConverter.convert(notification));
+        final JsonObjectBuilder notificationPayload = createObjectBuilder(objectToJsonObjectConverter.convert(notification));
+        if (documentAvailablePayload.containsKey(DESTINATION_FILE_URI)) {
+            // file uri path: the email's status is PENDING right before it is sent, and its client context
+            // matches notificationnotify's outcome back to the delivery of the document
+            documentDeliveryStatusService.recordEmailStatus(envelope.metadata(), materialId, EmailDeliveryStatus.PENDING);
+            notificationPayload.add(CLIENT_CONTEXT, clientContextFor(materialId));
+        }
+        notificationNotifyService.sendEmailNotification(envelope, notificationPayload.build());
     }
 
     /**

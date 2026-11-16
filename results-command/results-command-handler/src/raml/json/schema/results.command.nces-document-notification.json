@@ -9,6 +9,10 @@
     },
     "materialUrl": {
       "type": "string"
+    },
+    "isFileUri": {
+      "description": "the material was uploaded by its blob uri (the file uri path), whose delivery is tracked",
+      "type": "boolean"
     }
   },
   "required": [
