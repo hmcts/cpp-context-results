@@ -80,6 +80,15 @@
         <!-- TODO: move to cpp-platform-maven-common-bom once available there -->
         <cpp-platform-azure-utils.version>17.104.3</cpp-platform-azure-utils.version>
 
+        <!-- The notify gateway clients need >= 7.17.8 — first version whose client builder honours UseDevelopmentEmulator=true
+(plain AMQP to the local Service Bus emulator; 7.17.3 always uses TLS). 7.17.8 needs azure-core-amqp 2.9.12:
+azure-sdk-bom's 2.9.8 lacks the ReactorConnection constructor it calls (NoSuchMethodError at deploy).
+Every other azure library stays on azure-sdk-bom's pins.
+TODO: move to cpp-platform-maven-common-bom once available there -->
+        <azure-messaging-servicebus.version>7.17.8</azure-messaging-servicebus.version>
+        <azure-core-amqp.version>2.9.12</azure-core-amqp.version>
+
+
     </properties>
     <build>
         <plugins>
@@ -144,6 +153,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-messaging-servicebus</artifactId>
+                <version>${azure-messaging-servicebus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-core-amqp</artifactId>
+                <version>${azure-core-amqp.version}</version>
+            </dependency>
             <!-- Downgrade h2 until deltaspike tests have been updated to work with latest h2 version -->
             <dependency>
                 <groupId>com.h2database</groupId>

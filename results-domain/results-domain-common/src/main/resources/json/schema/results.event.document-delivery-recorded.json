@@ -22,7 +22,7 @@
       "type": "string"
     },
     "emailStatus": {
-      "description": "NOT_REQUIRED, PENDING, SUCCESS or FAILED",
+      "description": "NOT_REQUIRED, PENDING, SUCCESS, FAILED or VALIDATION_FAILED (the notify gateway rejected the email command)",
       "type": "string"
     },
     "sjpCases": {

@@ -31,7 +31,8 @@
         "NOT_REQUIRED",
         "PENDING",
         "SUCCESS",
-        "FAILED"
+        "FAILED",
+        "VALIDATION_FAILED"
       ]
     },
     "sjpCases": {

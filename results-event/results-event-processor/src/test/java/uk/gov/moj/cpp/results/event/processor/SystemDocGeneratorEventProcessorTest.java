@@ -34,6 +34,7 @@ import org.mockito.InOrder;
 import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
 import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialContext;
 import uk.gov.moj.cpp.results.event.service.UploadMaterialService;
 
@@ -72,6 +73,9 @@ public class SystemDocGeneratorEventProcessorTest {
 
     @Mock
     private NotificationNotifyService notificationNotifyService;
+
+    @Mock
+    private NotifyGatewaySendEmailService notifyGatewaySendEmailService;
 
     @Mock
     private MaterialUrlGenerator materialUrlGenerator;
@@ -194,6 +198,7 @@ public class SystemDocGeneratorEventProcessorTest {
         // the file service path is not tracked
         verifyNoInteractions(documentDeliveryStatusService);
         assertThat(argumentCaptor.getValue().containsKey("clientContext"), is(false));
+        verifyNoInteractions(notifyGatewaySendEmailService);
     }
 
     @Test
@@ -221,7 +226,7 @@ public class SystemDocGeneratorEventProcessorTest {
     }
 
     @Test
-    public void handleDocumentAvailable_whenPoliceNotificationIsBlobAddressed_shouldUploadMaterialByUriAndSendEmail() {
+    void handleDocumentAvailable_whenPoliceNotificationIsBlobAddressed_shouldUploadMaterialByUriAndSendEmailToTheNotifyGateway() {
         final UUID notificationId = UUID.randomUUID();
         final UUID emailTemplateId = UUID.randomUUID();
         final String destinationFileUri = "https://blob.example/sdg/documents/police.html";
@@ -256,13 +261,17 @@ public class SystemDocGeneratorEventProcessorTest {
         assertThat(uploadMaterialContextCaptor.getValue().getFileUri(), is(destinationFileUri));
 
         final ArgumentCaptor<JsonObject> notificationCaptor = ArgumentCaptor.forClass(JsonObject.class);
-        verify(notificationNotifyService).sendEmailNotification(any(), notificationCaptor.capture());
+        verify(notifyGatewaySendEmailService).sendEmailNotification(eq(jsonEnvelope), notificationCaptor.capture());
+        assertThat(notificationCaptor.getValue().getString("notificationId"), is(notificationId.toString()));
+        assertThat(notificationCaptor.getValue().getString("templateId"), is(emailTemplateId.toString()));
+        assertThat(notificationCaptor.getValue().getString("sendToAddress"), is("test@test.com"));
         assertThat(notificationCaptor.getValue().getString("materialUrl"), is(url));
         assertThat(notificationCaptor.getValue().getString("clientContext"), is("RESULTS_" + notificationId));
+        verify(notificationNotifyService, never()).sendEmailNotification(any(), any());
 
-        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notificationNotifyService);
+        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notifyGatewaySendEmailService);
         pendingThenSent.verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), notificationId, EmailDeliveryStatus.PENDING);
-        pendingThenSent.verify(notificationNotifyService).sendEmailNotification(any(), any());
+        pendingThenSent.verify(notifyGatewaySendEmailService).sendEmailNotification(any(), any());
     }
 
     @Test
