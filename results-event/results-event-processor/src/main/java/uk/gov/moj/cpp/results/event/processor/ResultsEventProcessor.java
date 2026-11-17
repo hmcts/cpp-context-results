@@ -72,6 +72,7 @@ import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.event.service.SjpService;
@@ -219,6 +220,9 @@ public class ResultsEventProcessor {
 
     @Inject
     private FeatureControlGuard featureControlGuard;
+
+    @Inject
+    private NotifyGatewaySendEmailService notifyGatewaySendEmailService;
 
     private static final String RESULTS_NCES_SEND_EMAIL_NOT_FOUND = "results.event.send-nces-email-not-found";
 
@@ -488,6 +492,7 @@ public class ResultsEventProcessor {
         final JsonObject requestJson = envelope.payloadAsJsonObject();
         final NcesEmailNotification ncesEmailNotification = jsonObjectToObjectConverter.convert(requestJson, NcesEmailNotification.class);
         LOGGER.info("Nces email notification event - {}", envelope.toObfuscatedDebugString());
+        final Boolean isFileUriPath = TRUE.equals(ncesEmailNotification.getIsFileUri());
 
         final EmailNotification emailNotification = EmailNotification.emailNotification()
                 .withNotificationId(ncesEmailNotification.getNotificationId())
@@ -496,21 +501,27 @@ public class ResultsEventProcessor {
                 .withSubject(ncesEmailNotification.getSubject())
                 .withMaterialUrl(ncesEmailNotification.getMaterialUrl())
                 // the material is tracked, and its email matched back to it, on the file uri path only
-                .withMaterialId(TRUE.equals(ncesEmailNotification.getIsFileUri()) ? ncesEmailNotification.getMaterialId() : null)
+                .withMaterialId(isFileUriPath ? ncesEmailNotification.getMaterialId() : null)
                 .build();
 
         //Send Email
         LOGGER.info("send email notification - {}", emailNotification.getNotificationId());
         if (isEmpty(emailNotification.getSendToAddress())) {
             // no NCES address: the email the flow sends is not sent
-            recordEmailStatus(envelope, emailNotification, EmailDeliveryStatus.NOT_REQUIRED);
+            if(isFileUriPath) {
+                recordEmailStatus(envelope, emailNotification, EmailDeliveryStatus.NOT_REQUIRED);
+            }
             final Envelope<JsonObject> jsonObjectEnvelope = envelop(envelope.payloadAsJsonObject())
                     .withName(RESULTS_NCES_SEND_EMAIL_NOT_FOUND)
                     .withMetadataFrom(envelope);
             sender.sendAsAdmin(jsonObjectEnvelope);
         } else {
-            recordEmailStatus(envelope, emailNotification, EmailDeliveryStatus.PENDING);
-            notificationNotifyService.sendNcesEmail(emailNotification, envelope);
+            if(isFileUriPath){
+                recordEmailStatus(envelope, emailNotification, EmailDeliveryStatus.PENDING);
+                notifyGatewaySendEmailService.sendNcesEmail(emailNotification, envelope);
+            } else {
+                notificationNotifyService.sendNcesEmail(emailNotification, envelope);
+            }
         }
     }
 

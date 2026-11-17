@@ -1,16 +1,9 @@
 package uk.gov.moj.cpp.results.it;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.findAll;
 import static com.github.tomakehurst.wiremock.client.WireMock.listAllStubMappings;
-import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
-import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static java.util.UUID.fromString;
 import static java.util.UUID.randomUUID;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.toSet;
-import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -25,8 +18,12 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonA
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenResultsAreTraced;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubRenderDocumentWithStatusOk;
-import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.NOTIFICATION_NOTIFY_ENDPOINT;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.setupNotificationNotifyStubs;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.RESULT_QUEUE_NAME;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.awaitEmailSentToGateway;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.bodyOf;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.isSendEmailNotification;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.publishNotificationSent;
 import static uk.gov.moj.cpp.results.it.stub.SjpStub.setupSjpQueryStub;
 import static uk.gov.moj.cpp.results.it.stub.SjpStub.stubUploadCaseDocument;
 import static uk.gov.moj.cpp.results.it.utils.ContextNameProvider.CONTEXT_NAME;
@@ -57,7 +54,9 @@ import java.util.UUID;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
+import javax.json.JsonObject;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import io.restassured.path.json.JsonPath;
@@ -74,9 +73,10 @@ import org.junit.jupiter.api.Test;
  * as those contexts report back.
  *
  * <p>Driven from the outside only - the results command API and the public events of hearing,
- * staging-enforcement, material, SJP and notificationnotify; no results private event is raised by
- * the test. It reads private events only to know when the service has reached a step. Like
- * {@link NcesEmailNotificationBlobStoreIT} it needs the "azurite" profile of the stack.</p>
+ * staging-enforcement, material and SJP, and the notify gateway's replies; no results private event
+ * is raised by the test. It reads private events only to know when the service has reached a step.
+ * Like {@link NcesEmailNotificationBlobStoreIT} it needs the "azurite" profile of the stack, and the
+ * "servicebus" one for the notify gateway's queues.</p>
  */
 class NcesDocumentDeliveryTrackingIT {
 
@@ -86,7 +86,6 @@ class NcesDocumentDeliveryTrackingIT {
     private static final String PUBLIC_EVENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT = "public.stagingenforcement.enforce-financial-imposition-acknowledgement";
     private static final String PUBLIC_EVENT_SJP_CASE_DOCUMENT_ADDED = "public.sjp.case-document-added";
     private static final String PUBLIC_EVENT_SJP_CASE_DOCUMENT_UPLOAD_REJECTED = "public.sjp.events.case-document-upload-rejected";
-    private static final String PUBLIC_EVENT_NOTIFICATION_SENT = "public.notificationnotify.events.notification-sent";
     private static final String SJP_HEARING_RESULTED = "json/public.events.hearing.hearing-resulted_for_staging_enforcement_for_sjp.json";
     private static final String TRACE_RESULT = "json/results.api.trace-results.json";
     private static final String SJP_HEARING_PROSECUTOR_CODE = "DVLA";
@@ -176,7 +175,7 @@ class NcesDocumentDeliveryTrackingIT {
      * An SJP hearing is resulted, its deemed-served financial results are traced through the
      * command API and staging-enforcement acknowledges the account, so results generates the NCES
      * documents and files each on both SJP cases. For one of them every context then reports back:
-     * material adds it, SJP adds it to one case and rejects it for the other, and notificationnotify
+     * material adds it, SJP adds it to one case and rejects it for the other, and the notify gateway
      * sends the NCES email.
      */
     @Test
@@ -207,7 +206,7 @@ class NcesDocumentDeliveryTrackingIT {
         // material adds the document: it is delivered to material, and the NCES email with its link goes out
         documentDeliveryHelper.raiseMaterialAddedForNcesFileUriMaterial(materialId, getUserId());
         documentDeliveryHelper.awaitMaterialStatus(materialId, SUCCESS);
-        awaitNcesEmailSentWithClientContext(CLIENT_CONTEXT_PREFIX + materialId);
+        final JsonObject email = awaitNcesEmailSentToTheNotifyGateway(materialId);
         documentDeliveryHelper.awaitEmailStatus(materialId, PENDING);
 
         // SJP adds the document to one case ...
@@ -228,12 +227,8 @@ class NcesDocumentDeliveryTrackingIT {
                 .build());
         documentDeliveryHelper.awaitSjpStatus(materialId, sjpCaseRejected, FAILED);
 
-        // notificationnotify sends the email
-        documentDeliveryHelper.raisePublicEvent(PUBLIC_EVENT_NOTIFICATION_SENT, createObjectBuilder()
-                .add("notificationId", randomUUID().toString())
-                .add("sentTime", "2026-11-12T10:00:00.000Z")
-                .add("clientContext", CLIENT_CONTEXT_PREFIX + materialId)
-                .build());
+        // the notify gateway sends the email
+        publishNotificationSent(CLIENT_CONTEXT_PREFIX + materialId, fromString(email.getString("notificationId")));
         documentDeliveryHelper.awaitEmailStatus(materialId, SUCCESS);
 
         // each outcome touched only its own status, and only this document
@@ -254,7 +249,7 @@ class NcesDocumentDeliveryTrackingIT {
 
     /**
      * One NCES document filed on two SJP cases, with every delivery succeeding: material adds it,
-     * SJP adds it to both cases and notificationnotify sends the NCES email.
+     * SJP adds it to both cases and the notify gateway sends the NCES email.
      */
     @Test
     void shouldTrackAnNcesDocumentDeliveredToMaterialBothSjpCasesAndEmailAsSucceeded() {
@@ -274,7 +269,7 @@ class NcesDocumentDeliveryTrackingIT {
 
         documentDeliveryHelper.raiseMaterialAddedForNcesFileUriMaterial(materialId, getUserId());
         documentDeliveryHelper.awaitMaterialStatus(materialId, SUCCESS);
-        awaitNcesEmailSentWithClientContext(CLIENT_CONTEXT_PREFIX + materialId);
+        final JsonObject email = awaitNcesEmailSentToTheNotifyGateway(materialId);
         documentDeliveryHelper.awaitEmailStatus(materialId, PENDING);
 
         for (final UUID sjpCase : List.of(firstSjpCase, secondSjpCase)) {
@@ -287,11 +282,7 @@ class NcesDocumentDeliveryTrackingIT {
             documentDeliveryHelper.awaitSjpStatus(materialId, sjpCase, SUCCESS);
         }
 
-        documentDeliveryHelper.raisePublicEvent(PUBLIC_EVENT_NOTIFICATION_SENT, createObjectBuilder()
-                .add("notificationId", randomUUID().toString())
-                .add("sentTime", "2026-11-12T10:00:00.000Z")
-                .add("clientContext", CLIENT_CONTEXT_PREFIX + materialId)
-                .build());
+        publishNotificationSent(CLIENT_CONTEXT_PREFIX + materialId, fromString(email.getString("notificationId")));
         documentDeliveryHelper.awaitEmailStatus(materialId, SUCCESS);
 
         final DocumentDelivery delivered = documentDeliveryHelper.awaitDelivery(materialId);
@@ -344,9 +335,19 @@ class NcesDocumentDeliveryTrackingIT {
         assertThat(documentDeliveryHelper.findSjpStatus(materialId, caseId).orElseThrow(), is(sjpStatus));
     }
 
-    private static void awaitNcesEmailSentWithClientContext(final String clientContext) {
-        await().atMost(30, SECONDS).pollInterval(1, SECONDS).until(() -> !findAll(postRequestedFor(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
-                .withRequestBody(matchingJsonPath("$.clientContext", equalTo(clientContext)))).isEmpty());
+    /**
+     * The NCES email of the file uri path goes to the notify gateway, with the material's link and
+     * the client context its outcome comes back with, and names results' result queue to reply on.
+     */
+    private static JsonObject awaitNcesEmailSentToTheNotifyGateway(final UUID materialId) {
+        final ServiceBusReceivedMessage message = awaitEmailSentToGateway(CLIENT_CONTEXT_PREFIX + materialId);
+        assertThat(isSendEmailNotification(message), is(true));
+        assertThat(message.getReplyTo(), is(RESULT_QUEUE_NAME));
+        final JsonObject email = bodyOf(message);
+        assertThat(email.getString("notificationId"), is(notNullValue()));
+        assertThat(email.getString("sendToAddress"), is(notNullValue()));
+        assertThat(email.getString("materialUrl"), endsWith(materialId + "?stream=true&requestPdf=true"));
+        return email;
     }
 
     private void awaitHearingResultsAddedForDay(final String hearingId) {

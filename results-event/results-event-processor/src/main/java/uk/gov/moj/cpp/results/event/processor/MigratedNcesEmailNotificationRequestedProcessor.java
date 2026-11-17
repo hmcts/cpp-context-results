@@ -1,5 +1,6 @@
 package uk.gov.moj.cpp.results.event.processor;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Objects.nonNull;
 import static uk.gov.moj.cpp.domains.DocumentDeliveryType.NCES;
 import static java.util.UUID.fromString;
@@ -42,6 +43,7 @@ import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -89,6 +91,9 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
     private NotificationNotifyService notificationNotifyService;
 
     @Inject
+    private NotifyGatewaySendEmailService notifyGatewaySendEmailService;
+
+    @Inject
     private FeatureControlGuard featureControlGuard;
 
     @Handles("results.event.migrated-inactive-nces-email-notification-requested")
@@ -124,6 +129,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
         final JsonObject requestJson = envelope.payloadAsJsonObject();
         final MigratedInactiveNcesEmailNotification ncesEmailNotification = jsonObjectToObjectConverter.convert(requestJson, MigratedInactiveNcesEmailNotification.class);
         LOGGER.info("Migrated inactive Nces email notification event - {}", envelope.toObfuscatedDebugString());
+        final boolean isFileUriPath = TRUE.equals(ncesEmailNotification.getIsFileUri());
 
         final EmailNotification emailNotification = EmailNotification.emailNotification()
                 .withNotificationId(ncesEmailNotification.getNotificationId())
@@ -132,7 +138,7 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
                 .withSubject(ncesEmailNotification.getSubject())
                 .withMaterialUrl(ncesEmailNotification.getMaterialUrl())
                 // the material is tracked, and its email matched back to it, on the file uri path only
-                .withMaterialId(Boolean.TRUE.equals(ncesEmailNotification.getIsFileUri()) ? ncesEmailNotification.getMaterialId() : null)
+                .withMaterialId(isFileUriPath ? ncesEmailNotification.getMaterialId() : null)
                 .build();
 
         //Send Email
@@ -141,7 +147,11 @@ public class MigratedNcesEmailNotificationRequestedProcessor {
         // carries the material there
         emailNotification.getMaterialId().ifPresent(materialId ->
                 documentDeliveryStatusService.recordEmailStatus(envelope.metadata(), materialId, EmailDeliveryStatus.PENDING));
-        notificationNotifyService.sendNcesEmail(emailNotification, envelope);
+        if (isFileUriPath) {
+            notifyGatewaySendEmailService.sendNcesEmail(emailNotification, envelope);
+        } else {
+            notificationNotifyService.sendNcesEmail(emailNotification, envelope);
+        }
     }
 
     private JsonEnvelope transformEnvelope(final JsonEnvelope envelope) {

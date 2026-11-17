@@ -9,6 +9,8 @@ import static uk.gov.justice.services.core.enveloper.Enveloper.envelop;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.moj.cpp.results.event.service.ConversionFormat.PDF;
 import static uk.gov.moj.cpp.results.event.service.NcesEmailNotificationTemplateData.ncesEmailNotificationTemplateData;
+import static uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService.CLIENT_CONTEXT;
+import static uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService.clientContextFor;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -34,27 +36,6 @@ public class NotificationNotifyService {
     private static final Logger LOGGER = LoggerFactory.getLogger(uk.gov.moj.cpp.results.event.service.NotificationNotifyService.class);
     private static final String NOTIFICATION_NOTIFY_EMAIL_METADATA_TYPE = "notificationnotify.send-email-notification";
     private static final String NCES_EMAIL_NOTIFICATION_REQUEST = "NCES_EMAIL_NOTIFICATION_REQUEST";
-
-    /**
-     * Echoed back by notificationnotify on notification-sent / notification-failed. Results sets it,
-     * with this prefix, on the email of a document it tracks the delivery of, so those events can be
-     * told apart from other contexts' and matched back to the material: the rest of it is the
-     * material id.
-     */
-    public static final String CLIENT_CONTEXT = "clientContext";
-    public static final String CLIENT_CONTEXT_PREFIX = "RESULTS_";
-
-    public static String clientContextFor(final UUID materialId) {
-        return CLIENT_CONTEXT_PREFIX + materialId;
-    }
-
-    public static boolean isResultsNotification(final JsonObject payload) {
-        return payload.getString(CLIENT_CONTEXT, "").startsWith(CLIENT_CONTEXT_PREFIX);
-    }
-
-    public static UUID materialIdFrom(final JsonObject payload) {
-        return UUID.fromString(payload.getString(CLIENT_CONTEXT).substring(CLIENT_CONTEXT_PREFIX.length()));
-    }
 
     @Inject
     @ServiceComponent(EVENT_PROCESSOR)

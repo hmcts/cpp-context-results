@@ -94,6 +94,7 @@ import uk.gov.moj.cpp.results.event.service.EventGridService;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.FileService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService;
 import uk.gov.moj.cpp.results.event.service.ProgressionService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.event.service.SjpService;
@@ -228,6 +229,9 @@ public class ResultsEventProcessorTest {
 
     @Mock
     private NotificationNotifyService notificationNotifyService;
+
+    @Mock
+    private NotifyGatewaySendEmailService notifyGatewaySendEmailService;
 
     @Mock
     private FileService fileService;
@@ -1575,7 +1579,7 @@ public class ResultsEventProcessorTest {
     }
 
     @Test
-    public void shouldHandleTheSendNcesEmail() {
+    void shouldSendTheNcesEmailOfTheFileUriPathToTheNotifyGateway() {
         final String sendToAddress = "mail@email.com";
         final String subject = "my subject";
         final String materialUrl = "http://localhost:1234/";
@@ -1595,23 +1599,20 @@ public class ResultsEventProcessorTest {
 
         resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
 
-        verify(notificationNotifyService, times(1)).sendNcesEmail(
-                any(), jsonEnvelopeArgumentCaptor.capture());
-        verify(notificationNotifyService, times(1)).sendNcesEmail(
-                emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("sendToAddress"), is(sendToAddress));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("subject"), is(subject));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialUrl"), is(materialUrl));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("notificationId"), is(notificationId));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("materialId"), is(materialId));
-        assertThat(jsonEnvelopeArgumentCaptor.getValue().payloadAsJsonObject().getString("templateId"), is(templateId));
-        assertThat(emailNotificationArgumentCaptor.getValue().getMaterialUrl(), is(materialUrl));
-        assertThat(emailNotificationArgumentCaptor.getValue().getMaterialId(), is(Optional.of(UUID.fromString(materialId))));
+        verify(notifyGatewaySendEmailService).sendNcesEmail(emailNotificationArgumentCaptor.capture(), eq(jsonEnvelope));
+        final EmailNotification emailNotification = emailNotificationArgumentCaptor.getValue();
+        assertThat(emailNotification.getNotificationId(), is(UUID.fromString(notificationId)));
+        assertThat(emailNotification.getTemplateId(), is(UUID.fromString(templateId)));
+        assertThat(emailNotification.getSendToAddress(), is(sendToAddress));
+        assertThat(emailNotification.getSubject(), is(Optional.of(subject)));
+        assertThat(emailNotification.getMaterialUrl(), is(materialUrl));
+        assertThat(emailNotification.getMaterialId(), is(Optional.of(UUID.fromString(materialId))));
+        verify(notificationNotifyService, never()).sendNcesEmail(any(), any());
 
         // the email's status is PENDING right before it is sent
-        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notificationNotifyService);
+        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notifyGatewaySendEmailService);
         pendingThenSent.verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), UUID.fromString(materialId), EmailDeliveryStatus.PENDING);
-        pendingThenSent.verify(notificationNotifyService).sendNcesEmail(any(), any());
+        pendingThenSent.verify(notifyGatewaySendEmailService).sendNcesEmail(any(), any());
     }
 
     @Test
@@ -1631,7 +1632,7 @@ public class ResultsEventProcessorTest {
         // no material on the email: no client context, and no email status recorded
         verify(notificationNotifyService).sendNcesEmail(emailNotificationArgumentCaptor.capture(), any(JsonEnvelope.class));
         assertThat(emailNotificationArgumentCaptor.getValue().getMaterialId(), is(Optional.empty()));
-        verifyNoInteractions(documentDeliveryStatusService);
+        verifyNoInteractions(documentDeliveryStatusService, notifyGatewaySendEmailService);
     }
 
     @Test
@@ -1669,6 +1670,26 @@ public class ResultsEventProcessorTest {
         // the flow sends an email, but there is no address to send it to
         verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), UUID.fromString(materialId), EmailDeliveryStatus.NOT_REQUIRED);
         verify(notificationNotifyService, never()).sendNcesEmail(any(), any());
+        verifyNoInteractions(notifyGatewaySendEmailService);
+    }
+
+    @Test
+    void shouldNotTrackTheMissingNcesEmailOfTheFileServicePath() {
+        final JsonEnvelope jsonEnvelope = envelope()
+                .with(metadataBuilder().withId(randomUUID()).withUserId(randomUUID().toString()).withName("dummy"))
+                .withPayloadOf("my subject", "subject")
+                .withPayloadOf("http://localhost:1234/", "materialUrl")
+                .withPayloadOf(randomUUID().toString(), "notificationId")
+                .withPayloadOf(randomUUID().toString(), "materialId")
+                .withPayloadOf(randomUUID().toString(), "templateId")
+                .build();
+
+        resultsEventProcessor.handleSendNcesEmailNotification(jsonEnvelope);
+
+        // no NCES address: send-nces-email-not-found is raised, but a material that is not tracked has no email status to record
+        verify(sender).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is("results.event.send-nces-email-not-found"));
+        verifyNoInteractions(documentDeliveryStatusService, notifyGatewaySendEmailService, notificationNotifyService);
     }
 
     @Test
@@ -2032,7 +2053,7 @@ public class ResultsEventProcessorTest {
         assertThat(sjpCommand.payload().getString("caseId"), is(SJP_CASE_UUID.toString()));
         assertThat(sjpCommand.payload().getString("caseDocumentType"), is("OTHER-" + NCES_FILE_NAME));
         assertThat(sjpCommand.payload().getString("caseDocumentUri"), is(NCES_BLOB_URI));
-        // must match the derivation sjp falls back to (CaseDocumentProcessor) and staging-dvla uses
+        // must match the derivation sjp falls back to (CaseDocumentProcessor) and results uses
         assertThat(sjpCommand.payload().getString("caseDocument"),
                 is(nameUUIDFromBytes(NCES_BLOB_URI.getBytes(StandardCharsets.UTF_8)).toString()));
     }

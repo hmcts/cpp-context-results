@@ -5,8 +5,8 @@ import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.FAILED;
 import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.SUCCESS;
 import static uk.gov.moj.cpp.results.event.helper.Originator.isFileUriMaterial;
 import static uk.gov.moj.cpp.results.event.helper.Originator.isResultsMaterial;
-import static uk.gov.moj.cpp.results.event.service.NotificationNotifyService.isResultsNotification;
-import static uk.gov.moj.cpp.results.event.service.NotificationNotifyService.materialIdFrom;
+import static uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService.isResultsNotification;
+import static uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService.materialIdFrom;
 
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;

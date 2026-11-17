@@ -9,5 +9,6 @@ public enum EmailDeliveryStatus {
     NOT_REQUIRED,
     PENDING,
     SUCCESS,
-    FAILED
+    FAILED,
+    VALIDATION_FAILED
 }
