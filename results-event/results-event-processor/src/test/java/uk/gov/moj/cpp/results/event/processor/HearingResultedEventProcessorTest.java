@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -53,6 +54,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -95,11 +97,18 @@ public class HearingResultedEventProcessorTest {
             HearingResultedEventProcessor.INFORMANT_REGISTER_SERVICE_FEATURE;
     private static final String ADD_HEARING_RESULT_FOR_DAY = "results.command.add-hearing-result-for-day";
     private static final String REQUEST_INFORMANT_REGISTER_PUBLISH = "results.command.request-informant-register-publish";
+    private static final String PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE =
+            HearingResultedEventProcessor.PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE;
+    private static final String REQUEST_PROBATION_DISTRIBUTION_PUBLISH = "results.command.request-probation-distribution-publish";
 
     private static final UtcClock clock = new UtcClock();
 
     private void givenTheInformantRegisterServiceFeatureIs(final boolean enabled) {
         when(featureControlGuard.isFeatureEnabled(INFORMANT_REGISTER_SERVICE_FEATURE)).thenReturn(enabled);
+    }
+
+    private void givenTheProbationResultsDistributionServiceFeatureIs(final boolean enabled) {
+        when(featureControlGuard.isFeatureEnabled(PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE)).thenReturn(enabled);
     }
 
     @Test
@@ -119,6 +128,7 @@ public class HearingResultedEventProcessorTest {
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         givenTheInformantRegisterServiceFeatureIs(true);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -215,6 +225,7 @@ public class HearingResultedEventProcessorTest {
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -249,6 +260,7 @@ public class HearingResultedEventProcessorTest {
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(featureControlGuard.isFeatureEnabled(INFORMANT_REGISTER_SERVICE_FEATURE))
                 .thenThrow(new RuntimeException("feature store unavailable"));
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -282,6 +294,7 @@ public class HearingResultedEventProcessorTest {
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         givenTheInformantRegisterServiceFeatureIs(true);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -320,6 +333,7 @@ public class HearingResultedEventProcessorTest {
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         givenTheInformantRegisterServiceFeatureIs(true);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -352,6 +366,7 @@ public class HearingResultedEventProcessorTest {
         when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
         when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
         givenTheInformantRegisterServiceFeatureIs(true);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         // The resulting command goes first and succeeds; the publish request is the second send.
         // A plain RuntimeException stands in for anything the send can raise.
@@ -364,6 +379,221 @@ public class HearingResultedEventProcessorTest {
         verify(sender, times(2)).sendAsAdmin(envelopeArgumentCaptor.capture());
         assertThat(envelopeArgumentCaptor.getAllValues().get(0).metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
         assertThat(envelopeArgumentCaptor.getAllValues().get(1).metadata().name(), is(REQUEST_INFORMANT_REGISTER_PUBLISH));
+    }
+
+    /**
+     * AC1: with the flag on, a regular hearing shared with a user id sends exactly one probation
+     * publish request, after the existing EXT_ cache write, the Event Grid publish and the resulting
+     * command, carrying the share's hearing id, hearing day and raw sharedTime.
+     */
+    @Test
+    public void shouldRequestProbationDistributionPublishAfterTheExistingWorkWhenTheFeatureIsOn() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final String hearingDay = "2021-03-15";
+
+        final JsonEnvelope event = givenARegularHearingShare(hearingId, createPublicEvent(userId,
+                createObjectBuilder().add("id", hearingId.toString()).build(), sharedTime, hearingDay, false));
+        givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(true);
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        final InOrder inOrder = inOrder(cacheService, eventGridService, sender);
+        inOrder.verify(cacheService).add(eq("EXT_" + hearingId + "_2021-03-15_result_"), anyString());
+        inOrder.verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+        inOrder.verify(sender, times(2)).sendAsAdmin(envelopeArgumentCaptor.capture());
+
+        final List<Envelope<JsonObject>> sent = envelopeArgumentCaptor.getAllValues();
+        assertThat(sent.get(0).metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+
+        final JsonEnvelope publishRequest = envelopeFrom(sent.get(1).metadata(), sent.get(1).payload());
+        assertThat(publishRequest,
+                jsonEnvelope(
+                        metadata().withName(REQUEST_PROBATION_DISTRIBUTION_PUBLISH),
+                        payloadIsJson(allOf(
+                                withJsonPath("$.hearingId", is(hearingId.toString())),
+                                withJsonPath("$.hearingDay", is(hearingDay)),
+                                withJsonPath("$.sharedTime", is(ZonedDateTimes.toString(sharedTime))),
+                                withJsonPath("$.userId", is(userId.toString())))
+                        )));
+        assertThat(publishRequest.payloadAsJsonObject().size(), is(4));
+    }
+
+    /**
+     * The probation and informant register flags are independent: both on sends both requests,
+     * informant first, and neither replaces the other.
+     */
+    @Test
+    public void shouldRequestBothPublishesWhenBothFeaturesAreOn() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+
+        final JsonEnvelope event = givenARegularHearingShare(hearingId, createPublicEvent(userId,
+                createObjectBuilder().add("id", hearingId.toString()).build(), clock.now(), "2021-03-15", false));
+        givenTheInformantRegisterServiceFeatureIs(true);
+        givenTheProbationResultsDistributionServiceFeatureIs(true);
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(3)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getAllValues().get(0).metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+        assertThat(envelopeArgumentCaptor.getAllValues().get(1).metadata().name(), is(REQUEST_INFORMANT_REGISTER_PUBLISH));
+        assertThat(envelopeArgumentCaptor.getAllValues().get(2).metadata().name(), is(REQUEST_PROBATION_DISTRIBUTION_PUBLISH));
+    }
+
+    /**
+     * AC2: off - which is also what a missing App Configuration entry reads as - is a complete
+     * no-op for probation, and the Event Grid publish is unchanged.
+     */
+    @Test
+    public void shouldNotRequestProbationDistributionPublishWhenTheFeatureIsOff() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final String hearingDay = "2021-03-15";
+
+        final JsonEnvelope event = givenARegularHearingShare(hearingId, createPublicEvent(userId,
+                createObjectBuilder().add("id", hearingId.toString()).build(), clock.now(), hearingDay, false));
+        givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(1)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+    }
+
+    /**
+     * AC2: a failed flag read counts as off. It must not cost the resulting, the Event Grid publish
+     * or the informant register request, and it is caught in its own block so the failure is logged
+     * (and counted) as a probation flag read failure rather than as a generic send failure.
+     */
+    @Test
+    public void shouldTreatAFailedProbationFlagReadAsOffWithoutAffectingAnythingElse() {
+        final UUID userId = randomUUID();
+        final UUID hearingId = randomUUID();
+        final String hearingDay = "2021-03-15";
+
+        final JsonEnvelope event = givenARegularHearingShare(hearingId, createPublicEvent(userId,
+                createObjectBuilder().add("id", hearingId.toString()).build(), clock.now(), hearingDay, false));
+        givenTheInformantRegisterServiceFeatureIs(true);
+        when(featureControlGuard.isFeatureEnabled(PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE))
+                .thenThrow(new RuntimeException("feature store unavailable"));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(2)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getAllValues().get(0).metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+        assertThat(envelopeArgumentCaptor.getAllValues().get(1).metadata().name(), is(REQUEST_INFORMANT_REGISTER_PUBLISH));
+        verify(eventGridService).sendHearingResultedForDayEvent(userId, hearingId.toString(), hearingDay, "Hearing_Resulted");
+    }
+
+    /**
+     * AC3: an SJP share never produces a probation request, and never even reads the flag.
+     */
+    @Test
+    public void shouldNotRequestProbationDistributionPublishForAnSjpHearing() {
+        final UUID hearingId = randomUUID();
+        final JsonObject hearing = createObjectBuilder()
+                .add("id", hearingId.toString())
+                .add("isSJPHearing", true)
+                .build();
+        final JsonEnvelope event = createPublicEvent(randomUUID(), hearing, clock.now(), "2021-03-15", false);
+
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(1)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+        verify(featureControlGuard, never()).isFeatureEnabled(PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE);
+    }
+
+    /**
+     * AC3: a share with no user id sends no probation request, matching the Event Grid leg which
+     * also only publishes when the envelope names a user.
+     */
+    @Test
+    public void shouldNotRequestProbationDistributionPublishWithoutAUserId() {
+        final UUID hearingId = randomUUID();
+        final ZonedDateTime sharedTime = clock.now();
+        final JsonObject hearing = createObjectBuilder().add("id", hearingId.toString()).build();
+        final JsonEnvelope event = envelopeFrom(metadataOf(randomUUID(), "public.events.hearing.hearing-resulted").build(),
+                createObjectBuilder()
+                        .add("isReshare", false)
+                        .add("hearingDay", "2021-03-15")
+                        .add("sharedTime", ZonedDateTimes.toString(sharedTime))
+                        .add("hearing", hearing)
+                        .build());
+
+        givenARegularHearingShare(hearingId, event);
+        givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(true);
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(1)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+        verifyNoInteractions(eventGridService);
+    }
+
+    /**
+     * The consumer types userId as a canonical uuid, so a metadata value that is not one is rejected
+     * on this side, and the resulting still goes out.
+     */
+    @Test
+    public void shouldNotRequestProbationDistributionPublishWhenTheUserIdIsNotAUuid() {
+        final UUID hearingId = randomUUID();
+        final JsonObject hearing = createObjectBuilder().add("id", hearingId.toString()).build();
+        final JsonEnvelope event = envelopeFrom(
+                metadataOf(randomUUID(), "public.events.hearing.hearing-resulted").withUserId("not-a-uuid").build(),
+                createObjectBuilder()
+                        .add("isReshare", false)
+                        .add("hearingDay", "2021-03-15")
+                        .add("sharedTime", ZonedDateTimes.toString(clock.now()))
+                        .add("hearing", hearing)
+                        .build());
+
+        givenARegularHearingShare(hearingId, event);
+        givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(true);
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(1)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getValue().metadata().name(), is(ADD_HEARING_RESULT_FOR_DAY));
+    }
+
+    /**
+     * A caller-side failure on the informant request must not stop the probation request being
+     * attempted: each leg has its own catch.
+     */
+    @Test
+    public void shouldStillRequestProbationDistributionPublishWhenTheInformantRequestFails() {
+        final UUID hearingId = randomUUID();
+        final JsonEnvelope event = givenARegularHearingShare(hearingId, createPublicEvent(randomUUID(),
+                createObjectBuilder().add("id", hearingId.toString()).build(), clock.now(), "2021-03-15", false));
+        givenTheInformantRegisterServiceFeatureIs(true);
+        givenTheProbationResultsDistributionServiceFeatureIs(true);
+
+        doNothing().doThrow(new RuntimeException("command queue unavailable")).doNothing()
+                .when(sender).sendAsAdmin(any(Envelope.class));
+
+        eventProcessor.handleHearingResultedPublicEvent(event);
+
+        verify(sender, times(3)).sendAsAdmin(envelopeArgumentCaptor.capture());
+        assertThat(envelopeArgumentCaptor.getAllValues().get(1).metadata().name(), is(REQUEST_INFORMANT_REGISTER_PUBLISH));
+        assertThat(envelopeArgumentCaptor.getAllValues().get(2).metadata().name(), is(REQUEST_PROBATION_DISTRIBUTION_PUBLISH));
+    }
+
+    private JsonEnvelope givenARegularHearingShare(final UUID hearingId, final JsonEnvelope event) {
+        final JsonObject hearing = event.payloadAsJsonObject().getJsonObject("hearing");
+        when(hearingHelper.transformedHearing(hearing)).thenReturn(createObjectBuilder().add("id", hearingId.toString()).build());
+        when(applicationResultsEnricher.enrichIfApplicationResultsMissing(any(JsonObject.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        return event;
     }
 
     @Test
@@ -388,6 +618,7 @@ public class HearingResultedEventProcessorTest {
         // Left implicit they would be toggle-off tests by accident, and an inverted default would
         // fail here rather than in the test that is actually about the toggle.
         givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -420,6 +651,7 @@ public class HearingResultedEventProcessorTest {
         // Left implicit they would be toggle-off tests by accident, and an inverted default would
         // fail here rather than in the test that is actually about the toggle.
         givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 
@@ -583,6 +815,7 @@ public class HearingResultedEventProcessorTest {
         // Left implicit they would be toggle-off tests by accident, and an inverted default would
         // fail here rather than in the test that is actually about the toggle.
         givenTheInformantRegisterServiceFeatureIs(false);
+        givenTheProbationResultsDistributionServiceFeatureIs(false);
 
         eventProcessor.handleHearingResultedPublicEvent(event);
 

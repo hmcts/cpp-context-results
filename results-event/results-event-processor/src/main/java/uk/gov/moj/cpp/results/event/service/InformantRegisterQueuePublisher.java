@@ -2,7 +2,7 @@ package uk.gov.moj.cpp.results.event.service;
 
 import static java.lang.String.format;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
-import static uk.gov.moj.cpp.domains.InformantRegisterHelper.informantRegisterRequestId;
+import static uk.gov.moj.cpp.domains.DistributionRequestIdHelper.distributionRequestId;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,7 +28,8 @@ import uk.gov.justice.services.common.configuration.Value;
  * service-cp-crime-informant-register (distribution-command.schema.json): seven fields,
  * additionalProperties false. requestId is minted deterministically from
  * hearingId|hearingDay|sharedTime so a republish of the same share carries the same id, while a
- * genuine re-share (new sharedTime) mints a new one. The broker messageId is
+ * genuine re-share (new sharedTime) mints a new one; the recipe is the shared
+ * {@link uk.gov.moj.cpp.domains.DistributionRequestIdHelper}. The broker messageId is
  * "RESULTS:{requestId}" and the correlationId is the hearingId.
  *
  * <p>The authoritative duplicate guard is the consuming service's (source, requestId) processed-log,
@@ -174,7 +175,7 @@ public class InformantRegisterQueuePublisher implements InformantRegisterQueueSe
             return;
         }
 
-        final UUID requestId = informantRegisterRequestId(hearingId, hearingDay, sharedTime);
+        final UUID requestId = distributionRequestId(hearingId, hearingDay, sharedTime);
 
         final String body = createObjectBuilder()
                 .add("source", SOURCE)

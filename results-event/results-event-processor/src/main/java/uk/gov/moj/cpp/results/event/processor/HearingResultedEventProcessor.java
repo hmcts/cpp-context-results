@@ -67,6 +67,23 @@ public class HearingResultedEventProcessor {
      */
     public static final String INFORMANT_REGISTER_SERVICE_FEATURE = "InformantRegisterService";
 
+    private static final String REQUEST_PROBATION_DISTRIBUTION_PUBLISH = "results.command.request-probation-distribution-publish";
+
+    /**
+     * The runtime switch between the legacy probation (hmpps) function app and the new probation
+     * results distribution service, read from Azure App Configuration under the environment's label.
+     * Same semantics as {@link #INFORMANT_REGISTER_SERVICE_FEATURE}: evaluated here, before the
+     * publish request is recorded, and fail-closed - a missing entry or a failed read is off.
+     */
+    public static final String PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE = "ProbationResultsDistributionService";
+
+    /**
+     * A stable token on the ERROR line logged when the probation flag read throws, so the failure
+     * can be counted and alerted on from the logs independently of everything else this processor
+     * logs at ERROR. Do not reword it without moving the alert rule that matches it.
+     */
+    static final String PROBATION_FLAG_READ_FAILURE = "probation_flag_read_failure";
+
     @Inject
     private Sender sender;
 
@@ -157,9 +174,74 @@ public class HearingResultedEventProcessor {
                 .withMetadataFrom(envelope);
         sender.sendAsAdmin(jsonObjectEnvelope);
 
-        // Last, and only for a regular hearing.
+        // Last, and only for a regular hearing. Each request is independent of the other and has its
+        // own catch, so a caller-side failure on one does not cost the other.
         if (!isSjpHearing) {
             requestInformantRegisterPublish(envelope, hearingId, hearingDay, sharedTime.getString());
+            requestProbationDistributionPublish(envelope, hearingId, hearingDay, sharedTime.getString());
+        }
+    }
+
+    /**
+     * Records that this share owes a probation results distribution publish, by sending a command
+     * that the command handler turns into a durable
+     * {@code results.events.probation-distribution-publish-requested} event. A copy of
+     * {@link #requestInformantRegisterPublish} with the names changed - read its Javadoc for what the
+     * catch does and, more importantly, does not do.
+     *
+     * <p>One difference: the flag read is caught separately, in
+     * {@link #isProbationResultsDistributionEnabled}, so that a failed read is logged with its own
+     * stable token and can be counted and alerted on, rather than disappearing among the generic
+     * send failures below.
+     */
+    @SuppressWarnings({"squid:S2221"})
+    private void requestProbationDistributionPublish(final JsonEnvelope envelope, final String hearingId, final String hearingDay, final String sharedTime) {
+        if (!isProbationResultsDistributionEnabled(hearingId, hearingDay)) {
+            return;
+        }
+
+        try {
+            final Optional<String> userId = envelope.metadata().userId();
+            if (userId.isEmpty()) {
+                LOGGER.warn("No userId on the hearing-resulted event - no probation distribution publish requested for hearing {}, hearingDay {}",
+                        hearingId, hearingDay);
+                return;
+            }
+
+            final JsonObject payload = createObjectBuilder()
+                    .add(COMMAND_HEARING_ID, hearingId)
+                    .add(HEARING_DAY, hearingDay)
+                    .add(SHARED_TIME, sharedTime)
+                    .add(USER_ID, UUID.fromString(userId.get()).toString())
+                    .build();
+
+            LOGGER.info("Requesting probation distribution publish for hearing {}, hearingDay {}", hearingId, hearingDay);
+            sender.sendAsAdmin(envelop(payload)
+                    .withName(REQUEST_PROBATION_DISTRIBUTION_PUBLISH)
+                    .withMetadataFrom(envelope));
+        } catch (Exception e) {
+            LOGGER.error("Exception caught while attempting to request the probation distribution publish for hearing {}, hearingDay {}", hearingId, hearingDay, e);
+        }
+    }
+
+    /**
+     * Fail-closed read of the probation flag. The feature-control library already turns a missing
+     * App Configuration entry, or a failed fetch from Azure, into "off"; this catch covers the guard
+     * itself throwing (possible with the non-caching provider), which the framework does not catch.
+     */
+    @SuppressWarnings({"squid:S2221"})
+    private boolean isProbationResultsDistributionEnabled(final String hearingId, final String hearingDay) {
+        try {
+            if (featureControlGuard.isFeatureEnabled(PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE)) {
+                return true;
+            }
+            LOGGER.info("Feature {} is not enabled - no probation distribution publish requested for hearing {}, hearingDay {}; the legacy function app remains responsible",
+                    PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE, hearingId, hearingDay);
+            return false;
+        } catch (Exception e) {
+            LOGGER.error("{}: feature {} could not be read and is treated as off - no probation distribution publish requested for hearing {}, hearingDay {}",
+                    PROBATION_FLAG_READ_FAILURE, PROBATION_RESULTS_DISTRIBUTION_SERVICE_FEATURE, hearingId, hearingDay, e);
+            return false;
         }
     }
 
