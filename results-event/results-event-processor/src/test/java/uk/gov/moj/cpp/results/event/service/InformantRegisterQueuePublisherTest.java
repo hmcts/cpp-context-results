@@ -11,7 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.justice.services.messaging.JsonObjects.createReader;
 import static uk.gov.justice.services.test.utils.core.reflection.ReflectionUtil.setField;
-import static uk.gov.moj.cpp.domains.InformantRegisterHelper.informantRegisterRequestId;
+import static uk.gov.moj.cpp.domains.DistributionRequestIdHelper.distributionRequestId;
 
 import java.io.StringReader;
 import java.time.Duration;
@@ -96,7 +96,7 @@ public class InformantRegisterQueuePublisherTest {
         verify(senderClient).sendMessage(messageCaptor.capture());
 
         final ServiceBusMessage message = messageCaptor.getValue();
-        final UUID expectedRequestId = informantRegisterRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME);
+        final UUID expectedRequestId = distributionRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME);
 
         assertThat(message.getMessageId(), is("RESULTS:" + expectedRequestId));
         assertThat(message.getContentType(), is("application/json"));
@@ -131,7 +131,7 @@ public class InformantRegisterQueuePublisherTest {
         final ServiceBusMessage first = messageCaptor.getAllValues().get(0);
         final ServiceBusMessage second = messageCaptor.getAllValues().get(1);
 
-        final UUID expectedRequestId = informantRegisterRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME);
+        final UUID expectedRequestId = distributionRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME);
 
         assertThat(second.getMessageId(), is(first.getMessageId()));
         assertThat(second.getMessageId(), is("RESULTS:" + expectedRequestId));
@@ -174,7 +174,7 @@ public class InformantRegisterQueuePublisherTest {
         assertThat(thrown.getCause(), is(brokerFailure));
         assertThat(thrown.getMessage().contains(HEARING_ID), is(true));
         assertThat(thrown.getMessage().contains(
-                informantRegisterRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME).toString()), is(true));
+                distributionRequestId(HEARING_ID, HEARING_DAY, SHARED_TIME).toString()), is(true));
     }
 
     /**
