@@ -1,12 +1,16 @@
 package uk.gov.moj.cpp.results.it.helper;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.stream.Collectors.toSet;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.justice.services.messaging.JsonEnvelope.envelopeFrom;
 import static uk.gov.justice.services.messaging.JsonEnvelope.metadataFrom;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.justice.services.test.utils.core.messaging.MetadataBuilderFactory.metadataWithRandomUUID;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.retrieveMessage;
 
 import uk.gov.justice.services.messaging.Metadata;
 import uk.gov.justice.services.test.utils.core.messaging.MessageProducerClient;
@@ -17,20 +21,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import javax.jms.MessageConsumer;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+import io.restassured.path.json.JsonPath;
+
 /**
- * Reads the delivery tracking of a document from the results view store, and raises the public
- * events other contexts report its outcome with.
+ * Reads the delivery tracking of a document from the results view store, raises the public
+ * events other contexts report its outcome with, and checks whether its blobs are deleted once it
+ * is delivered.
  */
 public class DocumentDeliveryHelper {
+
+    public static final String DOCUMENT_DELETED_FROM_BLOB = "results.event.document-deleted-from-blob";
 
     private static final String PUBLIC_EVENT_TOPIC = "public.event";
     private static final String RESULTS_CONTEXT = "results";
     private static final int TIMEOUT_IN_SECONDS = 30;
+    // the deletion is raised with the record that completes the delivery, so it is out by the time
+    // the view store shows that record
+    private static final long NO_DELETION_TIMEOUT_IN_MILLIS = 5000;
+    private static final String MATERIAL_ID = "materialId";
 
     private static final String SELECT_DELIVERY = "SELECT document_type, material_status, payload_blob_uri, document_blob_uri, email_status "
             + "FROM results_document_delivery WHERE material_id = ?";
@@ -86,6 +102,37 @@ public class DocumentDeliveryHelper {
             }
         } catch (final SQLException e) {
             throw new IllegalStateException("Failed to read SJP case " + caseId + " of material " + materialId, e);
+        }
+    }
+
+    /**
+     * Waits for the document-deleted-from-blob of the material on a consumer of {@link
+     * #DOCUMENT_DELETED_FROM_BLOB}, skipping those of other materials.
+     *
+     * @return the event, with the blob uris to delete
+     */
+    public JsonPath awaitDocumentDeletedFromBlob(final MessageConsumer documentDeletedFromBlobConsumer, final UUID materialId) {
+        JsonPath documentDeletedFromBlob;
+        do {
+            documentDeletedFromBlob = retrieveMessage(documentDeletedFromBlobConsumer);
+            assertThat("document-deleted-from-blob not raised for material " + materialId, documentDeletedFromBlob, is(notNullValue()));
+        } while (!materialId.toString().equals(documentDeletedFromBlob.getString(MATERIAL_ID)));
+        return documentDeletedFromBlob;
+    }
+
+    /**
+     * Asserts that no document-deleted-from-blob of any of the materials is raised on a consumer of
+     * {@link #DOCUMENT_DELETED_FROM_BLOB}: the blobs of a document whose delivery is not complete are
+     * kept. The consumer is drained once, so all the materials are checked against the same events.
+     */
+    public void assertNoDocumentDeletedFromBlob(final MessageConsumer documentDeletedFromBlobConsumer, final UUID... materialIds) {
+        final Set<String> keptMaterialIds = Stream.of(materialIds).map(UUID::toString).collect(toSet());
+        for (JsonPath documentDeletedFromBlob = retrieveMessage(documentDeletedFromBlobConsumer, NO_DELETION_TIMEOUT_IN_MILLIS);
+             documentDeletedFromBlob != null;
+             documentDeletedFromBlob = retrieveMessage(documentDeletedFromBlobConsumer, NO_DELETION_TIMEOUT_IN_MILLIS)) {
+            final String deletedMaterialId = documentDeletedFromBlob.getString(MATERIAL_ID);
+            assertThat("document-deleted-from-blob raised for material " + deletedMaterialId,
+                    keptMaterialIds.contains(deletedMaterialId), is(false));
         }
     }
 

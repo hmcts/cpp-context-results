@@ -6,8 +6,12 @@ import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.match;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.otherwiseDoNothing;
 import static uk.gov.justice.domain.aggregate.matcher.EventSwitcher.when;
 import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.PENDING;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.SUCCESS;
+import static uk.gov.moj.cpp.domains.EmailDeliveryStatus.NOT_REQUIRED;
 
 import uk.gov.justice.domain.aggregate.Aggregate;
+import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
+import uk.gov.moj.cpp.results.domain.event.DocumentDeletedFromBlob;
 import uk.gov.moj.cpp.results.domain.event.DocumentDeliveryRecorded;
 import uk.gov.moj.cpp.results.domain.event.SjpCases;
 
@@ -37,6 +41,10 @@ import java.util.stream.Stream;
  *     <li>a blob uri, once known, is not replaced.</li>
  * </ul>
  * A record that changes nothing raises no event, so redelivered records are harmless.
+ *
+ * <p>Once the delivery is complete - material SUCCESS, email NOT_REQUIRED or SUCCESS and every SJP
+ * case the document was sent to SUCCESS - the document's blobs are no longer read by anyone, so
+ * document-deleted-from-blob is raised, once per material. A FAILED status never completes it.
  */
 public class DocumentDeliveryAggregate implements Aggregate {
 
@@ -48,18 +56,62 @@ public class DocumentDeliveryAggregate implements Aggregate {
     private String payloadBlobUri;
     private String documentBlobUri;
     private final Map<UUID, String> sjpStatusByCaseId = new HashMap<>();
+    private boolean documentDeletedFromBlob;
 
     @Override
     public Object apply(final Object event) {
         return match(event).with(
                 when(DocumentDeliveryRecorded.class).apply(this::onDocumentDeliveryRecorded),
+                when(DocumentDeletedFromBlob.class).apply(e -> documentDeletedFromBlob = true),
                 otherwiseDoNothing()
         );
     }
 
     public Stream<Object> recordDocumentDelivery(final DocumentDeliveryRequest request) {
         final DocumentDeliveryRecorded recorded = tracked ? changesOf(request) : start(request);
-        return isNull(recorded) ? Stream.empty() : apply(Stream.of(recorded));
+        if (isNull(recorded)) {
+            return Stream.empty();
+        }
+        final Stream.Builder<Object> events = Stream.builder();
+        events.add(recorded);
+        if (isDeliveryCompleteAfter(recorded)) {
+            events.add(DocumentDeletedFromBlob.documentDeletedFromBlob()
+                    .withMaterialId(recorded.getMaterialId())
+                    .withPayloadBlobUri(valueAfter(payloadBlobUri, recorded.getPayloadBlobUri()))
+                    .withDocumentBlobUri(valueAfter(documentBlobUri, recorded.getDocumentBlobUri()))
+                    .build());
+        }
+        return apply(events.build());
+    }
+
+    /**
+     * The statuses arrive on separate records in any order, so the aggregate's state is merged with
+     * the incoming record (not yet applied) and checked as a whole. Unlike staging-dvla's single SJP
+     * case, a document may be sent to several SJP cases: all of them must have succeeded.
+     */
+    private boolean isDeliveryCompleteAfter(final DocumentDeliveryRecorded recorded) {
+        if (documentDeletedFromBlob) {
+            return false;
+        }
+        final String currentEmailStatus = valueAfter(emailStatus, recorded.getEmailStatus());
+        final boolean materialSucceeded = SUCCESS.name().equals(valueAfter(materialStatus, recorded.getMaterialStatus()));
+        final boolean emailCompleted = NOT_REQUIRED.name().equals(currentEmailStatus) || EmailDeliveryStatus.SUCCESS.name().equals(currentEmailStatus);
+        final boolean hasBlob = nonNull(valueAfter(payloadBlobUri, recorded.getPayloadBlobUri()))
+                || nonNull(valueAfter(documentBlobUri, recorded.getDocumentBlobUri()));
+        return materialSucceeded && emailCompleted && allSjpCasesSucceededAfter(recorded) && hasBlob;
+    }
+
+    private boolean allSjpCasesSucceededAfter(final DocumentDeliveryRecorded recorded) {
+        final Map<UUID, String> sjpStatuses = new HashMap<>(sjpStatusByCaseId);
+        if (nonNull(recorded.getSjpCases())) {
+            recorded.getSjpCases().forEach(sjpCase -> sjpStatuses.put(sjpCase.getCaseId(), sjpCase.getSjpStatus()));
+        }
+        // a document sent to no SJP case has no SJP filing to wait for
+        return sjpStatuses.values().stream().allMatch(SUCCESS.name()::equals);
+    }
+
+    private static String valueAfter(final String current, final String incoming) {
+        return nonNull(incoming) ? incoming : current;
     }
 
     private static DocumentDeliveryRecorded start(final DocumentDeliveryRequest request) {

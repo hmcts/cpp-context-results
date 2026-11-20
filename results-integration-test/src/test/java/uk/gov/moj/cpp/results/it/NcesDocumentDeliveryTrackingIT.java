@@ -11,6 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.moj.cpp.results.it.helper.DocumentDeliveryHelper.DOCUMENT_DELETED_FROM_BLOB;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
@@ -27,7 +28,7 @@ import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.publishNotificati
 import static uk.gov.moj.cpp.results.it.stub.SjpStub.setupSjpQueryStub;
 import static uk.gov.moj.cpp.results.it.stub.SjpStub.stubUploadCaseDocument;
 import static uk.gov.moj.cpp.results.it.utils.ContextNameProvider.CONTEXT_NAME;
-import static uk.gov.moj.cpp.results.it.utils.FeatureStubUtil.setFeatureToggle;
+import static uk.gov.moj.cpp.results.it.utils.FeatureStubUtil.enableResultsFileStoreWithDelete;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.convertStringToJson;
 import static uk.gov.moj.cpp.results.it.utils.FileUtil.getPayload;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
@@ -80,7 +81,6 @@ import org.junit.jupiter.api.Test;
  */
 class NcesDocumentDeliveryTrackingIT {
 
-    private static final String RESULTS_FILE_STORE_FEATURE = "resultsFileStore";
     private static final String RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED = "results.event.nces-email-notification-requested";
     private static final String RESULTS_EVENT_HEARING_RESULTS_ADDED_FOR_DAY = "results.events.hearing-results-added-for-day";
     private static final String PUBLIC_EVENT_ENFORCE_FINANCIAL_IMPOSITION_ACKNOWLEDGEMENT = "public.stagingenforcement.enforce-financial-imposition-acknowledgement";
@@ -118,6 +118,7 @@ class NcesDocumentDeliveryTrackingIT {
     private MessageConsumer hearingFinancialResultsUpdatedConsumer;
     private MessageConsumer ncesEmailNotificationRequestedConsumer;
     private MessageConsumer hearingResultsAddedForDayConsumer;
+    private MessageConsumer documentDeletedFromBlobConsumer;
 
     @BeforeAll
     static void setupStubs() throws ClassNotFoundException {
@@ -141,7 +142,7 @@ class NcesDocumentDeliveryTrackingIT {
         stubSpiOutFlag(false, false);
         stubProsecutorWithoutSpiOutOrPoliceFlag(SJP_HEARING_PROSECUTOR_CODE, SJP_HEARING_PROSECUTOR_OU_CODE);
         // last: loading WireMockStubUtils resets WireMock, which would wipe a feature stub registered before it
-        setFeatureToggle(RESULTS_FILE_STORE_FEATURE, true);
+        enableResultsFileStoreWithDelete();
     }
 
     @AfterAll
@@ -160,6 +161,7 @@ class NcesDocumentDeliveryTrackingIT {
         hearingFinancialResultsUpdatedConsumer = privateEvents.createConsumer("results.event.hearing-financial-results-updated");
         ncesEmailNotificationRequestedConsumer = privateEvents.createConsumer(RESULTS_EVENT_NCES_NOTIFICATION_REQUESTED);
         hearingResultsAddedForDayConsumer = privateEvents.createConsumer(RESULTS_EVENT_HEARING_RESULTS_ADDED_FOR_DAY);
+        documentDeletedFromBlobConsumer = privateEvents.createConsumer(DOCUMENT_DELETED_FROM_BLOB);
     }
 
     @AfterEach
@@ -168,6 +170,7 @@ class NcesDocumentDeliveryTrackingIT {
         hearingFinancialResultsUpdatedConsumer.close();
         ncesEmailNotificationRequestedConsumer.close();
         hearingResultsAddedForDayConsumer.close();
+        documentDeletedFromBlobConsumer.close();
         closeMessageConsumers();
     }
 
@@ -176,7 +179,8 @@ class NcesDocumentDeliveryTrackingIT {
      * command API and staging-enforcement acknowledges the account, so results generates the NCES
      * documents and files each on both SJP cases. For one of them every context then reports back:
      * material adds it, SJP adds it to one case and rejects it for the other, and the notify gateway
-     * sends the NCES email.
+     * sends the NCES email. With an SJP case failed the delivery is not complete, so neither
+     * document's blob is deleted.
      */
     @Test
     void shouldTrackTheDeliveryOfAnNcesDocumentToMaterialSjpAndEmail() {
@@ -245,11 +249,15 @@ class NcesDocumentDeliveryTrackingIT {
         assertThat(other.emailStatus(), is(nullValue()));
         assertSjpCase(otherMaterialId, sjpCaseAdded, PENDING);
         assertSjpCase(otherMaterialId, sjpCaseRejected, PENDING);
+
+        // the blobs are kept: an SJP case failed, and the other document is still pending
+        documentDeliveryHelper.assertNoDocumentDeletedFromBlob(documentDeletedFromBlobConsumer, materialId, otherMaterialId);
     }
 
     /**
      * One NCES document filed on two SJP cases, with every delivery succeeding: material adds it,
-     * SJP adds it to both cases and the notify gateway sends the NCES email.
+     * SJP adds it to both cases and the notify gateway sends the NCES email. The delivery is then
+     * complete, so its blob is deleted.
      */
     @Test
     void shouldTrackAnNcesDocumentDeliveredToMaterialBothSjpCasesAndEmailAsSucceeded() {
@@ -291,6 +299,11 @@ class NcesDocumentDeliveryTrackingIT {
         assertThat(delivered.emailStatus(), is(SUCCESS));
         assertSjpCase(materialId, firstSjpCase, SUCCESS);
         assertSjpCase(materialId, secondSjpCase, SUCCESS);
+
+        // delivered everywhere: the document blob is deleted; an NCES document has no payload blob
+        final JsonPath documentDeletedFromBlob = documentDeliveryHelper.awaitDocumentDeletedFromBlob(documentDeletedFromBlobConsumer, materialId);
+        assertThat(documentDeletedFromBlob.getString("documentBlobUri"), is(documentBlobUri));
+        assertThat(documentDeletedFromBlob.getString("payloadBlobUri"), is(nullValue()));
     }
 
     /**

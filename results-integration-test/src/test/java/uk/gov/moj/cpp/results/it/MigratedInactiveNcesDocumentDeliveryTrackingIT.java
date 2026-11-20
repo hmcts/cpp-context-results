@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.justice.services.messaging.JsonObjects.createArrayBuilder;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.moj.cpp.results.it.helper.DocumentDeliveryHelper.DOCUMENT_DELETED_FROM_BLOB;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubRenderDocumentWithStatusOk;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.setupNotificationNotifyStubs;
@@ -21,7 +22,7 @@ import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.bodyOf;
 import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.isSendEmailNotification;
 import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.publishNotificationSent;
 import static uk.gov.moj.cpp.results.it.utils.ContextNameProvider.CONTEXT_NAME;
-import static uk.gov.moj.cpp.results.it.utils.FeatureStubUtil.setFeatureToggle;
+import static uk.gov.moj.cpp.results.it.utils.FeatureStubUtil.enableResultsFileStoreWithDelete;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubPostForAddCourtDocument;
 import static uk.gov.moj.cpp.results.it.utils.ProgressionServiceStub.stubQueryInactiveMigratedCases;
 import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
@@ -65,7 +66,6 @@ import org.junit.jupiter.api.Test;
  */
 class MigratedInactiveNcesDocumentDeliveryTrackingIT {
 
-    private static final String RESULTS_FILE_STORE_FEATURE = "resultsFileStore";
     private static final String PUBLIC_EVENT_NCES_EMAIL_NOTIFICATION_FOR_APPLICATION = "public.hearing.nces-email-notification-for-application";
     private static final String MIGRATED_INACTIVE_NCES_EMAIL_NOTIFICATION_REQUESTED = "results.event.migrated-inactive-nces-email-notification-requested";
     private static final String HEARING_COURT_CENTRE_ID = "f8254db1-1683-483e-afb3-b87fde5a0a26";
@@ -81,6 +81,7 @@ class MigratedInactiveNcesDocumentDeliveryTrackingIT {
     private final DocumentDeliveryHelper documentDeliveryHelper = new DocumentDeliveryHelper();
 
     private MessageConsumer migratedInactiveNcesEmailNotificationRequestedConsumer;
+    private MessageConsumer documentDeletedFromBlobConsumer;
 
     @BeforeAll
     static void setupStubs() throws ClassNotFoundException {
@@ -95,7 +96,7 @@ class MigratedInactiveNcesDocumentDeliveryTrackingIT {
         setupNotificationNotifyStubs();
         stubGetOrganisationUnit();
         // last: loading WireMockStubUtils resets WireMock, which would wipe a feature stub registered before it
-        setFeatureToggle(RESULTS_FILE_STORE_FEATURE, true);
+        enableResultsFileStoreWithDelete();
     }
 
     @AfterAll
@@ -109,17 +110,20 @@ class MigratedInactiveNcesDocumentDeliveryTrackingIT {
     @BeforeEach
     void setup() {
         migratedInactiveNcesEmailNotificationRequestedConsumer = privateEvents.createConsumer(MIGRATED_INACTIVE_NCES_EMAIL_NOTIFICATION_REQUESTED);
+        documentDeletedFromBlobConsumer = privateEvents.createConsumer(DOCUMENT_DELETED_FROM_BLOB);
     }
 
     @AfterEach
     void tearDown() throws JMSException {
         migratedInactiveNcesEmailNotificationRequestedConsumer.close();
+        documentDeletedFromBlobConsumer.close();
     }
 
     /**
      * Hearing notifies an appeal application for a defendant with two migrated inactive cases, so
      * results generates an NCES document per case. Material then adds each document and the
-     * notify gateway sends its email.
+     * notify gateway sends its email. Each delivery is then complete, so each document's blob is
+     * deleted.
      */
     @Test
     void shouldTrackTheNcesDocumentsOfMigratedInactiveCasesDeliveredToMaterialAndEmailAsSucceeded() {
@@ -169,6 +173,11 @@ class MigratedInactiveNcesDocumentDeliveryTrackingIT {
             assertThat(delivered.materialStatus(), is(SUCCESS));
             assertThat(delivered.emailStatus(), is(SUCCESS));
             assertThat(delivered.documentBlobUri(), is(started.documentBlobUri()));
+
+            // delivered to material and by email, with no SJP case: the document blob is deleted
+            final JsonPath documentDeletedFromBlob = documentDeliveryHelper.awaitDocumentDeletedFromBlob(documentDeletedFromBlobConsumer, materialId);
+            assertThat(documentDeletedFromBlob.getString("documentBlobUri"), is(started.documentBlobUri()));
+            assertThat(documentDeletedFromBlob.getString("payloadBlobUri"), is(nullValue()));
         }
     }
 
