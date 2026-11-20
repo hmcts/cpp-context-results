@@ -645,7 +645,7 @@ public class ResultsEventProcessorTest {
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(policeNotificationEnvelope(policeNotificationRequestedV2));
 
-        verify(documentGeneratorService, never()).storePayloadWithUri(any(), any(), any(), any());
+        verify(documentGeneratorService, never()).storePayloadWithUri(any(), any(), any(), any(), any());
         verify(systemDocGenerator).generateDocument(documentGenerationRequestCaptor.capture(), any());
         final DocumentGenerationRequest documentGenerationRequest = documentGenerationRequestCaptor.getValue();
         assertThat(documentGenerationRequest.getPayloadFileServiceId(), is(payloadFileId));
@@ -663,7 +663,8 @@ public class ResultsEventProcessorTest {
         final String fileName = "POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html";
         final String payloadFileUri = "https://account.blob.core.windows.net/results/sdg/requests/" + fileName;
         final String destinationFileUri = "https://account.blob.core.windows.net/results/sdg/documents/" + fileName;
-        when(documentGeneratorService.storePayloadWithUri(payloadCaptor.capture(), eq(fileName), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF)))
+        when(documentGeneratorService.storePayloadWithUri(payloadCaptor.capture(), eq(fileName), eq(POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue()), eq(ConversionFormat.THYMELEAF),
+                eq(notificationId)))
                 .thenReturn(new DocumentGeneratorService.Result(payloadFileUri, destinationFileUri));
 
         resultsEventProcessor.handlePoliceNotificationRequestedV2(policeNotificationEnvelope(policeNotificationRequestedV2));

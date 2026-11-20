@@ -184,6 +184,7 @@ class DocumentGeneratorServiceTest {
 
         verify(blobClient).uploadWithResponse(blobUploadOptionsCaptor.capture(), eq(ofSeconds(300)), eq(Context.NONE));
         assertThat(blobUploadOptionsCaptor.getValue().getMetadata().get("fileName"), is(fileParams.getFilename()));
+        assertThat(blobUploadOptionsCaptor.getValue().getTags(), is(Map.of("materialId", materialId.toString(), "documentType", "NCES")));
 
         verify(uploadMaterialService).uploadMaterialWithUri(uploadMaterialContextCaptor.capture(), eq(NCES_ORIGINATOR));
         final UploadMaterialContext context = uploadMaterialContextCaptor.getValue();
@@ -214,6 +215,7 @@ class DocumentGeneratorServiceTest {
         verify(documentGeneratorClient).generatePdfDocument(ncesEnvelope.payloadAsJsonObject(), NCES_DLRM_DOC_TEMPLATE_NAME, systemUserId);
         verify(blobClient).uploadWithResponse(blobUploadOptionsCaptor.capture(), eq(ofSeconds(300)), eq(Context.NONE));
         assertThat(blobUploadOptionsCaptor.getValue().getMetadata().get("fileName"), is(fileParams.getFilename()));
+        assertThat(blobUploadOptionsCaptor.getValue().getTags(), is(Map.of("materialId", materialId.toString(), "documentType", "NCES")));
 
         verify(uploadMaterialService).uploadMaterialWithUri(uploadMaterialContextCaptor.capture(), eq(NCES_ORIGINATOR));
         final UploadMaterialContext context = uploadMaterialContextCaptor.getValue();
@@ -282,7 +284,8 @@ class DocumentGeneratorServiceTest {
 
     @Test
     void shouldStorePayloadInBlobStoreAndReturnPayloadAndDestinationUris() {
-        final String fileName = "POLICE_NOTIFICATION_HEARING_RESULTS" + randomUUID() + ".html";
+        final UUID notificationId = randomUUID();
+        final String fileName = "POLICE_NOTIFICATION_HEARING_RESULTS" + notificationId + ".html";
         final String payloadBlobName = PAYLOAD_BLOB_PREFIX + fileName;
         final JsonObject payload = createObjectBuilder().add("urn", "URN123").build();
         final byte[] payloadBytes = payload.toString().getBytes(UTF_8);
@@ -296,7 +299,8 @@ class DocumentGeneratorServiceTest {
         when(blobContainerClient.getBlobClient(documentBlobName)).thenReturn(documentBlobClient);
         when(documentBlobClient.getBlobUrl()).thenReturn(CONTAINER_URL + documentBlobName);
 
-        final DocumentGeneratorService.Result result = documentGeneratorService.storePayloadWithUri(payload, fileName, "PoliceNotificationHearingResults", ConversionFormat.THYMELEAF);
+        final DocumentGeneratorService.Result result = documentGeneratorService.storePayloadWithUri(payload, fileName, "PoliceNotificationHearingResults", ConversionFormat.THYMELEAF,
+                notificationId);
 
         assertThat(result.payloadFileUri(), is(CONTAINER_URL + payloadBlobName));
         // the generated document goes beside the payload, under the document prefix and with the same file name
@@ -311,6 +315,8 @@ class DocumentGeneratorServiceTest {
         assertThat(metadata.get("templateName"), is("PoliceNotificationHearingResults"));
         assertThat(metadata.get("numberOfPages"), is("1"));
         assertThat(metadata.get("fileSize"), is(String.valueOf(payloadBytes.length)));
+        // the document generator copies these onto the document it writes back
+        assertThat(blobUploadOptionsCaptor.getValue().getTags(), is(Map.of("materialId", notificationId.toString(), "documentType", "POLICE_NOTIFICATION")));
 
         verifyNoInteractions(fileStorer);
         verifyNoInteractions(uploadMaterialService);
@@ -324,7 +330,8 @@ class DocumentGeneratorServiceTest {
         when(blobClient.uploadWithResponse(any(BlobParallelUploadOptions.class), any(), any())).thenThrow(new IllegalStateException("blob store unavailable"));
 
         assertThrows(IllegalStateException.class,
-                () -> documentGeneratorService.storePayloadWithUri(createObjectBuilder().build(), "payload.html", "template", ConversionFormat.THYMELEAF));
+                () -> documentGeneratorService.storePayloadWithUri(createObjectBuilder().build(), "payload.html", "template", ConversionFormat.THYMELEAF,
+                        randomUUID()));
 
         verifyNoInteractions(fileStorer);
     }

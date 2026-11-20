@@ -6,12 +6,15 @@ import static java.lang.String.format;
 import static java.util.Map.of;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static javax.transaction.Transactional.TxType.REQUIRES_NEW;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryType.NCES;
+import static uk.gov.moj.cpp.domains.DocumentDeliveryType.POLICE_NOTIFICATION;
 
 import uk.gov.justice.services.core.dispatcher.SystemUserProvider;
 import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.fileservice.api.FileServiceException;
 import uk.gov.justice.services.fileservice.api.FileStorer;
 import uk.gov.justice.services.messaging.JsonEnvelope;
+import uk.gov.moj.cpp.domains.DocumentDeliveryType;
 import uk.gov.moj.cpp.results.event.blobstore.AzureFileStoreBlobConfiguration;
 import uk.gov.moj.cpp.results.event.service.exception.FileUploadException;
 import uk.gov.moj.cpp.results.event.service.exception.TemplateNameNotFoundException;
@@ -47,6 +50,10 @@ public class DocumentGeneratorService {
     public static final String NCES_DLRM_DOC_TEMPLATE_NAME = "NCESDLRMNotification";
     public static final String ENF_DOCUMENT_ORDER = "ENFDocumentOrder";
     public static final String FILE_NAME = "fileName";
+    // blob index tags set on every blob uploaded (keys match the other contexts', e.g. staging-dvla's):
+    // every blob of a material is findable by tag
+    public static final String TAG_MATERIAL_ID = "materialId";
+    public static final String TAG_DOCUMENT_TYPE = "documentType";
 
     private final DocumentGeneratorClientProducer documentGeneratorClientProducer;
 
@@ -182,7 +189,7 @@ public class DocumentGeneratorService {
         // <documentName>_<materialId>.<extension>: the file name's prefix, keyed by material instead of a timestamp
         final String blobFileName = azureBlobConfiguration.getDocumentBlobPrefix() + documentName + "_" + materialId + "." + fileName.substring(fileName.lastIndexOf('.') + 1);
 
-        final String fullFileUri = storeFileToBlob(blobFileName, of(FILE_NAME, fileName),fileContent);
+        final String fullFileUri = storeFileToBlob(blobFileName, of(FILE_NAME, fileName), tagsFor(materialId, NCES), fileContent);
 
         final UploadMaterialContextBuilder uploadMaterialContextBuilder = new UploadMaterialContextBuilder();
         uploadMaterialService.uploadMaterialWithUri(uploadMaterialContextBuilder
@@ -197,13 +204,19 @@ public class DocumentGeneratorService {
     }
 
     public record Result(String payloadFileUri, String destinationFileUri){}
-    public Result storePayloadWithUri(final JsonObject payload, final String fileName, final String templateName, final  ConversionFormat conversionFormat) {
+    /**
+     * Stores a police notification payload for the system document generator, tagged with the material id
+     * the generated document will be uploaded with (the document generator's source correlation id) and the
+     * POLICE_NOTIFICATION document type; the document generator copies the tags onto the document it writes back.
+     */
+    public Result storePayloadWithUri(final JsonObject payload, final String fileName, final String templateName, final  ConversionFormat conversionFormat,
+                                      final UUID materialId) {
         final String blobFileName = azureBlobConfiguration.getPayloadBlobPrefix() + fileName;
         final byte[] jsonPayloadInBytes = payload.toString().getBytes(StandardCharsets.UTF_8);
 
         Map<String, String> metadata = of(FILE_NAME, fileName,"conversionFormat", conversionFormat.getValue(),"templateName", templateName,"numberOfPages", "1","fileSize", String.valueOf(jsonPayloadInBytes.length));
 
-        final String fullBlobName =  storeFileToBlob(blobFileName, metadata, jsonPayloadInBytes);
+        final String fullBlobName =  storeFileToBlob(blobFileName, metadata, tagsFor(materialId, POLICE_NOTIFICATION), jsonPayloadInBytes);
         // the generated document goes under the document prefix with the payload's file name
         final String destinationFileUri = blobContainerClient
                 .getBlobClient(azureBlobConfiguration.getDocumentBlobPrefix() + fileName)
@@ -211,15 +224,21 @@ public class DocumentGeneratorService {
         return new Result(fullBlobName, destinationFileUri);
     }
 
-    private String storeFileToBlob(final String blobFileName, Map<String, String> metadata, final byte[] fileContent){
+    private String storeFileToBlob(final String blobFileName, final Map<String, String> metadata, final Map<String, String> tags, final byte[] fileContent){
         final BlobClient blobClient = blobContainerClient.getBlobClient(blobFileName);
         blobClient.uploadWithResponse(
                 new BlobParallelUploadOptions(fromStream(new ByteArrayInputStream(fileContent)))
-                        .setMetadata(metadata),
+                        .setMetadata(metadata)
+                        .setTags(tags),
                 azureBlobConfiguration.getTransferTimeout(), NONE);
 
         return blobClient
                 .getBlobUrl();
+    }
+
+    private static Map<String, String> tagsFor(final UUID materialId, final DocumentDeliveryType documentType) {
+        return of(TAG_MATERIAL_ID, materialId.toString(),
+                TAG_DOCUMENT_TYPE, documentType.name());
     }
 
     private UUID storeFile(final InputStream fileContent, final String fileName) throws FileServiceException {

@@ -601,7 +601,9 @@ public class ResultsEventProcessor {
                         fileId,
                         additionalInformation);
             } else {
-                final DocumentGeneratorService.Result result = documentGeneratorService.storePayloadWithUri(payload.build(), fileName, POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue(), ConversionFormat.THYMELEAF);
+                // the notification id is the material id the generated document is uploaded with
+                final DocumentGeneratorService.Result result = documentGeneratorService.storePayloadWithUri(payload.build(), fileName, POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE.getValue(), ConversionFormat.THYMELEAF,
+                        notificationId);
                 documentGenerationRequest = new DocumentGenerationRequest(
                         POLICE_NOTIFICATION_HEARING_RESULTS,
                         POLICE_NOTIFICATION_HEARING_RESULTS_TEMPLATE,
