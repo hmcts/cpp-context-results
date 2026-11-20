@@ -139,17 +139,6 @@ public class NotificationNotifyServiceTest {
         assertThat(envelopeCaptor.getValue().payloadAsJsonObject().getString("clientContext"), equalTo("RESULTS_" + materialId));
     }
 
-    @Test
-    void shouldTellAResultsNotificationApartAndReadItsMaterialId() {
-        final UUID materialId = randomUUID();
-        final JsonObject resultsNotification = createObjectBuilder().add("clientContext", NotificationNotifyService.clientContextFor(materialId)).build();
-
-        assertThat(NotificationNotifyService.isResultsNotification(resultsNotification), is(true));
-        assertThat(NotificationNotifyService.materialIdFrom(resultsNotification), is(materialId));
-        assertThat(NotificationNotifyService.isResultsNotification(createObjectBuilder().add("clientContext", "STAGINGDVLA_" + materialId).build()), is(false));
-        assertThat(NotificationNotifyService.isResultsNotification(createObjectBuilder().build()), is(false));
-    }
-
     private JsonEnvelope envelope() {
         return JsonEnvelope.envelopeFrom(
                 JsonEnvelope.metadataBuilder().withId(randomUUID()).withName("origin envelope"),

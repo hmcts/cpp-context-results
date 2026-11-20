@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
@@ -28,8 +29,12 @@ import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.verifyPubli
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.whenPrisonAdminTriesToViewResultsForThePerson;
 import static uk.gov.moj.cpp.results.it.steps.data.factory.HearingResultDataFactory.getUserId;
 import static uk.gov.moj.cpp.results.it.stub.DocumentGeneratorStub.stubDocGeneratorEndPoint;
-import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.NOTIFICATION_NOTIFY_ENDPOINT;
 import static uk.gov.moj.cpp.results.it.stub.NotificationNotifyServiceStub.setupNotificationNotifyStubs;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.RESULT_QUEUE_NAME;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.awaitEmailSentToGateway;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.bodyOf;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.isSendEmailNotification;
+import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.publishNotificationSent;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionProsecutionCasesFromPayload;
 import static uk.gov.moj.cpp.results.it.utils.ContextNameProvider.CONTEXT_NAME;
@@ -63,6 +68,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
@@ -79,16 +85,16 @@ import org.junit.jupiter.api.Test;
  * the blob store ({@code resultsFileStore} on): results records in its view store where the
  * document stands with material and with the police email that carries its link. No SJP case.
  *
- * <p>Driven by public events only - hearing's shares, then system-doc-generator, material and
- * notificationnotify reporting back; no results private event is raised by the test. Needs the
- * "azurite" profile of the stack.</p>
+ * <p>Driven by public events only - hearing's shares, then system-doc-generator and material
+ * reporting back - and the notify gateway's replies; no results private event is raised by the
+ * test. Needs the "azurite" profile of the stack, and the "servicebus" one for the notify gateway's
+ * queues.</p>
  */
 class PoliceNotificationDeliveryTrackingIT {
 
     private static final String RESULTS_FILE_STORE_FEATURE = "resultsFileStore";
     private static final String GENERATE_DOCUMENT_URL = "/.*/rest/systemdocgenerator/generate-document";
     private static final String PUBLIC_EVENT_DOCUMENT_AVAILABLE = "public.systemdocgenerator.events.document-available";
-    private static final String PUBLIC_EVENT_NOTIFICATION_SENT = "public.notificationnotify.events.notification-sent";
     private static final String FIRST_SHARE = "json/public-hearing-results-shared/firstshare-onecase-onedefendant-oneoffence.json";
     private static final String RESHARE = "json/public-hearing-results-shared/reshare-onecase-onedefendant-oneoffence.json";
     private static final String PROSECUTION_CASE = "stub-data/hearing-resulted/prosecutioncase-onedefendant-oneoffence.json";
@@ -146,7 +152,7 @@ class PoliceNotificationDeliveryTrackingIT {
     /**
      * A hearing is shared and then re-shared with amended results, so results asks
      * system-doc-generator for the police notification. System-doc-generator then makes the document
-     * available, material adds it and notificationnotify sends the police email.
+     * available, material adds it and the notify gateway sends the police email.
      */
     @Test
     void shouldTrackAPoliceNotificationDeliveredToMaterialAndEmailAsSucceeded() {
@@ -193,21 +199,22 @@ class PoliceNotificationDeliveryTrackingIT {
         awaitSingleRequestBody(postRequestedFor(urlPathEqualTo(UPLOAD_MATERIAL_COMMAND))
                 .withRequestBody(matchingJsonPath("$.materialId", equalTo(materialId.toString())))
                 .withRequestBody(matchingJsonPath("$.fileUri", equalTo(destinationFileUri))));
-        final JsonObject email = awaitSingleRequestBody(postRequestedFor(urlPathMatching(NOTIFICATION_NOTIFY_ENDPOINT))
-                .withRequestBody(matchingJsonPath("$.clientContext", equalTo(CLIENT_CONTEXT_PREFIX + materialId))));
+        // the police email of the file uri path goes to the notify gateway, which replies on results' result queue
+        final ServiceBusReceivedMessage emailMessage = awaitEmailSentToGateway(CLIENT_CONTEXT_PREFIX + materialId);
+        assertThat(isSendEmailNotification(emailMessage), is(true));
+        assertThat(emailMessage.getReplyTo(), is(RESULT_QUEUE_NAME));
+        final JsonObject email = bodyOf(emailMessage);
+        assertThat(email.getString("notificationId"), is(materialId.toString()));
         assertThat(email.getString("sendToAddress"), is(policeEmailAddress));
+        assertThat(email.getString("materialUrl"), endsWith(materialId + "?stream=true&requestPdf=true"));
         documentDeliveryHelper.awaitEmailStatus(materialId, PENDING);
 
         // material adds the document
         documentDeliveryHelper.raiseMaterialAddedForNcesFileUriMaterial(materialId, getUserId());
         documentDeliveryHelper.awaitMaterialStatus(materialId, SUCCESS);
 
-        // notificationnotify sends the email
-        documentDeliveryHelper.raisePublicEvent(PUBLIC_EVENT_NOTIFICATION_SENT, createObjectBuilder()
-                .add("notificationId", randomUUID().toString())
-                .add("sentTime", "2026-11-12T10:00:02.000Z")
-                .add("clientContext", CLIENT_CONTEXT_PREFIX + materialId)
-                .build());
+        // the notify gateway sends the email
+        publishNotificationSent(CLIENT_CONTEXT_PREFIX + materialId, materialId);
         documentDeliveryHelper.awaitEmailStatus(materialId, SUCCESS);
 
         final DocumentDelivery delivered = documentDeliveryHelper.awaitDelivery(materialId);

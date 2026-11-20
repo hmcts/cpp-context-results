@@ -36,6 +36,7 @@ import uk.gov.moj.cpp.results.event.service.DocumentGeneratorService;
 import uk.gov.moj.cpp.results.event.service.EmailNotification;
 import uk.gov.moj.cpp.results.event.service.FileParams;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
+import uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService;
 import uk.gov.moj.cpp.results.event.service.ReferenceDataService;
 import uk.gov.moj.cpp.results.event.service.exception.FileUploadException;
 
@@ -44,6 +45,7 @@ import uk.gov.moj.cpp.domains.DocumentDeliveryType;
 import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
 import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.json.JsonObject;
@@ -90,6 +92,9 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
     @Mock
     private NotificationNotifyService notificationNotifyService;
+
+    @Mock
+    private NotifyGatewaySendEmailService notifyGatewaySendEmailService;
 
     @Mock
     private FeatureControlGuard featureControlGuard;
@@ -324,7 +329,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
     }
 
     @Test
-    public void shouldHandleSendNcesEmailNotification() {
+    void shouldSendTheMigratedInactiveNcesEmailOfTheFileUriPathToTheNotifyGateway() {
         // Given
         final UUID notificationId = randomUUID();
         final UUID templateId = randomUUID();
@@ -353,19 +358,21 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
         processor.handleSendNcesEmailNotification(jsonEnvelope);
 
         // the email's status is PENDING right before it is sent
-        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notificationNotifyService);
+        final InOrder pendingThenSent = inOrder(documentDeliveryStatusService, notifyGatewaySendEmailService);
         pendingThenSent.verify(documentDeliveryStatusService).recordEmailStatus(jsonEnvelope.metadata(), materialId, EmailDeliveryStatus.PENDING);
-        pendingThenSent.verify(notificationNotifyService).sendNcesEmail(any(), any());
+        pendingThenSent.verify(notifyGatewaySendEmailService).sendNcesEmail(any(), any());
 
         // Then
-        verify(notificationNotifyService, times(1)).sendNcesEmail(
+        verify(notifyGatewaySendEmailService, times(1)).sendNcesEmail(
                 emailNotificationCaptor.capture(), eq(jsonEnvelope));
+        verify(notificationNotifyService, never()).sendNcesEmail(any(), any());
         final EmailNotification capturedEmailNotification = emailNotificationCaptor.getValue();
         assertThat(capturedEmailNotification.getNotificationId(), is(notificationId));
         assertThat(capturedEmailNotification.getTemplateId(), is(templateId));
         assertThat(capturedEmailNotification.getSendToAddress(), is(sendToAddress));
         assertThat(capturedEmailNotification.getSubject().orElse(null), is(subject));
         assertThat(capturedEmailNotification.getMaterialUrl(), is(materialUrl));
+        assertThat(capturedEmailNotification.getMaterialId(), is(Optional.of(materialId)));
     }
 
     @Test
@@ -388,7 +395,7 @@ public class MigratedNcesEmailNotificationRequestedProcessorTest {
 
         verify(notificationNotifyService).sendNcesEmail(emailNotificationCaptor.capture(), eq(jsonEnvelope));
         assertThat(emailNotificationCaptor.getValue().getMaterialId().isPresent(), is(false));
-        verifyNoInteractions(documentDeliveryStatusService);
+        verifyNoInteractions(documentDeliveryStatusService, notifyGatewaySendEmailService);
     }
 
     @Test

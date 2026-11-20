@@ -6,8 +6,8 @@ import static uk.gov.justice.services.core.annotation.Component.EVENT_PROCESSOR;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
 import static uk.gov.moj.cpp.results.event.helper.Originator.ORIGINATOR_VALUE_NCES;
 import static uk.gov.moj.cpp.results.event.helper.Originator.assembleEnvelopeWithPayloadAndMetaDetails;
-import static uk.gov.moj.cpp.results.event.service.NotificationNotifyService.CLIENT_CONTEXT;
-import static uk.gov.moj.cpp.results.event.service.NotificationNotifyService.clientContextFor;
+import static uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService.CLIENT_CONTEXT;
+import static uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService.clientContextFor;
 
 import uk.gov.justice.services.common.converter.ObjectToJsonObjectConverter;
 import uk.gov.justice.services.core.annotation.Handles;
@@ -16,6 +16,7 @@ import uk.gov.justice.services.core.sender.Sender;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.moj.cpp.domains.EmailDeliveryStatus;
 import uk.gov.moj.cpp.domains.results.notification.Notification;
+import uk.gov.moj.cpp.results.event.service.NotifyGatewaySendEmailService;
 import uk.gov.moj.cpp.results.material.client.MaterialUrlGenerator;
 import uk.gov.moj.cpp.results.event.service.DocumentDeliveryStatusService;
 import uk.gov.moj.cpp.results.event.service.NotificationNotifyService;
@@ -59,6 +60,9 @@ public class SystemDocGeneratorEventProcessor {
 
     @Inject
     private NotificationNotifyService notificationNotifyService;
+
+    @Inject
+    private NotifyGatewaySendEmailService notifyGatewaySendEmailService;
 
     @Inject
     private ObjectToJsonObjectConverter objectToJsonObjectConverter;
@@ -154,8 +158,10 @@ public class SystemDocGeneratorEventProcessor {
             // matches notificationnotify's outcome back to the delivery of the document
             documentDeliveryStatusService.recordEmailStatus(envelope.metadata(), materialId, EmailDeliveryStatus.PENDING);
             notificationPayload.add(CLIENT_CONTEXT, clientContextFor(materialId));
+            notifyGatewaySendEmailService.sendEmailNotification(envelope, notificationPayload.build());
+        } else {
+            notificationNotifyService.sendEmailNotification(envelope, notificationPayload.build());
         }
-        notificationNotifyService.sendEmailNotification(envelope, notificationPayload.build());
     }
 
     /**

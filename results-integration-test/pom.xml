@@ -26,6 +26,12 @@
             <artifactId>wiremock</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- plays the notify gateway on the Service Bus emulator's queues -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-messaging-servicebus</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>uk.gov.moj.cpp.results</groupId>
             <artifactId>results-domain-common</artifactId>
