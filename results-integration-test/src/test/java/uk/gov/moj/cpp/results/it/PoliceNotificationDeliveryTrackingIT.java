@@ -22,6 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static uk.gov.justice.services.messaging.JsonObjects.createObjectBuilder;
+import static uk.gov.moj.cpp.results.it.helper.DocumentDeliveryHelper.DOCUMENT_DELETED_FROM_BLOB;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.closeMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.createMessageConsumers;
 import static uk.gov.moj.cpp.results.it.steps.ResultsStepDefinitions.hearingResultsHaveBeenSharedV2;
@@ -38,7 +39,8 @@ import static uk.gov.moj.cpp.results.it.stub.NotifyGatewayStub.publishNotificati
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionCaseExistsByUrn;
 import static uk.gov.moj.cpp.results.it.stub.ProgressionStub.stubGetProgressionProsecutionCasesFromPayload;
 import static uk.gov.moj.cpp.results.it.utils.ContextNameProvider.CONTEXT_NAME;
-import static uk.gov.moj.cpp.results.it.utils.FeatureStubUtil.setFeatureToggle;
+import static uk.gov.moj.cpp.results.it.utils.FeatureStubUtil.enableResultsFileStoreWithDelete;
+import static uk.gov.moj.cpp.results.it.utils.QueueUtil.privateEvents;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubBailStatuses;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubCountryNationalities;
 import static uk.gov.moj.cpp.results.it.utils.ReferenceDataServiceStub.stubGetOrganisationUnit;
@@ -64,6 +66,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -73,6 +77,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
+import io.restassured.path.json.JsonPath;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -92,7 +97,6 @@ import org.junit.jupiter.api.Test;
  */
 class PoliceNotificationDeliveryTrackingIT {
 
-    private static final String RESULTS_FILE_STORE_FEATURE = "resultsFileStore";
     private static final String GENERATE_DOCUMENT_URL = "/.*/rest/systemdocgenerator/generate-document";
     private static final String PUBLIC_EVENT_DOCUMENT_AVAILABLE = "public.systemdocgenerator.events.document-available";
     private static final String FIRST_SHARE = "json/public-hearing-results-shared/firstshare-onecase-onedefendant-oneoffence.json";
@@ -109,6 +113,8 @@ class PoliceNotificationDeliveryTrackingIT {
     private final JsonObjectToObjectConverter jsonToObjectConverter = new JsonObjectToObjectConverter(new ObjectMapperProducer().objectMapper());
     private final DocumentDeliveryHelper documentDeliveryHelper = new DocumentDeliveryHelper();
     private final String policeEmailAddress = randomAlphabetic(15) + "@email.com";
+
+    private MessageConsumer documentDeletedFromBlobConsumer;
 
     @BeforeAll
     static void setupStubs() throws ClassNotFoundException {
@@ -127,7 +133,7 @@ class PoliceNotificationDeliveryTrackingIT {
         whenPrisonAdminTriesToViewResultsForThePerson(getUserId());
         stubMaterialUploadFile();
         stubDocGeneratorEndPoint();
-        setFeatureToggle(RESULTS_FILE_STORE_FEATURE, true);
+        enableResultsFileStoreWithDelete();
     }
 
     @AfterAll
@@ -142,17 +148,23 @@ class PoliceNotificationDeliveryTrackingIT {
     void setup() {
         stubSpiOutFlag(true, true, policeEmailAddress);
         createMessageConsumers();
+        documentDeletedFromBlobConsumer = privateEvents.createConsumer(DOCUMENT_DELETED_FROM_BLOB);
     }
 
     @AfterEach
-    void tearDown() {
-        closeMessageConsumers();
+    void tearDown() throws JMSException {
+        try {
+            documentDeletedFromBlobConsumer.close();
+        } finally {
+            closeMessageConsumers();
+        }
     }
 
     /**
      * A hearing is shared and then re-shared with amended results, so results asks
      * system-doc-generator for the police notification. System-doc-generator then makes the document
-     * available, material adds it and the notify gateway sends the police email.
+     * available, material adds it and the notify gateway sends the police email. The delivery is
+     * then complete, so its payload and document blobs are deleted.
      */
     @Test
     void shouldTrackAPoliceNotificationDeliveredToMaterialAndEmailAsSucceeded() {
@@ -223,6 +235,11 @@ class PoliceNotificationDeliveryTrackingIT {
         assertThat(delivered.emailStatus(), is(SUCCESS));
         assertThat(delivered.payloadBlobUri(), is(payloadFileUri));
         assertThat(delivered.documentBlobUri(), is(destinationFileUri));
+
+        // delivered to material and by email, with no SJP case: both blobs are deleted
+        final JsonPath documentDeletedFromBlob = documentDeliveryHelper.awaitDocumentDeletedFromBlob(documentDeletedFromBlobConsumer, materialId);
+        assertThat(documentDeletedFromBlob.getString("payloadBlobUri"), is(payloadFileUri));
+        assertThat(documentDeletedFromBlob.getString("documentBlobUri"), is(destinationFileUri));
     }
 
     private PublicHearingResulted publicHearingResulted(final String path, final UUID caseId, final String caseUrn, final UUID hearingId) {

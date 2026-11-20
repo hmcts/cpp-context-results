@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.FAILED;
@@ -13,11 +14,14 @@ import static uk.gov.moj.cpp.domains.DocumentDeliveryStatus.SUCCESS;
 import static uk.gov.moj.cpp.domains.DocumentDeliveryType.NCES;
 import static uk.gov.moj.cpp.domains.DocumentDeliveryType.POLICE_NOTIFICATION;
 import static uk.gov.moj.cpp.domains.EmailDeliveryStatus.NOT_REQUIRED;
+import static uk.gov.moj.cpp.domains.EmailDeliveryStatus.VALIDATION_FAILED;
 
 import uk.gov.moj.cpp.results.domain.aggregate.DocumentDeliveryRequest.SjpCase;
+import uk.gov.moj.cpp.results.domain.event.DocumentDeletedFromBlob;
 import uk.gov.moj.cpp.results.domain.event.DocumentDeliveryRecorded;
 import uk.gov.moj.cpp.results.domain.event.SjpCases;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -186,6 +190,165 @@ class DocumentDeliveryAggregateTest {
         record(ncesPending(firstCaseId));
 
         assertThat(record(new DocumentDeliveryRequest(materialId, null, null, null, "http://localhost/other.pdf", null, null)), is(empty()));
+    }
+
+    @Test
+    void shouldDeleteTheBlobsOnceMaterialAndEmailSucceedAndEverySjpCaseSucceeds() {
+        record(ncesPending(firstCaseId, secondCaseId));
+        assertThat(record(materialStatus(SUCCESS.name())), hasSize(1));
+        assertThat(record(emailStatus(SUCCESS.name())), hasSize(1));
+        // one SJP case is still PENDING
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name()))), hasSize(1));
+
+        final List<Object> events = record(sjpStatus(new SjpCase(secondCaseId, SUCCESS.name())));
+
+        assertThat(events, hasSize(2));
+        assertThat(events.get(0), instanceOf(DocumentDeliveryRecorded.class));
+        final DocumentDeletedFromBlob deleted = (DocumentDeletedFromBlob) events.get(1);
+        assertThat(deleted.getMaterialId(), is(materialId));
+        assertThat(deleted.getPayloadBlobUri(), is(nullValue()));
+        assertThat(deleted.getDocumentBlobUri(), is(DOCUMENT_BLOB_URI));
+    }
+
+    @Test
+    void shouldDeleteTheBlobsWhicheverStatusCompletesTheDelivery() {
+        // the statuses arrive in any order: here the material outcome comes last
+        record(ncesPending(firstCaseId));
+        record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name())));
+        record(emailStatus(NOT_REQUIRED.name()));
+
+        final List<Object> events = record(materialStatus(SUCCESS.name()));
+
+        assertThat(events, hasSize(2));
+        assertThat(events.get(1), instanceOf(DocumentDeletedFromBlob.class));
+    }
+
+    @Test
+    void shouldDeleteBothBlobsOfAPoliceNotificationWithNoSjpCase() {
+        record(new DocumentDeliveryRequest(materialId, POLICE_NOTIFICATION.name(), PENDING.name(),
+                PAYLOAD_BLOB_URI, DOCUMENT_BLOB_URI, null, null));
+        record(emailStatus(SUCCESS.name()));
+
+        final List<Object> events = record(materialStatus(SUCCESS.name()));
+
+        assertThat(events, hasSize(2));
+        final DocumentDeletedFromBlob deleted = (DocumentDeletedFromBlob) events.get(1);
+        assertThat(deleted.getPayloadBlobUri(), is(PAYLOAD_BLOB_URI));
+        assertThat(deleted.getDocumentBlobUri(), is(DOCUMENT_BLOB_URI));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsWhileAnSjpCaseIsNotSuccessful() {
+        record(ncesPending(firstCaseId, secondCaseId));
+        record(materialStatus(SUCCESS.name()));
+        record(emailStatus(SUCCESS.name()));
+        record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name())));
+
+        assertThat(record(sjpStatus(new SjpCase(secondCaseId, FAILED.name()))), hasSize(1));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsWhileTheEmailIsNotSent() {
+        record(ncesPending());
+        record(materialStatus(SUCCESS.name()));
+
+        assertThat(record(emailStatus(PENDING.name())), hasSize(1));
+        assertThat(record(emailStatus(FAILED.name())), hasSize(1));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsWhenTheMaterialFails() {
+        record(ncesPending());
+        record(emailStatus(NOT_REQUIRED.name()));
+
+        assertThat(record(materialStatus(FAILED.name())), hasSize(1));
+    }
+
+    @Test
+    void shouldDeleteTheBlobsOnlyOnce() {
+        record(ncesPending());
+        record(emailStatus(NOT_REQUIRED.name()));
+        assertThat(record(materialStatus(SUCCESS.name())), hasSize(2));
+
+        // a later change - e.g. a late email outcome - does not delete them again
+        assertThat(record(emailStatus(SUCCESS.name())), hasSize(1));
+    }
+
+    @Test
+    void shouldDeleteTheBlobsOfAnNcesDocumentSentToNoSjpCase() {
+        // e.g. the migrated inactive NCES flow
+        record(ncesPending());
+        record(materialStatus(SUCCESS.name()));
+
+        final List<Object> events = record(emailStatus(SUCCESS.name()));
+
+        assertThat(events, hasSize(2));
+        assertThat(((DocumentDeletedFromBlob) events.get(1)).getDocumentBlobUri(), is(DOCUMENT_BLOB_URI));
+    }
+
+    @Test
+    void shouldDeleteTheBlobsWhenAFailedSjpFilingSucceedsOnRetry() {
+        record(ncesPending(firstCaseId));
+        record(materialStatus(SUCCESS.name()));
+        record(emailStatus(SUCCESS.name()));
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, FAILED.name()))), hasSize(1));
+
+        final List<Object> events = record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name())));
+
+        assertThat(events, hasSize(2));
+        assertThat(events.get(1), instanceOf(DocumentDeletedFromBlob.class));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsWhenTheEmailFailsValidation() {
+        record(ncesPending(firstCaseId));
+        record(materialStatus(SUCCESS.name()));
+        record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name())));
+
+        assertThat(record(emailStatus(VALIDATION_FAILED.name())), hasSize(1));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsBeforeTheFlowDecidesOnTheEmail() {
+        // material and every SJP case succeeded, but the email status is still undecided
+        record(ncesPending(firstCaseId));
+        record(materialStatus(SUCCESS.name()));
+
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name()))), hasSize(1));
+    }
+
+    @Test
+    void shouldNotRaiseADeletionForADocumentWithNoBlob() {
+        record(new DocumentDeliveryRequest(materialId, NCES.name(), PENDING.name(), null, null, NOT_REQUIRED.name(), null));
+
+        assertThat(record(materialStatus(SUCCESS.name())), hasSize(1));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsAgainWhenAnSjpStatusChangesAfterTheDeletion() {
+        record(ncesPending(firstCaseId));
+        record(emailStatus(NOT_REQUIRED.name()));
+        record(materialStatus(SUCCESS.name()));
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name()))), hasSize(2));
+
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, FAILED.name()))), hasSize(1));
+        assertThat(record(sjpStatus(new SjpCase(firstCaseId, SUCCESS.name()))), hasSize(1));
+    }
+
+    @Test
+    void shouldNotDeleteTheBlobsAgainAfterTheStreamIsReplayed() {
+        final List<Object> stream = new ArrayList<>();
+        stream.addAll(record(ncesPending()));
+        stream.addAll(record(emailStatus(NOT_REQUIRED.name())));
+        stream.addAll(record(materialStatus(SUCCESS.name())));
+        assertThat(stream.get(stream.size() - 1), instanceOf(DocumentDeletedFromBlob.class));
+
+        // the aggregate is rebuilt from its events, as when it is loaded for the next command
+        final DocumentDeliveryAggregate replayed = new DocumentDeliveryAggregate();
+        stream.forEach(replayed::apply);
+
+        // a later change - e.g. a late email outcome - completes the delivery again but deletes nothing
+        assertThat(replayed.recordDocumentDelivery(emailStatus(SUCCESS.name())).toList(), hasSize(1));
     }
 
     private List<Object> record(final DocumentDeliveryRequest request) {

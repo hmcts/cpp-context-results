@@ -25,11 +25,13 @@ import uk.gov.justice.services.core.aggregate.AggregateService;
 import uk.gov.justice.services.core.enveloper.Enveloper;
 import uk.gov.justice.services.eventsourcing.source.core.EventSource;
 import uk.gov.justice.services.eventsourcing.source.core.EventStream;
+import uk.gov.justice.services.eventsourcing.source.core.exception.EventStreamException;
 import uk.gov.justice.services.messaging.Envelope;
 import uk.gov.justice.services.messaging.JsonEnvelope;
 import uk.gov.justice.services.test.utils.core.enveloper.EnveloperFactory;
 import uk.gov.moj.cpp.results.domain.aggregate.DocumentDeliveryAggregate;
 import uk.gov.moj.cpp.results.domain.aggregate.DocumentDeliveryRequest;
+import uk.gov.moj.cpp.results.domain.event.DocumentDeletedFromBlob;
 import uk.gov.moj.cpp.results.domain.event.DocumentDeliveryRecorded;
 
 import java.util.List;
@@ -51,6 +53,8 @@ class DocumentDeliveryCommandHandlerTest {
 
     private static final String RECORD_DOCUMENT_DELIVERY = "results.command.record-document-delivery";
     private static final String DOCUMENT_DELIVERY_RECORDED = "results.event.document-delivery-recorded";
+    private static final String DOCUMENT_DELETED_FROM_BLOB = "results.event.document-deleted-from-blob";
+    private static final String PAYLOAD_BLOB_URI = "http://localhost/results/sdg/requests/POLICE_NOTIFICATION_HEARING_RESULTS1.html";
     private static final String DOCUMENT_BLOB_URI = "http://localhost/results/sdg/documents/ENFDocumentOrder_1.pdf";
 
     private final UUID materialId = randomUUID();
@@ -67,7 +71,7 @@ class DocumentDeliveryCommandHandlerTest {
 
     // registers the event so the handler can envelope it
     @Spy
-    private final Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(DocumentDeliveryRecorded.class);
+    private final Enveloper enveloper = EnveloperFactory.createEnveloperWithEvents(DocumentDeliveryRecorded.class, DocumentDeletedFromBlob.class);
 
     @InjectMocks
     private DocumentDeliveryCommandHandler documentDeliveryCommandHandler;
@@ -130,6 +134,31 @@ class DocumentDeliveryCommandHandlerTest {
                 payload().isJson(allOf(
                         withJsonPath("$.materialId", is(materialId.toString())),
                         withJsonPath("$.emailStatus", is("NOT_REQUIRED")))))));
+    }
+
+    @Test
+    void shouldDeleteTheBlobsWhenTheRecordCompletesTheDelivery() throws EventStreamException {
+        aggregate.recordDocumentDelivery(new DocumentDeliveryRequest(materialId, "POLICE_NOTIFICATION", "PENDING",
+                PAYLOAD_BLOB_URI, DOCUMENT_BLOB_URI, null, List.of())).toList();
+        aggregate.recordDocumentDelivery(new DocumentDeliveryRequest(materialId, null, null, null, null, "SUCCESS", List.of())).toList();
+        givenTheAggregate();
+
+        documentDeliveryCommandHandler.recordDocumentDelivery(command(createObjectBuilder()
+                .add("materialId", materialId.toString())
+                .add("materialStatus", "SUCCESS")
+                .build()));
+
+        final Stream<JsonEnvelope> events = verifyAppendAndGetArgumentFrom(eventStream);
+        assertThat(events, streamContaining(
+                jsonEnvelope(
+                        metadata().withName(DOCUMENT_DELIVERY_RECORDED),
+                        payload().isJson(withJsonPath("$.materialStatus", is("SUCCESS")))),
+                jsonEnvelope(
+                        metadata().withName(DOCUMENT_DELETED_FROM_BLOB),
+                        payload().isJson(allOf(
+                                withJsonPath("$.materialId", is(materialId.toString())),
+                                withJsonPath("$.payloadBlobUri", is(PAYLOAD_BLOB_URI)),
+                                withJsonPath("$.documentBlobUri", is(DOCUMENT_BLOB_URI)))))));
     }
 
     private void givenTheAggregate() {

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "The delivery of a document results stores in its blob container is complete, so its blobs are deleted",
+  "id": "http://moj.gov.uk/cpp/results/domain/event/document-deleted-from-blob.json",
+  "type": "object",
+  "properties": {
+    "materialId": {
+      "description": "The identifier of the material the deleted blobs relate to",
+      "$ref": "http://justice.gov.uk/domain/core/common/definitions.json#/definitions/uuid"
+    },
+    "payloadBlobUri": {
+      "description": "The blob storage URI of the deleted payload; absent for a document with no payload blob (NCES)",
+      "type": "string"
+    },
+    "documentBlobUri": {
+      "description": "The blob storage URI of the deleted document",
+      "type": "string"
+    }
+  },
+  "required": [
+    "materialId"
+  ],
+  "additionalProperties": false
+}
