@@ -31,6 +31,7 @@
         "originatingOrganisation": "a",
         "initiationCode": "J",
         "caseStatus": "a",
+        "isCivil": true,
         "policeOfficerInCase": {
           "personDetails": {
             "title": "MR",
@@ -538,6 +539,10 @@
     "courtApplications": [
       {
         "id": "ab746921-d839-4867-bcf9-b41db8ebc852",
+        "courtCivilApplication": {
+          "isCivil": true,
+          "isExParte": false
+        },
         "type": {
           "id": "ab746921-d839-4867-bcf9-b41db8ebc852",
           "applicationCode": "a",

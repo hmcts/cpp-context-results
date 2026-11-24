@@ -21,6 +21,7 @@
       },
       "initiationCode": "J",
       "caseStatus": "SJP_REFERRAL",
+      "isCivil": true,
       "statementOfFacts": "Prosecution Facts",
       "caseMarkers": [
         {
@@ -608,6 +609,10 @@
   "courtApplications": [
     {
       "id": "c10e3b71-6a6d-45ef-9b62-34df4d54972a",
+      "courtCivilApplication": {
+        "isCivil": true,
+        "isExParte": false
+      },
       "courtApplicationCases": [
         {
           "caseStatus": "INACTIVE",
